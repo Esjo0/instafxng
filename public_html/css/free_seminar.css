@@ -1,0 +1,34 @@
+em {
+    font-weight: bold;
+    font-style: normal;
+}
+
+.color-fancy { color: #D96437; }
+
+#signup-section, #footer-section {
+    padding: 20px;
+    margin: 0;
+}
+
+#signup-section {
+    max-width: 400px;
+    margin: 0 auto;
+    border: 2px solid #BA1B2F;
+    background-color: #F4E8EB;
+    box-shadow: -2px -2px 5px 0 #666;
+}
+
+#signup-form > div {
+    margin-bottom: 5px;
+}
+
+.signup-header {
+    margin: 0;
+    padding: 0 0 7px 0;
+    border-bottom: 1px dotted black;
+}
+
+#footer-section {
+    margin-bottom: 10px;
+    border-top: 3px solid #D1D1D1;
+}

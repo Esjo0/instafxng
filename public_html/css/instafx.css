@@ -1,0 +1,379 @@
+/* default styles here for older browsers. 
+   I tend to go for a 600px - 960px width max but using percentages
+*/
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700);
+@import url(https://fonts.googleapis.com/css?family=Nunito:700);
+
+header, section, footer, aside, nav, article, figure, details, summary {
+    display: block;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #303030;
+    font-weight: 300;
+    margin: 0px;
+    padding: 0px;
+    background: url("../images/bg.gif") repeat;
+}
+
+.unit_name {
+    font-size: 1.15em !important;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+p, li {
+    font-size: 1.15em;
+}
+
+#main-body-content-area li {
+    margin-bottom: 8px;
+}
+
+h1 {
+    text-transform: capitalize !important;
+    font-size: 2em !important;
+}
+
+h2 { font-size: 2em !important; }
+h3 { font-size: 1.7em !important; }
+h4 { font-size: 1.5em !important; }
+h5 { font-size: 1.3em !important; }
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Nunito', sans-serif !important;
+    color: #A94442 !important;
+    margin: 0 !important;
+    padding: 10px 0 10px 0 !important;
+}
+
+p, h1 {
+    padding-top: 12px;
+}
+
+.container-fluid {
+    max-width: 95%;
+}
+
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+.super-shadow {
+    box-shadow: -1px -1px 5px 1px #DADADA;
+    -moz-box-shadow: -1px -1px 5px 1px #DADADA;
+    -webkit-box-shadow: -1px -1px 5px 1px #DADADA;
+}
+
+.masthead {
+    padding: 10px;
+}
+
+.section-tint {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-bottom: solid thin #A0A0A0;
+    margin-bottom: 10px;
+}
+
+.page-top-section {
+    margin-bottom: 10px;
+    padding: 20px;
+    border-bottom: solid thin #DA231B;
+    background-color: #FCEBED;
+}
+
+#page-top-section h1 {
+    color: #E3253E;
+}
+
+#welcome-note li {
+    margin-top: 15px;
+}
+
+#welcome-note  li:first-child {
+    margin-top:0;
+}
+
+.icon-tune {
+    color: #DA231B;
+}
+
+.nav-display {
+    margin: 0 2px 10px 2px;
+}
+
+.nav-display header {
+    background-color: #F0F0F0;
+    border-top: solid 1px #A0A0A0;
+    border-bottom: dotted thin #A0A0A0;
+    padding: 10px;
+    color: #A94442;
+    font-weight: bold;
+}
+
+.nav-display article {
+    background-color: #FFFFFF;
+    padding: 10px;
+}
+
+.start-here {
+    text-decoration: underline dotted;
+}
+
+#livechat, #main-logo {
+    text-align: center;
+}
+
+.blog-featured {
+    border: solid thin #E0D6CF;
+    border-radius: 4px;
+    padding: 7px;
+}
+
+.blog-featured a {
+    font-family: sans-serif;
+    font-size: 1.1em;
+    color: #A94442 !important;
+}
+
+.blog-featured hr {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    border-color: #E0D6CF !important;
+}
+
+.blog-featured-foot {
+    color: gray;
+    font-size: 0.9em;
+}
+
+#footer {
+    margin-top: 20px;
+    width: 100%;
+    background: #ddd url(../images/footerbg.png);
+    padding: 5px 10px 10px 10px;
+}
+
+#footer header {
+    border-bottom: 1px dotted #DA231B;
+    padding: 5px;
+}
+
+#footer article {
+    padding: 5px;
+}
+
+#footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+#footer p {
+    padding: 0 !important;
+}
+
+#header hr {
+    border: 1px dotted #CACACA;
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+#header-blockquote {
+    margin: 0 !important;
+    padding-bottom: 0 !important;
+    border-right: 5px solid #E4E4E4 !important;
+}
+
+.copyright {
+    padding: 10px;
+    margin-top: 50px;
+}
+
+.copyright hr {
+    border: 1px dotted #727272;
+}
+
+.bg-fancy {
+    background-color: #FCEBED;
+}
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+    width: 80%;
+    margin: auto;
+}
+.carousel-inner .item {
+    padding-right: 35px;
+    padding-left: 35px;
+}
+.carousel-control {
+    width: 10% !important;
+}
+.carousel-control.right, .carousel-control.left {
+    background-image: none !important;
+    color: #f4511e;
+}
+.carousel-indicators li {
+    border-color: #f4511e;
+}
+.carousel-indicators li.active {
+    background-color: #000000;
+}
+
+
+/* Top Navigation */
+.navbar {
+    border-radius: 5px !important;
+    margin-bottom: 8px !important;
+}
+
+.nav > li {
+    margin-bottom: 0 !important;
+}
+
+#top-nav li {
+    font-size: 12px;
+    /*font-family: Verdana;*/
+    font-weight: bold;
+}
+
+.news_list {
+    padding: 5px;
+    border-bottom: 1px dotted #DA231B;
+    margin-bottom: 3px;
+}
+
+a.title_link { color: #A94442; }
+a.title_link:visited { color: #A94442; }
+a.title_link:hover { color: #A94442; }
+a.title_link:active { color: #A94442; }
+
+.nav-tabs {
+    margin-bottom: 0px !important;
+    bottom: 10px;
+    clear: both;
+    border-bottom: 1px solid transparent;
+}
+
+.nav-tabs > li {
+    margin-bottom: 0 !important;
+}
+
+.tab-content {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e5e5;
+    border-top: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+
+
+
+/** The Magic **/
+.btn-breadcrumb .btn:not(:last-child):after {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 17px solid transparent;
+    border-bottom: 17px solid transparent;
+    border-left: 10px solid white;
+    position: absolute;
+    top: 50%;
+    margin-top: -17px;
+    left: 100%;
+    z-index: 3;
+}
+.btn-breadcrumb .btn:not(:last-child):before {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 17px solid transparent;
+    border-bottom: 17px solid transparent;
+    border-left: 10px solid rgb(173, 173, 173);
+    position: absolute;
+    top: 50%;
+    margin-top: -17px;
+    margin-left: 1px;
+    left: 100%;
+    z-index: 3;
+}
+
+/** The Spacing **/
+.btn-breadcrumb .btn {
+    padding:6px 12px 6px 24px;
+}
+.btn-breadcrumb .btn:first-child {
+    padding:6px 6px 6px 10px;
+}
+.btn-breadcrumb .btn:last-child {
+    padding:6px 18px 6px 24px;
+}
+
+/** Default button **/
+.btn-breadcrumb .btn.btn-default:not(:last-child):after {
+    border-left: 10px solid #fff;
+}
+.btn-breadcrumb .btn.btn-default:not(:last-child):before {
+    border-left: 10px solid #ccc;
+}
+.btn-breadcrumb .btn.btn-default:hover:not(:last-child):after {
+    border-left: 10px solid #ebebeb;
+}
+.btn-breadcrumb .btn.btn-default:hover:not(:last-child):before {
+    border-left: 10px solid #adadad;
+}
+
+
+
+
+/* MEDIA QUERIES GOES HERE */
+@media (max-device-width: 480px){
+    
+}
+
+/* xs */
+@media (max-width: 767px){
+    
+}
+
+/* sm */
+@media (min-width: 768px){
+ 
+}
+
+/* md */
+@media (min-width: 992px){
+    .container-fluid {
+        max-width: 1300px;
+    }
+    
+    #main-logo { text-align: left; }
+    
+    #main-body-side-bar {
+        padding-right: 15px;
+    }
+}
+
+/* lg */
+@media (min-width: 1200px){
+    .container-fluid {
+        max-width: 1300px;
+    }
+    
+    #livechat { text-align: right; }
+    #main-logo { text-align: left; }
+}

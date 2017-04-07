@@ -1,0 +1,334 @@
+/* default styles here for older browsers. 
+   I tend to go for a 600px - 960px width max but using percentages
+*/
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700);
+@import url('https://fonts.googleapis.com/css?family=Lato|Signika:400,600');
+
+header, section, footer, aside, nav, article, figure, details, summary {
+    display: block;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #303030;
+    font-weight: 300;
+    margin: 0px;
+    padding: 0px;
+    background: url("../../images/bg.gif") repeat;
+}
+
+.container-fluid {
+    max-width: 1020px !important;
+}
+hr {
+    max-width: 1020px !important;
+    margin-top: 7px !important;
+    margin-bottom: 7px !important;
+}
+
+.color-blue { color: #1D80CB !important; }
+.color-red { color: #CC3333 !important; }
+.color-black { color: black !important; }
+.color-pink { color: #FA8300 !important; }
+
+#footer {
+    max-width: 1020px !important;
+    margin: 0 auto;
+    background: #ddd url(../../images/footerbg.png);
+    padding: 5px 10px 10px 10px;
+}
+
+p, blockquote, ul, ol {
+    font-family: 'Lato', sans-serif !important;
+    font-style: normal;
+    font-size: 1.3em !important;
+    line-height: 30px !important;
+}
+
+#special-i {
+    font-size: 2.0em;
+    padding: 15px;
+}
+
+blockquote {
+    border-left: 5px solid #e74c3c !important;
+    background-color: #FDEAE8 !important;
+}
+
+#custom-progress-bar {
+    padding: 25px;
+    background-color: #bdc3c7;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 700 !important;
+    margin: 0 auto !important;
+    padding: 10px 0 10px 0 !important;
+}
+
+h2 { font-size: 30px !important; }
+h3 { font-size: 26px !important; }
+h4 { font-size: 22px !important; }
+h5 { font-size: 18px !important; }
+
+ul { list-style-image: url('../../images/greentick.png'); }
+
+/**
+Fancy input buttons
+**/
+label.btn span {
+    font-size: 1.5em;
+}
+
+label input[type="radio"] ~ i.fa.fa-circle-o {
+    color: #7AA3CC;
+    display: inline;
+}
+
+label input[type="radio"] ~ i.fa.fa-dot-circle-o {
+    display: none;
+}
+
+label input[type="radio"]:checked ~ i.fa.fa-circle-o {
+    display: none;
+}
+
+label input[type="radio"]:checked ~ i.fa.fa-dot-circle-o {
+    color: #7AA3CC;
+    display: inline;
+}
+
+label:hover input[type="radio"] ~ i.fa {
+    color: #7AA3CC;
+}
+
+label input[type="checkbox"] ~ i.fa.fa-square-o {
+    color: #c8c8c8;
+    display: inline;
+}
+
+label input[type="checkbox"] ~ i.fa.fa-check-square-o {
+    display: none;
+}
+
+label input[type="checkbox"]:checked ~ i.fa.fa-square-o {
+    display: none;
+}
+
+label input[type="checkbox"]:checked ~ i.fa.fa-check-square-o {
+    color: #7AA3CC;
+    display: inline;
+}
+
+label:hover input[type="checkbox"] ~ i.fa {
+    color: #7AA3CC;
+}
+
+div[data-toggle="buttons"] label.active {
+    color: #7AA3CC;
+}
+
+div[data-toggle="buttons"] label {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 2em;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: top;
+    cursor: pointer;
+    background-color: none;
+    border: 0px solid #7AA3CC;
+    border-radius: 3px;
+    color: #7AA3CC;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+div[data-toggle="buttons"] label:hover {
+    color: #7AA3CC;
+}
+
+div[data-toggle="buttons"] label:active,
+div[data-toggle="buttons"] label.active {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+/*******************************************/
+
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+.super-shadow {
+    box-shadow: -1px -1px 5px 1px #DADADA;
+    -moz-box-shadow: -1px -1px 5px 1px #DADADA;
+    -webkit-box-shadow: -1px -1px 5px 1px #DADADA;
+}
+
+.masthead {
+    padding: 10px;
+}
+
+.section-tint {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-bottom: solid thin #A0A0A0;
+    margin-bottom: 10px;
+}
+
+.section-tint-red {
+    background-color: #e74c3c;
+    padding: 5px 20px 5px 20px;
+    margin-bottom: 6px;
+}
+
+.white-text {
+    color: #FFF !important;
+}
+
+#header-h4 {
+    font-size: 32px !important;
+}
+
+.section-tint-blue {
+    background-color: #ccddff;
+    max-width: 700px;
+    color: #000000;
+    font-weight: bold;
+    padding: 20px;
+    border-bottom: solid thin #A0A0A0;
+    margin-bottom: 10px;
+    margin: 0 auto;
+    border-radius: 15px;
+}
+
+
+.page-top-section {
+    margin-bottom: 10px;
+    padding: 20px;
+    border-bottom: solid thin #DA231B;
+    background-color: #FCEBED;
+}
+
+
+#livechat, #main-logo {
+    text-align: center;
+}
+
+#header hr {
+    border: 1px dotted #CACACA;
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+#header-blockquote {
+    margin: 0 !important;
+    padding-bottom: 0 !important;
+    border-right: 5px solid #E4E4E4 !important;
+}
+
+.copyright {
+    padding: 10px;
+    margin-top: 50px;
+}
+
+.copyright hr {
+    border: 1px dotted #727272;
+}
+
+.lesson_reader h3, .lesson_reader h4, .lesson_reader h5 {
+    font-family: 'Signika', sans-serif;
+    color: #ea6a1b !important;
+    line-height: 1.3em;
+    font-weight: 600 !important;
+    text-transform: capitalize;
+}
+
+.lesson_reader p, .lesson_reader ul, .lesson_reader ol {
+    font-family: 'Lato', sans-serif !important;
+    font-weight: normal !important;
+    font-style: normal;
+    font-size: 1.3em !important;
+    line-height: 30px !important;
+    margin-bottom: 15px;
+}
+
+.lesson_reader li {
+    margin-bottom: 15px;
+}
+
+
+.transaction-remarks {
+    color: #7D7D7D;
+    background-color: #F5F5F5;
+    margin: 3px;
+    padding: 4px;
+    border: 1px solid #B4B4B4;
+}
+
+.transaction-remarks span {
+    display: block;
+}
+
+.transaction-remarks #trans_remark_author {
+    color: #0074ba;
+    font-style: italic;
+}
+
+.transaction-remarks #trans_remark {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.transaction-remarks #trans_remark_date {
+    color: #A94442;
+    font-size: 1em;
+}
+
+/* MEDIA QUERIES GOES HERE */
+@media (max-device-width: 480px){
+    
+}
+
+/* xs */
+@media (max-width: 767px){
+    
+}
+
+/* sm */
+@media (min-width: 768px){
+    #main-container {
+        padding: 20px 50px 20px 50px;
+    }
+}
+
+/* md */
+@media (min-width: 992px){
+    .container-fluid {
+        max-width: 1300px;
+    }
+    
+    #main-logo { text-align: left; }
+    
+    #main-body-side-bar {
+        padding-right: 15px;
+    }
+}
+
+/* lg */
+@media (min-width: 1200px){
+    #livechat { text-align: right; }
+    #main-logo { text-align: left; }
+}
