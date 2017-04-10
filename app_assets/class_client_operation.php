@@ -49,8 +49,8 @@ class clientOperation {
     public function get_user_by_code($user_code) {
         global $db_handle;
 
-        $query = "SELECT u.user_code AS client_user_code, u.email AS client_email,
-                CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+        $query = "SELECT u.user_code AS client_user_code, u.email AS client_email, u.first_name AS client_first_name,
+                u.last_name AS client_last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
                 u.phone AS client_phone_number, u.user_type AS client_user_type,
                 u.status AS client_status, u.created AS client_created,
                 GROUP_CONCAT(DISTINCT ui.ifx_acct_no) AS client_accounts
@@ -68,6 +68,8 @@ class clientOperation {
             return false;
         }
     }
+
+
 
     public function update_user_status($user_code, $client_status) {
         global $db_handle;
