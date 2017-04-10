@@ -247,6 +247,64 @@ class clientOperation {
 
         return $user_code ? $user_code : false;
     }
+
+    /**
+     * Create a user profile without an associated ifx account number, this works for the
+     * fxacademy https://instafxng.com/fxacademy/
+     * @param $full_name
+     * @param $email_address
+     * @param $phone_number
+     * @return mixed
+     */
+    public function new_user_ordinary($full_name, $email_address, $phone_number) {
+        global $db_handle;
+
+        // Check whether the email is existing
+        $query = "SELECT user_code, email FROM user WHERE email = '$email_address' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) > 0) {
+            $fetched_data = $db_handle->fetchAssoc($result);
+            $user_email = $fetched_data[0]['email'];
+        } else {
+            usercode:
+            $user_code = rand_string(11);
+            if($db_handle->numRows("SELECT user_code FROM user WHERE user_code = '$user_code'") > 0) { goto usercode; };
+
+            $pass_salt = hash("SHA256", "$user_code");
+
+            $full_name = preg_replace("/[^A-Za-z0-9 ]/", '', $full_name);
+            $full_name = ucwords(strtolower(trim($full_name)));
+            $full_name = explode(" ", $full_name);
+
+            if(count($full_name) == 3) {
+                $last_name = $full_name[0];
+                if(strlen($full_name[2]) < 3) {
+                    $middle_name = $full_name[2];
+                    $first_name = $full_name[1];
+                } else {
+                    $middle_name = $full_name[1];
+                    $first_name = $full_name[2];
+                }
+            } else {
+                $last_name = $full_name[0];
+                $middle_name = "";
+                $first_name = $full_name[1];
+            }
+
+            if(empty($middle_name)) {
+                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
+                $db_handle->runQuery($query);
+                $this->send_welcome_email($last_name, $email_address);
+            } else {
+                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
+                $db_handle->runQuery($query);
+                $this->send_welcome_email($last_name, $email_address);
+            }
+        }
+
+        return $user_email ? $user_email : $email_address;
+    }
     
     // Confirm that the client has uploaded approved ID, Signature, Passport Photography
     public function confirm_credential($user_code) {
