@@ -16,6 +16,16 @@ $latest_bulletin = $system_object->get_latest_bulletin();
 // GET ACTIVE CLIENTS
 $total_active_clients = $system_object->get_total_active_clients();
 
+// GET FREE TRAINING ACTIVE CLIENTS
+$total_active_training_clients = $system_object->get_total_active_training_clients();
+
+// Total training clients
+$query = "SELECT * FROM free_training_campaign";
+$result = $db_handle->numRows($query);
+$total_training_client = $result;
+
+$percentage_active_training_client = ($total_active_training_clients / $total_training_client) * 100;
+
 // GET ACTIVE ACCOUNTS
 $total_active_accounts = $system_object->get_total_active_accounts();
 
@@ -65,9 +75,9 @@ $failed_sms_code = $system_object->get_failed_sms_code();
 
                     <div class="row">
                         <div class="col-sm-3">
-                            <div class="super-shadow">
-                                <header class="text-center" style="background-color: #E4E7EC; border-color: #CCCCCC; padding: 5px;"><strong>Active Clients</strong></header>
-                                <article class="text-center" style="background-color: #FFF; border-color: #CCCCCC; padding: 10px;">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Active Clients</strong></header>
+                                <article class="text-center">
                                     Clients: <strong><?php echo number_format($total_active_clients); ?></strong>&nbsp; | &nbsp;
                                     Accts: <strong><?php echo number_format($total_active_accounts); ?></strong>
                                 </article>
@@ -75,18 +85,28 @@ $failed_sms_code = $system_object->get_failed_sms_code();
                         </div>
 
                         <div class="col-sm-3">
-                            <div class="super-shadow">
-                                <header class="text-center" style="background-color: #E4E7EC; border-color: #CCCCCC; padding: 5px;"><strong>Total Clients</strong></header>
-                                <article class="text-center" style="background-color: #FFF; border-color: #CCCCCC; padding: 10px;">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Training Active Clients</strong></header>
+                                <article class="text-center">
+                                    <strong><?php echo number_format($total_active_training_clients); ?></strong>&nbsp; | &nbsp;
+                                    <strong><?php echo number_format($percentage_active_training_client, 2, ".", ",") . "%"; ?></strong>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Total Clients</strong></header>
+                                <article class="text-center">
                                     <strong><?php echo number_format($total_clients); ?></strong>
                                 </article>
                             </div>
                         </div>
 
                         <div class="col-sm-3">
-                            <div class="super-shadow">
-                                <header class="text-center" style="background-color: #E4E7EC; border-color: #CCCCCC; padding: 5px;"><strong>Unclaimed Points</strong></header>
-                                <article class="text-center" style="background-color: #FFF; border-color: #CCCCCC; padding: 10px;">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Unclaimed Points</strong></header>
+                                <article class="text-center">
                                     <strong><?php echo number_format($total_unclaimed_points, 2, ".", ","); ?></strong>&nbsp; | &nbsp;
                                     <strong>$ <?php echo number_format($total_unclaimed_points_dollar_amount, 2, ".", ","); ?></strong>
                                 </article>
@@ -94,9 +114,9 @@ $failed_sms_code = $system_object->get_failed_sms_code();
                         </div>
 
                         <div class="col-sm-3">
-                            <div class="super-shadow">
-                                <header class="text-center" style="background-color: #E4E7EC; border-color: #CCCCCC; padding: 5px;"><strong>Failed SMS Code</strong></header>
-                                <article class="text-center" style="background-color: #FFF; border-color: #CCCCCC; padding: 10px;">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Failed SMS Code</strong></header>
+                                <article class="text-center">
                                     <strong><?php echo number_format(count($failed_sms_code)); ?></strong>
                                 </article>
                             </div>

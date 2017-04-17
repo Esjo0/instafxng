@@ -269,32 +269,49 @@ div[data-toggle="buttons"] label.active {
     margin-bottom: 15px;
 }
 
-
 .transaction-remarks {
-    color: #7D7D7D;
-    background-color: #F5F5F5;
+    color: #000;
+    background-color: #eafaf1;
     margin: 3px;
     padding: 4px;
-    border: 1px solid #B4B4B4;
+    border: 1px solid #59d98e;
 }
 
-.transaction-remarks span {
+.transaction-remarks-1 {
+    color: #000;
+    background-color: #f9d6d2;
+    margin: 3px;
+    padding: 4px;
+    border: 1px solid #e74c3c;
+}
+
+.transaction-remarks-2 {
+    color: #000;
+    background-color: #e3e7e8;
+    margin: 3px;
+    padding: 4px;
+    border: 1px solid #7f8c8d;
+}
+
+.transaction-remarks span, .transaction-remarks-1 span, .transaction-remarks-2 span {
     display: block;
 }
 
-.transaction-remarks #trans_remark_author {
-    color: #0074ba;
+.transaction-remarks #trans_remark_author, .transaction-remarks-1 #trans_remark_author, .transaction-remarks-2 #trans_remark_author {
+    color: #000;
     font-style: italic;
 }
 
-.transaction-remarks #trans_remark {
+.transaction-remarks #trans_remark, .transaction-remarks-1 #trans_remark, .transaction-remarks-2 #trans_remark {
     padding-top: 3px;
     padding-bottom: 3px;
 }
 
-.transaction-remarks #trans_remark_date {
-    color: #A94442;
-    font-size: 1em;
+.transaction-remarks #trans_remark_date, .transaction-remarks-1 #trans_remark_date, .transaction-remarks-2 #trans_remark_date {
+    color: #d96659;
+    font-size: 0.9em;
+    text-align: right;
+
 }
 
 /* MEDIA QUERIES GOES HERE */

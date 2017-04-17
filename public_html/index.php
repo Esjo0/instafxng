@@ -37,16 +37,18 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Improving your Market Analysis for Increased Profit</h3>
+                                <h3 style="margin: 0;">We've Got New Winners!</h3>
                                 <p style="margin-top: 0">
-                                    <strong>Join us for April Trader's Forum to learn how to Improve your Market Analysis for Increased Profit.</strong><br /><br />
-                                    Time: 12 - 2pm, Date: 8th of April, 2017<br />
-                                    <span class="text-right"><a href="https://instafxng.com/traders_forum.php" title="Click to reserve seat"><strong>Reserve your seat</strong></a></span>
-                                </p>
+                                    The five traders who earned the highest points in the Current Instafxng
+                                        Loyalty points campaign has just been rewarded for trading actively in the
+                                        month of March.</p>
+                                <p>Do you want to win too? The quest for the top 5 earners for the month of April is
+                                    on and you can emerge one of the top point earners.
+                                    <a href="https://instafxng.com/loyalty.php" title="Click to learn more">Learn More ...</a></p>
 
                             </div>
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/traders_forum.php"><img src="https://instafxng.com/images/emotional-intelligence-traders-forum.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/loyalty.php"><img src="https://instafxng.com/images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>

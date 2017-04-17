@@ -8,6 +8,8 @@ $query = "SELECT * FROM free_training_campaign";
 $result = $db_handle->numRows($query);
 $total_client = $result;
 
+$total_active_training_clients = $system_object->get_total_active_training_clients();
+
 $query = "SELECT * FROM free_training_campaign WHERE training_interest = '2'";
 $result = $db_handle->numRows($query);
 $interested = $result;
@@ -137,16 +139,19 @@ $log_of_dates = $db_handle->fetchAssoc($result);
                             <div class="col-sm-12">
                                 <p>Below is the free training campaign insight.</p>
 
-                                <p><strong>Total Clients: <?php echo $total_client; ?></strong> |
-                                <strong>Total IFX Accounts Opened: <?php echo $ifx_account_count; ?></strong> |
-                                <strong>Interested: <?php echo $interested; ?></strong> |
-                                <strong>Not Interested: <?php echo $not_interested; ?></strong> |
-                                <strong>Diamond Centre: <?php echo $diamond_office; ?></strong> |
-                                <strong>Ikota Centre: <?php echo $lekki_office; ?></strong> |
-                                <strong>Online Centre: <?php echo $online_office; ?></strong> |
-                                <strong>Clients That Funded: <?php echo $funding_count;  ?></strong> |
-                                <strong>Dollars Funded: &dollar; <?php echo number_format($funding_sum, 2, ".", ","); ?></strong> |
-                                <strong>Dollars Funded This Month: &dollar; <?php echo number_format($funding_sum_this_month, 2, ".", ","); ?></strong></p>
+                                <p>
+                                    <strong>Total Clients:</strong> <?php echo $total_client; ?> |
+                                    <strong>Active Clients:</strong> <?php echo $total_active_training_clients; ?> |
+                                    <strong>Total IFX Accounts Opened:</strong> <?php echo $ifx_account_count; ?> |
+                                    <strong>Interested:</strong> <?php echo $interested; ?> |
+                                    <strong>Not Interested:</strong> <?php echo $not_interested; ?> |
+                                    <strong>Diamond Centre:</strong> <?php echo $diamond_office; ?> |
+                                    <strong>Ikota Centre:</strong> <?php echo $lekki_office; ?> |
+                                    <strong>Online Centre:</strong> <?php echo $online_office; ?> |
+                                    <strong>Clients That Funded:</strong> <?php echo $funding_count;  ?> |
+                                    <strong>Dollars Funded: &dollar;</strong> <?php echo number_format($funding_sum, 2, ".", ","); ?>|
+                                    <strong>Dollars Funded This Month: &dollar;</strong> <?php echo number_format($funding_sum_this_month, 2, ".", ","); ?>
+                                </p>
                             </div>
                         </div>
 

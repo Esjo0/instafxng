@@ -376,6 +376,22 @@ p, h1 {
     font-size: 1em;
 }
 
+.dashboard-stats {
+    margin-top: 10px;
+}
+
+.dashboard-stats header {
+    background-color: #E4E7EC;
+    border-color: #CCCCCC;
+    padding: 5px;
+}
+
+.dashboard-stats article {
+    background-color: #FFF;
+    border-color: #CCCCCC;
+    padding: 10px;
+}
+
 
 /**************  Beautify Span ***************/
 .span-title {

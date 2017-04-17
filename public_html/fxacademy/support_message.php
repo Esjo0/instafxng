@@ -74,14 +74,31 @@ $all_support_request = $education_object->get_all_support_request_by_id($_SESSIO
                                 <p>Whenever you request for support on any of the lessons, you will receive
                                 all responses here. Click on your support request on the left to read the thread
                                 and also post a new reply.</p>
+                                <p>When an admin has responded to your question, the status will be closed.</p>
                             </div>
 
-                            <div class="col-sm-5" style="min-height: 500px; max-height: 900px; overflow: auto; border: 0;">
+                            <div class="col-sm-5" style="max-height: 900px; overflow: auto; border: 0;">
 
                                 <div class="list-group">
                                 <?php if($all_support_request) {
                                     foreach($all_support_request as $row) { ?>
-                                    <div class="alert alert-success"><a href="fxacademy/support_message.php?id=<?php echo encrypt($row['support_request_code']); ?>"><p><?php echo substr(trim($row['request']), 0, 100); ?>...</p></a></div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="transaction-remarks">
+                                                    <span id="trans_remark_author"><strong>You</strong></span>
+                                                    <span id="trans_remark"><?php echo substr(trim($row['request']), 0, 100); ?>...
+                                                        <a href="fxacademy/support_message.php?id=<?php echo encrypt($row['support_request_code']); ?>">View Replies</a>
+                                                        <br />
+                                                        <strong>Status: <?php if($row['status'] == '1') { echo 'Open'; } else { echo 'Closed'; } ?></strong>
+                                                        <hr /></span>
+                                                    <span id="trans_remark">
+                                                        <strong>Course Title:</strong> <?php echo $row['course_title']; ?><br />
+                                                        <strong>Lesson Title:</strong> <?php echo $row['lesson_title']; ?>
+                                                    </span>
+                                                    <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                 <?php } } else { ?>
                                     <div class="alert alert-warning">
                                         <p>You do not have any support request.</p>
@@ -89,21 +106,61 @@ $all_support_request = $education_object->get_all_support_request_by_id($_SESSIO
                                 <?php } ?>
                                 </div>
 
+                                <hr />
+
                             </div>
 
-                            <div class="col-sm-7" style="min-height: 500px; max-height: 1200px; overflow: auto; border: 0;">
+                            <div class="col-sm-7" style="max-height: 900px; overflow: auto; border: 0;">
 
                                 <?php if(!empty($selected_support)) { ?>
+                                    <p>Question:</p>
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="transaction-remarks">
-                                                <span id="trans_remark_author"><?php echo $selected_support['full_name']; ?></span>
-                                                <span id="trans_remark"><?php echo $selected_support['request']; ?></span>
+                                                <span id="trans_remark_author"><strong>You</strong></span>
+                                                <span id="trans_remark"><?php echo $selected_support['request']; ?><hr /></span>
+                                                <span id="trans_remark">
+                                                    <strong>Course Title:</strong> <?php echo $selected_support['course_title']; ?><br />
+                                                    <strong>Lesson Title:</strong> <?php echo $selected_support['lesson_title']; ?>
+                                                </span>
                                                 <span id="trans_remark_date"><?php echo datetime_to_text($selected_support['created']); ?></span>
                                             </div>
                                         </div>
                                     </div>
+                                    <hr />
 
+                                    <p>Responses:</p>
+                                    <?php if(!empty($selected_responses)) {
+                                        foreach($selected_responses as $row) { ?>
+
+                                            <div class="row">
+                                                <div class="col-sm-12">
+
+                                                    <?php if($row['category'] == '1') { $full_name = $education_object->get_client_detail_by_code($row['author']); ?>
+                                                    <div class="transaction-remarks-1">
+                                                        <span id="trans_remark_author"><strong>You</strong></span>
+                                                        <span id="trans_remark"><?php echo $row['response']; ?></span>
+                                                        <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+                                                    </div>
+                                                    <?php } ?>
+
+                                                    <?php if($row['category'] == '2') { $full_name = $education_object->get_admin_detail_by_code($row['author']); ?>
+                                                    <div class="transaction-remarks-2">
+                                                        <span id="trans_remark_author"><strong><?php echo $full_name['full_name'] . ' - Admin'; ?></strong></span>
+                                                        <span id="trans_remark"><?php echo $row['response']; ?></span>
+                                                        <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+                                                    </div>
+                                                    <?php } ?>
+
+
+                                                </div>
+                                            </div>
+
+                                        <?php } } else { ?>
+                                        <p class="text-danger"><em>There are no responses to your support request yet.</em></p>
+                                    <?php } ?>
+
+                                    <hr />
                                     <form class="form-horizontal" role="form" method="post" action="">
                                         <input type="hidden" name="support_id" value="<?php echo encrypt($selected_support['user_edu_support_request_id']); ?>" />
                                         <div class="form-group text-center">
@@ -114,33 +171,6 @@ $all_support_request = $education_object->get_all_support_request_by_id($_SESSIO
                                             <div class="col-sm-12"><input name="submit_reply" type="submit" class="btn btn-success" value="Submit Reply" /></div>
                                         </div class="form-group">
                                     </form>
-                                    <hr />
-
-                                    <?php if(!empty($selected_responses)) {
-                                        foreach($selected_responses as $row) { ?>
-
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="transaction-remarks">
-
-                                                        <?php if($row['category'] == '1') { $full_name = $education_object->get_client_detail_by_code($row['author']); ?>
-                                                            <span id="trans_remark_author" style="font-weight: bold !important; color: green !important;"><?php echo $full_name['full_name']; ?></span>
-                                                        <?php } ?>
-
-                                                        <?php if($row['category'] == '2') { $full_name = $education_object->get_admin_detail_by_code($row['author']); ?>
-                                                            <span id="trans_remark_author" style="font-weight: bold !important;"><?php echo $full_name['full_name'] . ' - Admin'; ?></span>
-                                                        <?php } ?>
-
-                                                        <span id="trans_remark"><?php echo $row['response']; ?></span>
-                                                        <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        <?php } } else { ?>
-                                        <p class="text-danger"><em>There are no responses to your support request yet.</em></p>
-                                    <?php } ?>
-
 
                                 <?php } ?>
 

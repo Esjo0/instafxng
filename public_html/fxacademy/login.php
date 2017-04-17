@@ -8,12 +8,12 @@ $client_operation = new clientOperation();
 
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
-    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
-        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-        $responseData = json_decode($verifyResponse);
-
-        if ($responseData->success) {
+//    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+//        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+//        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+//        $responseData = json_decode($verifyResponse);
+//
+//        if ($responseData->success) {
             $client_email = $db_handle->sanitizePost($_POST['client_email']);
             $user_code = $client_operation->get_user_by_email($client_email);
             $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
@@ -39,12 +39,12 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                 $message_error = "Your profile details could not be found, please confirm you
                 entered the correct email address used on our website or contact support.";
             }
-        } else {
-            $message_error = "Please try the robot test again.";
-        }
-    } else {
-        $message_error = "Please confirm that you are not a robot. :)";
-    }
+//        } else {
+//            $message_error = "Please try the robot test again.";
+//        }
+//    } else {
+//        $message_error = "Please confirm that you are not a robot. :)";
+//    }
 } else { // Form has not been submitted.
     $username = "";
     $password = "";
