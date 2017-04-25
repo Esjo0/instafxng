@@ -37,18 +37,17 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">We've Got New Winners!</h3>
+                                <h3 style="margin: 0;">Improving Your Analysis of the Forex Market for Optimum Profit</h3>
                                 <p style="margin-top: 0">
-                                    The five traders who earned the highest points in the Current Instafxng
-                                        Loyalty points campaign has just been rewarded for trading actively in the
-                                        month of March.</p>
-                                <p>Do you want to win too? The quest for the top 5 earners for the month of April is
-                                    on and you can emerge one of the top point earners.
-                                    <a href="https://instafxng.com/loyalty.php" title="Click to learn more">Learn More ...</a></p>
+                                    Most traders find it difficult to come up with sustainable and profitable analysis
+                                    while dissecting the Forex market before taking a position.</p>
+                                <p>The cause of this rests largely on the inability of a trader to adequately engage in
+                                    market analysis in order to place informed and accurate trades.
+                                    <a href="https://instafxng.com/news1/id/545/u/improving-your-analysis-forex-market-optimum-profit/" title="Click to learn more">Learn More ...</a></p>
 
                             </div>
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/loyalty.php"><img src="https://instafxng.com/images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/news1/id/545/u/improving-your-analysis-forex-market-optimum-profit/"><img src="images/instafxng-forex-analysis.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>

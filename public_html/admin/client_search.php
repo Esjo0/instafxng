@@ -15,8 +15,8 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3 || isset($_
         $search_text = $_POST['search_text'];
 
         $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
-                    FROM user_ifxaccount AS ui
-                    LEFT JOIN user AS u ON ui.user_code = u.user_code
+                    FROM user AS u
+                    LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     WHERE u.status = '1' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ";
         $_SESSION['search_client_query'] = $query;
 
