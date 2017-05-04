@@ -4,9 +4,24 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+/**
+ * x = user code
+ * r = referral page URL
+ * c = referral page title
+ * pg = referral page pagination link
+ */
+$get_params = allowed_get_params(['x', 'r', 'c', 'pg']);
+
+$user_code_encrypted = $get_params['x'];
+$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
+$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
+$referral_url = $get_params['r'];
+$referral_title_encrypted = $get_params['c']; $referral_title = decrypt(str_replace(" ", "+", $referral_title_encrypted)); $referral_title = preg_replace("/[^A-Za-z0-9 ]/", '', $referral_title);
+$referral_pagination = $get_params['pg'];
+
 // get the current page or set a default
-if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
-    $currentpage = (int) $_GET['pg'];
+if (isset($referral_pagination) && is_numeric($referral_pagination)) {
+    $currentpage = (int) $referral_pagination;
 } else {
     $currentpage = 1;
 }
@@ -17,7 +32,7 @@ if (isset($_POST['process'])) {
     }
 
     extract($_POST);
-    $comment = "UNVERIFIED CLIENT: " . $comment;
+    $comment = $referral_title . ": " . $comment;
     $admin_code = $_SESSION['admin_unique_code'];
     $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$selected_id', '$admin_code', '$comment')";
     $result = $db_handle->runQuery($query);
@@ -28,11 +43,6 @@ if (isset($_POST['process'])) {
         $message_error = "Looks like something went wrong or you didn't make any change.";
     }
 }
-
-$get_params = allowed_get_params(['x']);
-$user_code_encrypted = $get_params['x'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
-$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
 $query = "SELECT first_name, last_name, email, phone FROM user WHERE user_code = '$user_code' LIMIT 1";
 $result = $db_handle->runQuery($query);
@@ -45,6 +55,7 @@ $query = "SELECT scc.comment, scc.created, CONCAT(a.last_name, SPACE(1), a.first
           WHERE scc.user_code = '$user_code' ORDER BY scc.created DESC";
 $result = $db_handle->runQuery($query);
 $selected_comment = $db_handle->fetchAssoc($result);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,8 +63,8 @@ $selected_comment = $db_handle->fetchAssoc($result);
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Unverified Clients</title>
-        <meta name="title" content="Instaforex Nigeria | Unverified Clients" />
+        <title>Instaforex Nigeria | Sales Contact View</title>
+        <meta name="title" content="Instaforex Nigeria | Sales Contact View" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
@@ -76,7 +87,7 @@ $selected_comment = $db_handle->fetchAssoc($result);
                                         
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>VIEW UNVERIFIED CLIENT DETAILS</strong></h4>
+                            <h4><strong>VIEW SALES CONTACT VIEW DETAILS - <?php echo $referral_title; ?></strong></h4>
                         </div>
                     </div>
                     
@@ -84,9 +95,9 @@ $selected_comment = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p><a href='<?php echo "client_unverified.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Unverified Clients"><i class="fa fa-arrow-circle-left"></i> Unverified Clients</a></p>
+                                <p><a href='<?php echo "$referral_url.php?pg={$currentpage}"; ?>'  class="btn btn-default" title=""><i class="fa fa-arrow-circle-left"></i> <?php echo $referral_title; ?></a></p>
                                 
-                                <p>View Unverified Client Details</p>
+                                <p>View Client Details</p>
                                 
                                 <div class="row">
                                     <div class="col-lg-7">
@@ -128,7 +139,7 @@ $selected_comment = $db_handle->fetchAssoc($result);
                                                         <div class="modal-header">
                                                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                                                 class="close">&times;</button>
-                                                            <h4 class="modal-title">Unverified Client Comment</h4>
+                                                            <h4 class="modal-title">Save Contact Comment</h4>
                                                         </div>
                                                         <div class="modal-body">Are you sure you want to save this information?</div>
                                                         <div class="modal-footer">

@@ -273,41 +273,39 @@ div[data-toggle="buttons"] label.active {
     color: #000;
     background-color: #eafaf1;
     margin: 3px;
-    padding: 4px;
+    padding: 8px;
     border: 1px solid #59d98e;
+    -moz-border-radius: 15px 30px;
+    -webkit-border-radius: 15px 30px;
+    border-radius: 15px 30px;
 }
 
 .transaction-remarks-1 {
     color: #000;
-    background-color: #f9d6d2;
+    background-color: #F8F8F8;
     margin: 3px;
-    padding: 4px;
-    border: 1px solid #e74c3c;
+    padding: 8px;
+    border: 1px solid #CCCCCC;
+    -moz-border-radius: 15px 30px;
+    -webkit-border-radius: 15px 30px;
+    border-radius: 15px 30px;
 }
 
-.transaction-remarks-2 {
-    color: #000;
-    background-color: #e3e7e8;
-    margin: 3px;
-    padding: 4px;
-    border: 1px solid #7f8c8d;
-}
-
-.transaction-remarks span, .transaction-remarks-1 span, .transaction-remarks-2 span {
+.transaction-remarks span, .transaction-remarks-1 span {
     display: block;
 }
 
-.transaction-remarks #trans_remark_author, .transaction-remarks-1 #trans_remark_author, .transaction-remarks-2 #trans_remark_author {
+.transaction-remarks #trans_remark_author, .transaction-remarks-1 #trans_remark_author {
     color: #000;
     font-style: italic;
 }
 
-.transaction-remarks #trans_remark, .transaction-remarks-1 #trans_remark, .transaction-remarks-2 #trans_remark {
+.transaction-remarks #trans_remark, .transaction-remarks-1 #trans_remark {
     padding-top: 3px;
     padding-bottom: 3px;
 }
 
-.transaction-remarks #trans_remark_date, .transaction-remarks-1 #trans_remark_date, .transaction-remarks-2 #trans_remark_date {
+.transaction-remarks #trans_remark_date, .transaction-remarks-1 #trans_remark_date {
     color: #d96659;
     font-size: 0.9em;
     text-align: right;

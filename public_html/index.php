@@ -37,17 +37,15 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Improving Your Analysis of the Forex Market for Optimum Profit</h3>
+                                <h3 style="margin: 0;">Money Management Strategies for Forex Traders</h3>
                                 <p style="margin-top: 0">
-                                    Most traders find it difficult to come up with sustainable and profitable analysis
-                                    while dissecting the Forex market before taking a position.</p>
-                                <p>The cause of this rests largely on the inability of a trader to adequately engage in
-                                    market analysis in order to place informed and accurate trades.
-                                    <a href="https://instafxng.com/news1/id/545/u/improving-your-analysis-forex-market-optimum-profit/" title="Click to learn more">Learn More ...</a></p>
-
+                                    <strong>Join us for May Trader's Forum to learn Money Management Strategies for Forex Traders.</strong><br /><br />
+                                    Time: 12 - 2pm, Date: 13th of May, 2017<br />
+                                    <a href="traders_forum.php"><strong>Click here to reserve seat</strong></a>
+                                </p>
                             </div>
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/news1/id/545/u/improving-your-analysis-forex-market-optimum-profit/"><img src="images/instafxng-forex-analysis.jpg" alt="" class="img-responsive" /></a>
+                                <a href="traders_forum.php"><img src="https://instafxng.com/images/emotional-intelligence-traders-forum.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>

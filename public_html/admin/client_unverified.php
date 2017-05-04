@@ -97,14 +97,14 @@ $unverified_clients = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                
+
                                 <p>Below is a table of unverified clients. These clients have not done any form of transaction since the last quarter of year 2014.</p>
 
                                 <?php if(isset($numrows)) { ?>
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
 
-                                <?php if(isset($unverified_clients) && !empty($unverified_clients)) { require_once 'layouts/pagination_links.php'; } ?>
+                                <?php if(isset($unverified_clients) && !empty($unverified_clients)) { require 'layouts/pagination_links.php'; } ?>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
@@ -126,7 +126,7 @@ $unverified_clients = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
                                             <td>
-                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_unverified'; ?>&c=<?php echo encrypt('UNVERIFIED CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>

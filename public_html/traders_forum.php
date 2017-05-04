@@ -46,8 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
-            <p>At the Forum this month, we will discuss Improving your Market Analysis for Increased Profit.
-            This is a topic that will assist you in trading smartly and meet your financial goals.</p>
+            <p>At the Forum this month, we will discuss Money Management Strategies for Forex Traders.
+            This is one topic that helps you meet your income target and keeps you in the market for as long
+            as you desire, making lots of profit.</p>
 
             <p>You will also have the opportunity of meeting other Forex traders and you
             could be one of two lucky winners to win $20 trading bonus. Isn’t that cool?</p>
@@ -55,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: 8th of April, 2017<br /><br />
+            Date: 13th of May, 2017<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -132,10 +133,10 @@ MAIL;
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Improving your Market Analysis for Increased Profit</h3>
+                                <h3 style="margin: 0;">Money Management Strategies for Forex Traders</h3>
                                 <p style="margin-top: 0">
-                                    <strong>Join us for April Trader's Forum to learn how to Improve your Market Analysis for Increased Profit.</strong><br /><br />
-                                    Time: 12 - 2pm, Date: 8th of April, 2017<br />
+                                    <strong>Join us for May Trader's Forum to learn Money Management Strategies for Forex Traders.</strong><br /><br />
+                                    Time: 12 - 2pm, Date: 13th of May, 2017<br />
                                     <strong>Reserve Your Seat Below</strong>
                                 </p>
                             </div>
@@ -159,9 +160,9 @@ MAIL;
                                     success. They share their experiences, learn from other traders, meet new
                                     people and go home with lots of exciting prizes such bonus account and Instaforex
                                     branded materials. </p>
-                                <p>Join us on Saturday, 8th of April, 2017 for another exciting edition of
+                                <p>Join us on Saturday, 13th of May, 2017 for another exciting edition of
                                     Nigerian Forex traders Forum as we all share our trading experience with one
-                                    another and discuss Improving your Market Analysis for Increased Profit.</p>
+                                    another and discuss Money Management Strategies for Forex Traders.</p>
                             </div>
                         </div>
 

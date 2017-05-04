@@ -1,3 +1,10 @@
+<?php
+// Get details of loyalty point claimed by client while submitting this transaction
+if(!empty($trans_detail['points_claimed_id'])) {
+    $point_dollar_amount = $client_operation->get_loyalty_point_dollar_amount($trans_detail['user_code'], $trans_detail['points_claimed_id']);
+}
+?>
+
 <p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
 <p>Make Modification to this order below.</p>
 <p>Fill the actual amount paid for the order as confirmed with the bank, add your remark, then process this transaction. Please note that
@@ -139,6 +146,16 @@ you must enter a remark for this transaction.</p>
             <?php if(!empty($trans_detail['points_claimed_id'])) { ?>
             <input type="hidden" name="points_claimed_id" value="<?php echo $trans_detail['points_claimed_id']; ?>" />
             <?php } ?>
+
+            <?php if(isset($point_dollar_amount)) { ?>
+                <div class="form-group">
+                    <label class="control-label text-danger" for="point_dollar_amount">Loyalty Point Dollar Value (&#36;):</label>
+                    <div>
+                        <input type="text" class="form-control" id="point_dollar_amount" name="point_dollar_amount" value="<?php echo number_format($point_dollar_amount, 2, ".", ","); ?>" readonly>
+                    </div>
+                </div>
+            <?php } ?>
+
             <div class="form-group">
                 <label class="control-label text-danger" for="realamtpaid">Actual Amount Paid (&#8358;):</label>
                 <div>

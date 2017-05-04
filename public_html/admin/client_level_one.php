@@ -108,6 +108,8 @@ $selected_lev1_clients = $db_handle->fetchAssoc($result);
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
 
+                                <?php if(isset($selected_lev1_clients) && !empty($selected_lev1_clients)) { require 'layouts/pagination_links.php'; } ?>
+
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -127,7 +129,10 @@ $selected_lev1_clients = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                            <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                            <td>
+                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_level_one'; ?>&c=<?php echo encrypt('LEVEL ONE CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                            </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
@@ -141,7 +146,7 @@ $selected_lev1_clients = $db_handle->fetchAssoc($result);
                             </div>
                         </div>
                         
-                        <?php if(isset($selected_lev1_clients) && !empty($selected_lev1_clients)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($selected_lev1_clients) && !empty($selected_lev1_clients)) { require 'layouts/pagination_links.php'; } ?>
                     </div>
 
                     <!-- Unique Page Content Ends Here

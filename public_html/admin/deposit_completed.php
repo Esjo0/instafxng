@@ -22,13 +22,14 @@ $deposit_yesterday = $fetched_data[0];
 ////
 $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_payable, ud.real_dollar_equivalent, ud.real_naira_confirmed,
         ud.client_naira_notified, ud.client_pay_date, ud.client_reference, ud.client_pay_method,
-        ud.client_notified_date, ud.status AS deposit_status, u.user_code,
+        ud.client_notified_date, ud.status AS deposit_status, ud.points_claimed_id, u.user_code,
         ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-        uc.passport, ui.ifxaccount_id, ud.updated
+        uc.passport, ui.ifxaccount_id, ud.updated, pbc.dollar_amount AS points_dollar_value
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
+        LEFT JOIN point_based_claimed AS pbc ON ud.points_claimed_id = pbc.point_based_claimed_id
         WHERE ud.status = '8' ORDER BY ud.updated DESC ";
 $numrows = $db_handle->numRows($query);
 
@@ -104,7 +105,8 @@ $completed_deposit_requests = $db_handle->fetchAssoc($result);
                                             <th>Transaction ID</th>
                                             <th>Client Name</th>
                                             <th>IFX Account</th>
-                                            <th>Amount Funded</th>
+                                            <th>Amount Confirmed</th>
+                                            <th>Points Claimed</th>
                                             <th>Total Confirmed</th>
                                             <th>Date Created</th>
                                             <th>Last Updated</th>
@@ -122,12 +124,13 @@ $completed_deposit_requests = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['ifx_acct_no']; ?></td>
                                             <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
+                                            <td class="nowrap">&dollar; <?php echo number_format($row['points_dollar_value'], 2, ".", ","); ?></td>
                                             <td class="nowrap">&#8358; <?php echo number_format($row['real_naira_confirmed'], 2, ".", ","); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td><?php echo datetime_to_text($row['updated']); ?></td>
                                             <td><a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                         </tr>
-                                        <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                        <?php } } else { echo "<tr><td colspan='9' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
                                 
