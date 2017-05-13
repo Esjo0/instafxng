@@ -1501,14 +1501,30 @@ MAIL;
 
     }
 
+    public function get_user_code_by_account_no($account_no) {
+        global $db_handle;
+
+        $query = "SELECT user_code FROM user_ifxaccount WHERE ifx_acct_no = '$account_no' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) > 0) {
+            $fetched_data = $db_handle->fetchAssoc($result);
+            $fetched_data = $fetched_data[0]['user_code'];
+            return $fetched_data;
+        } else {
+            return false;
+        }
+
+    }
+
     // Add a new account flag
-    public function add_new_account_flag($account_flag_no, $ifx_account_id, $flag_account_comment, $flag_account_status = '1', $admin_code) {
+    public function add_new_account_flag($account_flag_no, $client_user_code, $ifx_account_id, $flag_account_comment, $flag_account_status = '1', $admin_code) {
         global $db_handle;
 
         if(!empty($account_flag_no)) {
-            $query = "UPDATE user_account_flag SET ifxaccount_id = '$ifx_account_id', comment = '$flag_account_comment', status = '$flag_account_status' WHERE user_account_flag_id = $account_flag_no LIMIT 1";
+            $query = "UPDATE user_account_flag SET user_code = '$client_user_code', ifxaccount_id = $ifx_account_id, comment = '$flag_account_comment', status = '$flag_account_status' WHERE user_account_flag_id = $account_flag_no LIMIT 1";
         } else {
-            $query = "INSERT INTO user_account_flag (admin_code, ifxaccount_id, comment, status) VALUES ('$admin_code', $ifx_account_id, '$flag_account_comment', '$flag_account_status')";
+            $query = "INSERT INTO user_account_flag (user_code, admin_code, ifxaccount_id, comment, status) VALUES ('$client_user_code', '$admin_code', $ifx_account_id, '$flag_account_comment', '$flag_account_status')";
         }
 
         $db_handle->runQuery($query);
@@ -1520,10 +1536,33 @@ MAIL;
         }
     }
 
-    public function account_flagged($account_id) {
+    // get flag details
+    public function get_client_flag_by_code($user_code) {
         global $db_handle;
 
-        $query = "SELECT * FROM user_account_flag WHERE ifxaccount_id = $account_id AND status = '1'";
+        $query = "SELECT uaf.user_account_flag_id, uaf.comment, uaf.status, uaf.created, ui.ifx_acct_no,
+            CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+            CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name
+            FROM user_account_flag AS uaf
+            INNER JOIN user_ifxaccount AS ui ON uaf.ifxaccount_id = ui.ifxaccount_id
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            INNER JOIN admin AS a ON uaf.admin_code = a.admin_code
+            WHERE uaf.user_code = '$user_code' ORDER BY uaf.created DESC";
+
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) > 0) {
+            $fetched_data = $db_handle->fetchAssoc($result);
+            return $fetched_data;
+        } else {
+            return false;
+        }
+    }
+
+    public function account_flagged($user_code) {
+        global $db_handle;
+
+        $query = "SELECT * FROM user_account_flag WHERE user_code = '$user_code' AND status = '1'";
         return $db_handle->numRows($query) ? true : false;
     }
 

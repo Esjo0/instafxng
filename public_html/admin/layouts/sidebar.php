@@ -150,6 +150,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <li class="divider"></li>
                         <!-- // 66 - 72 -->
                         <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_free_training.php">Training Campaign</a></li><?php } ?>
+                        <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_client_training_funded.php">Training Campaign Funded</a></li><?php } ?>
                         <?php if (in_array(74, $my_pages_sidebar)) { ?><li><a href="edu_forum_reg.php">Forum Registration</a></li><?php } ?>
                     </ul>
                 </li>

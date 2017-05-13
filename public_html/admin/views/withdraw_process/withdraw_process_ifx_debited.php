@@ -7,6 +7,7 @@
             <div class="trans_item_content">
                 <div class="row">
                     <div class="col-sm-4 trans_item-thumb">
+                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($trans_detail['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
                         <?php
                         if(!empty($trans_detail['passport'])) {
                             $file_location = "../userfiles/" . $trans_detail['passport'];
@@ -19,8 +20,8 @@
                             <img src="../images/placeholder.jpg" alt="" class="img-responsive">
                         <?php } unset($file_location); // so that it will not remember for someone without passport ?>
 
-                        <?php if($client_operation->account_flagged($trans_detail['ifxaccount_id'])) { ?>
-                            <img src="../images/red-flag.png" alt="" title="The account number associated with this transaction is flagged.">
+                        <?php if($client_operation->account_flagged($trans_detail['user_code'])) { ?>
+                            <p><img class="center-block" src="../images/red-flag.png" alt="" title="The account number associated with this transaction is flagged."></p>
                         <?php } ?>
                     </div>
                     <div class="col-sm-8 ">

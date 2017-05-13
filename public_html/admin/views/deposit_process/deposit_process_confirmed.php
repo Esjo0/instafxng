@@ -14,6 +14,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
             <div class="trans_item_content">
                 <div class="row">
                     <div class="col-sm-4 trans_item-thumb">
+                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($trans_detail['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
                         <?php
                         if(!empty($trans_detail['passport'])) { $file_location = "../userfiles/" . $trans_detail['passport']; }
 
@@ -24,8 +25,8 @@ if(!empty($trans_detail['points_claimed_id'])) {
                             <img src="../images/placeholder.jpg" alt="" class="img-responsive">
                         <?php } ?>
 
-                        <?php if($client_operation->account_flagged($trans_detail['ifxaccount_id'])) { ?>
-                            <img src="../images/red-flag.png" alt="" title="The account number associated with this transaction is flagged.">
+                        <?php if($client_operation->account_flagged($trans_detail['user_code'])) { ?>
+                            <p><img class="center-block" src="../images/red-flag.png" alt="" title="This client has an account flagged."></p>
                         <?php } ?>
                     </div>
                     <div class="col-sm-8 ">
