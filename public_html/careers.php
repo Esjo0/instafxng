@@ -2,9 +2,7 @@
 require_once 'init/initialize_general.php';
 $thisPage = "Careers";
 
-$query = "SELECT * FROM career_jobs WHERE status = '2'";
-$result = $db_handle->runQuery($query);
-$all_jobs = $db_handle->fetchAssoc($result);
+$all_jobs = $obj_careers->get_open_jobs();
 
 ?>
 <!DOCTYPE html>
@@ -18,46 +16,66 @@ $all_jobs = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <style>
+            .container-fluid { max-width: 1020px !important; }
+            hr { max-width: 1020px !important; }
+            #footer { max-width: 1020px !important; margin: 0 auto; background: #ddd url(../../images/footerbg.png); padding: 5px 10px 10px 10px; }
+        </style>
     </head>
+
     <body>
-        <?php require_once 'layouts/header.php'; ?>
-        <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
-        <div id="main-body" class="container-fluid">
-            <div class="row no-gutter">
-                <?php require_once 'layouts/topnav.php'; ?>
+    <!-- Header Section: Logo and Live Chat  -->
+    <header id="header">
+        <div class="container-fluid no-gutter masthead">
+            <div class="row">
+                <div id="main-logo" class="col-sm-12 col-md-5">
+                    <a href="./" target="_blank"><img src="images/ifxlogo.png" alt="Instaforex Nigeria Logo" /></a>
+                </div>
+                <div id="top-nav" class="col-sm-12 col-md-7 text-right">
+                </div>
+            </div>
+        </div>
+        <hr />
+    </header>
 
-                <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-                <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
-                    
-                    <!-- Unique Page Content Starts Here
-                    ================================================== -->
+    <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
+    <div id="main-body" class="container-fluid">
+        <div class="row no-gutter">
 
-                    <div class="super-shadow page-top-section">
-                        <div class="row ">
-                            <div class="col-sm-7">
-                                <h2>Careers and Job Opportunity</h2>
-                                <p>If you like scaling new heights and you have the drive for excellence, you
+            <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
+            <div id="main-body-content-area" class="col-md-12">
+
+                <!-- Unique Page Content Starts Here
+                ================================================== -->
+
+                <div class="super-shadow page-top-section">
+                    <div class="row ">
+                        <div class="col-sm-7">
+                            <h2>Careers and Job Opportunity</h2>
+                            <p>If you like scaling new heights and you have the drive for excellence, you
                                 will fit into our team.</p>
-                                <p>For 7 years, we have pushed the boundaries of service delivery in the Forex
+                            <p>For 7 years, we have pushed the boundaries of service delivery in the Forex
                                 Trading industry in Nigeria. Do you have what it takes to be on our team?</p>
-                            </div>
+                        </div>
 
-                            <div class="col-sm-5">
-                                <img src="images/instafxng-careers.jpg" alt="" class="img-responsive" />
-                            </div>
+                        <div class="col-sm-5">
+                            <img src="images/instafxng-careers.jpg" alt="" class="img-responsive" />
                         </div>
                     </div>
+                </div>
 
-                    <div class="section-tint super-shadow">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <p>Check for open positions below and apply accordingly.</p>
-                            </div>
+                <div class="section-tint super-shadow">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>Check for open positions below and apply accordingly.</p>
+                            <p>If you started an application process, <a title="Login" class="btn btn-success" href="careers_login.php">Login Here</a> to continue.</p>
+                            <hr />
+                        </div>
 
-                            <div class="col-sm-12">
-                                <div class="panel-group" id="accordion">
+                        <div class="col-sm-12">
+                            <div class="panel-group" id="accordion">
 
-                                    <?php $count = 1; if(isset($all_jobs) && !empty($all_jobs)) { foreach ($all_jobs as $row) { ?>
+                                <?php $count = 1; if(isset($all_jobs) && !empty($all_jobs)) { foreach ($all_jobs as $row) { ?>
 
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
@@ -65,6 +83,7 @@ $all_jobs = $db_handle->fetchAssoc($result);
                                         </div>
                                         <div id="collapse<?php echo $count; ?>" class="panel-collapse collapse">
                                             <div class="panel-body">
+                                                <p class="text-right"><a title="Apply Now" class="btn btn-success btn-bg" href="careers_apply.php?c=<?php echo encrypt($row['job_code']); ?>"><i class="fa fa-paper-plane-o icon-white"></i> Apply Now</a></p>
                                                 <?php echo $row['detail']; ?>
                                             </div>
                                         </div>
@@ -72,22 +91,26 @@ $all_jobs = $db_handle->fetchAssoc($result);
 
                                     <?php $count++; } } else { echo "<span class='text-danger'><em><hr />There is currently no job listed.</em></span>"; } ?>
 
-                                </div>
-
                             </div>
+
                         </div>
                     </div>
-
-                    <!-- Unique Page Content Ends Here
-                    ================================================== -->
-                    
                 </div>
-                <!-- Main Body - Side Bar  -->
-                <div id="main-body-side-bar" class="col-md-4 col-md-pull-8 col-lg-3 col-lg-pull-9 left-nav">
-                    <?php require_once 'layouts/sidebar.php'; ?>
+
+                <!-- Unique Page Content Ends Here
+                ================================================== -->
+            </div>
+        </div>
+
+    </div>
+    <footer id="footer" class="super-shadow">
+        <div class="container-fluid no-gutter">
+            <div class="col-sm-12">
+                <div class="row">
+                    <p class="text-center" style="font-size: 16px !important;">&copy; <?php echo date('Y'); ?>, All rights reserved. Instant Web-Net Technologies Limited (www.instafxng.com)</p>
                 </div>
             </div>
         </div>
-        <?php require_once 'layouts/footer.php'; ?>
+    </footer>
     </body>
 </html>

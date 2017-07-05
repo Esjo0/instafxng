@@ -136,8 +136,8 @@ if(isset($_POST['withdraw_funds_qty'])) {
     $ifx_dollar_amount = $db_handle->sanitizePost($_POST['ifx_dollar_amount']);
     $phone_password = $db_handle->sanitizePost($_POST['phone_password']);
 
-    if($ifx_dollar_amount < 20 || $ifx_dollar_amount > 10000) {
-        $message_error = "Please re-enter amount. The minimum you can withdraw per transaction is $20 and the maximum is $10,000.";
+    if($ifx_dollar_amount < WITHDRAWAL_MIN_VALUE || $ifx_dollar_amount > WITHDRAWAL_MAX_VALUE) {
+        $message_error = "Please re-enter amount. The minimum you can withdraw per transaction is $" . WITHDRAWAL_MIN_VALUE . " and the maximum is $" . number_format(WITHDRAWAL_MAX_VALUE);
     } else {
 
         $client_operation = new clientOperation($account_no);
@@ -204,11 +204,11 @@ switch($page_requested) {
                 if (isNaN(x)) {
                     alert("Must input numbers");
                     return false;
-                } else if (x < 20) {
-                    alert("Minimum Withdrawal is $20");
+                } else if (x < <?php echo WITHDRAWAL_MIN_VALUE; ?>) {
+                    alert("Minimum Withdrawal is $<?php echo WITHDRAWAL_MIN_VALUE; ?>");
                     return false;
-                } else if (x > 10000) {
-                    alert("Maximum Withdrawal is $10,000.");
+                } else if (x > <?php echo WITHDRAWAL_MAX_VALUE; ?>) {
+                    alert("Maximum Withdrawal is $<?php echo number_format(WITHDRAWAL_MAX_VALUE); ?>.");
                     return false;
                 }
             }

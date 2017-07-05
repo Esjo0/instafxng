@@ -17,6 +17,7 @@ require_once(LIB_PATH.DS."malek_func_library_1.0.0.php");
 require_once(LIB_PATH.DS."functions.php");
 
 // Load core objects
+require_once(LIB_PATH.DS."session_careers.php");
 require_once(LIB_PATH.DS."class_database.php");
 require_once(LIB_PATH.DS."class_system.php");
 
@@ -24,6 +25,7 @@ require_once(LIB_PATH.DS."class_system.php");
 require_once(LIB_PATH.DS.'PHPMailer'.DS."PHPMailerAutoload.php");
 require_once(LIB_PATH.DS."class_client_operation.php");
 require_once(LIB_PATH.DS."config_sys.php");
+require_once(LIB_PATH.DS."class_careers.php");
 
 /*
  * TRACK CLIENTS THAT PARTNERS REFER

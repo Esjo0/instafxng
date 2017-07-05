@@ -32,7 +32,7 @@ if($db_handle->numOfRows($result) > 0) {
     if($result) {
         foreach ($all_selected_members as $row) {
             $client_phone = strtolower(trim($row['phone']));
-            $system_object->send_sms($client_phone, $my_message);
+            $system_object->send_sms_2($client_phone, $my_message);
         }
 
         // if the current offset plus limit is equal or greater than total recipient
@@ -44,7 +44,7 @@ if($db_handle->numOfRows($result) > 0) {
             $result = $db_handle->runQuery($query);
 
             // Update this campaign to completed
-            $query = "UPDATE campaign_sms SET status = '6' WHERE campaign_email_id = $campaign_id";
+            $query = "UPDATE campaign_sms SET status = '6' WHERE campaign_sms_id = $campaign_id";
             $result = $db_handle->runQuery($query);
         }
     }

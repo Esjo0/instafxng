@@ -278,6 +278,16 @@ function client_group_campaign_category($status) {
         case '10': $message = "Online Training Students"; break;
         case '11': $message = "Lekki Training Students"; break;
         case '12': $message = "Diamond Training Students"; break;
+        case '13': $message = "Past Forum Participants"; break;
+        case '14': $message = "Clients Interested in Training"; break;
+        case '15': $message = "Clients Interested in Funding"; break;
+        case '16': $message = "Clients Interested in Bonuses"; break;
+        case '17': $message = "Clients Interested in Investment"; break;
+        case '18': $message = "Clients Interested in Services"; break;
+        case '19': $message = "Clients Interested in Other Things"; break;
+        case '20': $message = "Last Month Funding Clients"; break;
+        case '21': $message = "Pencil Unbroken Reg"; break;
+        case '22': $message = "In-house Test"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -304,6 +314,16 @@ function client_group_query($client_group) {
         case '10': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '3'"; break;
         case '11': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '2'"; break;
         case '12': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '1'"; break;
+        case '13': $query = "SELECT first_name, email, phone FROM forum_participant"; break;
+        case '14': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_training = '2'"; break;
+        case '15': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_funding = '2'"; break;
+        case '16': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_bonus = '2'"; break;
+        case '17': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_investment = '2'"; break;
+        case '18': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_services = '2'"; break;
+        case '19': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_other = '2'"; break;
+        case '20': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE u.campaign_subscribe = '1' AND (ud.status = '8' AND STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY ud.ifxaccount_id"; break;
+        case '21': $query = "SELECT full_name AS first_name, email_address AS email, phone_number AS phone FROM pencil_comedy_reg"; break;
+        case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE user_id IN (1, 37, 167, 444, 8648, 14313, 14406, 14442)"; break;
         default: $query = false; break;
     }
     return $query;
@@ -416,6 +436,15 @@ function dinner_invite_status($status) {
     switch ($status) {
         case '1': $message = "No"; break;
         case '2': $message = "Yes"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
+
+function forum_reg_venue($status) {
+    switch ($status) {
+        case '1': $message = "Diamond Estate"; break;
+        case '2': $message = "Eastline Complex"; break;
         default: $message = "Unknown"; break;
     }
     return $message;

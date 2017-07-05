@@ -44,7 +44,6 @@ $thisPage = "";
                                 </ol>
                                 <p>Feel free to click your browser's back button, or you can go to <a href="http://instafxng.com/" title="Go to our home page">our home page</a>.</p>
 
-                                
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@ $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
 $total_point_earned = $client_operation->get_loyalty_point($client_user_code);
 ?>
 <ul class="fa-ul">
-    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter the quantity that you want to fund. Minimum per order is $5.</li>
+    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter the quantity that you want to fund. Minimum per order is $<?php echo FUNDING_MIN_VALUE; ?>.</li>
 </ul>
 <p><strong>Note:</strong> Your InstaForex Account Is<strong> Not Enrolled in INSTAFXNG LOYALTY PROGRAM AND REWARDS (ILPR)</strong>. Your Account Will Be Funded At The Rate Of &#8358; <span class="text-danger"><?php if(defined('NFUNDRATE')) { echo NFUNDRATE; } ?></span> / $1. <strong><a href="live_account.php" >CLICK HERE NOW</a> </strong> to Open an Account and Enrol It into The INSTAFXNG LOYALTY PROGRAM AND REWARDS (ILPR) To Fund Your Account At Discounted Rate Of &#8358; <span class="text-danger"><?php if(defined('IPLRFUNDRATE')) { echo IPLRFUNDRATE; } ?></span> / $1</p>
 <form name="enter_amount" data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI . '?p=niqty'; ?>">

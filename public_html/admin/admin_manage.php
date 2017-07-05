@@ -228,8 +228,7 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="35" id="" <?php if (in_array(35, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Failed</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="36" id="" <?php if (in_array(36, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - All</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="37" id="" <?php if (in_array(37, $my_pages)) { echo 'checked="checked"'; } ?>/> Transaction Calculator</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="38" id="" <?php if (in_array(38, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Add Bonus</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="39" id="" <?php if (in_array(39, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - All Bonus</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="38" id="" <?php if (in_array(38, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Reversal</label></div></div>
                                     </div>
                                     <hr/>
                                     

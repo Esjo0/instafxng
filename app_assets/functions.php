@@ -187,7 +187,7 @@ function color_code($date) {
     } else {
         $css = "style=\"color: #990000;\"";
     }
-    return $css;    
+    return $css;
 }
 
 function encrypt($data){

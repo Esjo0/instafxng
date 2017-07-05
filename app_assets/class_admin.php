@@ -281,7 +281,7 @@ MAIL;
         global $db_handle;
         
         if(!empty($article_no)) {
-            $query = "UPDATE article SET title = '{$title}', description = '$description', keyword = '$tags', display_image = '$display_picture', content = '$content', url = '$url', status = '$article_status' WHERE article_id = $article_no LIMIT 1";
+            $query = "UPDATE article SET title = '{$title}', description = '$description', keyword = '$tags', display_image = '$display_picture', content = '$content', url = '$url', status = '$article_status', created = NOW() WHERE article_id = $article_no LIMIT 1";
         } else {
             $query = "INSERT INTO article (admin_code, title, description, keyword, display_image, content, url, status) VALUES ('$admin_code', '$title', '$description', '$tags', '$display_picture', '$content', '$url', '$article_status')";
         }

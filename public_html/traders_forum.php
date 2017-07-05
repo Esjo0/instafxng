@@ -21,13 +21,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $message_error = "The supplied phone number is invalid.";
     } else {
 
-        // Log New Registration in the DB
-        $query = "INSERT INTO forum_registrations (full_name, email, phone, venue, date)
-                VALUES ('$full_name', '$email_address', '$phone_number', '$venue', '$date')";
+        $query = "SELECT email FROM forum_participant WHERE email = '$email_address' LIMIT 1";
+        $result = $db_handle->runQuery($query);
 
-        $db_handle->runQuery($query);
+        if($venue == 'Diamond Estate') { $cvenue = '1'; } else { $cvenue = '2'; }
 
-         // Autoresponse email to client
+        if($db_handle->numOfRows($result) > 0) {
+            $query = "UPDATE forum_participant SET venue = '$cvenue', forum_activate = '1' WHERE email = '$email_address' LIMIT 1";
+            $db_handle->runQuery($query);
+
+        } else {
+
+            $full_name = ucwords(strtolower(trim($full_name)));
+            $full_name = explode(" ", $full_name);
+
+            if(count($full_name) == 3) {
+                $last_name = $full_name[0];
+                if(strlen($full_name[2]) < 3) {
+                    $middle_name = $full_name[2];
+                    $first_name = $full_name[1];
+                } else {
+                    $middle_name = $full_name[1];
+                    $first_name = $full_name[2];
+                }
+            } else {
+                $last_name = $full_name[0];
+                $middle_name = "";
+                $first_name = $full_name[1];
+            }
+
+            $query = "INSERT INTO forum_participant (first_name, middle_name, last_name, email, phone, venue, forum_activate)
+                VALUES ('$first_name', '$middle_name', '$last_name', '$email_address', '$phone_number', '$cvenue', '1')";
+
+            $db_handle->runQuery($query);
+
+        }
+
+        // Autoresponse email to client
         if ($venue == "Diamond Estate") {
             $chosen_venue = "Block 1A, Plot 8, Diamond Estate, LASU/Isheri road, Isheri Olofin, Lagos.";
         } else if ($venue == "Ajah Office") {
@@ -46,9 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
-            <p>At the Forum this month, we will discuss Money Management Strategies for Forex Traders.
-            This is one topic that helps you meet your income target and keeps you in the market for as long
-            as you desire, making lots of profit.</p>
+            <p>At the Forum this month, we will discuss Forex Trading for Very Busy, Unskilled and Smart Investors.</p>
 
             <p>You will also have the opportunity of meeting other Forex traders and you
             could be one of two lucky winners to win $20 trading bonus. Isn’t that cool?</p>
@@ -56,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: 13th of May, 2017<br /><br />
+            Date: 10th of June, 2017<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -133,15 +161,15 @@ MAIL;
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Money Management Strategies for Forex Traders</h3>
+                                <h3 style="margin: 0;">Forex Trading for Very Busy, Unskilled and Smart Investors</h3>
                                 <p style="margin-top: 0">
-                                    <strong>Join us for May Trader's Forum to learn Money Management Strategies for Forex Traders.</strong><br /><br />
-                                    Time: 12 - 2pm, Date: 13th of May, 2017<br />
+                                    <strong>Join us for June Trader's Forum to learn Forex Trading for Very Busy, Unskilled and Smart Investors.</strong><br /><br />
+                                    Time: 12 - 2pm, Date: 10th of June, 2017<br />
                                     <strong>Reserve Your Seat Below</strong>
                                 </p>
                             </div>
                             <div class="col-sm-6">
-                                <img src="https://instafxng.com/images/emotional-intelligence-traders-forum.jpg" alt="" class="img-responsive" />
+                                <img src="https://instafxng.com/images/forex-traders-forum-smart-investors.jpg" alt="" class="img-responsive" />
                             </div>
                         </div>
                     </div>
@@ -160,9 +188,9 @@ MAIL;
                                     success. They share their experiences, learn from other traders, meet new
                                     people and go home with lots of exciting prizes such bonus account and Instaforex
                                     branded materials. </p>
-                                <p>Join us on Saturday, 13th of May, 2017 for another exciting edition of
+                                <p>Join us on Saturday, 10th of June, 2017 for another exciting edition of
                                     Nigerian Forex traders Forum as we all share our trading experience with one
-                                    another and discuss Money Management Strategies for Forex Traders.</p>
+                                    another and discuss Forex Trading for Very Busy, Unskilled and Smart Investors.</p>
                             </div>
                         </div>
 
@@ -264,7 +292,7 @@ MAIL;
                         </div>
 
                         <div class="row text-center">
-                            <h2 class="color-fancy">For further enquiries, please call 08028281192</h2>
+                            <h2 class="color-fancy">For further enquiries, please call 08182045184, 07081036115</h2>
                         </div>
                     </div>
 

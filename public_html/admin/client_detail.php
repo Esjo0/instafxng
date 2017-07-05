@@ -56,6 +56,12 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
     }
 }
 
+// GET LATEST TRANSACTIONS
+$latest_funding = $system_object->get_latest_funding($user_code);
+
+// GET LATEST WITHDRAWALS
+$latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -254,37 +260,32 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
                                 </div><!------- End Contact section ----->
                                 
                                 <hr />
-                                
-                                <!-------------- Transaction section ----->
+
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <h5>Bank Account Detail</h5>
                                         <table class="table table-responsive table-striped table-bordered table-hover">
                                             <thead>
-                                                <tr>
-                                                    <th>Bank Name</th>
-                                                    <th>Account Name</th>
-                                                    <th>Account Number</th>
-                                                </tr>
+                                            <tr>
+                                                <th>Bank Name</th>
+                                                <th>Account Name</th>
+                                                <th>Account Number</th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <?php if($client_bank_account['client_acct_no']) { ?>
+                                            <?php if($client_bank_account['client_acct_no']) { ?>
                                                 <tr>
                                                     <td><?php echo $client_bank_account['client_bank_name']; ?></td>
                                                     <td><?php echo $client_bank_account['client_acct_name']; ?></td>
                                                     <td><?php echo $client_bank_account['client_acct_no']; ?></td>
                                                 </tr>
-                                                <?php } else { ?>
+                                            <?php } else { ?>
                                                 <tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>
-                                                <?php } ?>
+                                            <?php } ?>
                                             </tbody>
                                         </table>
-                                    </div>
-                                </div>
+                                        <hr />
 
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-12">
                                         <h5>Account Flag Detail</h5>
                                         <table class="table table-responsive table-striped table-bordered table-hover">
                                             <thead>
@@ -308,8 +309,123 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
                                             <?php } ?>
                                             </tbody>
                                         </table>
+
+                                    </div>
+                                </div><div class="row">
+                                    <div class="col-sm-12">
+                                        <h5>Bank Account Detail</h5>
+                                        <table class="table table-responsive table-striped table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Bank Name</th>
+                                                <th>Account Name</th>
+                                                <th>Account Number</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php if($client_bank_account['client_acct_no']) { ?>
+                                                <tr>
+                                                    <td><?php echo $client_bank_account['client_bank_name']; ?></td>
+                                                    <td><?php echo $client_bank_account['client_acct_name']; ?></td>
+                                                    <td><?php echo $client_bank_account['client_acct_no']; ?></td>
+                                                </tr>
+                                            <?php } else { ?>
+                                                <tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>
+                                            <?php } ?>
+                                            </tbody>
+                                        </table>
+                                        <hr />
+
+                                        <h5>Account Flag Detail</h5>
+                                        <table class="table table-responsive table-striped table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Account Number</th>
+                                                <th>Admin</th>
+                                                <th>Comment</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php if($client_flags) { foreach($client_flags as $value) { ?>
+                                                <tr>
+                                                    <td><?php echo datetime_to_text2($value['created']); ?></td>
+                                                    <td><?php echo $value['ifx_acct_no']; ?></td>
+                                                    <td><?php echo $value['admin_full_name']; ?></td>
+                                                    <td><?php echo $value['comment']; ?></td>
+                                                </tr>
+                                            <?php } } else { ?>
+                                                <tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>
+                                            <?php } ?>
+                                            </tbody>
+                                        </table>
+
                                     </div>
                                 </div>
+
+                                
+                                <!-------------- Transaction section ----->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h5>Recent Transactions</h5>
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a data-toggle="tab" href="#latest_funding">Deposit</a></li>
+                                            <li><a data-toggle="tab" href="#latest_withdrawal">Withdrawal</a></li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div id="latest_funding" class="tab-pane fade in active">
+                                                <table class="table table-responsive table-striped table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Trans ID</th>
+                                                        <th>Acct No</th>
+                                                        <th>Amount Ordered</th>
+                                                        <th>Status</th>
+                                                        <th>Date</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php if(isset($latest_funding) && !empty($latest_funding)) { foreach ($latest_funding as $row) { ?>
+                                                        <tr>
+                                                            <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                                            <td><?php echo $row['ifx_acct_no']; ?></td>
+                                                            <td>&dollar; <?php echo $row['dollar_ordered']; ?></td>
+                                                            <td><?php echo status_user_deposit($row['status']); ?></td>
+                                                            <td><?php echo datetime_to_text($row['created']); ?></td>
+                                                        </tr>
+                                                    <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id="latest_withdrawal" class="tab-pane fade">
+                                                <table class="table table-responsive table-striped table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Trans ID</th>
+                                                        <th>Acct No</th>
+                                                        <th>Amount Ordered</th>
+                                                        <th>Status</th>
+                                                        <th>Date</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php if(isset($latest_withdrawal) && !empty($latest_withdrawal)) { foreach ($latest_withdrawal as $row) { ?>
+                                                        <tr>
+                                                            <td><a target="_blank" title="View" href="withdrawal_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                                            <td><?php echo $row['ifx_acct_no']; ?></td>
+                                                            <td>&dollar; <?php echo $row['dollar_withdraw']; ?></td>
+                                                            <td><?php echo status_user_withdrawal($row['status']); ?></td>
+                                                            <td><?php echo datetime_to_text($row['created']); ?></td>
+                                                        </tr>
+                                                    <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

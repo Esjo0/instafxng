@@ -3,7 +3,7 @@ $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
 $total_point_earned = $client_operation->get_loyalty_point($client_user_code);
 ?>
 <ul class="fa-ul">
-    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter the quantity that you want to fund. Minimum per order is $5.</li>
+    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter the quantity that you want to fund. Minimum per order is $<?php echo FUNDING_MIN_VALUE; ?>.</li>
 </ul>
 
 <form name="enter_amount" data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI . '?p=iqty'; ?>">

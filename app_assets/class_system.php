@@ -588,14 +588,22 @@ class InstafxngSystem {
         return $fetched_data ? $fetched_data : false;
     }
 
-    public function get_latest_funding() {
+    public function get_latest_funding( $user_code = '' ) {
         global $db_handle;
 
-        $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.status, ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+        if(!empty($user_code)) {
+            $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.status, ui.ifx_acct_no, ud.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+              FROM user_deposit AS ud
+              INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE ud.status <> '1' AND u.user_code = '$user_code' ORDER BY ud.created DESC LIMIT 10";
+        } else {
+            $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.status, ui.ifx_acct_no, ud.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
               FROM user_deposit AS ud
               INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
               INNER JOIN user AS u ON ui.user_code = u.user_code
               WHERE ud.status <> '1' ORDER BY ud.created DESC LIMIT 10";
+        }
 
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
@@ -603,14 +611,23 @@ class InstafxngSystem {
         return $fetched_data ? $fetched_data : false;
     }
 
-    public function get_latest_withdrawal() {
+    public function get_latest_withdrawal( $user_code = '' ) {
         global $db_handle;
 
-        $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.status, ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+        if(!empty($user_code)) {
+            $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.status, ui.ifx_acct_no, uw.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+              FROM user_withdrawal AS uw
+              INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE u.user_code = '$user_code'
+              ORDER BY uw.created DESC LIMIT 10";
+        } else {
+            $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.status, ui.ifx_acct_no, uw.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
               FROM user_withdrawal AS uw
               INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
               INNER JOIN user AS u ON ui.user_code = u.user_code
               ORDER BY uw.created DESC LIMIT 10";
+        }
 
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);

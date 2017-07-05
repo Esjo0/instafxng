@@ -2060,5 +2060,37 @@ MAIL;
         }
     }
 
+    public function log_sales_contact_client_interest($user_code, $interest_training = '1', $interest_funding = '1', $interest_bonus = '1', $interest_investment = '1', $interest_services = '1', $interest_other = '1') {
+        global $db_handle;
+
+        if(empty($interest_training)) { $interest_training = '1'; }
+        if(empty($interest_funding)) { $interest_funding = '1'; }
+        if(empty($interest_bonus)) { $interest_bonus = '1'; }
+        if(empty($interest_investment)) { $interest_investment = '1'; }
+        if(empty($interest_services)) { $interest_services = '1'; }
+        if(empty($interest_other)) { $interest_other = '1'; }
+
+        if($db_handle->numRows("SELECT user_code FROM sales_contact_client_interest WHERE user_code = '$user_code' LIMIT 1") > 0) {
+
+            $query = "UPDATE sales_contact_client_interest SET
+                  interest_training = '$interest_training',
+                  interest_funding = '$interest_funding',
+                  interest_bonus = '$interest_bonus',
+                  interest_investment = '$interest_investment',
+                  interest_services = '$interest_services',
+                  interest_other = '$interest_other' WHERE user_code = '$user_code' LIMIT 1";
+        } else {
+            $query = "INSERT INTO sales_contact_client_interest (user_code, interest_training, interest_funding, interest_bonus, interest_investment, interest_services, interest_other) VALUES ('$user_code', '$interest_training', '$interest_funding', '$interest_bonus', '$interest_investment', '$interest_services', '$interest_other')";
+        }
+
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 }

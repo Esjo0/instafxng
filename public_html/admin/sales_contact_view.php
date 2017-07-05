@@ -37,6 +37,9 @@ if (isset($_POST['process'])) {
     $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$selected_id', '$admin_code', '$comment')";
     $result = $db_handle->runQuery($query);
 
+    $client_operation = new clientOperation();
+    $client_operation->log_sales_contact_client_interest($selected_id, $int_train, $int_fund, $int_bonus, $int_invest, $int_service, $int_other);
+
     if($result) {
         $message_success = "You have successfully saved your comment";
     } else {
@@ -55,6 +58,12 @@ $query = "SELECT scc.comment, scc.created, CONCAT(a.last_name, SPACE(1), a.first
           WHERE scc.user_code = '$user_code' ORDER BY scc.created DESC";
 $result = $db_handle->runQuery($query);
 $selected_comment = $db_handle->fetchAssoc($result);
+
+$query = "SELECT * FROM sales_contact_client_interest WHERE user_code = '$user_code' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$user_interest = $db_handle->fetchAssoc($result);
+$user_interest = $user_interest[0];
+
 
 ?>
 <!DOCTYPE html>
@@ -103,6 +112,14 @@ $selected_comment = $db_handle->fetchAssoc($result);
                                     <div class="col-lg-7">
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                             <input type="hidden" name="selected_id" value="<?php if(isset($user_code)) { echo $user_code; } ?>" />
+
+                                            <?php if($user_interest['interest_training'] == '2') { ?><input type="hidden" name="int_train" value="2" /><?php } ?>
+                                            <?php if($user_interest['interest_funding'] == '2') { ?><input type="hidden" name="int_fund" value="2" /><?php } ?>
+                                            <?php if($user_interest['interest_bonus'] == '2') { ?><input type="hidden" name="int_bonus" value="2" /><?php } ?>
+                                            <?php if($user_interest['interest_investment'] == '2') { ?><input type="hidden" name="int_invest" value="2" /><?php } ?>
+                                            <?php if($user_interest['interest_services'] == '2') { ?><input type="hidden" name="int_service" value="2" /><?php } ?>
+                                            <?php if($user_interest['interest_other'] == '2') { ?><input type="hidden" name="int_other" value="2" /><?php } ?>
+
                                             <div class="form-group">
                                                 <label class="control-label col-sm-3" for="first_name">First Name:</label>
                                                 <div class="col-sm-9">
@@ -126,6 +143,19 @@ $selected_comment = $db_handle->fetchAssoc($result);
                                                 <label class="control-label col-sm-3" for="comment">Comment:</label>
                                                 <div class="col-sm-9"><textarea name="comment" id="comment" rows="3" class="form-control" required></textarea></div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" for="client_interest">Client Interest:</label>
+                                                <div class="col-sm-9">
+                                                    <div class="checkbox"><label><input type="checkbox" name="int_train" value="2" <?php if($user_interest['interest_training'] == '2') { echo "checked disabled"; } ?> /> Training</label></div>
+                                                    <div class="checkbox"><label><input type="checkbox" name="int_fund" value="2" <?php if($user_interest['interest_funding'] == '2') { echo "checked disabled"; } ?> /> Funding<br></label></div>
+                                                    <div class="checkbox"><label><input type="checkbox" name="int_bonus" value="2" <?php if($user_interest['interest_bonus'] == '2') { echo "checked disabled"; } ?> /> Bonuses<br></label></div>
+                                                    <div class="checkbox"><label><input type="checkbox" name="int_invest" value="2" <?php if($user_interest['interest_investment'] == '2') { echo "checked disabled"; } ?> /> Investment (ForexCopy / PAMM)<br></label></div>
+                                                    <div class="checkbox"><label><input type="checkbox" name="int_service" value="2" <?php if($user_interest['interest_services'] == '2') { echo "checked disabled"; } ?>/> Services<br></label></div>
+                                                    <div class="checkbox"><label><input type="checkbox" name="int_other" value="2" <?php if($user_interest['interest_other'] == '2') { echo "checked disabled"; } ?> /> Other</label></div>
+                                                </div>
+                                            </div>
+
                                             <div class="form-group">
                                                 <div class="col-sm-offset-3 col-sm-9">
                                                     <button type="button" data-target="#add-comment-confirm" data-toggle="modal" class="btn btn-success"><i class="fa fa-save fa-fw"></i> Save</button>

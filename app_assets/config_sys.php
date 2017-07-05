@@ -24,5 +24,15 @@ $client_group_DEFAULT = array(
     "9" => "Lagos Clients",
     "10" => "Online Training Students",
     "11" => "Lekki Training Students",
-    "12" => "Diamond Training Students"
+    "12" => "Diamond Training Students",
+    "13" => "Past Forum Participants",
+    "14" => "Clients Interested in Training",
+    "15" => "Clients Interested in Funding",
+    "16" => "Clients Interested in Bonuses",
+    "17" => "Clients Interested in Investment",
+    "18" => "Clients Interested in Services",
+    "19" => "Clients Interested in Other Things",
+    "20" => "Last Month Funding Clients",
+    "21" => "Pencil Unbroken Reg",
+    "22" => "In-house Test"
 );

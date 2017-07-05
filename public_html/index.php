@@ -37,15 +37,13 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Money Management Strategies for Forex Traders</h3>
-                                <p style="margin-top: 0">
-                                    <strong>Join us for May Trader's Forum to learn Money Management Strategies for Forex Traders.</strong><br /><br />
-                                    Time: 12 - 2pm, Date: 13th of May, 2017<br />
-                                    <a href="traders_forum.php"><strong>Click here to reserve seat</strong></a>
-                                </p>
+                                <h3 style="margin: 0;">How to Make More Money from News Trading</h3>
+                                <p style="margin-top: 0">Don't miss the opportunity to make money in the Forex market through News Trading.</p>
+                                <p>Staying up to date with happening in the world of technical and fundamental analysis can make you some green pips.
+                                <a href="https://instafxng.com/news1/id/555/u/how-make-more-money-from-news-trading/" target="_blank">... read more</a></p>
                             </div>
                             <div class="col-sm-6">
-                                <a href="traders_forum.php"><img src="https://instafxng.com/images/emotional-intelligence-traders-forum.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/news1/id/555/u/how-make-more-money-from-news-trading/" target="_blank"><img src="https://instafxng.com/images/blog/asbvixtriretk541k0yucjgbl.jpg" alt="" class="img-responsive center-block" /></a>
                             </div>
                         </div>
                     </div>
@@ -114,7 +112,35 @@ $thisPage = "Home";
                                 <a href="investor_course.php" title="Investor Course" class="btn btn-default">Learn More</a>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
+
+                    <div class="text-center section-tint super-shadow">
+                        <div class="row"><div class="col-sm-12"><h2>Forex Informer</h2><br /></div></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="embed-responsive embed-responsive-4by3">
+                                            <iframe src="https://informers.instaforex.com/position_traders/run/ticker=EURUSD~GBPUSD~USDJPY~USDCAD~EURJPY~EURGBP~GBPJPY&w=320&t=30&ch=undefined&l=1&r=0&c1=968686&c2=FFFFFF&c2f=h&c2s=12&c3=302e30&c4=FF0000&c5=000000&c5f=h&c5s=12&c6=000000&c6f=h&c6s=11&x=BBLR&i=1&style=1_0_1&type=0" frameborder="0" width="320" height="319" scrolling="no" title="InstaForex is a universal Forex portal for traders"></iframe>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="embed-responsive embed-responsive-4by3">
+                                            <iframe src="https://informers.instaforex.com/calendar/run/w=320&count=7&tz=Europe~London&bg=fefefe_e2e2e2_666666_0_0_0_1_c2bebe_FFFFFF_&br=8_8_8_8&bgt=&stars=FFD700&font=11_000000_h_1_1_3_FFFFFF&full=1&i=1&high=0&part_code=x-BBLR&type=0" frameborder="0" width="100%" height="316" scrolling="no" title="InstaForex is an universal Forex portal for traders"></iframe>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
 

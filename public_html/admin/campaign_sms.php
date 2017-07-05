@@ -117,6 +117,7 @@ if($get_params['x'] == 'edit') {
                                         <label class="control-label col-sm-2" for="category">Category:</label>
                                         <div class="col-sm-10 col-lg-6">
                                             <select name="category" class="form-control" id="category">
+                                                <option value=""> - select category - </option>
                                                 <?php if(isset($all_campaign_category) && !empty($all_campaign_category)) { foreach ($all_campaign_category as $row) { ?>
                                                 <option value="<?php echo $row['campaign_category_id']; ?>" <?php if(isset($selected_campaign_sms['campaign_category_id']) && $row['campaign_category_id'] == $selected_campaign_sms['campaign_category_id']) { echo "selected='selected'"; } ?>><?php echo $row['title']; ?></option>
                                                 <?php } } ?>
