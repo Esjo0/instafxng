@@ -29,3 +29,4 @@ require_once(LIB_PATH.DS."class_education.php");
 require_once(LIB_PATH.DS."class_questions.php");
 require_once(LIB_PATH.DS."class_partner.php");
 require_once(LIB_PATH.DS."config_sys.php");
+require_once(LIB_PATH.DS."class_careers.php");

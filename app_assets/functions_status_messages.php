@@ -288,6 +288,8 @@ function client_group_campaign_category($status) {
         case '20': $message = "Last Month Funding Clients"; break;
         case '21': $message = "Pencil Unbroken Reg"; break;
         case '22': $message = "In-house Test"; break;
+        case '23': $message = "Top 20 Rank in Current Loyalty Year"; break;
+        case '24': $message = "Career Application Submitted"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -324,6 +326,8 @@ function client_group_query($client_group) {
         case '20': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE u.campaign_subscribe = '1' AND (ud.status = '8' AND STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY ud.ifxaccount_id"; break;
         case '21': $query = "SELECT full_name AS first_name, email_address AS email, phone_number AS phone FROM pencil_comedy_reg"; break;
         case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE user_id IN (1, 37, 167, 444, 8648, 14313, 14406, 14442)"; break;
+        case '23': $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS first_name, u.email, u.phone FROM point_ranking AS pr INNER JOIN user AS u ON pr.user_code = u.user_code ORDER BY pr.year_rank DESC, first_name ASC LIMIT 20"; break;
+        case '24': $query = "SELECT first_name, email_address, phone_number FROM career_user_application AS cua INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code WHERE cua.status = '2'"; break;
         default: $query = false; break;
     }
     return $query;
@@ -447,5 +451,64 @@ function forum_reg_venue($status) {
         case '2': $message = "Eastline Complex"; break;
         default: $message = "Unknown"; break;
     }
+    return $message;
+}
+
+function career_application_status($status) {
+    switch ($status) {
+        case '1': $message = "Not Submitted"; break;
+        case '2': $message = "Submitted"; break;
+        case '3': $message = "Review"; break;
+        case '4': $message = "No Review"; break;
+        case '5': $message = "Interviewed"; break;
+        case '6': $message = "Employed"; break;
+        case '7': $message = "Not Employed"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
+
+function biodata_sex_status($status) {
+    switch ($status) {
+        case 'M': $message = "Male"; break;
+        case 'F': $message = "Female"; break;
+        default: $message = "Unknown"; break;
+    }
+
+    return $message;
+}
+
+function biodata_marriage_status($status) {
+    switch ($status) {
+        case 'S': $message = "Single"; break;
+        case 'M': $message = "Married"; break;
+        default: $message = "Unknown"; break;
+    }
+
+    return $message;
+}
+
+function biodata_competency_status($status) {
+    switch ($status) {
+        case '1': $message = "Beginner"; break;
+        case '2': $message = "Advanced"; break;
+        case '3': $message = "Professional"; break;
+        case '4': $message = "Master"; break;
+        case '5': $message = "Certified"; break;
+        default: $message = "Unknown"; break;
+    }
+
+    return $message;
+}
+
+function biodata_achievement_status($status) {
+    switch ($status) {
+        case '1': $message = "Certification"; break;
+        case '2': $message = "Course"; break;
+        case '3': $message = "Honour/Award"; break;
+        case '4': $message = "Project"; break;
+        default: $message = "Unknown"; break;
+    }
+
     return $message;
 }

@@ -35,7 +35,19 @@ $thisPage = "About";
                         
                         <div class="row">
                             <div class="col-sm-12"><p>Watch Videos of our company below</p></div>
-                            
+
+                            <div class="col-sm-12">
+                                <h5>Awesome Moments from Pencil Unbroken 2 Comedy Show</h5>
+                                <div class="col-sm-6">
+                                    <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/jcW3GjtFfSM" frameborder="0" allowfullscreen></iframe></div>
+                                    <p>&nbsp;</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/yo0A3o4oXWw" frameborder="0" allowfullscreen></iframe></div>
+                                    <p>&nbsp;</p>
+                                </div>
+                            </div>
+
                             <div class="col-sm-12">
                                 <h5>Lucky 150 Star Winner's Dubai Tour Sponsored by Instaforex Nigeria</h5>
                                 <div class="col-sm-6">

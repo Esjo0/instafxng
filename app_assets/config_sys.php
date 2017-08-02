@@ -34,5 +34,7 @@ $client_group_DEFAULT = array(
     "19" => "Clients Interested in Other Things",
     "20" => "Last Month Funding Clients",
     "21" => "Pencil Unbroken Reg",
-    "22" => "In-house Test"
+    "22" => "In-house Test",
+    "23" => "Top 20 Rank in Current Loyalty Year",
+    "24" => "Career Application Submitted"
 );

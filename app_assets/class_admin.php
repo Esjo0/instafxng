@@ -362,7 +362,47 @@ MAIL;
 
         return $fetched_data ? $fetched_data : false;
     }
-    
+
+    public function add_new_prospect_source($source_title, $source_description) {
+        global $db_handle;
+
+        $query = "INSERT INTO prospect_source (source_name, source_description)
+                VALUES ('$source_title', '$source_description')";
+
+        $db_handle->runQuery($query);
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    public function get_all_prospect_source() {
+        global $db_handle;
+
+        $query = "SELECT * FROM prospect_source";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+
+    }
+
+    // Confirm that the email address is not existing
+    public function prospect_is_duplicate($email) {
+        global $db_handle;
+
+        $query = "SELECT * FROM prospect_biodata WHERE email_address = '$email'";
+        $result = $db_handle->numRows($query);
+
+        return $result ? true : false;
+    }
+
+    public function add_new_prospect_profile($admin_code, $last_name, $first_name, $middle_name = '', $email_address, $phone, $prospect_source) {
+        global $db_handle;
+
+        $query = "INSERT INTO prospect_biodata (admin_code, last_name, first_name, other_names, email_address, phone_number, prospect_source)
+                VALUES ('$admin_code', '$last_name', '$first_name', '$middle_name', '$email_address', '$phone', $prospect_source)";
+
+        $db_handle->runQuery($query);
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
 }
 
 $admin_object = new AdminUser();

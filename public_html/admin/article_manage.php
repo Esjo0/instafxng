@@ -73,34 +73,34 @@ $all_news_items = $db_handle->fetchAssoc($result);
                                 <p class="text-right"><a href="article_add.php" class="btn btn-default" title="Create New Article">New Article <i class="fa fa-arrow-circle-right"></i></a></p>
                                 <p>Below is the list of all articles.</p>
                                 <table class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Title</th>
-                                                <th>Description</th>
-                                                <th>Display Image</th>
-                                                <th>Author</th>
-                                                <th>Status</th>
-                                                <th>Created</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if(isset($all_news_items) && !empty($all_news_items)) {
-                                                foreach ($all_news_items as $row) { ?>
-                                            <tr>
-                                                <td><?php echo $row['title']; ?></td>
-                                                <td><?php echo $row['description']; ?></td>
-                                                <td><img class="img-responsive" width="120px" height="120px" src="https://instafxng.com/images/blog/<?php echo $row['display_image']; ?>" /></td>
-                                                <td><?php echo $row['admin_full_name']; ?></td>
-                                                <td><?php echo status_article($row['status']); ?></td>
-                                                <td><?php echo datetime_to_text($row['created']); ?></td>
-                                                <td>
-                                                    <a title="Edit" class="btn btn-info" href="article_add.php?x=edit&id=<?php echo encrypt($row['article_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
-                                                </td>
-                                            </tr>
-                                            <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
-                                        </tbody>
-                                    </table>
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Display Image</th>
+                                            <th>Author</th>
+                                            <th>Status</th>
+                                            <th>Created</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if(isset($all_news_items) && !empty($all_news_items)) {
+                                            foreach ($all_news_items as $row) { ?>
+                                        <tr>
+                                            <td><?php echo $row['title']; ?></td>
+                                            <td><?php echo $row['description']; ?></td>
+                                            <td><img class="img-responsive" width="120px" height="120px" src="https://instafxng.com/images/blog/<?php echo $row['display_image']; ?>" /></td>
+                                            <td><?php echo $row['admin_full_name']; ?></td>
+                                            <td><?php echo status_article($row['status']); ?></td>
+                                            <td><?php echo datetime_to_text($row['created']); ?></td>
+                                            <td>
+                                                <a title="Edit" class="btn btn-info" href="article_add.php?x=edit&id=<?php echo encrypt($row['article_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
+                                            </td>
+                                        </tr>
+                                        <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    </tbody>
+                                </table>
                                 
                                 <?php if(isset($all_news_items) && !empty($all_news_items)) { ?>
                                 <div class="tool-footer text-right">

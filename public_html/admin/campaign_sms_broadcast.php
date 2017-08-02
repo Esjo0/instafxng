@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
 
         if(!empty($selected_member)) {
             $client_phone = ucwords(strtolower(trim($selected_member[0]['phone'])));
-            $system_object->send_sms_2($client_phone, $my_message);
+            $system_object->send_sms($client_phone, $my_message);
         }
         continue;
     }
