@@ -24,9 +24,10 @@ class Education {
     public function get_learning_position($user_code) {
         global $db_handle;
 
-        $query = "SELECT ueel.lesson_id, el.course_id
+        $query = "SELECT ueel.lesson_id, el.course_id, el.title AS lesson_title, ec.title AS course_title
               FROM user_edu_exercise_log AS ueel
               INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
+              INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
               WHERE ueel.user_code = '$user_code' ORDER BY ueel.created DESC LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
@@ -384,9 +385,30 @@ class Education {
     public function get_all_support_request_by_id($user_code) {
         global $db_handle;
 
-        $query = "SELECT * FROM user_edu_support_request WHERE user_code = '$user_code' ORDER BY created DESC";
+        $query = "SELECT uesr.user_edu_support_request_id AS support_request_id, uesr.support_request_code, uesr.request, uesr.status, uesr.created, ec.title AS course_title,
+              el.title AS lesson_title
+              FROM user_edu_support_request AS uesr
+              INNER JOIN edu_course AS ec ON ec.edu_course_id = uesr.course_id
+              INNER JOIN edu_lesson AS el ON el.edu_lesson_id = uesr.lesson_id
+              WHERE user_code = '$user_code'
+              ORDER BY uesr.created DESC, uesr.status ASC";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
+
+        foreach($fetched_data as $key => $value) {
+            $support_request_id = $fetched_data[$key]['support_request_id'];
+            $query = "SELECT * FROM user_edu_support_answer WHERE request_id = $support_request_id ORDER BY created DESC LIMIT 1";
+            $result = $db_handle->runQuery($query);
+            $selected_answer = $db_handle->fetchAssoc($result);
+            $selected_answer = $selected_answer[0];
+
+            if($selected_answer) {
+                $fetched_data[$key]['last_reply_date'] = $selected_answer['created'];
+                $fetched_data[$key]['last_reply_author'] = $selected_answer['author'];
+            } else {
+                $fetched_data[$key]['last_reply_date'] = null;
+            }
+        }
 
         return $fetched_data;
     }
@@ -414,7 +436,7 @@ class Education {
     public function get_support_answers_by_id($support_id) {
         global $db_handle;
 
-        $query = "SELECT * FROM user_edu_support_answer WHERE request_id = $support_id ORDER BY created DESC";
+        $query = "SELECT * FROM user_edu_support_answer WHERE request_id = $support_id ORDER BY created ASC";
         $result = $db_handle->runQuery($query);
 
         return $db_handle->numOfRows($result) > 0 ? $db_handle->fetchAssoc($result) : false;

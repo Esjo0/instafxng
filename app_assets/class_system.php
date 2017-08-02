@@ -45,11 +45,12 @@ class InstafxngSystem {
         return $mail->send() ? true : false;
     }
     
-    // function to send sms
+    // function to send sms - using smslive247.com
     public function send_sms($phone, $my_message) {
         $phone_number = trim(preg_replace('/[\s\t\n\r\s]+/', '', $phone));
         $message = str_replace(" ","+",$my_message);
-        file_get_contents("http://www.smslive247.com/http/index.aspx?cmd=sendmsg&sessionid=5b422f10-7b78-4631-9b98-a1c2e1872099&message=$message&sender=INSTAFXNG&sendto=$phone_number&msgtype=0");
+        file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=fisayo75&message=$message&sender=INSTAFXNG&mobiles=$phone_number");
+//        file_get_contents("http://www.smslive247.com/http/index.aspx?cmd=sendmsg&sessionid=5b422f10-7b78-4631-9b98-a1c2e1872099&message=$message&sender=INSTAFXNG&sendto=$phone_number&msgtype=0");
         return true;
     }
 
@@ -168,9 +169,10 @@ class InstafxngSystem {
         global $db_handle;
 
         $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
-                ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state
+                ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code, ftc.last_name, ftc.first_name
                 FROM free_training_campaign AS ftc
                 LEFT JOIN state AS s ON ftc.state_id = s.state_id
+                LEFT JOIN user AS u ON u.email = ftc.email
                 WHERE free_training_campaign_id = $selected_id LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
@@ -178,14 +180,11 @@ class InstafxngSystem {
         return $fetched_data ? $fetched_data : false;
     }
 
-    public function update_free_training_registration($selected_id, $train_interest, $train_centre, $comment, $admin_unique_code, $state = '') {
+    public function update_free_training_registration($selected_id, $training_email, $training_phone, $training_first_name, $training_last_name, $comment, $admin_unique_code, $state = '', $add_ifx_account = '', $client_user_code = '') {
         global $db_handle;
 
         if(!empty($state)) {
-            $query = "UPDATE free_training_campaign SET training_interest = '$train_interest', training_centre = '$train_centre', state_id = '$state' WHERE free_training_campaign_id = $selected_id";
-            $db_handle->runQuery($query);
-        } else {
-            $query = "UPDATE free_training_campaign SET training_interest = '$train_interest', training_centre = '$train_centre' WHERE free_training_campaign_id = $selected_id";
+            $query = "UPDATE free_training_campaign SET state_id = '$state' WHERE free_training_campaign_id = $selected_id";
             $db_handle->runQuery($query);
         }
 
@@ -193,6 +192,40 @@ class InstafxngSystem {
             $query = "INSERT INTO free_training_campaign_comment (training_campaign_id, admin_code, comment) VALUES ($selected_id, '$admin_unique_code', '$comment')";
             $db_handle->runQuery($query);
         }
+
+        if(!empty($client_user_code)) {
+            if(!empty($add_ifx_account)) {
+                $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$client_user_code', '$add_ifx_account')";
+                $db_handle->runQuery($query);
+                $ifxaccount_id = $db_handle->insertedId();
+
+                $query = "INSERT INTO user_ilpr_enrolment (ifxaccount_id) VALUES ($ifxaccount_id)";
+                $db_handle->runQuery($query);
+            }
+        } else {
+            if(!empty($add_ifx_account)) {
+                usercode:
+                $user_code = rand_string(11);
+                if($db_handle->numRows("SELECT user_code FROM user WHERE user_code = '$user_code'") > 0) { goto usercode; };
+
+                $pass_salt = hash("SHA256", "$user_code");
+
+                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', '$training_email', '$pass_salt', '$training_first_name', '$training_last_name', '$training_phone')";
+                $db_handle->runQuery($query);
+
+                $client_operation = new clientOperation();
+                $client_operation->send_welcome_email($training_last_name, $training_email);
+
+                $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$user_code', '$add_ifx_account')";
+                $db_handle->runQuery($query);
+                $ifxaccount_id = $db_handle->insertedId();
+
+                $query = "INSERT INTO user_ilpr_enrolment (ifxaccount_id) VALUES ($ifxaccount_id)";
+                $db_handle->runQuery($query);
+
+            }
+        }
+
         return true;
     }
 
@@ -548,14 +581,22 @@ class InstafxngSystem {
         return $fetched_data ? $fetched_data : false;
     }
 
-    public function get_latest_funding() {
+    public function get_latest_funding( $user_code = '' ) {
         global $db_handle;
 
-        $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.status, ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+        if(!empty($user_code)) {
+            $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.status, ui.ifx_acct_no, ud.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+              FROM user_deposit AS ud
+              INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE ud.status <> '1' AND u.user_code = '$user_code' ORDER BY ud.created DESC LIMIT 10";
+        } else {
+            $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.status, ui.ifx_acct_no, ud.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
               FROM user_deposit AS ud
               INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
               INNER JOIN user AS u ON ui.user_code = u.user_code
               WHERE ud.status <> '1' ORDER BY ud.created DESC LIMIT 10";
+        }
 
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
@@ -563,14 +604,23 @@ class InstafxngSystem {
         return $fetched_data ? $fetched_data : false;
     }
 
-    public function get_latest_withdrawal() {
+    public function get_latest_withdrawal( $user_code = '' ) {
         global $db_handle;
 
-        $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.status, ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+        if(!empty($user_code)) {
+            $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.status, ui.ifx_acct_no, uw.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+              FROM user_withdrawal AS uw
+              INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE u.user_code = '$user_code'
+              ORDER BY uw.created DESC LIMIT 10";
+        } else {
+            $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.status, ui.ifx_acct_no, uw.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
               FROM user_withdrawal AS uw
               INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
               INNER JOIN user AS u ON ui.user_code = u.user_code
               ORDER BY uw.created DESC LIMIT 10";
+        }
 
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
@@ -605,6 +655,48 @@ class InstafxngSystem {
         $fetched_data = $db_handle->fetchAssoc($result);
 
         return $fetched_data ? $fetched_data : false;
+    }
+
+    /**
+     * ALGORITHM FOR ACTIVE TRAINING CLIENTS
+     *
+     */
+    public function get_total_active_training_clients() {
+        global $db_handle;
+
+        $from_date = date('Y-m-d', strtotime('today - 30 days'));
+        $to_date = date('Y-m-d');
+        $active_client_funding = ACTIVE_CLIENT_FUNDING;
+        $active_client_volume = (ACTIVE_CLIENT_FUNDING * 100) / (ACTIVE_CLIENT_VOLUME * 100);
+
+        $query = "SELECT final_sum_value
+                      FROM (
+                        SELECT SUM(sum_value) AS final_sum_value, email
+                          FROM (
+                              SELECT SUM(td.volume * $active_client_volume) AS sum_value, u.email
+                              FROM trading_commission AS td
+                              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+                              INNER JOIN user AS u ON ui.user_code = u.user_code
+                              INNER JOIN free_training_campaign AS ftc ON u.email = ftc.email
+                              WHERE td.date_earned BETWEEN '$from_date' AND '$to_date'
+                              GROUP BY u.email
+
+                              UNION ALL
+
+                              SELECT SUM(ud.real_dollar_equivalent) AS sum_value, u.email
+                              FROM user_deposit AS ud
+                              INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+                              INNER JOIN user AS u ON ui.user_code = u.user_code
+                              INNER JOIN free_training_campaign AS ftc ON u.email = ftc.email
+                              WHERE (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                              AND ud.status = '8'
+                              GROUP BY u.email
+                          ) src GROUP BY email
+                      ) src2 WHERE final_sum_value >= $active_client_funding";
+
+        $active_client = $db_handle->numRows($query);
+        return $active_client ? $active_client : false;
+
     }
 
 

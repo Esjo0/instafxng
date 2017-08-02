@@ -24,4 +24,4 @@ $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
         <div class="col-sm-offset-3 col-sm-9"><input name="withdraw_funds_qty" type="submit" class="btn btn-success" value="Withdraw" /> <a href="withdraw_funds.php" class="btn btn-danger">Cancel</a></div>
     </div>
 </form>
-<p><strong>Note:</strong> Minimum Withdrawal Value is $20</p>
+<p><strong>Note:</strong> Minimum Withdrawal Value is $<?php echo WITHDRAWAL_MIN_VALUE; ?></p>

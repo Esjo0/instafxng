@@ -4,6 +4,8 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$client_operation = new clientOperation();
+
 $total_entry = $db_handle->numRows("SELECT * FROM free_training_campaign");
 
 $query = "SELECT email
@@ -32,31 +34,35 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
 
     $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
-        ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state
+        ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
         FROM free_training_campaign AS ftc
         LEFT JOIN state AS s ON ftc.state_id = s.state_id
+        LEFT JOIN user AS u on u.email = ftc.email
         WHERE ftc.first_name LIKE '%$search_text%' OR ftc.last_name LIKE '%$search_text%' OR ftc.email LIKE '%$search_text%' OR ftc.phone LIKE '%$search_text%' OR ftc.created LIKE '$search_text%' GROUP BY ftc.email ";
 } else {
     switch($admin_code) {
         case $esther1:
             $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
-                ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state
+                ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
                 FROM free_training_campaign AS ftc
                 LEFT JOIN state AS s ON ftc.state_id = s.state_id
+                LEFT JOIN user AS u on u.email = ftc.email
                 WHERE ftc.attendant = '1' ORDER BY ftc.created DESC ";
             break;
         case $esther2:
             $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
-                ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state
+                ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
                 FROM free_training_campaign AS ftc
                 LEFT JOIN state AS s ON ftc.state_id = s.state_id
+                LEFT JOIN user AS u on u.email = ftc.email
                 WHERE ftc.attendant = '2' ORDER BY ftc.created DESC ";
             break;
         default:
             $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
-                ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state
+                ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
                 FROM free_training_campaign AS ftc
                 LEFT JOIN state AS s ON ftc.state_id = s.state_id
+                LEFT JOIN user AS u on u.email = ftc.email
                 ORDER BY ftc.created DESC ";
     }
 }
@@ -168,8 +174,7 @@ $all_registrations = $db_handle->fetchAssoc($result);
                                             <th>Email Address</th>
                                             <th>Phone Number</th>
                                             <th>State</th>
-                                            <th>Training Interest</th>
-                                            <th>Centre</th>
+                                            <th>IFX Accounts</th>
                                             <th>Created</th>
                                             <th>Action</th>
                                         </tr>
@@ -181,14 +186,16 @@ $all_registrations = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo $row['main_state']; ?></td>
-                                            <td><?php echo free_training_campaign_interest($row['training_interest']); ?></td>
-                                            <td><?php echo free_training_campaign_centre($row['training_centre']); ?></td>
+                                            <td>
+                                                <?php echo 'ILPR - ' . count($client_operation->get_client_ilpr_accounts_by_code($row['user_code'])); ?><br />
+                                                <?php echo 'Non ILPR - ' . count($client_operation->get_client_non_ilpr_accounts_by_code($row['user_code'])); ?><br />
+                                            </td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
                                                 <a title="View" class="btn btn-info" href="edu_free_training_view.php?x=<?php echo encrypt($row['free_training_campaign_id']); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
                                             </td>
                                         </tr>
-                                        <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                        <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
                                 

@@ -2,11 +2,29 @@
 require_once '../init/initialize_general.php';
 $thisPage = "";
 
+/****
+ *
+ *
+<p>
+<strong>STEP 3:</strong> In case you haven't commenced your free
+Forex training at our Forex Profit Academy, follow the link below to start now and be one of
+the Nigerians thriving well in this unfriendly economy.</p>
+<p style='text-align: center'><strong>
+<a href='https://instafxng.com/fxacademy/'>
+Click here to start now
+</a></strong><br /><br />
+or copy and paste the URL below in your address bar<br /><br />
+https://instafxng.com/fxacademy/
+</p>
+ *
+ *
+ */
+
 if (isset($_POST['submit'])) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
-    
+
     extract($_POST);
 
     if(empty($full_name) || empty($email_address) || empty($phone_number)) {
@@ -14,6 +32,11 @@ if (isset($_POST['submit'])) {
     } elseif (!check_email($email_address)) {
         $message_error = "You have supplied an invalid email address, please try again.";
     } else {
+
+        // create profile for this client
+        $client_operation = new clientOperation();
+        $log_new_client = $client_operation->new_user_ordinary($full_name, $email_address, $phone_number);
+        //...//
 
         $full_name = str_replace(".", "", $full_name);
         $full_name = ucwords(strtolower(trim($full_name)));
@@ -42,18 +65,18 @@ if (isset($_POST['submit'])) {
         }
 
         $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number')";
-
         $result = $db_handle->runQuery($query);
 
         if($result) {
 
+            // By default, the attendant is 1, but if it is an even number, let us reassign the attendant to be 2
+            // With that each entry is distributed amongst two attendants
             $inserted_id = $db_handle->insertedId();
             if($inserted_id % 2 == 0) {
                 $query = "UPDATE free_training_campaign SET attendant = '2' WHERE free_training_campaign_id = $inserted_id LIMIT 1";
                 $db_handle->runQuery($query);
             }
 
-            $link = "https://instafxng.com/forex-income/training.php?u=" . encrypt($email_address);
             $subject = "Welcome to the world of Money making!";
             $body =
 <<<MAIL
@@ -118,28 +141,7 @@ if (isset($_POST['submit'])) {
                     Instagram: <a href='https://www.instagram.com/instafxng/'>@instafxng</a>
                 </strong>
             </p>
-            <p>
-                <strong>STEP 3:</strong> In case you haven't registered for the free
-                forex training, you still have the chance to register now and be one of
-                the Nigerians thriving well in this unfriendly economy.</p>
-            <p style='text-align: center'><strong>
-                    <a href='$link'>
-                        Click here to register now
-                    </a></strong><br /><br />
-                    or copy and paste the URL below in your address bar<br /><br />
-                    $link
-            </p>
 
-            <p>A material has been attached below, it elaborately discusses all the concepts of Forex
-            trading and it directly teaches you all you need to know about Forex trading.</p>
-            <p>Kindly go through the material and do not hesitate to get in touch with me in case you
-            have any question or inquiry as regarding it.</p>
-
-            <p style='text-align: center'><strong>
-                    <a href='https://instafxng.com/downloads/instafxng-forex-trading-course.zip'>
-                        Download Forex Trading Course
-                    </a>
-            </p>
 
             <p>If you need to get in touch with me directly, you can simply reply this mail</p>
             <p>Do you have any question or any inquiry? You can call us on any of our help
@@ -187,8 +189,8 @@ MAIL;
             $from_name = "Bunmi - InstaFxNg";
             $system_object->send_email($subject, $body, $email_address, $first_name, $from_name);
 
-            $url = "https://instafxng.com/forex-income/training.php?u=" . encrypt($email_address);
-            redirect_to($url);
+
+            redirect_to('thank_you.php');
         } else {
             $message_error = "An error occurred, please try again.";
         }

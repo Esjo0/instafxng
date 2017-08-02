@@ -4,6 +4,8 @@ if ($session_client->is_logged_in()) {
     redirect_to("index.php");
 }
 
+$client_operation = new clientOperation();
+
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
 //    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
@@ -12,10 +14,9 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 //        $responseData = json_decode($verifyResponse);
 //
 //        if ($responseData->success) {
-            $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
-
-            $client_operation = new clientOperation($account_no);
-            $user_ifx_details = $client_operation->get_client_data();
+            $client_email = $db_handle->sanitizePost($_POST['client_email']);
+            $user_code = $client_operation->get_user_by_email($client_email);
+            $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
 
             if($user_ifx_details) {
 
@@ -35,8 +36,8 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                 }
 
             } else {
-                $message_error = "Your account details could not be found, please confirm you
-                entered the right account or contact support.";
+                $message_error = "Your profile details could not be found, please confirm you
+                entered the correct email address used on our website or contact support.";
             }
 //        } else {
 //            $message_error = "Please try the robot test again.";
@@ -108,7 +109,7 @@ if(isset($_GET['logout'])) {
                                     <footer>George S. Clason</footer>
                                 </blockquote>
 
-                                <p>Forex Trading is easy to learn, enter your Instaforex Account below and Start Learning.</p>
+                                <p>Forex Trading is easy to learn, enter your Email Address below and Start Learning.</p>
                             </div>
                         </div>
 
@@ -122,7 +123,7 @@ if(isset($_GET['logout'])) {
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                            <input type="text" placeholder="Instaforex Account" name="ifx_acct_no" class="form-control">
+                                            <input type="text" placeholder="Email Address" name="client_email" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group"><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>

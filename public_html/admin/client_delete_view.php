@@ -55,6 +55,8 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
         $client_bank_account = $client_operation->get_user_bank_account($user_code);
         $client_phone_code = $client_operation->get_user_phonecode($user_code);
 
+        $client_flags = $client_operation->get_client_flag_by_code($user_code);
+
         $total_point = $client_operation->get_loyalty_point_earned($user_code);
         $total_point_claimed = $client_operation->get_loyalty_point_claimed($user_code);
         $total_point_frozen = $client_operation->get_loyalty_point_frozen($user_code);
@@ -159,7 +161,13 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
                                     <div class="col-sm-6">
                                         <h5>Client Information</h5>
                                         <span class="span-title">Full Name</span>
-                                        <p><em><?php echo $full_name; ?></em></p>
+                                        <p><em><?php echo $full_name; ?></em>&nbsp;&nbsp;
+                                            <?php if($client_operation->account_flagged($user_code)) { ?>
+                                                <img src="../images/red-flag.png" alt="" title="This client has an account flagged."> -
+                                                <span class="text-danger"> Scroll down for flag details</span>
+                                            <?php } ?>
+                                        </p>
+
                                         <span class="span-title">Email Address</span>
                                         <p><em><?php echo $email; ?></em></p>
                                         <span class="span-title">Phone Number</span>
@@ -257,11 +265,7 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
                                                                 foreach($client_ilpr_account as $key => $value) {
                                                                     $ifx_acct_no = $value['ifx_acct_no'];
                                                                     if($count < count($client_ilpr_account)) { $ifx_acct_no = $ifx_acct_no . ", "; }
-                                                                    if($client_operation->account_flagged($value['ifxaccount_id'])) {
-                                                                        echo "<span class='text-danger'><strong>" . $ifx_acct_no . "</strong></span>";
-                                                                    } else {
-                                                                        echo $ifx_acct_no;
-                                                                    }
+                                                                    echo $ifx_acct_no;
                                                                     $count++;
                                                                 }
                                                                 ?>
@@ -290,11 +294,7 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
                                                                 foreach($client_non_ilpr_account as $key => $value) {
                                                                     $ifx_acct_no = $value['ifx_acct_no'];
                                                                     if($count < count($client_non_ilpr_account)) { $ifx_acct_no = $ifx_acct_no . ", "; }
-                                                                    if($client_operation->account_flagged($value['ifxaccount_id'])) {
-                                                                        echo "<span class='text-danger'><strong>" . $ifx_acct_no . "</strong></span>";
-                                                                    } else {
-                                                                        echo $ifx_acct_no;
-                                                                    }
+                                                                    echo $ifx_acct_no;
                                                                     $count++;
                                                                 }
                                                                 ?>
@@ -336,6 +336,35 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
                                                 <?php } else { ?>
                                                 <tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>
                                                 <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h5>Account Flag Detail</h5>
+                                        <table class="table table-responsive table-striped table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Account Number</th>
+                                                <th>Admin</th>
+                                                <th>Comment</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php if($client_flags) { foreach($client_flags as $value) { ?>
+                                                <tr>
+                                                    <td><?php echo datetime_to_text2($value['created']); ?></td>
+                                                    <td><?php echo $value['ifx_acct_no']; ?></td>
+                                                    <td><?php echo $value['admin_full_name']; ?></td>
+                                                    <td><?php echo $value['comment']; ?></td>
+                                                </tr>
+                                            <?php } } else { ?>
+                                                <tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>
+                                            <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>

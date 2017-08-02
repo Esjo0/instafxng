@@ -63,13 +63,23 @@
                             Thank you for registering
                         </h2>
                         <hr />
-                        <p class="text-center"><img src="images/private-course-banner.jpg" alt="" class="center-block img-responsive" /></p>
+                        <p class="text-center"><img src="images/free-training-banner-7.jpg" alt="" class="center-block img-responsive" /></p>
                         <p>
-                            Your registration was successful. You will be contacted by one of our customer support agent in a short while.
+                            Adequate training/education on forex trading is
+                            the first step to making steady income trading Forex. It is the key to
+                            financial stability through Forex because it helps you gain the
+                            understanding of the basics and variables of the market.
                         </p>
-                        
-                        <p class="text-center color-red"><strong>Inquiries? Call 08182045184 or 07081036115</strong></p>
-                        
+                        <p>
+                            Who goes into a business without knowing the basics? He who fails to get
+                            adequate knowledge plans to become poor! Our Free Forex training programme
+                            will introduce you to practical ways of trading the Forex market.
+                        </p>
+<!--                        <p class="color-red text-center"><strong>Welcome to the Instafxng Forex Profit Academy</strong></p>-->
+<!--                        <p>You have been enrolled for our online <strong>Forex Profit Academy</strong> where you will learn-->
+<!--                        how to make money trading the forex market. The lessons are easy and you can start immediately.</p>-->
+<!--                        <p>Click the button below to go to the Academy and login with the email address you used for registration.</p>-->
+<!--                        <p class="text-center"><a href="https://instafxng.com/fxacademy/" class="btn btn-lg btn-success">Forex Profit Academy</a></p>-->
                     </div>
 
                     <!-- Unique Page Content Ends Here

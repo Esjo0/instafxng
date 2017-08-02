@@ -52,7 +52,7 @@ if (isset($_POST['account_update'])) {
     $bank_acct_number = $_POST["bank_acct_number"];
 
     if($db_handle->numRows("SELECT user_code FROM user_bank WHERE user_code = '$user_code' LIMIT 1") > 0) {
-        $query = "UPDATE user_bank SET bank_acct_name = '$bank_acct_name', bank_acct_no = '$bank_acct_number', bank_id = $bank_id WHERE user_code = '$user_code' LIMIT 1";
+        $query = "UPDATE user_bank SET status = '2', bank_acct_name = '$bank_acct_name', bank_acct_no = '$bank_acct_number', bank_id = $bank_id WHERE user_code = '$user_code' LIMIT 1";
         $db_handle->runQuery($query);
     } else {
         $query = "INSERT INTO user_bank (user_code, bank_acct_name, bank_acct_no, bank_id, status) VALUES

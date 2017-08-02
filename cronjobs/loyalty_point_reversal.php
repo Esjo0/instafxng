@@ -4,7 +4,6 @@ require_once 'initialize_general.php';
 
 $client_operation = new clientOperation();
 
-// First select just one campaign that is in active mode
 $query = "SELECT * FROM point_based_claimed WHERE status = '1'";
 $result = $db_handle->runQuery($query);
 $all_new_points = $db_handle->fetchAssoc($result);

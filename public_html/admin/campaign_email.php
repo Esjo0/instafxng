@@ -137,7 +137,7 @@ if($get_params['x'] == 'edit') {
                                     <li>[LPYD] - Loyalty Point Year Difference (Compared to Highest)</li>
                                 </ul>
                                 
-                                <form class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                     <input type="hidden" name="campaign_email_no" value="<?php if(isset($selected_campaign_email['campaign_email_id'])) { echo $selected_campaign_email['campaign_email_id']; } ?>" />
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="subject">Subject:</label>
@@ -148,7 +148,8 @@ if($get_params['x'] == 'edit') {
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="category">Category:</label>
                                         <div class="col-sm-10 col-lg-6">
-                                            <select name="campaign_category" class="form-control" id="category">
+                                            <select name="campaign_category" class="form-control" id="category" required>
+                                                <option value=""> - select category - </option>
                                                 <?php if(isset($all_campaign_category) && !empty($all_campaign_category)) { foreach ($all_campaign_category as $row) { ?>
                                                 <option value="<?php echo $row['campaign_category_id']; ?>" <?php if(isset($selected_campaign_email['campaign_category_id']) && $row['campaign_category_id'] == $selected_campaign_email['campaign_category_id']) { echo "selected='selected'"; } ?>><?php echo $row['title']; ?></option>
                                                 <?php } } ?>

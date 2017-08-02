@@ -187,7 +187,7 @@ function color_code($date) {
     } else {
         $css = "style=\"color: #990000;\"";
     }
-    return $css;    
+    return $css;
 }
 
 function encrypt($data){
@@ -389,3 +389,23 @@ function in_array_r($needle, $haystack, $strict = false) {
     }
     return false;
 }
+
+function array_sort_by_column_asc(&$arr, $col, $dir = SORT_ASC) {
+    $sort_col = array();
+    foreach ($arr as $key=> $row) {
+        $sort_col[$key] = $row[$col];
+    }
+
+    array_multisort($sort_col, $dir, $arr);
+}
+
+function array_sort_by_column_desc(&$arr, $col, $dir = SORT_DESC) {
+    $sort_col = array();
+    foreach ($arr as $key=> $row) {
+        $sort_col[$key] = $row[$col];
+    }
+
+    array_multisort($sort_col, $dir, $arr);
+}
+
+

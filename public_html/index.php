@@ -35,18 +35,16 @@ $thisPage = "Home";
                     <?php $rand = rand(1, 2); ?>
 
                     <div class="super-shadow page-top-section">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h3 style="margin: 0;">Improving your Market Analysis for Increased Profit</h3>
-                                <p style="margin-top: 0">
-                                    <strong>Join us for April Trader's Forum to learn how to Improve your Market Analysis for Increased Profit.</strong><br /><br />
-                                    Time: 12 - 2pm, Date: 8th of April, 2017<br />
-                                    <span class="text-right"><a href="https://instafxng.com/traders_forum.php" title="Click to reserve seat"><strong>Reserve your seat</strong></a></span>
-                                </p>
-
+                        <div class="row ">
+                            <div class="col-sm-7">
+                                <h2>Incredible Moments of Amazing Fun at the Pencil Unbroken Comedy Show</h2>
+                                <p>It was a memorable day of great entertainment on the 2nd of July, 2017 at the second edition of Pencil D Comedian’s premium comedy show tagged "Pencil Unbroken 2.</p>
+                                <p>Some clients who won free VIP tickets in the Win-a-Ticket Contest had rib-cracking fun at the show.
+                                <a href="https://instafxng.com/news1/id/557/u/incredible-moments-amazing-fun-pencil-unbroken-comedy/">Read more here.</a></p>
                             </div>
-                            <div class="col-sm-6">
-                                <a href="https://instafxng.com/traders_forum.php"><img src="https://instafxng.com/images/emotional-intelligence-traders-forum.jpg" alt="" class="img-responsive" /></a>
+
+                            <div class="col-sm-5">
+                                <a href="https://instafxng.com/news1/id/557/u/incredible-moments-amazing-fun-pencil-unbroken-comedy/" target="_blank"><img src="https://instafxng.com/images/blog/ozftfgvkl0bfguydyctxofj3m.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>
@@ -115,7 +113,35 @@ $thisPage = "Home";
                                 <a href="investor_course.php" title="Investor Course" class="btn btn-default">Learn More</a>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
+
+                    <div class="text-center section-tint super-shadow">
+                        <div class="row"><div class="col-sm-12"><h2>Forex Informer</h2><br /></div></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="embed-responsive embed-responsive-4by3">
+                                            <iframe src="https://informers.instaforex.com/position_traders/run/ticker=EURUSD~GBPUSD~USDJPY~USDCAD~EURJPY~EURGBP~GBPJPY&w=320&t=30&ch=undefined&l=1&r=0&c1=968686&c2=FFFFFF&c2f=h&c2s=12&c3=302e30&c4=FF0000&c5=000000&c5f=h&c5s=12&c6=000000&c6f=h&c6s=11&x=BBLR&i=1&style=1_0_1&type=0" frameborder="0" width="320" height="319" scrolling="no" title="InstaForex is a universal Forex portal for traders"></iframe>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="embed-responsive embed-responsive-4by3">
+                                            <iframe src="https://informers.instaforex.com/calendar/run/w=320&count=7&tz=Europe~London&bg=fefefe_e2e2e2_666666_0_0_0_1_c2bebe_FFFFFF_&br=8_8_8_8&bgt=&stars=FFD700&font=11_000000_h_1_1_3_FFFFFF&full=1&i=1&high=0&part_code=x-BBLR&type=0" frameborder="0" width="100%" height="316" scrolling="no" title="InstaForex is an universal Forex portal for traders"></iframe>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
 

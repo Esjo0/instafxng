@@ -21,13 +21,14 @@ if (isset($_POST['process'])) {
     extract($_POST);
 
     $ifx_account_id = $client_operation->get_account_id_by_account_no($account_no);
+    $client_user_code = $client_operation->get_user_code_by_account_no($account_no);
     
     if(empty($account_no) || empty($flag_account_comment) || empty($flag_account_status)) {
         $message_error = "All fields are compulsory, please try again.";
     } elseif (!$ifx_account_id) {
         $message_error = "You have provided an invalid account number. Please try again.";
     } else {
-        $new_flag = $client_operation->add_new_account_flag($account_flag_no, $ifx_account_id, $flag_account_comment, $flag_account_status, $_SESSION['admin_unique_code']);
+        $new_flag = $client_operation->add_new_account_flag($account_flag_no, $client_user_code, $ifx_account_id, $flag_account_comment, $flag_account_status, $_SESSION['admin_unique_code']);
         if($new_flag) {
             $message_success = "You have successfully saved the account flag.";
         } else {

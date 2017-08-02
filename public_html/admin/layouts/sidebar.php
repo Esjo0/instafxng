@@ -67,6 +67,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(20, $my_pages_sidebar)) { ?><li><a href="client_unverified.php" title="Unverified Clients">Unverified Clients</a></li><?php } ?>
                         <?php if (in_array(21, $my_pages_sidebar)) { ?><li><a href="client_ilpr.php" title="ILPR Clients">View ILPR Clients</a></li><?php } ?>
                         <?php if (in_array(22, $my_pages_sidebar)) { ?><li><a href="client_non_ilpr.php" title="Non-ILPR Clients">View Non-ILPR Clients</a></li><?php } ?>
+                        <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_top_traders.php" title="View Top Traders">View Top Traders</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -76,6 +77,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(24, $my_pages_sidebar)) { ?><li><a href="insight/last_month_withdrawal.php" title="Last Month Withdrawal">Last Month Withdrawal</a></li><?php } ?>
                         <?php if (in_array(25, $my_pages_sidebar)) { ?><li><a href="insight/last_month_new_client.php" title="Last Month New Clients">Last Month New Clients</a></li><?php } ?>
                         <?php if (in_array(26, $my_pages_sidebar)) { ?><li><a href="insight/insight_training_campaign.php" title="Training Campaign">Training Campaign</a></li><?php } ?>
+                        <?php if (in_array(26, $my_pages_sidebar)) { ?><li><a href="insight/sales_client_interest.php" title="Sales - Client Interest">Sales - Client Interest</a></li><?php } ?>
                         <?php if (in_array(27, $my_pages_sidebar)) { ?><li><a href="insight/daily_funding.php" title="Daily Funding">Daily Funding</a></li><?php } ?>
                     </ul>
                 </li>
@@ -92,7 +94,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(35, $my_pages_sidebar)) { ?><li><a href="deposit_failed.php" title="Failed Deposit">Deposit - Failed</a></li><?php } ?>
                         <?php if (in_array(36, $my_pages_sidebar)) { ?><li><a href="deposit_all.php" title="All Deposit Transactions">Deposit - All</a></li><?php } ?>
                         <?php if (in_array(37, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
-<!--                        --><?php //if (in_array(38, $my_pages_sidebar)) { ?><!--<li><a href="deposit_add_bonus.php" title="Add Bonus Transactions">Deposit - Add Bonus</a></li>--><?php //} ?>
+                        <?php if (in_array(38, $my_pages_sidebar)) { ?><li><a href="deposit_reversal.php" title="Reverse Transaction">Deposit - Reversal</a></li><?php } ?>
 <!--                        --><?php //if (in_array(39, $my_pages_sidebar)) { ?><!--<li><a href="deposit_all_bonus.php" title="All Bonus Accounts">Deposit - All Bonus</a></li>--><?php //} ?>
                     </ul>
                 </li>
@@ -113,8 +115,9 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cutlery fa-fw"></i> Events<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(48, $my_pages_sidebar)) { ?><li><a href="dinner/new_reg.php" title="New Registration">New Dinner 2016 Reg</a></li><?php } ?>
-                        <?php if (in_array(49, $my_pages_sidebar)) { ?><li><a href="dinner/all_reg.php" title="All Registration">All Dinner 2016 Reg</a></li><?php } ?>
-                        <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="event/lekki_office_warming_all.php" title="All Registration">All Lekki Office Warming Reg</a></li><?php } ?>
+                        <?php if (in_array(49, $my_pages_sidebar)) { ?><li><a href="dinner/all_reg.php" title="">All Dinner 2016 Reg</a></li><?php } ?>
+                        <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="event/lekki_office_warming_all.php" title="">All Lekki Office Warming Reg</a></li><?php } ?>
+                        <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="event/pencil_unbroken.php" title="Pencil Unbroken Registration">Pencil Unbroken Reg</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -149,7 +152,9 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(66, $my_pages_sidebar)) { ?><li><a href="edu_deposit.php">Student Deposits</a></li><?php } ?>
                         <li class="divider"></li>
                         <!-- // 66 - 72 -->
+                        <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_free_training_reg.php">Training Campaign - New Reg</a></li><?php } ?>
                         <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_free_training.php">Training Campaign</a></li><?php } ?>
+                        <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_client_training_funded.php">Training Campaign Funded</a></li><?php } ?>
                         <?php if (in_array(74, $my_pages_sidebar)) { ?><li><a href="edu_forum_reg.php">Forum Registration</a></li><?php } ?>
                     </ul>
                 </li>
@@ -191,11 +196,12 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     <ul class="dropdown-menu">
                         <?php if (in_array(92, $my_pages_sidebar)) { ?><li><a href="career_new_job.php">New Job</a></li><?php } ?>
                         <?php if (in_array(93, $my_pages_sidebar)) { ?><li><a href="career_all_job.php">All Jobs</a></li><?php } ?>
-<!--                        --><?php //if (in_array(94, $my_pages_sidebar)) { ?><!--<li><a href="facility/make_request.php">Make Request</a></li>--><?php //} ?>
-<!--                        --><?php //if (in_array(95, $my_pages_sidebar)) { ?><!--<li><a href="facility/view_request.php">View Request</a></li>--><?php //} ?>
-<!--                        --><?php //if (in_array(96, $my_pages_sidebar)) { ?><!--<li><a href="facility/approve_request.php">Approve Request</a></li>--><?php //} ?>
-<!--                        --><?php //if (in_array(97, $my_pages_sidebar)) { ?><!--<li><a href="facility/inventory_new.php">New Inventory</a></li>--><?php //} ?>
-<!--                        --><?php //if (in_array(98, $my_pages_sidebar)) { ?><!--<li><a href="facility/inventory_take.php">Take Inventory</a></li>--><?php //} ?>
+                        <?php if (in_array(94, $my_pages_sidebar)) { ?><li><a href="career_all_applications.php">Application - All</a></li><?php } ?>
+                        <?php if (in_array(95, $my_pages_sidebar)) { ?><li><a href="career_app_submit.php">Application - Submitted</a></li><?php } ?>
+                        <?php if (in_array(96, $my_pages_sidebar)) { ?><li><a href="career_app_review.php">Application - Review</a></li><?php } ?>
+                        <?php if (in_array(97, $my_pages_sidebar)) { ?><li><a href="career_app_interview.php">Application - Interview</a></li><?php } ?>
+                        <?php if (in_array(98, $my_pages_sidebar)) { ?><li><a href="career_app_employ.php">Application - Employed</a></li><?php } ?>
+                        <?php if (in_array(98, $my_pages_sidebar)) { ?><li><a href="career_app_reject.php">Application - Rejected</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -219,14 +225,14 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
 <!--                        --><?php //if (in_array(109, $my_pages_sidebar)) { ?><!--<li><a href="report_withdrawal.php" title="Withdrawal Reports">Withdrawal Reports</a></li>--><?php //} ?>
                     </ul>
                 </li>
-<!--                <li class="dropdown">-->
-<!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-money fa-fw"></i> Accounts &amp; Records<b class="caret"></b></a>-->
-<!--                    <ul class="dropdown-menu">-->
-<!--                        --><?php //if (in_array(110, $my_pages_sidebar)) { ?><!--<li><a href="account/new_income.php">New Income</a></li>--><?php //} ?>
-<!--                        --><?php //if (in_array(111, $my_pages_sidebar)) { ?><!--<li><a href="account/new_expense.php">New Expense</a></li>--><?php //} ?>
-<!--                        --><?php //if (in_array(112, $my_pages_sidebar)) { ?><!--<li><a href="account/balance_sheet.php">Balance Sheet</a></li>--><?php //} ?>
-<!--                    </ul>-->
-<!--                </li>-->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> Prospect<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(110, $my_pages_sidebar)) { ?><li><a href="prospect_source.php">Manage Prospect Source</a></li><?php } ?>
+                        <?php if (in_array(111, $my_pages_sidebar)) { ?><li><a href="prospect_add.php">Add New Prospect</a></li><?php } ?>
+                        <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage.php">Manage Prospects</a></li><?php } ?>
+                    </ul>
+                </li>
 <!--                <li class="dropdown">-->
 <!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-paperclip fa-fw"></i> Surveys &amp; Feedbacks<b class="caret"></b></a>-->
 <!--                    <ul class="dropdown-menu">-->

@@ -1,5 +1,3 @@
-        <!--<base href="https://instafxng.com/" />-->
-        <base href="http://localhost/ifxnew/public_html/" />
         <meta http-equiv="Content-Language" content="en" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="Pragma" content="no-cache" />

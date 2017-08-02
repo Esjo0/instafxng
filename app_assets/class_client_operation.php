@@ -49,8 +49,8 @@ class clientOperation {
     public function get_user_by_code($user_code) {
         global $db_handle;
 
-        $query = "SELECT u.user_code AS client_user_code, u.email AS client_email,
-                CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+        $query = "SELECT u.user_code AS client_user_code, u.email AS client_email, u.first_name AS client_first_name,
+                u.last_name AS client_last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
                 u.phone AS client_phone_number, u.user_type AS client_user_type,
                 u.status AS client_status, u.created AS client_created,
                 GROUP_CONCAT(DISTINCT ui.ifx_acct_no) AS client_accounts
@@ -68,6 +68,8 @@ class clientOperation {
             return false;
         }
     }
+
+
 
     public function update_user_status($user_code, $client_status) {
         global $db_handle;
@@ -246,6 +248,64 @@ class clientOperation {
         }
 
         return $user_code ? $user_code : false;
+    }
+
+    /**
+     * Create a user profile without an associated ifx account number, this works for the
+     * fxacademy https://instafxng.com/fxacademy/
+     * @param $full_name
+     * @param $email_address
+     * @param $phone_number
+     * @return mixed
+     */
+    public function new_user_ordinary($full_name, $email_address, $phone_number) {
+        global $db_handle;
+
+        // Check whether the email is existing
+        $query = "SELECT user_code, email FROM user WHERE email = '$email_address' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) > 0) {
+            $fetched_data = $db_handle->fetchAssoc($result);
+            $user_email = $fetched_data[0]['email'];
+        } else {
+            usercode:
+            $user_code = rand_string(11);
+            if($db_handle->numRows("SELECT user_code FROM user WHERE user_code = '$user_code'") > 0) { goto usercode; };
+
+            $pass_salt = hash("SHA256", "$user_code");
+
+            $full_name = preg_replace("/[^A-Za-z0-9 ]/", '', $full_name);
+            $full_name = ucwords(strtolower(trim($full_name)));
+            $full_name = explode(" ", $full_name);
+
+            if(count($full_name) == 3) {
+                $last_name = $full_name[0];
+                if(strlen($full_name[2]) < 3) {
+                    $middle_name = $full_name[2];
+                    $first_name = $full_name[1];
+                } else {
+                    $middle_name = $full_name[1];
+                    $first_name = $full_name[2];
+                }
+            } else {
+                $last_name = $full_name[0];
+                $middle_name = "";
+                $first_name = $full_name[1];
+            }
+
+            if(empty($middle_name)) {
+                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
+                $db_handle->runQuery($query);
+                $this->send_welcome_email($last_name, $email_address);
+            } else {
+                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
+                $db_handle->runQuery($query);
+                $this->send_welcome_email($last_name, $email_address);
+            }
+        }
+
+        return $user_email ? $user_email : $email_address;
     }
     
     // Confirm that the client has uploaded approved ID, Signature, Passport Photography
@@ -1441,14 +1501,30 @@ MAIL;
 
     }
 
+    public function get_user_code_by_account_no($account_no) {
+        global $db_handle;
+
+        $query = "SELECT user_code FROM user_ifxaccount WHERE ifx_acct_no = '$account_no' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) > 0) {
+            $fetched_data = $db_handle->fetchAssoc($result);
+            $fetched_data = $fetched_data[0]['user_code'];
+            return $fetched_data;
+        } else {
+            return false;
+        }
+
+    }
+
     // Add a new account flag
-    public function add_new_account_flag($account_flag_no, $ifx_account_id, $flag_account_comment, $flag_account_status = '1', $admin_code) {
+    public function add_new_account_flag($account_flag_no, $client_user_code, $ifx_account_id, $flag_account_comment, $flag_account_status = '1', $admin_code) {
         global $db_handle;
 
         if(!empty($account_flag_no)) {
-            $query = "UPDATE user_account_flag SET ifxaccount_id = '$ifx_account_id', comment = '$flag_account_comment', status = '$flag_account_status' WHERE user_account_flag_id = $account_flag_no LIMIT 1";
+            $query = "UPDATE user_account_flag SET user_code = '$client_user_code', ifxaccount_id = $ifx_account_id, comment = '$flag_account_comment', status = '$flag_account_status' WHERE user_account_flag_id = $account_flag_no LIMIT 1";
         } else {
-            $query = "INSERT INTO user_account_flag (admin_code, ifxaccount_id, comment, status) VALUES ('$admin_code', $ifx_account_id, '$flag_account_comment', '$flag_account_status')";
+            $query = "INSERT INTO user_account_flag (user_code, admin_code, ifxaccount_id, comment, status) VALUES ('$client_user_code', '$admin_code', $ifx_account_id, '$flag_account_comment', '$flag_account_status')";
         }
 
         $db_handle->runQuery($query);
@@ -1460,10 +1536,33 @@ MAIL;
         }
     }
 
-    public function account_flagged($account_id) {
+    // get flag details
+    public function get_client_flag_by_code($user_code) {
         global $db_handle;
 
-        $query = "SELECT * FROM user_account_flag WHERE ifxaccount_id = $account_id AND status = '1'";
+        $query = "SELECT uaf.user_account_flag_id, uaf.comment, uaf.status, uaf.created, ui.ifx_acct_no,
+            CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+            CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name
+            FROM user_account_flag AS uaf
+            INNER JOIN user_ifxaccount AS ui ON uaf.ifxaccount_id = ui.ifxaccount_id
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            INNER JOIN admin AS a ON uaf.admin_code = a.admin_code
+            WHERE uaf.user_code = '$user_code' ORDER BY uaf.created DESC";
+
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) > 0) {
+            $fetched_data = $db_handle->fetchAssoc($result);
+            return $fetched_data;
+        } else {
+            return false;
+        }
+    }
+
+    public function account_flagged($user_code) {
+        global $db_handle;
+
+        $query = "SELECT * FROM user_account_flag WHERE user_code = '$user_code' AND status = '1'";
         return $db_handle->numRows($query) ? true : false;
     }
 
@@ -1952,6 +2051,38 @@ MAIL;
 
         $query = "INSERT INTO user_deposit_meta (user_deposit_id, trans_status_code, trans_status_message, trans_amount, trans_currency, gateway_name, full_verify_hash) "
             . "VALUES ($id, '$gtpay_tranx_status_code', '$gtpay_tranx_status_msg', '$gtpay_tranx_amt', '$gtpay_tranx_curr', '$gtpay_gway_name', '$gtpay_full_verification_hash')";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function log_sales_contact_client_interest($user_code, $interest_training = '1', $interest_funding = '1', $interest_bonus = '1', $interest_investment = '1', $interest_services = '1', $interest_other = '1') {
+        global $db_handle;
+
+        if(empty($interest_training)) { $interest_training = '1'; }
+        if(empty($interest_funding)) { $interest_funding = '1'; }
+        if(empty($interest_bonus)) { $interest_bonus = '1'; }
+        if(empty($interest_investment)) { $interest_investment = '1'; }
+        if(empty($interest_services)) { $interest_services = '1'; }
+        if(empty($interest_other)) { $interest_other = '1'; }
+
+        if($db_handle->numRows("SELECT user_code FROM sales_contact_client_interest WHERE user_code = '$user_code' LIMIT 1") > 0) {
+
+            $query = "UPDATE sales_contact_client_interest SET
+                  interest_training = '$interest_training',
+                  interest_funding = '$interest_funding',
+                  interest_bonus = '$interest_bonus',
+                  interest_investment = '$interest_investment',
+                  interest_services = '$interest_services',
+                  interest_other = '$interest_other' WHERE user_code = '$user_code' LIMIT 1";
+        } else {
+            $query = "INSERT INTO sales_contact_client_interest (user_code, interest_training, interest_funding, interest_bonus, interest_investment, interest_services, interest_other) VALUES ('$user_code', '$interest_training', '$interest_funding', '$interest_bonus', '$interest_investment', '$interest_services', '$interest_other')";
+        }
+
         $db_handle->runQuery($query);
 
         if($db_handle->affectedRows() > 0) {

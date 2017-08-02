@@ -70,7 +70,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="contact_info.php" title="Contact">Contact Info</a></li>
                             <li><a href="faq.php" title="Frequently Asked Questions">FAQ</a></li>
-                            <li><a href="careers.php" title="Careers">Careers</a></li>
+                            <li><a href="careers.php" title="Careers" target="_blank">Careers</a></li>
                         </ul>
                     </li>
 <!--                    <li class="dropdown <?php if ($thisPage == "Partner") { echo " active"; } ?>">

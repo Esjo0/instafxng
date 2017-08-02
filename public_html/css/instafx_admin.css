@@ -107,7 +107,7 @@ p, h1 {
 
 .page-top-section {
     margin-bottom: 10px;
-    padding: 20px;
+    padding: 20px 20px 0 20px;
     border-bottom: solid thin #DA231B;
     background-color: #FCEBED;
 }
@@ -376,6 +376,22 @@ p, h1 {
     font-size: 1em;
 }
 
+.dashboard-stats {
+    margin-top: 10px;
+}
+
+.dashboard-stats header {
+    background-color: #E4E7EC;
+    border-color: #CCCCCC;
+    padding: 5px;
+}
+
+.dashboard-stats article {
+    background-color: #FFF;
+    border-color: #CCCCCC;
+    padding: 10px;
+}
+
 
 /**************  Beautify Span ***************/
 .span-title {
@@ -397,11 +413,11 @@ p, h1 {
     
 }
 
-@media (max-width: 767px){ //xs
+@media (max-width: 767px){ /* xs */
     
 }
 
-@media (min-width: 768px){ //sm
+@media (min-width: 768px){ /* sm */
     .navbar-collapse {
         height: auto;
         border-top: 0;
@@ -442,7 +458,7 @@ p, h1 {
     }
 }
 
-@media (min-width: 992px){ //md
+@media (min-width: 992px){ /* md */
     .container-fluid {
         max-width: 1300px;
     }
@@ -450,7 +466,7 @@ p, h1 {
     #main-logo { text-align: left; }
 }
 
-@media (min-width: 1200px){ //lg
+@media (min-width: 1200px){ /* lg */
     .container-fluid {
         max-width: 1300px;
     }

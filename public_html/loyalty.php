@@ -10,7 +10,7 @@ $current_point_season = $db_handle->fetchAssoc($result);
 $from_date = $current_point_season[0]['start_date'];
 $to_date = $current_point_season[0]['end_date'];
 
-$query = "SELECT pr.month_rank, pr.month_earned_archive, pr.point_claimed, u.first_name AS full_name
+$query = "SELECT pr.month_rank, pr.month_earned_archive, pr.point_claimed, u.last_name, u.first_name AS full_name
       FROM point_ranking AS pr
       INNER JOIN user AS u ON pr.user_code = u.user_code
       ORDER BY pr.month_rank DESC, full_name ASC LIMIT 20";
@@ -27,7 +27,7 @@ $current_point_season = $db_handle->fetchAssoc($result);
 $from_date_year = $current_point_season[0]['start_date'];
 $to_date_year = $current_point_season[0]['end_date'];
 
-$query = "SELECT pr.year_rank, pr.year_earned_archive, pr.point_claimed, u.first_name AS full_name
+$query = "SELECT pr.year_rank, pr.year_earned_archive, pr.point_claimed, u.last_name, u.first_name AS full_name
       FROM point_ranking AS pr
       INNER JOIN user AS u ON pr.user_code = u.user_code
       ORDER BY pr.year_rank DESC, full_name ASC LIMIT 20";
@@ -299,7 +299,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $count; ?></td>
-                                                        <td><?php echo $row['full_name']; ?></td>
+                                                        <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
                                                         <td><?php echo number_format(($row['month_rank']), 2, ".", ","); ?></td>
                                                     </tr>
                                                     <?php $count++; } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -309,7 +309,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     </div>
                                     <hr />
 
-                                    <h5 class="text-center">Did you make it to the top 20 in <?php echo date('F, Y', strtotime('this month')); ?>? No worries, check your position below</h5>
+                                    <h5 class="text-center">Haven't made it to the top 20 in <?php echo date('F, Y', strtotime('this month')); ?> yet? No worries, check your position below and speed things up to appear on the rank list</h5>
                                     <br />
 
                                     <div class="form-group">
@@ -349,7 +349,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                                 ?>
                                             <tr>
                                                 <td><?php echo $count; ?></td>
-                                                <td><?php echo $row['full_name']; ?></td>
+                                                <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
                                                 <td><?php echo number_format(($row['year_rank']), 2, ".", ","); ?></td>
                                             </tr>
                                             <?php $count++; } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -359,7 +359,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     </div>
                                     <hr />
 
-                                    <h5 class="text-center">Did you make it to the top 20 in current loyalty year? Check your position below</h5>
+                                    <h5 class="text-center">Haven't made it to the top 20 in the current loyalty year? Check your position below and speed things up to appear on the rank list</h5>
                                     <br />
 
                                     <div class="form-group">

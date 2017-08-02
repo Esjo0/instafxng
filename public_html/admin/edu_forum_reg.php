@@ -5,7 +5,7 @@ if (!$session_admin->is_logged_in()) {
 }
 
 // Select all seminar registrations or search query, do pagination also
-$query = "SELECT * FROM forum_registrations ORDER BY date DESC ";
+$query = "SELECT CONCAT(first_name, SPACE(1), middle_name, SPACE(1), last_name) AS full_name, email, phone, venue, created, updated FROM forum_participant WHERE forum_activate = '1' ORDER BY updated DESC ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -73,8 +73,10 @@ $forum_regs = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
+
+                                <p><a href="edu_forum_reg2.php" class="btn btn-default" title="All time registrations"><i class="fa fa-arrow-circle-right"></i> View All Forum Registrations</a></p>
                                 
-                                <p>Below is the list of all new registrations</p>
+                                <p>Below is the list of all new registrations for the upcoming forum event.</p>
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -86,25 +88,23 @@ $forum_regs = $db_handle->fetchAssoc($result);
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($forum_regs as $row) { ?>
+                                        <?php if(isset($forum_regs) && !empty($forum_regs)) { foreach ($forum_regs as $row) { ?>
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
-                                            <td><?php echo $row['venue']; ?></td>
-                                            <td><?php echo datetime_to_text($row['date']); ?></td>
+                                            <td><?php echo forum_reg_venue($row['venue']); ?></td>
+                                            <td><?php if(!empty($row['updated'])) { echo datetime_to_text($row['updated']); } ?></td>
                                         </tr>
-                                        <?php } ?>
+                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
-                                
+                                <?php if(isset($forum_regs) && !empty($forum_regs)) { ?>
+                                    <div class="tool-footer text-right">
+                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                    </div>
+                                <?php } ?>
                             </div>
-
-                            <?php if(isset($forum_regs) && !empty($forum_regs)) { ?>
-                                <div class="tool-footer text-right">
-                                    <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
-                                </div>
-                            <?php } ?>
                         </div>
 
                         <?php if(isset($forum_regs) && !empty($forum_regs)) { require_once 'layouts/pagination_links.php'; } ?>

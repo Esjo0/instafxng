@@ -8,7 +8,7 @@ $client_operation = new clientOperation();
 
 $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.created, uw.naira_total_withdrawable,
         uw.client_phone_password, uw.status AS withdrawal_status,
-        CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
+        CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.user_code,
         uc.passport, ui.ifxaccount_id, ui.ifx_acct_no
         FROM user_withdrawal AS uw
         INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
@@ -97,13 +97,14 @@ $initiated_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                         <?php if($row['withdrawal_status'] == '2') { ?>
                                                             <img src="../images/in-progress.png" alt="" class="img-responsive" title="This transaction is in progress">
                                                         <?php } ?>
-                                                        <?php if($client_operation->account_flagged($row['ifxaccount_id'])) { ?>
+                                                        <?php if($client_operation->account_flagged($row['user_code'])) { ?>
                                                             <img src="../images/red-flag.png" alt="" title="The account number associated with this transaction is flagged.">
                                                         <?php } ?>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-4 trans_item-thumb">
+                                                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
                                                         <?php
                                                         if(!empty($row['passport'])) { $file_location = "../userfiles/" . $row['passport']; }
 

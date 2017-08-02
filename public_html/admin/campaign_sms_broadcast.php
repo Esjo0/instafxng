@@ -157,7 +157,7 @@ if($get_params['x'] == 'test') {
                                                     <button type="button" data-dismiss="modal" aria-hidden="true"
                                                         class="close">&times;</button>
                                                     <h4 class="modal-title">Send SMS Campaign Confirmation</h4></div>
-                                                <div class="modal-body">Do you want to send sms campaign now? This cannot be reversed, email will be sent to associated client group.</div>
+                                                <div class="modal-body">Do you want to send sms campaign now? This cannot be reversed, sms will be sent to associated client group.</div>
                                                 <div class="modal-footer">
                                                     <input name="send_campaign" type="submit" class="btn btn-success" value="Send Campaign">
                                                     <button type="submit" name="decline" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>

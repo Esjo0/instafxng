@@ -18,13 +18,12 @@ if (isset($_POST['process'])) {
     
     extract($_POST);
 
-    if(!empty($state)) {
-        $update_registration = $system_object->update_free_training_registration($selected_id, $train_interest, $train_centre, $comment, $_SESSION['admin_unique_code'], $state);
-    } else {
-        $update_registration = $system_object->update_free_training_registration($selected_id, $train_interest, $train_centre, $comment, $_SESSION['admin_unique_code']);
+    if(!empty($client_user_code)) {
+        $client_user_code = decrypt(str_replace(" ", "+", $client_user_code));
+        $client_user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $client_user_code);
     }
 
-
+    $update_registration = $system_object->update_free_training_registration($selected_id, $training_email, $training_phone, $training_first_name, $training_last_name, $comment, $_SESSION['admin_unique_code'], $state, $add_ifx_account, $client_user_code);
 
     if($update_registration) {
         $message_success = "You have successfully updated the registration";
@@ -42,6 +41,22 @@ $selected_detail = $selected_detail[0];
 
 $selected_comment = $system_object->get_free_training_registration_comment($selected_id);
 $all_states = $system_object->get_all_states();
+
+$course_started = "No";
+$current_course = "Not Available";
+$current_lesson = "Not Available";
+
+if(!empty($selected_detail['user_code'])) {
+
+    $training_stats = $education_object->get_learning_position($selected_detail['user_code']);
+
+    if($training_stats) {
+        $course_started = "Yes";
+        $current_course = $training_stats['course_title'];
+        $current_lesson = $training_stats['lesson_title'];
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,8 +102,27 @@ $all_states = $system_object->get_all_states();
                                 
                                 <div class="row">
                                     <div class="col-lg-7">
+
+                                        <table class="table table-responsive table-striped table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2" class="text-center">Online Training Stats</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr><td>Started?</td><td><?php echo $course_started; ?></td></tr>
+                                                <tr><td>Current Course</td><td><?php echo $current_course; ?></td></tr>
+                                                <tr><td>Current Lesson</td><td><?php echo $current_lesson; ?></td></tr>
+                                            </tbody>
+                                        </table>
+
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                             <input type="hidden" name="selected_id" value="<?php if(isset($selected_detail['free_training_campaign_id'])) { echo $selected_detail['free_training_campaign_id']; } ?>" />
+                                            <input type="hidden" name="training_email" value="<?php if(isset($selected_detail['email'])) { echo $selected_detail['email']; } ?>" />
+                                            <input type="hidden" name="training_phone" value="<?php if(isset($selected_detail['phone'])) { echo $selected_detail['phone']; } ?>" />
+                                            <input type="hidden" name="training_first_name" value="<?php if(isset($selected_detail['first_name'])) { echo $selected_detail['first_name']; } ?>" />
+                                            <input type="hidden" name="training_last_name" value="<?php if(isset($selected_detail['last_name'])) { echo $selected_detail['last_name']; } ?>" />
+                                            <input type="hidden" name="client_user_code" value="<?php if(isset($selected_detail['email'])) { echo encrypt($selected_detail['user_code']); } ?>" />
 
                                             <div class="form-group">
                                                 <label class="control-label col-sm-3" for="full_name">Full Name:</label>
@@ -122,33 +156,19 @@ $all_states = $system_object->get_all_states();
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="control-label col-sm-3" for="training_interest">Training Interest:</label>
+                                                <label class="control-label col-sm-3" for="add_ifx_account">Add IFX Account:</label>
                                                 <div class="col-sm-9">
-                                                    <div class="radio">
-                                                        <label><input id="venue" type="radio" name="train_interest" value="1" <?php if($selected_detail['training_interest'] == '1') { echo "checked"; } ?> required>Not Yet</label>
-                                                    </div>
-                                                    <div class="radio">
-                                                        <label><input id="venue" type="radio" name="train_interest" value="2" <?php if($selected_detail['training_interest'] == '2') { echo "checked"; } ?> required>Yes</label>
-                                                    </div>
+                                                    <input type="text" name="add_ifx_account" class="form-control" id="add_ifx_account" value="" />
+                                                    <span class="help-block">Add a new IFX account you opened for this client</span>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-3" for="train_centre">Training Centre:</label>
-                                                <div class="col-sm-9">
-                                                    <div class="radio">
-                                                        <label><input id="venue" type="radio" name="train_centre" value="1" <?php if($selected_detail['training_centre'] == '1') { echo "checked"; } ?> >Diamond Estate</label>
-                                                    </div>
-                                                    <div class="radio">
-                                                        <label><input id="venue" type="radio" name="train_centre" value="2" <?php if($selected_detail['training_centre'] == '2') { echo "checked"; } ?> >Ikota Office</label>
-                                                    </div>
-                                                    <div class="radio">
-                                                        <label><input id="venue" type="radio" name="train_centre" value="3" <?php if($selected_detail['training_centre'] == '3') { echo "checked"; } ?> >Online</label>
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                             <div class="form-group">
                                                 <label class="control-label col-sm-3" for="comment">Comment:</label>
-                                                <div class="col-sm-9"><textarea name="comment" id="comment" rows="3" class="form-control"></textarea></div>
+                                                <div class="col-sm-9">
+                                                    <textarea name="comment" id="comment" rows="3" class="form-control"></textarea>
+                                                </div>
+
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-sm-offset-3 col-sm-9">
@@ -177,6 +197,7 @@ $all_states = $system_object->get_all_states();
                                     </div>
                                     
                                     <div class="col-lg-5">
+                                        <a href="live_account.php" target="_blank" class="btn btn-primary">Open Live Account</a>
                                         <!-- comment history goes here -->
                                         <h5>Admin Remarks</h5>
                                         <div class="row" style="max-height: 500px !important; overflow: scroll;">
