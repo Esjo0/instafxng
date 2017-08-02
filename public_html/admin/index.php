@@ -98,7 +98,7 @@ $failed_sms_code = $system_object->get_failed_sms_code();
                             <div class="super-shadow dashboard-stats">
                                 <header class="text-center"><strong>Total Clients</strong></header>
                                 <article class="text-center">
-                                    <strong><?php echo number_format($total_clients); ?></strong>
+                                    <strong><?php echo number_format(15); ?></strong>
                                 </article>
                             </div>
                         </div>
@@ -107,8 +107,8 @@ $failed_sms_code = $system_object->get_failed_sms_code();
                             <div class="super-shadow dashboard-stats">
                                 <header class="text-center"><strong>Unclaimed Points</strong></header>
                                 <article class="text-center">
-                                    <strong><?php echo number_format($total_unclaimed_points, 2, ".", ","); ?></strong>&nbsp; | &nbsp;
-                                    <strong>$ <?php echo number_format($total_unclaimed_points_dollar_amount, 2, ".", ","); ?></strong>
+                                    <strong><?php echo number_format(0, 2, ".", ","); ?></strong>&nbsp; | &nbsp;
+                                    <strong>$ <?php echo number_format(0, 2, ".", ","); ?></strong>
                                 </article>
                             </div>
                         </div>

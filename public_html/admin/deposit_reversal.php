@@ -14,7 +14,7 @@ if (isset($_POST['deposit_reversal'])) {
         $trans_detail = $db_handle->fetchAssoc($result);
         $trans_detail = $trans_detail[0];
 
-        if($trans_detail['status'] == '5') {
+        if($trans_detail['status'] == '5' || $trans_detail['status'] == '6') {
             $query = "UPDATE user_deposit SET status = '2' WHERE trans_id = '$trans_id' LIMIT 1";
             $result = $db_handle->runQuery($query);
 

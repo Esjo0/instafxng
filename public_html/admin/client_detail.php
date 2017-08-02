@@ -311,59 +311,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                         </table>
 
                                     </div>
-                                </div><div class="row">
-                                    <div class="col-sm-12">
-                                        <h5>Bank Account Detail</h5>
-                                        <table class="table table-responsive table-striped table-bordered table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>Bank Name</th>
-                                                <th>Account Name</th>
-                                                <th>Account Number</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php if($client_bank_account['client_acct_no']) { ?>
-                                                <tr>
-                                                    <td><?php echo $client_bank_account['client_bank_name']; ?></td>
-                                                    <td><?php echo $client_bank_account['client_acct_name']; ?></td>
-                                                    <td><?php echo $client_bank_account['client_acct_no']; ?></td>
-                                                </tr>
-                                            <?php } else { ?>
-                                                <tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>
-                                            <?php } ?>
-                                            </tbody>
-                                        </table>
-                                        <hr />
-
-                                        <h5>Account Flag Detail</h5>
-                                        <table class="table table-responsive table-striped table-bordered table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Account Number</th>
-                                                <th>Admin</th>
-                                                <th>Comment</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php if($client_flags) { foreach($client_flags as $value) { ?>
-                                                <tr>
-                                                    <td><?php echo datetime_to_text2($value['created']); ?></td>
-                                                    <td><?php echo $value['ifx_acct_no']; ?></td>
-                                                    <td><?php echo $value['admin_full_name']; ?></td>
-                                                    <td><?php echo $value['comment']; ?></td>
-                                                </tr>
-                                            <?php } } else { ?>
-                                                <tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>
-                                            <?php } ?>
-                                            </tbody>
-                                        </table>
-
-                                    </div>
                                 </div>
-
-                                
                                 <!-------------- Transaction section ----->
                                 <div class="row">
                                     <div class="col-sm-12">

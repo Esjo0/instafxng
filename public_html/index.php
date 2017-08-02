@@ -35,15 +35,16 @@ $thisPage = "Home";
                     <?php $rand = rand(1, 2); ?>
 
                     <div class="super-shadow page-top-section">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h3 style="margin: 0;">How to Make More Money from News Trading</h3>
-                                <p style="margin-top: 0">Don't miss the opportunity to make money in the Forex market through News Trading.</p>
-                                <p>Staying up to date with happening in the world of technical and fundamental analysis can make you some green pips.
-                                <a href="https://instafxng.com/news1/id/555/u/how-make-more-money-from-news-trading/" target="_blank">... read more</a></p>
+                        <div class="row ">
+                            <div class="col-sm-7">
+                                <h2>Incredible Moments of Amazing Fun at the Pencil Unbroken Comedy Show</h2>
+                                <p>It was a memorable day of great entertainment on the 2nd of July, 2017 at the second edition of Pencil D Comedian’s premium comedy show tagged "Pencil Unbroken 2.</p>
+                                <p>Some clients who won free VIP tickets in the Win-a-Ticket Contest had rib-cracking fun at the show.
+                                <a href="https://instafxng.com/news1/id/557/u/incredible-moments-amazing-fun-pencil-unbroken-comedy/">Read more here.</a></p>
                             </div>
-                            <div class="col-sm-6">
-                                <a href="https://instafxng.com/news1/id/555/u/how-make-more-money-from-news-trading/" target="_blank"><img src="https://instafxng.com/images/blog/asbvixtriretk541k0yucjgbl.jpg" alt="" class="img-responsive center-block" /></a>
+
+                            <div class="col-sm-5">
+                                <a href="https://instafxng.com/news1/id/557/u/incredible-moments-amazing-fun-pencil-unbroken-comedy/" target="_blank"><img src="https://instafxng.com/images/blog/ozftfgvkl0bfguydyctxofj3m.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>

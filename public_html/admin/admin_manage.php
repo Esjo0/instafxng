@@ -326,11 +326,12 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="92" id="" <?php if (in_array(92, $my_pages)) { echo 'checked="checked"'; } ?>/> New Job</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="93" id="" <?php if (in_array(93, $my_pages)) { echo 'checked="checked"'; } ?>/> All Jobs</label></div></div>
-<!--                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="94" id="" --><?php //if (in_array(94, $my_pages)) { echo 'checked="checked"'; } ?><!--/> Make Request</label></div></div>-->
-<!--                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="95" id="" --><?php //if (in_array(95, $my_pages)) { echo 'checked="checked"'; } ?><!--/> View Request</label></div></div>-->
-<!--                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="96" id="" --><?php //if (in_array(96, $my_pages)) { echo 'checked="checked"'; } ?><!--/> Approve Request</label></div></div>-->
-<!--                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="97" id="" --><?php //if (in_array(97, $my_pages)) { echo 'checked="checked"'; } ?><!--/> New Inventory</label></div></div>-->
-<!--                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="98" id="" --><?php //if (in_array(98, $my_pages)) { echo 'checked="checked"'; } ?><!--/> Take Inventory</label></div></div>-->
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="94" id="" <?php if (in_array(94, $my_pages)) { echo 'checked="checked"'; } ?>/> Application - All</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="95" id="" <?php if (in_array(95, $my_pages)) { echo 'checked="checked"'; } ?>/> Application - Submitted</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="96" id="" <?php if (in_array(96, $my_pages)) { echo 'checked="checked"'; } ?>/> Application - Review</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="97" id="" <?php if (in_array(97, $my_pages)) { echo 'checked="checked"'; } ?>/> Application - Interview</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="98" id="" <?php if (in_array(98, $my_pages)) { echo 'checked="checked"'; } ?>/> Application - Employed</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="98" id="" <?php if (in_array(98, $my_pages)) { echo 'checked="checked"'; } ?>/> Application - Rejected</label></div></div>
                                     </div>
                                     <hr/>
                                     
@@ -355,11 +356,11 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     </div>
                                     <hr/>
                                     
-                                    <p><strong>Accounts &amp; Records</strong></p>
+                                    <p><strong>Prospect</strong></p>
                                     <div class="form-group row">
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="110" id="" <?php if (in_array(110, $my_pages)) { echo 'checked="checked"'; } ?>/> New Income</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="111" id="" <?php if (in_array(111, $my_pages)) { echo 'checked="checked"'; } ?>/> New Expense</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="112" id="" <?php if (in_array(112, $my_pages)) { echo 'checked="checked"'; } ?>/> Balance Sheet</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="110" id="" <?php if (in_array(110, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Prospect Source</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="111" id="" <?php if (in_array(111, $my_pages)) { echo 'checked="checked"'; } ?>/> Add New Prospect</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="112" id="" <?php if (in_array(112, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Prospects</label></div></div>
                                     </div>
                                     <hr/>
                                     

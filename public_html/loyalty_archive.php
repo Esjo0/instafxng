@@ -76,7 +76,7 @@ $selected_months = $db_handle->fetchAssoc($result);
                                                         <tbody>
 
                                                         <?php
-                                                        $query = "SELECT prl.position, prl.point_earned, u.first_name AS full_name
+                                                        $query = "SELECT prl.position, prl.point_earned, u.last_name, u.first_name AS full_name
                                                               FROM point_ranking_log AS prl
                                                               INNER JOIN user AS u ON prl.user_code = u.user_code
                                                               WHERE prl.start_date = '$start_date' AND prl.type = '1'
@@ -90,7 +90,7 @@ $selected_months = $db_handle->fetchAssoc($result);
                                                                 ?>
                                                                 <tr>
                                                                     <td><?php echo $row['position']; ?></td>
-                                                                    <td><?php echo $row['full_name']; ?></td>
+                                                                    <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
                                                                     <td><?php echo $row['point_earned']; ?></td>
                                                                 </tr>
                                                                 <?php } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

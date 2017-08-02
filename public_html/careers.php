@@ -67,8 +67,11 @@ $all_jobs = $obj_careers->get_open_jobs();
                 <div class="section-tint super-shadow">
                     <div class="row">
                         <div class="col-sm-12">
-                            <p>Check for open positions below and apply accordingly.</p>
+                            <p>Check for open positions below and apply accordingly. Please note that you can only apply for one
+                            position, multiple applications for multiple positions is not allowed. Kindly read all instructions, it will
+                                take just a few minutes to complete the process.</p>
                             <p>If you started an application process, <a title="Login" class="btn btn-success" href="careers_login.php">Login Here</a> to continue.</p>
+                            <p>If you encounter any challenge, please send an email to careers@instafxng.com, we will be glad to assist you.</p>
                             <hr />
                         </div>
 
@@ -85,6 +88,7 @@ $all_jobs = $obj_careers->get_open_jobs();
                                             <div class="panel-body">
                                                 <p class="text-right"><a title="Apply Now" class="btn btn-success btn-bg" href="careers_apply.php?c=<?php echo encrypt($row['job_code']); ?>"><i class="fa fa-paper-plane-o icon-white"></i> Apply Now</a></p>
                                                 <?php echo $row['detail']; ?>
+                                                <p class="text-right"><a title="Apply Now" class="btn btn-success btn-bg" href="careers_apply.php?c=<?php echo encrypt($row['job_code']); ?>"><i class="fa fa-paper-plane-o icon-white"></i> Apply Now</a></p>
                                             </div>
                                         </div>
                                     </div>

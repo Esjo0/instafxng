@@ -1334,7 +1334,7 @@ MAIL;
         $sms_code = generate_sms_code();
         $sms_message = "Your activation code is: $sms_code A message has been sent to your email, click the activation link in it and enter this code.";
         
-        $system_object->send_sms_2($client_phone_number, $sms_message);
+        $system_object->send_sms($client_phone_number, $sms_message);
         
         if(!is_null($client_verification_id)) {
             $query = "UPDATE user_verification SET phone_code = '$sms_code' WHERE verification_id = $client_verification_id LIMIT 1";

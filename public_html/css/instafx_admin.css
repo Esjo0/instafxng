@@ -413,11 +413,11 @@ p, h1 {
     
 }
 
-@media (max-width: 767px){ //xs
+@media (max-width: 767px){ /* xs */
     
 }
 
-@media (min-width: 768px){ //sm
+@media (min-width: 768px){ /* sm */
     .navbar-collapse {
         height: auto;
         border-top: 0;
@@ -458,7 +458,7 @@ p, h1 {
     }
 }
 
-@media (min-width: 992px){ //md
+@media (min-width: 992px){ /* md */
     .container-fluid {
         max-width: 1300px;
     }
@@ -466,7 +466,7 @@ p, h1 {
     #main-logo { text-align: left; }
 }
 
-@media (min-width: 1200px){ //lg
+@media (min-width: 1200px){ /* lg */
     .container-fluid {
         max-width: 1300px;
     }

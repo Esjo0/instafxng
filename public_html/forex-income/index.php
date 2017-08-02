@@ -2,8 +2,6 @@
 require_once '../init/initialize_general.php';
 $thisPage = "";
 
-var_dump($_SESSION);
-
 /****
  *
  *

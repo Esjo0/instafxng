@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
-            <p>At the Forum this month, we will discuss Forex Trading for Very Busy, Unskilled and Smart Investors.</p>
+            <p>At the Forum this month, we will discuss Understanding and Gaining Mastery of Effective Indicators in Forex.</p>
 
             <p>You will also have the opportunity of meeting other Forex traders and you
             could be one of two lucky winners to win $20 trading bonus. Isn’t that cool?</p>
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: 10th of June, 2017<br /><br />
+            Date: 12th of August, 2017<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -161,11 +161,13 @@ MAIL;
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Forex Trading for Very Busy, Unskilled and Smart Investors</h3>
+                                <h3 style="margin: 0;">Understanding and Gaining Mastery of Effective Indicators in Forex</h3>
                                 <p style="margin-top: 0">
-                                    <strong>Join us for June Trader's Forum to learn Forex Trading for Very Busy, Unskilled and Smart Investors.</strong><br /><br />
-                                    Time: 12 - 2pm, Date: 10th of June, 2017<br />
-                                    <strong>Reserve Your Seat Below</strong>
+                                    Join us on Saturday, 12th of August as we examine the various
+                                    effective indicators available and gain mastery of them so you can
+                                    execute your trading plan like a pro.
+                                        Time: 12 - 2pm.<br />
+                                    <strong>Reserve your seat below to stand a chance to win $20.</strong>
                                 </p>
                             </div>
                             <div class="col-sm-6">
@@ -188,9 +190,10 @@ MAIL;
                                     success. They share their experiences, learn from other traders, meet new
                                     people and go home with lots of exciting prizes such bonus account and Instaforex
                                     branded materials. </p>
-                                <p>Join us on Saturday, 10th of June, 2017 for another exciting edition of
-                                    Nigerian Forex traders Forum as we all share our trading experience with one
-                                    another and discuss Forex Trading for Very Busy, Unskilled and Smart Investors.</p>
+                                <p>Join us on Saturday, 12th of August, 2017 for another exciting edition of
+                                    Nigerian Forex traders Forum as we examine the various
+                                    effective indicators available and gain mastery of them so you can
+                                    execute your trading plan like a pro.</p>
                             </div>
                         </div>
 
@@ -274,11 +277,11 @@ MAIL;
                                         <div class="form-group">
                                             <label for="venue" class="control-label">Choose your venue</label>
                                             <div class="radio">
-                                                <label><input id="venue" type="radio" name="venue" value="Diamond Estate" required>Block 1A, Plot 8, Diamond Estate, LASU/Isheri road, Isheri Olofin, Lagos.</label>
+                                                <label><input id="venue" type="radio" name="venue" value="Diamond Estate" checked required>Block 1A, Plot 8, Diamond Estate, LASU/Isheri road, Isheri Olofin, Lagos.</label>
                                             </div>
-                                            <div class="radio">
-                                                <label><input id="venue" type="radio" name="venue" value="Ajah Office" required>Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</label>
-                                            </div>
+<!--                                            <div class="radio">-->
+<!--                                                <label><input id="venue" type="radio" name="venue" value="Ajah Office" required>Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</label>-->
+<!--                                            </div>-->
                                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                         </div>
                                         <div class="form-group">

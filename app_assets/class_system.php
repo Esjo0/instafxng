@@ -49,15 +49,8 @@ class InstafxngSystem {
     public function send_sms($phone, $my_message) {
         $phone_number = trim(preg_replace('/[\s\t\n\r\s]+/', '', $phone));
         $message = str_replace(" ","+",$my_message);
-        file_get_contents("http://www.smslive247.com/http/index.aspx?cmd=sendmsg&sessionid=5b422f10-7b78-4631-9b98-a1c2e1872099&message=$message&sender=INSTAFXNG&sendto=$phone_number&msgtype=0");
-        return true;
-    }
-
-    // function to send sms - using smsworks360.com
-    public function send_sms_2($phone, $my_message) {
-        $phone_number = trim(preg_replace('/[\s\t\n\r\s]+/', '', $phone));
-        $message = str_replace(" ","+",$my_message);
-        file_get_contents("http://sms.smsworks360.com/customer/bulksms/?username=support@instafxng.com&password=fisayo75&message=$message&sender=INSTAFXNG&mobiles=$phone_number");
+        file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=fisayo75&message=$message&sender=INSTAFXNG&mobiles=$phone_number");
+//        file_get_contents("http://www.smslive247.com/http/index.aspx?cmd=sendmsg&sessionid=5b422f10-7b78-4631-9b98-a1c2e1872099&message=$message&sender=INSTAFXNG&sendto=$phone_number&msgtype=0");
         return true;
     }
 
