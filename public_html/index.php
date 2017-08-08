@@ -35,16 +35,19 @@ $thisPage = "Home";
                     <?php $rand = rand(1, 2); ?>
 
                     <div class="super-shadow page-top-section">
-                        <div class="row ">
-                            <div class="col-sm-7">
-                                <h2>Incredible Moments of Amazing Fun at the Pencil Unbroken Comedy Show</h2>
-                                <p>It was a memorable day of great entertainment on the 2nd of July, 2017 at the second edition of Pencil D Comedian’s premium comedy show tagged "Pencil Unbroken 2.</p>
-                                <p>Some clients who won free VIP tickets in the Win-a-Ticket Contest had rib-cracking fun at the show.
-                                <a href="https://instafxng.com/news1/id/557/u/incredible-moments-amazing-fun-pencil-unbroken-comedy/">Read more here.</a></p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h3 style="margin: 0;">Understanding and Gaining Mastery of Effective Indicators in Forex</h3>
+                                <p style="margin-top: 0">
+                                    Join us on Saturday, 12th of August as we examine the various
+                                    effective indicators available and gain mastery of them so you can
+                                    execute your trading plan like a pro.
+                                    Time: 12 - 2pm.<br />
+                                    <strong><a href="traders_forum.php">Click here</a> to reserve a seat and stand a chance to win $20.</strong>
+                                </p>
                             </div>
-
-                            <div class="col-sm-5">
-                                <a href="https://instafxng.com/news1/id/557/u/incredible-moments-amazing-fun-pencil-unbroken-comedy/" target="_blank"><img src="https://instafxng.com/images/blog/ozftfgvkl0bfguydyctxofj3m.jpg" alt="" class="img-responsive" /></a>
+                            <div class="col-sm-6">
+                                <a href="traders_forum.php"><img src="https://instafxng.com/images/forex-traders-forum-smart-investors.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>
