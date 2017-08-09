@@ -231,10 +231,10 @@ MAIL;
     }
     
     // Update admin profile - modify the status
-    public function modify_admin_profile($admin_code, $admin_status) {
+    public function modify_admin_profile($admin_code, $first_name, $last_name, $admin_status) {
         global $db_handle;
         
-        $query = "UPDATE admin SET status = '{$admin_status}' WHERE admin_code = '{$admin_code}' LIMIT 1";
+        $query = "UPDATE admin SET first_name = '$first_name', last_name = '$last_name', status = '{$admin_status}' WHERE admin_code = '{$admin_code}' LIMIT 1";
         $db_handle->runQuery($query);
         
         if($db_handle->affectedRows() > 0) {

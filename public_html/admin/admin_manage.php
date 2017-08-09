@@ -16,7 +16,7 @@ if (isset($_POST['process'])) {
     $admin_id = decrypt(str_replace(" ", "+", $admin_id));
     $admin_code = preg_replace("/[^A-Za-z0-9 ]/", '', $admin_id);
     
-    $profile_modified = $admin_object->modify_admin_profile($admin_code, $admin_status);
+    $profile_modified = $admin_object->modify_admin_profile($admin_code, $first_name, $last_name, $admin_status);
     
     if($profile_modified) {
         $message_success = "The admin profile has been updated.";
@@ -111,13 +111,13 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="first_name">First Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo $admin_detail['first_name']; ?>" readonly>
+                                            <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo $admin_detail['first_name']; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="last_name">Last Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input type="text" class="form-control" id="first_name" name="last_name" value="<?php echo $admin_detail['last_name']; ?>" readonly>
+                                            <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo $admin_detail['last_name']; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group">
