@@ -16,21 +16,43 @@ if (isset($_POST['apply_filter'])) {
     $_SESSION['job_code_filter'] = $job_category;
 }
 
-$query = "SELECT CONCAT(last_name, SPACE(1), first_name) AS full_name, cua.career_user_application_id, cj.title, cua.created, cua.status
-    FROM career_user_application AS cua
-    INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code
-    INNER JOIN career_jobs AS cj ON cua.job_code = cj.job_code WHERE cua.status IN ('4', '7') ";
+if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
+    $search_text = $_POST['search_text'];
 
-if(isset($_SESSION['job_code_filter']) && $_SESSION['job_code_filter'] <> 'all') {
-    $job_code_filter = $_SESSION['job_code_filter'];
-    $query .= "AND cua.job_code = '$job_code_filter' ORDER BY created DESC ";
+    $query = "SELECT CONCAT(cub.last_name, SPACE(1), cub.first_name) AS full_name, cua.career_user_application_id, cj.title, cua.created, cua.status
+        FROM career_user_application AS cua
+        INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code
+        INNER JOIN career_jobs AS cj ON cua.job_code = cj.job_code WHERE cua.status IN ('4', '7') AND (cub.email_address LIKE '%$search_text%' OR cub.last_name LIKE '%$search_text%' OR cub.first_name LIKE '%$search_text%' OR cub.other_names LIKE '%$search_text%' OR cub.email_address LIKE '%$search_text%' OR cub.phone_number LIKE '%$search_text%' OR cub.created LIKE '$search_text%') ";
+
+    if(isset($_SESSION['job_code_filter']) && $_SESSION['job_code_filter'] <> 'all') {
+        $job_code_filter = $_SESSION['job_code_filter'];
+        $query .= "AND cua.job_code = '$job_code_filter' ORDER BY cua.created DESC ";
+    } else {
+        $query .= "ORDER BY cua.created DESC ";
+    }
 } else {
-    $query .= "ORDER BY created DESC ";
+    $query = "SELECT CONCAT(cub.last_name, SPACE(1), cub.first_name) AS full_name, cua.career_user_application_id, cj.title, cua.created, cua.status
+        FROM career_user_application AS cua
+        INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code
+        INNER JOIN career_jobs AS cj ON cua.job_code = cj.job_code WHERE cua.status IN ('4', '7') ";
+
+    if(isset($_SESSION['job_code_filter']) && $_SESSION['job_code_filter'] <> 'all') {
+        $job_code_filter = $_SESSION['job_code_filter'];
+        $query .= "AND cua.job_code = '$job_code_filter' ORDER BY cua.created DESC ";
+    } else {
+        $query .= "ORDER BY cua.created DESC ";
+    }
 }
 
 $numrows = $db_handle->numRows($query);
 
-$rowsperpage = 20;
+// For search, make rows per page equal total rows found, meaning, no pagination
+// for search results
+if (isset($_POST['search_text'])) {
+    $rowsperpage = $numrows;
+} else {
+    $rowsperpage = 20;
+}
 
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
@@ -79,6 +101,21 @@ $all_applications = $db_handle->fetchAssoc($result);
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
+                    <div class="search-section">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
+                                    <div class="input-group">
+                                        <input type="hidden" name="search_param" value="all" id="search_param">
+                                        <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                                         
                     <div class="row">
                         <div class="col-sm-12 text-danger">

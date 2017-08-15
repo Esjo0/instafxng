@@ -15,8 +15,14 @@ if (isset($_POST['saldo_report'])) {
     $saldo = $system_object->get_saldo_report($from_date, $to_date);
     
     $total_deposit = number_format($saldo['deposit'], 2, ".", ",");
+    $total_deposit_dollar = number_format($saldo['deposit_dollar'], 2, ".", ",");
     $total_withdrawal = number_format($saldo['withdrawal'], 2, ".", ",");
+    $total_withdrawal_dollar = number_format($saldo['withdrawal_dollar'], 2, ".", ",");
     $saldo_calculated = number_format($saldo['saldo'], 2, ".", ",");
+    $saldo_calculated_dollar = number_format($saldo['saldo_dollar'], 2, ".", ",");
+
+    $deposit_avg = number_format($saldo['deposit_avg'], 2, ".", ",");
+    $withdrawal_avg = number_format($saldo['withdrawal_avg'], 2, ".", ",");
 }
 
 ?>
@@ -93,10 +99,32 @@ if (isset($_POST['saldo_report'])) {
                                 
                                 <hr>
                                 <?php if(isset($saldo_calculated)) { ?>
-                                <h5>Saldo Report from <strong><?php echo date('d-M-Y', strtotime($from_date)); ?></strong> to <strong><?php echo date('d-M-Y', strtotime($to_date)); ?></strong></h5>
-                                <p><strong>Total Deposit: &#8358; <?php echo $total_deposit; ?></strong></p>
-                                <p><strong>Total Withdrawal: &#8358; <?php echo $total_withdrawal; ?></strong></p>
-                                <p><strong>Saldo: &#8358; <?php echo $saldo_calculated; ?></strong></p>
+                                    <h5>Saldo Report from <strong><?php echo date('d-M-Y', strtotime($from_date)); ?></strong> to <strong><?php echo date('d-M-Y', strtotime($to_date)); ?></strong></h5>
+                                    <p><strong>Average Deposit Rate:</strong> &dollar; <br />
+                                        <strong>Average Withdrawal Rate:</strong> &dollar; </p>
+
+                                    <table class="table table-responsive table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Total Deposit</th>
+                                            <th>Total Deposit</th>
+                                            <th>Total Withdrawal</th>
+                                            <th>Total Withdrawal</th>
+                                            <th>Saldo</th>
+                                            <th>Saldo</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>&#8358; <?php echo $total_deposit; ?></td>
+                                                <td>&dollar; <?php echo $total_deposit_dollar; ?></td>
+                                                <td>&#8358; <?php echo $total_withdrawal; ?></td>
+                                                <td>&dollar; <?php echo $total_withdrawal_dollar; ?></td>
+                                                <td>&#8358; <?php echo $saldo_calculated ?></td>
+                                                <td>&dollar; <?php echo $saldo_calculated_dollar ?></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 <?php } ?>
                                 
                                 

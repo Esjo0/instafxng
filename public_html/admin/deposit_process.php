@@ -118,8 +118,9 @@ if ($deposit_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POS
 
         $client_operation->update_loyalty_point($points_claimed_id, $point_status);
     }
-    
-    header("Location: deposit_confirmed.php");
+
+    $trans_id_encrypted = encrypt($transaction_id);
+    header("Location: deposit_view_details.php?id=$trans_id_encrypted");
 }
 
 // Process Pending Deposit

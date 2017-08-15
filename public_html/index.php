@@ -37,17 +37,14 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Understanding and Gaining Mastery of Effective Indicators in Forex</h3>
-                                <p style="margin-top: 0">
-                                    Join us on Saturday, 12th of August as we examine the various
-                                    effective indicators available and gain mastery of them so you can
-                                    execute your trading plan like a pro.
-                                    Time: 12 - 2pm.<br />
-                                    <strong><a href="traders_forum.php">Click here</a> to reserve a seat and stand a chance to win $20.</strong>
+                                <h3 style="margin: 0;">3 Must-Haves for a Successful and Profitable Forex Trading Career</h3>
+                                <p style="margin-top: 0">Does it sometimes seem that you need to have magical skills to make money from Forex trading? Do you have a feeling that Forex trading is probably not meant for someone like you?</p>
+                                <p>I don’t believe so and you will discover the reason as you read.
+                                    <strong><a href="https://instafxng.com/news1/id/558/u/3-musthaves-successful-profitable-forex-trading-career/">Click here to read more.</a></strong>
                                 </p>
                             </div>
                             <div class="col-sm-6">
-                                <a href="traders_forum.php"><img src="https://instafxng.com/images/forex-traders-forum-smart-investors.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/news1/id/558/u/3-musthaves-successful-profitable-forex-trading-career/"><img src="images/investor-course-banner.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>
