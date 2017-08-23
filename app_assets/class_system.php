@@ -833,6 +833,38 @@ class InstafxngSystem {
             return false;
         }
     }
+
+    public function next_account_officer() {
+        global $db_handle;
+
+        $query = "SELECT current_position, officer_count FROM account_officers_stopper";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $current_position = $fetched_data[0]['current_position'];
+        $officer_count = $fetched_data[0]['officer_count'];
+
+        if($current_position < $officer_count) {
+            $query = "UPDATE account_officers_stopper SET current_position = current_position + 1";
+            $db_handle->runQuery($query);
+        } else {
+            $query = "UPDATE account_officers_stopper SET current_position = 1";
+            $db_handle->runQuery($query);
+        }
+
+        return $current_position ? $current_position : false;
+    }
+
+    public function get_all_account_officer() {
+        global $db_handle;
+
+        $query = "SELECT account_officers_id, CONCAT(a.last_name, SPACE(1), a.first_name) AS officer_full_name
+            FROM account_officers AS ao
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code ORDER BY account_officers_id ASC";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
     
 }
 

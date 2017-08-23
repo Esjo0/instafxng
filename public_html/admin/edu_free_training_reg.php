@@ -17,11 +17,7 @@ if (isset($_POST['submit'])) {
         $message_error = "You have supplied an invalid email address, please try again.";
     } else {
 
-        // create profile for this client
-        $client_operation = new clientOperation();
-        $log_new_client = $client_operation->new_user_ordinary($full_name, $email_address, $phone_number);
-        //...//
-
+        $client_full_name = $full_name;
         $full_name = str_replace(".", "", $full_name);
         $full_name = ucwords(strtolower(trim($full_name)));
         $full_name = explode(" ", $full_name);
@@ -48,8 +44,13 @@ if (isset($_POST['submit'])) {
             $last_name = "";
         }
 
-        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, attendant) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '$attendant')";
+        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, attendant) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', $attendant)";
         $result = $db_handle->runQuery($query);
+
+        // create profile for this client
+        $client_operation = new clientOperation();
+        $log_new_client = $client_operation->new_user_ordinary($client_full_name, $email_address, $phone_number, $attendant);
+        //...//
 
         if($result) {
 
@@ -173,7 +174,7 @@ MAIL;
     }
 }
 
-
+$all_account_officers = $system_object->get_all_account_officer();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -233,8 +234,9 @@ MAIL;
                                         <label class="control-label col-sm-3" for="attendant">Call Agent:</label>
                                         <div class="col-sm-9 col-lg-5">
                                             <select name="attendant" class="form-control" id="attendant" required>
-                                                <option value="1">Abraham Esther</option>
-                                                <option value="2">Ogunsola Esther</option>
+                                                <?php foreach($all_account_officers as $key => $value) { ?>
+                                                    <option value="<?php echo $value['account_officers_id']; ?>"><?php echo $value['officer_full_name']; ?></option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                     </div>
