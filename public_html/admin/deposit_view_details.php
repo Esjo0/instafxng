@@ -4,6 +4,26 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+// complete points
+if (isset($_POST['complete_point'])) {
+
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    extract($_POST);
+
+    $query = "UPDATE point_based_claimed SET status = '2' WHERE point_based_claimed_id = $point_id LIMIT 1";
+    $result = $db_handle->runQuery($query);
+
+    if($db_handle->affectedRows() > 0) {
+        $message_success = "Points have been regularized.";
+    } else {
+        $message_error = "An error occurred, the changes was not made.";
+    }
+}
+
+
 $get_params = allowed_get_params(['id']);
 $trans_id_encrypted = $get_params['id'];
 $trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
@@ -29,15 +49,17 @@ if($db_handle->numOfRows($result) > 0) {
     $trans_remark = $client_operation->get_deposit_remark($trans_id);
 
     if(!empty($points_claimed_id)) {
-        $query = "SELECT dollar_amount, status, point_claimed FROM point_based_claimed WHERE point_based_claimed_id = $points_claimed_id LIMIT 1";
+        $query = "SELECT dollar_amount, status, point_claimed, point_based_claimed_id FROM point_based_claimed WHERE point_based_claimed_id = $points_claimed_id LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $point_dollar_amount = $fetched_data[0]['dollar_amount'];
         $point_status = $fetched_data[0]['status'];
+        $point_claimed = $fetched_data[0]['point_claimed'];
+        $point_id = $fetched_data[0]['point_based_claimed_id'];
     }
 } else {
     // result not found, redirect back to search page
-    redirect_to('deposit_search.php');
+    redirect_to('deposit_confirmed.php');
 }
 
 ?>
@@ -78,8 +100,11 @@ if($db_handle->numOfRows($result) > 0) {
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <p><a href="deposit_search.php" class="btn btn-default" title="Deposit Search"><i class="fa fa-arrow-circle-left"></i> Go Back</a></p>
+                                <?php require_once 'layouts/feedback_message.php'; ?>
+                                <p><a href="deposit_confirmed.php" class="btn btn-default" title="Deposit Confirmed"><i class="fa fa-arrow-circle-left"></i> Go Back to Deposit Confirmed</a></p>
                                 <p>Below is the detail of the selected transaction.</p>
+                                <p class="text-danger"><strong>If the client claimed points, you will see details below and
+                                    the point status.</strong></p>
                             </div>
                         </div>
 
@@ -104,9 +129,25 @@ if($db_handle->numOfRows($result) > 0) {
                                         <tr><td>Payment Method</td><td><?php if(isset($client_pay_method)) { echo status_user_deposit_pay_method($client_pay_method); } ?></td></tr>
                                         <tr><td>Payment Confirmed (&#8358;)</td><td><?php if(isset($real_naira_confirmed)) { echo number_format($real_naira_confirmed, 2, ".", ","); } ?></td></tr>
                                         <tr><td class="text-success"><strong>Equivalent (&dollar;) - Amount Funded</strong></td><td class="text-success"><strong><?php if(isset($real_dollar_equivalent)) { echo $real_dollar_equivalent; } ?></strong></td></tr>
-                                        <?php if(isset($point_dollar_amount)) { ?><tr><td class="text-success"><strong>Points Claimed (&dollar;)</strong></td>
-                                            <td class="text-success"><strong><?php if(isset($point_dollar_amount)) { echo $point_dollar_amount; } ?></strong>
-                                                Status: <?php if(isset($point_status)) { echo status_point_claimed($point_status); } ?><br /></td></tr><?php } ?>
+
+                                        <?php if(isset($point_dollar_amount)) { ?>
+                                            <tr>
+                                                <td class="text-success"><strong>Points Claimed (&dollar;)</strong></td>
+                                                <td class="text-success">
+                                                    <strong><?php if(isset($point_dollar_amount)) { echo $point_dollar_amount; } ?></strong><br />
+                                                    Status: <?php if(isset($point_status)) { echo status_point_claimed($point_status); } ?><br />
+
+                                                    <?php if(isset($point_status) && ($point_status <> '2')) { ?>
+                                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                        <input name="point_id" type="hidden" value="<?php if(isset($point_id)) { echo $point_id; } ?>">
+                                                        <input name="complete_point" type="submit" class="btn btn-success" value="Complete Point">
+                                                    </form>
+                                                    <?php } ?>
+
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+
                                         <tr><td>Transfer Reference</td><td><?php if(isset($transfer_reference)) { echo $transfer_reference; } ?></td></tr>
                                         <tr><td>Status</td><td><?php if(isset($deposit_status)) { echo status_user_deposit($deposit_status); } ?></td></tr>
                                         <tr><td>Last Updated</td><td><?php if(isset($updated)) { echo datetime_to_text($updated); } ?></td></tr>

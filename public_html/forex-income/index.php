@@ -33,11 +33,7 @@ if (isset($_POST['submit'])) {
         $message_error = "You have supplied an invalid email address, please try again.";
     } else {
 
-        // create profile for this client
-        $client_operation = new clientOperation();
-        $log_new_client = $client_operation->new_user_ordinary($full_name, $email_address, $phone_number);
-        //...//
-
+        $client_full_name = $full_name;
         $full_name = str_replace(".", "", $full_name);
         $full_name = ucwords(strtolower(trim($full_name)));
         $full_name = explode(" ", $full_name);
@@ -66,16 +62,19 @@ if (isset($_POST['submit'])) {
 
         $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number')";
         $result = $db_handle->runQuery($query);
+        $inserted_id = $db_handle->insertedId();
 
         if($result) {
 
-            // By default, the attendant is 1, but if it is an even number, let us reassign the attendant to be 2
-            // With that each entry is distributed amongst two attendants
-            $inserted_id = $db_handle->insertedId();
-            if($inserted_id % 2 == 0) {
-                $query = "UPDATE free_training_campaign SET attendant = '2' WHERE free_training_campaign_id = $inserted_id LIMIT 1";
-                $db_handle->runQuery($query);
-            }
+            $assigned_account_officer = $system_object->next_account_officer();
+
+            $query = "UPDATE free_training_campaign SET attendant = $assigned_account_officer WHERE free_training_campaign_id = $inserted_id LIMIT 1";
+            $db_handle->runQuery($query);
+
+            // create profile for this client
+            $client_operation = new clientOperation();
+            $log_new_client = $client_operation->new_user_ordinary($client_full_name, $email_address, $phone_number, $assigned_account_officer);
+            //...//
 
             $subject = "Welcome to the world of Money making!";
             $body =
@@ -188,7 +187,6 @@ MAIL;
 
             $from_name = "Bunmi - InstaFxNg";
             $system_object->send_email($subject, $body, $email_address, $first_name, $from_name);
-
 
             redirect_to('thank_you.php');
         } else {

@@ -169,8 +169,9 @@ class clientOperation {
      * @param $type - 1 if KYC, 2 if ILPR enrolment
      * @return bool|string
      */
-    public function new_user($account_no, $full_name, $email_address, $phone_number, $type, $my_refferer) {
+    public function new_user($account_no, $full_name, $email_address, $phone_number, $type, $my_refferer = "", $attendant = "") {
         global $db_handle;
+        global $system_object;
         
         // Check whether the email is existing
         $query = "SELECT user_code FROM user WHERE email = '$email_address' LIMIT 1";
@@ -183,7 +184,7 @@ class clientOperation {
             if($this->ifx_account_is_duplicate($account_no)) {
                 return false;
             } else {
-                if(isset($my_refferer) && !IS_NULL($my_refferer)) {
+                if(isset($my_refferer) && !empty($my_refferer)) {
                     $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no, partner_code) VALUES ('$user_code', '$account_no', '$my_refferer')";
                 } else {
                     $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$user_code', '$account_no')";
@@ -219,18 +220,22 @@ class clientOperation {
                 $middle_name = "";
                 $first_name = $full_name[1];
             }
+
+            if(empty($attendant)) {
+                $attendant = $system_object->next_account_officer();
+            }
             
             if(empty($middle_name)) {
-                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
+                $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
                 $this->send_welcome_email($last_name, $email_address);
             } else {
-                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
+                $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
                 $this->send_welcome_email($last_name, $email_address);
             }
 
-            if(isset($my_refferer) && !IS_NULL($my_refferer)) {
+            if(isset($my_refferer) && !empty($my_refferer)) {
                 $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no, partner_code) VALUES ('$user_code', '$account_no', '$my_refferer')";
             } else {
                 $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$user_code', '$account_no')";
@@ -258,7 +263,7 @@ class clientOperation {
      * @param $phone_number
      * @return mixed
      */
-    public function new_user_ordinary($full_name, $email_address, $phone_number) {
+    public function new_user_ordinary($full_name, $email_address, $phone_number, $attendant = 1) {
         global $db_handle;
 
         // Check whether the email is existing
@@ -295,11 +300,11 @@ class clientOperation {
             }
 
             if(empty($middle_name)) {
-                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
+                $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
                 $this->send_welcome_email($last_name, $email_address);
             } else {
-                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
+                $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
                 $this->send_welcome_email($last_name, $email_address);
             }

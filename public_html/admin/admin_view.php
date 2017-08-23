@@ -75,7 +75,7 @@ $admin_members = $db_handle->fetchAssoc($result);
                                             <th>Full Name</th>
                                             <th>Email</th>
                                             <th>Status</th>
-                                            <th>Actions</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>

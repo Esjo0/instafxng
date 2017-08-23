@@ -19,16 +19,14 @@ $total_not_contacted = $total_entry - $total_contacted;
 if(isset($_GET['f'])) {
     $person = $_GET['f'];
     switch($person) {
-        case 'est1': $admin_code = "VqGHw"; break;
-        case 'est2': $admin_code = "W86K7"; break;
-        default: $admin_code = $_SESSION['admin_unique_code'];
+        case '1': $selected_agent = "1"; $selected_agent_name = "Esther"; break;
+        case '2': $selected_agent = "2"; $selected_agent_name = "Titi"; break;
+        case '3': $selected_agent = "3"; $selected_agent_name = "Percy"; break;
+        default: $selected_agent = false;
     }
 } else {
-    $admin_code = $_SESSION['admin_unique_code'];
+    $selected_agent = false;
 }
-
-$esther1 = "VqGHw";
-$esther2 = "W86K7";
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
@@ -41,27 +39,16 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
         LEFT JOIN user AS u on u.email = ftc.email
         WHERE fctcc.comment IS NULL AND (ftc.first_name LIKE '%$search_text%' OR ftc.last_name LIKE '%$search_text%' OR ftc.email LIKE '%$search_text%' OR ftc.phone LIKE '%$search_text%' OR ftc.created LIKE '$search_text%') GROUP BY ftc.email ";
 } else {
-    switch($admin_code) {
-        case $esther1:
-            $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
+    if(!empty($selected_agent)) {
+        $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
                 ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
                 FROM free_training_campaign AS ftc
                 LEFT JOIN state AS s ON ftc.state_id = s.state_id
                 LEFT JOIN free_training_campaign_comment AS fctcc ON ftc.free_training_campaign_id = fctcc.training_campaign_id
                 LEFT JOIN user AS u on u.email = ftc.email
-                WHERE fctcc.comment IS NULL AND ftc.attendant = '1' ORDER BY ftc.created DESC ";
-            break;
-        case $esther2:
-            $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
-                ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
-                FROM free_training_campaign AS ftc
-                LEFT JOIN state AS s ON ftc.state_id = s.state_id
-                LEFT JOIN free_training_campaign_comment AS fctcc ON ftc.free_training_campaign_id = fctcc.training_campaign_id
-                LEFT JOIN user AS u on u.email = ftc.email
-                WHERE fctcc.comment IS NULL AND ftc.attendant = '2' ORDER BY ftc.created DESC ";
-            break;
-        default:
-            $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
+                WHERE fctcc.comment IS NULL AND ftc.attendant = $selected_agent ORDER BY ftc.created DESC ";
+    } else {
+        $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
                 ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
                 FROM free_training_campaign AS ftc
                 LEFT JOIN state AS s ON ftc.state_id = s.state_id
@@ -157,8 +144,9 @@ $all_registrations = $db_handle->fetchAssoc($result);
                                     <div class="col-sm-12">
                                         <div class="btn-group btn-breadcrumb">
                                             <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="btn btn-default" title="All Registrations">All Registrations</a>
-                                            <a href="<?php echo $_SERVER['PHP_SELF'] . '?f=est1'; ?>" class="btn btn-default" title="">Esther List</a>
-                                            <a href="<?php echo $_SERVER['PHP_SELF'] . '?f=est2'; ?>" class="btn btn-default" title="">Titi List</a>
+                                            <a href="<?php echo $_SERVER['PHP_SELF'] . '?f=1'; ?>" class="btn btn-default" title="">Esther</a>
+                                            <a href="<?php echo $_SERVER['PHP_SELF'] . '?f=2'; ?>" class="btn btn-default" title="">Titi</a>
+                                            <a href="<?php echo $_SERVER['PHP_SELF'] . '?f=3'; ?>" class="btn btn-default" title="">Percy</a>
                                         </div>
                                     </div>
                                 </div>

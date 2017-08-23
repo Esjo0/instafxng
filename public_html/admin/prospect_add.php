@@ -13,10 +13,8 @@ if (isset($_POST['process'])) {
 
     extract($_POST);
 
-    if(empty($last_name) || empty($first_name) || empty($email_address) || empty($phone) || empty($prospect_source)) {
+    if(empty($phone) || empty($prospect_source)) {
         $message_error = "All fields are compulsory, please try again.";
-    } elseif (!check_email($email_address)) {
-        $message_error = "You have provided an invalid email address. Please try again.";
     } elseif($admin_object->prospect_is_duplicate($email_address)) {
         $message_error = "Email already exists! Please try again";
     } else {
@@ -80,13 +78,13 @@ if(empty($all_prospect_source)) {
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="last_name">Last Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="last_name" type="text" id="last_name" value="" class="form-control" required/>
+                                            <input name="last_name" type="text" id="last_name" value="" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="first_name">First Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="first_name" type="text" id="first_name" value="" class="form-control" required/>
+                                            <input name="first_name" type="text" id="first_name" value="" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -98,7 +96,7 @@ if(empty($all_prospect_source)) {
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="email_address">Email Address:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="email_address" type="text" id="email_address" value="" class="form-control" required/>
+                                            <input name="email_address" type="text" id="email_address" value="" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">

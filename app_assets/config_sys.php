@@ -36,5 +36,9 @@ $client_group_DEFAULT = array(
     "21" => "Pencil Unbroken Reg",
     "22" => "In-house Test",
     "23" => "Top 20 Rank in Current Loyalty Year",
-    "24" => "Career Application Submitted"
+    "24" => "Career Application Submitted",
+    "25" => "Top Traders",
+    "26" => "Prospect - Pencil Comedy Event",
+    "27" => "Prospect - 500 USD No-Deposit"
+
 );

@@ -82,19 +82,24 @@ class InstafxngSystem {
     public function get_saldo_report($from_date, $to_date) {
         global $db_handle;
 
-        $query = "SELECT SUM(real_naira_confirmed) AS sum_total FROM user_deposit WHERE status = '8' AND (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
+        $query = "SELECT (SUM(exchange_rate) / COUNT(trans_id)) AS avg_deposit_rate, SUM(real_naira_confirmed) AS sum_total, SUM(real_dollar_equivalent) AS sum_dol_total FROM user_deposit WHERE status = '8' AND (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
         $result = $db_handle->runQuery($query);
         $selected_data = $db_handle->fetchAssoc($result);
         $total_deposit = $selected_data[0]['sum_total'];
+        $total_deposit_dollar = $selected_data[0]['sum_dol_total'];
+        $deposit_avg = $selected_data[0]['avg_deposit_rate'];
 
-        $query = "SELECT SUM(naira_total_withdrawable) AS sum_total FROM user_withdrawal WHERE status = '10' AND (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
+        $query = "SELECT (SUM(exchange_rate) / COUNT(trans_id)) AS avg_withdrawal_rate, SUM(naira_total_withdrawable) AS sum_total, SUM(dollar_withdraw) AS sum_dol_total FROM user_withdrawal WHERE status = '10' AND (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
         $result = $db_handle->runQuery($query);
         $selected_data = $db_handle->fetchAssoc($result);
         $total_withdrawal = $selected_data[0]['sum_total'];
+        $total_withdrawal_dollar = $selected_data[0]['sum_dol_total'];
+        $withdrawal_avg = $selected_data[0]['avg_withdrawal_rate'];
 
         $saldo_calculated = $total_deposit - $total_withdrawal;
+        $saldo_calculated_dollar = $total_deposit_dollar - $total_withdrawal_dollar;
 
-        $saldo = array("saldo" => $saldo_calculated, "deposit" => $total_deposit, "withdrawal" => $total_withdrawal);
+        $saldo = array("deposit_avg" => $deposit_avg, "withdrawal_avg" => $withdrawal_avg,  "saldo" => $saldo_calculated, "saldo_dollar" => $saldo_calculated_dollar, "deposit" => $total_deposit, "deposit_dollar" => $total_deposit_dollar, "withdrawal" => $total_withdrawal, "withdrawal_dollar" => $total_withdrawal_dollar);
         return $saldo;
     }
 
@@ -511,7 +516,7 @@ class InstafxngSystem {
     public function get_all_campaign_category() {
         global $db_handle;
 
-        $query = "SELECT * FROM campaign_category ORDER BY created DESC";
+        $query = "SELECT * FROM campaign_category WHERE status = '1' ORDER BY created DESC";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -827,6 +832,38 @@ class InstafxngSystem {
         } else {
             return false;
         }
+    }
+
+    public function next_account_officer() {
+        global $db_handle;
+
+        $query = "SELECT current_position, officer_count FROM account_officers_stopper";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $current_position = $fetched_data[0]['current_position'];
+        $officer_count = $fetched_data[0]['officer_count'];
+
+        if($current_position < $officer_count) {
+            $query = "UPDATE account_officers_stopper SET current_position = current_position + 1";
+            $db_handle->runQuery($query);
+        } else {
+            $query = "UPDATE account_officers_stopper SET current_position = 1";
+            $db_handle->runQuery($query);
+        }
+
+        return $current_position ? $current_position : false;
+    }
+
+    public function get_all_account_officer() {
+        global $db_handle;
+
+        $query = "SELECT account_officers_id, CONCAT(a.last_name, SPACE(1), a.first_name) AS officer_full_name
+            FROM account_officers AS ao
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code ORDER BY account_officers_id ASC";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
     }
     
 }

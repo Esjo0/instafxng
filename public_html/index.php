@@ -35,16 +35,16 @@ $thisPage = "Home";
                     <?php $rand = rand(1, 2); ?>
 
                     <div class="super-shadow page-top-section">
-                        <div class="row ">
-                            <div class="col-sm-7">
-                                <h2>Incredible Moments of Amazing Fun at the Pencil Unbroken Comedy Show</h2>
-                                <p>It was a memorable day of great entertainment on the 2nd of July, 2017 at the second edition of Pencil D Comedian’s premium comedy show tagged "Pencil Unbroken 2.</p>
-                                <p>Some clients who won free VIP tickets in the Win-a-Ticket Contest had rib-cracking fun at the show.
-                                <a href="https://instafxng.com/news1/id/557/u/incredible-moments-amazing-fun-pencil-unbroken-comedy/">Read more here.</a></p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h3 style="margin: 0;">3 Must-Haves for a Successful and Profitable Forex Trading Career</h3>
+                                <p style="margin-top: 0">Does it sometimes seem that you need to have magical skills to make money from Forex trading? Do you have a feeling that Forex trading is probably not meant for someone like you?</p>
+                                <p>I don’t believe so and you will discover the reason as you read.
+                                    <strong><a href="https://instafxng.com/news1/id/558/u/3-musthaves-successful-profitable-forex-trading-career/">Click here to read more.</a></strong>
+                                </p>
                             </div>
-
-                            <div class="col-sm-5">
-                                <a href="https://instafxng.com/news1/id/557/u/incredible-moments-amazing-fun-pencil-unbroken-comedy/" target="_blank"><img src="https://instafxng.com/images/blog/ozftfgvkl0bfguydyctxofj3m.jpg" alt="" class="img-responsive" /></a>
+                            <div class="col-sm-6">
+                                <a href="https://instafxng.com/news1/id/558/u/3-musthaves-successful-profitable-forex-trading-career/"><img src="images/investor-course-banner.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>

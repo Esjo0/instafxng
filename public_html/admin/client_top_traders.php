@@ -16,7 +16,7 @@ if($current_day <= 15) {
     $to_date = date('Y-m') . '-15';
 }
 
-$query = "SELECT  SUM(td.commission) AS sum_commission, u.email, u.phone, u.created,
+$query = "SELECT SUM(td.commission) AS sum_commission, u.email, u.phone, u.created,
     CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code
     FROM trading_commission AS td
     INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no

@@ -290,6 +290,9 @@ function client_group_campaign_category($status) {
         case '22': $message = "In-house Test"; break;
         case '23': $message = "Top 20 Rank in Current Loyalty Year"; break;
         case '24': $message = "Career Application Submitted"; break;
+        case '25': $message = "Top Traders"; break;
+        case '26': $message = "Prospect - Pencil Comedy Event"; break;
+        case '27': $message = "Prospect - 500 USD No-Deposit"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -302,6 +305,18 @@ function client_group_campaign_category($status) {
 function client_group_query($client_group) {
     $from_date = date('Y-m-d', strtotime('first day of last month'));
     $to_date = date('Y-m-d', strtotime('last day of last month'));
+
+    $current_day = date('d');
+
+    if($current_day <= 15) {
+        // Date will be from 16 - last day of last month
+        $top_trader_from_date = date('Y-m', strtotime('first day of last month')) . '-16';
+        $top_trader_to_date = date('Y-m-d', strtotime('last day of last month')) ;
+    } else {
+        // Date will be from 1 - 15th day of this month
+        $top_trader_from_date = date('Y-m') . '-01';
+        $top_trader_to_date = date('Y-m') . '-15';
+    }
 
     switch ($client_group) {
         case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1'"; break;
@@ -328,6 +343,9 @@ function client_group_query($client_group) {
         case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE user_id IN (1, 37, 167, 444, 8648, 14313, 14406, 14442)"; break;
         case '23': $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS first_name, u.email, u.phone FROM point_ranking AS pr INNER JOIN user AS u ON pr.user_code = u.user_code ORDER BY pr.year_rank DESC, first_name ASC LIMIT 20"; break;
         case '24': $query = "SELECT first_name, email_address, phone_number FROM career_user_application AS cua INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code WHERE cua.status = '2'"; break;
+        case '25': $query = "SELECT u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned BETWEEN '$top_trader_from_date' AND '$top_trader_to_date'"; break;
+        case '26': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 1"; break;
+        case '27': $query = "SELECT CONCAT(last_name, SPACE(1), first_name) AS first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 2"; break;
         default: $query = false; break;
     }
     return $query;
@@ -507,6 +525,17 @@ function biodata_achievement_status($status) {
         case '2': $message = "Course"; break;
         case '3': $message = "Honour/Award"; break;
         case '4': $message = "Project"; break;
+        default: $message = "Unknown"; break;
+    }
+
+    return $message;
+}
+
+function status_point_claimed($status) {
+    switch($status) {
+        case '1': $message = "New Request"; break;
+        case '2': $message = "Completed"; break;
+        case '3': $message = "Failed"; break;
         default: $message = "Unknown"; break;
     }
 

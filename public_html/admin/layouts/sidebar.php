@@ -45,6 +45,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(5, $my_pages_sidebar)) { ?><li><a href="bulletin_centre.php" title="Bulletin Centre">Bulletin Centre</a></li><?php } ?>
                         <?php if (in_array(6, $my_pages_sidebar)) { ?><li><a href="snappy_help_add.php" title="Add Snappy Help">Add Snappy Help</a></li><?php } ?>
                         <?php if (in_array(7, $my_pages_sidebar)) { ?><li><a href="snappy_help_manage.php" title="Manage Snappy Help">Manage Snappy Help</a></li><?php } ?>
+                        <?php if (in_array(1, $my_pages_sidebar)) { ?><li><a href="account_officers.php" title="Account Officers">Account Officers</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
