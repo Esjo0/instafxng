@@ -35,16 +35,19 @@ $thisPage = "Home";
                     <?php $rand = rand(1, 2); ?>
 
                     <div class="super-shadow page-top-section">
-                        <div class="row">
+                        <div class="row ">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">3 Must-Haves for a Successful and Profitable Forex Trading Career</h3>
-                                <p style="margin-top: 0">Does it sometimes seem that you need to have magical skills to make money from Forex trading? Do you have a feeling that Forex trading is probably not meant for someone like you?</p>
-                                <p>I don’t believe so and you will discover the reason as you read.
-                                    <strong><a href="https://instafxng.com/news1/id/558/u/3-musthaves-successful-profitable-forex-trading-career/">Click here to read more.</a></strong>
-                                </p>
+                                <h2>Instafxng Point Based Loyalty Program and Reward</h2>
+                                <p>5 traders who traded consistently in the month of August will share
+                                a lump sum of $500 by the end of the month.</p>
+                                <p>The most fascinating thing about the promo is that, you can be one of
+                                these traders only if you swing into action immediately.</p>
+                                <p>If you would rather win N1,000,000 by the end of the year, see how
+                                you can participate <a href="loyalty.php" title="click for details">here</a>.</p>
                             </div>
+
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/news1/id/558/u/3-musthaves-successful-profitable-forex-trading-career/"><img src="images/investor-course-banner.jpg" alt="" class="img-responsive" /></a>
+                                <a href="loyalty.php" title="click for details"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>
