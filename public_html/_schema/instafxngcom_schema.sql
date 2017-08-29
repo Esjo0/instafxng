@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2017 at 10:34 AM
+-- Generation Time: Aug 29, 2017 at 03:59 PM
 -- Server version: 5.7.9
 -- PHP Version: 7.0.0
 
@@ -393,9 +393,10 @@ CREATE TABLE IF NOT EXISTS `customer_care_log` (
   `status` varchar(255) NOT NULL DEFAULT 'PENDING',
   `admin_code` varchar(255) NOT NULL,
   `tag` varchar(255) DEFAULT NULL,
+  `type` varchar(10) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`log_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COMMENT='This table contains both complaints and feedback.';
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COMMENT='This table contains both complaints and feedback.';
 
 -- --------------------------------------------------------
 

@@ -164,6 +164,8 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     <ul class="dropdown-menu">
                         <?php if (in_array(75, $my_pages_sidebar)) { ?><li><a href="article_add.php">Add Article</a></li><?php } ?>
                         <?php if (in_array(76, $my_pages_sidebar)) { ?><li><a href="article_manage.php">Manage Article</a></li><?php } ?>
+						<?php //if (in_array(75, $my_pages_sidebar)) { ?><li><a href="recent_comments.php">Recent Comments</a></li><?php// } ?>
+                        <?php //if (in_array(76, $my_pages_sidebar)) { ?><li><a href="list_of_visitors.php">List Of Visitors</a></li><?php// } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -232,6 +234,8 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(110, $my_pages_sidebar)) { ?><li><a href="prospect_source.php">Manage Prospect Source</a></li><?php } ?>
                         <?php if (in_array(111, $my_pages_sidebar)) { ?><li><a href="prospect_add.php">Add New Prospect</a></li><?php } ?>
                         <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage.php">Manage Prospects</a></li><?php } ?>
+						<?php //if (in_array(111, $my_pages_sidebar)) { ?><li><a href="reminder_add.php">Add New Reminder</a></li><?php// } ?>
+                        <?php //if (in_array(111, $my_pages_sidebar)) { ?><li><a href="reminder_manage.php">Manage Reminders</a></li><?php// } ?>
                     </ul>
                 </li>
 <!--                <li class="dropdown">-->
@@ -243,6 +247,14 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
 <!--                        --><?php //if (in_array(116, $my_pages_sidebar)) { ?><!--<li><a href="survey/testimonials.php">Testimonials</a></li>--><?php //} ?>
 <!--                    </ul>-->
 <!--                </li>-->
+				<li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-expand fa-fw"></i>Customer Care<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php //if (in_array(110, $my_pages_sidebar)) { ?><li><a href="customer_care_log_add.php">Add New Log</a></li><?php //} ?>
+                        <?php //if (in_array(112, $my_pages_sidebar)) { ?><li><a href="customer_care_admin_log_manage.php">Manage Logs</a></li><?php //} ?>
+                        <?php //if (in_array(112, $my_pages_sidebar)) { ?><li><a href="customer_care_all_log_manage.php">Manage All Logs</a></li><?php //} ?>
+                    </ul>
+                </li>
                 <li><a href="logout.php" title="Log Out"><i class="fa fa-sign-out fa-fw"></i> Log Out</a></li>
             </ul>
         </div>
