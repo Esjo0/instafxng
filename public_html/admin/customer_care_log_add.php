@@ -9,17 +9,16 @@ if (isset($_POST['process_client']))
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
-    var_dump($_POST);
     extract($_POST);
     if(empty($con_desc) || empty($acc_no))
     {
         $message_error = "All fields are compulsory, please try again.";
     }
-    elseif (!$system_object->valid_ifxacct($acc_no))
-    {
-        $message_error = "You have provided an invalid InstaForex Account Number.
-        Please check the email address to ensure that it belongs to an existing client.";
-    }
+    ///elseif (!$system_object->valid_ifxacct($acc_no))
+    //{
+        //$message_error = "You have provided an invalid InstaForex Account Number.
+        //Please check the account number to ensure that it belongs to an existing client.";
+    //}
     else {
         $new_log = $obj_log->add_new_client_log($_SESSION['admin_unique_code'], $acc_no, $con_desc);
         if($new_log)
@@ -54,7 +53,6 @@ if (isset($_POST['process_customer']))
     else {
 
         $new_log = $obj_log->add_new_customer_log($_SESSION['admin_unique_code'], $full_name, $email_address, $phone_no, $con_desc);
-        var_dump($_SESSION['admin_unique_code'], $full_name, $email_address, $phone_no, $con_desc);
         if($new_log)
         {
             $message_success = "You have successfully created a new log.";

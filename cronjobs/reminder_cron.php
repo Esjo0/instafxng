@@ -15,18 +15,14 @@ if($pending_reminders)
         if($row['effect_date'] == $current_date && $row['status'] == 'ON')
         {
             $destination_details = $admin_object->get_admin_detail_by_code($row['admin_code']);
-            var_dump($pending_reminders);
+            //var_dump($pending_reminders);
             $admin_name = $destination_details['first_name']." ".$destination_details['last_name'];
             $admin_email = $destination_details['email'];
-            $subject = "Prospect Reminder";
+            $subject = "Reminder";
 
             $message = "Dear $admin_name,<br/>
             You added a reminder on ".datetime_to_text($row['created'])." . Below is the description of this reminder.<br/>
-            <strong>Customer Details:</strong><br/>
-            Customer/Client's Full Name: ".$row['full_name']."<br/>
-            Customer/Client's Email Address: ".$row['email_address']."<br/>
-            Customer/Client's Phone Contact: ".$row['phone']."<br/>
-            Customer/Client's Account Number: ".$row['ifx_acc_no']."<br/><br/>
+           
             <strong>Description:</strong><br/>
             ".$row['description']."<br/><br/>";
 

@@ -21,7 +21,7 @@ if(isset($_POST['delete_reminder']))
 
 if(isset($_POST['edit_reminder']))
 {
-    $result = $obj_reminders->update_reminder($_POST['reminder_id'], $_POST['full_name'], $_POST['email_address'],$_POST['phone'], $_POST['description'], $_POST['effect_date']);
+    $result = $obj_reminders->update_reminder($_POST['reminder_id'], $_POST['description'], $_POST['effect_date']);
     if($result)
     {
         $message_success = "You have successfully deleted a reminder.";
@@ -34,10 +34,10 @@ if(isset($_POST['edit_reminder']))
 
 $current_date = date("Y-m-d");
 
-$pending_query = "SELECT reminder_id, full_name, email_address, phone_number, ifx_acc_no, description, effect_date
-                  FROM reminder
-                  WHERE reminder.status = 'ON' 
-                  AND reminder.effect_date > '$current_date'
+$pending_query = "SELECT reminder_id, description, effect_date
+                  FROM reminders
+                  WHERE reminders.status = 'ON' 
+                  AND reminders.effect_date > '$current_date'
                   ORDER BY effect_date DESC ";
 $pending_numrows = $db_handle->numRows($pending_query);
 $pending_rowsperpage = 20;
@@ -66,10 +66,10 @@ $pending_reminders = $db_handle->fetchAssoc($pending_result);
 
 
 
-$expired_query = "SELECT reminder_id, full_name, email_address, phone_number, ifx_acc_no, description, effect_date
-                  FROM reminder
-                  WHERE reminder.status = 'OFF' 
-                  AND reminder.effect_date <= '$current_date'
+$expired_query = "SELECT reminder_id, description, effect_date
+                  FROM reminders
+                  WHERE reminders.status = 'OFF' 
+                  AND reminders.effect_date <= '$current_date'
                   ORDER BY effect_date DESC ";
 $expired_numrows = $db_handle->numRows($expired_query);
 $expired_rowsperpage = 20;
@@ -99,7 +99,7 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin - Transaction Reminders</title>
+        <title>Instaforex Nigeria | Admin - Reminders</title>
         <meta name="title" content="Instaforex Nigeria | Admin - Career Rejected Applications" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
@@ -140,7 +140,6 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                         <table class="table table-responsive table-striped table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Customer/Client Details</th>
                                                     <th>Description</th>
                                                     <th>Effect Date</th>
                                                     <th>Edit</th>
@@ -150,12 +149,6 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                             <tbody>
                                                 <?php if(isset($pending_reminders) && !empty($pending_reminders)) { foreach ($pending_reminders as $row) { ?>
                                                 <tr>
-                                                    <td>
-                                                        <label>Name:</label> <?php echo $row['full_name']; ?><br/>
-                                                        <label>E-mail:</label> <?php echo $row['email_address']; ?><br/>
-                                                        <label>Phone:</label> <?php echo $row['phone_number']; ?><br/>
-                                                        <label>Account No:</label> <?php echo $row['ifx_acc_no']; ?><br/>
-                                                    </td>
                                                     <td><?php echo $row['description']; ?></td>
                                                     <td><?php echo $row['effect_date']; ?></td>
                                                     <td>
@@ -171,34 +164,11 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                                     <div class="modal-body">
                                                                         <input name="reminder_id" type="hidden" value="<?php echo $row['reminder_id']; ?>">
                                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-sm-3" for="full_name">Full Name:</label>
-                                                                                <div class="col-sm-9 ">
-                                                                                    <input name="full_name" type="text" id="full_name" value="<?php echo $row['full_name']; ?>" class="form-control" required/>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-sm-3" for="email_address">Email Address:</label>
-                                                                                <div class="col-sm-9 ">
-                                                                                    <input name="email_address" type="text" id="email_address" value="<?php echo $row['email_address']; ?>" class="form-control" required/>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-sm-3" for="phone">Phone Number:</label>
-                                                                                <div class="col-sm-9 ">
-                                                                                    <input name="phone" type="text" id="phone" value="<?php echo $row['phone_number']; ?>" class="form-control" required/>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-sm-3" for="ifx_acc_no">IFX Account Number(If any):</label>
-                                                                                <div class="col-sm-9 ">
-                                                                                    <input name="ifx_acc_no" type="text" id="ifx_acc_no" value="<?php echo $row['ifx_acc_no']; ?>" class="form-control"/>
-                                                                                </div>
-                                                                            </div>
+
                                                                             <div class="form-group">
                                                                                 <label class="control-label col-sm-3" for="description">Description:</label>
                                                                                 <div class="col-sm-9">
-                                                                                    <textarea name="description" id="description" rows="5"  class="form-control" required><?php echo $row['description']; ?></textarea>
+                                                                                    <textarea name="description" id="description" rows="10"  class="form-control" required><?php echo $row['description']; ?></textarea>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
@@ -208,6 +178,8 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                                                         <input name="effect_date" type="text" class="form-control" id="datetimepicker2" value="<?php echo $row['effect_date']; ?>" required>
                                                                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                                                     </div>
+                                                                                    <br/>
+                                                                                    <input name="edit_reminder" type="submit" class="btn btn-success" value="Update">
                                                                                 </div>
                                                                                 <script type="text/javascript">
                                                                                     $(function ()
@@ -222,7 +194,6 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                                         </form>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <input name="edit_reminder" type="submit" class="btn btn-success" value="Proceed">
                                                                         <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                                     </div>
                                                                 </div>
@@ -244,8 +215,8 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                             <input name="reminder_id" type="hidden" value="<?php echo $row['reminder_id']; ?>">
                                                                             <input name="delete_reminder" type="submit" class="btn btn-success" value="Proceed">
+                                                                            <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                                         </form>
-                                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -268,7 +239,6 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                         <table class="table table-responsive table-striped table-bordered table-hover">
                                             <thead>
                                             <tr>
-                                                <th>Customer Details</th>
                                                 <th>Description</th>
                                                 <th>Effect Date</th>
                                                 <th>Delete</th>
@@ -277,12 +247,6 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                             <tbody>
                                             <?php if(isset($expired_reminders) && !empty($expired_reminders)) { foreach ($expired_reminders as $row) { ?>
                                                 <tr>
-                                                    <td>
-                                                        <label>Name:</label> <?php echo $row['full_name']; ?><br/>
-                                                        <label>E-mail:</label> <?php echo $row['email_address']; ?><br/>
-                                                        <label>Phone:</label> <?php echo $row['phone_number']; ?><br/>
-                                                        <label>Account No:</label> <?php echo $row['ifx_acc_no']; ?><br/>
-                                                    </td>
                                                     <td><?php echo $row['description']; ?></td>
                                                     <td><?php echo $row['effect_date']; ?></td>
                                                     <td>

@@ -1,8 +1,8 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in()) {
-    redirect_to("login.php");
-}
+//if (!$session_admin->is_logged_in()) {
+    //redirect_to("login.php");
+//}
 
 // Add New Admin User - Process submitted form
 if (isset($_POST['process'])) {

@@ -47,7 +47,7 @@ if (isset($_POST['process'])) {
         $message_error = "All fields must be filled, please try again";
     } else {
         $new_article = $admin_object->add_new_article($article_no, $title, $description, $tags, $display_picture, $url, $content, $article_status, $_SESSION['admin_unique_code']);
-        
+
         if($new_article) {
             $message_success = "You have successfully saved the article";
         } else {

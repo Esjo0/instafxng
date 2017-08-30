@@ -92,7 +92,8 @@ if (isset($_POST['delete_comment']))
                                 <th>Author's Email</th>
                                 <th>Comment</th>
                                 <th>Created</th>
-                                <th>Action</th>
+                                <th>Approve</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -101,14 +102,14 @@ if (isset($_POST['delete_comment']))
                                     <tr>
                                         <td><?php echo $row['title']; ?></td>
                                         <td><?php echo $row['description']; ?></td>
-                                        <td><?php echo $row['visitor_name']; ?></td>
-                                        <td><?php echo $row['visitor_email']; ?></td>
+                                        <td><?php echo $row['full_name']; ?></td>
+                                        <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['comment']; ?></td>
                                         <td><?php echo datetime_to_text($row['created']); ?></td>
                                         <td>
-                                            <button type="button" data-target="#confirm-approve-comment" data-toggle="modal" class="btn btn-success"><i class="glyphicon glyphicon-play icon-white"></i></button>
+                                            <button type="button" data-target="#confirm-approve-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-success"><i class="glyphicon glyphicon-play icon-white"></i></button>
                                             <!--Modal - confirmation boxes-->
-                                            <div id="confirm-approve-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                            <div id="confirm-approve-comment<?php echo $row['comment_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -126,8 +127,9 @@ if (isset($_POST['delete_comment']))
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <button type="button" data-target="#confirm-delete-comment" data-toggle="modal" class="btn btn-danger"><i class="glyphicon glyphicon-remove icon-white"></i> </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" data-target="#confirm-delete-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-danger"><i class="glyphicon glyphicon-remove icon-white"></i> </button>
                                             <!--Modal - confirmation boxes-->
                                             <div id="confirm-delete-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                 <div class="modal-dialog">
