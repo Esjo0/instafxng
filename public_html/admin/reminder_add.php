@@ -12,13 +12,9 @@ if (isset($_POST['process'])) {
 
     extract($_POST);
 
-    if(empty($full_name) || empty($email_address) || empty($phone) || empty($description) || empty($effect_date))
+    if(empty($description) || empty($effect_date))
     {
         $message_error = "All fields are compulsory, please try again.";
-    }
-    elseif (!check_email($email_address))
-    {
-        $message_error = "You have provided an invalid email address. Please try again.";
     }
     elseif ($effect_date <= $current_date)
     {
@@ -26,7 +22,7 @@ if (isset($_POST['process'])) {
     }
 
     else {
-        $new_reminder = $obj_reminders->add_new_reminder($_SESSION['admin_unique_code'], $full_name, $email_address, $phone, $ifx_acc_no, $description, $effect_date);
+        $new_reminder = $obj_reminders->add_new_reminder($_SESSION['admin_unique_code'], $description, $effect_date);
 
         if($new_reminder)
         {
@@ -80,33 +76,9 @@ if (isset($_POST['process'])) {
                                 <p>Fill the form below to add a new reminder about a prospective customer/client.</p>
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="last_name">Full Name:</label>
-                                        <div class="col-sm-9 ">
-                                            <input name="full_name" type="text" id="full_name" value="" class="form-control" required/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="email_address">Email Address:</label>
-                                        <div class="col-sm-9 ">
-                                            <input name="email_address" type="text" id="email_address" value="" class="form-control" required/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="phone">Phone Number:</label>
-                                        <div class="col-sm-9 ">
-                                            <input name="phone" type="text" id="phone" value="" class="form-control" required/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="ifx_acc_no">IFX Account Number(If any):</label>
-                                        <div class="col-sm-9 ">
-                                            <input name="ifx_acc_no" type="text" id="ifx_acc_no" value="" class="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="control-label col-sm-3" for="description">Description:</label>
                                         <div class="col-sm-9">
-                                            <textarea name="description" id="description" rows="5"  class="form-control" required></textarea>
+                                            <textarea name="description" id="description"  rows="10"  class="form-control" required></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">

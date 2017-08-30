@@ -2,10 +2,11 @@
 require_once 'init/initialize_general.php';
 $thisPage = "About";
 
-$news_id = $_GET['id'];
-
+//$news_id = $_GET['id'];
+$news_id = 545;
 if (isset($_POST['post_comment']))
 {
+    var_dump($_POST);
     $name = $_POST['name'];
     $email = $_POST['email'];
     $comment = $_POST['comment'];
@@ -17,20 +18,20 @@ if (isset($_POST['post_comment']))
         $message_error = "You have provided an invalid email address. Please try again.";
     }  else
     {
-        $db_handle->runQuery("INSERT IGNORE INTO visitors (visitor_email, visitor_name) VALUES ('".$email."', '".$name."')");
-        $block_status = $db_handle->runQuery("SELECT block_status FROM visitors WHERE visitor_email = '".$email."';");
+        $db_handle->runQuery("INSERT IGNORE INTO visitors (email, full_name) VALUES ('".$email."', '".$name."')");
+        $block_status = $db_handle->runQuery("SELECT block_status FROM visitors WHERE email = '".$email."';");
         $block_status = $db_handle->fetchAssoc($block_status);
         $block_status = $block_status[0];
         $block_status = $block_status['block_status'];
 
         if ($block_status == 'OFF')
         {
-            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM visitors WHERE visitor_email = '".$email."';");
+            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM visitors WHERE email = '".$email."';");
             $db_handle->runQuery("INSERT INTO comments (visitor_id, article_id, comment) VALUES(@v_id, '".$article_id."', '".$comment."')");
         }
         else
         {
-            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM visitors WHERE visitor_email = '".$email."';");
+            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM visitors WHERE email = '".$email."';");
             $db_handle->runQuery("INSERT INTO comments (visitor_id, article_id, comment) VALUES(@v_id, '".$article_id."', '".$comment."')");
         }
         $message_success = "You have successfully added a new comment.";
@@ -52,15 +53,15 @@ if (isset($_POST['reply_comment']))
         $message_error = "You have provided an invalid email address. Please try again.";
     }  else
     {
-        $db_handle->runQuery("INSERT IGNORE INTO visitors (visitor_email, visitor_name) VALUES ('".$email."', '".$name."')");
-        $block_status = $db_handle->runQuery("SELECT block_status FROM visitors WHERE visitor_email = '".$email."';");
+        $db_handle->runQuery("INSERT IGNORE INTO visitors (email, full_name) VALUES ('".$email."', '".$name."')");
+        $block_status = $db_handle->runQuery("SELECT block_status FROM visitors WHERE email = '".$email."';");
         $block_status = $db_handle->fetchAssoc($block_status);
         $block_status = $block_status[0];
         $block_status = $block_status['block_status'];
 
         if ($block_status == 'OFF')
         {
-            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM visitors WHERE visitor_email = '".$email."';");
+            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM visitors WHERE email = '".$email."';");
             $db_handle->runQuery("INSERT INTO comments (visitor_id, article_id, comment, reply_to) VALUES(@v_id, '".$article_id."', '".$comment."', '".$comment_id."')");
         }
         $message_success = "You have successfully added a reply.";
@@ -158,7 +159,6 @@ if(strlen($news_id) > 4) {
                                 <?php if(isset($content)) { echo htmlspecialchars_decode(stripslashes(trim($content))); } ?>
 
                                 <!--<div class="fb-comments" data-href="https://instafxng.com/news1/id/<?php /*echo $article_id . '/u/' . $url . '/'; */?>" data-numposts="10" data-mobile="1" data-width="100%"></div>-->
-
                                 <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="name">Full Name:</label>
@@ -212,6 +212,7 @@ if(strlen($news_id) > 4) {
                                     </div>
                                 </form>
                                 <hr class=""/>
+
                                 <?php if(isset($latest_comments)) { ?>
                                     <h5>Previous Comments</h5>
                                     <div id="latest_comment">
@@ -219,7 +220,7 @@ if(strlen($news_id) > 4) {
                                     <ul class="fa-ul">
                                         <?php foreach($latest_comments as $row) { ?>
                                             <li>
-                                                <?php echo $row['visitor_name']; ?> on <?php echo datetime_to_text($row['created']);?>
+                                                <?php echo $row['full_name']; ?> on <?php echo datetime_to_text($row['created']);?>
 
                                                 <?PHP
 
@@ -231,7 +232,7 @@ if(strlen($news_id) > 4) {
                                                     //var_dump($db_handle->runQuery($reply_details));
                                                     $reply_details = $db_handle->fetchAssoc($reply_details);
                                                     foreach ($reply_details as $row1) {
-                                                        echo "as a reply to ".$row1['visitor_name'] . "'s comment on ".$row1['title']." ";
+                                                        echo "as a reply to ".$row1['full_name'] . "'s comment on ".$row1['title']." ";
                                                     }
                                                 }
                                                 ?>
@@ -293,7 +294,6 @@ if(strlen($news_id) > 4) {
                                 <?php } ?>
 
                                 <hr class=""/>
-
 
                                 <?php if(isset($latest_news)) { ?>
                                 <h5>Latest News</h5>

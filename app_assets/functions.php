@@ -190,6 +190,20 @@ function color_code($date) {
     return $css;
 }
 
+function encrypt_ssl($data)
+{
+    $encryptionMethod = "AES-256-CBC";
+    $secretHash = "25c6c7ff35b9979b151f2136cd13b0ff";
+    return openssl_encrypt($data, $encryptionMethod, $secretHash);
+}
+
+function decrypt_ssl($data)
+{
+    $encryptionMethod = "AES-256-CBC";
+    $secretHash = "25c6c7ff35b9979b151f2136cd13b0ff";
+    return openssl_decrypt($data, $encryptionMethod, $secretHash);
+}
+
 function encrypt($data){
     return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, KEY, $data, MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"));
 }

@@ -497,6 +497,19 @@ class InstafxngSystem {
         return $fetched_data;
     }
 
+    function valid_ifxacct($ifx_acct) {
+        global $db_handle;
+        $query = "SELECT * FROM user_ifxaccount WHERE ifx_acct_no = '$ifx_acct' LIMIT 1";
+        if($db_handle->numRows($query) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     // Create new campaign category
     public function add_new_campaign_category($title, $description, $campaign_category_status, $campaign_category_no, $client_group) {
         global $db_handle;
