@@ -17,10 +17,12 @@ if($current_day <= 15) {
 }
 
 $query = "SELECT SUM(td.commission) AS sum_commission, u.email, u.phone, u.created,
-    CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code
+    CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
     FROM trading_commission AS td
     INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
     INNER JOIN user AS u ON ui.user_code = u.user_code
+    INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+    INNER JOIN admin AS a ON ao.admin_code = a.admin_code
     WHERE date_earned BETWEEN '$from_date' AND '$to_date' ";
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
@@ -128,7 +130,8 @@ $clients_top_traders = $db_handle->fetchAssoc($result);
                                         <th>Full Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Opening Date</th>
+                                        <th>Reg Date</th>
+                                        <th>Account Officer</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -141,12 +144,13 @@ $clients_top_traders = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                            <td>
+                                            <td><?php echo $row['account_officer_full_name']; ?></td>
+                                            <td nowrap="nowrap">
                                                 <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_top_traders'; ?>&c=<?php echo encrypt('TOP TRADERS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
-                                    <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
                                 
