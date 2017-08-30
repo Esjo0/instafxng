@@ -1482,7 +1482,12 @@ MAIL;
     public function get_user_by_user_code($user_code) {
         global $db_handle;
 
-        $query = "SELECT user_id, user_code, email, phone, password, first_name, middle_name, last_name, created, status FROM user WHERE user_code = '$user_code' LIMIT 1";
+        $query = "SELECT u.user_id, u.user_code, u.email, u.phone, u.password, u.first_name,
+            u.middle_name, u.last_name, u.created, u.status, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM user AS u
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            WHERE u.user_code = '$user_code' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $fetched_data = $fetched_data[0];

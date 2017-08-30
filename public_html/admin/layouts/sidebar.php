@@ -78,6 +78,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(24, $my_pages_sidebar)) { ?><li><a href="insight/last_month_withdrawal.php" title="Last Month Withdrawal">Last Month Withdrawal</a></li><?php } ?>
                         <?php if (in_array(25, $my_pages_sidebar)) { ?><li><a href="insight/last_month_new_client.php" title="Last Month New Clients">Last Month New Clients</a></li><?php } ?>
                         <?php if (in_array(26, $my_pages_sidebar)) { ?><li><a href="insight/insight_training_campaign.php" title="Training Campaign">Training Campaign</a></li><?php } ?>
+                        <?php if (in_array(26, $my_pages_sidebar)) { ?><li><a href="insight/insight_prospects.php" title="Prospects">Prospects</a></li><?php } ?>
                         <?php if (in_array(26, $my_pages_sidebar)) { ?><li><a href="insight/sales_client_interest.php" title="Sales - Client Interest">Sales - Client Interest</a></li><?php } ?>
                         <?php if (in_array(27, $my_pages_sidebar)) { ?><li><a href="insight/daily_funding.php" title="Daily Funding">Daily Funding</a></li><?php } ?>
                     </ul>

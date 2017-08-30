@@ -4,6 +4,18 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+if(empty($_SESSION['account_officer_filter']) || !isset($_SESSION['account_officer_filter'])) {
+    $_SESSION['account_officer_filter'] = 'all';
+}
+
+if (isset($_POST['apply_filter'])) {
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+    extract($_POST);
+    $_SESSION['account_officer_filter'] = $account_officer;
+}
+
 $one_day = 24 * 60 * 60;
 $yesterday = time() - $one_day;
 $date_today = date('Y-m-d');
@@ -16,7 +28,24 @@ $query = "SELECT user_code FROM user WHERE created LIKE '$date_today%'";
 $clients_today = $db_handle->numRows($query);
 
 ///////////
-$query = "SELECT user_code, CONCAT(last_name, SPACE(1), first_name) AS full_name, email, phone, created FROM user WHERE status = '1' ORDER BY created DESC ";
+if(isset($_SESSION['account_officer_filter']) && $_SESSION['account_officer_filter'] <> 'all') {
+    $account_officer_filter = $_SESSION['account_officer_filter'];
+
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+        u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+        FROM user AS u
+        INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+        INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+        WHERE u.status = '1' AND ao.account_officers_id = $account_officer_filter ORDER BY u.created DESC ";
+} else {
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+        u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+        FROM user AS u
+        INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+        INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+        WHERE u.status = '1' ORDER BY u.created DESC ";
+}
+
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -41,7 +70,7 @@ $result = $db_handle->runQuery($query);
 $all_clients = $db_handle->fetchAssoc($result);
 
 
-// Admin Allowed: Toye, Lekan, Demola, Bunmi "FWJK4",
+// Admin Allowed: Toye, Lekan, Demola, Bunmi
 $update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6");
 $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allowed) ? true : false;
 
@@ -83,12 +112,32 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
+                                <?php $all_account_officers = $admin_object->get_all_account_officers(); ?>
+                                <form data-toggle="validator" class="form-inline" role="form" method="post" action="">
+                                    <div class="form-group">
+                                        <label for="account_officer">Filter By Account Officer:</label>
+                                        <select name="account_officer" class="form-control" id="account_officer" required>
+                                            <option value="all"> All Clients</option>
+                                            <?php if(isset($all_account_officers) && !empty($all_account_officers)) { foreach ($all_account_officers as $row) { ?>
+                                                <option value="<?php echo $row['account_officers_id']; ?>" <?php if(isset($_SESSION['account_officer_filter']) && $row['account_officers_id'] == $_SESSION['account_officer_filter']) { echo "selected='selected'"; } ?>><?php echo $row['account_officer_full_name']; ?></option>
+                                            <?php } } ?>
+                                        </select>
+                                    </div>
+                                    <input name="apply_filter" type="submit" class="btn btn-primary" value="Apply Filter">
+                                </form>
+
                                 <p>Below is a table of all clients.</p>
                                 <p>
                                     <strong>Total Unique Clients: </strong><?php echo number_format($numrows); ?> <br />
                                     <strong>Clients Today: </strong> <?php echo number_format($clients_today); ?><br />
                                     <strong>Clients Yesterday: </strong><?php echo number_format($clients_yesterday); ?> <br />
                                 </p>
+
+                                <?php if(isset($account_officer_filter)) { ?>
+                                    <hr />
+                                    <p><strong>Filter Result: </strong> <?php echo number_format($numrows); ?></p>
+                                <?php } ?>
+
                                 <div class="table-wrap">
                                     <table class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>
@@ -96,7 +145,8 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <th>Full Name</th>
                                                 <th>Email</th>
                                                 <th>Phone</th>
-                                                <th>Opening Date</th>
+                                                <th>Reg Date</th>
+                                                <th>Account Officer</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -107,14 +157,15 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <td><?php echo $row['email']; ?></td>
                                                 <td><?php echo $row['phone']; ?></td>
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                                <td>
+                                                <td><?php echo $row['account_officer_full_name']; ?></td>
+                                                <td nowrap="nowrap">
                                                     <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <?php if($allowed_update_profile) { ?>
                                                         <a target="_blank" title="Update" class="btn btn-info" href="client_update.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
                                                     <?php } ?>
                                                 </td>
                                             </tr>
-                                            <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                            <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>
                                     </table>
                                 </div>

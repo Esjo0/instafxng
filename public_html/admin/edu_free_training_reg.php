@@ -174,7 +174,7 @@ MAIL;
     }
 }
 
-$all_account_officers = $system_object->get_all_account_officer();
+$all_account_officers = $admin_object->get_all_account_officers();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -235,7 +235,7 @@ $all_account_officers = $system_object->get_all_account_officer();
                                         <div class="col-sm-9 col-lg-5">
                                             <select name="attendant" class="form-control" id="attendant" required>
                                                 <?php foreach($all_account_officers as $key => $value) { ?>
-                                                    <option value="<?php echo $value['account_officers_id']; ?>"><?php echo $value['officer_full_name']; ?></option>
+                                                    <option value="<?php echo $value['account_officers_id']; ?>"><?php echo $value['account_officer_full_name']; ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>

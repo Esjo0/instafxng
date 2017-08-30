@@ -14,8 +14,10 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3 || isset($_
 
         $search_text = $_POST['search_text'];
 
-        $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+        $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
                     FROM user AS u
+                    INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+                    INNER JOIN admin AS a ON ao.admin_code = a.admin_code
                     LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     WHERE u.status = '1' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ";
         $_SESSION['search_client_query'] = $query;
@@ -128,7 +130,8 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <th>Full Name</th>
                                                 <th>Email</th>
                                                 <th>Phone</th>
-                                                <th>Opening Date</th>
+                                                <th>Reg Date</th>
+                                                <th>Account Officer</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -141,6 +144,7 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <td><?php echo $row['email']; ?></td>
                                                 <td><?php echo $row['phone']; ?></td>
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
+                                                <td><?php echo $row['account_officer_full_name']; ?></td>
                                                 <td>
                                                     <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <?php if($allowed_update_profile) { ?>
@@ -148,7 +152,7 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                     <?php } ?>
                                                 </td>
                                             </tr>
-                                            <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                            <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>
                                     </table>
                                 </div>

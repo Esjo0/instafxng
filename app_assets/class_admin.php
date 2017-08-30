@@ -405,6 +405,17 @@ MAIL;
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
     }
+
+    public function get_all_account_officers() {
+        global $db_handle;
+
+        $query = "SELECT ao.account_officers_id, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM account_officers AS ao
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        return $fetched_data;
+    }
 }
 
 $admin_object = new AdminUser();
