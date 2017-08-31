@@ -104,7 +104,6 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                             <th>Last Conversation Description</th>
                                             <th>All Conversations</th>
                                             <th>Mark As Treated</th>
-                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -149,7 +148,6 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                             <th>Status</th>
                                                                             <th>Created</th>
                                                                             <th>Mark As Treated</th>
-                                                                            <th>Delete</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -191,12 +189,6 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                                     <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
                                                                                 </form>
                                                                             </td>
-                                                                            <td>
-                                                                                <form>
-                                                                                    <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
-                                                                                    <button name="process_delete" type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
-                                                                                </form>
-                                                                            </td>
                                                                         </tr>
                                                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                                                     </tbody>
@@ -230,12 +222,6 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                <form>
-                                                    <input type="hidden" name="log_id" value="<?php echo $row['log_id']?>">
-                                                    <button name="process_delete" type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
-                                                </form>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
