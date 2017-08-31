@@ -139,21 +139,21 @@ if($get_learning_position) {
                                 <hr />
 
 
-                                <?php if($first_time_user) { var_dump(1); ?>
+                                <?php if($first_time_user) { ?>
                                     <ul class="pager">
                                         <li class="next"><a href="fxacademy/course_view.php?id=<?php echo encrypt($first_time_course['edu_course_id']); ?>">Next Lesson &rarr;</a></li>
                                     </ul>
                                     <hr />
                                 <?php } ?>
 
-                                <?php if($go_to_next_lesson) { var_dump(2); ?>
+                                <?php if($go_to_next_lesson) { ?>
                                     <ul class="pager">
                                         <li class="next"><a href="fxacademy/lesson_view.php?cid=<?php echo encrypt($next_lesson['course_id']); ?>&lid=<?php echo encrypt($next_lesson['edu_lesson_id']); ?>">Next Lesson &rarr;</a></li>
                                     </ul>
                                     <hr />
                                 <?php } ?>
 
-                                <?php if($go_to_next_course) { var_dump(3); ?>
+                                <?php if($go_to_next_course) { ?>
                                     <ul class="pager">
                                         <li class="next"><a href="fxacademy/course_view.php?id=<?php echo encrypt($first_lesson_course['course_id']); ?>">Next Lesson &rarr;</a></li>
                                     </ul>

@@ -76,7 +76,11 @@ if (isset($_POST['submit_question'])) {
                                 <p><a href="fxacademy/course_view.php?id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
                                 <p>Course Title: <span class="text-danger"><em><?php echo $selected_course['title']; ?></em></span></p>
                                 <h3 class="text-center"><strong><?php echo $selected_lesson['title']; ?></strong></h3>
+
+                                <?php require_once 'layouts/feedback_message.php'; ?>
+
                                 <hr />
+
                                 <?php echo $selected_lesson['content']; ?>
                                 <hr />
 
@@ -86,7 +90,7 @@ if (isset($_POST['submit_question'])) {
                                 <hr />
 
                                 <p class="text-danger">Do you have any question about this lesson? Send a message to your Instructor.</p>
-                                <?php require_once 'layouts/feedback_message.php'; ?>
+
                                 <form class="form-horizontal" role="form" method="post" action="">
 
                                     <div class="form-group">
