@@ -49,7 +49,6 @@ if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
-
 $result = $db_handle->runQuery($query);
 $admin_all_logs = $db_handle->fetchAssoc($result);
 
@@ -119,13 +118,13 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                     echo "<strong>Email : </strong>".$client_details['email']."<br/>";
                                                     echo "<strong>Account Number : </strong>".$client_details['ifx_acct_no']."<br/>";
                                                 }
-                                                elseif ($row['type'] == 'CUSTOMER')
+                                                elseif ($row['type'] == 'PROSPECT')
                                                 {
                                                     $customer_details = $obj_log->customer_details($row['tag']);
                                                     $customer_details = $customer_details[0];
-                                                    echo "<strong>Full Name: </strong>".$customer_details['full_name']."<br/>";
-                                                    echo "<strong>Phone : </strong>".$customer_details['phone']."<br/>";
-                                                    echo "<strong>Email : </strong>".$customer_details['email']."<br/>";
+                                                    echo "<strong>Full Name: </strong>".$customer_details['first_name']." ".$customer_details['other_name']." ".$customer_details['last_name']."<br/>";
+                                                    echo "<strong>Phone : </strong>".$customer_details['phone_number']."<br/>";
+                                                    echo "<strong>Email : </strong>".$customer_details['email_address']."<br/>";
                                                 }
                                                 ?>
                                             </td>
@@ -156,17 +155,17 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                         $client_details = $obj_log->client_details($row['tag']);
                                                                         $client_details = $client_details[0];
                                                                         echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
-                                                                        echo "<strong>Phone : </strong>".$client_details['phone']."<br/>";
-                                                                        echo "<strong>Email : </strong>".$client_details['email']."<br/>";
+                                                                        echo "<strong>Phone : </strong>".$client_details['phone_number']."<br/>";
+                                                                        echo "<strong>Email : </strong>".$client_details['email_address']."<br/>";
                                                                         echo "<strong>Account Number : </strong>".$client_details['ifx_acct_no']."<br/>";
                                                                     }
-                                                                    elseif ($row['type'] == 'CUSTOMER')
+                                                                    elseif ($row['type'] == 'PROSPECT')
                                                                     {
                                                                         $customer_details = $obj_log->customer_details($row['tag']);
                                                                         $customer_details = $customer_details[0];
-                                                                        echo "<strong>Full Name: </strong>".$customer_details['full_name']."<br/>";
-                                                                        echo "<strong>Phone : </strong>".$customer_details['phone']."<br/>";
-                                                                        echo "<strong>Email : </strong>".$customer_details['email']."<br/>";
+                                                                        echo "<strong>Full Name: </strong>".$customer_details['first_name']." ".$customer_details['other_name']." ".$customer_details['last_name']."<br/>";
+                                                                        echo "<strong>Phone : </strong>".$customer_details['phone_number']."<br/>";
+                                                                        echo "<strong>Email : </strong>".$customer_details['email_address']."<br/>";
                                                                     }
                                                                     ?>
                                                                         <?php

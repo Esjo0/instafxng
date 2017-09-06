@@ -230,7 +230,6 @@ if(strlen($news_id) > 4) {
                                                                 <div class="modal-body">
                                                                     <p>Reply <?php echo $row['full_name'] ?>'s comment on <?php echo $title?>.</p>
                                                                     <div class="form-group">
-                                                                        <div class="col-sm-12">
                                                                             <div class="input-group">
                                                                                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                                                                 <input placeholder="Full Name" name="name" type="text" id="name" value="" class="form-control" required/>

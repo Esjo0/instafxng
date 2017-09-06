@@ -847,7 +847,8 @@ class InstafxngSystem {
         }
     }
 
-    public function next_account_officer() {
+    public function next_account_officer()
+    {
         global $db_handle;
 
         $query = "SELECT current_position, officer_count FROM account_officers_stopper";

@@ -9,7 +9,7 @@ $query = "SELECT * FROM article, visitors, comments
             AND visitors.visitor_id = comments.visitor_id 
             AND visitors.block_status = 'OFF' 
             AND comments.status = 'OFF' 
-            ORDER BY comment_id DESC;";
+            ORDER BY comment_id DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -29,7 +29,7 @@ $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
 $offset = ($currentpage - 1) * $rowsperpage;
-//$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $all_comments_items = $db_handle->fetchAssoc($result);
 
