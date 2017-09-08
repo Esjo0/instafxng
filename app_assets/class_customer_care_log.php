@@ -3,12 +3,13 @@
 class Customer_Care
 {
 
-    public function add_new_customer_log($admin_code, $full_name, $email, $phone, $con_desc)
+    public function add_new_customer_log($admin_code, $first_name, $other_name, $last_name, $email, $phone, $con_desc, $prospect_source)
     {
         global $db_handle;
-        $db_handle->runQuery("INSERT IGNORE INTO customers (full_name, email, phone) VALUES ('$full_name','$email','$phone');");
-        $db_handle->runQuery("SELECT @cust_id:= customer_id FROM customers WHERE email = '$email';");
-        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, type) VALUES('$con_desc', '$admin_code', @cust_id, 'CUSTOMER');");
+        //$db_handle->runQuery("SELECT @prospect_source_id:= prospect_source_id FROM prospect_source WHERE source_name = 'Enquiries';");
+        $db_handle->runQuery("INSERT IGNORE INTO prospect_biodata (first_name, last_name, other_names ,email_address, phone_number, prospect_source) VALUES ('$first_name', '$last_name', '$other_name','$email','$phone', '$prospect_source'");
+        $db_handle->runQuery("SELECT @prospect_id:= prospect_biodata_id FROM prospect_biodata WHERE email = '$email' OR phone_number = '$phone';");
+        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, type) VALUES('$con_desc', '$admin_code', @prospect_id, 'PROSPECT');");
 
         return $db_handle->affectedRows() > 0 ? true : false;
     }
@@ -33,7 +34,7 @@ class Customer_Care
     public function customer_details($customer_id)
     {
         global $db_handle;
-        $query = "SELECT full_name, email, phone FROM customers WHERE customers.customer_id = '$customer_id' LIMIT 1";
+        $query = "SELECT first_name, other_names, last_name,  email_address, phone_number FROM prospect_biodata WHERE prospect_biodata.prospect_biodata_id = '$customer_id' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $customer_details = $db_handle->fetchAssoc($result);
         return $customer_details;

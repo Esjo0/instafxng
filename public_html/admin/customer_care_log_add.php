@@ -14,11 +14,11 @@ if (isset($_POST['process_client']))
     {
         $message_error = "All fields are compulsory, please try again.";
     }
-    ///elseif (!$system_object->valid_ifxacct($acc_no))
-    //{
-        //$message_error = "You have provided an invalid InstaForex Account Number.
-        //Please check the account number to ensure that it belongs to an existing client.";
-    //}
+    /*elseif (!$system_object->valid_ifxacct($acc_no))
+    {
+        $message_error = "You have provided an invalid InstaForex Account Number.
+        Please check the account number to ensure that it belongs to an existing client.";
+    }*/
     else {
         $new_log = $obj_log->add_new_client_log($_SESSION['admin_unique_code'], $acc_no, $con_desc);
         if($new_log)
@@ -46,14 +46,14 @@ if (isset($_POST['process_customer']))
     {
         $message_error = "All fields are compulsory, please try again.";
     }
-    elseif (!check_email($email_address))
+    elseif (!check_email($email_address)|| $admin_object->prospect_is_duplicate($email_address))
     {
-        $message_error = "You have provided an invalid email address. Please try again.";
+        $message_error = "You have provided an invalid email address or the email already exists!. Please try again.";
     }
-    else {
-
-        $new_log = $obj_log->add_new_customer_log($_SESSION['admin_unique_code'], $full_name, $email_address, $phone_no, $con_desc);
-        if($new_log)
+    else
+        {
+        $new_log = $obj_log->add_new_customer_log($_SESSION['admin_unique_code'], $first_name, $other_name, $last_name, $email_address, $phone_no, $con_desc, $prospect_source);
+            if($new_log)
         {
             $message_success = "You have successfully created a new log.";
         } else
@@ -62,6 +62,11 @@ if (isset($_POST['process_customer']))
         }
     }
 
+}
+
+$all_prospect_source = $admin_object->get_all_prospect_source();
+if(empty($all_prospect_source)) {
+    $message_error = "You cannot add a prospect until you have added at least one prospect source <a href='prospect_source.php'>here</a>.";
 }
 
 ?>
@@ -111,27 +116,65 @@ if (isset($_POST['process_customer']))
                                         <p>Fill the form below to add a new log about a customer.</p>
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-3" for="full_name">Customer's Full Name:</label>
-                                                <div class="col-sm-9 col-lg-5">
-                                                    <input name="full_name" type="text" id="full_name" value="" class="form-control" required/>
+                                                <label class="control-label col-sm-3" for="full_name">Customer's Name:</label>
+                                                <div class="col-sm-9">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <input name="last_name" type="text" id="last_name" placeholder="Surname" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <input name="first_name" type="text" id="first_name" placeholder="First Name" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <input name="middle_name" type="text" id="other_name" placeholder="Other Names"  class="form-control">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label col-sm-3" for="email_address">Customer's Email Address:</label>
-                                                <div class="col-sm-9 col-lg-5">
-                                                    <input name="email_address" type="text" id="email_address" value="" class="form-control" required/>
+                                                <div class="col-sm-9">
+                                                    <div class="row">
+                                                        <div class="col-md-9">
+                                                            <input name="email_address" type="text" id="email_address" value="" class="form-control" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label col-sm-3" for="phone_no">Customer's Phone Number:</label>
-                                                <div class="col-sm-9 col-lg-5">
-                                                    <input name="phone_no" type="text" id="phone_no" value="" class="form-control" required/>
+                                                <div class="col-sm-9">
+                                                    <div class="row">
+                                                        <div class="col-md-9">
+                                                            <input name="phone_no" type="text" id="phone_no"  class="form-control" required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" for="prospect_source">Source:</label>
+                                                <div class="col-sm-9">
+                                                    <div class="row">
+                                                        <div class="col-md-9">
+                                                            <select name="prospect_source" class="form-control" id="prospect_source" >
+                                                                <option value="" selected>Select Source</option>
+                                                                <?php foreach($all_prospect_source as $key => $value) { ?>
+                                                                    <option value="<?php echo $value['prospect_source_id']; ?>"><?php echo $value['source_name']; ?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label col-sm-3" for="description">Conversation Description:</label>
-                                                <div class="col-sm-9 col-lg-5">
-                                                    <textarea placeholder="Enter a brief precise description of your convesation..." name="con_desc" id="con_desc" rows="3" class="form-control" required></textarea>
+                                                <div class="col-sm-9">
+                                                    <div class="row">
+                                                        <div class="col-md-9">
+                                                            <textarea placeholder="Enter a brief and precise description of your conversation..." name="con_desc" id="con_desc" rows="3" class="form-control" required></textarea>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                             <div class="form-group">

@@ -400,7 +400,9 @@ MAIL;
         global $db_handle;
 
         $query = "INSERT INTO prospect_biodata (admin_code, last_name, first_name, other_names, email_address, phone_number, prospect_source)
-                VALUES ('$admin_code', '$last_name', '$first_name', '$middle_name', '$email_address', '$phone', $prospect_source)";
+                VALUES ('$admin_code', '$last_name', '$first_name', '$middle_name', '$email_address', '$phone', $prospect_source);
+                SELECT @p_id:= prospect_biodata_id FROM prospect_biodata WHERE email_address = '$email_address';
+                INSERT IGNORE INTO prospect_sales_contact (prospect_id, admin_code) VALUES (@p_id, '$admin_code')";
 
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;

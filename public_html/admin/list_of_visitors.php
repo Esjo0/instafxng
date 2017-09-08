@@ -7,7 +7,6 @@ if (!$session_admin->is_logged_in())
 
 if(isset($_POST['search']))
 {
-    //var_dump('HELLO');
     redirect_to("visitors_results.php?data=".$_POST['email_search']);
 }
 
