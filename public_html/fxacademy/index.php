@@ -84,7 +84,7 @@ if($get_learning_position) {
                     <div id="main-container" class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-md-12">
-                                <p>Welcome <?php echo $_SESSION['client_first_name']; ?>,</p>
+                                <p><strong>Welcome <?php echo $_SESSION['client_first_name']; ?>,</strong></p>
                                 <p>This is your dashboard where you can check your learning progress, latest message from your instructor
                                 and other quick information about your study at our Forex Trading School.</p>
                                 <p>Learning Forex Trading is easy and fun, you would be happy to discover new and exciting ways to
@@ -113,16 +113,6 @@ if($get_learning_position) {
                                 <hr />
                                 <?php } ?>
 
-                                <?php if($course_completed) { ?>
-                                <h4>Congratulations!</h4>
-                                <p><?php echo $_SESSION['client_first_name']; ?>, you have completed all the available courses in the
-                                <strong>Forex Profit Academy</strong></p>
-                                <p>You can now comfortably take live trades in the Forex Market and make as much profit as you desire.
-                                At this point, you qualify for our 100% education bonus* for funding your account.</p>
-                                <p><a class="btn btn-success btn-lg" href="https://instafxng.com/deposit.php">Fund Account - Get Bonus Now</a></p>
-                                <hr />
-                                <?php } ?>
-
                                 <?php if($get_course_library) { ?>
                                 <h4>Course Library</h4>
                                 <p>Below is the list of courses you have enrolled for.</p>
@@ -133,19 +123,6 @@ if($get_learning_position) {
                                 </ul>
                                 <?php } ?>
 
-
-<!--                                <h4>Certification</h4>-->
-<!--                                <p>Well, you are learning Forex Trading to make more money, buy hey! You would also-->
-<!--                                earn our esteemed Forex Trading certificates for each course you complete.</p>-->
-<!--                                <p>See your progress for the current course below.</p>-->
-<!--                                <div id="custom-progress-bar">-->
-<!--                                    <div class="progress" style="margin-bottom: 0 !important">-->
-<!--                                        <div class="progress-bar progress-bar-striped active" role="progressbar"-->
-<!--                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">-->
-<!--                                            40%-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
                             </div>
                         </div>
                     </div>

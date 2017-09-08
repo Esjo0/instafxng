@@ -4,14 +4,33 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT pb.email_address, CONCAT(pb.first_name, SPACE(1), pb.last_name) AS full_name,
-    pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id
-    FROM prospect_biodata AS pb
-    INNER JOIN prospect_source AS ps ON pb.prospect_source = ps.prospect_source_id
-    ORDER BY created DESC ";
-$numrows = $db_handle->numRows($query);
+if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3 || isset($_GET['pg'])) {
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
 
-$rowsperpage = 20;
+    $search_text = $_POST['search_text'];
+
+    $query = "SELECT pb.email_address, CONCAT(pb.first_name, SPACE(1), pb.last_name) AS full_name,
+        pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id
+        FROM prospect_biodata AS pb
+        INNER JOIN prospect_source AS ps ON pb.prospect_source = ps.prospect_source_id
+        WHERE pb.email_address LIKE '%$search_text%' OR pb.first_name LIKE '%$search_text%' OR pb.last_name LIKE '%$search_text%' OR pb.phone_number LIKE '%$search_text%'
+        ORDER BY created DESC ";
+
+    $numrows = $db_handle->numRows($query);
+    $rowsperpage = $numrows;
+
+} else {
+    $query = "SELECT pb.email_address, CONCAT(pb.first_name, SPACE(1), pb.last_name) AS full_name,
+        pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id
+        FROM prospect_biodata AS pb
+        INNER JOIN prospect_source AS ps ON pb.prospect_source = ps.prospect_source_id
+        ORDER BY created DESC ";
+
+    $numrows = $db_handle->numRows($query);
+    $rowsperpage = 20;
+}
 
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
@@ -60,6 +79,22 @@ $all_prospect = $db_handle->fetchAssoc($result);
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
+                    <div class="search-section">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <div class="input-group">
+                                        <input type="hidden" name="search_param" value="all" id="search_param">
+                                        <input type="text" class="form-control" name="search_text" value="" placeholder="Search term..." required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-sm-12 text-danger">
                             <h4><strong>MANAGE PROSPECT</strong></h4>

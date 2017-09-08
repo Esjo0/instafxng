@@ -36,6 +36,67 @@ class Education {
         return $fetched_data ? $fetched_data : false;
     }
 
+    // Get the next lesson position using course id and lesson id
+    public function get_next_lesson($course_id, $course_lesson_id) {
+        global $db_handle;
+
+        $next_lesson_url = "";
+        $next_lesson_name = "";
+
+        $query = "SELECT el.edu_lesson_id
+              FROM edu_lesson AS el
+              INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
+              WHERE el.course_id = $course_id AND el.status = '2' ORDER BY el.lesson_order ASC";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        $selected_lessons = array();
+        foreach ($fetched_data AS $key => $value) {
+            $selected_lessons[] = $value['edu_lesson_id'];
+        }
+
+        $lesson_count = count($selected_lessons);
+        $lesson_position = array_search($course_lesson_id, $selected_lessons);
+
+        if(($lesson_position + 1) < $lesson_count) {
+            $next_lesson_key = $lesson_position + 1;
+
+            $next_lesson_url = "fxacademy/lesson_view.php?cid=" . encrypt($course_id) . "&lid=" . encrypt($selected_lessons[$next_lesson_key]);
+            $next_lesson_name = "Next Lesson";
+        } else {
+            // Go to Course Level
+            $query = "SELECT edu_course_id FROM edu_course WHERE status = '2' ORDER BY course_order ASC";
+            $result = $db_handle->runQuery($query);
+            $fetched_data = $db_handle->fetchAssoc($result);
+
+            $selected_courses = array();
+            foreach ($fetched_data AS $key => $value) {
+                $selected_courses[] = $value['edu_course_id'];
+            }
+
+            $course_count = count($selected_courses);
+            $course_position = array_search($course_id, $selected_courses);
+
+            if(($course_position + 1) < $course_count) {
+                $next_course_key = $course_position + 1;
+
+                $next_lesson_url = "fxacademy/course_view.php?id=" . encrypt($selected_courses[$next_course_key]);
+                $next_lesson_name = "Next Course";
+            } else {
+                $next_lesson_url = "fxacademy/completion_cert.php";
+                $next_lesson_name = "Course Completion";
+            }
+        }
+
+        $next_lesson = array(
+            'next_lesson_url' => $next_lesson_url,
+            'next_lesson_name' => $next_lesson_name
+        );
+
+        return $next_lesson ? $next_lesson : false;
+    }
+
     // Get all the courses attempted by this client
     public function get_courses_attempted($user_code) {
         global $db_handle;
@@ -44,7 +105,7 @@ class Education {
               FROM user_edu_exercise_log AS ueel
               INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
               INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
-              WHERE ueel.user_code = '$user_code' GROUP BY ec.edu_course_id ORDER BY ueel.created DESC";
+              WHERE ueel.user_code = '$user_code' GROUP BY ec.edu_course_id ORDER BY ec.course_code ASC";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -167,6 +228,23 @@ class Education {
 
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    /**
+     * Delete a particular lesson, associated exercises will also be deleted
+     * @param $lesson_id
+     * @return bool
+     */
+    public function delete_lesson($lesson_id) {
+        global $db_handle;
+
+        //Delete associated exercises
+        $db_handle->runQuery("DELETE FROM edu_lesson_exercise WHERE lesson_id = $lesson_id");
+
+        //Delete lesson
+        $db_handle->runQuery("DELETE FROM edu_lesson WHERE edu_lesson_id = $lesson_id");
+
+        return true;
     }
 
     // Get lessons belonging to a course by id

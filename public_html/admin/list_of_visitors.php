@@ -118,8 +118,8 @@ $all_comments_items = $db_handle->fetchAssoc($result);
                                 { ?>
                                     <tr>
 
-                                        <td><?php echo $row['visitor_name']; ?></td>
-                                        <td><?php echo $row['visitor_email']; ?></td>
+                                        <td><?php echo $row['full_name']; ?></td>
+                                        <td><?php echo $row['email']; ?></td>
                                         <td>
                                             <a title="Block Visitor" href="block_visitor.php?data=<?php echo $row['visitor_id'] ?>&type=block"><button name="block_visitor" class="btn btn-danger glyphicon glyphicon-stop"<?php if ($row['block_status'] == 'ON'){echo 'disabled';} ?>></button></a>
                                             <a title="Unblock Visitor" href="block_visitor.php?data=<?php echo $row['visitor_id'] ?>&type=unblock"><button name="block_visitor" class="btn btn-success glyphicon glyphicon-play"<?php if ($row['block_status'] == 'OFF'){echo 'disabled';} ?>></button></a>
