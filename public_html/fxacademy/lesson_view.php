@@ -17,6 +17,7 @@ $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
 
 $selected_course = $education_object->get_active_course_by_id($course_id);
 $selected_lesson = $education_object->get_single_course_lesson_id($course_lesson_id);
+$selected_exercise = $education_object->get_all_exercise_by_lesson_id($course_lesson_id);
 
 if(empty($selected_course)) {
     redirect_to("fxacademy/"); // cannot find course or URL tampered
@@ -42,6 +43,9 @@ if (isset($_POST['submit_question'])) {
         $message_error = "There seems to be a problem somewhere, your support request could not be saved. Please try again.";
     }
 }
+
+// Go to next lesson
+$next_lesson = $education_object->get_next_lesson($course_id, $course_lesson_id);
 
 ?>
 <!DOCTYPE html>
@@ -74,19 +78,27 @@ if (isset($_POST['submit_question'])) {
                         <div class="row">
                             <div class="col-md-12 lesson_reader">
                                 <p><a href="fxacademy/course_view.php?id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
-                                <p>Course Title: <span class="text-danger"><em><?php echo $selected_course['title']; ?></em></span></p>
+                                <p><span class="text-danger"><?php echo $selected_course['title']; ?></span></p>
                                 <h3 class="text-center"><strong><?php echo $selected_lesson['title']; ?></strong></h3>
+
+                                <?php require_once 'layouts/feedback_message.php'; ?>
+
                                 <hr />
+
                                 <?php echo $selected_lesson['content']; ?>
                                 <hr />
 
                                 <ul class="pager">
-                                    <li class="next"><a href="fxacademy/test_view.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($course_lesson_id); ?>">Proceed: Take Lesson Assessment &rarr;</a></li>
+                                    <?php if(empty($selected_exercise)) { ?>
+                                        <li class="next"><a href="<?php echo $next_lesson['next_lesson_url']; ?>"><?php echo $next_lesson['next_lesson_name']; ?> &rarr;</a></li>
+                                    <?php } else { ?>
+                                        <li class="next"><a href="fxacademy/test_view.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($course_lesson_id); ?>">Proceed: Take Lesson Assessment &rarr;</a></li>
+                                    <?php } ?>
                                 </ul>
                                 <hr />
 
                                 <p class="text-danger">Do you have any question about this lesson? Send a message to your Instructor.</p>
-                                <?php require_once 'layouts/feedback_message.php'; ?>
+
                                 <form class="form-horizontal" role="form" method="post" action="">
 
                                     <div class="form-group">

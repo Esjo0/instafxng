@@ -282,8 +282,10 @@ MAIL;
         
         if(!empty($article_no)) {
             $query = "UPDATE article SET title = '{$title}', description = '$description', keyword = '$tags', display_image = '$display_picture', content = '$content', url = '$url', status = '$article_status', created = NOW() WHERE article_id = $article_no LIMIT 1";
+
         } else {
             $query = "INSERT INTO article (admin_code, title, description, keyword, display_image, content, url, status) VALUES ('$admin_code', '$title', '$description', '$tags', '$display_picture', '$content', '$url', '$article_status')";
+
         }
         
         $result = $db_handle->runQuery($query);
@@ -398,10 +400,23 @@ MAIL;
         global $db_handle;
 
         $query = "INSERT INTO prospect_biodata (admin_code, last_name, first_name, other_names, email_address, phone_number, prospect_source)
-                VALUES ('$admin_code', '$last_name', '$first_name', '$middle_name', '$email_address', '$phone', $prospect_source)";
+                VALUES ('$admin_code', '$last_name', '$first_name', '$middle_name', '$email_address', '$phone', $prospect_source);
+                SELECT @p_id:= prospect_biodata_id FROM prospect_biodata WHERE email_address = '$email_address';
+                INSERT IGNORE INTO prospect_sales_contact (prospect_id, admin_code) VALUES (@p_id, '$admin_code')";
 
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    public function get_all_account_officers() {
+        global $db_handle;
+
+        $query = "SELECT ao.account_officers_id, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM account_officers AS ao
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        return $fetched_data;
     }
 }
 

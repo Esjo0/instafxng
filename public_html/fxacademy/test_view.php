@@ -18,7 +18,7 @@ $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
 $confirm_second_time_assessment = $education_object->confirm_second_time_assessment($course_lesson_id, $_SESSION['client_unique_code']);
 
 if($confirm_second_time_assessment) {
-    redirect_to("test_result.php?lid=$course_lesson_id_encrypted");
+    redirect_to("test_result.php?cid=$course_id_encrypted&lid=$course_lesson_id_encrypted");
     exit;
 }
 
@@ -66,11 +66,13 @@ if(empty($selected_course)) {
                         <div class="row">
                             <div class="col-md-12">
                                 <p><a href="fxacademy/course_view.php?id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
-                                <p>Course Title: <span class="text-danger"><?php echo $selected_course['title']; ?></span></p>
-                                <p class="text-center"><span class="text-danger"><?php echo $selected_lesson['title']; ?></span> (Lesson Assessment)</p>
+
+                                <h3 class="text-center">Lesson Assessment</h3>
+                                <p><span class="text-danger"><?php echo $selected_course['title']; ?></span></p>
+                                <p><span class="text-danger"><?php echo $selected_lesson['title']; ?></span></p>
                                 <hr />
 
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="fxacademy/test_result.php">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="fxacademy/test_result.php?cid=<?php echo $course_id_encrypted; ?>&lid=<?php echo $course_lesson_id_encrypted; ?>">
                                     <input type="hidden" name="course_no" value="<?php echo $course_id_encrypted; ?>" />
                                     <input type="hidden" name="lesson_no" value="<?php echo $course_lesson_id_encrypted; ?>" />
 

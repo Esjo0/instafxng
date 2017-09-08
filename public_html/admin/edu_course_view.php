@@ -4,6 +4,17 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+if (isset($_POST['delete_lesson'])) {
+
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    extract($_POST);
+
+    $education_object->delete_lesson($lesson_id);
+}
+
 $get_params = allowed_get_params(['id']);
 $course_id_encrypted = $get_params['id'];
 $course_id = decrypt(str_replace(" ", "+", $course_id_encrypted));
@@ -109,31 +120,63 @@ if(empty($selected_course)) {
                                     <div class="col-sm-12">
                                         <hr />
                                         <p>Below is the list of lessons in this course.</p>
+
                                         <!-- Display list of lessons under the course -->
                                         <table class="table table-responsive table-striped table-bordered table-hover">
                                             <thead>
                                             <tr>
+                                                <th>&nbsp;</th>
                                                 <th>Author</th>
                                                 <th>Title</th>
                                                 <th>Order</th>
                                                 <th>Exercise Count</th>
                                                 <th>Status</th>
-                                                <th>Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <?php if(isset($course_lessons) && !empty($course_lessons)) { foreach ($course_lessons as $row) { ?>
                                                 <tr>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <a class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Action <span class="caret"></span></a>
+                                                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                                                <li role="presentation"><a role="menuitem" tabindex="-1" title="View Lesson Details" href="edu_lesson_view.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><i class="fa fa-eye fa-fw"></i> View Lesson</a></li>
+                                                                <li role="presentation"><a role="menuitem" tabindex="-1" title="Edit Lesson" href="edu_lesson_new.php?cid=<?php echo encrypt($course_id); ?>&x=edit&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><i class="fa fa-edit fa-fw"></i> Edit Lesson</a></li>
+                                                                <li role="presentation"><a role="menuitem" tabindex="-1" title="Create Exercise" href="edu_exercise_new.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><i class="fa fa-question-circle fa-fw"></i> Create Exercise</a></li>
+                                                                <li role="presentation">
+                                                                    <a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#delete-lesson-confirm<?php echo $row['edu_lesson_id']; ?>" title="Delete Lesson" href="#"><i class="fa fa-trash fa-fw"></i> Delete Lesson</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <div id="delete-lesson-confirm<?php echo $row['edu_lesson_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                                class="close">&times;</button>
+                                                                        <h4 class="modal-title">Delete Lesson Confirmation</h4></div>
+                                                                    <div class="modal-body">
+                                                                        <p>Do you want to delete this lesson? This action cannot be reversed.</p>
+                                                                        <p>All exercises associated with the lesson will also be deleted.</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <form class="form-horizontal" role="form" method="post" action="">
+                                                                            <input type="hidden" name="lesson_id" value="<?php echo $row['edu_lesson_id']; ?>" />
+                                                                            <input name="delete_lesson" type="submit" class="btn btn-danger" value="Delete Lesson">
+                                                                            <button type="submit" name="decline" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     <td><?php echo $row['admin_full_name']; ?></td>
                                                     <td><?php echo $row['title']; ?></td>
                                                     <td><?php echo $row['lesson_order']; ?></td>
                                                     <td><?php echo $db_handle->numRows("SELECT edu_lesson_exercise_id FROM edu_lesson_exercise WHERE lesson_id = {$row['edu_lesson_id']}"); ?></td>
                                                     <td><?php echo status_edu_lesson($row['status']); ?></td>
-                                                    <td class="nowrap">
-                                                        <a title="View Lesson Details" class="btn btn-info" href="edu_lesson_view.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><i class="fa fa-eye"></i> </a>
-                                                        <a title="Edit Lesson" class="btn btn-default" href="edu_lesson_new.php?cid=<?php echo encrypt($course_id); ?>&x=edit&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><i class="fa fa-edit"></i> </a>
-                                                        <a title="Create Exercise" class="btn btn-success" href="edu_exercise_new.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><i class="fa fa-question-circle"></i> </a>
-                                                    </td>
+
                                                 </tr>
                                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No lesson found for this course</em></td></tr>"; } ?>
                                             </tbody>

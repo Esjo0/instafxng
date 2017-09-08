@@ -78,6 +78,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(24, $my_pages_sidebar)) { ?><li><a href="insight/last_month_withdrawal.php" title="Last Month Withdrawal">Last Month Withdrawal</a></li><?php } ?>
                         <?php if (in_array(25, $my_pages_sidebar)) { ?><li><a href="insight/last_month_new_client.php" title="Last Month New Clients">Last Month New Clients</a></li><?php } ?>
                         <?php if (in_array(26, $my_pages_sidebar)) { ?><li><a href="insight/insight_training_campaign.php" title="Training Campaign">Training Campaign</a></li><?php } ?>
+                        <?php if (in_array(26, $my_pages_sidebar)) { ?><li><a href="insight/insight_prospects.php" title="Prospects">Prospects</a></li><?php } ?>
                         <?php if (in_array(26, $my_pages_sidebar)) { ?><li><a href="insight/sales_client_interest.php" title="Sales - Client Interest">Sales - Client Interest</a></li><?php } ?>
                         <?php if (in_array(27, $my_pages_sidebar)) { ?><li><a href="insight/daily_funding.php" title="Daily Funding">Daily Funding</a></li><?php } ?>
                     </ul>
@@ -164,13 +165,8 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     <ul class="dropdown-menu">
                         <?php if (in_array(75, $my_pages_sidebar)) { ?><li><a href="article_add.php">Add Article</a></li><?php } ?>
                         <?php if (in_array(76, $my_pages_sidebar)) { ?><li><a href="article_manage.php">Manage Article</a></li><?php } ?>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-square fa-fw"></i> Signal Management<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <?php if (in_array(77, $my_pages_sidebar)) { ?><li><a href="signal_daily.php">Update Daily Signal</a></li><?php } ?>
-                        <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_review.php">Weekly Market Analysis</a></li><?php } ?>
+                        <?php if (in_array(75, $my_pages_sidebar)) { ?><li><a href="recent_comments.php">Recent Comments</a></li><?php } ?>
+                        <?php if (in_array(76, $my_pages_sidebar)) { ?><li><a href="list_of_visitors.php">List Of Visitors</a></li><?php } ?>
                     </ul>
                 </li>
                 <?php if (in_array(79, $my_pages_sidebar)) { ?><li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li><?php } ?>
@@ -227,6 +223,13 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     </ul>
                 </li>
                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-square fa-fw"></i> Signal Management<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(77, $my_pages_sidebar)) { ?><li><a href="signal_daily.php">Update Daily Signal</a></li><?php } ?>
+                        <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_review.php">Weekly Market Analysis</a></li><?php } ?>
+                    </ul>
+                </li>
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> Prospect<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(110, $my_pages_sidebar)) { ?><li><a href="prospect_source.php">Manage Prospect Source</a></li><?php } ?>
@@ -234,6 +237,21 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage.php">Manage Prospects</a></li><?php } ?>
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-clock-o fa-fw"></i> Reminders<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(77, $my_pages_sidebar)) { ?><li><a href="reminder_add.php">Add New Reminder</a></li><?php } ?>
+                        <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="reminder_manage.php">Manage Reminders</a></li><?php } ?>
+                    </ul>
+                </li>
+<!--                <li class="dropdown">-->
+<!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-expand fa-fw"></i> Customer Care<b class="caret"></b></a>-->
+<!--                    <ul class="dropdown-menu">-->
+<!--                        --><?php ////if (in_array(110, $my_pages_sidebar)) { ?><!--<li><a href="customer_care_log_add.php">Add New Log</a></li>--><?php ////} ?>
+<!--                        --><?php ////if (in_array(112, $my_pages_sidebar)) { ?><!--<li><a href="customer_care_admin_log_manage.php">Manage Logs</a></li>--><?php ////} ?>
+<!--                        --><?php ////if (in_array(112, $my_pages_sidebar)) { ?><!--<li><a href="customer_care_all_log_manage.php">Manage All Logs</a></li>--><?php ////} ?>
+<!--                    </ul>-->
+<!--                </li>-->
 <!--                <li class="dropdown">-->
 <!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-paperclip fa-fw"></i> Surveys &amp; Feedbacks<b class="caret"></b></a>-->
 <!--                    <ul class="dropdown-menu">-->

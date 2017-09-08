@@ -107,7 +107,9 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <h5>Client Information</h5>
-                                        <span class="span-title">Full Name</span>
+                                        <span class="span-title text-right">Account Officer</span>
+                                        <p class="text-right"><em><?php echo $account_officer_full_name; ?></em></p>
+                                        <span class="span-title">Client Name</span>
                                         <p><em><?php echo $full_name; ?></em>&nbsp;&nbsp;
                                             <?php if($client_operation->account_flagged($user_code)) { ?>
                                                 <img src="../images/red-flag.png" alt="" title="This client has an account flagged."> -

@@ -2018,7 +2018,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `career_user_biodata` (
   `career_user_biodata_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `cu_user_code` VARCHAR(7) NOT NULL,
+  `cu_user_code` VARCHAR(11) NOT NULL,
   `email_address` VARCHAR(200) NOT NULL,
   `cu_password` VARCHAR(128) NOT NULL,
   `pass_salt` VARCHAR(64) NOT NULL,
@@ -2059,7 +2059,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `career_user_education` (
   `career_user_education_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `cu_user_code` VARCHAR(7) NOT NULL,
+  `cu_user_code` VARCHAR(11) NOT NULL,
   `institution` VARCHAR(255) NOT NULL,
   `field_of_study` VARCHAR(255) NOT NULL,
   `degree` VARCHAR(255) NOT NULL,
@@ -2084,7 +2084,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `career_user_work_experience` (
   `career_user_work_experience_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `cu_user_code` VARCHAR(7) NOT NULL,
+  `cu_user_code` VARCHAR(11) NOT NULL,
   `job_title` VARCHAR(200) NOT NULL,
   `company` VARCHAR(255) NOT NULL,
   `location` INT(11) NOT NULL,
@@ -2114,7 +2114,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `career_user_skill` (
   `career_user_skill_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `cu_user_code` VARCHAR(7) NOT NULL,
+  `cu_user_code` VARCHAR(11) NOT NULL,
   `skill_title` VARCHAR(255) NOT NULL,
   `competency` ENUM('1', '2', '3', '4', '5') NOT NULL DEFAULT '1' COMMENT '1 - Beginner\n2 - Advanced\n3 - Professional\n4 - Master\n5 - Certified',
   `description` TEXT NOT NULL,
@@ -2135,7 +2135,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `career_user_achievement` (
   `career_user_achievement_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `cu_user_code` VARCHAR(7) NOT NULL,
+  `cu_user_code` VARCHAR(11) NOT NULL,
   `achieve_title` VARCHAR(200) NOT NULL,
   `description` TEXT NOT NULL,
   `category` ENUM('1', '2', '3', '4') NOT NULL COMMENT '1 - Certification\n2 - Course\n3 - Honour / Award\n4 - Project',
@@ -2157,7 +2157,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `career_user_application` (
   `career_user_application_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `cu_user_code` VARCHAR(7) NOT NULL,
+  `cu_user_code` VARCHAR(11) NOT NULL,
   `job_code` VARCHAR(6) NOT NULL,
   `status` ENUM('1', '2', '3', '4', '5', '6', '7') NOT NULL DEFAULT '1' COMMENT '1 - New\n2 - Submitted\n3 - Review\n4 - No Review\n5 - Interviewed\n6 - Employed\n7 - Not Employed',
   `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
