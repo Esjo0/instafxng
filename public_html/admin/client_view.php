@@ -34,15 +34,15 @@ if(isset($_SESSION['account_officer_filter']) && $_SESSION['account_officer_filt
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
         u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
         FROM user AS u
-        INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-        INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+        LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+        LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' AND ao.account_officers_id = $account_officer_filter ORDER BY u.created DESC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
         u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
         FROM user AS u
-        INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-        INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+        LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+        LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' ORDER BY u.created DESC ";
 }
 

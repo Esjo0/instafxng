@@ -2,24 +2,6 @@
 require_once '../init/initialize_general.php';
 $thisPage = "";
 
-/****
- *
- *
-<p>
-<strong>STEP 3:</strong> In case you haven't commenced your free
-Forex training at our Forex Profit Academy, follow the link below to start now and be one of
-the Nigerians thriving well in this unfriendly economy.</p>
-<p style='text-align: center'><strong>
-<a href='https://instafxng.com/fxacademy/'>
-Click here to start now
-</a></strong><br /><br />
-or copy and paste the URL below in your address bar<br /><br />
-https://instafxng.com/fxacademy/
-</p>
- *
- *
- */
-
 if (isset($_POST['submit'])) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
@@ -141,6 +123,12 @@ if (isset($_POST['submit'])) {
                 </strong>
             </p>
 
+            <p><strong>STEP 3:</strong> In case you haven't commenced your free
+            Forex training at our Forex Profit Academy, follow the link below to start now and be one of
+            the Nigerians thriving well in this unfriendly economy.</p>
+            <p style='text-align: center'><strong><a href='https://instafxng.com/fxacademy/'>Click here to start now</a></strong><br /><br />
+            or copy and paste the URL below in your address bar<br /><br />
+            https://instafxng.com/fxacademy/</p>
 
             <p>If you need to get in touch with me directly, you can simply reply this mail</p>
             <p>Do you have any question or any inquiry? You can call us on any of our help

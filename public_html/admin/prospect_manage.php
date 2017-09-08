@@ -4,6 +4,58 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3 || isset($_GET['pg'])) {
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    $search_text = $_POST['search_text'];
+
+    $query = "SELECT pb.email_address, CONCAT(pb.first_name, SPACE(1), pb.last_name) AS full_name,
+        pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id
+        FROM prospect_biodata AS pb
+        INNER JOIN prospect_source AS ps ON pb.prospect_source = ps.prospect_source_id
+        WHERE pb.email_address LIKE '%$search_text%' OR pb.first_name LIKE '%$search_text%' OR pb.last_name LIKE '%$search_text%' OR pb.phone_number LIKE '%$search_text%'
+        ORDER BY created DESC ";
+
+    $numrows = $db_handle->numRows($query);
+    $rowsperpage = $numrows;
+
+} else {
+    $query = "SELECT pb.email_address, CONCAT(pb.first_name, SPACE(1), pb.last_name) AS full_name,
+        pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id, psc.prospect_sales_contact_id,
+        psc.prospect_id, psc.comment, psc.status, pb.prospect_source
+        FROM prospect_biodata AS pb
+        INNER JOIN prospect_source AS ps ON pb.prospect_source = ps.prospect_source_id
+        INNER JOIN prospect_sales_contact AS psc ON pb.prospect_biodata_id = psc.prospect_id
+        WHERE psc.status = 'PENDING'
+        ORDER BY pb.created DESC ";
+
+    $numrows = $db_handle->numRows($query);
+    $rowsperpage = 20;
+}
+
+$totalpages = ceil($numrows / $rowsperpage);
+// get the current page or set a default
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
+    $currentpage = (int) $_GET['pg'];
+} else {
+    $currentpage = 1;
+}
+if ($currentpage > $totalpages) { $currentpage = $totalpages; }
+if ($currentpage < 1) { $currentpage = 1; }
+
+$prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
+$prespagehigh = $currentpage * $rowsperpage;
+if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
+
+$offset = ($currentpage - 1) * $rowsperpage;
+$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$result = $db_handle->runQuery($query);
+$all_prospect = $db_handle->fetchAssoc($result);
+
+///////////////////////////
+
 if (isset($_POST['process_successfull']))
 {
     extract($_POST);
@@ -36,15 +88,15 @@ if (isset($_POST['process_successfull']))
             //...//
 
             $subject = "Welcome to the world of Money making!";
-            <<<MAIL
-                <div style="background-color: #F3F1F2">
-                    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
-                        <img src="https://instafxng.com/images/ifxlogo.png" />
-                            <hr />
-                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>Hi $first_name,</p>
-                                <p>I wanted to take a second to welcome you and to let you in on all the
-                                benefits you are going to enjoy being with us.</p>
+            $body = <<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+            <hr />
+            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hi $first_name,</p>
+            <p>I wanted to take a second to welcome you and to let you in on all the
+            benefits you are going to enjoy being with us.</p>
             <p>My name is Bunmi, Client Relationship Manager at InstaForex Nigeria for over
             six years.</p>
             <p>You know, I'm truly excited and grateful that you've decided to join over
@@ -202,32 +254,6 @@ if(isset($_POST['process_pending']))
 
 }
 
-$query = "SELECT prospect_sales_contact.prospect_sales_contact_id, prospect_biodata.email_address, CONCAT(prospect_biodata.first_name, SPACE(1), prospect_biodata.last_name) AS full_name, prospect_biodata.phone_number, prospect_sales_contact.prospect_id, prospect_sales_contact.comment, prospect_sales_contact.status, 
-                  prospect_biodata.prospect_source, prospect_biodata.created, prospect_source.source_name FROM prospect_sales_contact, prospect_biodata, prospect_source WHERE
-                  prospect_biodata.prospect_biodata_id = prospect_sales_contact.prospect_id AND prospect_sales_contact.status = 'PENDING' AND prospect_source.prospect_source_id = prospect_biodata.prospect_source ORDER BY prospect_biodata.created DESC ";
-
-$numrows = $db_handle->numRows($query);
-
-$rowsperpage = 20;
-
-$totalpages = ceil($numrows / $rowsperpage);
-// get the current page or set a default
-if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
-    $currentpage = (int) $_GET['pg'];
-} else {
-    $currentpage = 1;
-}
-if ($currentpage > $totalpages) { $currentpage = $totalpages; }
-if ($currentpage < 1) { $currentpage = 1; }
-
-$prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
-$prespagehigh = $currentpage * $rowsperpage;
-if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
-
-$offset = ($currentpage - 1) * $rowsperpage;
-$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
-$result = $db_handle->runQuery($query);
-$all_prospect = $db_handle->fetchAssoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -256,6 +282,22 @@ $all_prospect = $db_handle->fetchAssoc($result);
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
+                    <div class="search-section">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <div class="input-group">
+                                        <input type="hidden" name="search_param" value="all" id="search_param">
+                                        <input type="text" class="form-control" name="search_text" value="" placeholder="Search term..." required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-sm-12 text-danger">
                             <h4><strong>MANAGE PROSPECT</strong></h4>

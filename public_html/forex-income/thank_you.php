@@ -38,10 +38,7 @@
                         <img src="images/ifxlogo.png" alt="Instaforex Nigeria Logo" />
                     </div>
                     <div id="top-nav" class="col-sm-12 col-md-7 text-right">
-<!--                        <blockquote id="header-blockquote" class="blockquote-reverse">
-                            <span style="font-size: 0.9em">In investing, what is comfortable is rarely profitable.</span>
-                            <footer>Robert Arnott</footer>
-                        </blockquote>-->
+<
                     </div>
                 </div>
             </div>
@@ -75,11 +72,11 @@
                             adequate knowledge plans to become poor! Our Free Forex training programme
                             will introduce you to practical ways of trading the Forex market.
                         </p>
-<!--                        <p class="color-red text-center"><strong>Welcome to the Instafxng Forex Profit Academy</strong></p>-->
-<!--                        <p>You have been enrolled for our online <strong>Forex Profit Academy</strong> where you will learn-->
-<!--                        how to make money trading the forex market. The lessons are easy and you can start immediately.</p>-->
-<!--                        <p>Click the button below to go to the Academy and login with the email address you used for registration.</p>-->
-<!--                        <p class="text-center"><a href="https://instafxng.com/fxacademy/" class="btn btn-lg btn-success">Forex Profit Academy</a></p>-->
+                        <p class="color-red text-center"><strong>Welcome to the Instafxng Forex Profit Academy</strong></p>
+                        <p>You have been enrolled for our online <strong>Forex Profit Academy</strong> where you will learn
+                        how to make money trading the forex market. The lessons are easy and you can start immediately.</p>
+                        <p>Click the button below to go to the Academy and login with the email address you used for registration.</p>
+                        <p class="text-center"><a href="https://instafxng.com/fxacademy/" class="btn btn-lg btn-success">Forex Profit Academy</a></p>
                     </div>
 
                     <!-- Unique Page Content Ends Here

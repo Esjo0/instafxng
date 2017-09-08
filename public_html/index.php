@@ -37,17 +37,13 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
-                                <h2>Instafxng Point Based Loyalty Program and Reward</h2>
-                                <p>5 traders who traded consistently in the month of August will share
-                                a lump sum of $500 by the end of the month.</p>
-                                <p>The most fascinating thing about the promo is that, you can be one of
-                                these traders only if you swing into action immediately.</p>
-                                <p>If you would rather win N1,000,000 by the end of the year, see how
-                                you can participate <a href="loyalty.php" title="click for details">here</a>.</p>
+                                <h2>Insight on Crypto-currency & its application in Forex Trading</h2>
+                                <p>Join us on Saturday, 9th of September as we explore crypto-currency and how you can use it to trade Forex profitably.</p>
+                                <p>Register <a href="traders_forum.php">here</a> to stand a chance to win $20.</p>
                             </div>
 
                             <div class="col-sm-6">
-                                <a href="loyalty.php" title="click for details"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
+                                <a href="traders_forum.php" title="click for details"><img src="images/forex-traders-forum-smart-investors.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>
