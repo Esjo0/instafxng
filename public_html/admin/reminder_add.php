@@ -73,7 +73,7 @@ if (isset($_POST['process'])) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p>Fill the form below to add a new reminder about a prospective customer/client.</p>
+                                <p>Fill the form below to add a new reminder.</p>
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="description">Description:</label>

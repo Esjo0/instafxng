@@ -6,7 +6,7 @@ $thisPage = "About";
 $news_id = 545;
 if (isset($_POST['post_comment']))
 {
-    var_dump($_POST);
+    //var_dump($_POST);
     $name = $_POST['name'];
     $email = $_POST['email'];
     $comment = $_POST['comment'];
@@ -24,12 +24,7 @@ if (isset($_POST['post_comment']))
         $block_status = $block_status[0];
         $block_status = $block_status['block_status'];
 
-        if ($block_status == 'OFF')
-        {
-            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM visitors WHERE email = '".$email."';");
-            $db_handle->runQuery("INSERT INTO comments (visitor_id, article_id, comment) VALUES(@v_id, '".$article_id."', '".$comment."')");
-        }
-        else
+        if ($block_status != 'OFF')
         {
             $db_handle->runQuery("SELECT @v_id:= visitor_id FROM visitors WHERE email = '".$email."';");
             $db_handle->runQuery("INSERT INTO comments (visitor_id, article_id, comment) VALUES(@v_id, '".$article_id."', '".$comment."')");
@@ -191,23 +186,7 @@ if(strlen($news_id) > 4) {
                                         <div class="col-sm-offset-3 col-sm-9">
 
                                             <input type="hidden" name="article_id" value="<?php echo $news_id;?>"/>
-                                            <button type="button" data-target="#confirm-add-comment" data-toggle="modal" class="btn btn-success">Post</button>
-                                        </div>
-                                    </div>
-                                    <!--Modal - confirmation boxes-->
-                                    <div id="confirm-add-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                            class="close">&times;</button>
-                                                    <h4 class="modal-title">Post Comment</h4></div>
-                                                <div class="modal-body">Are you sure you want to post this comment? This action cannot be reversed.</div>
-                                                <div class="modal-footer">
-                                                    <input type="submit" name="post_comment" class="btn btn-success" value="Proceed"/>
-                                                    <button name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
-                                                </div>
-                                            </div>
+                                            <button type="submit" name="post_comment" class="btn btn-success">Post</button>
                                         </div>
                                     </div>
                                 </form>
@@ -228,8 +207,7 @@ if(strlen($news_id) > 4) {
                                                 {
                                                     $db_handle->runQuery("SELECT @v_id:= visitor_id FROM comments WHERE comments.comment_id = '" . $row['reply_to'] . "';");
                                                     $db_handle->runQuery("SELECT @a_id:= article_id FROM comments WHERE comments.comment_id = '" . $row['reply_to'] . "';");
-                                                    $reply_details = $db_handle->runQuery("SELECT visitor_name, title FROM visitors, article WHERE visitors.visitor_id = @v_id AND article.article_id = @a_id;");
-                                                    //var_dump($db_handle->runQuery($reply_details));
+                                                    $reply_details = $db_handle->runQuery("SELECT full_name, title FROM visitors, article WHERE visitors.visitor_id = @v_id AND article.article_id = @a_id;");
                                                     $reply_details = $db_handle->fetchAssoc($reply_details);
                                                     foreach ($reply_details as $row1) {
                                                         echo "as a reply to ".$row1['full_name'] . "'s comment on ".$row1['title']." ";
@@ -250,9 +228,8 @@ if(strlen($news_id) > 4) {
                                                                             class="close">&times;</button>
                                                                     <h4 class="modal-title">Reply Comment</h4></div>
                                                                 <div class="modal-body">
-                                                                    <p>Reply <?php echo $row['visitor_name'] ?>'s comment on <?php echo $title?>.</p>
+                                                                    <p>Reply <?php echo $row['full_name'] ?>'s comment on <?php echo $title?>.</p>
                                                                     <div class="form-group">
-                                                                        <div class="col-sm-12">
                                                                             <div class="input-group">
                                                                                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                                                                 <input placeholder="Full Name" name="name" type="text" id="name" value="" class="form-control" required/>

@@ -1,9 +1,10 @@
+
 -- phpMyAdmin SQL Dump
 -- version 4.5.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 30, 2017 at 11:05 AM
+-- Generation Time: Sep 06, 2017 at 10:04 AM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.4
 
@@ -22,144 +23,102 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
+DROP TABLE `customers`;
+
 --
--- Table structure for table `comments`
+-- Table structure for table `prospect_biodata`
 --
 
-CREATE TABLE `comments` (
-  `comment_id` int(11) NOT NULL,
-  `visitor_id` int(11) NOT NULL,
-  `article_id` varchar(255) NOT NULL,
-  `comment` text NOT NULL,
-  `reply_to` varchar(255) DEFAULT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` varchar(3) NOT NULL DEFAULT 'OFF'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `prospect_biodata` (
+  `prospect_biodata_id` int(11) NOT NULL,
+  `admin_code` varchar(5) NOT NULL,
+  `email_address` varchar(200) DEFAULT NULL,
+  `first_name` varchar(150) NOT NULL,
+  `last_name` varchar(150) NOT NULL,
+  `other_names` varchar(200) DEFAULT NULL,
+  `phone_number` varchar(11) NOT NULL,
+  `prospect_source` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customers`
+-- Table structure for table `prospect_sales_contact`
 --
 
-CREATE TABLE `customers` (
-  `customer_id` int(11) NOT NULL,
-  `full_name` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `customer_care_log`
---
-
-CREATE TABLE `customer_care_log` (
-  `log_id` int(11) NOT NULL,
-  `admin_code` varchar(255) NOT NULL,
-  `con_desc` text NOT NULL,
-  `tag` varchar(255) NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE `prospect_sales_contact` (
+  `prospect_sales_contact_id` int(11) NOT NULL,
+  `prospect_id` int(11) NOT NULL,
+  `admin_code` varchar(5) NOT NULL,
+  `comment` text,
   `status` varchar(255) NOT NULL DEFAULT 'PENDING',
-  `type` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reminders`
+-- Table structure for table `prospect_source`
 --
 
-CREATE TABLE `reminders` (
-  `reminder_id` int(11) NOT NULL,
-  `admin_code` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `effect_date` varchar(500) NOT NULL,
-  `status` varchar(3) NOT NULL DEFAULT 'ON',
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `visitors`
---
-
-CREATE TABLE `visitors` (
-  `visitor_id` int(11) NOT NULL,
-  `full_name` varchar(255) NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `email` varchar(255) NOT NULL,
-  `block_status` varchar(3) NOT NULL DEFAULT 'OFF'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `prospect_source` (
+  `prospect_source_id` int(11) NOT NULL,
+  `source_name` varchar(250) NOT NULL,
+  `source_description` text NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `comments`
+-- Indexes for table `prospect_biodata`
 --
-ALTER TABLE `comments`
-  ADD PRIMARY KEY (`comment_id`);
+ALTER TABLE `prospect_biodata`
+  ADD PRIMARY KEY (`prospect_biodata_id`),
+  ADD UNIQUE KEY `email_address_UNIQUE` (`email_address`),
+  ADD KEY `fk_prospect_biodata_admin1_idx` (`admin_code`),
+  ADD KEY `fk_prospect_biodata_prospect_source1_idx` (`prospect_source`);
 
 --
--- Indexes for table `customers`
+-- Indexes for table `prospect_sales_contact`
 --
-ALTER TABLE `customers`
-  ADD PRIMARY KEY (`customer_id`),
-  ADD UNIQUE KEY `email` (`email`);
+ALTER TABLE `prospect_sales_contact`
+  ADD PRIMARY KEY (`prospect_sales_contact_id`),
+  ADD UNIQUE KEY `admin_code` (`admin_code`),
+  ADD KEY `fk_prospect_sales_contact_admin1_idx` (`admin_code`),
+  ADD KEY `fk_prospect_sales_contact_prospect_biodata1_idx` (`prospect_id`);
 
 --
--- Indexes for table `customer_care_log`
+-- Indexes for table `prospect_source`
 --
-ALTER TABLE `customer_care_log`
-  ADD PRIMARY KEY (`log_id`);
-
---
--- Indexes for table `reminders`
---
-ALTER TABLE `reminders`
-  ADD PRIMARY KEY (`reminder_id`);
-
---
--- Indexes for table `visitors`
---
-ALTER TABLE `visitors`
-  ADD PRIMARY KEY (`visitor_id`),
-  ADD UNIQUE KEY `email` (`email`);
+ALTER TABLE `prospect_source`
+  ADD PRIMARY KEY (`prospect_source_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `comments`
+-- AUTO_INCREMENT for table `prospect_biodata`
 --
-ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `prospect_biodata`
+  MODIFY `prospect_biodata_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT for table `customers`
+-- AUTO_INCREMENT for table `prospect_sales_contact`
 --
-ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `prospect_sales_contact`
+  MODIFY `prospect_sales_contact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT for table `customer_care_log`
+-- AUTO_INCREMENT for table `prospect_source`
 --
-ALTER TABLE `customer_care_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `reminders`
---
-ALTER TABLE `reminders`
-  MODIFY `reminder_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `visitors`
---
-ALTER TABLE `visitors`
-  MODIFY `visitor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `prospect_source`
+  MODIFY `prospect_source_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
