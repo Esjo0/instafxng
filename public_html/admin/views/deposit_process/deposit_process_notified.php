@@ -37,8 +37,6 @@ you must enter a remark for this transaction.</p>
                                 <span><?php echo $trans_detail['phone']; ?></span>
                                 <span><?php echo $trans_detail['email']; ?></span>
                                 <hr/>
-<!--                                <span class="text-danger"><strong>Recent Transactions</strong></span>-->
-<!--                                <span>## coming soon ##</span>-->
                                 <span class="text-danger"><strong>IFX Accounts</strong></span>
                                 <span style="max-width: 500px; overflow: scroll">
                                     <?php

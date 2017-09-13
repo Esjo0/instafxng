@@ -40,7 +40,11 @@ if (isset($_POST['process'])) {
     }
 }
 
-$query = "SELECT * FROM prospect_biodata WHERE prospect_biodata_id = '$prospect_id' LIMIT 1";
+$query = "SELECT pb.email_address, pb.first_name, pb.last_name,
+        pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id
+        FROM prospect_biodata AS pb
+        INNER JOIN prospect_source AS ps ON pb.prospect_source = ps.prospect_source_id
+        WHERE pb.prospect_biodata_id = '$prospect_id' LIMIT 1";
 $result = $db_handle->runQuery($query);
 $user_detail = $db_handle->fetchAssoc($result);
 $user_detail = $user_detail[0];
@@ -100,6 +104,12 @@ $selected_comment = $db_handle->fetchAssoc($result);
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                             <input type="hidden" name="selected_id" value="<?php if(isset($prospect_id)) { echo $prospect_id; } ?>" />
 
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" for="category">Category:</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="category" class="form-control" id="category" value="<?php if(isset($user_detail['source_name'])) { echo $user_detail['source_name']; } ?>" required disabled/>
+                                                </div>
+                                            </div>
                                             <div class="form-group">
                                                 <label class="control-label col-sm-3" for="first_name">First Name:</label>
                                                 <div class="col-sm-9">
