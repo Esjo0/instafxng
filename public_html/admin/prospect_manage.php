@@ -4,7 +4,7 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3 || isset($_GET['pg'])) {
+if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
@@ -310,6 +310,15 @@ if(isset($_POST['process_pending']))
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
                                 <p>List of prospect that have been added to the system.</p>
+
+                                <?php if(isset($all_prospect) && !empty($all_prospect)) { require 'layouts/pagination_links.php'; } ?>
+
+                                <?php if(isset($all_prospect) && !empty($all_prospect)) { ?>
+                                    <div class="tool-footer text-right">
+                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                    </div>
+                                <?php } ?>
+
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -406,7 +415,7 @@ if(isset($_POST['process_pending']))
                                                     </div>
                                                 </td>
                                             </tr>
-                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                        <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
 
@@ -418,7 +427,7 @@ if(isset($_POST['process_pending']))
                             </div>
                         </div>
 
-                        <?php if(isset($all_prospect) && !empty($all_prospect)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($all_prospect) && !empty($all_prospect)) { require 'layouts/pagination_links.php'; } ?>
                     </div>
 
                     <!-- Unique Page Content Ends Here

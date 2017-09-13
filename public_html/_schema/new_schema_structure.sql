@@ -122,3 +122,80 @@ ALTER TABLE `prospect_source`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+
+--
+-- Table structure for table `article_visitors`
+--
+
+CREATE TABLE `article_visitors` (
+  `visitor_id` int(11) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `email` varchar(255) NOT NULL,
+  `block_status` varchar(3) NOT NULL DEFAULT 'OFF'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `article_visitors`
+--
+ALTER TABLE `article_visitors`
+ADD PRIMARY KEY (`visitor_id`),
+ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `article_visitors`
+--
+ALTER TABLE `article_visitors`
+MODIFY `visitor_id` int(11) NOT NULL AUTO_INCREMENT;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+--
+-- Table structure for table `article_comments`
+--
+
+CREATE TABLE `article_comments` (
+  `comment_id` int(11) NOT NULL,
+  `visitor_id` int(11) NOT NULL,
+  `article_id` varchar(255) NOT NULL,
+  `comment` text NOT NULL,
+  `reply_to` varchar(255) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(3) NOT NULL DEFAULT 'OFF'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `article_comments`
+--
+ALTER TABLE `article_comments`
+ADD PRIMARY KEY (`comment_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `article_comments`
+--
+ALTER TABLE `article_comments`
+MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
