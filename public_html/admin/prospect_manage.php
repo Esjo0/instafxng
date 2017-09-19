@@ -4,6 +4,18 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+if(empty($_SESSION['prospect_source_filter']) || !isset($_SESSION['prospect_source_filter'])) {
+    $_SESSION['prospect_source_filter'] = 'all';
+}
+
+if (isset($_POST['apply_filter'])) {
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+    extract($_POST);
+    $_SESSION['prospect_source_filter'] = $prospect_source;
+}
+
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
@@ -22,14 +34,28 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $rowsperpage = $numrows;
 
 } else {
-    $query = "SELECT pb.email_address, CONCAT(pb.first_name, SPACE(1), pb.last_name) AS full_name,
-        pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id, psc.prospect_sales_contact_id,
-        psc.prospect_id, psc.comment, psc.status, pb.prospect_source
-        FROM prospect_biodata AS pb
-        INNER JOIN prospect_source AS ps ON pb.prospect_source = ps.prospect_source_id
-        INNER JOIN prospect_sales_contact AS psc ON pb.prospect_biodata_id = psc.prospect_id
-        WHERE psc.status = 'PENDING'
-        ORDER BY pb.created DESC ";
+
+    if(isset($_SESSION['prospect_source_filter']) && $_SESSION['prospect_source_filter'] <> 'all') {
+        $prospect_source_filter = $_SESSION['prospect_source_filter'];
+
+        $query = "SELECT pb.email_address, CONCAT(pb.first_name, SPACE(1), pb.last_name) AS full_name,
+            pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id, psc.prospect_sales_contact_id,
+            psc.prospect_id, psc.comment, psc.status, pb.prospect_source
+            FROM prospect_biodata AS pb
+            INNER JOIN prospect_source AS ps ON pb.prospect_source = ps.prospect_source_id
+            INNER JOIN prospect_sales_contact AS psc ON pb.prospect_biodata_id = psc.prospect_id
+            WHERE psc.status = 'PENDING' AND ps.prospect_source_id = $prospect_source_filter
+            ORDER BY pb.created DESC ";
+    } else {
+        $query = "SELECT pb.email_address, CONCAT(pb.first_name, SPACE(1), pb.last_name) AS full_name,
+            pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id, psc.prospect_sales_contact_id,
+            psc.prospect_id, psc.comment, psc.status, pb.prospect_source
+            FROM prospect_biodata AS pb
+            INNER JOIN prospect_source AS ps ON pb.prospect_source = ps.prospect_source_id
+            INNER JOIN prospect_sales_contact AS psc ON pb.prospect_biodata_id = psc.prospect_id
+            WHERE psc.status = 'PENDING'
+            ORDER BY pb.created DESC ";
+    }
 
     $numrows = $db_handle->numRows($query);
     $rowsperpage = 20;
@@ -308,6 +334,24 @@ if(isset($_POST['process_pending']))
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
+
+                                <?php $all_prospect_sources = $admin_object->get_all_prospect_source(); ?>
+
+                                <form data-toggle="validator" class="form-inline" role="form" method="post" action="">
+
+                                    <div class="form-group">
+                                        <label for="prospect_source">Source:</label>
+                                        <select name="prospect_source" class="form-control" id="prospect_source" required>
+                                            <option value="all"> All Sources</option>
+                                            <?php if(isset($all_prospect_sources) && !empty($all_prospect_sources)) { foreach ($all_prospect_sources as $row) { ?>
+                                                <option value="<?php echo $row['prospect_source_id']; ?>" <?php if(isset($_SESSION['prospect_source_filter']) && $row['prospect_source_id'] == $_SESSION['prospect_source_filter']) { echo "selected='selected'"; } ?>><?php echo $row['source_name']; ?></option>
+                                            <?php } } ?>
+                                        </select>
+                                    </div>
+                                    <input name="apply_filter" type="submit" class="btn btn-primary" value="Apply Filter">
+                                </form>
+
+                                <br /><hr />
 
                                 <p>List of prospect that have been added to the system.</p>
 

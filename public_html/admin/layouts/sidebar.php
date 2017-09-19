@@ -152,6 +152,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(64, $my_pages_sidebar)) { ?><li><a href="edu_support_ticket.php">Course Messages</a></li><?php } ?>
                         <?php if (in_array(65, $my_pages_sidebar)) { ?><li><a href="edu_payment.php">Student Payments</a></li><?php } ?>
                         <?php if (in_array(66, $my_pages_sidebar)) { ?><li><a href="edu_deposit.php">Student Deposits</a></li><?php } ?>
+                        <?php if (in_array(63, $my_pages_sidebar)) { ?><li><a href="edu_student.php">All Students</a></li><?php } ?>
                         <li class="divider"></li>
                         <!-- // 66 - 72 -->
                         <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_free_training_reg.php">Training Campaign - New Reg</a></li><?php } ?>
@@ -235,6 +236,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(110, $my_pages_sidebar)) { ?><li><a href="prospect_source.php">Manage Prospect Source</a></li><?php } ?>
                         <?php if (in_array(111, $my_pages_sidebar)) { ?><li><a href="prospect_add.php">Add New Prospect</a></li><?php } ?>
                         <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage.php">Manage Prospects</a></li><?php } ?>
+                        <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage_funded.php">Manage Prospects - Funded</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
