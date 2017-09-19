@@ -264,7 +264,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                 <hr />
 
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-7">
                                         <h5>Bank Account Detail</h5>
                                         <table class="table table-responsive table-striped table-bordered table-hover">
                                             <thead>
@@ -312,11 +312,6 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                             </tbody>
                                         </table>
 
-                                    </div>
-                                </div>
-                                <!-------------- Transaction section ----->
-                                <div class="row">
-                                    <div class="col-sm-12">
                                         <h5>Recent Transactions</h5>
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a data-toggle="tab" href="#latest_funding">Deposit</a></li>
@@ -374,6 +369,12 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                         </div>
 
                                     </div>
+
+                                    <div class="col-sm-5">
+                                        <!-- Display information about the client Education career here -->
+
+                                    </div>
+
                                 </div>
 
                             </div>

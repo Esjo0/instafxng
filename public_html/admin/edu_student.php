@@ -7,25 +7,21 @@ if (!$session_admin->is_logged_in()) {
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
-    $query = "SELECT uefp.reference, uefp.created, uefp.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
-            ec.title
-            FROM user_edu_fee_payment AS uefp
-            INNER JOIN user AS u ON uefp.user_code = u.user_code
-            INNER JOIN edu_course AS ec ON uefp.course_id = ec.edu_course_id
-            WHERE (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
-            ORDER BY uefp.created DESC ";
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
+            u.phone, u.academy_signup
+            FROM user AS u
+            WHERE u.academy_signup IS NOT NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
+            ORDER BY u.academy_signup DESC ";
 } else {
-    $query = "SELECT uefp.reference, uefp.created, uefp.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
-            ec.title
-            FROM user_edu_fee_payment AS uefp
-            INNER JOIN user AS u ON uefp.user_code = u.user_code
-            INNER JOIN edu_course AS ec ON uefp.course_id = ec.edu_course_id
-            ORDER BY uefp.created DESC ";
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
+            u.phone, u.academy_signup
+            FROM user AS u WHERE u.academy_signup IS NOT NULL
+            ORDER BY u.academy_signup DESC ";
 }
+
 $numrows = $db_handle->numRows($query);
 
-// For search, make rows per page equal total rows found, meaning, no pagination
-// for search results
+// For search, make rows per page equal total rows found, meaning, no pagination for search results
 if (isset($_POST['search_text'])) {
     $rowsperpage = $numrows;
 } else {
@@ -49,7 +45,7 @@ if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$education_payments = $db_handle->fetchAssoc($result);
+$education_students = $db_handle->fetchAssoc($result);
 
 ?>
 <!DOCTYPE html>
@@ -58,8 +54,8 @@ $education_payments = $db_handle->fetchAssoc($result);
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin - Student Payments</title>
-        <meta name="title" content="Instaforex Nigeria | Admin - Student Payments" />
+        <title>Instaforex Nigeria | Admin - All Students</title>
+        <meta name="title" content="Instaforex Nigeria | Admin - All Students" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
@@ -98,40 +94,58 @@ $education_payments = $db_handle->fetchAssoc($result);
 
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>VIEW COMPLETED STUDENT PAYMENTS</strong></h4>
+                            <h4><strong>VIEW ALL STUDENT</strong></h4>
                         </div>
                     </div>
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p>Listed below is the payments that have been completed by the Forex Training Students</p>
 
-                                <p><strong>Total Received (&#8358;): </strong></p>
+                                <p>List of students that have signed in to the FX Academy portal</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Reference ID</th>
                                         <th>Client Name</th>
                                         <th>Client Phone</th>
-                                        <th>Course</th>
-                                        <th>Created</th>
+                                        <th>First Login</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php if(isset($education_payments) && !empty($education_payments)) { foreach ($education_payments as $row) { ?>
+                                    <?php if(isset($education_students) && !empty($education_students)) { foreach ($education_students as $row) { ?>
                                         <tr>
-                                            <td><?php echo $row['reference']; ?></td>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
-                                            <td><?php echo $row['title']; ?></td>
-                                            <td><?php echo datetime_to_text($row['created']); ?></td>
+                                            <td><?php echo date_to_text($row['academy_signup']); ?></td>
+                                            <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                         </tr>
-                                    <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
+
+                                <?php if(isset($education_students) && !empty($education_students)) { ?>
+                                    <div class="tool-footer text-right">
+                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                    </div>
+                                <?php } ?>
+
+                                <?php if(isset($education_students) && !empty($education_students)) { require_once 'layouts/pagination_links.php'; } ?>
+
+                                <div id="student_details" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                        class="close">&times;</button>
+                                                <h4 class="modal-title">Student Details</h4></div>
+                                            <div class="modal-body">
+                                            </div>
+                                            <div class="modal-footer"></div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>

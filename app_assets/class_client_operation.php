@@ -52,7 +52,7 @@ class clientOperation {
         $query = "SELECT u.user_code AS client_user_code, u.email AS client_email, u.first_name AS client_first_name,
                 u.last_name AS client_last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
                 u.phone AS client_phone_number, u.user_type AS client_user_type,
-                u.status AS client_status, u.created AS client_created,
+                u.status AS client_status, u.created AS client_created, u.academy_signup AS client_academy_first_login,
                 GROUP_CONCAT(DISTINCT ui.ifx_acct_no) AS client_accounts
                 FROM user AS u
                 LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
@@ -2070,6 +2070,16 @@ MAIL;
         }
     }
 
+    /**
+     * @param $user_code
+     * @param string $interest_training
+     * @param string $interest_funding
+     * @param string $interest_bonus
+     * @param string $interest_investment
+     * @param string $interest_services
+     * @param string $interest_other
+     * @return bool
+     */
     public function log_sales_contact_client_interest($user_code, $interest_training = '1', $interest_funding = '1', $interest_bonus = '1', $interest_investment = '1', $interest_services = '1', $interest_other = '1') {
         global $db_handle;
 
@@ -2095,11 +2105,15 @@ MAIL;
 
         $db_handle->runQuery($query);
 
-        if($db_handle->affectedRows() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    public function log_academy_first_login($user_code) {
+        global $db_handle;
+
+        $query = "UPDATE user SET academy_signup = NOW() WHERE user_code = '$user_code' LIMIT 1";
+        $db_handle->runQuery($query);
+        return $db_handle->affectedRows() > 0 ? true : false;
     }
 
 

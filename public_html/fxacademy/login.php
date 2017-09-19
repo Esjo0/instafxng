@@ -16,28 +16,24 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
         if ($responseData->success) {
             $client_email = $db_handle->sanitizePost($_POST['client_email']);
             $user_code = $client_operation->get_user_by_email($client_email);
+
+            if(empty($user_code) || !isset($user_code)) { redirect_to("register.php?id=$client_email"); }
+
             $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
 
             if($user_ifx_details) {
-
-                // confirm that the user is active
-                if($client_operation->user_is_active($user_ifx_details['client_email'])) {
-                    $found_user = array(
-                        'user_code' => $user_ifx_details['client_user_code'],
-                        'status' => $user_ifx_details['client_status'],
-                        'first_name' => $user_ifx_details['client_first_name'],
-                        'last_name' => $user_ifx_details['client_last_name'],
-                        'email' => $user_ifx_details['client_email']
-                    );
-                    $session_client->login($found_user);
-                    redirect_to("index.php");
-                } else {
-                    $message_error = "Your profile has certain issues, please contact support.";
-                }
+                $found_user = array(
+                    'user_code' => $user_ifx_details['client_user_code'],
+                    'status' => $user_ifx_details['client_status'],
+                    'first_name' => $user_ifx_details['client_first_name'],
+                    'last_name' => $user_ifx_details['client_last_name'],
+                    'email' => $user_ifx_details['client_email']
+                );
+                $session_client->login($found_user);
+                redirect_to("index.php");
 
             } else {
-                $message_error = "Your profile details could not be found, please confirm you
-                entered the correct email address used on our website or contact support.";
+                redirect_to("register.php?id=$client_email");
             }
         } else {
             $message_error = "Please try the robot test again.";
@@ -109,6 +105,7 @@ if(isset($_GET['logout'])) {
                                     <footer>George S. Clason</footer>
                                 </blockquote>
 
+                                <h4>Login to access the Academy</h4>
                                 <p>Forex Trading is easy to learn, enter your Email Address below and Start Learning.</p>
                             </div>
                         </div>
