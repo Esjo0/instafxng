@@ -2108,11 +2108,88 @@ MAIL;
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
-    public function log_academy_first_login($user_code) {
+    public function log_academy_first_login($first_name, $email_address, $user_code) {
         global $db_handle;
+        global $system_object;
 
         $query = "UPDATE user SET academy_signup = NOW() WHERE user_code = '$user_code' LIMIT 1";
         $db_handle->runQuery($query);
+
+        $subject = "$first_name, your Journey to Consistent Income Starts Here";
+        $message =
+<<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello $first_name,</p>
+
+            <p>A very warm welcome to you. The first step on the journey to making consistent
+            income from Forex trading is getting adequate knowledge and I’m glad yours has begun.</p>
+
+            <p>Tighten your seat belt as this is going to be an amazing journey and I can only giggle
+            right now as I know that when you are done, you will be armed with enough knowledge to
+            conquer the world, in this case, take all that you deserve from life instead of just
+            settling with what life has to offer.</p>
+
+            <ul>
+                <li>Be sure to give this training your 100% attention and thoroughly go through
+                each lesson without forgetting to attempt all the test exercises.</li>
+                <li>Don’t hesitate to use any of the message box to ask a question when you need
+                more clarity on something or you have a hard time understanding a particular lesson
+                and you will be swiftly responded to. </li>
+                <li>Rest assured that I am fully committed to holding your hands even as I guide you
+                through all the lessons of this course.</li>
+            </ul>
+
+            <p>$first_name, brace up for you are about to start one heck of an amazing journey that
+            leads you to getting all that you deserve from life. </p>
+
+            <p><a href="http://bit.ly/2ffEeKl" title="Start the training">You can click here to start
+            the training.</a></p>
+
+            <p>It's a big Welcome once again from me to you and I look forward to seeing you on the
+             other side.</p>
+
+
+            <br /><br />
+            <p>Best Regards,</p>
+            <p>Your friend,<br />
+            Bunmi,<br />
+            Client relations manager<br /></p>
+            <p>www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+        $system_object->send_email($subject, $message, $email_address, $first_name);
+
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 

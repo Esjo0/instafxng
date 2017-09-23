@@ -1,5 +1,6 @@
 <?php
 require_once '../init/initialize_client.php';
+
 if ($session_client->is_logged_in()) {
     redirect_to("index.php");
 }
@@ -30,6 +31,12 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                     'email' => $user_ifx_details['client_email']
                 );
                 $session_client->login($found_user);
+
+                // Check if this is a first time login, then log the date
+                if(empty($user_ifx_details['client_academy_first_login']) || is_null($user_ifx_details['client_academy_first_login'])) {
+                    $client_operation->log_academy_first_login($user_ifx_details['client_first_name'], $user_ifx_details['client_email'], $user_ifx_details['client_user_code']);
+                }
+
                 redirect_to("index.php");
 
             } else {
