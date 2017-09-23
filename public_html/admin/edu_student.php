@@ -8,14 +8,19 @@ if (!$session_admin->is_logged_in()) {
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
-            u.phone, u.academy_signup
+            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
             FROM user AS u
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE u.academy_signup IS NOT NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
             ORDER BY u.academy_signup DESC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
-            u.phone, u.academy_signup
-            FROM user AS u WHERE u.academy_signup IS NOT NULL
+            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM user AS u
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            WHERE u.academy_signup IS NOT NULL
             ORDER BY u.academy_signup DESC ";
 }
 
@@ -110,6 +115,7 @@ $education_students = $db_handle->fetchAssoc($result);
                                         <th>Client Name</th>
                                         <th>Client Phone</th>
                                         <th>First Login</th>
+                                        <th>Officer</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -119,6 +125,7 @@ $education_students = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo date_to_text($row['academy_signup']); ?></td>
+                                            <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

@@ -14,10 +14,15 @@ $client_operation = new clientOperation();
 if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
     redirect_to("./"); // page cannot display anything without the id
 } else {
+
     $user_code = $db_handle->sanitizePost($user_code);
     $user_detail = $client_operation->get_user_by_user_code($user_code);
     
     if($user_detail) {
+
+        // Get client education log history
+        $client_education_history = $education_object->get_client_lesson_history($user_code);
+
         extract($user_detail);
 
         if($middle_name) {
@@ -264,7 +269,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                 <hr />
 
                                 <div class="row">
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-12">
                                         <h5>Bank Account Detail</h5>
                                         <table class="table table-responsive table-striped table-bordered table-hover">
                                             <thead>
@@ -369,12 +374,34 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                         </div>
 
                                     </div>
+                                </div>
 
-                                    <div class="col-sm-5">
+                                <div class="row">
+                                    <div class="col-sm-12">
                                         <!-- Display information about the client Education career here -->
 
-                                    </div>
+                                        <br />
+                                        <h5>Education History</h5>
+                                        <table class="table table-responsive table-striped table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Course</th>
+                                                <th>Lesson</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php if(isset($client_education_history) && !empty($client_education_history)) { foreach ($client_education_history as $row) { ?>
+                                                <tr>
+                                                    <td><?php echo datetime_to_text($row['lesson_log_date']); ?></td>
+                                                    <td><?php echo $row['course_title']; ?></td>
+                                                    <td><?php echo $row['lesson_title']; ?></td>
+                                                </tr>
+                                            <?php } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                            </tbody>
+                                        </table>
 
+                                    </div>
                                 </div>
 
                             </div>

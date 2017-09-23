@@ -171,7 +171,7 @@ array_sort_by_column_desc($all_support_request, 'last_reply_date');
                                                                     <td><img src="images/support_reply_staff.png" class="img-responsive center-block" /></td>
                                                                     <td>
                                                                         <span style="color: #4EA0AE !important; font-weight: bold;">
-                                                                            <?php echo $full_name['full_name']; ?>
+                                                                            <?php echo $full_name['admin_first_name']; ?>
                                                                         </span><br />
                                                                         <span style="font-size: 0.8em !important; color: #4EA0AE !important; font-weight: bold;">
                                                                             <?php echo datetime_to_text($row['created']); ?>

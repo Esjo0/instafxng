@@ -284,7 +284,7 @@ class InstafxngSystem {
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
-    // Add a new bulletin
+    // Add a new campaign
     public function add_new_campaign_email($campaign_email_no, $subject, $campaign_category, $content, $admin_code, $campaign_email_status = '1') {
         global $db_handle;
 
@@ -297,6 +297,16 @@ class InstafxngSystem {
         $db_handle->runQuery($query);
 
         return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    // Delete campaign email by id
+    public function delete_campaign_by_id($campaign_email_id) {
+        global $db_handle;
+
+        //Delete campaign
+        $db_handle->runQuery("DELETE FROM campaign_email WHERE campaign_email_id = $campaign_email_id LIMIT 1");
+
+        return true;
     }
 
     // Get campaign email by id

@@ -14,7 +14,7 @@ if (isset($_POST['submit_reply'])) {
     $support_id = decrypt(str_replace(" ", "+", $support_id));
     $support_id = preg_replace("/[^A-Za-z0-9 ]/", '', $support_id);
 
-    $question_reply = $education_object->set_lesson_support_reply('2', $support_id, $comment_reply, $_SESSION['admin_unique_code'], '2');
+    $question_reply = $education_object->set_lesson_support_reply('2', $support_id, $comment_reply, $_SESSION['admin_unique_code'], '2', $client_email, $client_name);
 
     if($question_reply) {
         $message_success = "You have successfully submitted a reply to this support thread.";
@@ -106,6 +106,8 @@ if(!empty($support_request_code)) {
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <form role="form" method="post" action="">
+                                            <input type="hidden" name="client_email" value="<?php echo $selected_support['email']; ?>" />
+                                            <input type="hidden" name="client_name" value="<?php echo $selected_support['full_name']; ?>" />
                                             <input type="hidden" name="support_id" value="<?php echo encrypt($selected_support['user_edu_support_request_id']); ?>" />
                                             <div class="form-group">
                                                 <label for="question">Post a reply:</label>
