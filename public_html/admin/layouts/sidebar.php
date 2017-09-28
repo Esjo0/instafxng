@@ -196,14 +196,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_review.php">Weekly Market Analysis</a></li><?php } ?>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-expand fa-fw"></i>Customer Care<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <?php //if (in_array(110, $my_pages_sidebar)) { ?><li><a href="customer_care_log_add.php">Add New Log</a></li><?php //} ?>
-                        <?php //if (in_array(112, $my_pages_sidebar)) { ?><li><a href="customer_care_admin_log_manage.php">Manage Logs</a></li><?php //} ?>
-                        <?php //if (in_array(112, $my_pages_sidebar)) { ?><li><a href="customer_care_all_log_manage.php">Manage All Logs</a></li><?php //} ?>
-                    </ul>
-                </li>
+            
                 <?php if (in_array(79, $my_pages_sidebar)) { ?><li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li><?php } ?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bookmark fa-fw"></i> Campaign<b class="caret"></b></a>
@@ -265,13 +258,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage.php">Manage Prospects</a></li><?php } ?>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> Promotions<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <?php //if (in_array(110, $my_pages_sidebar)) { ?><li><a href="ind_promo_participants.php">All Participants</a></li><?php //} ?>
-                        <?php //if (in_array(110, $my_pages_sidebar)) { ?><li><a href="ind_top_promo_participants.php">Top 5 Participants</a></li><?php //} ?>
-                    </ul>
-                </li>
+                
 <!--                <li class="dropdown">-->
 <!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-paperclip fa-fw"></i> Surveys &amp; Feedbacks<b class="caret"></b></a>-->
 <!--                    <ul class="dropdown-menu">-->
