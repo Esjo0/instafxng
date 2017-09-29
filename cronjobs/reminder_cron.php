@@ -5,8 +5,10 @@ require_once 'initialize_admin.php';
 
 $current_date = date("Y-m-d");
 
+
+
 //Get pending reminders
-$pending_reminders = $obj_reminders->get_pending_reminders();
+$pending_reminders = $obj_project_management->get_pending_reminders();
 
 if($pending_reminders)
 {
@@ -27,7 +29,7 @@ if($pending_reminders)
             ".$row['description']."<br/><br/>";
 
             $system_object->send_email($subject, $message, $admin_email, $admin_name);
-            $obj_reminders->treated_reminder($row['reminder_id']);
+            $obj_project_management->treated_reminder($row['reminder_id']);
         }
 
     }
