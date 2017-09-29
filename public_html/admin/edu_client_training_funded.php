@@ -130,7 +130,7 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                            <td>
+                                            <td nowrap>
                                                 <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_client_training_funded'; ?>&c=<?php echo encrypt('TRAINING CLIENT FUNDED'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>

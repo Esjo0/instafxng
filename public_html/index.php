@@ -37,17 +37,16 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
-                                <h2>Instafxng Point Based Loyalty Program and Reward</h2>
-                                <p>5 traders who traded consistently in the month of August will share
-                                a lump sum of $500 by the end of the month.</p>
-                                <p>The most fascinating thing about the promo is that, you can be one of
-                                these traders only if you swing into action immediately.</p>
-                                <p>If you would rather win N1,000,000 by the end of the year, see how
-                                you can participate <a href="loyalty.php" title="click for details">here</a>.</p>
+                                <h2>5 Reasons You Should Keep a Forex Trading Journal</h2>
+                                <p>Do you often wonder why you need to keep a trading journal for your Forex
+                                    trading activities since your broker provide a real-time records of your
+                                    trade?</p>
+                                <p>There are a lot of benefits to keeping a separate and manual trading journal
+                                    <a href="https://instafxng.com/news1/id/534/u/5-reasons-you-should-keep-forex-trading-journal/"> ... read more</a></p>
                             </div>
 
                             <div class="col-sm-6">
-                                <a href="loyalty.php" title="click for details"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/news1/id/534/u/5-reasons-you-should-keep-forex-trading-journal/" title="click for details"><img src="images/forex-journal.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>

@@ -36,6 +36,67 @@ class Education {
         return $fetched_data ? $fetched_data : false;
     }
 
+    // Get the next lesson position using course id and lesson id
+    public function get_next_lesson($course_id, $course_lesson_id) {
+        global $db_handle;
+
+        $next_lesson_url = "";
+        $next_lesson_name = "";
+
+        $query = "SELECT el.edu_lesson_id
+              FROM edu_lesson AS el
+              INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
+              WHERE el.course_id = $course_id AND el.status = '2' ORDER BY el.lesson_order ASC";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        $selected_lessons = array();
+        foreach ($fetched_data AS $key => $value) {
+            $selected_lessons[] = $value['edu_lesson_id'];
+        }
+
+        $lesson_count = count($selected_lessons);
+        $lesson_position = array_search($course_lesson_id, $selected_lessons);
+
+        if(($lesson_position + 1) < $lesson_count) {
+            $next_lesson_key = $lesson_position + 1;
+
+            $next_lesson_url = "fxacademy/lesson_view.php?cid=" . encrypt($course_id) . "&lid=" . encrypt($selected_lessons[$next_lesson_key]);
+            $next_lesson_name = "Next Lesson";
+        } else {
+            // Go to Course Level
+            $query = "SELECT edu_course_id FROM edu_course WHERE status = '2' ORDER BY course_order ASC";
+            $result = $db_handle->runQuery($query);
+            $fetched_data = $db_handle->fetchAssoc($result);
+
+            $selected_courses = array();
+            foreach ($fetched_data AS $key => $value) {
+                $selected_courses[] = $value['edu_course_id'];
+            }
+
+            $course_count = count($selected_courses);
+            $course_position = array_search($course_id, $selected_courses);
+
+            if(($course_position + 1) < $course_count) {
+                $next_course_key = $course_position + 1;
+
+                $next_lesson_url = "fxacademy/course_view.php?id=" . encrypt($selected_courses[$next_course_key]);
+                $next_lesson_name = "Next Course";
+            } else {
+                $next_lesson_url = "fxacademy/completion_cert.php";
+                $next_lesson_name = "Course Completion";
+            }
+        }
+
+        $next_lesson = array(
+            'next_lesson_url' => $next_lesson_url,
+            'next_lesson_name' => $next_lesson_name
+        );
+
+        return $next_lesson ? $next_lesson : false;
+    }
+
     // Get all the courses attempted by this client
     public function get_courses_attempted($user_code) {
         global $db_handle;
@@ -44,7 +105,7 @@ class Education {
               FROM user_edu_exercise_log AS ueel
               INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
               INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
-              WHERE ueel.user_code = '$user_code' GROUP BY ec.edu_course_id ORDER BY ueel.created DESC";
+              WHERE ueel.user_code = '$user_code' GROUP BY ec.edu_course_id ORDER BY ec.course_code ASC";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -167,6 +228,23 @@ class Education {
 
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    /**
+     * Delete a particular lesson, associated exercises will also be deleted
+     * @param $lesson_id
+     * @return bool
+     */
+    public function delete_lesson($lesson_id) {
+        global $db_handle;
+
+        //Delete associated exercises
+        $db_handle->runQuery("DELETE FROM edu_lesson_exercise WHERE lesson_id = $lesson_id LIMIT 1");
+
+        //Delete lesson
+        $db_handle->runQuery("DELETE FROM edu_lesson WHERE edu_lesson_id = $lesson_id LIMIT 1");
+
+        return true;
     }
 
     // Get lessons belonging to a course by id
@@ -366,17 +444,68 @@ class Education {
     }
 
     // Set support request for lessons
-    public function set_lesson_support_request($course_id, $course_lesson_id, $comment, $client_code) {
+    public function set_lesson_support_request($course_id, $course_lesson_id, $comment, $client_code, $client_first_name, $client_email) {
         global $db_handle;
+        global $system_object;
 
         support_request_code:
         $request_code = rand_string(20);
         if($db_handle->numRows("SELECT support_request_code FROM user_edu_support_request WHERE support_request_code = '$request_code'") > 0) { goto support_request_code; };
 
-
         $query = "INSERT INTO user_edu_support_request (support_request_code, user_code, lesson_id, course_id, request)
             VALUES ('$request_code', '$client_code', $course_lesson_id, $course_id, '$comment')";
         $db_handle->runQuery($query);
+
+        // Send acknowledgement mail to clients when they submit a support request
+        $subject = "FX Academy Support Request Acknowledgment";
+        $message =
+<<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello $client_first_name,</p>
+
+            <p>Your support request has been submitted successfully, your Instructor will respond soon.</p>
+
+            <p>You will receive an email when there is a new reply to your request.</p>
+
+
+            <br /><br />
+            <p>Best Regards,<br/>Curry</p>
+            <p>Instafxng FX Academy,<br />
+                www.instafxng.com/fxacademy</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+        $system_object->send_email($subject, $message, $client_email, $client_first_name);
 
         return $db_handle->affectedRows() > 0 ? $query : false;
     }
@@ -443,8 +572,9 @@ class Education {
     }
 
     // Set support reply
-    public function set_lesson_support_reply($category, $support_id, $comment_reply, $unique_code, $request_status) {
+    public function set_lesson_support_reply($category, $support_id, $comment_reply, $unique_code, $request_status, $client_email, $client_first_name) {
         global $db_handle;
+        global $system_object;
 
         $query = "INSERT INTO user_edu_support_answer (author, category, request_id, response) VALUES ('$unique_code', '$category', $support_id, '$comment_reply')";
         $db_handle->runQuery($query);
@@ -452,6 +582,62 @@ class Education {
         if ($db_handle->affectedRows() > 0) {
             $query = "UPDATE user_edu_support_request SET status = $request_status WHERE user_edu_support_request_id = $support_id LIMIT 1";
             $db_handle->runQuery($query);
+
+            // Send acknowledgement mail to clients when they submit a support request
+            $comment_reply_mail = str_replace('\r', "\r", str_replace('\n', "\n", $comment_reply));
+            $subject = "RE: FX Academy Support Request";
+            $message =
+<<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello $client_first_name,</p>
+
+            <p>Your enquiry has been responded to.</p>
+            <p>Here is the response from your instructor:</p>
+            <p>-----</p>
+            <p style="color: #9D0000; font-weight: bold">$comment_reply_mail</p>
+            <p>-----</p>
+            <p>Kindly <a href="https://instafxng.com/fxacademy/">click here</a> to login to the
+             FX Academy portal to see the full support thread.</p>
+
+            <br /><br />
+            <p>Best Regards,<br/>Curry</p>
+            <p>Instafxng FX Academy,<br />
+                www.instafxng.com/fxacademy</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+            $system_object->send_email($subject, $message, $client_email, $client_first_name);
+
             return true;
         } else {
             return false;
@@ -517,6 +703,22 @@ class Education {
         }
     }
 
+    // Get all lesson logged by the client - using answered exercises
+    public function get_client_lesson_history($user_code) {
+        global $db_handle;
+
+        $query = "SELECT ueel.created AS lesson_log_date, el.title AS lesson_title, ec.title AS course_title
+              FROM user_edu_exercise_log AS ueel
+              INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
+              INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
+              WHERE ueel.user_code = '$user_code' GROUP BY (ueel.lesson_id) ORDER BY ec.course_order ASC, ueel.created ASC";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
     // get client detail with unique code
     public function get_client_detail_by_code($unique_code) {
         global $db_handle;
@@ -533,14 +735,13 @@ class Education {
     public function get_admin_detail_by_code($unique_code) {
         global $db_handle;
 
-        $query = "SELECT CONCAT(first_name, SPACE(1), last_name) AS full_name FROM admin WHERE admin_code = '$unique_code' LIMIT 1";
+        $query = "SELECT first_name AS admin_first_name, CONCAT(first_name, SPACE(1), last_name) AS full_name FROM admin WHERE admin_code = '$unique_code' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $fetched_data = $fetched_data[0];
 
         return $fetched_data ? $fetched_data : false;
     }
-
 }
 
 $education_object = new Education();

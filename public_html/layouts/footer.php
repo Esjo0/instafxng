@@ -107,7 +107,6 @@
                     </small>
                     <hr>
                     <p class="text-center">&copy; <?php echo date('Y'); ?>, All rights reserved. Instant Web-Net Technologies Limited (www.instafxng.com)</p>
-                    <p class="text-center" style="font-size: 0.9em !important;"><a style="text-decoration: none !important;" href="https://sludasoft.com/" target="_blank" title="Visit Sludasoft">Website by Sludasoft</a></p>
                 </div>
             </div>
         </footer>

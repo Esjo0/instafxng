@@ -6,12 +6,19 @@ if (!$session_client->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$get_params = allowed_get_params(['lid']);
+$get_params = allowed_get_params(['lid', 'cid']);
+$course_id_encrypted = $get_params['cid'];
+$course_id = decrypt(str_replace(" ", "+", $course_id_encrypted));
+$course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
+
 $course_lesson_id_encrypted = $get_params['lid'];
 $course_lesson_id = decrypt(str_replace(" ", "+", $course_lesson_id_encrypted));
 $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
 
 $confirm_second_time_assessment = $education_object->confirm_second_time_assessment($course_lesson_id, $_SESSION['client_unique_code']);
+
+$selected_course = $education_object->get_active_course_by_id($course_id);
+$selected_lesson = $education_object->get_single_course_lesson_id($course_lesson_id);
 
 if (isset($_POST['process_test'])) {
     foreach($_POST as $key => $value) {
@@ -28,8 +35,6 @@ if (isset($_POST['process_test'])) {
     $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
     $course_lesson_id = decrypt(str_replace(" ", "+", $lesson_no));
     $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
-    $selected_course = $education_object->get_active_course_by_id($course_id);
-    $selected_lesson = $education_object->get_single_course_lesson_id($course_lesson_id);
 
     $assessment_result = $education_object->set_assessment_result($question_answered, $course_lesson_id, $_SESSION['client_unique_code']);
 
@@ -52,55 +57,8 @@ if (isset($_POST['process_test'])) {
     redirect_to('./');
 }
 
-/**
- * Go to next lesson
- */
-$get_learning_position = $education_object->get_learning_position($_SESSION['client_unique_code']);
-
-if($get_learning_position) {
-    // determine the next lesson
-    $all_lessons = $education_object->get_active_lessons_by_id($get_learning_position['course_id']);
-
-    $lesson_position = 0;
-    foreach($all_lessons AS $row) {
-        if($row['edu_lesson_id'] == $get_learning_position['lesson_id']) { $stop_lesson_position = $lesson_position; }
-        $lesson_position++;
-    }
-
-    $next_lesson_position = $stop_lesson_position + 1;
-    $next_lesson = $all_lessons[$next_lesson_position];
-
-    if($next_lesson) {
-        // Get the lesson
-        $go_to_next_lesson = true;
-
-    } else {
-        // Jump to the next course
-        $all_courses = $education_object->get_all_active_course();
-
-        $course_position = 0;
-        foreach($all_courses AS $row) {
-            if($row['edu_lesson_id'] == $get_learning_position['course_id']) { $stop_course_position = $course_position; }
-            $course_position++;
-        }
-
-        $next_course_position = $stop_course_position + 1;
-        $next_course = $all_courses[$next_course_position];
-
-        if($next_course) {
-            // Get the lesson
-            $first_lesson_course = $education_object->get_first_lesson_in_course($next_course['edu_course_id']);
-            $go_to_next_course = true;
-        } else {
-            $course_completed = true;
-        }
-
-    }
-
-} else {
-    $first_time_user = true;
-    $first_time_course = $education_object->get_first_school_course();
-}
+// Go to next lesson
+$next_lesson = $education_object->get_next_lesson($course_id, $course_lesson_id);
 
 ?>
 <!DOCTYPE html>
@@ -132,33 +90,17 @@ if($get_learning_position) {
                     <div id="main-container" class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-md-12">
-
                                 <p><a href="fxacademy/course_view.php?id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
-                                <p>Course Title: <span class="text-danger"><?php echo $selected_course['title']; ?></span></p>
-                                <p class="text-center"><span class="text-danger"><?php echo $selected_lesson['title']; ?></span> (Lesson Assessment Result)</p>
+
+                                <h3 class="text-center">Lesson Assessment</h3>
+                                <p><span class="text-danger"><?php echo $selected_course['title']; ?></span></p>
+                                <p><span class="text-danger"><?php echo $selected_lesson['title']; ?></span></p>
                                 <hr />
 
-
-                                <?php if($first_time_user) { var_dump(1); ?>
-                                    <ul class="pager">
-                                        <li class="next"><a href="fxacademy/course_view.php?id=<?php echo encrypt($first_time_course['edu_course_id']); ?>">Next Lesson &rarr;</a></li>
-                                    </ul>
-                                    <hr />
-                                <?php } ?>
-
-                                <?php if($go_to_next_lesson) { var_dump(2); ?>
-                                    <ul class="pager">
-                                        <li class="next"><a href="fxacademy/lesson_view.php?cid=<?php echo encrypt($next_lesson['course_id']); ?>&lid=<?php echo encrypt($next_lesson['edu_lesson_id']); ?>">Next Lesson &rarr;</a></li>
-                                    </ul>
-                                    <hr />
-                                <?php } ?>
-
-                                <?php if($go_to_next_course) { var_dump(3); ?>
-                                    <ul class="pager">
-                                        <li class="next"><a href="fxacademy/course_view.php?id=<?php echo encrypt($first_lesson_course['course_id']); ?>">Next Lesson &rarr;</a></li>
-                                    </ul>
-                                    <hr />
-                                <?php } ?>
+                                <ul class="pager">
+                                    <li class="next"><a href="<?php echo $next_lesson['next_lesson_url']; ?>"><?php echo $next_lesson['next_lesson_name']; ?> &rarr;</a></li>
+                                </ul>
+                                <hr />
 
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
@@ -206,26 +148,10 @@ if($get_learning_position) {
                                 <?php } ?>
                                 <hr />
 
-                                <?php if($first_time_user) { ?>
-                                    <ul class="pager">
-                                        <li class="next"><a href="fxacademy/course_view.php?id=<?php echo encrypt($first_time_course['edu_course_id']); ?>">Next Lesson &rarr;</a></li>
-                                    </ul>
-                                    <hr />
-                                <?php } ?>
-
-                                <?php if($go_to_next_lesson) { ?>
-                                    <ul class="pager">
-                                        <li class="next"><a href="fxacademy/lesson_view.php?cid=<?php echo encrypt($next_lesson['course_id']); ?>&lid=<?php echo encrypt($next_lesson['edu_lesson_id']); ?>">Next Lesson &rarr;</a></li>
-                                    </ul>
-                                    <hr />
-                                <?php } ?>
-
-                                <?php if($go_to_next_course) { ?>
-                                    <ul class="pager">
-                                        <li class="next"><a href="fxacademy/course_view.php?id=<?php echo encrypt($first_lesson_course['course_id']); ?>">Next Lesson &rarr;</a></li>
-                                    </ul>
-                                    <hr />
-                                <?php } ?>
+                                <ul class="pager">
+                                    <li class="next"><a href="<?php echo $next_lesson['next_lesson_url']; ?>"><?php echo $next_lesson['next_lesson_name']; ?> &rarr;</a></li>
+                                </ul>
+                                <hr />
 
                             </div>
                         </div>

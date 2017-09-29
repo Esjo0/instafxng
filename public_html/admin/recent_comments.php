@@ -4,11 +4,11 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT * FROM article, visitors, comments 
-            WHERE article.article_id = comments.article_id 
-            AND visitors.visitor_id = comments.visitor_id 
-            AND visitors.block_status = 'OFF' 
-            AND comments.status = 'OFF' 
+$query = "SELECT * FROM article, article_visitors, article_comments
+            WHERE article.article_id = article_comments.article_id
+            AND article_visitors.visitor_id = article_comments.visitor_id
+            AND article_visitors.block_status = 'OFF'
+            AND article_comments.status = 'OFF'
             ORDER BY comment_id DESC ";
 $numrows = $db_handle->numRows($query);
 
@@ -36,7 +36,7 @@ $all_comments_items = $db_handle->fetchAssoc($result);
 
 if (isset($_POST['delete_comment']))
 {
-    $query = "DELETE FROM comments 
+    $query = "DELETE FROM article_comments
                   WHERE comment_id = '".$_POST['comment_id']."'
                   AND visitor_id = '".$_POST['visitor_id']."';";
     $result = $db_handle->runQuery($query);
@@ -87,7 +87,6 @@ if (isset($_POST['delete_comment']))
                             <thead>
                             <tr>
                                 <th>Article Title</th>
-                                <th>Article Description</th>
                                 <th>Author's Name</th>
                                 <th>Author's Email</th>
                                 <th>Comment</th>
@@ -101,7 +100,6 @@ if (isset($_POST['delete_comment']))
                                 foreach ($all_comments_items as $row) { ?>
                                     <tr>
                                         <td><?php echo $row['title']; ?></td>
-                                        <td><?php echo $row['description']; ?></td>
                                         <td><?php echo $row['full_name']; ?></td>
                                         <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['comment']; ?></td>
@@ -115,7 +113,7 @@ if (isset($_POST['delete_comment']))
                                                         <div class="modal-header">
                                                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                                                     class="close">&times;</button>
-                                                            <h4 class="modal-title">Add Admin</h4></div>
+                                                            <h4 class="modal-title">Approve Comment</h4></div>
                                                         <div class="modal-body">
                                                             Are you sure you want to approve this comment?
                                                             This action cannot be reversed.
@@ -131,19 +129,19 @@ if (isset($_POST['delete_comment']))
                                         <td>
                                             <button type="button" data-target="#confirm-delete-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-danger"><i class="glyphicon glyphicon-remove icon-white"></i> </button>
                                             <!--Modal - confirmation boxes-->
-                                            <div id="confirm-delete-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                            <div id="confirm-delete-comment<?php echo $row['comment_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                                                     class="close">&times;</button>
-                                                            <h4 class="modal-title">Add Admin</h4></div>
+                                                            <h4 class="modal-title">Delete Comment</h4></div>
                                                         <div class="modal-body">
                                                             Are you sure you want to delete this comment?
                                                             This action cannot be reversed.
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <a title="Delete Comment" class="btn btn-danger" href="delete_comment.php?data=<?php echo $row['comment_id']; ?>">Proceed</a>
+                                                            <a title="Delete Comment" class="btn btn-primary" href="delete_comment.php?data=<?php echo $row['comment_id']; ?>">Proceed</a>
                                                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                         </div>
                                                     </div>

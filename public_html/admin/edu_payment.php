@@ -12,6 +12,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             FROM user_edu_fee_payment AS uefp
             INNER JOIN user AS u ON uefp.user_code = u.user_code
             INNER JOIN edu_course AS ec ON uefp.course_id = ec.edu_course_id
+            WHERE (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
             ORDER BY uefp.created DESC ";
 } else {
     $query = "SELECT uefp.reference, uefp.created, uefp.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,

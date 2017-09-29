@@ -5,12 +5,13 @@ if (!$session_admin->is_logged_in())
     redirect_to("login.php");
 }
 
-if(isset($_POST['search']))
+if(isset($_POST['email_search']))
 {
+    $_POST['email_search'] = $db_handle->sanitizePost(trim($_POST['email_search']));
     redirect_to("visitors_results.php?data=".$_POST['email_search']);
 }
 
-$query = "SELECT * FROM visitors ";
+$query = "SELECT * FROM article_visitors ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -56,8 +57,8 @@ $all_comments_items = $db_handle->fetchAssoc($result);
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Admin - View Recent Comments</title>
-    <meta name="title" content="Instaforex Nigeria | Admin - View Recent Comments" />
+    <title>Instaforex Nigeria | Admin - View Visitor List</title>
+    <meta name="title" content="Instaforex Nigeria | Admin - View Visitor List" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <?php require_once 'layouts/head_meta.php'; ?>
@@ -79,6 +80,21 @@ $all_comments_items = $db_handle->fetchAssoc($result);
             <!-- Unique Page Content Starts Here
             ================================================== -->
 
+            <div class="search-section">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="email_search" value="" placeholder="Search By Email" required>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-sm-12 text-danger">
                     <h4><strong>VIEW LIST OF VISITORS</strong></h4>
@@ -88,16 +104,6 @@ $all_comments_items = $db_handle->fetchAssoc($result);
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
-                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                            <div>
-                                <div class="left col-sm-9 col-lg-5 form-group input-group">
-                                    <input placeholder="Search By Email"  name="email_search" type="text" class="form-control" required/>
-                                    <span class="input-group-btn"><button type="submit" name="search" class="btn btn-default glyphicon glyphicon-search" ></button></span>
-                                </div>
-                            </div>
-                        </form>
-
-
 
                         <p>Below is the list of all the visitors that have commented on your articles.</p>
                         <table class="table table-striped table-bordered table-hover">

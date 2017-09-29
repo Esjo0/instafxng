@@ -284,7 +284,7 @@ class InstafxngSystem {
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
-    // Add a new bulletin
+    // Add a new campaign
     public function add_new_campaign_email($campaign_email_no, $subject, $campaign_category, $content, $admin_code, $campaign_email_status = '1') {
         global $db_handle;
 
@@ -297,6 +297,16 @@ class InstafxngSystem {
         $db_handle->runQuery($query);
 
         return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    // Delete campaign email by id
+    public function delete_campaign_by_id($campaign_email_id) {
+        global $db_handle;
+
+        //Delete campaign
+        $db_handle->runQuery("DELETE FROM campaign_email WHERE campaign_email_id = $campaign_email_id LIMIT 1");
+
+        return true;
     }
 
     // Get campaign email by id
@@ -675,10 +685,7 @@ class InstafxngSystem {
         return $fetched_data ? $fetched_data : false;
     }
 
-    /**
-     * ALGORITHM FOR ACTIVE TRAINING CLIENTS
-     *
-     */
+    // ALGORITHM FOR ACTIVE TRAINING CLIENTS
     public function get_total_active_training_clients() {
         global $db_handle;
 
@@ -713,7 +720,46 @@ class InstafxngSystem {
                       ) src2 WHERE final_sum_value >= $active_client_funding";
 
         $active_client = $db_handle->numRows($query);
-        return $active_client ? $active_client : false;
+        return $active_client ? $active_client : '0';
+
+    }
+
+    // ALGORITHM FOR ACTIVE PROSPECT CLIENTS
+    public function get_total_active_prospect_clients() {
+        global $db_handle;
+
+        $from_date = date('Y-m-d', strtotime('today - 30 days'));
+        $to_date = date('Y-m-d');
+        $active_client_funding = ACTIVE_CLIENT_FUNDING;
+        $active_client_volume = (ACTIVE_CLIENT_FUNDING * 100) / (ACTIVE_CLIENT_VOLUME * 100);
+
+        $query = "SELECT final_sum_value
+                      FROM (
+                        SELECT SUM(sum_value) AS final_sum_value, email
+                          FROM (
+                              SELECT SUM(td.volume * $active_client_volume) AS sum_value, u.email
+                              FROM trading_commission AS td
+                              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+                              INNER JOIN user AS u ON ui.user_code = u.user_code
+                              INNER JOIN prospect_biodata AS pb ON u.email = pb.email_address
+                              WHERE td.date_earned BETWEEN '$from_date' AND '$to_date'
+                              GROUP BY u.email
+
+                              UNION ALL
+
+                              SELECT SUM(ud.real_dollar_equivalent) AS sum_value, u.email
+                              FROM user_deposit AS ud
+                              INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+                              INNER JOIN user AS u ON ui.user_code = u.user_code
+                              INNER JOIN prospect_biodata AS pb ON u.email = pb.email_address
+                              WHERE (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                              AND ud.status = '8'
+                              GROUP BY u.email
+                          ) src GROUP BY email
+                      ) src2 WHERE final_sum_value >= $active_client_funding";
+
+        $active_client = $db_handle->numRows($query);
+        return $active_client ? $active_client : '0';
 
     }
 
@@ -866,18 +912,6 @@ class InstafxngSystem {
         }
 
         return $current_position ? $current_position : false;
-    }
-
-    public function get_all_account_officer() {
-        global $db_handle;
-
-        $query = "SELECT account_officers_id, CONCAT(a.last_name, SPACE(1), a.first_name) AS officer_full_name
-            FROM account_officers AS ao
-            INNER JOIN admin AS a ON ao.admin_code = a.admin_code ORDER BY account_officers_id ASC";
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-
-        return $fetched_data ? $fetched_data : false;
     }
     
 }

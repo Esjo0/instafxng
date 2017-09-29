@@ -98,7 +98,7 @@ $failed_sms_code = $system_object->get_failed_sms_code();
                             <div class="super-shadow dashboard-stats">
                                 <header class="text-center"><strong>Total Clients</strong></header>
                                 <article class="text-center">
-                                    <strong><?php echo number_format(15); ?></strong>
+                                    <strong><?php echo number_format($total_clients); ?></strong>
                                 </article>
                             </div>
                         </div>
