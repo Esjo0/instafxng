@@ -120,6 +120,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(49, $my_pages_sidebar)) { ?><li><a href="dinner/all_reg.php" title="">All Dinner 2016 Reg</a></li><?php } ?>
                         <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="event/lekki_office_warming_all.php" title="">All Lekki Office Warming Reg</a></li><?php } ?>
                         <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="event/pencil_unbroken.php" title="Pencil Unbroken Registration">Pencil Unbroken Reg</a></li><?php } ?>
+                        <?php// if (in_array(50, $my_pages_sidebar)) { ?><li><a href="independence_quiz_results.php" title="Independence Quiz Results">2017 Independence Quiz Results</a></li><?php //} ?>
                     </ul>
                 </li>
                 <li class="dropdown">
