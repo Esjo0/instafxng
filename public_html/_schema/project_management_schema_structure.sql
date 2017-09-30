@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2017 at 01:11 PM
+-- Generation Time: Sep 30, 2017 at 09:54 AM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.4
 
@@ -101,6 +101,28 @@ CREATE TABLE `project_management_reports` (
   `status` varchar(255) DEFAULT 'PENDING'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project_management_tasks`
+--
+
+CREATE TABLE `project_management_tasks` (
+  `task_id` int(11) NOT NULL,
+  `task_code` varchar(500) NOT NULL,
+  `project_code` varchar(500) NOT NULL,
+  `author_code` varchar(500) NOT NULL,
+  `title` varchar(1000) NOT NULL,
+  `description` text NOT NULL,
+  `time_span` varchar(255) NOT NULL,
+  `excecutors` text NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(255) NOT NULL,
+  `start_stamp` timestamp NULL DEFAULT NULL,
+  `deadline` varchar(255) DEFAULT NULL,
+  `completion_stamp` timestamp NULL DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -138,6 +160,13 @@ ALTER TABLE `project_management_reports`
   ADD UNIQUE KEY `report_code` (`report_code`);
 
 --
+-- Indexes for table `project_management_tasks`
+--
+ALTER TABLE `project_management_tasks`
+  ADD PRIMARY KEY (`task_id`),
+  ADD UNIQUE KEY `task_code` (`task_code`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -160,12 +189,17 @@ ALTER TABLE `project_management_project_comments`
 -- AUTO_INCREMENT for table `project_management_reminders`
 --
 ALTER TABLE `project_management_reminders`
-  MODIFY `reminder_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `reminder_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `project_management_reports`
 --
 ALTER TABLE `project_management_reports`
   MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `project_management_tasks`
+--
+ALTER TABLE `project_management_tasks`
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

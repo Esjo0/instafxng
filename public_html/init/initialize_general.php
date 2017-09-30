@@ -27,8 +27,6 @@ require_once(LIB_PATH.DS."class_client_operation.php");
 require_once(LIB_PATH.DS."config_sys.php");
 require_once(LIB_PATH.DS."class_careers.php");
 require_once(LIB_PATH.DS."class_project_management.php");
-require_once(LIB_PATH.DS."class_customer_care_log.php");
-require_once(LIB_PATH.DS."class_support_emails.php");
 require_once(LIB_PATH.DS."class_quiz.php");
 require_once(LIB_PATH.DS."session_quiz_participant.php");
 
