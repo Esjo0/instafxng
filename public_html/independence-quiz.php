@@ -98,7 +98,7 @@ require_once 'init/initialize_general.php';
                                 <li>You have 1 minute 15 secs to answer 15 multiple choice questions on the history of Nigeria.
                                     Each question has a time allotted it.</li>
                                 <li>If you couldn’t select an answer before time out, you have missed the question.</li>
-                                <li>You can only participate in this contest once irrespective of how many accounts you have with InstafxNg.</li>
+                                <li>You are allowed to participate in this contest just once even if you have more than one account.</li>
                                 <li>Five people with the highest scores will get $20 each.</li>
                             </ol>
                         </div>
