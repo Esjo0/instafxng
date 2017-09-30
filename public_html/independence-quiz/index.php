@@ -148,15 +148,14 @@ else
                                                                 <p class="text-danger text-center"><strong>Here are the guidelines to Participating in the Independence Day Quiz Competition.</strong></p>
                                                             </div>
                                                             <div class="modal-body">
+                                                                    <p class="text-justify">Follow the rules and regulations of the competition below diligently and
+                                                                        attempt all questions to the best of your knowledge.</p>
                                                                 <ul>
-                                                                    <li>Login with the email address you opened your InstaForex account with.</li>
-                                                                    <li>You have 2 minutes to answer <?php echo $no_of_allowed_questions ?> multiple choice current affairs questions. Each
-                                                                        question has a time allotted it.</li>
-                                                                    <li>If you couldn’t select an answer before time out, you have missed the question. Just
-                                                                        proceed to the next question. (If you don’t know the answer, just select a random
-                                                                        figure!)</li>
-                                                                    <li>Don’t even try to use Google, you will run out of time!</li>
-                                                                    <li>You can only participate in this competition once.</li>
+                                                                    <li>Only accounts enrolled in InstafxNg Loyalty Program and Rewards (ILPR) can participate in this contest.</li>
+                                                                    <li>You have 1 minute 15 secs to answer 15 multiple choice questions on the history of Nigeria.
+                                                                    Each question has a time allotted it.</li>
+                                                                    <li>If you couldn’t select an answer before time out, you have missed the question.</li>
+                                                                    <li>You can only participate in this contest once irrespective of how many accounts you have with InstafxNg.</li>
                                                                     <li>Five people with the highest scores will get $20 each.</li>
                                                                 </ul>
                                                             </div>

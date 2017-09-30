@@ -69,7 +69,7 @@ require_once 'init/initialize_general.php';
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <h3 class="text-success"><strong>NIGERIA @ 57</strong></h3>
-                                <p><strong>Participate in the Instafxng Quiz Contest to <span class="text-success">WIN $50</span></strong></p>
+                                <p><strong>Participate in the Instafxng Independence Day Contest to <span class="text-success">WIN $20</span></strong></p>
                             </div>
                         </div>
                         <hr />
@@ -77,30 +77,29 @@ require_once 'init/initialize_general.php';
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <p class="text-justify">How about playing a quiz that gets you $20 to commemorate this year’s Independence
+                                <p class="text-justify">How about participating in a contest that gets you $20 to commemorate this year’s Independence
                                     celebration?</p>
                                 <p class="text-justify">Cool right? Yes!</p>
-                                <p class="text-justify">You can be one of the 5 clients to be rewarded with $20 each in the ongoing quiz competition
+                                <p class="text-justify">You can be one of the 5 clients to be rewarded with $20 each in the ongoing Independence Day Contest
                                     just by showing us how well you know this beautiful country of ours – Nigeria.</p>
                                 <p class="text-justify">Yes! Your knowledge of the history of Nigeria is needed here to for you to get the $20.</p>
-                                <p class="text-justify">Follow the rules and regulations of the competition below diligently and attempt all questions
+                                <p class="text-justify">Follow the rules and regulations of the contest below diligently and attempt all questions
                                     to the best of your knowledge.</p>
-                                <p class="text-justify">Sure you want to win $50? Then let’s get to work!</p>
+                                <p class="text-justify">Sure you want to win $20? Then let’s get to work!</p>
+                                <p class="text-justify">This contest will run from today 30th of September to the 2nd of October 2017.</p>
                             </div>
                         </div>
 
                         <div class="section-tint-blue super-shadow">
-                            <p class="text-danger text-center"><strong>Here are the guidelines to Participating in the Independence Day Quiz Competition.</strong></p>
+                            <p class="text-justify">Follow the rules and regulations of the contest below diligently and
+                                attempt all questions to the best of your knowledge.</p>
                             <ol>
-                                <li class="text-justify">Login with the email address you opened your InstaForex account with.</li>
-                                <li class="text-justify">You have 2 minutes to answer 15 multiple choice current affairs questions. Each
-                                    question has a time allotted it.</li>
-                                <li class="text-justify">If you couldn’t select an answer before time out, you have missed the question. Just
-                                    proceed to the next question. (If you don’t know the answer, just select a random
-                                    figure!)</li>
-                                <li class="text-justify">Don’t even try to use Google, you will run out of time!</li>
-                                <li class="text-justify">You can only participate in this competition once.</li>
-                                <li class="text-justify">Five people with the highest scores will get $50 each.</li>
+                                <li>Only accounts enrolled in InstafxNg Loyalty Program and Rewards (ILPR) can participate in this contest.</li>
+                                <li>You have 1 minute 15 secs to answer 15 multiple choice questions on the history of Nigeria.
+                                    Each question has a time allotted it.</li>
+                                <li>If you couldn’t select an answer before time out, you have missed the question.</li>
+                                <li>You can only participate in this contest once irrespective of how many accounts you have with InstafxNg.</li>
+                                <li>Five people with the highest scores will get $20 each.</li>
                             </ol>
                         </div>
 

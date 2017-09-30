@@ -6,7 +6,8 @@ if (!$session_admin->is_logged_in()) {
 $current_date = date("Y-m-d");
 if (isset($_POST['process'])) {
     
-    foreach($_POST as $key => $value) {
+    foreach($_POST as $key => $value)
+    {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
 

@@ -186,8 +186,8 @@ $full_name = $result['full_name'];
                                     <div class="col-sm-8">
                                         <p class="text-justify">
                                             Thank you <?php echo $full_name; ?>,
-                                            for participating in this quiz competition.<br/>
-                                            The top five participants in this competition would be contacted soon.
+                                            for participating in the Independence Day Contest.<br/>
+                                            The top five participants will be announced on the 3rd of October 2017.
                                         </p>
                                     </div>
                                     <div class="col-sm-2">
