@@ -77,15 +77,15 @@ require_once 'init/initialize_general.php';
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <p class="text-justify">How about participating in a contest that gets you $20 to commemorate this yearâ€™s Independence
+                                <p class="text-justify">How about participating in a contest that gets you $20 to commemorate this year’s Independence
                                     celebration?</p>
                                 <p class="text-justify">Cool right? Yes!</p>
                                 <p class="text-justify">You can be one of the 5 clients to be rewarded with $20 each in the ongoing Independence Day Contest
-                                    just by showing us how well you know this beautiful country of ours â€“ Nigeria.</p>
+                                    just by showing us how well you know this beautiful country of ours – Nigeria.</p>
                                 <p class="text-justify">Yes! Your knowledge of the history of Nigeria is needed here to for you to get the $20.</p>
                                 <p class="text-justify">Follow the rules and regulations of the contest below diligently and attempt all questions
                                     to the best of your knowledge.</p>
-                                <p class="text-justify">Sure you want to win $20? Then letâ€™s get to work!</p>
+                                <p class="text-justify">Sure you want to win $20? Then let’s get to work!</p>
                                 <p class="text-justify">This contest will run from today 30th of September to the 2nd of October 2017.</p>
                             </div>
                         </div>
@@ -94,10 +94,10 @@ require_once 'init/initialize_general.php';
                             <p class="text-justify">Follow the rules and regulations of the contest below diligently and
                                 attempt all questions to the best of your knowledge.</p>
                             <ol>
-                                <li>Only accounts enrolled in InstafxNg Loyalty Program and Rewards (ILPR) can participate in this contest.</li>
+                                <li>Only accounts enrolled on Instafxng Loyalty Program and Rewards (ILPR) can participate in this contest.</li>
                                 <li>You have 1 minute 15 secs to answer 15 multiple choice questions on the history of Nigeria.
                                     Each question has a time allotted it.</li>
-                                <li>If you couldnâ€™t select an answer before time out, you have missed the question.</li>
+                                <li>If you couldn’t select an answer before time out, you have missed the question.</li>
                                 <li>You are allowed to participate in this contest just once even if you have more than one account.</li>
                                 <li>Five people with the highest scores will get $20 each.</li>
                             </ol>
