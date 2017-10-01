@@ -77,11 +77,11 @@ require_once 'init/initialize_general.php';
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <p class="text-justify">How about participating in a contest that gets you $20 to commemorate this year’s Independence
+                                <p class="text-justify">How about participating in a contest that gets you $20 to commemorate this year�s Independence
                                     celebration?</p>
                                 <p class="text-justify">Cool right? Yes!</p>
                                 <p class="text-justify">You can be one of the 5 clients to be rewarded with $20 each in the ongoing Independence Day Contest
-                                    just by showing us how well you know this beautiful country of ours – Nigeria.</p>
+                                    just by showing us how well you know this beautiful country of ours � Nigeria.</p>
                                 <p class="text-justify">Yes! Your knowledge of the history of Nigeria is needed here to for you to get the $20.</p>
                                 <p class="text-justify">Follow the rules and regulations of the contest below diligently and attempt all questions
                                     to the best of your knowledge.</p>
