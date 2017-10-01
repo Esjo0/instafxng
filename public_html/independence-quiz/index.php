@@ -52,8 +52,8 @@ else
                 background: url(images/Spinner.gif) center no-repeat #fff;
             }
         </style>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
         <script>
             $(window).load(function()
             {
@@ -87,7 +87,7 @@ else
         <script src="js/ie10-viewport-bug-workaround.js"></script>
         <script src="js/validator.min.js"></script>
         <script src="js/npm.js"></script>
-        <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js'></script>
+        <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js'></script>
         <script type='text/javascript' src='loadImg.js'></script>
         <script type='text/javascript'>
             $(function(){
@@ -154,7 +154,7 @@ else
                                                                     <li>Only accounts enrolled on Instafxng Loyalty Program and Rewards (ILPR) can participate in this contest.</li>
                                                                     <li>You have 1 minute 15 secs to answer 15 multiple choice questions on the history of Nigeria.
                                                                     Each question has a time allotted it.</li>
-                                                                    <li>If you couldn’t select an answer before time out, you have missed the question.</li>
+                                                                    <li>If you couldnâ€™t select an answer before time out, you have missed the question.</li>
                                                                     <li>You are allowed to participate in this contest just once even if you have more than one account.</li>
                                                                     <li>Five people with the highest scores will get $20 each.</li>
                                                                 </ul>
