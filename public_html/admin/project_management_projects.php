@@ -419,7 +419,12 @@ $projects = $db_handle->fetchAssoc($result);
                                                 </div>
                                             </td>
                                             <td>
-                                                <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $row['project_code'] ?>" class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
+                                                <?php
+                                                if($row['supervisor_code'] == $admin_code)
+                                                {
+                                                    echo '<button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project'.$row['project_code'].' class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>';
+                                                }
+                                                ?>
                                                 <div id="edit_project<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
                                                     <div class="modal-dialog">
                                                         <!-- Modal content-->
