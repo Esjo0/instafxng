@@ -61,8 +61,8 @@ $options = explode("*", $options);
             background: url(images/Spinner.gif) center no-repeat #fff;
         }
     </style>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
     <script>
         $(window).load(function()
         {
@@ -117,7 +117,7 @@ $options = explode("*", $options);
         {
             if (document.getElementById)
             {
-                if(document.getElementById("seconds").innerHTML == "1")
+                if(document.getElementById("seconds").innerHTML == "0")
                 {
                     document.getElementById("next").disabled = true;
                     document.getElementById("questions_form").submit();
