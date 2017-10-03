@@ -117,7 +117,7 @@ $options = explode("*", $options);
         {
             if (document.getElementById)
             {
-                if(document.getElementById("seconds").innerHTML == "0")
+                if(document.getElementById("seconds").innerHTML == "1")
                 {
                     document.getElementById("next").disabled = true;
                     document.getElementById("questions_form").submit();
