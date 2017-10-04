@@ -270,6 +270,7 @@ $projects = $db_handle->fetchAssoc($result);
                                     foreach ($projects as $row) { ?>
                                         <?php
                                         $executors = explode(", " ,$row['executors']);
+                                        //
                                         if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code)
                                         :?>
                                             <tr>
