@@ -21,7 +21,7 @@ if(isset($_POST['delete_reminder']))
 
 if(isset($_POST['edit_reminder']))
 {
-    $result = $obj_project_management->update_reminders($_POST['reminder_id'], $_POST['description'], $_POST['effect_date']);
+    $result = $obj_project_management->update_reminder($_POST['reminder_id'], $_POST['description'], $_POST['effect_date']);
     if($result)
     {
         $message_success = "You have successfully deleted a reminder.";
@@ -35,9 +35,9 @@ if(isset($_POST['edit_reminder']))
 $current_date = date("Y-m-d");
 
 $pending_query = "SELECT reminder_id, description, effect_date
-                  FROM project_management_reminders
-                  WHERE project_management_reminders.status = 'ON' 
-                  AND project_management_reminders.effect_date > '$current_date'
+                  FROM reminders
+                  WHERE reminders.status = 'ON' 
+                  AND reminders.effect_date > '$current_date'
                   ORDER BY effect_date DESC ";
 $pending_numrows = $db_handle->numRows($pending_query);
 $pending_rowsperpage = 20;
@@ -67,9 +67,9 @@ $pending_reminders = $db_handle->fetchAssoc($pending_result);
 
 
 $expired_query = "SELECT reminder_id, description, effect_date
-                  FROM project_management_reminders
-                  WHERE status = 'OFF' 
-                  AND effect_date <= '$current_date'
+                  FROM reminders
+                  WHERE reminders.status = 'OFF' 
+                  AND reminders.effect_date <= '$current_date'
                   ORDER BY effect_date DESC ";
 $expired_numrows = $db_handle->numRows($expired_query);
 $expired_rowsperpage = 20;
@@ -162,9 +162,8 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                                         <h4 class="modal-title">Edit Reminder</h4>
                                                                     </div>
                                                                     <div class="modal-body">
-
+                                                                        <input name="reminder_id" type="hidden" value="<?php echo $row['reminder_id']; ?>">
                                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                                            <input name="reminder_id" type="hidden" value="<?php echo $row['reminder_id']; ?>">
 
                                                                             <div class="form-group">
                                                                                 <label class="control-label col-sm-3" for="description">Description:</label>
@@ -265,8 +264,8 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                             <input name="reminder_id" type="hidden" value="<?php echo $row['reminder_id']; ?>">
                                                                             <input name="delete_reminder" type="submit" class="btn btn-success" value="Proceed">
-                                                                            <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                                         </form>
+                                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                                     </div>
                                                                 </div>
                                                             </div>

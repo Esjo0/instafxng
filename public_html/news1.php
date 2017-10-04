@@ -43,7 +43,6 @@ if (isset($_POST['post_comment']))
     }
 }
 
-
 if (isset($_POST['reply_comment']))
 {
     $name = $db_handle->sanitizePost($_POST['name']);
@@ -72,7 +71,6 @@ if (isset($_POST['reply_comment']))
         $message_success = "You have successfully added a reply.";
     }
 }
-
 
 if(strlen($news_id) > 4) {
     header("Location: view_news.php");
@@ -211,7 +209,6 @@ if(strlen($news_id) > 4) {
                                     <?php foreach($latest_comments as $row) { ?>
 
                                         <?php echo $row['full_name']; ?> on <?php echo datetime_to_text($row['created']); ?>
-
                                         <?php
 
                                         if($row['reply_to'] > 0)
@@ -226,8 +223,7 @@ if(strlen($news_id) > 4) {
                                         }
                                         ?>
 
-                                        said;<br/>
-                                        <em>"<?php echo $row['comment'];?>"</em><br/>
+                                        said;<br/>"<?php echo $row['comment'];?>"<br/>
                                         <a title="Reply" data-target="#reply-comment<?php echo $row['comment_id'];?>" data-toggle="modal" href="#">Reply</a>
 
                                         <!--Modal - confirmation boxes-->

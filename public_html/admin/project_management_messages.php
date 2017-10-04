@@ -300,7 +300,10 @@ $all_bulletin = $db_handle->fetchAssoc($result);
                                                                 </div>
                                                                 <div class="panel-collapse " id="collapseOne">
                                                                     <div class="panel-body">
-                                                                        <ul  id="chat<?php echo $row['project_code']; ?>" onfocus="get_messages('chat<?php echo $row['project_code']; ?>', '<?php echo $row['project_code']; ?>')" class="chat">
+                                                                        <ul  id="chat<?php echo $row['project_code']; ?>" class="chat">
+                                                                            <script>
+                                                                                get_messages('chat<?php echo $row['project_code']; ?>', '<?php echo $row['project_code']; ?>')
+                                                                            </script>
                                                                         </ul>
                                                                     </div>
                                                                     <div class="panel-footer">
