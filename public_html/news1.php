@@ -3,6 +3,7 @@ require_once 'init/initialize_general.php';
 $thisPage = "About";
 
 $news_id = $_GET['id'];
+//$news_id = 544;
 
 if (isset($_POST['post_comment']))
 {
@@ -42,7 +43,6 @@ if (isset($_POST['post_comment']))
     }
 }
 
-
 if (isset($_POST['reply_comment']))
 {
     $name = $db_handle->sanitizePost($_POST['name']);
@@ -71,7 +71,6 @@ if (isset($_POST['reply_comment']))
         $message_success = "You have successfully added a reply.";
     }
 }
-
 
 if(strlen($news_id) > 4) {
     header("Location: view_news.php");
@@ -210,14 +209,13 @@ if(strlen($news_id) > 4) {
                                     <?php foreach($latest_comments as $row) { ?>
 
                                         <?php echo $row['full_name']; ?> on <?php echo datetime_to_text($row['created']); ?>
-                                    <li>
                                         <?php
 
                                         if($row['reply_to'] > 0)
                                         {
-                                            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM comments WHERE comments.comment_id = '" . $row['reply_to'] . "';");
-                                            $db_handle->runQuery("SELECT @a_id:= article_id FROM comments WHERE comments.comment_id = '" . $row['reply_to'] . "';");
-                                            $reply_details = $db_handle->runQuery("SELECT full_name, title FROM visitors, article WHERE visitors.visitor_id = @v_id AND article.article_id = @a_id;");
+                                            $query1 = $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
+                                            $query2 = $db_handle->runQuery("SELECT @a_id:= article_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
+                                            $reply_details = $db_handle->runQuery("SELECT full_name, title FROM article_visitors, article WHERE article_visitors.visitor_id = @v_id AND article.article_id = @a_id;");
                                             $reply_details = $db_handle->fetchAssoc($reply_details);
                                             foreach ($reply_details as $row1) {
                                                 echo "as a reply to ".$row1['full_name'] . "'s comment on ".$row1['title']." ";
@@ -225,8 +223,7 @@ if(strlen($news_id) > 4) {
                                         }
                                         ?>
 
-                                        said;<br/>
-                                        <em>"<?php echo $row['comment'];?>"</em><br/>
+                                        said;<br/>"<?php echo $row['comment'];?>"<br/>
                                         <a title="Reply" data-target="#reply-comment<?php echo $row['comment_id'];?>" data-toggle="modal" href="#">Reply</a>
 
                                         <!--Modal - confirmation boxes-->
@@ -285,7 +282,7 @@ if(strlen($news_id) > 4) {
                                         </div>
 
                                     <br/>
-                                    </li>
+
                                     <?php } ?>
                                 </ul>
                                 <?php } ?>

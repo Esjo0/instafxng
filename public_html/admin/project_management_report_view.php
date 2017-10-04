@@ -29,6 +29,7 @@ $result = $db_handle->fetchAssoc($result);
 
 if(isset($_POST['accept']))
 {
+    var_dump($_POST);
     extract($_POST);
     $query = "UPDATE project_management_reports SET status = 'APPROVED' WHERE report_code = '$report_code' ";
     $accept1 = $db_handle->runQuery($query);
@@ -110,7 +111,6 @@ if(isset($_POST['decline']))
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <p><a onclick="window.history.back()" class="btn btn-default" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a></p>
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <?php foreach ($result as $row) { ?>

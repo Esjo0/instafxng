@@ -265,231 +265,237 @@ $projects = $db_handle->fetchAssoc($result);
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php if(isset($projects) && !empty($projects)) {
+                                    <?php if(isset($projects) && !empty($projects))
+                                    {
                                     foreach ($projects as $row) { ?>
-                                        <tr>
-                                            <td><?php echo $row['title']; ?></td>
-                                            <td>
-                                                <button type="button" data-toggle="modal" data-target="#view_project<?php echo $row['project_code']; ?>" class="btn btn-default">Project Description</button>
-                                                <!-- Modal-- View Project Details -->
-                                                <div id="view_project<?php echo $row['project_code']; ?>" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog">
-                                                        <!-- Modal content-->
-                                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                    <h4 class="modal-title">Project Details</h4>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12">
-                                                                                    <p>
-                                                                                        <strong>Project Title: </strong><?php echo $row['title'];?>
-                                                                                    </p>
-                                                                                    <hr/>
+                                        <?php
+                                        $executors = explode(", " ,$row['executors']);
+                                        if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code)
+                                        :?>
+                                            <tr>
+                                                <td><?php echo $row['title']; ?></td>
+                                                <td>
+                                                    <button type="button" data-toggle="modal" data-target="#view_project<?php echo $row['project_code']; ?>" class="btn btn-default">Project Description</button>
+                                                    <!-- Modal-- View Project Details -->
+                                                    <div id="view_project<?php echo $row['project_code']; ?>" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog">
+                                                            <!-- Modal content-->
+                                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        <h4 class="modal-title">Project Details</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <p>
+                                                                                    <strong>Project Title: </strong><?php echo $row['title'];?>
+                                                                                </p>
+                                                                                <hr/>
 
 
-                                                                                    <p class="text-center">
-                                                                                        <strong>Description</strong>
-                                                                                    </p>
-                                                                                    <p class="text-justify">
-                                                                                        <?php echo $row['description'];?>
-                                                                                    </p>
-                                                                                    <hr/>
+                                                                                <p class="text-center">
+                                                                                    <strong>Description</strong>
+                                                                                </p>
+                                                                                <p class="text-justify">
+                                                                                    <?php echo $row['description'];?>
+                                                                                </p>
+                                                                                <hr/>
 
-                                                                                    <p>
-                                                                                        <strong>Project Deadline: </strong>
-                                                                                        <?php echo $row['deadline'];?>
-                                                                                    </p>
-                                                                                    <hr/>
-
-
+                                                                                <p>
+                                                                                    <strong>Project Deadline: </strong>
+                                                                                    <?php echo $row['deadline'];?>
+                                                                                </p>
+                                                                                <hr/>
 
 
 
 
+
+
+                                                                            </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
+                                                            </form>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td><?php echo $row['created']; ?></td>
-                                            <td><?php echo $row['deadline']; ?></td>
-                                            <td><?php echo $row['status']; ?></td>
-                                            <td>
-                                                <?php
+                                                </td>
+                                                <td><?php echo $row['created']; ?></td>
+                                                <td><?php echo $row['deadline']; ?></td>
+                                                <td><?php echo $row['status']; ?></td>
+                                                <td>
+                                                    <?php
                                                     $executors = explode(", " ,$row['executors']);
                                                     for ($i = 0; $i < count($executors); $i++)
                                                     {
                                                         echo $admin_object->get_admin_name_by_code($executors[$i])."<br/>";
                                                     }
-                                                ?>
-                                                <?php ?>
-                                            </td>
-                                            <td>
-                                                <button title="View Comments" type="button" data-toggle="modal" data-target="#view_comment<?php echo $row['project_code']?>" class="btn btn-info"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                <br/>
-                                                <br/>
-                                                <?php
+                                                    ?>
+                                                    <?php ?>
+                                                </td>
+                                                <td>
+                                                    <button title="View Comments" type="button" data-toggle="modal" data-target="#view_comment<?php echo $row['project_code']?>" class="btn btn-info"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    <br/>
+                                                    <br/>
+                                                    <?php
                                                     if($row['supervisor_code'] == $admin_code)
                                                     {
                                                         echo '<button title="Add New Comment" type="button" data-toggle="modal" data-target="#new_comment'.$row['project_code'].'" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i></button>';
                                                     }
-                                                ?>
-                                                <div id="new_comment<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog">
-                                                        <!-- Modal content-->
-                                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                    <h4 class="modal-title">Project Comments</h4>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12">
-                                                                            <p><strong>Project Title:</strong></p>
-                                                                            <p><?php echo $row['title']; ?></p>
-                                                                            <hr/>
+                                                    ?>
+                                                    <div id="new_comment<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog">
+                                                            <!-- Modal content-->
+                                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        <h4 class="modal-title">Project Comments</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <p><strong>Project Title:</strong></p>
+                                                                                <p><?php echo $row['title']; ?></p>
+                                                                                <hr/>
 
-                                                                            <p><strong>New Comment:</strong></p>
-                                                                            <input name="project_code" type="hidden" value="<?php echo $row['project_code'] ?>">
-                                                                            <textarea name="comment" rows="5" class="form-control" placeholder="Enter a new comment here..." required></textarea>
-                                                                            <hr/>
+                                                                                <p><strong>New Comment:</strong></p>
+                                                                                <input name="project_code" type="hidden" value="<?php echo $row['project_code'] ?>">
+                                                                                <textarea name="comment" rows="5" class="form-control" placeholder="Enter a new comment here..." required></textarea>
+                                                                                <hr/>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="modal-footer">
+                                                                        <input name="new_comment" type="submit" class="btn btn-success" value="Post Comment"/>
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <input name="new_comment" type="submit" class="btn btn-success" value="Post Comment"/>
-                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
+                                                            </form>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div id="view_comment<?php echo $row['project_code']?>" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog">
-                                                        <!-- Modal content-->
-                                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                    <h4 class="modal-title">Project Comments</h4>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12">
+                                                    <div id="view_comment<?php echo $row['project_code']?>" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog">
+                                                            <!-- Modal content-->
+                                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        <h4 class="modal-title">Project Comments</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
 
-                                                                            <p><strong>Project Title:</strong></p>
-                                                                            <p><?php echo $row['title']; ?></p>
-                                                                            <hr/>
+                                                                                <p><strong>Project Title:</strong></p>
+                                                                                <p><?php echo $row['title']; ?></p>
+                                                                                <hr/>
 
-                                                                            <?php $comments = $obj_project_management->get_project_comments($row['project_code']);
+                                                                                <?php $comments = $obj_project_management->get_project_comments($row['project_code']);
                                                                                 //var_dump($comments);
                                                                                 if(isset($comments) && !empty($comments))
                                                                                 {
                                                                                     foreach ($comments as $row1)
                                                                                     { ?>
 
-                                                                            <div class="text-left">
-                                                                                <strong>Author:</strong><?php echo $row1['author_name'] ?>
-                                                                                <p class="text-left"><strong>Date:</strong><?php echo datetime_to_text2($row1['created']); ?></p>
-                                                                                <p class="text-justify"><?php echo $row1['comment'] ?></p>
-                                                                            </div>
+                                                                                        <div class="text-left">
+                                                                                            <strong>Author:</strong><?php echo $row1['author_name'] ?>
+                                                                                            <p class="text-left"><strong>Date:</strong><?php echo datetime_to_text2($row1['created']); ?></p>
+                                                                                            <p class="text-justify"><?php echo $row1['comment'] ?></p>
+                                                                                        </div>
 
-                                                                            <hr/>
+                                                                                        <hr/>
                                                                                     <?php } }  ?>
 
+                                                                            </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
+                                                            </form>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>
+                                                </td>
                                                 <?php
-                                                if($row['supervisor_code'] == $admin_code)
-                                                {
-                                                    echo '<button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project'.$row['project_code'].' class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>';
-                                                }
-                                                ?>
-                                                <div id="edit_project<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog">
-                                                        <!-- Modal content-->
-                                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                    <h4 class="modal-title">Edit Project</h4>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12">
-                                                                            <input type="hidden" name="project_code" value="<?php echo $row['project_code'];?>" />
+                                                if($row['supervisor_code'] == $admin_code):?>
+                                                    <td>
+                                                        <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $row['project_code'] ?>" class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        <div id="edit_project<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
+                                                            <div class="modal-dialog">
+                                                                <!-- Modal content-->
+                                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                            <h4 class="modal-title">Edit Project</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-12">
+                                                                                    <input type="hidden" name="project_code" value="<?php echo $row['project_code'];?>" />
 
-                                                                            <p><strong>Project Title</strong></p>
-                                                                            <input value="<?php echo $row['title']; ?>" type="text" name="title" class="form-control" placeholder="Project Title" required/>
-                                                                            <hr/>
+                                                                                    <p><strong>Project Title</strong></p>
+                                                                                    <input value="<?php echo $row['title']; ?>" type="text" name="title" class="form-control" placeholder="Project Title" required/>
+                                                                                    <hr/>
 
-                                                                            <p><strong>Project Description</strong></p>
-                                                                            <textarea id="description" name="description" placeholder="Project Description" class="form-control" rows="9" required><?php echo $row['description']; ?></textarea>
-                                                                            <hr/>
+                                                                                    <p><strong>Project Description</strong></p>
+                                                                                    <textarea id="description" name="description" placeholder="Project Description" class="form-control" rows="9" required><?php echo $row['description']; ?></textarea>
+                                                                                    <hr/>
 
-                                                                            <p><strong>Executors</strong></p>
-                                                                            <div class="form-group row">
-                                                                                <div class="col-sm-10">
-                                                                                    <?php $allowed_admin = explode(",", $row['executors']);
-                                                                                    foreach($all_admin_member AS $key) { ?>
-                                                                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
-                                                                                    <?php } ?>
-                                                                                </div>
-                                                                            </div>
-                                                                            <hr/>
+                                                                                    <p><strong>Executors</strong></p>
+                                                                                    <div class="form-group row">
+                                                                                        <div class="col-sm-10">
+                                                                                            <?php $allowed_admin = explode(",", $row['executors']);
+                                                                                            foreach($all_admin_member AS $key) { ?>
+                                                                                                <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
+                                                                                            <?php } ?>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <hr/>
 
-                                                                            <p><strong>Deadline</strong></p>
-                                                                            <div class="">
-                                                                                <div class="input-group date" id="datetimepicker">
-                                                                                    <input value="<?php echo $row['deadline']; ?>" name="deadline" type="text" class="form-control" id="datetimepicker2" required/>
-                                                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <script type="text/javascript">
-                                                                                $(function ()
-                                                                                {
-                                                                                    $('#datetimepicker, #datetimepicker2').datetimepicker(
+                                                                                    <p><strong>Deadline</strong></p>
+                                                                                    <div class="">
+                                                                                        <div class="input-group date" id="datetimepicker">
+                                                                                            <input value="<?php echo $row['deadline']; ?>" name="deadline" type="text" class="form-control" id="datetimepicker2" required/>
+                                                                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <script type="text/javascript">
+                                                                                        $(function ()
                                                                                         {
-                                                                                            format: 'YYYY-MM-DD'
+                                                                                            $('#datetimepicker, #datetimepicker2').datetimepicker(
+                                                                                                {
+                                                                                                    format: 'YYYY-MM-DD'
+                                                                                                });
                                                                                         });
-                                                                                });
-                                                                            </script>
-                                                                            <hr/>
+                                                                                    </script>
+                                                                                    <hr/>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <input name="edit_project" type="submit" class="btn btn-success" value="Proceed"/>
+                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <input name="edit_project" type="submit" class="btn btn-success" value="Proceed"/>
-                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                </div>
+                                                                </form>
                                                             </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                                        </div>
+                                                    </td>
+                                                <?php endif ?>
+                                            </tr>
+                                        <?php endif?>
 
-                                        </tr>
-                                    <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+
+                                    <?php }
+                                    } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
                                 <?php if(isset($projects) && !empty($projects)) { ?>

@@ -17,7 +17,7 @@ foreach ($chat_box as $row2)
                 <div class="header">
                     <strong class="primary-font"><?php echo $admin_object->get_admin_name_by_code($row2['author_code']); ?></strong>
                     <small class="pull-right text-muted">
-                        <span class="glyphicon glyphicon-time"></span><?php echo datetime_to_text2($row2['created']); ?>
+                        <span class="glyphicon glyphicon-time"></span><?php echo datetime_to_text($row2['created']); ?>
                     </small>
                 </div>
                 <p>
