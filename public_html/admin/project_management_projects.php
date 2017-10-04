@@ -269,7 +269,7 @@ $projects = $db_handle->fetchAssoc($result);
                                     {
                                     foreach ($projects as $row) { ?>
                                         <?php
-                                        $executors = explode(", " ,$row['executors']);
+                                        $executors = explode("," ,$row['executors']);
                                         //
                                         if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code)
                                         :?>
@@ -331,7 +331,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                 <td><?php echo $row['status']; ?></td>
                                                 <td>
                                                     <?php
-                                                    $executors = explode(", " ,$row['executors']);
+                                                    $executors = explode("," ,$row['executors']);
                                                     for ($i = 0; $i < count($executors); $i++)
                                                     {
                                                         echo $admin_object->get_admin_name_by_code($executors[$i])."<br/>";
