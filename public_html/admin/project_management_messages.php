@@ -346,9 +346,6 @@ $all_bulletin = $db_handle->fetchAssoc($result);
 
                         <?php if(isset($all_bulletin) && !empty($all_bulletin)) { require_once 'layouts/pagination_links.php'; } ?>
 
-
-
-
                     </div>
 
                     <!-- Unique Page Content Ends Here
