@@ -189,6 +189,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(75, $my_pages_sidebar)) { ?><li><a href="article_add.php">Add Article</a></li><?php } ?>
                         <?php if (in_array(76, $my_pages_sidebar)) { ?><li><a href="article_manage.php">Manage Article</a></li><?php } ?>
                         <?php if (in_array(75, $my_pages_sidebar)) { ?><li><a href="recent_comments.php">Recent Comments</a></li><?php } ?>
+                        <?php if (in_array(76, $my_pages_sidebar)) { ?><li><a href="article_comments_history.php">Comments History</a></li><?php } ?>
                         <?php if (in_array(76, $my_pages_sidebar)) { ?><li><a href="list_of_visitors.php">List Of Visitors</a></li><?php } ?>
                     </ul>
                 </li>
