@@ -1,6 +1,7 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in()) {
+if (!$session_admin->is_logged_in())
+{
     redirect_to("login.php");
 }
 $author_code = $_SESSION['admin_unique_code'];
