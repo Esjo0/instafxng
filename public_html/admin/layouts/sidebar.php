@@ -120,18 +120,18 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(49, $my_pages_sidebar)) { ?><li><a href="dinner/all_reg.php" title="">All Dinner 2016 Reg</a></li><?php } ?>
                         <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="event/lekki_office_warming_all.php" title="">All Lekki Office Warming Reg</a></li><?php } ?>
                         <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="event/pencil_unbroken.php" title="Pencil Unbroken Registration">Pencil Unbroken Reg</a></li><?php } ?>
-                        <?php// if (in_array(50, $my_pages_sidebar)) { ?><li><a href="independence_quiz_results.php" title="Independence Quiz Results">2017 Independence Quiz Results</a></li><?php //} ?>
+                        <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="independence_quiz_results.php" title="Independence Quiz Results">2017 Independence Quiz Results</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-gears fa-fw"></i> Project Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <?php //if (in_array(48, $my_pages_sidebar)) { ?><li><a href="project_management_projects.php" title="Projects">Projects</a></li><?php //} ?>
-                        <?php //if (in_array(48, $my_pages_sidebar)) { ?><li><a href="project_management_project_report.php" title="Project Reports">Project Reports</a></li><?php //} ?>
-                        <?php //if (in_array(48, $my_pages_sidebar)) { ?><li><a href="project_management_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li><?php //} ?>
-                        <?php //if (in_array(48, $my_pages_sidebar)) { ?><li><a href="project_management_messages.php" title="Messaging Board">Messaging Board</a></li><?php //} ?>
-                        <?php //if (in_array(77, $my_pages_sidebar)) { ?><li><a href="project_management_reminder_add.php" title="Add New Reminder" >Add New Reminder</a></li><?php //} ?>
-                        <?php //if (in_array(78, $my_pages_sidebar)) { ?><li><a href="project_management_reminder_manage.php" title="Manage Reminders">Manage Reminders</a></li><?php //} ?>
+                        <?php if (in_array(203, $my_pages_sidebar)) { ?><li><a href="project_management_projects.php" title="Projects">Projects</a></li><?php } ?>
+                        <?php if (in_array(204, $my_pages_sidebar)) { ?><li><a href="project_management_project_report.php" title="Project Reports">Project Reports</a></li><?php } ?>
+                        <?php if (in_array(205, $my_pages_sidebar)) { ?><li><a href="project_management_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li><?php } ?>
+                        <?php if (in_array(206, $my_pages_sidebar)) { ?><li><a href="project_management_messages.php" title="Messaging Board">Messaging Board</a></li><?php } ?>
+                        <?php if (in_array(207, $my_pages_sidebar)) { ?><li><a href="project_management_reminder_add.php" title="Add New Reminder" >Add New Reminder</a></li><?php } ?>
+                        <?php if (in_array(208, $my_pages_sidebar)) { ?><li><a href="project_management_reminder_manage.php" title="Manage Reminders">Manage Reminders</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">

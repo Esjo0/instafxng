@@ -1,8 +1,8 @@
 <?php
 require_once("../init/initialize_admin.php");
-//if (!$session_admin->is_logged_in()) {
-    //redirect_to("login.php");
-//}
+if (!$session_admin->is_logged_in()) {
+    redirect_to("login.php");
+}
 
 // Add New Admin User - Process submitted form
 if (isset($_POST['process'])) {
@@ -250,6 +250,17 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="48" id="" <?php if (in_array(48, $my_pages)) { echo 'checked="checked"'; } ?>/> New Dinner 2016 Reg</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="49" id="" <?php if (in_array(49, $my_pages)) { echo 'checked="checked"'; } ?>/> All Dinner 2016 Reg</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="50" id="" <?php if (in_array(50, $my_pages)) { echo 'checked="checked"'; } ?>/> All Lekki Office Warming Reg</label></div></div>
+                                    </div>
+                                    <hr/>
+
+                                    <p><strong>Project Management</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="203" id="" <?php if (in_array(203, $my_pages)) { echo 'checked="checked"'; } ?>/> Projects</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="204" id="" <?php if (in_array(204, $my_pages)) { echo 'checked="checked"'; } ?>/> Project Reports</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="205" id="" <?php if (in_array(205, $my_pages)) { echo 'checked="checked"'; } ?>/> Confirmation Requests</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="206" id="" <?php if (in_array(206, $my_pages)) { echo 'checked="checked"'; } ?>/> Messaging Board</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="207" id="" <?php if (in_array(207, $my_pages)) { echo 'checked="checked"'; } ?>/> Add New Reminder</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="208" id="" <?php if (in_array(208, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Reminders</label></div></div>
                                     </div>
                                     <hr/>
 
