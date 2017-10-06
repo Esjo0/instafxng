@@ -113,6 +113,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(47, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
                     </ul>
                 </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cutlery fa-fw"></i> Events<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -123,6 +124,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php// if (in_array(50, $my_pages_sidebar)) { ?><li><a href="independence_quiz_results.php" title="Independence Quiz Results">2017 Independence Quiz Results</a></li><?php //} ?>
                     </ul>
                 </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-gears fa-fw"></i> Project Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
