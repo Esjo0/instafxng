@@ -37,16 +37,14 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
-                                <h2>5 Reasons You Should Keep a Forex Trading Journal</h2>
-                                <p>Do you often wonder why you need to keep a trading journal for your Forex
-                                    trading activities since your broker provide a real-time records of your
-                                    trade?</p>
-                                <p>There are a lot of benefits to keeping a separate and manual trading journal
-                                    <a href="https://instafxng.com/news1/id/534/u/5-reasons-you-should-keep-forex-trading-journal/"> ... read more</a></p>
+                                <h2>More Better and Easier Methods to Profitable Trading</h2>
+                                <p>Join us on Saturday, 14th of October as we examine more Better and Easier methods
+                                    to Profitable Trading. Time: 12 - 2pm. <a href="traders_forum.php">Click here</a>
+                                    to reserve your seat below to stand a chance to win $20.</p>
                             </div>
 
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/news1/id/534/u/5-reasons-you-should-keep-forex-trading-journal/" title="click for details"><img src="images/forex-journal.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/traders_forum.php" title="click for details"><img src="images/forex-traders-forum-smart-investors.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>
