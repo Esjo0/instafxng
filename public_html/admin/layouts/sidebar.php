@@ -136,16 +136,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php //if (in_array(78, $my_pages_sidebar)) { ?><li><a href="project_management_reminder_manage.php" title="Manage Reminders">Manage Reminders</a></li><?php //} ?>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-envelope fa-fw"></i> Support Mails<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <?php //if (in_array(48, $my_pages_sidebar)) { ?><li><a href="support_email_compose.php" title="Compose Email">Compose Email</a></li><?php //} ?>
-                        <?php //if (in_array(49, $my_pages_sidebar)) { ?><li><a href="support_email_inbox.php" title="Inbox">Inbox</a></li><?php //} ?>
-                        <?php //if (in_array(50, $my_pages_sidebar)) { ?><li><a href="support_email_sent_box.php" title="Sent Box">Sent Box</a></li><?php //} ?>
-                        <?php //if (in_array(49, $my_pages_sidebar)) { ?><li><a href="support_email_assigned.php" title="Inbox">Assigned Emails</a></li><?php //} ?>
-                        <?php //if (in_array(50, $my_pages_sidebar)) { ?><li><a href="support_email_drafts.php" title="Drafts">Drafts</a></li><?php //} ?>
-                    </ul>
-                </li>
+            
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-suitcase fa-fw"></i> Partner Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -275,23 +266,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     </ul>
                 </li>
                 
-<!--                <li class="dropdown">-->
-<!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-expand fa-fw"></i> Customer Care<b class="caret"></b></a>-->
-<!--                    <ul class="dropdown-menu">-->
-<!--                        --><?php ////if (in_array(110, $my_pages_sidebar)) { ?><!--<li><a href="customer_care_log_add.php">Add New Log</a></li>--><?php ////} ?>
-<!--                        --><?php ////if (in_array(112, $my_pages_sidebar)) { ?><!--<li><a href="customer_care_admin_log_manage.php">Manage Logs</a></li>--><?php ////} ?>
-<!--                        --><?php ////if (in_array(112, $my_pages_sidebar)) { ?><!--<li><a href="customer_care_all_log_manage.php">Manage All Logs</a></li>--><?php ////} ?>
-<!--                    </ul>-->
-<!--                </li>-->
-<!--                <li class="dropdown">-->
-<!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-paperclip fa-fw"></i> Surveys &amp; Feedbacks<b class="caret"></b></a>-->
-<!--                    <ul class="dropdown-menu">-->
-<!--                        --><?php //if (in_array(113, $my_pages_sidebar)) { ?><!--<li><a href="survey/new_survey.php">New Survey</a></li>--><?php //} ?>
-<!--                        --><?php //if (in_array(114, $my_pages_sidebar)) { ?><!--<li><a href="survey/survey_feedback.php">Survey Feedbacks</a></li>--><?php //} ?>
-<!--                        --><?php //if (in_array(115, $my_pages_sidebar)) { ?><!--<li><a href="survey/manage_survey.php">Manage Surveys</a></li>--><?php //} ?>
-<!--                        --><?php //if (in_array(116, $my_pages_sidebar)) { ?><!--<li><a href="survey/testimonials.php">Testimonials</a></li>--><?php //} ?>
-<!--                    </ul>-->
-<!--                </li>-->
+<!--               
                 <li><a href="logout.php" title="Log Out"><i class="fa fa-sign-out fa-fw"></i> Log Out</a></li>
             </ul>
         </div>
