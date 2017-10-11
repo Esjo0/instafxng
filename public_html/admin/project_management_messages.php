@@ -183,7 +183,7 @@ $all_bulletin = $db_handle->fetchAssoc($result);
                 req.open('GET', 'project_management_messages_server2.php?project_code=' + project_code, true);
                 req.send();
             }
-            setInterval(function(){get_messages()}, 1000)
+            setInterval(function(){get_messages()}, 3000)
         </script>
     </head>
     <body>
@@ -346,9 +346,6 @@ $all_bulletin = $db_handle->fetchAssoc($result);
                         <?php } ?>
 
                         <?php if(isset($all_bulletin) && !empty($all_bulletin)) { require_once 'layouts/pagination_links.php'; } ?>
-
-
-
 
                     </div>
 
