@@ -123,7 +123,7 @@ if (isset($_POST['process']))
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p><a href="project_management_project_report.php" class="btn btn-default" title="Project Reports"><i class="fa fa-arrow-circle-left"></i> Project Reports</a></p>
+                                <p><a onclick="window.history.back()" class="btn btn-default" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a></p>
                                 
                                 <p>Create a project report. </p>
                                 <p></p>

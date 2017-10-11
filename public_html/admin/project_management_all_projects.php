@@ -46,7 +46,7 @@ if(isset($_POST['edit_project']))
     {
         $all_allowed_admin = $all_allowed_admin . "," . $allowed_admin[$i];
     }
-    $all_allowed_admin = substr_replace($all_allowed_admin, "", 0, 1);
+    //$all_allowed_admin = substr_replace($all_allowed_admin, "", 0, 1);
     //var_dump($all_allowed_admin);
     $update_project = $obj_project_management->update_project($title, $description, $deadline, $all_allowed_admin, $admin_code, $project_code);
     if ($update_project)
@@ -79,7 +79,7 @@ if(isset($_POST['new_comment']))
 
 
 
-$query = "SELECT * FROM project_management_projects ORDER BY created DESC  ";
+$query = "SELECT * FROM project_management_projects WHERE status = 'IN PROGRESS' ORDER BY created DESC  ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -158,7 +158,7 @@ $projects = $db_handle->fetchAssoc($result);
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>ALL PROJECTS</strong></h4>
+                            <h4><strong>PROJECTS</strong></h4>
                         </div>
                     </div>
                     
@@ -260,7 +260,8 @@ $projects = $db_handle->fetchAssoc($result);
                                             <th>Project Deadline</th>
                                             <th>Project Status</th>
                                             <th>Project Executors</th>
-                                            <th>Comments</th>
+                                            <th>Announcements</th>
+                                            <th></th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -324,21 +325,22 @@ $projects = $db_handle->fetchAssoc($result);
                                                 <td><?php echo $row['created']; ?></td>
                                                 <td><?php echo $row['deadline']; ?></td>
                                                 <td><?php echo $row['status']; ?></td>
-                                                <td>
+
                                                     <?php
                                                     $executors = explode("," ,$row['executors']);
+                                                    echo "<td>";
                                                     for ($i = 0; $i < count($executors); $i++)
                                                     {
                                                         echo $admin_object->get_admin_name_by_code($executors[$i])."<br/><br/>";
                                                     }
+                                                    echo "</td>";
                                                     ?>
-                                                    <?php ?>
-                                                </td>
                                                 <td>
-                                                    <button title="View Comments" type="button" data-toggle="modal" data-target="#view_comment<?php echo $row['project_code']?>" class="btn btn-info"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    <button title="View Announcements" type="button" data-toggle="modal" data-target="#view_comment<?php echo $row['project_code']?>" class="btn btn-info"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                     <br/>
                                                     <br/>
-                                                    <button title="Add New Comment" type="button" data-toggle="modal" data-target="#new_comment<?php echo $row['project_code']; ?>" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i></button>
+                                                    <button title="Add New Announcement" type="button" data-toggle="modal" data-target="#new_comment<? echo $row['project_code']?>" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i></button>
+
                                                     <div id="new_comment<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
                                                         <div class="modal-dialog">
                                                             <!-- Modal content-->
@@ -346,7 +348,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                        <h4 class="modal-title">Project Comments</h4>
+                                                                        <h4 class="modal-title">Project Announcements</h4>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <div class="row">
@@ -355,15 +357,15 @@ $projects = $db_handle->fetchAssoc($result);
                                                                                 <p><?php echo $row['title']; ?></p>
                                                                                 <hr/>
 
-                                                                                <p><strong>New Comment:</strong></p>
+                                                                                <p><strong>New Announcement:</strong></p>
                                                                                 <input name="project_code" type="hidden" value="<?php echo $row['project_code'] ?>">
-                                                                                <textarea name="comment" rows="5" class="form-control" placeholder="Enter a new comment here..." required></textarea>
+                                                                                <textarea name="comment" rows="5" class="form-control" placeholder="Enter a new announcement here..." required></textarea>
                                                                                 <hr/>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <input name="new_comment" type="submit" class="btn btn-success" value="Post Comment"/>
+                                                                        <input name="new_comment" type="submit" class="btn btn-success" value="Post Announcement"/>
                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                                                     </div>
                                                                 </div>
@@ -377,7 +379,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                        <h4 class="modal-title">Project Comments</h4>
+                                                                        <h4 class="modal-title">Project Announcements</h4>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <div class="row">
@@ -414,72 +416,79 @@ $projects = $db_handle->fetchAssoc($result);
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $row['project_code'] ?>" class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
-                                                    <div id="edit_project<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
-                                                        <div class="modal-dialog">
-                                                            <!-- Modal content-->
-                                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                        <h4 class="modal-title">Edit Project</h4>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="col-sm-12">
-                                                                                <input type="hidden" name="project_code" value="<?php echo $row['project_code'];?>" />
+                                                    <td>
+                                                        <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $row['project_code'] ?>" class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        <div id="edit_project<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
+                                                            <div class="modal-dialog">
+                                                                <!-- Modal content-->
+                                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                            <h4 class="modal-title">Edit Project</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-12">
+                                                                                    <input type="hidden" name="project_code" value="<?php echo $row['project_code'];?>" />
 
-                                                                                <p><strong>Project Title</strong></p>
-                                                                                <input value="<?php echo $row['title']; ?>" type="text" name="title" class="form-control" placeholder="Project Title" required/>
-                                                                                <hr/>
+                                                                                    <p><strong>Project Title</strong></p>
+                                                                                    <input value="<?php echo $row['title']; ?>" type="text" name="title" class="form-control" placeholder="Project Title" required/>
+                                                                                    <hr/>
 
-                                                                                <p><strong>Project Description</strong></p>
-                                                                                <textarea id="description" name="description" placeholder="Project Description" class="form-control" rows="9" required><?php echo $row['description']; ?></textarea>
-                                                                                <hr/>
+                                                                                    <p><strong>Project Description</strong></p>
+                                                                                    <textarea id="description" name="description" placeholder="Project Description" class="form-control" rows="9" required><?php echo $row['description']; ?></textarea>
+                                                                                    <hr/>
 
-                                                                                <p><strong>Executors</strong></p>
-                                                                                <div class="form-group row">
-                                                                                    <div class="col-sm-10">
-                                                                                        <?php $allowed_admin = explode(",", $row['executors']);
-                                                                                        foreach($all_admin_member AS $key) { ?>
-                                                                                            <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
-                                                                                        <?php } ?>
+                                                                                    <p><strong>Executors</strong></p>
+                                                                                    <div class="form-group row">
+                                                                                        <div class="col-sm-10">
+                                                                                            <?php $allowed_admin = explode(",", $row['executors']);
+                                                                                            foreach($all_admin_member AS $key) { ?>
+                                                                                                <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
+                                                                                            <?php } ?>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <hr/>
+                                                                                    <hr/>
 
-                                                                                <p><strong>Deadline</strong></p>
-                                                                                <div class="">
-                                                                                    <div class="input-group date" id="datetimepicker">
-                                                                                        <input value="<?php echo $row['deadline']; ?>" name="deadline" type="text" class="form-control" id="datetimepicker2" required/>
-                                                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                                    <p><strong>Deadline</strong></p>
+                                                                                    <div class="">
+                                                                                        <div class="input-group date" id="datetimepicker">
+                                                                                            <input value="<?php echo $row['deadline']; ?>" name="deadline" type="text" class="form-control" id="datetimepicker2" required/>
+                                                                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                                        </div>
                                                                                     </div>
+                                                                                    <script type="text/javascript">
+                                                                                        $(function ()
+                                                                                        {
+                                                                                            $('#datetimepicker, #datetimepicker2').datetimepicker(
+                                                                                                {
+                                                                                                    format: 'YYYY-MM-DD'
+                                                                                                });
+                                                                                        });
+                                                                                    </script>
+                                                                                    <hr/>
                                                                                 </div>
-                                                                                <script type="text/javascript">
-                                                                                    $(function ()
-                                                                                    {
-                                                                                        $('#datetimepicker, #datetimepicker2').datetimepicker(
-                                                                                            {
-                                                                                                format: 'YYYY-MM-DD'
-                                                                                            });
-                                                                                    });
-                                                                                </script>
-                                                                                <hr/>
                                                                             </div>
                                                                         </div>
+                                                                        <div class="modal-footer">
+                                                                            <input name="edit_project" type="submit" class="btn btn-success" value="Proceed"/>
+                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="modal-footer">
-                                                                        <input name="edit_project" type="submit" class="btn btn-success" value="Proceed"/>
-                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
+                                                                </form>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </td>
+                                                <td>
+                                                    <a target="_blank" href="project_management_project_view.php?x=<?php echo encrypt($row['project_code']);?>">
+                                                        <button title="View Complete Details" class="btn btn-sm btn-success">
+                                                            <i class="glyphicon glyphicon-arrow-right "></i>
+                                                        </button>
+                                                    </a>
                                                 </td>
-
                                             </tr>
+                                        <?php ?>
 
 
                                     <?php }

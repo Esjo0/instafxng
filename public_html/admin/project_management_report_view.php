@@ -113,6 +113,7 @@ if(isset($_POST['decline']))
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
+                                <p><a onclick="window.history.back()" class="btn btn-default" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a></p>
                                 <?php foreach ($result as $row) { ?>
                                     <p><b>PROJECT TITLE:</b> <?php echo $row['project_title']; ?></p>
                                     <p><b>AUTHOR:</b> <?php echo $row['author_name']; ?></p>

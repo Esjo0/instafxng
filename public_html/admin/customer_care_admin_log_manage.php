@@ -5,7 +5,7 @@ if (!$session_admin->is_logged_in()) {
 }
 if(isset($_POST['process_delete']))
 {
-    if($obj_log->log_delete($_POST['log_id']))
+    if($obj_customer_care_log->log_delete($_POST['log_id']))
     {
         $message_success = "You have successfully removed a log.";
     }
@@ -17,7 +17,7 @@ if(isset($_POST['process_delete']))
 
 if(isset($_POST['process_treated']))
 {
-    if($obj_log->log_treated($_POST['log_id']))
+    if($obj_customer_care_log->log_treated($_POST['log_id']))
     {
         $message_success = "You have successfully treated a log.";
     }
@@ -29,7 +29,7 @@ if(isset($_POST['process_treated']))
 
 $admin_code = $_SESSION["admin_unique_code"];
 
-$query = "SELECT * FROM customer_care_log WHERE admin_code = '$admin_code' AND status = 'PENDING' ORDER BY log_id DESC  ";
+$query = "SELECT * FROM customer_care_log WHERE admin_code = '$admin_code' ORDER BY log_id DESC  ";
 $numrows = $db_handle->numRows($query);
 $rowsperpage = 20;
 
@@ -109,18 +109,18 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                         <?php if(isset($admin_all_logs) && !empty($admin_all_logs)) { foreach ($admin_all_logs as $row){?>
                                         <tr>
                                             <td>
-                                                <?php if($row['type'] == 'CLIENT')
+                                                <?php if($row['log_type'] == '1')
                                                 {
-                                                    $client_details = $obj_log->client_details($row['tag']);
+                                                    $client_details = $obj_customer_care_log->client_details($row['tag']);
                                                     $client_details = $client_details[0];
                                                     echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
                                                     echo "<strong>Phone : </strong>".$client_details['phone']."<br/>";
                                                     echo "<strong>Email : </strong>".$client_details['email']."<br/>";
                                                     echo "<strong>Account Number : </strong>".$client_details['ifx_acct_no']."<br/>";
                                                 }
-                                                elseif ($row['type'] == 'PROSPECT')
+                                                elseif ($row['log_type'] == '2')
                                                 {
-                                                    $customer_details = $obj_log->customer_details($row['tag']);
+                                                    $customer_details = $obj_customer_care_log->customer_details($row['tag']);
                                                     $customer_details = $customer_details[0];
                                                     echo "<strong>Full Name: </strong>".$customer_details['first_name']." ".$customer_details['other_name']." ".$customer_details['last_name']."<br/>";
                                                     echo "<strong>Phone : </strong>".$customer_details['phone_number']."<br/>";
@@ -150,18 +150,18 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    <?php if($row['type'] == 'CLIENT')
+                                                                    <?php if($row['log_type'] == '1')
                                                                     {
-                                                                        $client_details = $obj_log->client_details($row['tag']);
+                                                                        $client_details = $obj_customer_care_log->client_details($row['tag']);
                                                                         $client_details = $client_details[0];
                                                                         echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
                                                                         echo "<strong>Phone : </strong>".$client_details['phone_number']."<br/>";
                                                                         echo "<strong>Email : </strong>".$client_details['email_address']."<br/>";
                                                                         echo "<strong>Account Number : </strong>".$client_details['ifx_acct_no']."<br/>";
                                                                     }
-                                                                    elseif ($row['type'] == 'PROSPECT')
+                                                                    elseif ($row['log_type'] == '2')
                                                                     {
-                                                                        $customer_details = $obj_log->customer_details($row['tag']);
+                                                                        $customer_details = $obj_customer_care_log->customer_details($row['tag']);
                                                                         $customer_details = $customer_details[0];
                                                                         echo "<strong>Full Name: </strong>".$customer_details['first_name']." ".$customer_details['other_name']." ".$customer_details['last_name']."<br/>";
                                                                         echo "<strong>Phone : </strong>".$customer_details['phone_number']."<br/>";
@@ -169,7 +169,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                     }
                                                                     ?>
                                                                         <?php
-                                                                        $all_conversations = $obj_log->get_all_conversations($row['tag']);
+                                                                        $all_conversations = $obj_customer_care_log->get_all_conversations($row['tag']);
                                                                         if(isset($all_conversations) && !empty($all_conversations))  { foreach ($all_conversations as $row1) {
                                                                             ?>
                                                                         <tr>
@@ -177,13 +177,22 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                                 <?php echo $row1['con_desc'] ?>
                                                                             </td>
                                                                             <td>
-                                                                                <?php echo $row1['status'] ?>
+                                                                                <?php
+                                                                                if($row1['status'] == '1')
+                                                                                {
+                                                                                    echo 'PENDING';
+                                                                                }
+                                                                                elseif($row1['status'] == '2')
+                                                                                {
+                                                                                    echo 'TREATED';
+                                                                                }
+                                                                                ?>
                                                                             </td>
                                                                             <td>
                                                                                 <?php echo $row1['created'] ?>
                                                                             </td>
                                                                             <td>
-                                                                                <form>
+                                                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                                     <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
                                                                                     <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
                                                                                 </form>
@@ -201,26 +210,10 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                 </div>
                                             </td>
                                             <td>
-                                                <button data-target="#treated<?php echo $row['log_id']?>" data-toggle="modal" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
-                                                <!--Modal - confirmation boxes-->
-                                                <div id="confirm-add-customer-log" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
-                                                                <h4 class="modal-title">Mark As Treated</h4>
-                                                            </div>
-                                                            <div class="modal-body">Are you sure you have properly treated this complain or enquiry?</div>
-                                                            <div class="modal-footer">
-                                                                <form>
-                                                                    <input type="hidden" name="log_id" value="<?php echo $row['log_id']?>">
-                                                                    <input name="process_treated" type="submit" class="btn btn-success" value="Proceed">
-                                                                </form>
-                                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                    <input type="hidden" name="log_id" value="<?php echo $row['log_id']?>">
+                                                    <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
+                                                </form>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
