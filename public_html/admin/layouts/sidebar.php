@@ -281,17 +281,6 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     </ul>
                 </li>-->
 
-
-
-
-
-
-
-
-
-
-
-
 <!--                <li class="dropdown">-->
 <!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-paperclip fa-fw"></i> Surveys &amp; Feedbacks<b class="caret"></b></a>-->
 <!--                    <ul class="dropdown-menu">-->
