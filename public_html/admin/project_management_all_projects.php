@@ -269,11 +269,6 @@ $projects = $db_handle->fetchAssoc($result);
                                     <?php if(isset($projects) && !empty($projects))
                                     {
                                     foreach ($projects as $row) { ?>
-                                        <?php
-                                        $executors = explode("," ,$row['executors']);
-                                        //
-                                        if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code)
-                                        :?>
                                             <tr>
                                                 <td><?php echo $row['title']; ?></td>
                                                 <td>
@@ -344,13 +339,8 @@ $projects = $db_handle->fetchAssoc($result);
                                                     <button title="View Announcements" type="button" data-toggle="modal" data-target="#view_comment<?php echo $row['project_code']?>" class="btn btn-info"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                     <br/>
                                                     <br/>
-                                                    <?php
-                                                    
-                                                    if($row['supervisor_code'] == $admin_code)
-                                                    {
-                                                        echo '<button title="Add New Announcement" type="button" data-toggle="modal" data-target="#new_comment'.$row['project_code'].'" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i></button>';
-                                                    }
-                                                    ?>
+                                                    <button title="Add New Announcement" type="button" data-toggle="modal" data-target="#new_comment<? echo $row['project_code']?>" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i></button>
+
                                                     <div id="new_comment<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
                                                         <div class="modal-dialog">
                                                             <!-- Modal content-->
@@ -426,8 +416,6 @@ $projects = $db_handle->fetchAssoc($result);
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <?php
-                                                if($row['supervisor_code'] == $admin_code):?>
                                                     <td>
                                                         <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $row['project_code'] ?>" class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
                                                         <div id="edit_project<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
@@ -492,7 +480,6 @@ $projects = $db_handle->fetchAssoc($result);
                                                             </div>
                                                         </div>
                                                     </td>
-                                                <?php endif ?>
                                                 <td>
                                                     <a target="_blank" href="project_management_project_view.php?x=<?php echo encrypt($row['project_code']);?>">
                                                         <button title="View Complete Details" class="btn btn-sm btn-success">
@@ -501,7 +488,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                     </a>
                                                 </td>
                                             </tr>
-                                        <?php endif;?>
+                                        <?php ?>
 
 
                                     <?php }

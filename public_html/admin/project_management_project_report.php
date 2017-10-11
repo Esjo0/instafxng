@@ -289,7 +289,7 @@ $project_reports = $db_handle->fetchAssoc($result);
                                 <?php } ?>
                             </div>
                         </div>
-                        <?php if(isset($projects) && !empty($projects)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($projects) && !empty($projects)) { require 'layouts/pagination_links.php'; } ?>
                     </div>
 
 
@@ -348,14 +348,14 @@ $project_reports = $db_handle->fetchAssoc($result);
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
-                                <?php if(isset($projects) && !empty($projects)) { ?>
+                                <?php if(isset($project_reports) && !empty($project_reports)) { ?>
                                     <div class="tool-footer text-right">
                                         <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                     </div>
                                 <?php } ?>
                             </div>
                         </div>
-                        <?php if(isset($projects) && !empty($projects)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($project_reports) && !empty($project_reports)) { require 'layouts/pagination_links.php'; } ?>
                     </div>
                     <!-- Unique Page Content Ends Here
                     ================================================== -->

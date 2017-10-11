@@ -21,7 +21,7 @@ if(isset($_POST['delete_reminder']))
 
 if(isset($_POST['edit_reminder']))
 {
-    $result = $obj_project_management->update_reminder($_POST['reminder_id'], $_POST['description'], $_POST['effect_date']);
+    $result = $obj_project_management->update_reminders($_POST['reminder_id'], $_POST['description'], $_POST['effect_date']);
     if($result)
     {
         $message_success = "You have successfully deleted a reminder.";
@@ -35,9 +35,9 @@ if(isset($_POST['edit_reminder']))
 $current_date = date("Y-m-d");
 
 $pending_query = "SELECT reminder_id, description, effect_date
-                  FROM reminders
-                  WHERE reminders.status = 'ON' 
-                  AND reminders.effect_date > '$current_date'
+                  FROM project_management_reminders
+                  WHERE status = 'ON' 
+                  OR effect_date > '$current_date'
                   ORDER BY effect_date DESC ";
 $pending_numrows = $db_handle->numRows($pending_query);
 $pending_rowsperpage = 20;
@@ -67,9 +67,9 @@ $pending_reminders = $db_handle->fetchAssoc($pending_result);
 
 
 $expired_query = "SELECT reminder_id, description, effect_date
-                  FROM reminders
-                  WHERE reminders.status = 'OFF' 
-                  AND reminders.effect_date <= '$current_date'
+                  FROM project_management_reminders
+                  WHERE status = 'OFF' 
+                  OR effect_date <= '$current_date'
                   ORDER BY effect_date DESC ";
 $expired_numrows = $db_handle->numRows($expired_query);
 $expired_rowsperpage = 20;
@@ -157,14 +157,15 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                         <div id="edit-reminder<?php echo $row['reminder_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
+                                                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                     <div class="modal-header">
                                                                         <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
                                                                         <h4 class="modal-title">Edit Reminder</h4>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <input name="reminder_id" type="hidden" value="<?php echo $row['reminder_id']; ?>">
-                                                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
 
+
+                                                                            <input name="reminder_id" type="hidden" value="<?php echo $row['reminder_id']; ?>">
                                                                             <div class="form-group">
                                                                                 <label class="control-label col-sm-3" for="description">Description:</label>
                                                                                 <div class="col-sm-9">
@@ -179,7 +180,6 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                                                     </div>
                                                                                     <br/>
-                                                                                    <input name="edit_reminder" type="submit" class="btn btn-success" value="Update">
                                                                                 </div>
                                                                                 <script type="text/javascript">
                                                                                     $(function ()
@@ -191,11 +191,13 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                                                     });
                                                                                 </script>
                                                                             </div>
-                                                                        </form>
+
                                                                     </div>
                                                                     <div class="modal-footer">
+                                                                        <input name="edit_reminder" type="submit" class="btn btn-success" value="Update">
                                                                         <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                                     </div>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -250,9 +252,9 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                     <td><?php echo $row['description']; ?></td>
                                                     <td><?php echo $row['effect_date']; ?></td>
                                                     <td>
-                                                        <button data-target="#confirm-delete-reminder<?php echo $row['reminder_id']; ?>" data-toggle="modal" title="Delete Reminder" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
+                                                        <button data-target="#confirm-expired-delete-reminder<?php echo $row['reminder_id']; ?>" data-toggle="modal" title="Delete Reminder" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
                                                         <!--Modal - confirmation boxes-->
-                                                        <div id="confirm-delete-reminder<?php echo $row['reminder_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                        <div id="confirm-expired-delete-reminder<?php echo $row['reminder_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -264,8 +266,8 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                             <input name="reminder_id" type="hidden" value="<?php echo $row['reminder_id']; ?>">
                                                                             <input name="delete_reminder" type="submit" class="btn btn-success" value="Proceed">
+                                                                            <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                                         </form>
-                                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                                     </div>
                                                                 </div>
                                                             </div>

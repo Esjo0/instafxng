@@ -31,4 +31,6 @@ require_once(LIB_PATH.DS."class_partner.php");
 require_once(LIB_PATH.DS."config_sys.php");
 require_once(LIB_PATH.DS."class_careers.php");
 require_once(LIB_PATH.DS."class_project_management.php");
+require_once(LIB_PATH.DS."class_customer_care_log.php");
+require_once(LIB_PATH.DS."class_push_notification.php");
 
