@@ -93,107 +93,65 @@ $latest_comments = $db_handle->fetchAssoc($result);
                                 <hr/>
                             </div>
                         </div>
-                        
-                        <div class="row">
-                            <div class="col-sm-12 text-danger">
-                                <h4><strong><?php echo $selected_bulletin['title'];?></strong></h4>
-                            </div>
-                        </div>
-                        
+
                         <div class="row">
                             <div class="col-sm-12">
-                                <?php echo $selected_bulletin['content'];?>
-                            </div>
-                        </div>
-                        <h5>Leave a comment</h5>
-                        <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
-                            <div class="form-group">
-                                <label class="control-label col-sm-3" for="comment">Comment:</label>
-                                <div class="col-sm-7">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-comment-o fa-fw"></i></span>
-                                        <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <div class="col-sm-12 text-danger">
+                                            <h4><strong><?php echo $selected_bulletin['title'];?></strong></h4>
+                                        </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <?php echo $selected_bulletin['content'];?>
+                                        </div>
+                                    </div>
+                                    <form  data-toggle="validator" role="form" method="post" action="">
+                                        <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
+                                        <div class="form-group">
+                                            <label class="control-label" for="remarks">Your Remark:</label>
+                                            <div>
+                                                <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" name="bulletin_id" value="<?php echo $bulletin_id;?>"/>
+                                            <button type="submit" name="post_comment" class="btn btn-success">Post Remark</button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-3 col-sm-9">
-                                    <input type="hidden" name="bulletin_id" value="<?php echo $bulletin_id;?>"/>
-                                    <button type="submit" name="post_comment" class="btn btn-success">Post Comment</button>
-                                </div>
-                            </div>
-                        </form>
-                        <hr class=""/>
 
-                        <?php if(isset($latest_comments)) { ?>
-                            <h5>Previous Comments</h5>
-                            <div id="latest_comment">
-                            </div>
 
-                            <ul class="fa-ul">
-                                <?php foreach($latest_comments as $row) { ?>
-
-                                    <?php echo $row['first_name']; ?> <?php echo $row['last_name']; ?> on <?php echo datetime_to_text($row['created']); ?>
-                                    <?php
-
-                                    if($row['reply_to'] > 0)
-                                    {
-                                        $query1 = $db_handle->runQuery("SELECT author_code, bulletin_id FROM admin_bulletin_comments WHERE comment_id = '" . $row['reply_to'] . "';");
-                                        $details = $db_handle->fetchAssoc($query1);
-                                        $details = $details[0];
-                                        $details_x = $details['author_code'];
-                                        $details_y = $details['bulletin_id'];
-                                        $query2 = "SELECT CONCAT(admin.first_name, SPACE(1), admin.last_name) AS full_name, title FROM admin, admin_bulletin WHERE admin.admin_code = '$details_x' AND admin_bulletin.admin_bulletin_id = '$details_y';";
-                                        $reply_details = $db_handle->runQuery($query2);
-                                        $reply_details = $db_handle->fetchAssoc($reply_details);
-                                        foreach ($reply_details as $row1) {
-                                            echo "as a reply to ".$row1['full_name'] . "'s comment on ".$row1['title']." ";
-                                        }
-                                    }
-                                    ?>
-
-                                    said;<br/>"<?php echo $row['comment'];?>"<br/>
-                                    <a title="Reply" data-target="#reply-comment<?php echo $row['comment_id'];?>" data-toggle="modal" href="#">Reply</a>
-
-                                    <!--Modal - confirmation boxes-->
-                                    <div id="reply-comment<?php echo $row['comment_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                            class="close">&times;</button>
-                                                    <h4 class="modal-title">Reply Comment</h4></div>
-                                                <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
-                                                <div class="modal-body">
-                                                    <p>Reply <?php echo $row['first_name']; ?> <?php echo $row['last_name']; ?>'s comment on <?php echo $title?>.</p>
-                                                    <div class="form-group">
-                                                        <label class="control-label col-sm-3" for="comment">Comment:</label>
-                                                        <div class="col-sm-9">
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon"><i class="fa fa-comment-o fa-fw"></i></span>
-                                                                <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
-                                                            </div>
+                                <div class="col-sm-6">
+                                    <h5>Admin Remarks</h5>
+                                    <div style="word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
+                                        <?php
+                                        if(isset($latest_comments) && !empty($latest_comments)) {
+                                            foreach ($latest_comments as $row) {
+                                                ?>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="transaction-remarks">
+                                                            <span id="trans_remark_author"><?php echo $row['first_name']; ?> <?php echo $row['last_name']; ?></span>
+                                                            <span id="trans_remark"><?php echo $row['comment'];?></span>
+                                                            <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <input type="hidden" name="bulletin_id" value="<?php echo $bulletin_id;?>"/>
-                                                    <input type="hidden" name="comment_id" value="<?php echo $row['comment_id'];?>"/>
-                                                    <input type="submit" name="reply_comment" class="btn btn-success" value="Submit Reply"/>
-                                                    <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                            <?php } } else { ?>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="transaction-remarks">
+                                                        <span class="text-danger"><em>There is no remark to display.</em></span>
+                                                    </div>
                                                 </div>
-                                                </form>
                                             </div>
-                                        </div>
+                                        <?php } ?>
                                     </div>
-
-                                    <br/>
-
-                                <?php } ?>
-                            </ul>
-                        <?php } ?>
-
-                        <hr class=""/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
