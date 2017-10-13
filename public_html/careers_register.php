@@ -14,11 +14,11 @@ if(!$obj_careers->is_valid_job_code($job_code)) {
 }
 
 if(isset($_POST['careers_register'])) {
-//    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-//        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
-//        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
-//        $responseData = json_decode($verifyResponse);
-//        if($responseData->success) {
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
+        $responseData = json_decode($verifyResponse);
+        if($responseData->success) {
             foreach ($_POST as $key => $value) {
                 $_POST[$key] = $db_handle->sanitizePost(trim($value));
             }
@@ -28,19 +28,17 @@ if(isset($_POST['careers_register'])) {
             $log_biodata = $obj_careers->set_new_career_user($first_name, $last_name, $other_names, $email_add, $phone_no, $sex,
                 $marital_status, $state_of_origin, $dob, $address, $state_of_residence, $client_job_code);
 
-    var_dump($log_biodata);
-
-//            if($log_biodata) {
-//                redirect_to('careers_login.php?m=true');
-//            } else {
-//                $message_error = "Something went wrong, your data could not be saved. Please try again or contact support.";
-//            }
-//        } else {
-//            $message_error = "You did not answer the robot test correctly, please try again.";
-//        }
-//    } else {
-//        $message_error = "Kindly confirm that you are not a robot";
-//    }
+            if($log_biodata) {
+                redirect_to('careers_login.php?m=true');
+            } else {
+                $message_error = "Something went wrong, your data could not be saved. Please try again or contact support.";
+            }
+        } else {
+            $message_error = "You did not answer the robot test correctly, please try again.";
+        }
+    } else {
+        $message_error = "Kindly confirm that you are not a robot";
+    }
 }
 
 $job_detail = $obj_careers->get_job_by_code($job_code);
