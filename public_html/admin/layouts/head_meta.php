@@ -26,3 +26,38 @@
         <script src="../js/npm.js"></script>
         <script src="../js/Chart.min.js"></script>
         <script src="../js/instafx_admin.js"></script>
+
+
+        <!-- NOTIFICATION CSS -->
+        <style>
+                .modal.fade .modal-dialog
+                {
+                        transform: translate(0px, -25%);
+                        transition: transform 0.3s ease-out 0s;
+                }
+                .modal.fade.in .modal-dialog
+                {
+                        transform: translate(0px, 0px);
+                }
+
+                .flyover
+                {
+                        left: 150%;
+                        overflow: hidden;
+                        position: fixed;
+                        width: 50%;
+                        opacity: 0.95;
+                        z-index: 1050;
+                        transition: left 0.6s ease-out 0s;
+                }
+
+                .flyover-centered {
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                }
+
+                .flyover.in {
+                        left: 50%;
+                }
+        </style>
+        <!-- NOTIFICATION CSS -->

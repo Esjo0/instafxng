@@ -6,10 +6,11 @@ class Customer_Care
     public function add_new_customer_log($admin_code, $first_name, $other_name, $last_name, $email, $phone, $con_desc, $prospect_source)
     {
         global $db_handle;
-        //$db_handle->runQuery("SELECT @prospect_source_id:= prospect_source_id FROM prospect_source WHERE source_name = 'Enquiries';");
-        $db_handle->runQuery("INSERT IGNORE INTO prospect_biodata (first_name, last_name, other_names ,email_address, phone_number, prospect_source) VALUES ('$first_name', '$last_name', '$other_name','$email','$phone', '$prospect_source'");
-        $db_handle->runQuery("SELECT @prospect_id:= prospect_biodata_id FROM prospect_biodata WHERE email = '$email' OR phone_number = '$phone';");
-        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, type) VALUES('$con_desc', '$admin_code', @prospect_id, 'PROSPECT');");
+        $query = "INSERT IGNORE INTO prospect_biodata (first_name, last_name, other_names , email_address, phone_number, prospect_source) VALUES ('$first_name', '$last_name', '$other_name','$email','$phone', '$prospect_source')";
+        $db_handle->runQuery($query);
+        $query = "SELECT @prospect_id:= prospect_biodata_id FROM prospect_biodata WHERE email_address = '$email' OR phone_number = '$phone' ";
+        $db_handle->runQuery($query);
+        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type) VALUES('$con_desc', '$admin_code', @prospect_id, '2') ");
 
         return $db_handle->affectedRows() > 0 ? true : false;
     }
@@ -18,7 +19,7 @@ class Customer_Care
     {
         global $db_handle;
         $db_handle->runQuery("SELECT @u_code:= user_code FROM user_ifxaccount WHERE user_ifxaccount.ifx_acct_no = '$acc_no'");
-        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, type) VALUES('$con_desc', '$admin_code', @u_code, 'CLIENT')");
+        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type) VALUES('$con_desc', '$admin_code', @u_code, '1')");
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
@@ -76,9 +77,9 @@ class Customer_Care
     public function log_treated($log_id)
     {
         global $db_handle;
-        $query = "UPDATE customer_care_log SET status = 'TREATED' WHERE log_id = '$log_id'";
+        $query = "UPDATE customer_care_log SET status = '2' WHERE log_id = '$log_id'";
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 }
-$obj_log = new Customer_Care();
+$obj_customer_care_log = new Customer_Care();

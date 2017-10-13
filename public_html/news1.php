@@ -113,6 +113,103 @@ if(strlen($news_id) > 4) {
                 display: inline;
             }
         </style>
+        <style>
+
+            body{
+                background:#eee;
+            }
+
+            hr {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                border: 0;
+                border-top: 1px solid #FFFFFF;
+            }
+            a {
+                text-decoration: none;
+            }
+            .blog-comment::before,
+            .blog-comment::after,
+            .blog-comment-form::before,
+            .blog-comment-form::after{
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            .blog-comment{
+                /*padding-left: 15%;
+                padding-right: 15%;*/
+            }
+
+            .blog-comment ul{
+                list-style-type: none;
+                padding: 0;
+            }
+
+            .blog-comment img{
+                opacity: 1;
+                filter: Alpha(opacity=100);
+                -webkit-border-radius: 4px;
+                -moz-border-radius: 4px;
+                -o-border-radius: 4px;
+                border-radius: 4px;
+            }
+
+            .blog-comment img.avatar {
+                position: relative;
+                float: left;
+                margin-left: 0;
+                margin-top: 0;
+                width: 65px;
+                height: 65px;
+            }
+
+            .blog-comment .post-comments{
+                border: 1px solid #eee;
+                margin-bottom: 20px;
+                margin-left: 85px;
+                margin-right: 0px;
+                padding: 10px 20px;
+                position: relative;
+                -webkit-border-radius: 4px;
+                -moz-border-radius: 4px;
+                -o-border-radius: 4px;
+                border-radius: 4px;
+                background: #fff;
+                color: #6b6e80;
+                position: relative;
+            }
+
+            .blog-comment .meta {
+                font-size: 15px;
+                color: #000;
+                padding-bottom: 8px;
+                margin-bottom: 10px !important;
+                border-bottom: 1px solid #eee;
+            }
+
+            .blog-comment ul.comments ul{
+                list-style-type: none;
+                padding: 0;
+                margin-left: 85px;
+            }
+
+            .blog-comment-form{
+                padding-left: 15%;
+                padding-right: 15%;
+                padding-top: 40px;
+            }
+
+            .blog-comment h3,
+            .blog-comment-form h3{
+                margin-bottom: 40px;
+                font-size: 26px;
+                line-height: 30px;
+                font-weight: 800;
+            }
+        </style>
+        <link href='//fonts.googleapis.com/css?family=Average' rel='stylesheet'>
         <meta property="fb:app_id" content="652051961615498" />
     </head>
     <body>
@@ -202,30 +299,40 @@ if(strlen($news_id) > 4) {
 
                                 <?php if(isset($latest_comments)) { ?>
                                 <h5>Previous Comments</h5>
-                                <div id="latest_comment">
-                                </div>
+                                <div class="container bootstrap snippet">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="blog-comment">
 
-                                <ul class="fa-ul">
-                                    <?php foreach($latest_comments as $row) { ?>
+                                    <?php foreach($latest_comments as $row)
+                                    {?>
+                                        <ul style="font-family: 'Average';font-size: 22px;" class="comments">
+                                            <li class="clearfix">
+                                                <div class="post-comments">
+                                                    <p class="meta"><span style="color: #23527c;" id="trans_remark_date"><i class="glyphicon glyphicon-time"></i><?php echo datetime_to_text($row['created'])?></span>
+                                                        <br/>
+                                                        <span id="trans_remark_author"><b><?php echo strtoupper($row['full_name']);?></b></span>
 
-                                        <?php echo $row['full_name']; ?> on <?php echo datetime_to_text($row['created']); ?>
-                                        <?php
-
-                                        if($row['reply_to'] > 0)
-                                        {
-                                            $query1 = $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
-                                            $query2 = $db_handle->runQuery("SELECT @a_id:= article_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
-                                            $reply_details = $db_handle->runQuery("SELECT full_name, title FROM article_visitors, article WHERE article_visitors.visitor_id = @v_id AND article.article_id = @a_id;");
-                                            $reply_details = $db_handle->fetchAssoc($reply_details);
-                                            foreach ($reply_details as $row1) {
-                                                echo "as a reply to ".$row1['full_name'] . "'s comment on ".$row1['title']." ";
-                                            }
-                                        }
-                                        ?>
-
-                                        said;<br/>"<?php echo $row['comment'];?>"<br/>
-                                        <a title="Reply" data-target="#reply-comment<?php echo $row['comment_id'];?>" data-toggle="modal" href="#">Reply</a>
-
+                                                        <?php if($row['reply_to'] > 0):
+                                                            $query1 = $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
+                                                            $query2 = $db_handle->runQuery("SELECT @a_id:= article_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
+                                                            $reply_details = $db_handle->runQuery("SELECT full_name, title FROM article_visitors, article WHERE article_visitors.visitor_id = @v_id AND article.article_id = @a_id;");
+                                                            $reply_details = $db_handle->fetchAssoc($reply_details);
+                                                            foreach ($reply_details as $row1)
+                                                            {?>
+                                                                replying <span id="trans_remark_author"><b><?php echo strtoupper($row1['full_name']);?></b></span>
+                                                            <?php }
+                                                        endif; ?>
+                                                        <i class="pull-right">
+                                                            <a  data-target="#reply-comment<?php echo $row['comment_id'];?>" data-toggle="modal" href="#">
+                                                                <small>REPLY</small>
+                                                            </a>
+                                                        </i>
+                                                    </p>
+                                                    <span id="trans_remark"><?php echo $row['comment'];?></span>
+                                                </div>
+                                            </li>
+                                        </ul>
                                         <!--Modal - confirmation boxes-->
                                         <div id="reply-comment<?php echo $row['comment_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                             <div class="modal-dialog">
@@ -280,11 +387,12 @@ if(strlen($news_id) > 4) {
                                                 </div>
                                             </div>
                                         </div>
-
-                                    <br/>
-
                                     <?php } ?>
-                                </ul>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 <?php } ?>
 
                                 <hr class=""/>
