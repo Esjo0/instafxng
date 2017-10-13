@@ -34,10 +34,13 @@ if(isset($_POST['edit_reminder']))
 
 $current_date = date("Y-m-d");
 
+$admin_code = $_POST['admin_unique_code'];
+
 $pending_query = "SELECT reminder_id, description, effect_date
                   FROM project_management_reminders
                   WHERE status = 'ON' 
                   OR effect_date > '$current_date'
+                  AND admin_code = '$admin_code'
                   ORDER BY effect_date DESC ";
 $pending_numrows = $db_handle->numRows($pending_query);
 $pending_rowsperpage = 20;
@@ -70,6 +73,7 @@ $expired_query = "SELECT reminder_id, description, effect_date
                   FROM project_management_reminders
                   WHERE status = 'OFF' 
                   OR effect_date <= '$current_date'
+                  AND admin_code = '$admin_code'
                   ORDER BY effect_date DESC ";
 $expired_numrows = $db_handle->numRows($expired_query);
 $expired_rowsperpage = 20;
@@ -233,7 +237,7 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                 <p class="pull-left">Showing <?php echo $pending_prespagelow . " to " . $pending_prespagehigh . " of " . $pending_numrows; ?> entries</p>
                                             </div>
                                         <?php } ?>
-                                        <?php if(isset($pending_reminders) && !empty($pending_reminders)) { require_once 'layouts/pagination_links.php'; } ?>
+                                        <?php if(isset($pending_reminders) && !empty($pending_reminders)) { require 'layouts/pagination_links.php'; } ?>
                                     </div>
 
                                     <div id="expired" class="tab-pane fade">
@@ -282,7 +286,7 @@ $expired_reminders = $db_handle->fetchAssoc($expired_result);
                                                 <p class="pull-left">Showing <?php echo $expired_prespagelow . " to " . $expired_prespagehigh . " of " . $expired_numrows; ?> entries</p>
                                             </div>
                                         <?php } ?>
-                                        <?php if(isset($expired_reminders) && !empty($expired_reminders)) { require_once 'layouts/pagination_links.php'; } ?>
+                                        <?php if(isset($expired_reminders) && !empty($expired_reminders)) { require 'layouts/pagination_links.php'; } ?>
                                     </div>
                                 </div>
                             </div>

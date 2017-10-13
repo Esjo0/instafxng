@@ -60,9 +60,9 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                 <!--<li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-money fa-fw"></i> Accounting System<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <?php /*//if (in_array(48, $my_pages_sidebar)) { */?><li><a href="accounting_system_requisition_form.php" title="Requisition Form">Requisition Form</a></li><?php /*//} */?>
-                        <?php /*//if (in_array(50, $my_pages_sidebar)) { */?><li><a href="accounting_system_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li><?php /*//} */?>
-                        <?php /*//if (in_array(50, $my_pages_sidebar)) { */?><li><a href="accounting_system_cashiers_desk.php" title="Cashiers Desk">Cashiers Desk</a></li><?php /*//} */?>
+                        <li><a href="accounting_system_requisition_form.php" title="Requisition Form">Requisition Form</a></li>
+                        <li><a href="accounting_system_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li>
+                        <li><a href="accounting_system_cashiers_desk.php" title="Cashiers Desk">Cashiers Desk</a></li>
                     </ul>
                 </li>-->
                 <li class="dropdown">
