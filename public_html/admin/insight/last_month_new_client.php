@@ -7,9 +7,19 @@ if (!$session_admin->is_logged_in()) {
 $from_date = date('Y-m-d', strtotime('first day of last month'));
 $to_date = date('Y-m-d', strtotime('last day of last month'));
 
-$query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
+    $search_text = $_POST['search_text'];
+
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+        FROM user AS u
+        WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') ORDER BY u.created DESC ";
+
+} else {
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
         FROM user AS u
         WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY u.created DESC ";
+}
+
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -63,6 +73,22 @@ $client_insight = $db_handle->fetchAssoc($result);
 
             <!-- Unique Page Content Starts Here
             ================================================== -->
+            <div class="search-section">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                            <div class="input-group">
+                                <input type="hidden" name="search_param" value="all" id="search_param">
+                                <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                    </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-sm-12 text-danger">
                     <h4><strong>CLIENT PROFILE INSIGHT</strong></h4>
@@ -75,6 +101,12 @@ $client_insight = $db_handle->fetchAssoc($result);
                         <?php require_once '../layouts/feedback_message.php'; ?>
 
                         <p>Details of unique clients that joined the system last month.</p>
+
+                        <?php if(isset($numrows)) { ?>
+                            <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
+                        <?php } ?>
+
+                        <?php if(isset($client_insight) && !empty($client_insight)) { require '../layouts/pagination_links.php'; } ?>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
@@ -94,8 +126,9 @@ $client_insight = $db_handle->fetchAssoc($result);
                                         <td><?php echo $row['full_name']; ?></td>
                                         <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['phone']; ?></td>
-                                        <td>
-                                            <a title="View" class="btn btn-info" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
+                                        <td nowrap="nowrap">
+                                            <a title="View" class="btn btn-success" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'insight/last_month_new_client'; ?>&c=<?php echo encrypt('LAST MONTH NEW CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                            <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                         </td>
                                     </tr>
                                 <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -109,8 +142,7 @@ $client_insight = $db_handle->fetchAssoc($result);
                             </div>
                         <?php } ?>
 
-                        <?php if(isset($client_insight) && !empty($client_insight)) { require_once '../layouts/pagination_links.php'; } ?>
-
+                        <?php if(isset($client_insight) && !empty($client_insight)) { require '../layouts/pagination_links.php'; } ?>
 
                     </div>
                 </div>

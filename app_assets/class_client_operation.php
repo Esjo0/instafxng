@@ -244,6 +244,9 @@ class clientOperation {
 
             // get returned ifxaccount_id generated
             $ifxaccount_id = $db_handle->insertedId();
+
+            // Create a record for the user on the loyalty log table
+            $this->user_loyalty_log_record($user_code);
         }
 
         // log ilpr application
@@ -308,9 +311,22 @@ class clientOperation {
                 $db_handle->runQuery($query);
                 $this->send_welcome_email($last_name, $email_address);
             }
+
+            // Create a record for the user on the loyalty log table
+            $this->user_loyalty_log_record($user_code);
+
         }
 
         return $user_email ? $user_email : $email_address;
+    }
+
+    public function user_loyalty_log_record($user_code) {
+        global $db_handle;
+
+        $query = "INSERT INTO user_loyalty_log (user_code) VALUES ('$user_code')";
+        $db_handle->runQuery($query);
+
+        return true;
     }
     
     // Confirm that the client has uploaded approved ID, Signature, Passport Photography

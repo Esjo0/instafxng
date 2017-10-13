@@ -7,12 +7,23 @@ if (!$session_admin->is_logged_in()) {
 $from_date = date('Y-m-d', strtotime('first day of last month'));
 $to_date = date('Y-m-d', strtotime('last day of last month'));
 
-$query = "SELECT COUNT(uw.trans_id) AS withdraw_frequency, SUM(uw.dollar_withdraw) AS sum_withdraw_ordered,
+if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
+    $search_text = $_POST['search_text'];
+
+    $query = "SELECT COUNT(uw.trans_id) AS withdraw_frequency, SUM(uw.dollar_withdraw) AS sum_withdraw_ordered,
+        u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+        FROM user_withdrawal AS uw
+        INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        WHERE (uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY uw.ifxaccount_id ORDER BY sum_withdraw_ordered DESC ";
+} else {
+    $query = "SELECT COUNT(uw.trans_id) AS withdraw_frequency, SUM(uw.dollar_withdraw) AS sum_withdraw_ordered,
         u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
         FROM user_withdrawal AS uw
         INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         WHERE (uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY uw.ifxaccount_id ORDER BY sum_withdraw_ordered DESC ";
+}
 
 $numrows = $db_handle->numRows($query);
 
@@ -65,6 +76,22 @@ $withdrawal_insight = $db_handle->fetchAssoc($result);
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
+                    <div class="search-section">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <div class="input-group">
+                                        <input type="hidden" name="search_param" value="all" id="search_param">
+                                        <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-sm-12 text-danger">
                             <h4><strong>WITHDRAWAL INSIGHT</strong></h4>
@@ -77,6 +104,12 @@ $withdrawal_insight = $db_handle->fetchAssoc($result);
                                 <?php require_once '../layouts/feedback_message.php'; ?>
                                 
                                 <p>Below is the details of clients who withdrew from their Instaforex accounts last month.</p>
+
+                                <?php if(isset($numrows)) { ?>
+                                    <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
+                                <?php } ?>
+
+                                <?php if(isset($withdrawal_insight) && !empty($withdrawal_insight)) { require '../layouts/pagination_links.php'; } ?>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
@@ -100,8 +133,9 @@ $withdrawal_insight = $db_handle->fetchAssoc($result);
                                                 <td><?php echo $row['phone']; ?></td>
                                                 <td><?php echo number_format($row['sum_withdraw_ordered']); ?></td>
                                                 <td><?php echo $row['withdraw_frequency']; ?></td>
-                                                <td>
-                                                    <a title="View" class="btn btn-info" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
+                                                <td nowrap="nowrap">
+                                                    <a title="View" class="btn btn-success" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'insight/last_month_withdrawal'; ?>&c=<?php echo encrypt('LAST MONTH WITHDRAWAL'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                 </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -115,9 +149,7 @@ $withdrawal_insight = $db_handle->fetchAssoc($result);
                                     </div>
                                 <?php } ?>
 
-                                <?php if(isset($withdrawal_insight) && !empty($withdrawal_insight)) { require_once '../layouts/pagination_links.php'; } ?>
-
-
+                                <?php if(isset($withdrawal_insight) && !empty($withdrawal_insight)) { require '../layouts/pagination_links.php'; } ?>
 
                             </div>
                         </div>

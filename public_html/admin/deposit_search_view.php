@@ -92,6 +92,7 @@ if($db_handle->numOfRows($result) > 0) {
                                     <tbody>
                                         <tr><td>Transaction ID</td><td><?php if(isset($trans_id)) { echo $trans_id; } ?></td></tr>
                                         <tr><td>Created</td><td><?php if(isset($created)) { echo datetime_to_text($created); } ?></td></tr>
+                                        <tr><td>Date Notified</td><td><?php if(isset($client_notified_date)) { echo datetime_to_text($client_notified_date); } ?></td></tr>
                                         <tr><td>Account Number</td><td><?php if(isset($ifx_acct_no)) { echo $ifx_acct_no; } ?></td></tr>
                                         <tr><td>Client Name</td><td><?php if(isset($full_name)) { echo $full_name; } ?></td></tr>
                                         <tr><td>Client Phone</td><td><?php if(isset($phone)) { echo $phone; } ?></td></tr>
