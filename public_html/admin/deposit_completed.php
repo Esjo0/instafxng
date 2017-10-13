@@ -130,6 +130,25 @@ $completed_deposit_requests = $db_handle->fetchAssoc($result);
                                             <td><?php echo datetime_to_text($row['updated']); ?></td>
                                             <td><a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                         </tr>
+                                        <tr>
+                                            <td colspan='9' class="text-right text-success">
+                                                <?php
+                                                $start  = date_create($row['client_notified_date']);
+                                                $end 	= date_create($row['updated']); // Current time and date
+                                                $diff  	= date_diff( $start, $end );
+
+                                                $output = '';
+                                                $output .= $diff->y . ' years, ';
+                                                $output .= $diff->m . ' months, ';
+                                                $output .= $diff->d . ' days, ';
+                                                $output .= $diff->h . ' hours, ';
+                                                $output .= $diff->i . ' minutes, ';
+                                                $output .= $diff->s . ' seconds';
+
+                                                ?>
+                                                <strong><?php echo $row['trans_id']; ?> Completion Time: <?php echo $output; ?></strong>
+                                            </td>
+                                        </tr>
                                         <?php } } else { echo "<tr><td colspan='9' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
