@@ -4,6 +4,81 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+function user_total_point_earned($user_code) {
+    global $db_handle;
+
+    $query = "SELECT SUM(pbr.point_earned) AS total_point_earned
+                FROM point_based_reward AS pbr
+                WHERE pbr.user_code = '$user_code'";
+
+    $result = $db_handle->runQuery($query);
+    $selected_data = $db_handle->fetchAssoc($result);
+    $total_point_earned = $selected_data[0]['total_point_earned'];
+
+    return $total_point_earned;
+
+}
+
+function user_total_point_earned_lagged($user_code) {
+    global $db_handle;
+
+    $date_start = "2016-10-16";
+    $time = strtotime("-1 year", time());
+    $date_end = date("Y-m-d", $time);
+
+    $query = "SELECT SUM(pbr.point_earned) AS total_point_earned_lagged
+                FROM point_based_reward AS pbr
+                WHERE pbr.user_code = '$user_code' AND pbr.date_earned BETWEEN '$date_start' AND '$date_end'";
+
+    $result = $db_handle->runQuery($query);
+    $selected_data = $db_handle->fetchAssoc($result);
+    $total_point_earned_lagged = $selected_data[0]['total_point_earned_lagged'];
+
+    return $total_point_earned_lagged;
+
+}
+
+function user_total_point_claimed($user_code) {
+    global $db_handle;
+
+    $query = "SELECT SUM(pbc.point_claimed) AS total_point_claimed
+                FROM point_based_claimed AS pbc
+                WHERE pbc.user_code = '$user_code' AND status IN ('1', '2')";
+
+    $result = $db_handle->runQuery($query);
+    $selected_data = $db_handle->fetchAssoc($result);
+    $total_point_claimed = $selected_data[0]['total_point_claimed'];
+
+    return $total_point_claimed;
+}
+
+$query = "SELECT user_code FROM user";
+$result = $db_handle->runQuery($query);
+$selected = $db_handle->fetchAssoc($result);
+
+foreach ($selected AS $row) {
+    extract($row);
+
+    if($db_handle->numRows("SELECT user_code FROM user_loyalty_log WHERE user_code = '$user_code'") > 0) {
+        // Make an update
+
+    } else {
+        // Make an insert
+        $total_point_earned = "";
+        $total_point_earned_lagged = "";
+        $total_point_claimed = "";
+
+        $expired_point = $total_point_earned_lagged - $total_point_claimed;
+        $point_balance = $total_point_earned - $total_point_claimed - $expired_point;
+
+        $query = "INSERT INTO user_loyalty_log (user_code) VALUES ('$user_code')";
+        $result = $db_handle->runQuery($query);
+
+    }
+
+}
+
+
 //$query = "SELECT * FROM forum_registrations";
 //$result = $db_handle->runQuery($query);
 //$selected = $db_handle->fetchAssoc($result);

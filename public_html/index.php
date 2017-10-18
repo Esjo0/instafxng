@@ -37,14 +37,15 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
-                                <h2>More Better and Easier Methods to Profitable Trading</h2>
-                                <p>Join us on Saturday, 14th of October as we examine more Better and Easier methods
-                                    to Profitable Trading. Time: 12 - 2pm. <a href="traders_forum.php">Click here</a>
-                                    to reserve your seat below to stand a chance to win $20.</p>
+                                <h2>The Race to One Million Naira is Almost Over!</h2>
+                                <p>Last year December, the current Instafxng Loyalty promo started with five people each getting a share of $500 each month.</p>
+                                <p>It's <strong><?php echo 61 - date('d'); ?> days to the end of the promo</strong> and one hardworking and consistent trader will win a whopping sum of <strong>&#8358;<?php echo number_format(1000000); ?></strong>.
+                                    You can be the ONE only if you start trading more than ever before.
+                                    <a href="https://instafxng.com/loyalty.php" title="click for details">Click here</a> to learn more.</p>
                             </div>
 
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/traders_forum.php" title="click for details"><img src="images/forex-traders-forum-smart-investors.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>

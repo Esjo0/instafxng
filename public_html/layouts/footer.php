@@ -1,4 +1,4 @@
-
+a
         <!-- Footer Section: Copyright, Site Map  -->
         <footer id="footer" class="super-shadow">
             <div class="container-fluid no-gutter">
@@ -8,10 +8,10 @@
                             <header><i class="fa fa-tty fa-fw icon-tune"></i> <strong>Contact Details</strong></header>
                             <article>
                                 <p><strong><span class="text-danger">Head Office Address</span></strong><br />Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri-Olofin, Lagos.
-                                <br /><strong>Support Email:</strong> support@instafxng.com<br /><strong>Phone:</strong> 08028281192, 08182045184, 08083956750</p>
+                                <br /><strong>Support Email:</strong> support@instafxng.com<br /><strong>Phone:</strong> 08028281192, 08182045184, 08084603182</p>
 
                                 <p><strong><span class="text-danger">Lekki Office Address</span></strong><br />Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.
-                                <br /><strong>Phone:</strong> 07081036115, 08084603182</p>
+                                <br /><strong>Phone:</strong> 07081036115, 08083956750</p>
                             </article>
                         </div>
                         
