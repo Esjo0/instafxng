@@ -33,4 +33,5 @@ require_once(LIB_PATH.DS."class_careers.php");
 require_once(LIB_PATH.DS."class_project_management.php");
 require_once(LIB_PATH.DS."class_customer_care_log.php");
 require_once(LIB_PATH.DS."class_push_notification.php");
-
+require_once(LIB_PATH.DS."class_loyalty_point.php");
+require_once(LIB_PATH.DS."class_support_emails.php");

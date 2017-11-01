@@ -5,7 +5,6 @@ if (!$session_admin->is_logged_in()) {
 }
 if (isset($_POST['process_client']))
 {
-    
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }

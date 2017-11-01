@@ -131,6 +131,9 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="event/lekki_office_warming_all.php" title="">All Lekki Office Warming Reg</a></li><?php } ?>
                         <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="event/pencil_unbroken.php" title="Pencil Unbroken Registration">Pencil Unbroken Reg</a></li><?php } ?>
                         <?php if (in_array(211, $my_pages_sidebar)) { ?><li><a href="independence_quiz_results.php" title="Independence Quiz Results">2017 Independence Quiz Results</a></li><?php } ?>
+                        <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="dinner_2017_new_reg.php" title="New Dinner 2017 Reg">New Dinner 2017 Reg</a></li><?php } ?>
+                        <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="dinner_2017_all_reg.php" title="All Dinner 2017 Reg">All Dinner 2017 Reg</a></li><?php } ?>
+                        <?php if (in_array(50, $my_pages_sidebar)) { ?><li><a href="dinner_2017_signin.php" title="Sign In">Sign In</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -277,14 +280,27 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(216, $my_pages_sidebar)) { ?><li><a href="customer_care_all_log_manage.php">Manage All Logs</a></li><?php } ?>
                     </ul>
                 </li>
-                <!--<li class="dropdown">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-envelope fa-fw"></i> Support Mails<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(217, $my_pages_sidebar)) { ?><li><a href="support_email_compose.php" title="Compose Email">Compose Email</a></li><?php } ?>
+                        <?php if (in_array(218, $my_pages_sidebar)) { ?><li><a href="support_email_inbox.php" title="Inbox">Inbox</a></li><?php } ?>
+                        <?php if (in_array(219, $my_pages_sidebar)) { ?><li><a href="support_email_sent_box.php" title="Sent Box">Sent Box</a></li><?php } ?>
+                        <?php if (in_array(220, $my_pages_sidebar)) { ?><li><a href="support_email_assigned.php" title="Inbox">Assigned Emails</a></li><?php } ?>
+                        <?php if (in_array(221, $my_pages_sidebar)) { ?><li><a href="support_email_drafts.php" title="Drafts">Drafts</a></li><?php } ?>
+                    </ul>
+                </li>
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-money fa-fw"></i> Accounting System<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="accounting_system_requisition_form.php" title="Requisition Form">Requisition Form</a></li>
-                        <li><a href="accounting_system_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li>
-                        <li><a href="accounting_system_cashiers_desk.php" title="Cashiers Desk">Cashiers Desk</a></li>
+                        <?php if (in_array(222, $my_pages_sidebar)) { ?><li><a href="accounting_system_requisition_form.php" title="Requisition Form">Requisition Form</a></li><?php } ?>
+                        <?php if (in_array(223, $my_pages_sidebar)) { ?><li><a href="accounting_system_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li><?php } ?>
+                        <?php if (in_array(224, $my_pages_sidebar)) { ?><li><a href="accounting_system_cashiers_desk.php" title="Cashiers Desk">Cashiers Desk</a></li><?php } ?>
+                        <?php if (in_array(225, $my_pages_sidebar)) { ?><li><a href="accounting_system_req_reports.php" title="Requisition Report">Requisition Report</a></li><?php } ?>
+                        <?php if (in_array(226, $my_pages_sidebar)) { ?><li><a href="accounting_system_settings.php" title="Requisition Report">System Settings</a></li><?php } ?>
                     </ul>
-                </li>-->
+                </li>
+
                 <li><a href="logout.php" title="Log Out"><i class="fa fa-sign-out fa-fw"></i> Log Out</a></li>
             </ul>
         </div>

@@ -20,14 +20,18 @@
         </header>
 
         <script>
-            $(document).ready(function(){
+            $(document).ready(function()
+            {
+                count_notifications();
                 setInterval(function()
                 {
                     load_last_notification();
                 }, 5000);
+                count_notifications();
 
                 function load_last_notification()
                 {
+                    count_notifications();
                     $.ajax(
                         {
                             url:"push_notification_server.php",
@@ -46,6 +50,10 @@
                     if(rows > 0)
                     {
                         document.getElementById("counter").innerHTML = rows;
+                    }
+                    if(rows <= 0)
+                    {
+                        document.getElementById("counter").innerHTML = "";
                     }
                 }
             });
@@ -74,15 +82,14 @@
                         if (XMLHttpRequestObject.readyState == 4 &&
                             XMLHttpRequestObject.status == 200)
                         {
-                            //var returnedData = XMLHttpRequestObject.responseText;
-                            //var messageDiv = document.getElementById(messageDiv);
-                            //messageDiv.innerHTML = returnedData;
+                            count_notifications();
                         }
                     }
                     var type = '0';
                     //window.alert("type=" + type + "&notification_id=" + notification_id);
                     XMLHttpRequestObject.send("type=" + type + "&notification_id=" + notification_id);
                     //load_last_notification();
+                    count_notifications();
                 }
 
                 return false;

@@ -38,14 +38,19 @@ $thisPage = "Home";
                         <div class="row ">
                             <div class="col-sm-6">
                                 <h2>The Race to One Million Naira is Almost Over!</h2>
-                                <p>Last year December, the current Instafxng Loyalty promo started with five people each getting a share of $500 each month.</p>
-                                <p>It's <strong><?php echo 61 - date('d'); ?> days to the end of the promo</strong> and one hardworking and consistent trader will win a whopping sum of <strong>&#8358;<?php echo number_format(1000000); ?></strong>.
-                                    You can be the ONE only if you start trading more than ever before.
-                                    <a href="https://instafxng.com/loyalty.php" title="click for details">Click here</a> to learn more.</p>
+                                <p>It's <strong><?php echo 30 - date('d'); ?> days to the end of the promo</strong> and ONE hardworking and consistent
+                                trader will win a whopping sum of <strong>&#8358;<?php echo number_format(1000000); ?></strong>.</p>
+
+                                <p>Now, that's not all! There are CASH prizes for the 2nd to the 10th trader who
+                                appears on the rank scale by the end of the Promo.</p>
+
+                                <p>You can be one of the hardworking traders who will win varying cash
+                                awards only if you start trading more than ever before.
+                                <a href="https://instafxng.com/news1/id/562/u/he-did-it-one-month-you-can/" title="click for details">Click here</a> to learn more.</p>
                             </div>
 
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/news1/id/562/u/he-did-it-one-month-you-can/" title="click for details"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>

@@ -35,6 +35,16 @@ $thisPage = "About";
                         
                         <div class="row">
                             <div class="col-sm-12"><p>Watch Videos of our company below</p></div>
+                            <div class="col-sm-12">
+                                <h5>Instaforex Nigeria Classic 80s Dinner</h5>
+                                <div class="col-sm-6">
+                                    <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tdHp4WGw7YE" frameborder="0" allowfullscreen></iframe></div>
+                                    <p>&nbsp;</p>
+                                </div>
+                                <div class="col-sm-6">
+
+                                </div>
+                            </div>
 
                             <div class="col-sm-12">
                                 <h5>Awesome Moments from Pencil Unbroken 2 Comedy Show</h5>

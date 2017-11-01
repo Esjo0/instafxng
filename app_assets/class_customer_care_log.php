@@ -2,7 +2,6 @@
 
 class Customer_Care
 {
-
     public function add_new_customer_log($admin_code, $first_name, $other_name, $last_name, $email, $phone, $con_desc, $prospect_source)
     {
         global $db_handle;

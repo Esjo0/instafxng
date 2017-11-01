@@ -3,7 +3,7 @@ require_once '../init/initialize_client.php';
 $thisPage = "";
 
 if (!$session_client->is_logged_in()) {
-    redirect_to("login.php");
+//    redirect_to("login.php");
 }
 
 if (isset($_POST['submit_reply'])) {

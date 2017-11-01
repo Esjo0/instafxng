@@ -155,8 +155,8 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                         $client_details = $obj_customer_care_log->client_details($row['tag']);
                                                                         $client_details = $client_details[0];
                                                                         echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
-                                                                        echo "<strong>Phone : </strong>".$client_details['phone_number']."<br/>";
-                                                                        echo "<strong>Email : </strong>".$client_details['email_address']."<br/>";
+                                                                        echo "<strong>Phone : </strong>".$client_details['phone']."<br/>";
+                                                                        echo "<strong>Email : </strong>".$client_details['email']."<br/>";
                                                                         echo "<strong>Account Number : </strong>".$client_details['ifx_acct_no']."<br/>";
                                                                     }
                                                                     elseif ($row['log_type'] == '2')
@@ -192,10 +192,13 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                                 <?php echo $row1['created'] ?>
                                                                             </td>
                                                                             <td>
-                                                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                                                    <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
-                                                                                    <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
-                                                                                </form>
+                                                                                <?php
+                                                                                if($row1['status'] == '1'):?>
+                                                                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                                                        <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
+                                                                                        <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
+                                                                                    </form>
+                                                                                <?php endif; ?>
                                                                             </td>
                                                                         </tr>
                                                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -210,10 +213,13 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                 </div>
                                             </td>
                                             <td>
-                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                    <input type="hidden" name="log_id" value="<?php echo $row['log_id']?>">
-                                                    <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
-                                                </form>
+                                                <?php
+                                                if($row1['status'] == '1'):?>
+                                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                        <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
+                                                        <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
+                                                    </form>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

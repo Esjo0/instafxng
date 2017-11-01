@@ -5,6 +5,8 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$query = "SELECT DISTINCT ftc.email, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS first_name, ftc.phone FROM free_training_campaign AS ftc INNER JOIN user AS u WHERE training_centre = '3' AND u.academy_signup IS NULL";
+
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,

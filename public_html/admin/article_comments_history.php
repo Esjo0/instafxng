@@ -4,6 +4,9 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+
+
+
 $query = "SELECT * FROM article, article_visitors, article_comments
             WHERE article.article_id = article_comments.article_id
             AND article_visitors.visitor_id = article_comments.visitor_id
@@ -38,6 +41,27 @@ if (isset($_POST['delete_comment']))
                   WHERE comment_id = '".$_POST['comment_id']."'
                   AND visitor_id = '".$_POST['visitor_id']."';";
     $result = $db_handle->runQuery($query);
+}
+
+if (isset($_POST['reply_comment']))
+{
+    $name = $db_handle->sanitizePost($_POST['name']);
+    $email = $db_handle->sanitizePost($_POST['email']);
+    $comment = $db_handle->sanitizePost($_POST['comment']);
+    $article_id = $db_handle->sanitizePost($_POST['article_id']);
+    $comment_id = $db_handle->sanitizePost($_POST['comment_id']);
+
+    if(empty($name) || empty($email) || empty($comment)) {
+        $message_error = "All fields are compulsory, please try again.";
+    } elseif (!check_email($email)) {
+        $message_error = "You have provided an invalid email address. Please try again.";
+    }  else
+    {
+        $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('".$email."', '".$name."')");
+        $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_visitors WHERE email = '".$email."';");
+        $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment, reply_to, status) VALUES(@v_id, '".$article_id."', '".$comment."', '".$comment_id."', 'ON')");
+        $message_success = "You have successfully added a reply.";
+    }
 }
 
 ?>
@@ -90,6 +114,7 @@ if (isset($_POST['delete_comment']))
                                 <th>Comment</th>
                                 <th>Created</th>
                                 <th>Status</th>
+                                <th>Reply</th>
                                 <th>Delete</th>
                             </tr>
                             </thead>
@@ -113,6 +138,68 @@ if (isset($_POST['delete_comment']))
                                                 echo 'Approved';
                                             }
                                             ?>
+                                        </td>
+                                        <td>
+                                            <button type="button" data-target="#reply-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-info"><i class="glyphicon glyphicon-comment icon-white"></i> </button>
+                                            <!--Modal - confirmation boxes-->
+                                            <div id="reply-comment<?php echo $row['comment_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                    class="close">&times;</button>
+                                                            <h4 class="modal-title">Reply Comment</h4></div>
+                                                        <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
+                                                        <div class="modal-body">
+                                                            <p>Reply <?php echo $row['full_name'] ?>'s comment on <?php echo $title?>.</p>
+
+
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-3" for="name">Display Name:</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                                                            <input name="name" type="text" id="name" value="Instaforex NG" class="form-control" disabled required/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-3" for="email">Display Email Address:</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+                                                                            <input name="email" type="text" id="email" value="Support@instafxng.com" disabled class="form-control" required/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-3" for="comment">Comment:</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="fa fa-comment-o fa-fw"></i></span>
+                                                                            <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-sm-offset-3 col-sm-9">
+                                                                        <input name="email" type="hidden" id="email" value="Support@instafxng.com" class="form-control" required/>
+                                                                        <input name="name" type="hidden" id="name" value="Instaforex NG" class="form-control" required/>
+                                                                        <input type="hidden" name="article_id" value="<?php echo $row['article_id'];?>"/>
+                                                                        <input type="hidden" name="comment_id" value="<?php echo $row['comment_id'];?>"/>
+
+                                                                    </div>
+                                                                </div>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" name="reply_comment" class="btn btn-success" value="Submit Reply"/>
+                                                            <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td>
                                             <button type="button" data-target="#confirm-delete-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-danger"><i class="glyphicon glyphicon-remove icon-white"></i> </button>

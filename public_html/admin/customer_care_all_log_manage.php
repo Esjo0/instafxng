@@ -14,7 +14,6 @@ if(isset($_POST['process_delete']))
         $message_error = "Looks like something went wrong or you didn't make any change.";
     }
 }
-
 if(isset($_POST['process_treated']))
 {
     if($obj_customer_care_log->log_treated($_POST['log_id']))
@@ -26,7 +25,6 @@ if(isset($_POST['process_treated']))
         $message_error = "Looks like something went wrong or you didn't make any change.";
     }
 }
-
 $admin_code = $_SESSION["admin_unique_code"];
 
 $query = "SELECT * FROM customer_care_log ORDER BY log_id DESC  ";

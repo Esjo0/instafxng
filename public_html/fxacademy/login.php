@@ -9,12 +9,12 @@ $client_operation = new clientOperation();
 
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
-    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
-        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-        $responseData = json_decode($verifyResponse);
-
-        if ($responseData->success) {
+//    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+//        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+//        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+//        $responseData = json_decode($verifyResponse);
+//
+//        if ($responseData->success) {
             $client_email = $db_handle->sanitizePost($_POST['client_email']);
             $user_code = $client_operation->get_user_by_email($client_email);
 
@@ -42,12 +42,12 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             } else {
                 redirect_to("register.php?id=$client_email");
             }
-        } else {
-            $message_error = "Please try the robot test again.";
-        }
-    } else {
-        $message_error = "Please confirm that you are not a robot. :)";
-    }
+//        } else {
+//            $message_error = "Please try the robot test again.";
+//        }
+//    } else {
+//        $message_error = "Please confirm that you are not a robot. :)";
+//    }
 } else { // Form has not been submitted.
     $username = "";
     $password = "";
@@ -123,7 +123,7 @@ if(isset($_GET['logout'])) {
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
                                 <!-- Login Form -->
-                                <form role="form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                                <form role="form" method="post" action="">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>

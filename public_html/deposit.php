@@ -2,6 +2,28 @@
 require_once 'init/initialize_general.php';
 $thisPage = "Traders";
 
+$get_params = allowed_get_params(['x']);
+$additional_msg = $get_params['x'];
+
+if($additional_msg == 'msg') {
+    $special_msg = <<<msg
+        <p>Funding your InstaForex Account is Fast and Easy!</p>
+
+        <p>You stand to enjoy amazing benefits whenever you make a deposit into your
+        InstaForex account and trade with it. A lot of successful traders are making
+        consistent income trading Forex. You can be one too.</p>
+
+        <p>When you fund your account, you will be funded at a deeply discounted rate.</p>
+
+        <p>That's not all!</p>
+
+        <p>Funding and trading your InstaForex account also makes you stand a chance to be
+        amongst 10 traders who will win Cash Prizes for trading actively in the ongoing
+        InstaFxNg Loyalty Points Promo.</p>
+        <br />
+msg;
+}
+
 $page_requested = "";
 
 // This section processes - views/val_offer_info.php

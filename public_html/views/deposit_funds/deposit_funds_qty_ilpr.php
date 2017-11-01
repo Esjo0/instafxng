@@ -1,6 +1,10 @@
 <?php
+
 $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
-$total_point_earned = $client_operation->get_loyalty_point($client_user_code);
+//$total_point_earned = $client_operation->get_loyalty_point($client_user_code);
+$client_point_details = $obj_loyalty_point->get_user_point_details($client_user_code);
+$total_point_balance = $client_point_details['point_balance'];
+
 ?>
 <ul class="fa-ul">
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter the quantity that you want to fund. Minimum per order is $<?php echo FUNDING_MIN_VALUE; ?>.</li>
@@ -19,8 +23,8 @@ $total_point_earned = $client_operation->get_loyalty_point($client_user_code);
     <!-- Loyalty Points -->
     <div class="alert alert-info">
         <strong>Loyalty Point Rewards - <a href="" data-toggle="modal" data-target="#myModal">Click for Details!</a></strong><br/>
-        Points Earned: <?php if(!is_null($total_point_earned)) { echo $total_point_earned; } else { echo 0; } ?><br/>
-        <?php if(!is_null($total_point_earned) && $total_point_earned > 100) { ?>
+        Points Balance: <?php if(!is_null($total_point_balance)) { echo $total_point_balance; } else { echo 0; } ?><br/>
+        <?php if(!is_null($total_point_balance) && $total_point_balance > 100) { ?>
         <br/><input style="width: 230px" name="point_claimed" type="text" class="form-control" id="point_claimed" placeholder="Enter points to redeem">
         <?php } ?>
     </div>

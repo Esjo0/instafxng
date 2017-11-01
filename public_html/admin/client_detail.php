@@ -47,6 +47,8 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
         $total_point_frozen = $client_operation->get_loyalty_point_frozen($user_code);
         $loyalty_point_balance = $total_point - ($total_point_claimed + $total_point_frozen);
 
+        $client_point_details = $obj_loyalty_point->get_user_point_details($user_code);
+
         $selected_point_frozen_trans_id = $client_operation->get_loyalty_point_frozen_transaction($user_code);
 
         switch($client_verification) {
@@ -176,16 +178,18 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                                             <th>Claimed</th>
                                                             <th>Held</th>
                                                             <th>Balance</th>
+                                                            <th>Expired</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
                                                             <td><?php if(!empty($total_point_claimed)) { echo $total_point_claimed; } else { echo '0.00'; } ?></td>
                                                             <td><?php if(!empty($total_point_frozen)) { echo $total_point_frozen; } else { echo '0.00'; } ?></td>
-                                                            <td><?php if(!empty($loyalty_point_balance)) { echo $loyalty_point_balance; } else { echo '0.00'; } ?></td>
+                                                            <td><?php if(!empty($client_point_details)) { echo $client_point_details['point_balance']; } else { echo '0.00'; } ?></td>
+                                                            <td><?php if(!empty($client_point_details)) { echo $client_point_details['expired_point']; } else { echo '0.00'; } ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3">
+                                                            <td colspan="4">
                                                                 Held Transactions:
                                                                 <?php if(!empty($selected_point_frozen_trans_id)) {
                                                                     $count = 1;

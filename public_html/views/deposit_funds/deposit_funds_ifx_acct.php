@@ -1,7 +1,14 @@
 <?php
 $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
 ?>
-<p>Account funding is very fast and simple</p>
+
+<?php
+    if(isset($special_msg) && !empty($special_msg)) {
+        echo $special_msg; // this is defined in deposit.php
+    } else { ?>
+        <p>Account funding is very fast and simple</p>
+<?php } ?>
+
 <ul class="fa-ul">
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter your Instaforex Account Number and click the submit button</li>
 </ul>

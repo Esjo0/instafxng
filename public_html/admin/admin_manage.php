@@ -392,6 +392,26 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     </div>
                                     <hr/>
 
+                                    <p><strong>Support Mails</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="217" id="" <?php if (in_array(217, $my_pages)) { echo 'checked="checked"'; } ?>/> Compose Email</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="218" id="" <?php if (in_array(218, $my_pages)) { echo 'checked="checked"'; } ?>/> Inbox</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="219" id="" <?php if (in_array(219, $my_pages)) { echo 'checked="checked"'; } ?>/> Sent Box</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="220" id="" <?php if (in_array(220, $my_pages)) { echo 'checked="checked"'; } ?>/> Assigned Emails</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="221" id="" <?php if (in_array(221, $my_pages)) { echo 'checked="checked"'; } ?>/> Drafts</label></div></div>
+                                    </div>
+                                    <hr/>
+
+                                    <p><strong>Accounting System</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="222" id="" <?php if (in_array(222, $my_pages)) { echo 'checked="checked"'; } ?>/> Requisition Form</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="223" id="" <?php if (in_array(223, $my_pages)) { echo 'checked="checked"'; } ?>/> Confirmation Requests</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="224" id="" <?php if (in_array(224, $my_pages)) { echo 'checked="checked"'; } ?>/> Cashiers Desk</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="225" id="" <?php if (in_array(225, $my_pages)) { echo 'checked="checked"'; } ?>/> Requisition Report</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="226" id="" <?php if (in_array(226, $my_pages)) { echo 'checked="checked"'; } ?>/> System Settings</label></div></div>
+                                    </div>
+                                    <hr/>
+
                                     <br/>
                                     <div class="form-group">
                                         <div class="col-sm-12">
