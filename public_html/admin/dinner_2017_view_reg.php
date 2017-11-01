@@ -8,11 +8,10 @@ if (!$session_admin->is_logged_in())
 function get_dinner_reg_remark($reg_code)
 {
     global $db_handle;
-
     $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, dc.comment, dc.created
                 FROM dinner2017_comment AS dc
                 INNER JOIN admin AS a ON dc.admin_code = a.admin_code
-                WHERE dc.reservation_code = $reg_code ORDER BY dc.created DESC";
+                WHERE dc.reservation_code = '$reg_code' ORDER BY dc.created DESC";
     $result = $db_handle->runQuery($query);
     $fetched_data = $db_handle->fetchAssoc($result);
 

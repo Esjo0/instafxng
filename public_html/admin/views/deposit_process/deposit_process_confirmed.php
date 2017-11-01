@@ -64,12 +64,11 @@ if(!empty($trans_detail['points_claimed_id'])) {
                     <div class="col-sm-12 ">
                         <span id="transaction_identity"><?php echo $trans_id; ?></span>
                         <span><strong>Order:</strong> &dollar; <?php echo $trans_detail['dollar_ordered']; ?> - &#8358; <?php echo number_format($trans_detail['naira_total_payable'], 2, ".", ","); ?></span>
-                        <span><strong>Date Created: </strong><?php echo datetime_to_text($trans_detail['deposit_created']); ?></span>
+                        <span><strong>Date: </strong><?php echo datetime_to_text($trans_detail['deposit_created']); ?></span>
                         <span><strong>Account:</strong> <?php echo $trans_detail['ifx_acct_no']; ?></span>
                         <hr/>
                         <span><strong>Paid:</strong> &#8358; <?php echo number_format($trans_detail['client_naira_notified'], 2, ".", ","); ?></span>
-                        <span><strong>Payment Date:</strong> <?php if(!is_null($trans_detail['client_pay_date'])) { echo date_to_text($trans_detail['client_pay_date']); } ?></span>
-                        <span><strong>Date Notified: </strong><?php echo datetime_to_text($trans_detail['client_notified_date']); ?></span>
+                        <span><strong>Date:</strong> <?php if(!is_null($trans_detail['client_pay_date'])) { echo date_to_text($trans_detail['client_pay_date']); } ?></span>
                         <span><strong>Ref:</strong> <?php echo $trans_detail['client_reference']; ?></span>
                         <span><strong>Method:</strong> <?php echo status_user_deposit_pay_method($trans_detail['client_pay_method']); ?></span>
                     </div>

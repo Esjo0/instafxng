@@ -8,18 +8,23 @@ if (isset($_POST['calculator'])) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
-    
-    $exchange_rate = $_POST['exchange_rate'];
-    $amount = $_POST['amount'];
-    $trans_type = $_POST['trans_type'];
+
+    //var_dump($_POST);
+    extract($_POST);
+    //$exchange_rate = $_POST['exchange_rate'];
+    //$amount = $_POST['amount'];
+    //$trans_type = $_POST['trans_type'];
     
     $amount = str_replace(",", "", $amount);
     
-    if($trans_type == 'Deposit') {
+    if($trans_type == 'Deposit')
+    {
         $new_naira_amount = $amount - CBN_STAMP_DUTY;
         $denom = DVAT * DSERVCHARGE + DSERVCHARGE + 1;	
         $realDolVal = number_format(($new_naira_amount / ($exchange_rate * $denom)), 2);
-    } else {
+    }
+    else
+    {
         $new_naira_amount = $amount * $exchange_rate;
         $total_service_charge = $new_naira_amount * WSERVCHARGE;
         $total_vat = $total_service_charge * WVAT;
@@ -80,18 +85,45 @@ if (isset($_POST['calculator'])) {
                                             <input name="amount" type="text" class="form-control" required>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!--<div class="form-group">
                                         <label class="control-label col-sm-3" for="exchange_rate">Exchange Rate (&#8358;):</label>
                                         <div class="col-sm-9 col-lg-5">
                                             <input name="exchange_rate" type="text" class="form-control" required>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="trans_type">Transaction Type:</label>
                                         <div class="col-sm-9 col-lg-5">
                                             <select name="trans_type" class="form-control" id="service_charge_type">
                                                 <option value="Deposit" selected="selected">Deposit</option>
                                                 <option value="Withdrawal">Withdrawal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="trans_type">Account Type:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <select name="acc_type" class="form-control" id="service_charge_type">
+                                                <option value="ILPR" selected="selected">ILPR</option>
+                                                <option value="NILPR">None-ILPR</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="trans_type">Funding Type:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <select name="fund_type" class="form-control" id="service_charge_type">
+                                                <option value="Online Funding" selected="selected">Online Funding</option>
+                                                <option value="Offline Funding">Offline Funding</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="trans_type">Currency Type:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <select name="curr_type" class="form-control" id="service_charge_type">
+                                                <option value="Naira" selected="selected">Naira</option>
+                                                <option value="Dollar">Dollar</option>
                                             </select>
                                         </div>
                                     </div>

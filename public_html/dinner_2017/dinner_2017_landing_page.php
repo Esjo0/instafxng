@@ -1,130 +1,6 @@
 <?php
     require_once("../init/initialize_general.php");
     require_once("../init/initialize_admin.php");
-    // Process submitted form
-    if (isset($_POST['process']))
-    {
-        foreach($_POST as $key => $value)
-        {
-            $_POST[$key] = $db_handle->sanitizePost(trim($value));
-        }
-        extract($_POST);
-        if(empty($email) || empty($phone) || empty($full_name) || empty($state_of_residence) || !isset($ticket_type))
-        {
-
-            $message_error = "All fields are compulsory, please try again.";
-            echo '<script type="text/javascript">scroll_down();</script>';
-        }
-        elseif (!check_email($email))
-        {
-
-            $message_error = "You have provided an invalid email address. Please try again.";
-            echo '<script type="text/javascript">scroll_down();</script>';
-        }
-        elseif ($admin_object->dinner_guest_2017_is_duplicate($email))
-        {
-
-            $message_error = "You placed a reservation request already";
-            echo '<script type="text/javascript">scroll_down();</script>';
-        }
-        else
-        {
-            $new_reg = $admin_object->add_new_dinner_guest_2017($full_name, $email, $phone, $ticket_type, $state_of_residence, $comments);
-            if($new_reg)
-            {
-                $subject = "AFRO NITE 2017";
-                $message = <<<MAIL
-    <div style="background-color: #F3F1F2">
-    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
-    <img src="https://instafxng.com/images/ifxlogo.png" />
-    <hr />
-    <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-    <p>Dear $full_name,</p>
-    
-    <p>It’s been almost 365 days and a lot has happened during the year,
-    but get ready for one more!</p>
-    
-    <p>I want to take this opportunity to appreciate you for showing
-    consistent confidence in the services we render and allowing us to
-    service you this year. You are truly one of the most loyal clients
-    of our company and serving you remains our pleasure.</p>
-    
-    <p>To roundup the year together, I humbly request that you join us
-    for an exciting and entertaining time at our annual Christmas Dinner
-    Event specially designed so you could relax and have fun with the
-    members of our team and other Forex traders like yourself.</p>
-    
-    <p>This year’s dinner is themed the <strong>Classic 80s Night</strong>. When you step
-    inside the venue; the music, the theme and overall ambience will
-    transport you to a simpler and more innocent time where you can have the
-    feel of what it used to be in the 80s.</p>
-    
-    <p>If you love to have fun, you should be at this event as the outfit,
-    the looks the music and the venue will represent what it used to be
-    from way back 80s, and there would be lots of exciting activities lined
-    up alongside the 3 course dinner to be served.</p>
-    
-    <p style="text-align: center"><strong>One last thing ...</strong></p>
-    
-    <p>We have one last surprise for you before the year ends, you will
-    witness the launch of a new service created to make you more money
-    daily even as you trade.</p>
-    
-    <!---<p style="text-align: center">You can
-    <a href="https://instafxng.com/dinner.php?x=$id_encrypt">click here</a>
-    to reserve your seat now.</p>-->
-    
-    <p><strong>NOTE: Admission is strictly by Invitation.</strong></p>
-    
-    <p>It would be an honor to have you at the event as I earnestly look
-    forward to welcoming you and meeting you in person.</p>
-    
-    <br /><br />
-    <p>Best Regards,</p>
-    <p>Fujah Abideen,<br />
-    Corporate Communications Manager<br />
-    www.instafxng.com</p>
-    <br /><br />
-    </div>
-    <hr />
-    <div style="background-color: #EBDEE9;">
-    <div style="font-size: 11px !important; padding: 15px;">
-    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
-        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-    </p>
-    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-    <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
-    <p><strong>Office Number:</strong> 08028281192</p>
-    <br />
-    </div>
-    <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-        official Nigerian Representative of Instaforex, operator and administrator
-        of the website www.instafxng.com</p>
-    <p>To ensure you continue to receive special offers and updates from us,
-        please add support@instafxng.com to your address book.</p>
-    </div>
-    </div>
-    </div>
-    </div>
-MAIL;
-                $system_object->send_email($subject, $message, $email, $full_name);
-                $message_success = "You have successfully created a new dinner reservation.";
-                echo '<script type="text/javascript">scroll_down();</script>';
-            }
-            else
-            {
-                $message_error = "Looks like something went wrong or you didn't make any change.";
-                echo '<script type="text/javascript">scroll_down();</script>';
-            }
-        }
-
-    }
-
 ?>
 <?php
 $get_params = allowed_get_params(['x', 'id']);
@@ -132,7 +8,7 @@ $user_code_encrypted = $get_params['id'];
 $user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
-// Process comment
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
 {
     foreach($_POST as $key => $value)
@@ -149,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             $_POST[$key] = $db_handle->sanitizePost(trim($value));
         }
         extract($_POST);
-        if(empty($phone) || empty($full_name) || empty($state_of_residence) || !isset($ticket_type))
+
+        if(empty($email) ||  empty($phone) || empty($full_name) || empty($state_of_residence) || !isset($ticket_type))
         {
             $message_error = "All fields are compulsory, please try again.";
         }
@@ -163,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
         }
         else
         {
+            $query = "UPDATE user_meta SET d_o_b = '$d_o_b', fb_name = '$fb_name' WHERE user_code = '$user_code' ";
+            $db_handle->runQuery($query);
             $new_reg = $admin_object->add_new_dinner_guest_2017($confirmation_status, $full_name, $email, $phone, $ticket_type, $state_of_residence, $comments);
             if($new_reg)
             {
@@ -249,7 +128,7 @@ MAIL;
                 $system_object->send_email($subject, $message, $email, $full_name);
                 $message_success = "You have successfully created a new dinner reservation.";
             }
-            else
+            if(!$new_reg)
             {
                 $message_error = "Looks like something went wrong or you didn't make any change.";
             }
@@ -325,9 +204,8 @@ if(empty($attendee_detail))
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav mu-menu navbar-right">
-                            <li><a href="#mu-hero">Home</a></li>
+                            <li><a href="#mu-hero">Reservation</a></li>
                             <li><a href="#mu-about">About The Event</a></li>
-                            <li><a href="#mu-register">Reservation</a></li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
@@ -340,27 +218,175 @@ if(empty($attendee_detail))
 
                         <!-- Start hero featured area -->
                         <div class="mu-hero-featured-area">
-                            <!-- Start center Logo -->
-                            <div class="mu-logo-area">
-                                <!-- text based logo -->
-                                <!--<a class="mu-logo" href="#"><center><img height="50%" width="50%" class="img-responsive" src="../images/ifxlogo-xmas.png"></center></a>-->
-                                <!-- image based logo -->
-                                <a class="mu-logo" href="#"><img src="../images/ifxlogo-xmas.png" alt="logo img"></a>
-                            </div>
-                            <!-- End center Logo -->
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <!-- Start center Logo -->
+                                        <div class="mu-logo-area">
+                                            <!-- text based logo -->
+                                            <!--<a class="mu-logo" href="#"><center><img height="50%" width="50%" class="img-responsive" src="../images/ifxlogo-xmas.png"></center></a>-->
+                                            <!-- image based logo -->
+                                            <a class="mu-logo" href="#"><img src="../images/ifxlogo-xmas.png" alt="logo img"></a>
+                                        </div>
+                                        <!-- End center Logo -->
 
-                            <div class="mu-hero-featured-content">
+                                        <div class="mu-hero-featured-content">
 
-                                <h1>HELLO! WELCOME TO AFRO NITE 2017</h1>
-                                <h2>The Biggest Rewards Ceremony In Africa</h2>
-                                <p class="mu-event-date-line">17 December, 2017. Lagos State, Nigeria</p>
+                                            <h1>HELLO! WELCOME TO AFRO NITE 2017</h1>
+                                            <h2>The Biggest Rewards Ceremony In Africa</h2>
+                                            <p class="mu-event-date-line">17 December, 2017. Lagos State, Nigeria</p>
 
-                                <div class="mu-event-counter-area">
-                                    <div id="mu-event-counter">
+                                            <div class="mu-event-counter-area">
+                                                <div id="mu-event-counter">
+                                                </div>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="modal-content">
+                                            <div class="panel-heading">
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-center text-danger">
+                                                        <h5><strong>2017 DINNER RESERVATION</strong></h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                    <fieldset>
+                                                        <?php require_once '../layouts/feedback_message.php'; ?>
+                                                        <p>Please fill the form below to reserve a spot at the Instaforex Afro Nite.</p>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                                                    <input value="<?php echo $attendee_detail['full_name']; ?>" placeholder="Full Name" name="full_name" type="text" id="full_name" class="form-control" required disabled/>
+                                                                    <input value="<?php echo $attendee_detail['full_name']; ?>"  name="full_name" type="hidden" id="full_name" class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+                                                                    <input placeholder="Email Address" name="email" type="text" id="email" value="<?php echo $attendee_detail['email']; ?>" class="form-control" required disabled/>
+                                                                    <input placeholder="Email Address" name="email" type="hidden" id="email" value="<?php echo $attendee_detail['email']; ?>" class="form-control"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
+                                                                    <input placeholder="Phone Number" name="phone" type="text" id="phone_number" value="" class="form-control" required/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <input id="ticket_type" name="ticket_type" type="hidden" value="0">
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-location-arrow fa-fw"></i></span>
+                                                                    <select id="state_of_residence" name="state_of_residence" class="form-control" required>
+                                                                        <option value="">Select Your State Of Residence</option>
+                                                                        <option value="Abia State">Abia State</option>
+                                                                        <option value="Adamawa State">Adamawa State</option>
+                                                                        <option value="Akwa Ibom State">Akwa Ibom State</option>
+                                                                        <option value="Anambra State">Anambra State</option>
+                                                                        <option value="Bauchi State">Bauchi State</option>
+                                                                        <option value="Bayelsa State">Bayelsa State</option>
+                                                                        <option value="Benue State">Benue State</option>
+                                                                        <option value="Borno State">Borno State</option>
+                                                                        <option value="Cross River State">Cross River State</option>
+                                                                        <option value="Delta State">Delta State</option>
+                                                                        <option value="Ebonyi State">Ebonyi State</option>
+                                                                        <option value="Edo State">Edo State</option>
+                                                                        <option value="Ekiti State">Ekiti State</option>
+                                                                        <option value="Enugu State">Enugu State</option>
+                                                                        <option value="FCT Abuja">FCT Abuja</option>
+                                                                        <option value="Gombe State">Gombe State</option>
+                                                                        <option value="Imo State">Imo State</option>
+                                                                        <option value="Jigawa State">Jigawa State</option>
+                                                                        <option value="Kaduna State">Kaduna State</option>
+                                                                        <option value="Kano State">Kano State</option>
+                                                                        <option value="Katsina State">Katsina State</option>
+                                                                        <option value="Kebbi State">Kebbi State</option>
+                                                                        <option value="Kogi State">Kogi State</option>
+                                                                        <option value="Kwara State">Kwara State</option>
+                                                                        <option value="Lagos State">Lagos State</option>
+                                                                        <option value="Nasarawa State">Nasarawa State</option>
+                                                                        <option value="Niger State">Niger State</option>
+                                                                        <option value="Ogun State">Ogun State</option>
+                                                                        <option value="Ondo State">Ondo State</option>
+                                                                        <option value="Osun State">Osun State</option>
+                                                                        <option value="Oyo State">Oyo State</option>
+                                                                        <option value="Plateau State">Plateau State</option>
+                                                                        <option value="Rivers State">Rivers State</option>
+                                                                        <option value="Sokoto State">Sokoto State</option>
+                                                                        <option value="Taraba State">Taraba State</option>
+                                                                        <option value="Yobe State">Yobe State</option>
+                                                                        <option value="Zamfara State">Zamfara State </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-facebook fa-fw"></i></span>
+                                                                    <input placeholder="Facebook Name" name="fb_name" type="text" id="fb_name" value="" class="form-control" required/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
+                                                                    <input  type="text" class="form-control" placeholder="Date Of Birth" id="d_o_b" name="d_o_b" required/>
+                                                                    <script type="text/javascript">
+                                                                        $(function ()
+                                                                        {
+                                                                            $('#d_o_b').datetimepicker(
+                                                                                {
+                                                                                    format: 'DD-MM-YYYY'
+                                                                                });
+                                                                        });
+                                                                    </script>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+                                                                    <textarea placeholder="Comments (If Any)" id="comments" rows="3" name="comments" class="form-control"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="text-justify input-group">
+                                                                    <input id="confirmation_status" type="radio" name="confirmation_status" value="1" required/> <label for="confirmation_status">Maybe I would be in attendance.</label>
+                                                                    <br/>
+                                                                    <input id="confirmation_status" type="radio" name="confirmation_status" value="2" required/> <label for="confirmation_status">Yes, I would be in attendance.</label>
+                                                                    <br/>
+                                                                    <input id="confirmation_status" type="radio" name="confirmation_status" value="3" required/> <label for="confirmation_status">No, I would not be in attendance.</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-center form-group">
+                                                            <div class=" col-sm-12">
+                                                                <input name="process" type="submit" class="btn btn-success" value="Reserve My Spot Now!">
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <!-- End hero featured area -->
@@ -425,7 +451,7 @@ if(empty($attendee_detail))
                 <div class="mu-video-content">
                     <div class="mu-video-iframe-area">
                         <a class="mu-video-close-btn" href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
-                        <iframe width="854" height="480" src="https://www.youtube.com/embed/n9AVEl9764s" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="854" height="480" src="//www.youtube.com/embed/tdHp4WGw7YE" frameborder="0" allowfullscreen></iframe>
                     </div>
                 </div>
                 <!-- End Video content -->
@@ -458,7 +484,7 @@ if(empty($attendee_detail))
             </section>
             <!-- End Venue -->
 
-            <!-- Start Register  -->
+            <!-- Start Register
             <section id="mu-register">
                 <div class="container">
                     <div class="row">
