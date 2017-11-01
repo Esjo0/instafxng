@@ -95,17 +95,17 @@ function log_action($action, $message="") {
  */
 function datetime_to_text($datetime="") {
   $unixdatetime = strtotime($datetime);
-  return strftime("%B %d, %Y at %I:%M %p", $unixdatetime);
+  return strftime("%b %d, %Y at %I:%M %p", $unixdatetime);
 }
 
 function datetime_to_text2($datetime="") {
   $unixdatetime = strtotime($datetime);
-  return strftime("%B %d, %Y", $unixdatetime);
+  return strftime("%b %d, %Y", $unixdatetime);
 }
 
 function date_to_text($datetime="") {
   $unixdatetime = strtotime($datetime);
-  return strftime("%B %d, %Y", $unixdatetime);
+  return strftime("%b %d, %Y", $unixdatetime);
 }
 
 

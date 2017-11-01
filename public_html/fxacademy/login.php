@@ -1,5 +1,6 @@
 <?php
 require_once '../init/initialize_client.php';
+
 if ($session_client->is_logged_in()) {
     redirect_to("index.php");
 }
@@ -8,43 +9,45 @@ $client_operation = new clientOperation();
 
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
-    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
-        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-        $responseData = json_decode($verifyResponse);
-
-        if ($responseData->success) {
+//    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+//        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+//        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+//        $responseData = json_decode($verifyResponse);
+//
+//        if ($responseData->success) {
             $client_email = $db_handle->sanitizePost($_POST['client_email']);
             $user_code = $client_operation->get_user_by_email($client_email);
+
+            if(empty($user_code) || !isset($user_code)) { redirect_to("register.php?id=$client_email"); }
+
             $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
 
             if($user_ifx_details) {
+                $found_user = array(
+                    'user_code' => $user_ifx_details['client_user_code'],
+                    'status' => $user_ifx_details['client_status'],
+                    'first_name' => $user_ifx_details['client_first_name'],
+                    'last_name' => $user_ifx_details['client_last_name'],
+                    'email' => $user_ifx_details['client_email']
+                );
+                $session_client->login($found_user);
 
-                // confirm that the user is active
-                if($client_operation->user_is_active($user_ifx_details['client_email'])) {
-                    $found_user = array(
-                        'user_code' => $user_ifx_details['client_user_code'],
-                        'status' => $user_ifx_details['client_status'],
-                        'first_name' => $user_ifx_details['client_first_name'],
-                        'last_name' => $user_ifx_details['client_last_name'],
-                        'email' => $user_ifx_details['client_email']
-                    );
-                    $session_client->login($found_user);
-                    redirect_to("index.php");
-                } else {
-                    $message_error = "Your profile has certain issues, please contact support.";
+                // Check if this is a first time login, then log the date
+                if(empty($user_ifx_details['client_academy_first_login']) || is_null($user_ifx_details['client_academy_first_login'])) {
+                    $client_operation->log_academy_first_login($user_ifx_details['client_first_name'], $user_ifx_details['client_email'], $user_ifx_details['client_user_code']);
                 }
 
+                redirect_to("index.php");
+
             } else {
-                $message_error = "Your profile details could not be found, please confirm you
-                entered the correct email address used on our website or contact support.";
+                redirect_to("register.php?id=$client_email");
             }
-        } else {
-            $message_error = "Please try the robot test again.";
-        }
-    } else {
-        $message_error = "Please confirm that you are not a robot. :)";
-    }
+//        } else {
+//            $message_error = "Please try the robot test again.";
+//        }
+//    } else {
+//        $message_error = "Please confirm that you are not a robot. :)";
+//    }
 } else { // Form has not been submitted.
     $username = "";
     $password = "";
@@ -109,6 +112,7 @@ if(isset($_GET['logout'])) {
                                     <footer>George S. Clason</footer>
                                 </blockquote>
 
+                                <h4>Login to access the Academy</h4>
                                 <p>Forex Trading is easy to learn, enter your Email Address below and Start Learning.</p>
                             </div>
                         </div>
@@ -119,7 +123,7 @@ if(isset($_GET['logout'])) {
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
                                 <!-- Login Form -->
-                                <form role="form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                                <form role="form" method="post" action="">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>

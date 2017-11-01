@@ -76,7 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
-            <p>At the Forum this month, we will discuss the topic Insight on Crypto-currency & its application in Forex Trading.</p>
+            <p>At the Forum this month, we will highlight the trading year 2017, the high and lows
+            you experienced in Forex trading, and together, we will discuss how to close more profitable
+            trades in the coming year .</p>
 
             <p>You will also have the opportunity of meeting other Forex traders and you
             could be one of two lucky winners to win $20 trading bonus. Isn’t that cool?</p>
@@ -84,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: 9th of September, 2017<br /><br />
+            Date: 11th of November, 2017<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -161,9 +163,11 @@ MAIL;
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Insight on Crypto-currency & its application in Forex Trading</h3>
+                                <h3 style="margin: 0;">Highlights of the Year 2017</h3>
                                 <p style="margin-top: 0">
-                                    Join us on Saturday, 9th of September as we examine explore crypto-currency and how you can use it to trade Forex profitably.
+                                    Join us on Saturday 11th of November, 2017 as you share with us,
+                                    the high and lows you experienced in Forex trading in year 2017 and we
+                                    together discuss how to close more profitable trades in the new year.
                                         Time: 12 - 2pm.<br />
                                     <strong>Reserve your seat below to stand a chance to win $20.</strong>
                                 </p>
@@ -188,9 +192,9 @@ MAIL;
                                     success. They share their experiences, learn from other traders, meet new
                                     people and go home with lots of exciting prizes such bonus account and Instaforex
                                     branded materials. </p>
-                                <p>Join us on Saturday, 9th of September, 2017 for another exciting edition of
-                                    Nigerian Forex traders Forum as we explore crypto-currency and how you can use it
-                                    to trade Forex profitably.</p>
+                                <p>Join us on Saturday, 11th of November, 2017 for another exciting edition of
+                                    Nigerian Forex traders Forum as we examine the moments in the forex trading
+                                    year 2017.</p>
                             </div>
                         </div>
 
@@ -276,9 +280,9 @@ MAIL;
                                             <div class="radio">
                                                 <label><input id="venue" type="radio" name="venue" value="Diamond Estate" checked required>Block 1A, Plot 8, Diamond Estate, LASU/Isheri road, Isheri Olofin, Lagos.</label>
                                             </div>
-                                            <div class="radio">
-                                                <label><input id="venue" type="radio" name="venue" value="Ajah Office" required>Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</label>
-                                            </div>
+<!--                                            <div class="radio">-->
+<!--                                                <label><input id="venue" type="radio" name="venue" value="Ajah Office" required>Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</label>-->
+<!--                                            </div>-->
                                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                         </div>
                                         <div class="form-group">

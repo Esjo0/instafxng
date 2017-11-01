@@ -48,13 +48,13 @@ if(isset($_GET['s']) && $_GET['s'] == 1) {
                                     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>
                                         <strong>Head Office Address</strong><br>
                                         TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Busstop, LASU/Isheri road, Isheri Olofin, Lagos, Nigeria.<br>
-                                        <strong>Support Phones:</strong> 08028281192, 08182045184, 08083956750<br>
+                                        <strong>Support Phones:</strong> 08028281192, 08182045184,08084603182<br>
                                         <strong>Email:</strong> support@instafxng.com
                                     </li>
                                     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>
                                         <strong>Lekki Office Address</strong><br>
                                         Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos, Nigeria.<br>
-                                        <strong>Support Phones:</strong> 07081036115, 08084603182
+                                        <strong>Support Phones:</strong> 07081036115, 08083956750
                                     </li>
                                 </ul>
                                 <h5>Kindly fill the form below to contact us</h5>

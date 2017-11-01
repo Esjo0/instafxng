@@ -178,7 +178,7 @@ class careers {
 MAIL;
             $system_object->send_email($subject, $body, $email_add, $first_name);
 
-            return true;
+            return $client_password;
         } else {
             return false;
         }

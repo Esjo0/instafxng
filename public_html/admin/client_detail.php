@@ -14,10 +14,15 @@ $client_operation = new clientOperation();
 if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
     redirect_to("./"); // page cannot display anything without the id
 } else {
+
     $user_code = $db_handle->sanitizePost($user_code);
     $user_detail = $client_operation->get_user_by_user_code($user_code);
     
     if($user_detail) {
+
+        // Get client education log history
+        $client_education_history = $education_object->get_client_lesson_history($user_code);
+
         extract($user_detail);
 
         if($middle_name) {
@@ -41,6 +46,8 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
         $total_point_claimed = $client_operation->get_loyalty_point_claimed($user_code);
         $total_point_frozen = $client_operation->get_loyalty_point_frozen($user_code);
         $loyalty_point_balance = $total_point - ($total_point_claimed + $total_point_frozen);
+
+        $client_point_details = $obj_loyalty_point->get_user_point_details($user_code);
 
         $selected_point_frozen_trans_id = $client_operation->get_loyalty_point_frozen_transaction($user_code);
 
@@ -171,16 +178,18 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                                             <th>Claimed</th>
                                                             <th>Held</th>
                                                             <th>Balance</th>
+                                                            <th>Expired</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
                                                             <td><?php if(!empty($total_point_claimed)) { echo $total_point_claimed; } else { echo '0.00'; } ?></td>
                                                             <td><?php if(!empty($total_point_frozen)) { echo $total_point_frozen; } else { echo '0.00'; } ?></td>
-                                                            <td><?php if(!empty($loyalty_point_balance)) { echo $loyalty_point_balance; } else { echo '0.00'; } ?></td>
+                                                            <td><?php if(!empty($client_point_details)) { echo $client_point_details['point_balance']; } else { echo '0.00'; } ?></td>
+                                                            <td><?php if(!empty($client_point_details)) { echo $client_point_details['expired_point']; } else { echo '0.00'; } ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3">
+                                                            <td colspan="4">
                                                                 Held Transactions:
                                                                 <?php if(!empty($selected_point_frozen_trans_id)) {
                                                                     $count = 1;
@@ -312,11 +321,6 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                             </tbody>
                                         </table>
 
-                                    </div>
-                                </div>
-                                <!-------------- Transaction section ----->
-                                <div class="row">
-                                    <div class="col-sm-12">
                                         <h5>Recent Transactions</h5>
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a data-toggle="tab" href="#latest_funding">Deposit</a></li>
@@ -372,6 +376,34 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                                 </table>
                                             </div>
                                         </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- Display information about the client Education career here -->
+
+                                        <br />
+                                        <h5>Education History</h5>
+                                        <table class="table table-responsive table-striped table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Course</th>
+                                                <th>Lesson</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php if(isset($client_education_history) && !empty($client_education_history)) { foreach ($client_education_history as $row) { ?>
+                                                <tr>
+                                                    <td><?php echo datetime_to_text($row['lesson_log_date']); ?></td>
+                                                    <td><?php echo $row['course_title']; ?></td>
+                                                    <td><?php echo $row['lesson_title']; ?></td>
+                                                </tr>
+                                            <?php } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                            </tbody>
+                                        </table>
 
                                     </div>
                                 </div>

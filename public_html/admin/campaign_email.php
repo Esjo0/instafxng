@@ -57,6 +57,14 @@ if($get_params['x'] == 'edit') {
     }   
 }
 
+if($get_params['x'] == 'duplicate') {
+
+    $selected_campaign_email = $system_object->get_campaign_email_by_id($campaign_email_id);
+
+    //We have to unset the ID since this is like save new from an old campaign
+    unset($selected_campaign_email['campaign_email_id']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

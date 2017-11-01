@@ -95,4 +95,3 @@ class mysqlDB {
 }
 
 $db_handle = new mysqlDB(DB_NAME, DB_USER, DB_PASS);
-$db_handle2 = new mysqlDB('tboy9_demo', 'root', '');

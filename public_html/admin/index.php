@@ -32,10 +32,12 @@ $total_active_accounts = $system_object->get_total_active_accounts();
 // GET TOTAL CLIENTS
 $total_clients = $system_object->get_total_clients();
 
-// GET TOTAL UNCLAIMED POINTS
-$client_operation = new clientOperation();
-$total_unclaimed_points = $client_operation->get_loyalty_point("all");
-$total_unclaimed_points_dollar_amount = $total_unclaimed_points * DOLLAR_PER_POINT;
+// GET TOTAL POINT BALANCE
+$total_point_balance = $obj_loyalty_point->point_balance_sum();
+$total_point_balance_dollar_amount = $total_point_balance * DOLLAR_PER_POINT;
+
+$total_expired_point = $obj_loyalty_point->total_expired_point();
+$total_expired_point_dollar_amount = $total_expired_point * DOLLAR_PER_POINT;
 
 $failed_sms_code = $system_object->get_failed_sms_code();
 
@@ -105,10 +107,20 @@ $failed_sms_code = $system_object->get_failed_sms_code();
 
                         <div class="col-sm-3">
                             <div class="super-shadow dashboard-stats">
-                                <header class="text-center"><strong>Unclaimed Points</strong></header>
+                                <header class="text-center"><strong>Points Balance</strong></header>
                                 <article class="text-center">
-                                    <strong><?php echo number_format(0, 2, ".", ","); ?></strong>&nbsp; | &nbsp;
-                                    <strong>$ <?php echo number_format(0, 2, ".", ","); ?></strong>
+                                    <strong><?php echo number_format($total_point_balance, 2, ".", ","); ?></strong>&nbsp; | &nbsp;
+                                    <strong>$ <?php echo number_format($total_point_balance_dollar_amount, 2, ".", ","); ?></strong>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Expired Points</strong></header>
+                                <article class="text-center">
+                                    <strong><?php echo number_format($total_expired_point, 2, ".", ","); ?></strong>&nbsp; | &nbsp;
+                                    <strong>$ <?php echo number_format($total_expired_point_dollar_amount, 2, ".", ","); ?></strong>
                                 </article>
                             </div>
                         </div>

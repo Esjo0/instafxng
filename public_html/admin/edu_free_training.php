@@ -4,6 +4,25 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+if(empty($_SESSION['training_centre_filter']) || !isset($_SESSION['training_centre_filter'])) {
+    $_SESSION['training_centre_filter'] = 'all';
+}
+
+if (isset($_POST['apply_filter'])) {
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+    extract($_POST);
+    $_SESSION['training_centre_filter'] = $training_centre;
+}
+
+if(isset($_SESSION['training_centre_filter']) && $_SESSION['training_centre_filter'] <> 'all') {
+    $training_centre = $_SESSION['training_centre_filter'];
+    $query_add_1 = " AND training_centre = '$training_centre' ";
+    $query_add_2 = " WHERE training_centre = '$training_centre' ";
+    $filter_on = true;
+}
+
 $client_operation = new clientOperation();
 
 $total_entry = $db_handle->numRows("SELECT * FROM free_training_campaign");
@@ -35,8 +54,13 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
         ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
         FROM free_training_campaign AS ftc
         LEFT JOIN state AS s ON ftc.state_id = s.state_id
-        LEFT JOIN user AS u on u.email = ftc.email
-        WHERE ftc.first_name LIKE '%$search_text%' OR ftc.last_name LIKE '%$search_text%' OR ftc.email LIKE '%$search_text%' OR ftc.phone LIKE '%$search_text%' OR ftc.created LIKE '$search_text%' GROUP BY ftc.email ";
+        LEFT JOIN user AS u on u.email = ftc.email ";
+
+    if($filter_on) {
+        $query .= "WHERE ftc.first_name LIKE '%$search_text%' OR ftc.last_name LIKE '%$search_text%' OR ftc.email LIKE '%$search_text%' OR ftc.phone LIKE '%$search_text%' OR ftc.created LIKE '$search_text%' " . $query_add_1 . " GROUP BY ftc.email ";
+    } else {
+        $query .= "WHERE ftc.first_name LIKE '%$search_text%' OR ftc.last_name LIKE '%$search_text%' OR ftc.email LIKE '%$search_text%' OR ftc.phone LIKE '%$search_text%' OR ftc.created LIKE '$search_text%' GROUP BY ftc.email ";
+    }
 
 } else {
     if(!empty($selected_agent)) {
@@ -44,15 +68,25 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
             FROM free_training_campaign AS ftc
             LEFT JOIN state AS s ON ftc.state_id = s.state_id
-            LEFT JOIN user AS u on u.email = ftc.email
-            WHERE ftc.attendant = $selected_agent ORDER BY ftc.created DESC ";
+            LEFT JOIN user AS u on u.email = ftc.email ";
+
+        if($filter_on) {
+            $query .= "WHERE ftc.attendant = $selected_agent " . $query_add_1 . " ORDER BY ftc.created DESC ";
+        } else {
+            $query .= "WHERE ftc.attendant = $selected_agent ORDER BY ftc.created DESC ";
+        }
     } else {
         $query = "SELECT ftc.free_training_campaign_id, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS full_name, ftc.email, ftc.phone,
             ftc.training_interest, ftc.training_centre, ftc.created, s.alias AS main_state, u.user_code
             FROM free_training_campaign AS ftc
             LEFT JOIN state AS s ON ftc.state_id = s.state_id
-            LEFT JOIN user AS u on u.email = ftc.email
-            ORDER BY ftc.created DESC ";
+            LEFT JOIN user AS u on u.email = ftc.email ";
+
+        if($filter_on) {
+            $query .= $query_add_2 . " ORDER BY ftc.created DESC ";
+        } else {
+            $query .= " ORDER BY ftc.created DESC ";
+        }
     }
 }
 
@@ -133,6 +167,21 @@ $all_registrations = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
+
+                                <form data-toggle="validator" class="form-inline" role="form" method="post" action="">
+                                    <div class="form-group">
+                                        <label for="training_centre">Filter By Training Centre:</label>
+                                        <select name="training_centre" class="form-control" id="training_centre" required>
+                                            <option value="all"> All Centres</option>
+                                            <option value="1" <?php if(isset($_SESSION['training_centre_filter']) && $_SESSION['training_centre_filter'] == '1') { echo "selected='selected'"; } ?>>Diamond Centre</option>
+                                            <option value="2" <?php if(isset($_SESSION['training_centre_filter']) && $_SESSION['training_centre_filter'] == '2') { echo "selected='selected'"; } ?>>Lekki Centre</option>
+                                            <option value="3" <?php if(isset($_SESSION['training_centre_filter']) && $_SESSION['training_centre_filter'] == '3') { echo "selected='selected'"; } ?>>Online Centre</option>
+                                        </select>
+                                    </div>
+                                    <input name="apply_filter" type="submit" class="btn btn-primary" value="Apply Filter">
+                                </form>
+
+
                                 <p>Below is the table of Free Forex Training prospects.</p>
                                 <p><strong>Total Entry:</strong> <?php echo number_format($total_entry); ?><br />
                                 <strong>Total Entry Not Contacted:</strong> <?php echo number_format($total_not_contacted); ?> <a target="_blank" class="btn btn-default" href="edu_free_training2.php" title="View"><i class="glyphicon glyphicon-eye-open icon-white"></i></a></p>

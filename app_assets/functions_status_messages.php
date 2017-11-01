@@ -463,6 +463,64 @@ function dinner_invite_status($status) {
     return $message;
 }
 
+
+
+/*
+ * Table: Dinner 2017
+ * Column: invite
+ */
+function dinner_2017_invite_status($status) {
+    switch ($status) {
+        case '0': $message = "Not Sent"; break;
+        case '1': $message = "Sent"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
+
+function dinner_2017_confirmation_status($status) {
+    switch ($status) {
+        case '2': $message = "Confirmed"; break;
+        case '3': $message = "Declined"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
+
+/*
+ * Table: Dinner 2017
+ * Column: Ticket Type
+ */
+function dinner_ticket_type($status) {
+    switch ($status)
+    {
+        case '0': $message = "Single Client"; break;
+        case '1': $message = "Plus One Client (Double)"; break;
+        case '2': $message = "VIP Single"; break;
+        case '3': $message = "VIP Plus One (Double)"; break;
+        case '4': $message = "Hired Help"; break;
+        case '5': $message = "Staff"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
+
+/*
+ * Table: Dinner 2017
+ * Column: Confirmation Status
+ */
+function dinner_confirmation_status($status) {
+    switch ($status)
+    {
+        case '0': $message = "Pending"; break;
+        case '1': $message = "Maybe"; break;
+        case '2': $message = "Confirmed"; break;
+        case '3': $message = "Declined"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
+
 function forum_reg_venue($status) {
     switch ($status) {
         case '1': $message = "Diamond Estate"; break;

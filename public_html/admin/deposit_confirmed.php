@@ -119,11 +119,12 @@ $confirmed_deposit_requests = $db_handle->fetchAssoc($result);
                                                     <div class="col-sm-8 ">
                                                         <span id="transaction_identity"><?php echo $row['trans_id']; ?></span>
                                                         <span><strong>Order:</strong> &dollar; <?php echo $row['dollar_ordered']; ?> - &#8358; <?php echo number_format($row['naira_total_payable'], 2, ".", ","); ?></span>
-                                                        <span><strong>Date: </strong><?php echo datetime_to_text($row['created']); ?></span>
+                                                        <span><strong>Date Created: </strong><?php echo datetime_to_text($row['created']); ?></span>
                                                         <span><strong>Account:</strong> <?php echo $row['ifx_acct_no']; ?></span>
                                                         <hr/>
                                                         <span><strong>Paid:</strong> &#8358; <?php echo number_format($row['client_naira_notified'], 2, ".", ","); ?></span>
-                                                        <span><strong>Date:</strong> <?php if(!is_null($row['client_pay_date'])) { echo date_to_text($row['client_pay_date']); } ?></span>
+                                                        <span><strong>Payment Date:</strong> <?php if(!is_null($row['client_pay_date'])) { echo date_to_text($row['client_pay_date']); } ?></span>
+                                                        <span><strong>Date Notified: </strong><?php echo datetime_to_text($row['client_notified_date']); ?></span>
                                                         <span><strong>Ref:</strong> <?php echo $row['client_reference']; ?></span>
                                                         <span><strong>Method:</strong> <?php echo status_user_deposit_pay_method($row['client_pay_method']); ?></span>
                                                     </div>

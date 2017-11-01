@@ -34,11 +34,13 @@ if (isset($_POST['submit_question'])) {
     }
     extract($_POST);
 
-    $question_submitted = $education_object->set_lesson_support_request($course_id, $course_lesson_id, $comment, $_SESSION['client_unique_code']);
+    $question_submitted = $education_object->set_lesson_support_request($course_id, $course_lesson_id, $comment, $_SESSION['client_unique_code'], $_SESSION['client_first_name'], $_SESSION['client_email']);
 
     if($question_submitted) {
         $message_success = "Your support request has been submitted successfully, your Instructor will respond soon.
                     Go to <a href='fxacademy/support_message.php'>Support Message</a> to follow responses on all your support request.";
+
+        // Send acknowledgement email to the client
     } else {
         $message_error = "There seems to be a problem somewhere, your support request could not be saved. Please try again.";
     }

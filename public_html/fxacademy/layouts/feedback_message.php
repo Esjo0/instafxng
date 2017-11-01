@@ -9,4 +9,10 @@
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Oops!</strong> <?php echo $message_error; ?>
 </div>
+<?php endif ?>
+<?php if(isset($message_info)): ?>
+    <div class="alert alert-info">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <?php echo $message_info; ?>
+    </div>
 <?php endif;

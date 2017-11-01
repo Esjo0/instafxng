@@ -37,16 +37,20 @@ $thisPage = "Home";
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
-                                <h2>5 Reasons You Should Keep a Forex Trading Journal</h2>
-                                <p>Do you often wonder why you need to keep a trading journal for your Forex
-                                    trading activities since your broker provide a real-time records of your
-                                    trade?</p>
-                                <p>There are a lot of benefits to keeping a separate and manual trading journal
-                                    <a href="https://instafxng.com/news1/id/534/u/5-reasons-you-should-keep-forex-trading-journal/"> ... read more</a></p>
+                                <h2>The Race to One Million Naira is Almost Over!</h2>
+                                <p>It's <strong><?php echo 30 - date('d'); ?> days to the end of the promo</strong> and ONE hardworking and consistent
+                                trader will win a whopping sum of <strong>&#8358;<?php echo number_format(1000000); ?></strong>.</p>
+
+                                <p>Now, that's not all! There are CASH prizes for the 2nd to the 10th trader who
+                                appears on the rank scale by the end of the Promo.</p>
+
+                                <p>You can be one of the hardworking traders who will win varying cash
+                                awards only if you start trading more than ever before.
+                                <a href="https://instafxng.com/news1/id/562/u/he-did-it-one-month-you-can/" title="click for details">Click here</a> to learn more.</p>
                             </div>
 
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/news1/id/534/u/5-reasons-you-should-keep-forex-trading-journal/" title="click for details"><img src="images/forex-journal.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/news1/id/562/u/he-did-it-one-month-you-can/" title="click for details"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>

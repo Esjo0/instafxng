@@ -5,7 +5,6 @@ if (!$session_admin->is_logged_in()) {
 }
 if (isset($_POST['process_client']))
 {
-    
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
@@ -14,13 +13,13 @@ if (isset($_POST['process_client']))
     {
         $message_error = "All fields are compulsory, please try again.";
     }
-    /*elseif (!$system_object->valid_ifxacct($acc_no))
+    elseif (!$system_object->valid_ifxacct($acc_no))
     {
         $message_error = "You have provided an invalid InstaForex Account Number.
         Please check the account number to ensure that it belongs to an existing client.";
-    }*/
+    }
     else {
-        $new_log = $obj_log->add_new_client_log($_SESSION['admin_unique_code'], $acc_no, $con_desc);
+        $new_log = $obj_customer_care_log->add_new_client_log($_SESSION['admin_unique_code'], $acc_no, $con_desc);
         if($new_log)
         {
             $message_success = "You have successfully created a new log.";
@@ -34,32 +33,30 @@ if (isset($_POST['process_client']))
 
 if (isset($_POST['process_customer']))
 {
-
-    foreach($_POST as $key => $value) {
+    foreach($_POST as $key => $value)
+    {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
-    //var_dump($_POST);
     extract($_POST);
-
-
-    if(empty($full_name) && empty($phone_no) || empty($con_desc) || empty($email_address))
+    if(empty($first_name) || empty($last_name) || empty($phone) || empty($con_desc))
     {
         $message_error = "All fields are compulsory, please try again.";
     }
-    elseif (!check_email($email_address)|| $admin_object->prospect_is_duplicate($email_address))
+    elseif (!check_email($email))
     {
-        $message_error = "You have provided an invalid email address or the email already exists!. Please try again.";
+        $message_error = "You have provided an invalid email address. Please try again.";
     }
     else
         {
-        $new_log = $obj_log->add_new_customer_log($_SESSION['admin_unique_code'], $first_name, $other_name, $last_name, $email_address, $phone_no, $con_desc, $prospect_source);
+        $new_log = $obj_customer_care_log->add_new_customer_log($_SESSION['admin_unique_code'], $first_name, $other_name, $last_name, $email, $phone, $con_desc, $prospect_source);
+        //($_SESSION['admin_unique_code'], $first_name, $other_name, $last_name, $email_address, $phone_no, $con_desc, $prospect_source);
             if($new_log)
-        {
-            $message_success = "You have successfully created a new log.";
-        } else
-        {
-            $message_error = "Looks like something went wrong or you didn't make any change.";
-        }
+            {
+                $message_success = "You have successfully created a new log.";
+            } else
+            {
+                $message_error = "Looks like something went wrong or you didn't make any change.";
+            }
     }
 
 }
@@ -132,21 +129,21 @@ if(empty($all_prospect_source)) {
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-3" for="email_address">Customer's Email Address:</label>
+                                                <label class="control-label col-sm-3" for="email">Customer's Email Address:</label>
                                                 <div class="col-sm-9">
                                                     <div class="row">
                                                         <div class="col-md-9">
-                                                            <input name="email_address" type="text" id="email_address" value="" class="form-control" />
+                                                            <input name="email" type="text" id="email" value="" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-3" for="phone_no">Customer's Phone Number:</label>
+                                                <label class="control-label col-sm-3" for="phone">Customer's Phone Number:</label>
                                                 <div class="col-sm-9">
                                                     <div class="row">
                                                         <div class="col-md-9">
-                                                            <input name="phone_no" type="text" id="phone_no"  class="form-control" required/>
+                                                            <input name="phone" type="text" id="phone"  class="form-control" required/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -212,7 +209,7 @@ if(empty($all_prospect_source)) {
                                             <div class="form-group">
                                                 <label class="control-label col-sm-3" for="description">Conversation Description:</label>
                                                 <div class="col-sm-9 col-lg-5">
-                                                    <textarea placeholder="Enter a brief precise description of your convesation..." name="con_desc" id="con_desc" rows="3" class="form-control" required></textarea>
+                                                    <textarea placeholder="Enter a brief and precise description of your convesation..." name="con_desc" id="con_desc" rows="3" class="form-control" required></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group">
