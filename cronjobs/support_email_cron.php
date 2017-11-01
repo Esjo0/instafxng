@@ -48,6 +48,7 @@ if($emails) {
         $message = $db_handle->sanitizePost(trim($message));
 
         $new_mail = $obj_support_emails->set_inbox($email, $message, $subject, $date_time);
+
     }
 
 

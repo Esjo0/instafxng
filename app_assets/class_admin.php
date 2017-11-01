@@ -218,7 +218,6 @@ MAIL;
         }
     }
 
-
     // Add New Dinner Attendee
     public function add_new_dinner_attendee($full_name, $email, $phone_number) {
         global $db_handle;
@@ -228,6 +227,37 @@ MAIL;
 
         return $db_handle->affectedRows() > 0 ? true : false;
 
+    }
+
+    // Add New Dinner Guest 2017
+    public function add_new_dinner_guest_2017($confirmation, $full_name, $email, $phone_number, $ticket_type, $state_of_residence, $comments)
+    {
+        global $db_handle;
+
+        reservation_code:
+        $reservation_code = rand_string(5);
+        if($db_handle->numRows("SELECT reservation_code FROM dinner_2017 WHERE reservation_code = '$reservation_code'") > 0) { goto reservation_code; };
+
+        $query = "INSERT INTO dinner_2017 (confirmation, reservation_code, full_name, email, phone, ticket_type, state_of_residence, comments) VALUES ('$confirmation', '$reservation_code', '$full_name', '$email', '$phone_number', '$ticket_type', '$state_of_residence', '$comments')";
+        $db_handle->runQuery($query);
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    // Update Dinner Guest 2017
+    public function update_dinner_guest_2017($reservation_code, $ticket_type, $confirmation)
+    {
+        global $db_handle;
+        $query = "UPDATE dinner_2017 SET ticket_type = '$ticket_type', confirmation = '$confirmation' WHERE reservation_code = '$reservation_code'";
+        $db_handle->runQuery($query);
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+    // Confirm that the email address is not existing
+    public function dinner_guest_2017_is_duplicate($email)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM dinner_2017 WHERE email = '$email'";
+        $result = $db_handle->numRows($query);
+        return $result ? true : false;
     }
     
     // Update admin profile - modify the status

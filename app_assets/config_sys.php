@@ -39,6 +39,7 @@ $client_group_DEFAULT = array(
     "24" => "Career Application Submitted",
     "25" => "Top Traders",
     "26" => "Prospect - Pencil Comedy Event",
-    "27" => "Prospect - 500 USD No-Deposit"
+    "27" => "Prospect - 500 USD No-Deposit",
+    "28" => "Lagos Clients"
 
 );

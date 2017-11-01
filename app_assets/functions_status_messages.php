@@ -293,6 +293,7 @@ function client_group_campaign_category($status) {
         case '25': $message = "Top Traders"; break;
         case '26': $message = "Prospect - Pencil Comedy Event"; break;
         case '27': $message = "Prospect - 500 USD No-Deposit"; break;
+        case '28': $message = "Lagos Clients"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -346,6 +347,7 @@ function client_group_query($client_group) {
         case '25': $query = "SELECT u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned BETWEEN '$top_trader_from_date' AND '$top_trader_to_date'"; break;
         case '26': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 1"; break;
         case '27': $query = "SELECT CONCAT(last_name, SPACE(1), first_name) AS first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 2"; break;
+        case '28': $query = "SELECT CONCAT(last_name, SPACE(1), first_name) AS first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 2"; break;
         default: $query = false; break;
     }
     return $query;

@@ -14,10 +14,15 @@ $total_point_balance = $client_point_details['point_balance'];
     <input type="hidden" name="ifx_acct_no" value="<?php if(isset($ifx_acc_no)) { echo $ifx_acc_no; } ?>" />
     <div class="form-group">
         <div class="col-sm-9 col-lg-5">
+            <!--<label class="control-label" for="ifx_dollar_amount">Amount :</label>-->
             <label class="control-label" for="ifx_dollar_amount">Amount (&dollar;):</label>
             <input name="ifx_dollar_amount" type="text" class="form-control" id="ifx_dollar_amount" onBlur="checkInp()" required>
             <span class="help-block">Fill in the amount of Instaforex credit (e.g 100 or 10.6 )</span>
         </div>
+        <!--<div class="radio-inline">
+            <input class="radio" type="radio" value="naira">Naira(₦)
+            <input class="radio" type="radio" value="dollar">Dollar(&dollar;)
+        </div>-->
     </div>
     
     <!-- Loyalty Points -->
