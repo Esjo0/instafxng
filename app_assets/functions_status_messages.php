@@ -294,7 +294,6 @@ function client_group_campaign_category($status) {
         case '26': $message = "Prospect - Pencil Comedy Event"; break;
         case '27': $message = "Prospect - 500 USD No-Deposit"; break;
         case '28': $message = "Online Trainee - Not Started"; break;
-        case '29': $message = "Lagos Clients"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -349,7 +348,6 @@ function client_group_query($client_group) {
         case '26': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 1"; break;
         case '27': $query = "SELECT CONCAT(last_name, SPACE(1), first_name) AS first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 2"; break;
         case '28': $query = "SELECT CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS first_name, ftc.email, ftc.phone FROM free_training_campaign AS ftc LEFT JOIN user AS u on u.email = ftc.email WHERE training_centre = '3' AND ftc.email NOT IN (SELECT email AS c_email FROM user WHERE academy_signup IS NOT NULL)"; break;
-        case '29': $query = ""; break;
         default: $query = false; break;
     }
     return $query;
