@@ -252,6 +252,9 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="49" id="" <?php if (in_array(49, $my_pages)) { echo 'checked="checked"'; } ?>/> All Dinner 2016 Reg</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="50" id="" <?php if (in_array(50, $my_pages)) { echo 'checked="checked"'; } ?>/> All Lekki Office Warming Reg</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="211" id="" <?php if (in_array(211, $my_pages)) { echo 'checked="checked"'; } ?>/> Independence Quiz Results</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="228" id="" <?php if (in_array(228, $my_pages)) { echo 'checked="checked"'; } ?>/> New Dinner 2017 Reg</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="229" id="" <?php if (in_array(229, $my_pages)) { echo 'checked="checked"'; } ?>/> All Dinner 2017 Reg</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="230" id="" <?php if (in_array(230, $my_pages)) { echo 'checked="checked"'; } ?>/> Dinner Sign In</label></div></div>
                                     </div>
                                     <hr/>
 

@@ -11,6 +11,22 @@ if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
     $currentpage = 1;
 }
 
+if (isset($_POST['process_send_email'])) {
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    extract($_POST);
+
+    $send_email = $education_object->mail_academy_login_details($training_first_name, $training_email);
+
+    if($send_email) {
+        $message_success = "You have successfully sent Academy Login Email";
+    } else {
+        $message_error = "Looks like something went wrong, the email was not sent.";
+    }
+}
+
 if (isset($_POST['process'])) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
@@ -197,6 +213,34 @@ if(!empty($selected_detail['user_code'])) {
                                     </div>
                                     
                                     <div class="col-lg-5">
+
+                                        <form data-toggle="validator" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                            <input type="hidden" name="training_email" value="<?php if(isset($selected_detail['email'])) { echo $selected_detail['email']; } ?>" />
+                                            <input type="hidden" name="training_first_name" value="<?php if(isset($selected_detail['first_name'])) { echo $selected_detail['first_name']; } ?>" />
+
+                                            <div class="form-group">
+                                                <button type="button" data-target="#send-login-email-confirm" data-toggle="modal" class="btn btn-success"><i class="fa fa-paper-plane fa-fw"></i> Send Login Email</button>
+                                            </div>
+
+                                            <!-- Modal - confirmation boxes -->
+                                            <div id="send-login-email-confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                    class="close">&times;</button>
+                                                            <h4 class="modal-title">Send Academy Login Email Confirmation</h4>
+                                                        </div>
+                                                        <div class="modal-body">Are you sure you want to send this email?</div>
+                                                        <div class="modal-footer">
+                                                            <input name="process_send_email" type="submit" class="btn btn-success" value="Send">
+                                                            <button type="submit" name="decline" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
                                         <a href="live_account.php" target="_blank" class="btn btn-primary">Open Live Account</a>
                                         <!-- comment history goes here -->
                                         <h5>Admin Remarks</h5>
