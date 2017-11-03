@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Make all settings constants - available all through the system
  */
@@ -40,6 +41,6 @@ $client_group_DEFAULT = array(
     "25" => "Top Traders",
     "26" => "Prospect - Pencil Comedy Event",
     "27" => "Prospect - 500 USD No-Deposit",
-    "28" => "Lagos Clients"
-
+    "28" => "Online Trainee - Not Started",
+    "29" => "Lagos Clients"
 );
