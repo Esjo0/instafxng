@@ -165,8 +165,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
             $message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.";
         } else {
             $max_per_deposit = LEVEL_ONE_MAX_PER_DEPOSIT;
-            if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit)
-            {
+            if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit) {
                 $message_error = "Please re-enter amount. Minimum order is $" . FUNDING_MIN_VALUE . " and maximum order is $" . number_format($max_per_deposit) . " per transaction.";
             } elseif((isset($point_claimed) && !is_null($point_claimed)) && ($point_claimed > $total_point_earned)) {
                 $message_error = "You can not redeem more than your total earned point.";
