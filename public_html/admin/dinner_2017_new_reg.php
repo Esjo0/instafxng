@@ -27,7 +27,8 @@ if (isset($_POST['process']))
     }
     else
     {
-        $new_reg = $admin_object->add_new_dinner_guest_2017($full_name, $email, $phone_number, $ticket_type, $state_of_residence, $comments);
+        $confirmation = "0";//It is pending Confirmation
+        $new_reg = $admin_object->add_new_dinner_guest_2017($confirmation, $full_name, $email, $phone_number, $ticket_type, $state_of_residence, $comments);
         if($new_reg)
         {
             $subject = "AFRO NITE 2017";
