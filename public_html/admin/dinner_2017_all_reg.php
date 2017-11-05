@@ -256,6 +256,6 @@ $dinner_reg = $db_handle->fetchAssoc($result);
 
     </div>
 </div>
-<?php require_once '../layouts/footer.php'; ?>
+<?php require_once 'layouts/footer.php'; ?>
 </body>
 </html>
