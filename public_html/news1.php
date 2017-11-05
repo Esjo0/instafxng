@@ -2,8 +2,7 @@
 require_once 'init/initialize_general.php';
 $thisPage = "About";
 
-//$news_id = $_GET['id'];
-$news_id = 544;
+$news_id = $_GET['id'];
 
 if (isset($_POST['post_comment']))
 {
