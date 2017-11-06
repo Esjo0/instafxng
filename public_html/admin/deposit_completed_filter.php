@@ -44,7 +44,7 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
 
         $where_clause = " WHERE ud.status = '8' ";
         $where_clause .= $query_add;
-        $where_clause .= " AND ud.created BETWEEN '$from_date' AND '$to_date' ORDER BY ud.updated DESC ";
+        $where_clause .= " AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY ud.updated DESC ";
 
         $query .= $where_clause;
 
@@ -94,8 +94,8 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
     $result = $db_handle->runQuery($query);
     $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
 
-    $query = "SELECT SUM(ud.naira_total_payable) AS naira_total_payable,
-              SUM(ud.dollar_ordered) AS total_dollar_ordered
+    $query = "SELECT SUM(ud.real_naira_confirmed) AS total_real_naira_confirmed,
+              SUM(ud.real_dollar_equivalent) AS total_real_dollar_equivalent
               FROM user_deposit AS ud
               INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
               INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -303,8 +303,8 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                                 <?php if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) { ?>
 
                                     <h5>Deposit transactions between <strong><?php echo $from_date . " and " . $to_date; ?> </strong></h5>
-                                    <p><strong>Amount Paid: </strong>&#8358; <?php echo number_format($stats['naira_total_payable'], 2, ".", ","); ?></p>
-                                    <p><strong>Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_dollar_ordered'], 2, ".", ","); ?></p>
+                                    <p><strong>Amount Paid: </strong>&#8358; <?php echo number_format($stats['total_real_naira_confirmed'], 2, ".", ","); ?></p>
+                                    <p><strong>Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_real_dollar_equivalent'], 2, ".", ","); ?></p>
 
                                     <div>
                                         <p>Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
@@ -356,8 +356,8 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                                 <div id="output" style="display: none">
                                     <?php if(isset($completed_deposit_requests_filter_export) && !empty($completed_deposit_requests_filter_export)) { ?>
                                         <h5>Deposit transactions between <strong><?php echo $from_date." and ".$to_date; ?> </strong></h5>
-                                        <p><strong>Total Amount Payable:</strong>₦<?php echo number_format($stats['naira_total_payable'], 2, ".", ","); ?></p>
-                                        <p><strong>Total Amount Ordered:</strong>₦<?php echo number_format($stats['total_dollar_ordered'], 2, ".", ","); ?></p>
+                                        <p><strong>Amount Paid: </strong>&#8358; <?php echo number_format($stats['total_real_naira_confirmed'], 2, ".", ","); ?></p>
+                                        <p><strong>Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_real_dollar_equivalent'], 2, ".", ","); ?></p>
 
                                         <div class="tool-footer text-right">
                                             <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>

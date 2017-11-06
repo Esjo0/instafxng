@@ -782,13 +782,10 @@ MAIL;
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Hello $client_first_name,</p>
 
-            <p>Your enquiry has been responded to.</p>
-            <p>Here is the response from your instructor:</p>
-            <p>-----</p>
-            <p style="color: #9D0000; font-weight: bold">$comment_reply_mail</p>
-            <p>-----</p>
+            <p>Your support request on the FX Academy has been responsded to by an Admin.</p>
+
             <p>Kindly <a href="https://instafxng.com/fxacademy/">click here</a> to login to the
-             FX Academy portal to see the full support thread.</p>
+             FX Academy portal to see the reply and the full support thread.</p>
 
             <br /><br />
             <p>Best Regards,<br/>Curry</p>
