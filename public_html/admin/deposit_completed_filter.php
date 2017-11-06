@@ -123,11 +123,10 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
         <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
         <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
-
         <script>
             (function () {
                 var
-                    form = $('#divTable'),
+                    form = $('#output'),
                     cache_width = form.width(),
                     a4 = [595.28, 841.89]; // for a4 size paper width and height
 
@@ -159,7 +158,6 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
 
             }());
         </script>
-
         <script>
             /*
              * jQuery helper plugin for examples and tests
@@ -224,14 +222,6 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                 };
             })(jQuery);
 
-        </script>
-
-        <script>
-            window.exportExcel =     function exportExcel()
-            {
-                var filename = 'deposit_completed_filter'+Math.floor(Date.now() / 1000);
-                alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#dvTable",{headers:true})');
-            }
         </script>
 
     </head>
@@ -359,43 +349,60 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                                 </table>
 
 
-                                <div class="container-fluid" style="display: none">
-                                    <table id="dvTable" class="table table-responsive table-striped table-bordered table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>Transaction ID</th>
-                                            <th>Client Name</th>
-                                            <th>IFX Account</th>
-                                            <th>Amount Funded</th>
-                                            <th>Total Confirmed</th>
-                                            <th>Date Created</th>
-                                            <th>Last Updated</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
-                                        if(isset($completed_deposit_requests_filter_export) && !empty($completed_deposit_requests_filter_export)) {
-                                            foreach ($completed_deposit_requests_filter_export as $row) {
-                                                ?>
-                                                <tr>
-                                                    <td><?php echo $row['trans_id']; ?></td>
-                                                    <td><?php echo $row['full_name']; ?></td>
-                                                    <td><?php echo $row['ifx_acct_no']; ?></td>
-                                                    <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
-                                                    <td class="nowrap">&#8358; <?php echo number_format($row['real_naira_confirmed'], 2, ".", ","); ?></td>
-                                                    <td><?php echo datetime_to_text($row['created']); ?></td>
-                                                    <td><?php echo datetime_to_text($row['updated']); ?></td>
-                                                </tr>
-                                            <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
-                                        </tbody>
-                                    </table>
+
+                                <?php
+                                if(isset($completed_deposit_requests_filter_export) && !empty($completed_deposit_requests_filter_export)) :
+                                ?>
+                                <div id="output" style="display: none">
+                                    <?php if(isset($completed_deposit_requests_filter_export) && !empty($completed_deposit_requests_filter_export)) { ?>
+                                        <h5>Deposit transactions between <strong><?php echo $from_date." and ".$to_date; ?> </strong></h5>
+                                        <p><strong>Total Amount Payable:</strong>₦<?php echo number_format($stats['naira_total_payable'], 2, ".", ","); ?></p>
+                                        <p><strong>Total Amount Ordered:</strong>₦<?php echo number_format($stats['total_dollar_ordered'], 2, ".", ","); ?></p>
+
+                                        <div class="tool-footer text-right">
+                                            <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                        </div>
+                                    <?php } ?>
+                                    <div class="container-fluid" >
+                                        <table id="outputTable" class="table table-responsive table-striped table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Transaction ID</th>
+                                                <th>Client Name</th>
+                                                <th>IFX Account</th>
+                                                <th>Amount Funded</th>
+                                                <th>Total Confirmed</th>
+                                                <th>Date Created</th>
+                                                <th>Last Updated</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php
+                                            if(isset($completed_deposit_requests_filter_export) && !empty($completed_deposit_requests_filter_export)) {
+                                                foreach ($completed_deposit_requests_filter_export as $row) {
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $row['trans_id']; ?></td>
+                                                        <td><?php echo $row['full_name']; ?></td>
+                                                        <td><?php echo $row['ifx_acct_no']; ?></td>
+                                                        <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
+                                                        <td class="nowrap">&#8358; <?php echo number_format($row['real_naira_confirmed'], 2, ".", ","); ?></td>
+                                                        <td><?php echo datetime_to_text($row['created']); ?></td>
+                                                        <td><?php echo datetime_to_text($row['updated']); ?></td>
+                                                    </tr>
+                                                <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                 </div>
+                                <?php endif; ?>
 
                                 <script>
                                     window.exportExcel =     function exportExcel()
                                     {
                                         var filename = 'deposit_completed_filter'+Math.floor(Date.now() / 1000);
-                                        alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#dvTable",{headers:true})');
+                                        alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#outputTable",{headers:true})');
                                     }
                                 </script>
                                 <?php if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) { ?>
