@@ -29,6 +29,9 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
         $query = $_SESSION['search_client_query'];
     }
 
+    $result = $db_handle->runQuery($query);
+    $completed_withdrawal_requests_filter_export = $db_handle->fetchAssoc($result);
+
     $numrows = $db_handle->numRows($query);
 
     $rowsperpage = 20;
@@ -76,6 +79,109 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+        <script>
+            (function ()
+            {
+                var
+                    form = $('#outputTable'),
+                    cache_width = form.width(),
+                    a4 = [595.28, 841.89]; // for a4 size paper width and height
+
+                $('#create_pdf').on('click', function () {
+                    $('body').scrollTop(0);
+                    createPDF();
+                });
+                //create pdf
+                function createPDF() {
+                    getCanvas().then(function (canvas) {
+                        var
+                            img = canvas.toDataURL("image/png"),
+                            doc = new jsPDF({ unit: 'px',     format: 'a4'    });
+                        doc.addImage(img, 'JPEG', 20, 20);
+                        var filename = 'requisition_reports_'+Math.floor(Date.now() / 1000);
+                        doc.save(filename+'.pdf');
+                        form.width(cache_width);
+                    });
+                }
+
+                // create canvas object
+                function getCanvas() {
+                    form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+                    return html2canvas(form, {
+                        imageTimeout: 2000,
+                        removeContainer: true
+                    });
+                }
+
+            }());
+        </script>
+        <script>
+            /*
+             * jQuery helper plugin for examples and tests
+             */
+            (function ($) {
+                $.fn.html2canvas = function (options) {
+                    var date = new Date(),
+                        $message = null,
+                        timeoutTimer = false,
+                        timer = date.getTime();
+                    html2canvas.logging = options && options.logging;
+                    html2canvas.Preload(this[0], $.extend({
+                        complete: function (images) {
+                            var queue = html2canvas.Parse(this[0], images, options),
+                                $canvas = $(html2canvas.Renderer(queue, options)),
+                                finishTime = new Date();
+
+                            $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
+                            $canvas.siblings().toggle();
+
+                            $(window).click(function () {
+                                if (!$canvas.is(':visible')) {
+                                    $canvas.toggle().siblings().toggle();
+                                    throwMessage("Canvas Render visible");
+                                } else {
+                                    $canvas.siblings().toggle();
+                                    $canvas.toggle();
+                                    throwMessage("Canvas Render hidden");
+                                }
+                            });
+                            throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
+                        }
+                    }, options));
+
+                    function throwMessage(msg, duration) {
+                        window.clearTimeout(timeoutTimer);
+                        timeoutTimer = window.setTimeout(function () {
+                            $message.fadeOut(function () {
+                                $message.remove();
+                            });
+                        }, duration || 2000);
+                        if ($message)
+                            $message.remove();
+                        $message = $('<div ></div>').html(msg).css({
+                            margin: 0,
+                            padding: 10,
+                            background: "#000",
+                            opacity: 0.7,
+                            position: "fixed",
+                            top: 10,
+                            right: 10,
+                            fontFamily: 'Tahoma',
+                            color: '#fff',
+                            fontSize: 12,
+                            borderRadius: 12,
+                            width: 'auto',
+                            height: 'auto',
+                            textAlign: 'center',
+                            textDecoration: 'none'
+                        }).hide().fadeIn().appendTo('body');
+                    }
+                };
+            })(jQuery);
+
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -152,114 +258,13 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
 
                                     <center>
                                         <button id="create_pdf" type="button" class="btn btn-sm btn-info" >Export table to PDF</button>
-                                        <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-                                        <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
-                                        <script>
-                                            (function () {
-                                                var
-                                                    form = $('#divTable'),
-                                                    cache_width = form.width(),
-                                                    a4 = [595.28, 841.89]; // for a4 size paper width and height
 
-                                                $('#create_pdf').on('click', function () {
-                                                    $('body').scrollTop(0);
-                                                    createPDF();
-                                                });
-                                                //create pdf
-                                                function createPDF() {
-                                                    getCanvas().then(function (canvas) {
-                                                        var
-                                                            img = canvas.toDataURL("image/png"),
-                                                            doc = new jsPDF({ unit: 'px',     format: 'a4'    });
-                                                        doc.addImage(img, 'JPEG', 20, 20);
-                                                        var filename = 'requisition_reports_'+Math.floor(Date.now() / 1000);
-                                                        doc.save(filename+'.pdf');
-                                                        form.width(cache_width);
-                                                    });
-                                                }
-
-                                                // create canvas object
-                                                function getCanvas() {
-                                                    form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
-                                                    return html2canvas(form, {
-                                                        imageTimeout: 2000,
-                                                        removeContainer: true
-                                                    });
-                                                }
-
-                                            }());
-                                        </script>
-                                        <script>
-                                            /*
-                                             * jQuery helper plugin for examples and tests
-                                             */
-                                            (function ($) {
-                                                $.fn.html2canvas = function (options) {
-                                                    var date = new Date(),
-                                                        $message = null,
-                                                        timeoutTimer = false,
-                                                        timer = date.getTime();
-                                                    html2canvas.logging = options && options.logging;
-                                                    html2canvas.Preload(this[0], $.extend({
-                                                        complete: function (images) {
-                                                            var queue = html2canvas.Parse(this[0], images, options),
-                                                                $canvas = $(html2canvas.Renderer(queue, options)),
-                                                                finishTime = new Date();
-
-                                                            $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
-                                                            $canvas.siblings().toggle();
-
-                                                            $(window).click(function () {
-                                                                if (!$canvas.is(':visible')) {
-                                                                    $canvas.toggle().siblings().toggle();
-                                                                    throwMessage("Canvas Render visible");
-                                                                } else {
-                                                                    $canvas.siblings().toggle();
-                                                                    $canvas.toggle();
-                                                                    throwMessage("Canvas Render hidden");
-                                                                }
-                                                            });
-                                                            throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
-                                                        }
-                                                    }, options));
-
-                                                    function throwMessage(msg, duration) {
-                                                        window.clearTimeout(timeoutTimer);
-                                                        timeoutTimer = window.setTimeout(function () {
-                                                            $message.fadeOut(function () {
-                                                                $message.remove();
-                                                            });
-                                                        }, duration || 2000);
-                                                        if ($message)
-                                                            $message.remove();
-                                                        $message = $('<div ></div>').html(msg).css({
-                                                            margin: 0,
-                                                            padding: 10,
-                                                            background: "#000",
-                                                            opacity: 0.7,
-                                                            position: "fixed",
-                                                            top: 10,
-                                                            right: 10,
-                                                            fontFamily: 'Tahoma',
-                                                            color: '#fff',
-                                                            fontSize: 12,
-                                                            borderRadius: 12,
-                                                            width: 'auto',
-                                                            height: 'auto',
-                                                            textAlign: 'center',
-                                                            textDecoration: 'none'
-                                                        }).hide().fadeIn().appendTo('body');
-                                                    }
-                                                };
-                                            })(jQuery);
-
-                                        </script>
                                         <button type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export table to Excel</button>
                                         <script>
                                             window.exportExcel =     function exportExcel()
                                             {
                                                 var filename = 'deposit_completed_filter'+Math.floor(Date.now() / 1000);
-                                                alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#dvTable",{headers:true})');
+                                                alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#outputTable",{headers:true})');
                                             }
                                         </script>
                                     </center>
@@ -301,13 +306,6 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
                                 <div class="tool-footer text-right">
                                     <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                 </div>
-                                    <script>
-                                        window.exportExcel =     function exportExcel()
-                                        {
-                                            var filename = 'deposit_completed_filter'+Math.floor(Date.now() / 1000);
-                                            alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#dvTable",{headers:true})');
-                                        }
-                                    </script>
                                 <?php } ?>
                                 
                             </div>
