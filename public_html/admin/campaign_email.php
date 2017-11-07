@@ -143,6 +143,7 @@ if($get_params['x'] == 'duplicate') {
                                     <li>[LPYHR] - Loyalty Point Year Highest Rank Value</li>
                                     <li>[LPYG] - Loyalty Point Year Goal (Lots to Trade to Meet Highest)</li>
                                     <li>[LPYD] - Loyalty Point Year Difference (Compared to Highest)</li>
+                                    <li>[UC] - User Code (Unique to every client)</li>
                                 </ul>
                                 
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
