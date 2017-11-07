@@ -107,6 +107,10 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
 
 }
 
+// Admin Allowed: Toye, Lekan, Demola, Joshua
+$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "Vi1DW");
+$allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allowed) ? true : false;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -310,10 +314,13 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                                         <p>Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                     </div>
 
+                                    <?php if($allowed_export_profile) { ?>
                                     <p class="text-center">
                                         <a id="create_pdf" type="button" class="btn btn-sm btn-info" >Export Result to PDF</a>
                                         <a type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export Result to Excel</a>
                                     </p>
+                                    <?php } ?>
+
                                 <?php } ?>
 
                                 <?php if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) { require 'layouts/pagination_links.php'; } ?>
