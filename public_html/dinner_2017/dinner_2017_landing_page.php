@@ -438,9 +438,10 @@ if(empty($attendee_detail))
                             <div class="col-md-12">
                                 <div class="mu-video-area">
                                     <h2>Watch Previous Event Video</h2>
-                                    <a class="mu-video-play-btn" href="#">
+                                    <iframe width="854" height="480" src="//www.youtube.com/embed/tdHp4WGw7YE" frameborder="0" allowfullscreen></iframe>
+                                    <!--<a class="mu-video-play-btn" href="#">
                                         <i class="glyphicon glyphicon-play" aria-hidden="true"></i>
-                                    </a>
+                                    </a>-->
                                 </div>
                             </div>
                         </div>
@@ -645,7 +646,7 @@ if(empty($attendee_detail))
 						</div>
 					</div>
 					<div class="mu-footer-bottom">
-						<p class="mu-copy-right">&copy; Copyright <a rel="nofollow" href="http://markups.io">Instant Web Net Technologies</a>. All rights reserved.</p>
+						<p class="mu-copy-right">&copy; Copyright <a rel="nofollow" href="http://markups.io">Instant Web Net Technologies Ltd</a>. All rights reserved.</p>
 					</div>
 				</div>
 			</div>
