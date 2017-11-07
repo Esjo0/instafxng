@@ -44,7 +44,7 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
 
         $where_clause = " WHERE ud.status = '8' ";
         $where_clause .= $query_add;
-        $where_clause .= " AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY ud.updated DESC ";
+        $where_clause .= " AND (STR_TO_DATE(ud.updated, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY ud.updated DESC ";
 
         $query .= $where_clause;
 
