@@ -261,8 +261,8 @@ $projects = $db_handle->fetchAssoc($result);
                                             <th>Project Status</th>
                                             <th>Project Executors</th>
                                             <th>Announcements</th>
-                                            <th></th>
-                                            <th></th>
+                                            <th>Edit</th>
+                                            <th>View</th>
                                         </tr>
                                     </thead>
                                     <tbody>

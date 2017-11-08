@@ -254,15 +254,15 @@ $projects = $db_handle->fetchAssoc($result);
                                 <table class="table table-responsive  table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Project Title</th>
-                                            <th>Project Description</th>
-                                            <th>Project Created</th>
-                                            <th>Project Deadline</th>
-                                            <th>Project Status</th>
-                                            <th>Project Executors</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Created</th>
+                                            <th>Deadline</th>
+                                            <th>Status</th>
+                                            <th>Executors</th>
                                             <th>Announcements</th>
-                                            <th></th>
-                                            <th></th>
+                                            <th>Edit</th>
+                                            <th>View</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -327,8 +327,8 @@ $projects = $db_handle->fetchAssoc($result);
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td><?php echo $row['created']; ?></td>
-                                                <td><?php echo $row['deadline']; ?></td>
+                                                <td><?php echo datetime_to_text($row['created']); ?></td>
+                                                <td><?php echo datetime_to_text2($row['deadline']); ?></td>
                                                 <td><?php echo $row['status']; ?></td>
 
                                                     <?php

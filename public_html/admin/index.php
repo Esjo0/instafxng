@@ -53,6 +53,7 @@ $failed_sms_code = $system_object->get_failed_sms_code();
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <?php require_once 'hr_attendance_system.php'; ?>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>

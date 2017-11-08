@@ -83,6 +83,7 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[LPYHR]', $year_rank_highest, $my_message_new);
                 $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
                 $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
+                $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
 
                 $my_message_new = str_replace('[LPMP]', '', $my_message_new);
                 $my_message_new = str_replace('[LPMR]', '', $my_message_new);
@@ -94,6 +95,7 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[LPYHR]', '', $my_message_new);
                 $my_message_new = str_replace('[LPYG]', '', $my_message_new);
                 $my_message_new = str_replace('[LPYD]', '', $my_message_new);
+                $my_message_new = str_replace('[UC]', '', $my_message_new);
             }
 
             $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name);
