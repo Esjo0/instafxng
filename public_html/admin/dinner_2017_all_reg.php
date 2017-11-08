@@ -44,57 +44,57 @@ $total_vip_double_clients = $result;
 if(isset($page) && !empty($page)) {
     switch($page) {
         case 'all':
-            $query = "SELECT * FROM dinner_2017 ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Registered Guests";
             break;
 
         case 'yes':
-            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '2' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '2' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for Confirmed Registered Guests";
             break;
 
         case 'no':
-            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '3' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '3' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for Declined Registered Guests";
             break;
 
         case 'maybe':
-            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '1' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '1' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for the Waiting List (Maybe)";
             break;
 
         case 'staff':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '5' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '5' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Staff Reservations";
             break;
 
         case 'hired_help':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '4' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '4' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Hired Help Reservations";
             break;
         case 'single':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '0' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '0' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Single Client Reservations";
             break;
         case 'double':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '1' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '1' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Plus One Client Reservations";
             break;
         case 'vip_single':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '2' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '2' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Single VIP Reservations";
             break;
         case 'vip_double':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '3' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '3' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Plus One VIP Reservations";
             break;
         default:
-            $query = "SELECT * FROM dinner_2017 ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Reservations";
             break;
     }
 } else {
-    $query = "SELECT * FROM dinner_2017 ORDER BY created DESC ";
+    $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
 }
 
 $numrows = $db_handle->numRows($query);
