@@ -172,14 +172,7 @@ if(empty($attendee_detail))
         <script src="../js/bootstrap-datetimepicker.js"></script>
         <script src="../js/jquery_2.1.1.min.js"></script>
         <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
-        <script>
-            function scroll_down()
-            {
-                $('html, body').animate({
-                    scrollTop: $("#mu-register").offset().top
-                }, 2000);
-            }
-        </script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     </head>
     <body>
   	    <!-- Start Header -->
@@ -345,12 +338,14 @@ if(empty($attendee_detail))
                                                                     <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
                                                                     <input  type="text" class="form-control" placeholder="Date Of Birth" id="d_o_b" name="d_o_b" required/>
                                                                     <script type="text/javascript">
-                                                                        $(function ()
-                                                                        {
-                                                                            $('#d_o_b').datetimepicker(
-                                                                                {
-                                                                                    format: 'DD-MM-YYYY'
-                                                                                });
+                                                                        $(function() {
+                                                                            $( "#d_o_b" ).datepicker({
+                                                                                dateFormat : 'dd-mm-yy',
+                                                                                changeMonth : true,
+                                                                                changeYear : true,
+                                                                                yearRange: '-100y:c+nn',
+                                                                                maxDate: '-1d'
+                                                                            });
                                                                         });
                                                                     </script>
 
@@ -668,5 +663,6 @@ if(empty($attendee_detail))
 	    <script type="text/javascript" src="assets/js/custom.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
         <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </body>
 </html>

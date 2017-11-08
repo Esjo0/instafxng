@@ -523,6 +523,21 @@ function dinner_confirmation_status($status) {
     return $message;
 }
 
+
+/*
+ * Table: Attendance Sysytem
+ * Column: status
+ */
+function office_location($status)
+{
+    switch ($status) {
+        case '1': $message = "HFP Eastline Office"; break;
+        case '2': $message = "Diamond Estate Office"; break;
+        default: $message = "Status Unknown"; break;
+    }
+    return $message;
+}
+
 function forum_reg_venue($status) {
     switch ($status) {
         case '1': $message = "Diamond Estate"; break;
