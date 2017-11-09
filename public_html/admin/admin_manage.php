@@ -415,6 +415,12 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     </div>
                                     <hr/>
 
+                                    <p><strong>HR Management</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="231" id="" <?php if (in_array(231, $my_pages)) { echo 'checked="checked"'; } ?>/> Attendance Logs</label></div></div>
+                                    </div>
+                                    <hr/>
+
                                     <br/>
                                     <div class="form-group">
                                         <div class="col-sm-12">
