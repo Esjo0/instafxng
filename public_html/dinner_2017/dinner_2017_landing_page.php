@@ -65,6 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             that you would have checked your schedule for December 17th and decide if you 
             would be able to make it to the dinner by then.</p>
             <p>I really do hope you would be able to attend as I don’t want you to miss the fun that awaits you.</p>
+            <p><a target="_blank" href="https://www.instafxng.com/dinner_2017/">Click here to update your status now.</a></p>
+            <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Marketing Executive,</p>
@@ -115,6 +117,7 @@ MAIL;
             <p>It promises to be awesome and I can’t wait to receive you at the dinner.</p>
             <p>I look forward to giving you a royal welcome on the 17th of December.</p>
             <p>From me to you…. It’s see you soon!</p>
+            <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Marketing Executive,</p>
@@ -164,6 +167,7 @@ MAIL;
             <p>Not to worry, I’ll document the happenings at the dinner for your viewing pleasure and let you know how it went.</p>
             <p>Have a merry Christmas and Prosperous New Year!</p>
             <p>Keep making money with InstaFxNg!</p>
+            <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Marketing Executive,</p>
@@ -213,6 +217,7 @@ MAIL;
             <p>It promises to be awesome and I can’t wait to receive you at the dinner.</p>
             <p>I look forward to giving you a royal welcome on the 17th of December.</p>
             <p>From me to you…. It’s see you soon!</p>
+            <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Marketing Executive,</p>
