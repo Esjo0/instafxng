@@ -1627,7 +1627,7 @@ MAIL;
     public function get_user_address_by_code($user_code) {
         global $db_handle;
 
-        $query = "SELECT um.address, um.address2, um.city, s.state
+        $query = "SELECT um.address, um.address2, um.city, s.state, um.state_id
                 FROM user_meta AS um
                 LEFT JOIN state AS s ON um.state_id = s.state_id
                 WHERE um.user_code = '$user_code' LIMIT 1";

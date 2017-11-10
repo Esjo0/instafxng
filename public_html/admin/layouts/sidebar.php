@@ -114,12 +114,6 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> HR Management<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <?php //if (in_array(48, $my_pages_sidebar)) { ?><li><a href="hr_attendance_system_logs.php" title="Attendance Logs">Attendance Logs</a></li><?php //} ?>
-                    </ul>
-                </li>
-                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cutlery fa-fw"></i> Events<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(48, $my_pages_sidebar)) { ?><li><a href="dinner/new_reg.php" title="New Registration">New Dinner 2016 Reg</a></li><?php } ?>
@@ -289,7 +283,12 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(226, $my_pages_sidebar)) { ?><li><a href="accounting_system_settings.php" title="Requisition Report">System Settings</a></li><?php } ?>
                     </ul>
                 </li>
-
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> HR Management<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(231, $my_pages_sidebar)) { ?><li><a href="hr_attendance_system_logs.php" title="Attendance Logs">Attendance Logs</a></li><?php } ?>
+                    </ul>
+                </li>
                 <li><a href="logout.php" title="Log Out"><i class="fa fa-sign-out fa-fw"></i> Log Out</a></li>
             </ul>
         </div>
