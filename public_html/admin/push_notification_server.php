@@ -51,6 +51,25 @@ foreach ($notifications as $row)
             </li>
         <?php endif;
     endif;
+
+    if($row['notification_type'] == '3'):
+        $recipients = explode("," ,$row['recipients']);
+        if (in_array($admin_code, $recipients, true)):
+            ?>
+            <li style="word-break:break-all;">
+                <p style="font-size: 15px" class="text-center"><b>NEW BULLETIN</b></p>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="transaction-remarks">
+                            <?php echo $row['message']; ?>
+                            <span style="font-size: small" id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+                            <center><button type="button" onclick="dismiss_notification('<?php echo $row['notification_id']; ?>')" class="btn btn-sm btn-default">Dismiss</button></center>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        <?php endif;
+    endif;
     ?>
 <?php } ?>
 

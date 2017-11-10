@@ -29,9 +29,18 @@ if (isset($_POST['process'])) {
     } else {
         $new_bulletin = $admin_object->add_new_bulletin($bulletin_no, $title, $content, $bulletin_status, $all_allowed_admin, $_SESSION['admin_unique_code']);
 
-        if($new_bulletin) {
+        if($new_bulletin)
+        {
+            $message_main = '<p style="font-size: small">Bulletin Title: '.$title."</p>";
+            $message_main .= '<span style="font-size: small" id="trans_remark_author">'.$admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']) ."</span>";
+            $message_main .= '<span style="font-size: small" id="trans_remark">Visit the <a href="bulletin_centre.php">Bulletin Centre</a> to read more.</span>';
+            $recipients = $all_allowed_admin;
+            $type = '3';
+            $obj_push_notification->add_new_notification($message_main, $recipients, $type);
             $message_success = "You have successfully saved the bulletin";
-        } else {
+        }
+        else
+            {
             $message_error = "Looks like something went wrong or you didn't make any change.";
         }
 

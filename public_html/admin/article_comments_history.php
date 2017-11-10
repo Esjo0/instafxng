@@ -109,8 +109,8 @@ if (isset($_POST['reply_comment']))
                             <thead>
                             <tr>
                                 <th>Article Title</th>
-                                <th>Author's Name</th>
-                                <th>Author's Email</th>
+                                <th>Name</th>
+                                <th>Email</th>
                                 <th>Comment</th>
                                 <th>Created</th>
                                 <th>Status</th>
@@ -122,7 +122,7 @@ if (isset($_POST['reply_comment']))
                             <?php if(isset($all_comments_items) && !empty($all_comments_items)) {
                                 foreach ($all_comments_items as $row) { ?>
                                     <tr>
-                                        <td><?php echo $row['title']; ?></td>
+                                        <td><a href="../news1/id/<?php echo $row['article_id'] . '/u/' . $row['url'] . '/'; ?>"><?php echo $row['title']; ?></a></td>
                                         <td><?php echo $row['full_name']; ?></td>
                                         <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['comment']; ?></td>
