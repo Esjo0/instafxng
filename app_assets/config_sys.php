@@ -41,5 +41,7 @@ $client_group_DEFAULT = array(
     "25" => "Top Traders",
     "26" => "Prospect - Pencil Comedy Event",
     "27" => "Prospect - 500 USD No-Deposit",
-    "28" => "Online Trainee - Not Started"
+    "28" => "Online Trainee - Not Started",
+    "29" => "Point Winners (Dec '16 - Oct '17)",
+    "30" => "Commission Clients (Dec '16 - Oct '17)"
 );

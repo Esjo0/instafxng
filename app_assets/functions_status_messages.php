@@ -294,6 +294,8 @@ function client_group_campaign_category($status) {
         case '26': $message = "Prospect - Pencil Comedy Event"; break;
         case '27': $message = "Prospect - 500 USD No-Deposit"; break;
         case '28': $message = "Online Trainee - Not Started"; break;
+        case '29': $message = "Point Winners (Dec '16 - Oct '17)"; break;
+        case '30': $message = "Commission Clients (Dec '16 - Oct '17)"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -348,6 +350,8 @@ function client_group_query($client_group) {
         case '26': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 1"; break;
         case '27': $query = "SELECT CONCAT(last_name, SPACE(1), first_name) AS first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 2"; break;
         case '28': $query = "SELECT CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS first_name, ftc.email, ftc.phone FROM free_training_campaign AS ftc LEFT JOIN user AS u on u.email = ftc.email WHERE training_centre = '3' AND ftc.email NOT IN (SELECT email AS c_email FROM user WHERE academy_signup IS NOT NULL)"; break;
+        case '29': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM point_ranking_log AS prl INNER JOIN user AS u ON prl.user_code = u.user_code WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code"; break;
+        case '30': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE (td.date_earned BETWEEN '2016-12-01' AND '2017-11-30') AND u.user_code NOT IN (SELECT prl.user_code FROM point_ranking_log AS prl WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code) GROUP BY u.email"; break;
         default: $query = false; break;
     }
     return $query;
