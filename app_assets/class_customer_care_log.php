@@ -2,10 +2,10 @@
 
 class Customer_Care
 {
-    public function add_new_customer_log($admin_code, $first_name, $other_name, $last_name, $email, $phone, $con_desc, $prospect_source)
+    public function add_new_customer_log($admin_code, $first_name, $last_name, $email, $phone, $con_desc, $prospect_source, $other_name = "")
     {
         global $db_handle;
-        $query = "INSERT IGNORE INTO prospect_biodata (first_name, last_name, other_names , email_address, phone_number, prospect_source) VALUES ('$first_name', '$last_name', '$other_name','$email','$phone', '$prospect_source')";
+        $query = "INSERT IGNORE INTO prospect_biodata (admin_code, first_name, last_name, other_names, email_address, phone_number, prospect_source) VALUES ('$admin_code', '$first_name', '$last_name', '$other_name','$email','$phone', '$prospect_source')";
         $db_handle->runQuery($query);
         $query = "SELECT @prospect_id:= prospect_biodata_id FROM prospect_biodata WHERE email_address = '$email' OR phone_number = '$phone' ";
         $db_handle->runQuery($query);
