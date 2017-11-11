@@ -225,7 +225,7 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                                         <td><?php echo dinner_confirmation_status($row['confirmation']); ?></td>
                                         <td><?php echo datetime_to_text2($row['created']); ?></td>
                                         <td><?php echo $row['state_of_residence']; ?></td>
-                                        <td><?php echo $row['comments']; ?></td>
+                                        <td><?php echo nl2br(htmlspecialchars($row['comments'])) ; ?></td>
                                         <td>
                                             <a title="View" class="btn btn-info" href="dinner_2017_view_reg.php?id=<?php echo encrypt($row['reservation_code']); ?>"><i class="glyphicon glyphicon-arrow-right icon-white"></i></a>
                                         </td>

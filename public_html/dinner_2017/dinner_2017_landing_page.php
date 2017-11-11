@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Dear $full_name,</p>
-            <p>Thank your for your response.</p>
+            <p>Thank you for your response.</p>
             <p>I would really love you to make up your mind on time as the dinner promises 
             to be fun and we have a whole lots of clients on the waiting list.</p>
             <p>It wouldn’t be fair to them if you say maybe and you never get to come.</p>
@@ -65,6 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             that you would have checked your schedule for December 17th and decide if you 
             would be able to make it to the dinner by then.</p>
             <p>I really do hope you would be able to attend as I don’t want you to miss the fun that awaits you.</p>
+            <p><a target="_blank" href="https://www.instafxng.com/dinner_2017/">Click here to update your status now.</a></p>
+            <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Marketing Executive,</p>
@@ -82,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
                     <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
                 </p>
                 <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
                 <p><strong>Office Number:</strong> 08028281192</p>
                 <br />
             </div>
@@ -115,6 +117,7 @@ MAIL;
             <p>It promises to be awesome and I can’t wait to receive you at the dinner.</p>
             <p>I look forward to giving you a royal welcome on the 17th of December.</p>
             <p>From me to you…. It’s see you soon!</p>
+            <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Marketing Executive,</p>
@@ -132,7 +135,7 @@ MAIL;
                     <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
                 </p>
                 <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
                 <p><strong>Office Number:</strong> 08028281192</p>
                 <br />
             </div>
@@ -160,10 +163,11 @@ MAIL;
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Dear $full_name,</p>
             <p>Aww, I’m sad you wouldn’t be able to attend this year’s dinner.</p> 
-            <p>We’ll really miss your presence this time and I look forward to welcoming you another time.</p>
+            <p>We’ll really miss you this time and I look forward to welcoming you another time.</p>
             <p>Not to worry, I’ll document the happenings at the dinner for your viewing pleasure and let you know how it went.</p>
             <p>Have a merry Christmas and Prosperous New Year!</p>
             <p>Keep making money with InstaFxNg!</p>
+            <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Marketing Executive,</p>
@@ -181,7 +185,7 @@ MAIL;
                     <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
                 </p>
                 <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
                 <p><strong>Office Number:</strong> 08028281192</p>
                 <br />
             </div>
@@ -213,6 +217,7 @@ MAIL;
             <p>It promises to be awesome and I can’t wait to receive you at the dinner.</p>
             <p>I look forward to giving you a royal welcome on the 17th of December.</p>
             <p>From me to you…. It’s see you soon!</p>
+            <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Marketing Executive,</p>
@@ -230,7 +235,7 @@ MAIL;
                     <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
                 </p>
                 <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
                 <p><strong>Office Number:</strong> 08028281192</p>
                 <br />
             </div>
@@ -327,7 +332,6 @@ if(empty($attendee_detail))
                 </div><!-- /.container-fluid -->
             </nav>
             <!-- End menu -->
-
             <div class="mu-hero-overlay">
                 <div class="container">
                     <div class="mu-hero-area">
@@ -450,7 +454,7 @@ if(empty($attendee_detail))
                                                             <div class="col-sm-12">
                                                                 <div class="input-group">
                                                                     <span class="input-group-addon"><i class="fa fa-facebook fa-fw"></i></span>
-                                                                    <input placeholder="Facebook Name" name="fb_name" type="text" id="fb_name" value="" class="form-control" required/>
+                                                                    <input placeholder="Facebook Name" name="fb_name" type="text" id="fb_name" value="" class="form-control" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -458,7 +462,7 @@ if(empty($attendee_detail))
                                                             <div class="col-sm-12">
                                                                 <div class="input-group">
                                                                     <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
-                                                                    <input  type="text" class="form-control" placeholder="Date Of Birth" id="d_o_b" name="d_o_b" required/>
+                                                                    <input  type="text" class="form-control" placeholder="Date Of Birth" id="d_o_b" name="d_o_b" />
                                                                     <script type="text/javascript">
                                                                         $(function() {
                                                                             $( "#d_o_b" ).datepicker({
@@ -530,9 +534,9 @@ if(empty($attendee_detail))
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mu-about-right">
+                                        <div class="mu-about-right" style='font-family: "Bookman Old Style"'>
                                             <h2>About The Event</h2>
-                                            <p class="text-justify">This year’s dinner promises to be filled with great fun as we look deep into the riches of our culture and heritage.</p>
+                                            <p class="text-justify" >This year’s dinner promises to be filled with great fun as we look deep into the riches of our culture and heritage.</p>
                                             <p class="text-justify">The expression of our cultural beauty, the ambience of our arts, the melody of our music, the rhythm of our folk story,
                                                 the beauty of our clothing and the uniqueness of our languages makes up our native identities.</p>
                                             <p class="text-justify">In this Edition, we would be celebrating the Native heritage of the indigenous groups in Nigeria by creating an aura that embraces our roots as a people.</p>
@@ -606,151 +610,6 @@ if(empty($attendee_detail))
                 </div>
             </section>
             <!-- End Venue -->
-
-            <!-- Start Register
-            <section id="mu-register">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="mu-register-area">
-
-                                <div class="mu-title-area">
-                                    <h2 class="mu-title">Reservation Form</h2>
-                                    <p>Please fill the form below to reserve a spot at the Instaforex Afro Nite.</p>
-                                    <?php require_once '../admin/layouts/feedback_message.php'; ?>
-                                </div>
-                                <div class="mu-register-content">
-                                    <form class="mu-register-form">
-                                        <div class="row">
-                                            <input name="full_name" type="hidden" id="name" value="<?php echo $attendee_detail['full_name']; ?>" class="form-control"/>
-                                            <input name="email" type="hidden" id="email" value="<?php echo $attendee_detail['email']; ?>" class="form-control"/>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Full Name" id="full_name" name="full_name" value="<?php echo $attendee_detail['full_name']; ?>" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input type="email" class="form-control" placeholder="Email" id="email" name="email" value="<?php echo $attendee_detail['email']; ?>" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Phone Number" id="phone" name="phone" required="">
-                                                </div>
-                                            </div>
-                                            <input id="ticket_type" name="ticket_type" type="hidden" value="0">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <select class="form-control" name="state_of_residence" id="state_of_residence">
-                                                        <option value="">Select Your State Of Residence</option>
-                                                        <option value="Abia State">Abia State</option>
-                                                        <option value="Adamawa State">Adamawa State</option>
-                                                        <option value="Akwa Ibom State">Akwa Ibom State</option>
-                                                        <option value="Anambra State">Anambra State</option>
-                                                        <option value="Bauchi State">Bauchi State</option>
-                                                        <option value="Bayelsa State">Bayelsa State</option>
-                                                        <option value="Benue State">Benue State</option>
-                                                        <option value="Borno State">Borno State</option>
-                                                        <option value="Cross River State">Cross River State</option>
-                                                        <option value="Delta State">Delta State</option>
-                                                        <option value="Ebonyi State">Ebonyi State</option>
-                                                        <option value="Edo State">Edo State</option>
-                                                        <option value="Ekiti State">Ekiti State</option>
-                                                        <option value="Enugu State">Enugu State</option>
-                                                        <option value="FCT Abuja">FCT Abuja</option>
-                                                        <option value="Gombe State">Gombe State</option>
-                                                        <option value="Imo State">Imo State</option>
-                                                        <option value="Jigawa State">Jigawa State</option>
-                                                        <option value="Kaduna State">Kaduna State</option>
-                                                        <option value="Kano State">Kano State</option>
-                                                        <option value="Katsina State">Katsina State</option>
-                                                        <option value="Kebbi State">Kebbi State</option>
-                                                        <option value="Kogi State">Kogi State</option>
-                                                        <option value="Kwara State">Kwara State</option>
-                                                        <option value="Lagos State">Lagos State</option>
-                                                        <option value="Nasarawa State">Nasarawa State</option>
-                                                        <option value="Niger State">Niger State</option>
-                                                        <option value="Ogun State">Ogun State</option>
-                                                        <option value="Ondo State">Ondo State</option>
-                                                        <option value="Osun State">Osun State</option>
-                                                        <option value="Oyo State">Oyo State</option>
-                                                        <option value="Plateau State">Plateau State</option>
-                                                        <option value="Rivers State">Rivers State</option>
-                                                        <option value="Sokoto State">Sokoto State</option>
-                                                        <option value="Taraba State">Taraba State</option>
-                                                        <option value="Yobe State">Yobe State</option>
-                                                        <option value="Zamfara State">Zamfara State </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Facebook Username" id="facebook_id" name="facebook_id" value="">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Date Of Birth" id="d_o_b" name="d_o_b" required="">
-                                                    <script type="text/javascript">
-                                                        $(function ()
-                                                        {
-                                                            $('#d_o_b').datetimepicker(
-                                                                {
-                                                                    format: 'DD-MM-YYYY'
-                                                                });
-                                                        });
-                                                    </script>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <textarea rows="3" class="form-control" placeholder="Comments (If Any)" id="comments" name="comments" ></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="text-center form-group">
-
-                                                    <p>
-                                                        <input type="radio" name="confirmation_status" value="1" required/>
-                                                        Maybe I would be in attendance.
-                                                    </p>
-
-
-                                                    <p>
-                                                        <input type="radio" name="confirmation_status" value="2" required/>
-                                                        Yes, I would be in attendance.
-                                                    </p>
-
-                                                    <p>
-                                                        <input type="radio" name="confirmation_status" value="3" required/>
-                                                        No, I would not be in attendance.
-                                                    </p
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <button type="submit" class="mu-reg-submit-btn">SUBMIT</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- End Register -->
         </main>
 	    <!-- End main content -->
 			
@@ -761,9 +620,10 @@ if(empty($attendee_detail))
 				<div class="mu-footer-area">
 					<div class="mu-footer-top">
 						<div class="mu-social-media">
-							<a href="#"><i class="fa fa-facebook"></i></a>
-							<a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
+							<a href="//www.facebook.com/InstaForexNigeria"><i class="fa fa-facebook"></i></a>
+							<a href="//www.twitter.com/instafxng"><i class="fa fa-twitter"></i></a>
+                            <a href="//www.instagram.com/instafxng/"><i class="fa fa-instagram"></i></a>
+                            <a href="//www.linkedin.com/company/instaforex-ng"><i class="fa fa-linkedin"></i></a>
 							<a href="//www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><i class="fa fa-youtube"></i></a>
 						</div>
 					</div>

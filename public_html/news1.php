@@ -83,7 +83,7 @@ if(strlen($news_id) > 4) {
         $db_handle->runQuery("UPDATE article SET view_count = view_count + 1 WHERE article_id = {$article_id} LIMIT 1");
 
         // Select the latest comments
-        $result = $db_handle->runQuery("SELECT * FROM article_comments, article_visitors  WHERE article_comments.visitor_id = article_visitors.visitor_id AND article_comments.article_id = $article_id AND article_comments.status = 'ON' ORDER BY comment_id DESC LIMIT 20");
+        $result = $db_handle->runQuery("SELECT * FROM article_comments, article_visitors  WHERE article_comments.visitor_id = article_visitors.visitor_id AND article_comments.article_id = $article_id AND article_comments.status = 'ON' ORDER BY article_comments.created ASC LIMIT 20");
         $latest_comments = $db_handle->fetchAssoc($result);
         
         // Select the latest news

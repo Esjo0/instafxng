@@ -138,6 +138,7 @@ CREATE TABLE `dinner_2017` (
   `full_name` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
   `phone` varchar(30) DEFAULT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ticket_type` enum('0','1','2','3','4','5') NOT NULL COMMENT '0-Single   1-Double    2-VIP_Single 3-VIP_Double  4-Hired_help   5-Staff',
   `confirmation` enum('0','1','2','3') NOT NULL DEFAULT '0'COMMENT
 ) ;
