@@ -5,6 +5,7 @@ if (!$session_admin->is_logged_in())
     redirect_to("login.php");
 }
 $ip_address = $db_handle->sanitizePost(gethostbyname(trim(`hostname`)));
+//var_dump(getHostByName(getHostName()));
 $today = $db_handle->sanitizePost(date("d-m-Y"));
 $time = $db_handle->sanitizePost(date("h:i:s"));
 $day = date('l', strtotime($today));
@@ -16,8 +17,9 @@ if ($day != 'Saturday' || !$day != 'Sunday')
     $result = $db_handle->numRows($query);
     if($result < 1)
     {
-        $query = "SELECT * FROM hr_attendance_locations WHERE ip_address = '$ip_address' ";
+        $query = "SELECT * FROM hr_attendance_locations WHERE ip_address LIKE '%$ip_address%' ";
         $result = $db_handle->numRows($query);
+
         if($result > 0)
         {
             $result = $db_handle->runQuery($query);

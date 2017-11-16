@@ -132,6 +132,24 @@ function status_edu_lesson($status) {
 }
 
 /*
+ * Table: admin
+ * Column: edu_lesson
+ */
+function lesson_rating($status)
+{
+    switch ($status)
+    {
+        case '1': $message = "Very Poor"; break;
+        case '2': $message = "Poor"; break;
+        case '3': $message = "Average"; break;
+        case '4': $message = "Good"; break;
+        case '5': $message = "Very Good"; break;
+        default: $message = "Status Unknown"; break;
+    }
+    return $message;
+}
+
+/*
  * Table: campaign_category
  * Column: status
  */

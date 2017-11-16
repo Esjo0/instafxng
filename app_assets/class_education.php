@@ -828,6 +828,13 @@ MAIL;
         }
     }
 
+    //Set lesson rating
+    public function set_lesson_rating($user_code, $lesson_id, $course_id, $rating, $comments)
+    {
+        global $db_handle;
+        $query = "INSERT INTO edu_lesson_rating (user_code, lesson_id, course_id, rating, comments) VALUES('$user_code','$lesson_id','$course_id','$rating','$comments')";
+        $db_handle->runQuery($query);
+    }
 }
 
 $education_object = new Education();

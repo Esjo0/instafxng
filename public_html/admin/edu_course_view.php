@@ -23,9 +23,7 @@ $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
 $selected_course = $education_object->get_course_by_id($course_id);
 
 if(empty($selected_course)) {
-    redirect_to("edu_course.php"); // cannot find course or URL tampered
 } else {
-    $course_lessons = $education_object->get_course_lessons_id($course_id);
 }
 
 ?>
@@ -130,6 +128,7 @@ if(empty($selected_course)) {
                                                 <th>Title</th>
                                                 <th>Order</th>
                                                 <th>Exercise Count</th>
+                                                <th>Rating</th>
                                                 <th>Status</th>
                                             </tr>
                                             </thead>
@@ -175,6 +174,52 @@ if(empty($selected_course)) {
                                                     <td><?php echo $row['title']; ?></td>
                                                     <td><?php echo $row['lesson_order']; ?></td>
                                                     <td><?php echo $db_handle->numRows("SELECT edu_lesson_exercise_id FROM edu_lesson_exercise WHERE lesson_id = {$row['edu_lesson_id']}"); ?></td>
+                                                    <?php
+                                                    $query = "SELECT * FROM edu_lesson_rating WHERE lesson_id = {$row['edu_lesson_id']} AND course_id = $course_id ";
+                                                    $result = $db_handle->runQuery($query);
+                                                    $result = $db_handle->fetchAssoc($result);
+                                                    $rating = array();
+                                                    foreach ($result as $row1)
+                                                    {
+                                                        $rating[] = $row['rating'];
+                                                    }
+                                                    function modes_of_array($arr)
+                                                    {
+                                                        $values = array();
+                                                        foreach ($arr as $v)
+                                                        {
+                                                            if (isset($values[$v]))
+                                                            {
+                                                                $values[$v] ++;
+                                                            }
+                                                            else
+                                                            {
+                                                                $values[$v] = 1;  // counter of appearance
+                                                            }
+                                                        }
+                                                        arsort($values);  // sort the array by values, in non-ascending order.
+                                                        $modes = array();
+                                                        $x = $values[key($values)]; // get the most appeared counter
+                                                        reset($values);
+                                                        foreach ($values as $key => $v)
+                                                        {
+                                                            if ($v == $x)
+                                                            {   // if there are multiple 'most'
+                                                                $modes[] = $key;  // push to the modes array
+                                                            }
+                                                            else
+                                                            {
+                                                                break;
+                                                            }
+                                                        }
+                                                        return $modes;
+                                                    }
+                                                    $rating = modes_of_array($rating);
+                                                    $ratings = array_sum($rating);
+                                                    $num_of_items = count($rating);
+                                                    $average_rating = $ratings / $num_of_items;
+                                                    ?>
+                                                    <td><?php echo lesson_rating(ceil($average_rating)); ?></td>
                                                     <td><?php echo status_edu_lesson($row['status']); ?></td>
 
                                                 </tr>
