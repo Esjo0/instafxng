@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             <p>Dear $full_name,</p>
             <p>Thank you for your response.</p>
             <p>I would really love you to make up your mind on time as the dinner promises 
-            to be fun and we have a whole lots of clients on the waiting list.</p>
+            to be fun and we have a lot of clients on the waiting list.</p>
             <p>It wouldn’t be fair to them if you say maybe and you never get to come.</p>
             <p>To this end, we have reserved your seat for the next 10 days as we expect 
             that you would have checked your schedule for December 17th and decide if you 
@@ -628,7 +628,7 @@ if(empty($attendee_detail))
 						</div>
 					</div>
 					<div class="mu-footer-bottom">
-						<p class="mu-copy-right">&copy; Copyright <a rel="nofollow" href="http://markups.io">Instant Web Net Technologies Ltd</a>. All rights reserved.</p>
+						<p class="mu-copy-right">&copy; Copyright <a rel="nofollow" href="#">Instant Web Net Technologies Ltd</a>. All rights reserved.</p>
 					</div>
 				</div>
 			</div>

@@ -2,7 +2,8 @@
 require_once '../init/initialize_client.php';
 $thisPage = "";
 
-if (!$session_client->is_logged_in()) {
+if (!$session_client->is_logged_in())
+{
     redirect_to("login.php");
 }
 
@@ -20,7 +21,8 @@ $confirm_second_time_assessment = $education_object->confirm_second_time_assessm
 $selected_course = $education_object->get_active_course_by_id($course_id);
 $selected_lesson = $education_object->get_single_course_lesson_id($course_lesson_id);
 
-if (isset($_POST['process_test'])) {
+if (isset($_POST['process_test']))
+{
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
@@ -35,6 +37,8 @@ if (isset($_POST['process_test'])) {
     $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
     $course_lesson_id = decrypt(str_replace(" ", "+", $lesson_no));
     $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
+
+    $education_object->set_lesson_rating($_SESSION['client_unique_code'],$course_lesson_id,$course_id,$_POST['rating'],$_POST['comments']);
 
     $assessment_result = $education_object->set_assessment_result($question_answered, $course_lesson_id, $_SESSION['client_unique_code']);
 

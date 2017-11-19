@@ -2,7 +2,8 @@
 require_once '../init/initialize_client.php';
 $thisPage = "";
 
-if (!$session_client->is_logged_in()) {
+if (!$session_client->is_logged_in())
+{
     redirect_to("login.php");
 }
 
@@ -26,10 +27,14 @@ $selected_course = $education_object->get_active_course_by_id($course_id);
 $selected_lesson = $education_object->get_single_course_lesson_id($course_lesson_id);
 $selected_exercise = $education_object->get_all_exercise_by_lesson_id($course_lesson_id);
 
-if(empty($selected_course)) {
+if(empty($selected_course))
+{
     redirect_to("./"); // cannot find course or URL tampered
-} else {
-    if(empty($selected_lesson)) {
+}
+else
+{
+    if(empty($selected_lesson))
+    {
         $back_url = "course_view.php?id=" . encrypt($course_id);
         redirect_to($back_url); // cannot find lesson or URL tampered
     }
@@ -46,6 +51,10 @@ if(empty($selected_course)) {
         <meta name="title" content="" />
         <meta name="keywords" content="">
         <meta name="description" content="">
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
+        <link href="layouts/ratings_styles/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
+        <script src="layouts/ratings_styles/js/star-rating.js" type="text/javascript"></script>
         <?php require_once 'layouts/head_meta.php'; ?>
     </head>
     <body>
@@ -115,9 +124,15 @@ if(empty($selected_course)) {
                                                     <button type="button" data-dismiss="modal" aria-hidden="true"
                                                             class="close">&times;</button>
                                                     <h4 class="modal-title">Lesson Assessment</h4></div>
-                                                <div class="modal-body">Are you sure you want to submit the assessment for this lesson?</div>
+                                                <div class="modal-body">
+                                                    <!--Are you sure you want to submit the assessment for this lesson?-->
+                                                    <label for="input-1" class="control-label">Rate this lesson: </label>
+                                                    <input id="input-1" name="rating" class="rating rating-loading" data-min="0" data-max="5" data-step="1">
+                                                    <label for="comments" class="control-label">Comments (If Any):</label>
+                                                    <textarea rows="5" id="comments" name="comments" class="form-control"></textarea>
+                                                </div>
                                                 <div class="modal-footer">
-                                                    <input name="process_test" type="submit" class="btn btn-success" value="Submit">
+                                                    <input name="process_test" type="submit" class="btn btn-success" value="Proceed">
                                                     <button type="submit" name="close" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                 </div>
                                             </div>

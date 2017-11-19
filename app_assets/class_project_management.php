@@ -7,7 +7,7 @@ class Project_Management
         global $db_handle;
         $query = "SELECT 
                   project_management_projects.title AS project_title,
-                  CONCAT(project_management_projects.supervisor_code, project_management_projects.executors) AS recipients
+                  CONCAT(project_management_projects.supervisor_code,',', project_management_projects.executors) AS recipients
                   FROM project_management_projects
                   WHERE 
                   project_management_projects.project_code = '$project_code' ";
