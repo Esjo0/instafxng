@@ -758,10 +758,26 @@ MAIL;
         return $fetched_data ? $fetched_data : false;
     }
 
+    public function close_support_ticket($ticket_code) {
+        global $db_handle;
+
+        $query = "UPDATE user_edu_support_request SET status = '2' WHERE support_request_code = '$ticket_code' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
     // Set support reply
     public function set_lesson_support_reply($category, $support_id, $comment_reply, $unique_code, $request_status, $client_email, $client_first_name) {
         global $db_handle;
         global $system_object;
+
+        $query = "SELECT support_request_code FROM user_edu_support_request WHERE user_edu_support_request_id = $support_id LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $support_request_code = $fetched_data[0]['support_request_code'];
+
+        $return_url = "https://instafxng.com/fxacademy/index.php?se=" . $client_email . "&sid=" . encrypt($support_request_code) . "&c=" . encrypt("1");
 
         $query = "INSERT INTO user_edu_support_answer (author, category, request_id, response) VALUES ('$unique_code', '$category', $support_id, '$comment_reply')";
         $db_handle->runQuery($query);
@@ -784,7 +800,7 @@ MAIL;
 
             <p>Your support request on the FX Academy has been responsded to by an Admin.</p>
 
-            <p>Kindly <a href="https://instafxng.com/fxacademy/">click here</a> to login to the
+            <p>Kindly <a href="$return_url">click here</a> to login to the
              FX Academy portal to see the reply and the full support thread.</p>
 
             <br /><br />

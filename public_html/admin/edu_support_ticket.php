@@ -5,6 +5,19 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+if (isset($_POST['close_ticket'])) {
+
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    extract($_POST);
+    $ticket_code = decrypt(str_replace(" ", "+", $ticket_code));
+    $ticket_code = preg_replace("/[^A-Za-z0-9 ]/", '', $ticket_code);
+    $education_object->close_support_ticket($ticket_code);
+}
+
+
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT uesr.user_edu_support_request_id, uesr.support_request_code, uesr.lesson_id, uesr.course_id,
@@ -113,23 +126,50 @@ $education_tickets = $db_handle->fetchAssoc($result);
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
+                                        <th></th>
                                         <th>Client Name</th>
                                         <th>Client Phone</th>
                                         <th>Request</th>
                                         <th>Created</th>
-                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php if(isset($education_tickets) && !empty($education_tickets)) { foreach ($education_tickets as $row) { ?>
                                         <tr>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Action <span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" title="View" href="edu_support_ticket_view.php?id=<?php echo encrypt($row['support_request_code']); ?>"><i class="fa fa-eye fa-fw"></i> View</a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#close-ticket"><i class="fa fa-lock fa-fw"></i> Close Ticket</a></li>
+                                                    </ul>
+                                                </div>
+
+                                                <div id="close-ticket" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                        class="close">&times;</button>
+                                                                <h4 class="modal-title">Close Ticket</h4></div>
+                                                            <div class="modal-body">
+                                                                <p>Do you want to close the selected ticket.</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form class="form-horizontal" role="form" method="post" action="">
+                                                                    <input type="hidden" name="ticket_code" value="<?php echo encrypt($row['support_request_code']); ?>" />
+                                                                    <input name="close_ticket" type="submit" class="btn btn-danger" value="Close Ticket">
+                                                                    <button type="submit" name="decline" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo substr($row['request'], 0, 160) . ' ...'; ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
-                                            <td>
-                                                <a target="_blank" title="View" class="btn btn-info" href="edu_support_ticket_view.php?id=<?php echo encrypt($row['support_request_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                            </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
