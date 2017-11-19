@@ -183,7 +183,7 @@ $refunds = $db_handle->fetchAssoc($result);
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Author Name</th>
+                                <th>Name</th>
                                 <th>Office Location</th>
                                 <th>Order List</th>
                                 <th>Order Total</th>
@@ -213,7 +213,7 @@ $refunds = $db_handle->fetchAssoc($result);
                                                                 <h4 class="modal-title">REQUISITION ORDER</h4>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <p><b>AUTHOR NAME:</b> <?php echo $row['author_name']; ?></p>
+                                                                <p><b>NAME:</b> <?php echo $row['author_name']; ?></p>
                                                                 <p><b>DATE:</b> <?php echo $row['created']; ?></p>
 
                                                                 <?php echo $row['req_order'];?>
@@ -269,7 +269,7 @@ $refunds = $db_handle->fetchAssoc($result);
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Author Name</th>
+                                <th>Name</th>
                                 <th>Office Location</th>
                                 <th>Order List</th>
                                 <th>Order Total</th>
@@ -296,7 +296,7 @@ $refunds = $db_handle->fetchAssoc($result);
                                                             <h4 class="modal-title">REQUISITION ORDER</h4>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p><b>AUTHOR NAME:</b> <?php echo $row['author_name']; ?></p>
+                                                            <p><b>NAME:</b> <?php echo $row['author_name']; ?></p>
                                                             <p><b>DATE:</b> <?php echo $row['created']; ?></p>
                                                             <p><b>ACTUAL SPENT</b> ₦<?php echo number_format($row['actual_spent'], 2, ".", ","); ?></p>
                                                             <?php echo $row['req_order'];?>

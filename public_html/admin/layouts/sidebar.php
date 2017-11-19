@@ -255,13 +255,6 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage_funded.php">Manage Prospects - Funded</a></li><?php } ?>
                     </ul>
                 </li>
-                <!--                <li class="dropdown">-->
-                <!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-clock-o fa-fw"></i> Reminders<b class="caret"></b></a>-->
-                <!--                    <ul class="dropdown-menu">-->
-                <!--                        --><?php //if (in_array(212, $my_pages_sidebar)) { ?><!--<li><a href="reminder_add.php">Add New Reminder</a></li>--><?php //} ?>
-                <!--                        --><?php //if (in_array(213, $my_pages_sidebar)) { ?><!--<li><a href="reminder_manage.php">Manage Reminders</a></li>--><?php //} ?>
-                <!--                    </ul>-->
-                <!--                </li>-->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-expand fa-fw"></i> Customer Care<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -290,7 +283,12 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(226, $my_pages_sidebar)) { ?><li><a href="accounting_system_settings.php" title="Requisition Report">System Settings</a></li><?php } ?>
                     </ul>
                 </li>
-
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> HR Management<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(231, $my_pages_sidebar)) { ?><li><a href="hr_attendance_system_logs.php" title="Attendance Logs">Attendance Logs</a></li><?php } ?>
+                    </ul>
+                </li>
                 <li><a href="logout.php" title="Log Out"><i class="fa fa-sign-out fa-fw"></i> Log Out</a></li>
             </ul>
         </div>

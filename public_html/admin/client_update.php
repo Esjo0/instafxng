@@ -24,13 +24,19 @@ if (isset($_POST['contact_update'])) {
     $user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
     $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
-    $email_address = $_POST["email_address"];
-    $phone_number = $_POST["phone_number"];
+    $email_address = $db_handle->sanitizePost($_POST["email_address"]);
+    $phone_number = $db_handle->sanitizePost($_POST["phone_number"]);
+    $state_id = $db_handle->sanitizePost($_POST["state"]);
+    $city = $db_handle->sanitizePost($_POST["city"]);
+    $address = $db_handle->sanitizePost($_POST["address"]);
 
     $query = "UPDATE user SET email = '$email_address', phone = '$phone_number' WHERE user_code = '$user_code' LIMIT 1";
-    $db_handle->runQuery($query);
+    $update1 = $db_handle->runQuery($query);
 
-    if($db_handle->affectedRows() > 0) {
+    $query = "UPDATE user_meta SET address = '$address', city = '$city', state_id = $state_id WHERE user_code = '$user_code' LIMIT 1";
+    $update2 = $db_handle->runQuery($query);
+
+    if($update1 || $update2) {
         $message_success = "You have successfully made an update";
     } else {
         $message_error = "Something went wrong, the modifications were not saved or you did not make any change.";
@@ -185,6 +191,7 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
         $client_bank_account = $client_operation->get_user_bank_account($user_code);
         $client_phone_code = $client_operation->get_user_phonecode($user_code);
         $all_banks = $system_object->get_all_banks();
+        $all_states = $system_object->get_all_states();
         $selected_user_docs = $client_operation->get_user_docs_by_code($user_code);
 
         switch($client_verification) {

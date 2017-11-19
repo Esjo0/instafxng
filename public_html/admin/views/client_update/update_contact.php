@@ -22,6 +22,29 @@
             <input name="phone_number" type="text" class="form-control" id="phone_number" value="<?php echo $phone; ?>" required>
         </div>
     </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="address">Address:</label>
+        <div class="col-sm-9 col-lg-5">
+            <textarea name="address" class="form-control" rows="3" id="address" required><?php echo $client_address['address'] . ' ' . $client_address['address2']; ?></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="city">City:</label>
+        <div class="col-sm-9 col-lg-5">
+            <input name="city" type="text" class="form-control" id="city" value="<?php echo $client_address['city']; ?>" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="state">State:</label>
+        <div class="col-sm-9 col-lg-5">
+            <select name="state" class="form-control" id="state" required>
+                <option value="" selected>Select State</option>
+                <?php foreach($all_states as $key => $value) { ?>
+                    <option value="<?php echo $value['state_id']; ?>" <?php if($value['state_id'] == $client_address['state_id']) { echo "selected='selected'"; } ?>><?php echo $value['state']; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
 
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">

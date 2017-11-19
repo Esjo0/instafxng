@@ -3,7 +3,81 @@ require_once '../init/initialize_client.php';
 $thisPage = "";
 
 if (!$session_client->is_logged_in()) {
-    redirect_to("login.php");
+
+    // Check whether this client is following link in an email to get to course messages
+    $get_params = allowed_get_params(['se', 'sid', 'c']);
+
+    $control_code_encrypted = $get_params['c'];
+    $control_code = decrypt(str_replace(" ", "+", $control_code_encrypted));
+    $control_code = preg_replace("/[^A-Za-z0-9 ]/", '', $control_code);
+
+    if(!empty($get_params['se']) && !empty($get_params['sid']) && $control_code == "1") {
+
+        $student_email = $get_params['se'];
+
+        $support_id_encrypted = $get_params['sid'];
+
+        $client_operation = new clientOperation();
+        $user_code = $client_operation->get_user_by_email($student_email);
+
+        if(empty($user_code) || !isset($user_code)) { redirect_to("register.php?id=$student_email"); }
+
+        $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
+
+        if($user_ifx_details) {
+            $found_user = array(
+                'user_code' => $user_ifx_details['client_user_code'],
+                'status' => $user_ifx_details['client_status'],
+                'first_name' => $user_ifx_details['client_first_name'],
+                'last_name' => $user_ifx_details['client_last_name'],
+                'email' => $user_ifx_details['client_email']
+            );
+            $session_client->login($found_user);
+
+            redirect_to("support_message.php?id=" . $support_id_encrypted);
+
+        }
+    } else {
+        redirect_to("login.php");
+    }
+} else {
+
+    // TODO: Refactor this
+
+    // Check whether this client is following link in an email to get to course messages
+    $get_params = allowed_get_params(['se', 'sid', 'c']);
+
+    $control_code_encrypted = $get_params['c'];
+    $control_code = decrypt(str_replace(" ", "+", $control_code_encrypted));
+    $control_code = preg_replace("/[^A-Za-z0-9 ]/", '', $control_code);
+
+    if(!empty($get_params['se']) && !empty($get_params['sid']) && $control_code == "1") {
+
+        $student_email = $get_params['se'];
+
+        $support_id_encrypted = $get_params['sid'];
+
+        $client_operation = new clientOperation();
+        $user_code = $client_operation->get_user_by_email($student_email);
+
+        if(empty($user_code) || !isset($user_code)) { redirect_to("register.php?id=$student_email"); }
+
+        $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
+
+        if($user_ifx_details) {
+            $found_user = array(
+                'user_code' => $user_ifx_details['client_user_code'],
+                'status' => $user_ifx_details['client_status'],
+                'first_name' => $user_ifx_details['client_first_name'],
+                'last_name' => $user_ifx_details['client_last_name'],
+                'email' => $user_ifx_details['client_email']
+            );
+            $session_client->login($found_user);
+
+            redirect_to("support_message.php?id=" . $support_id_encrypted);
+
+        }
+    }
 }
 
 $get_course_library = $education_object->get_courses_attempted($_SESSION['client_unique_code']);

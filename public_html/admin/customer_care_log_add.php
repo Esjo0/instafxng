@@ -48,7 +48,7 @@ if (isset($_POST['process_customer']))
     }
     else
         {
-        $new_log = $obj_customer_care_log->add_new_customer_log($_SESSION['admin_unique_code'], $first_name, $other_name, $last_name, $email, $phone, $con_desc, $prospect_source);
+        $new_log = $obj_customer_care_log->add_new_customer_log($_SESSION['admin_unique_code'], $first_name, $last_name, $email, $phone, $con_desc, $prospect_source, $other_name);
         //($_SESSION['admin_unique_code'], $first_name, $other_name, $last_name, $email_address, $phone_no, $con_desc, $prospect_source);
             if($new_log)
             {
@@ -123,7 +123,7 @@ if(empty($all_prospect_source)) {
                                                             <input name="first_name" type="text" id="first_name" placeholder="First Name" class="form-control" required>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input name="middle_name" type="text" id="other_name" placeholder="Other Names"  class="form-control">
+                                                            <input name="other_name" type="text" id="other_name" placeholder="Other Names"  class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>

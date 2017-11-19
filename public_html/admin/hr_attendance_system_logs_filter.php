@@ -3,55 +3,90 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+function getWorkingDays($startDate,$endDate,$holidays)
+{
+    // do strtotime calculations just once
+    $endDate = strtotime($endDate);
+    $startDate = strtotime($startDate);
 
-////
-if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
 
-    if (isset($_POST['filter_deposit'])) {
+    //The total number of days between the two dates. We compute the no. of seconds and divide it to 60*60*24
+    //We add one to inlude both dates in the interval.
+    $days = ($endDate - $startDate) / 86400 + 1;
 
-        foreach ($_POST as $key => $value) {
+    $no_full_weeks = floor($days / 7);
+    $no_remaining_days = fmod($days, 7);
+
+    //It will return 1 if it's Monday,.. ,7 for Sunday
+    $the_first_day_of_week = date("N", $startDate);
+    $the_last_day_of_week = date("N", $endDate);
+
+    //---->The two can be equal in leap years when february has 29 days, the equal sign is added here
+    //In the first case the whole interval is within a week, in the second case the interval falls in two weeks.
+    if ($the_first_day_of_week <= $the_last_day_of_week) {
+        if ($the_first_day_of_week <= 6 && 6 <= $the_last_day_of_week) $no_remaining_days--;
+        if ($the_first_day_of_week <= 7 && 7 <= $the_last_day_of_week) $no_remaining_days--;
+    }
+    else {
+        // (edit by Tokes to fix an edge case where the start day was a Sunday
+        // and the end day was NOT a Saturday)
+
+        // the day of the week for start is later than the day of the week for end
+        if ($the_first_day_of_week == 7) {
+            // if the start date is a Sunday, then we definitely subtract 1 day
+            $no_remaining_days--;
+
+            if ($the_last_day_of_week == 6) {
+                // if the end date is a Saturday, then we subtract another day
+                $no_remaining_days--;
+            }
+        }
+        else {
+            // the start date was a Saturday (or earlier), and the end date was (Mon..Fri)
+            // so we skip an entire weekend and subtract 2 days
+            $no_remaining_days -= 2;
+        }
+    }
+
+    //The no. of business days is: (number of weeks between the two dates) * (5 working days) + the remainder
+//---->february in none leap years gave a remainder of 0 but still calculated weekends between first and last day, this is one way to fix it
+    $workingDays = $no_full_weeks * 5;
+    if ($no_remaining_days > 0 )
+    {
+        $workingDays += $no_remaining_days;
+    }
+
+    //We subtract the holidays
+    foreach($holidays as $holiday){
+        $time_stamp=strtotime($holiday);
+        //If the holiday doesn't fall in weekend
+        if ($startDate <= $time_stamp && $time_stamp <= $endDate && date("N",$time_stamp) != 6 && date("N",$time_stamp) != 7)
+            $workingDays--;
+    }
+
+    return $workingDays;
+}
+
+
+$req_time = "08:30:00";
+if (isset($_POST['filter_deposit']) || isset($_GET['pg']))
+{
+
+    if (isset($_POST['filter_deposit']))
+    {
+
+        foreach ($_POST as $key => $value)
+        {
             $_POST[$key] = $db_handle->sanitizePost(trim($value));
         }
 
         extract($_POST);
+        $query = "SELECT * FROM admin ";
 
-        switch($trans_type) {
-            // All transactions - No addition of any query
-            case '1': $query_add = ""; break;
-
-            // Cash Transactions at Diamond Estate Office
-            case '2': $query_add = " AND deposit_origin = '2' "; break;
-
-            // Cash Transactions at Eastline Office
-            case '3': $query_add = " AND deposit_origin = '3' "; break;
-
-            // GTPay card transactions
-            case '4': $query_add = " AND client_pay_method = '1' "; break;
-
-            // All Transactions - No addition of any query
-            default: $query_add = "";
-        }
-
-        $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_payable, ud.real_dollar_equivalent, ud.real_naira_confirmed,
-            ud.client_naira_notified, ud.client_pay_date, ud.client_reference, ud.client_pay_method,
-            ud.client_notified_date, ud.status AS deposit_status, u.user_code,
-            ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-            uc.passport, ui.ifxaccount_id, ud.updated
-            FROM user_deposit AS ud
-            INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-            INNER JOIN user AS u ON ui.user_code = u.user_code
-            LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code ";
-
-        $where_clause = " WHERE ud.status = '8' ";
-        $where_clause .= $query_add;
-        $where_clause .= " AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY ud.updated DESC ";
-
-        $query .= $where_clause;
-
-        $_SESSION['search_client_query'] = $query;
-        $_SESSION['search_client_where_clause'] = $where_clause;
-        $_SESSION['from_date'] = $from_date;
-        $_SESSION['to_date'] = $to_date;
+        $holidays = array();
+        global $total_week_days;
+        $total_week_days = getWorkingDays($from_date, $to_date, $holidays);
+        //$query = "SELECT * FROM hr_attendance_system WHERE (STR_TO_DATE(created, '%d-%m-%Y') BETWEEN '$from_date' AND '$to_date') ORDER BY created ASC ";
 
     } else {
         // The lines below helps to keep the search query and the dates while going through results
@@ -93,18 +128,6 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
     $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
     $result = $db_handle->runQuery($query);
     $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
-
-    $query = "SELECT SUM(ud.real_naira_confirmed) AS total_real_naira_confirmed,
-              SUM(ud.real_dollar_equivalent) AS total_real_dollar_equivalent
-              FROM user_deposit AS ud
-              INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-              INNER JOIN user AS u ON ui.user_code = u.user_code
-              LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code ";
-    $query .= $where_clause;
-    $result = $db_handle->runQuery($query);
-    $stats = $db_handle->fetchAssoc($result);
-    $stats = $stats[0];
-
 }
 
 ?>
@@ -121,8 +144,8 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
         <?php require_once 'layouts/head_meta.php'; ?>
         <script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+        <!--<script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>-->
         <script>
             (function () {
                 var
@@ -243,7 +266,7 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                     
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>COMPLETED DEPOSIT</strong></h4>
+                            <h4><strong>ATTENDANCE LOGS - FILTER</strong></h4>
                         </div>
                     </div>
                     
@@ -251,10 +274,7 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                         <div class="row">
                             <div class="col-sm-12">
 
-                                <p class="text-right"><a href="deposit_completed.php"  class="btn btn-default" title="Completed Deposit"><i class="fa fa-arrow-circle-left"></i> Completed Deposit</a></p>
-                                <p>Select date range below to get deposit transactions. Please note that when you filter, the result will be saved, if you
-                                    want to get a new result, simply perform another filter.</p>
-
+                                <p class="text-left"><a href="hr_attendance_system_logs.php"  class="btn btn-default" title="Attendance Logs"><i class="fa fa-arrow-circle-left"></i> Attendance Logs</a></p>
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="from_date">From:</label>
@@ -274,17 +294,6 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="trans_type">Transaction Category:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <select name="trans_type" class="form-control" id="trans_type">
-                                                <option value="1" <?php if(isset($trans_type) && $trans_type == '1') { echo "selected"; } ?>>All Transactions</option>
-                                                <option value="2" <?php if(isset($trans_type) && $trans_type == '2') { echo "selected"; } ?>>Cash - Diamond</option>
-                                                <option value="3" <?php if(isset($trans_type) && $trans_type == '3') { echo "selected"; } ?>>Cash - Eastline</option>
-                                                <option value="4" <?php if(isset($trans_type) && $trans_type == '4') { echo "selected"; } ?>>GTPay Transaction</option>
-                                            </select>
-                                        </div>
-                                    </div>
 
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9"><input name="filter_deposit" type="submit" class="btn btn-success" value="Filter" /></div>
@@ -292,7 +301,7 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                                     <script type="text/javascript">
                                         $(function () {
                                             $('#datetimepicker, #datetimepicker2').datetimepicker({
-                                                format: 'YYYY-MM-DD'
+                                                format: 'DD-MM-YYYY'
                                             });
                                         });
                                     </script>
@@ -302,32 +311,23 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
 
                                 <?php if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) { ?>
 
-                                    <h5>Deposit transactions between <strong><?php echo $from_date . " and " . $to_date; ?> </strong></h5>
-                                    <p><strong>Amount Paid: </strong>&#8358; <?php echo number_format($stats['total_real_naira_confirmed'], 2, ".", ","); ?></p>
-                                    <p><strong>Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_real_dollar_equivalent'], 2, ".", ","); ?></p>
-
                                     <div>
                                         <p>Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                     </div>
 
                                     <p class="text-center">
-                                        <a id="create_pdf" type="button" class="btn btn-sm btn-info" >Export Result to PDF</a>
                                         <a type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export Result to Excel</a>
                                     </p>
                                 <?php } ?>
 
                                 <?php if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) { require 'layouts/pagination_links.php'; } ?>
 
-                                <table  class="table table-responsive table-striped table-bordered table-hover">
+                                <table id="outputTable" class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Transaction ID</th>
-                                            <th>Client Name</th>
-                                            <th>IFX Account</th>
-                                            <th>Amount Funded</th>
-                                            <th>Total Confirmed</th>
-                                            <th>Date Created</th>
-                                            <th>Last Updated</th>
+                                            <th>Name</th>
+                                            <th>Total Days Present</th>
+                                            <th>Attendance Percentage</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -336,72 +336,42 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
                                                 foreach ($completed_deposit_requests_filter as $row) {
                                         ?>
                                         <tr>
-                                            <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
-                                            <td><?php echo $row['full_name']; ?></td>
-                                            <td><?php echo $row['ifx_acct_no']; ?></td>
-                                            <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
-                                            <td class="nowrap">&#8358; <?php echo number_format($row['real_naira_confirmed'], 2, ".", ","); ?></td>
-                                            <td><?php echo datetime_to_text($row['created']); ?></td>
-                                            <td><?php echo datetime_to_text($row['updated']); ?></td>
+                                            <td>
+                                                <?php echo $row['last_name'] . ' ' . $row['middle_name'] . ' ' . $row['first_name']; ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                    $admin_code = $row['admin_code'];
+                                                    $query = "SELECT * FROM hr_attendance_log WHERE admin_code = '$admin_code' AND (hr_attendance_log.date BETWEEN '$from_date' AND '$to_date')";
+                                                    $result = $db_handle->numOfRows($db_handle->runQuery($query));
+                                                    echo $result;
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                $query = "SELECT * FROM hr_attendance_log WHERE admin_code = '$admin_code' AND (hr_attendance_log.date BETWEEN '$from_date' AND '$to_date')";
+                                                $result = $db_handle->runQuery($query);
+                                                $result = $db_handle->fetchAssoc($result);
+                                                $count = 0;
+                                                foreach ($result as $row1)
+                                                {
+                                                    if(date('H:i:s',strtotime($row1['time'])) <= date('H:i:s',strtotime($req_time)))
+                                                    {
+                                                        $count = $count + 1;
+                                                    }
+                                                }
+                                                $count = ($count *100) / $total_week_days;
+                                                echo round($count, 2).'%';
+                                                ?>
+                                            </td>
                                         </tr>
-                                        <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                        <?php } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
-
-
-
-                                <?php
-                                if(isset($completed_deposit_requests_filter_export) && !empty($completed_deposit_requests_filter_export)) :
-                                ?>
-                                <div id="output" style="display: none">
-                                    <?php if(isset($completed_deposit_requests_filter_export) && !empty($completed_deposit_requests_filter_export)) { ?>
-                                        <h5>Deposit transactions between <strong><?php echo $from_date." and ".$to_date; ?> </strong></h5>
-                                        <p><strong>Amount Paid: </strong>&#8358; <?php echo number_format($stats['total_real_naira_confirmed'], 2, ".", ","); ?></p>
-                                        <p><strong>Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_real_dollar_equivalent'], 2, ".", ","); ?></p>
-
-                                        <div class="tool-footer text-right">
-                                            <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
-                                        </div>
-                                    <?php } ?>
-                                    <div class="container-fluid" >
-                                        <table id="outputTable" class="table table-responsive table-striped table-bordered table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>Transaction ID</th>
-                                                <th>Client Name</th>
-                                                <th>IFX Account</th>
-                                                <th>Amount Funded</th>
-                                                <th>Total Confirmed</th>
-                                                <th>Date Created</th>
-                                                <th>Last Updated</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php
-                                            if(isset($completed_deposit_requests_filter_export) && !empty($completed_deposit_requests_filter_export)) {
-                                                foreach ($completed_deposit_requests_filter_export as $row) {
-                                                    ?>
-                                                    <tr>
-                                                        <td><?php echo $row['trans_id']; ?></td>
-                                                        <td><?php echo $row['full_name']; ?></td>
-                                                        <td><?php echo $row['ifx_acct_no']; ?></td>
-                                                        <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
-                                                        <td class="nowrap">&#8358; <?php echo number_format($row['real_naira_confirmed'], 2, ".", ","); ?></td>
-                                                        <td><?php echo datetime_to_text($row['created']); ?></td>
-                                                        <td><?php echo datetime_to_text($row['updated']); ?></td>
-                                                    </tr>
-                                                <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                                <?php endif; ?>
-
                                 <script>
                                     window.exportExcel =     function exportExcel()
                                     {
-                                        var filename = 'deposit_completed_filter'+Math.floor(Date.now() / 1000);
+                                        var filename = 'attendance_logs_<?php echo $from_date.'_to_'.$to_date ?>';
                                         alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#outputTable",{headers:true})');
                                     }
                                 </script>
