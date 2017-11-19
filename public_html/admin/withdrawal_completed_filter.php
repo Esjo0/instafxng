@@ -61,12 +61,11 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
               INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
               INNER JOIN user AS u ON ui.user_code = u.user_code
               LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
-              WHERE uw.created BETWEEN '$from_date' AND '$to_date' ";
+              WHERE (STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
     $result = $db_handle->runQuery($query);
     $stats = $db_handle->fetchAssoc($result);
     $stats = $stats[0];
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -249,8 +248,8 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
 
                                 <?php if(isset($completed_withdrawal_requests_filter) && !empty($completed_withdrawal_requests_filter)) { ?>
                                     <h5>Withdrawal transactions between <strong><?php echo $from_date." and ".$to_date; ?> </strong></h5>
-                                    <p><strong>Total Amount Withdrawable:</strong>₦<?php echo number_format($stats['naira_total_withdrawable'], 2, ".", ","); ?></p>
-                                    <p><strong>Total Amount Ordered:</strong>₦<?php echo number_format($stats['total_dollar_withdraw'], 2, ".", ","); ?></p>
+                                    <p><strong>Total Amount Withdrawable:</strong>&#8358; <?php echo number_format($stats['naira_total_withdrawable'], 2, ".", ","); ?></p>
+                                    <p><strong>Total Amount Ordered:</strong>&dollar; <?php echo number_format($stats['total_dollar_withdraw'], 2, ".", ","); ?></p>
 
                                     <div class="tool-footer text-right">
                                         <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
