@@ -1,0 +1,27 @@
+
+CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL,
+  `user_code` varchar(11) NOT NULL,
+  `attendant` int(11) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `pass_salt` varchar(64) DEFAULT NULL,
+  `password` varchar(128) DEFAULT NULL,
+  `title` varchar(5) DEFAULT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `middle_name` varchar(20) DEFAULT NULL,
+  `last_name` varchar(20) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `user_type` enum('1','2','3') NOT NULL DEFAULT '1' COMMENT '1 - Client\n2 - Partner\n3 - Prospect',
+  `campaign_subscribe` enum('1','2','3') NOT NULL DEFAULT '1' COMMENT '1 - Subscribed\n2 - Not Subscribed\n3 - Cannot Receive Email',
+  `referred_by_code` varchar(5) NOT NULL DEFAULT 'BBLR',
+  `sales_last_contact` timestamp NULL DEFAULT NULL,
+  `sales_next_contact` timestamp NULL DEFAULT NULL,
+  `last_login` timestamp NULL DEFAULT NULL,
+  `status` enum('1','2','3','4') NOT NULL DEFAULT '1' COMMENT '1 - Active2 - Inactive3 - Probation4 - Suspended',
+  `reset_code` varchar(20) DEFAULT NULL,
+  `reset_expiry` timestamp NULL DEFAULT NULL,
+  `point_balance` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `academy_signup` date DEFAULT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
