@@ -52,6 +52,9 @@ if(isset($_POST['withdraw_funds_pcode'])) {
             if(!$client_operation->confirm_credential($client_user_code)) {
                 $message_error = "You have not verified your account by uploading identification documents. You must verify your account ";
                 $message_error .= "before proceeding with your withdrawal. Please verify your account by <a href='verify_account.php'> clicking here.</a></p>";
+            } elseif (!$client_operation->confirm_client_address($client_user_code)) {
+                $message_error = "You have not verified your contact address or your verification is still been processed. You must verify your address to proceed. ";
+                $message_error .= "Please verify your account by <a href='verify_account.php'> clicking here.</a> or <a href='contact_info.php'>contact us</a> for help</p>";
             } elseif (!$client_operation->confirm_bank_account($client_user_code)) {
                 $all_banks = $system_object->get_all_banks();
                 $page_requested = withdraw_funds_add_bank_php;
@@ -121,7 +124,7 @@ if(isset($_POST['withdraw_funds_add_bank'])) {
             extract($user_ifx_details);
 
             $client_operation->set_bank_account($client_user_code, $bank_acct_name, $bank_acct_number, $bank_name);
-            $page_requested = 'withdraw_funds_qty_php';
+            $message_success = "Your bank information have been submitted. Please hold on for approval. You can <a href='contact_info.php'>contact us</a> if you need any help.";
         } else {
             $message_error = "Something went wrong, the operation could not be completed.";
         }
@@ -180,7 +183,19 @@ switch($page_requested) {
     case 'withdraw_funds_pcode_php': $withdraw_funds_pcode_php = true; break;
     case 'withdraw_funds_pcode_new_php': $withdraw_funds_pcode_new_php = true; break;
     case 'withdraw_funds_kyc_php': $withdraw_funds_kyc_php = true; break;
-    case 'withdraw_funds_add_bank_php': $withdraw_funds_add_bank_php = true; break;
+    case 'withdraw_funds_add_bank_php': {
+        $query = "SELECT status FROM user_bank WHERE user_code = '$client_user_code' AND is_active = '1' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $bank_status = $fetched_data[0]['status'];
+
+        if($bank_status == '1') {
+            $message_error = "Your bank account information is not yet approved, please <a href='contact_info.php'>contact us</a> for help.";
+            $submit_btn = false;
+        }
+
+        $withdraw_funds_add_bank_php = true;
+    }; break;
     case 'withdraw_funds_qty_php': $withdraw_funds_qty_php = true; break;
     case 'withdraw_funds_finalize_php': $withdraw_funds_finalize_php = true; break;
     default: $withdraw_funds_ifx_acct_php = true;

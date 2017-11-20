@@ -31,7 +31,9 @@ $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
             <span class="help-block">10 digit NUBAN account number</span>
         </div>
     </div>
+    <?php if($submit_btn) { ?>
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9"><input name="withdraw_funds_add_bank" type="submit" class="btn btn-success" value="Submit" /></div>
     </div>
+    <?php } ?>
 </form>

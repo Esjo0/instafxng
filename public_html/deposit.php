@@ -162,7 +162,8 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
         // confirm total funding orders today, if > 2000, disallow this order
         if($client_operation->deposit_limit_exceeded($client_user_code, $ifx_dollar_amount)) {
             $message_error = "The requested amount will make your total funding order today exceed the allowed daily limit of $" . LEVEL_ONE_MAX_PER_DEPOSIT;
-            $message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.";
+            $message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.<br />";
+            $message_error .= "<br />Your address, valid ID, Passport Photograph and your Signature is required for verification.";
         } else {
             $max_per_deposit = LEVEL_ONE_MAX_PER_DEPOSIT;
             if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit) {

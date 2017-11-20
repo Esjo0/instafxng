@@ -5,26 +5,33 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT DISTINCT ftc.email, CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS first_name, ftc.phone FROM free_training_campaign AS ftc INNER JOIN user AS u WHERE training_centre = '3' AND u.academy_signup IS NULL";
+$query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
+          u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+          FROM user_edu_exercise_log AS ueel
+          INNER JOIN user AS u ON ueel.user_code = u.user_code
+          INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+          INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+          LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
+          WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL GROUP BY ueel.user_code ";
 
-if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
-    $search_text = $_POST['search_text'];
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
-            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
-            FROM user AS u
-            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE u.academy_signup IS NOT NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
-            ORDER BY u.academy_signup DESC ";
-} else {
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
-            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
-            FROM user AS u
-            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE u.academy_signup IS NOT NULL
-            ORDER BY u.academy_signup DESC ";
-}
+//if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
+//    $search_text = $_POST['search_text'];
+//    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
+//            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+//            FROM user AS u
+//            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+//            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+//            WHERE u.academy_signup IS NOT NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
+//            ORDER BY u.academy_signup DESC ";
+//} else {
+//    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
+//            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+//            FROM user AS u
+//            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+//            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+//            WHERE u.academy_signup IS NOT NULL
+//            ORDER BY u.academy_signup DESC ";
+//}
 
 $numrows = $db_handle->numRows($query);
 
@@ -101,15 +108,15 @@ $education_students = $db_handle->fetchAssoc($result);
 
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>VIEW ALL STUDENT</strong></h4>
+                            <h4><strong>VIEW STUDENT - COMPLETED COURSE 1</strong></h4>
                         </div>
                     </div>
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <p class="text-right"><a href="edu_student2.php" target="_blank"  class="btn btn-default" title="Completed Course 1"><i class="fa fa-arrow-circle-right"></i> Completed Course 1</a></p>
-                                <p>List of students that have signed in to the FX Academy portal</p>
+
+                                <p>List of students that have completed Course 1 but have not started course 2</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>

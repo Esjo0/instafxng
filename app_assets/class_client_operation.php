@@ -353,6 +353,17 @@ class clientOperation {
         return $bank_status == '2' ? true : false;
     }
 
+    public function confirm_client_address($user_code) {
+        global $db_handle;
+
+        $query = "SELECT status FROM user_meta WHERE user_code = '$user_code' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $address_status = $fetched_data[0]['status'];
+
+        return $address_status == '2' ? true : false;
+    }
+
     // set a new bank account
     public function set_bank_account($user_code, $bank_acct_name, $bank_acct_number, $bank_id) {
         global $db_handle;
@@ -373,7 +384,7 @@ class clientOperation {
         $query = "SELECT bank_acct_name AS client_acct_name, bank_acct_no AS client_acct_no,
                 b.bank_name AS client_bank_name FROM user_bank AS ub
                 INNER JOIN bank AS b ON ub.bank_id = b.bank_id
-                WHERE ub.user_code = '$user_code' AND ub.status = '2' LIMIT 1";
+                WHERE ub.user_code = '$user_code' AND ub.status = '2' AND is_active = '1' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -402,7 +413,11 @@ class clientOperation {
     public function update_bank_account_status($user_bank_id, $bank_account_status) {
         global $db_handle;
 
-        $query = "UPDATE user_bank SET status = '$bank_account_status' WHERE user_bank_id = '$user_bank_id' LIMIT 1";
+        if($bank_account_status == '3') {
+            $query = "UPDATE user_bank SET status = '$bank_account_status', is_active = '2' WHERE user_bank_id = '$user_bank_id' LIMIT 1";
+        } else {
+            $query = "UPDATE user_bank SET status = '$bank_account_status' WHERE user_bank_id = '$user_bank_id' LIMIT 1";
+        }
         $db_handle->runQuery($query);
 
         return $db_handle->affectedRows() > 0 ? true : false;
@@ -414,7 +429,9 @@ class clientOperation {
         $query = "SELECT * FROM user_verification WHERE phone_status = '2' AND user_code = '$user_code' LIMIT 1";
         if($db_handle->numRows($query) > 0) { $level_one = true; }
 
-        $query = "SELECT * FROM user_credential  WHERE doc_status = '111' AND user_code = '$user_code' LIMIT 1";
+        $query = "SELECT * FROM user_credential AS uc
+            LEFT JOIN user_meta AS um ON uc.user_code = um.user_code
+            WHERE uc.doc_status = '111' AND um.status = '2' AND uc.user_code = '$user_code' LIMIT 1";
         if($db_handle->numRows($query) > 0) { $level_two = true; }
 
         $query = "SELECT * FROM user_bank WHERE is_active = '1' AND status = '2' AND user_code = '$user_code' LIMIT 1";
@@ -707,11 +724,7 @@ MAIL;
 
         $status = $fetched_data[0]['status'];
 
-        if($status == '1') {
-            return true;
-        } else {
-            return false;
-        }
+        return $status == '1' ? true : false;
     }
     
     // Check whether an unverified user has not passed the allowed daily limit of 1
