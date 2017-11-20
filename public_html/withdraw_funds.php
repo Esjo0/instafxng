@@ -192,6 +192,8 @@ switch($page_requested) {
         if($bank_status == '1') {
             $message_error = "Your bank account information is not yet approved, please <a href='contact_info.php'>contact us</a> for help.";
             $submit_btn = false;
+        } else {
+            $submit_btn = true;
         }
 
         $withdraw_funds_add_bank_php = true;
