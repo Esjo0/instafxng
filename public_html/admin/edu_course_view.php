@@ -179,7 +179,7 @@ if(empty($selected_course)) {
                                                     $rating = array();
                                                     foreach ($result as $row1)
                                                     {
-                                                        $rating[] = $row['rating'];
+                                                        $rating[] = $row1['rating'];
                                                     }
                                                     $rating = modes_of_array($rating);
                                                     $ratings = array_sum($rating);
