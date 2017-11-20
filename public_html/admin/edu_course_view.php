@@ -23,7 +23,9 @@ $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
 $selected_course = $education_object->get_course_by_id($course_id);
 
 if(empty($selected_course)) {
-} else {
+} else
+    {
+    $course_lessons = $education_object->get_active_lessons_by_id($course_id);
 }
 
 ?>
@@ -77,19 +79,14 @@ if(empty($selected_course)) {
 
                                                 <p><a href="edu_course_new.php?x=edit&id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Edit Course"><i class="fa fa-edit"></i> Edit Course</a></p>
                                                 <table class="table table-responsive table-striped table-bordered table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
+
                                                     <tbody>
-                                                        <tr><td>Author</td><td><?php echo $selected_course['admin_full_name']; ?></td></tr>
-                                                        <tr><td>Course Code</td><td><?php echo $selected_course['course_code']; ?></td></tr>
-                                                        <tr><td>Course Order</td><td><?php echo $selected_course['course_order']; ?></td></tr>
-                                                        <tr><td>Title</td><td><?php echo $selected_course['title']; ?></td></tr>
-                                                        <tr><td>Description</td><td><?php echo $selected_course['description']; ?></td></tr>
-                                                        <tr><td>Course Cost (&#8358;)</td><td><?php echo $selected_course['course_cost']; ?></td></tr>
+                                                        <tr><td><b>Author</b></td><td><?php echo $selected_course['admin_full_name']; ?></td></tr>
+                                                        <tr><td><b>Course Code</b></td><td><?php echo $selected_course['course_code']; ?></td></tr>
+                                                        <tr><td><b>Course Order</b></td><td><?php echo $selected_course['course_order']; ?></td></tr>
+                                                        <tr><td><b>Title</b></td><td><?php echo $selected_course['title']; ?></td></tr>
+                                                        <tr><td><b>Description</b></td><td><?php echo $selected_course['description']; ?></td></tr>
+                                                        <tr><td><b>Course Cost (&#8358;)</b></td><td><?php echo $selected_course['course_cost']; ?></td></tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -133,7 +130,8 @@ if(empty($selected_course)) {
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <?php if(isset($course_lessons) && !empty($course_lessons)) { foreach ($course_lessons as $row) { ?>
+                                            <?php if(isset($course_lessons) && !empty($course_lessons)) { foreach ($course_lessons as $row)
+                                            {?>
                                                 <tr>
                                                     <td>
                                                         <div class="dropdown">
