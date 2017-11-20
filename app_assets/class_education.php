@@ -265,16 +265,16 @@ class Education {
     }
 
     // Get lessons belonging to a course by id
-    public function get_active_lessons_by_id($course_id) {
+    public function get_active_lessons_by_id($course_id)
+    {
         global $db_handle;
 
-        $query = "SELECT el.edu_lesson_id, el.course_id,
+        $query = "SELECT CONCAT(a.first_name, SPACE(1), a.last_name) AS admin_full_name, el.edu_lesson_id, el.course_id, el.admin_code,
             el.lesson_order, el.title, el.content, el.time_required, el.status, el.created
             FROM edu_lesson AS el
             INNER JOIN edu_course AS ec ON ec.edu_course_id = el.course_id
             INNER JOIN admin AS a ON a.admin_code = el.admin_code
             WHERE el.course_id = $course_id AND el.status = '2' ORDER BY el.lesson_order ASC";
-
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 

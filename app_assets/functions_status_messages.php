@@ -139,6 +139,7 @@ function lesson_rating($status)
 {
     switch ($status)
     {
+        case '0': $message = "No Ratings Yet"; break;
         case '1': $message = "Very Poor"; break;
         case '2': $message = "Poor"; break;
         case '3': $message = "Average"; break;
