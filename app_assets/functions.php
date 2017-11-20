@@ -422,4 +422,36 @@ function array_sort_by_column_desc(&$arr, $col, $dir = SORT_DESC) {
     array_multisort($sort_col, $dir, $arr);
 }
 
+function modes_of_array($arr)
+{
+    $values = array();
+    foreach ($arr as $v)
+    {
+        if (isset($values[$v]))
+        {
+            $values[$v] ++;
+        }
+        else
+        {
+            $values[$v] = 1;  // counter of appearance
+        }
+    }
+    arsort($values);  // sort the array by values, in non-ascending order.
+    $modes = array();
+    $x = $values[key($values)]; // get the most appeared counter
+    reset($values);
+    foreach ($values as $key => $v)
+    {
+        if ($v == $x)
+        {   // if there are multiple 'most'
+            $modes[] = $key;  // push to the modes array
+        }
+        else
+        {
+            break;
+        }
+    }
+    return $modes;
+}
+
 
