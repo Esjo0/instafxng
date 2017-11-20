@@ -251,7 +251,7 @@ $projects = $db_handle->fetchAssoc($result);
                                 </div>
                             </div>
                             <div class="col-sm-12">
-                                <table class="table table-responsive  table-striped table-bordered table-hover">
+                                <table class="table table-responsive    table-hover">
                                     <thead>
                                         <tr>
                                             <th>Title</th>
@@ -261,8 +261,8 @@ $projects = $db_handle->fetchAssoc($result);
                                             <th>Status</th>
                                             <th>Executors</th>
                                             <th>Announcements</th>
-                                            <th>Edit</th>
-                                            <th>View</th>
+                                            <th> </th>
+                                            <th> </th>
                                         </tr>
                                     </thead>
                                     <tbody>
