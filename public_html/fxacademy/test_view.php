@@ -4,7 +4,7 @@ $thisPage = "";
 
 if (!$session_client->is_logged_in())
 {
-    redirect_to("login.php");
+    //redirect_to("login.php");
 }
 
 $get_params = allowed_get_params(['lid', 'cid']);
@@ -127,7 +127,7 @@ else
                                                 <div class="modal-body">
                                                     <!--Are you sure you want to submit the assessment for this lesson?-->
                                                     <label for="input-1" class="control-label">Rate this lesson: </label>
-                                                    <input id="input-1" name="rating" class="rating rating-loading" data-min="0" data-max="5" data-step="1">
+                                                    <input id="input-1" name="rating" class="rating rating-loading" data-min="0" data-max="5" data-step="1" required>
                                                     <label for="comments" class="control-label">Comments (If Any):</label>
                                                     <textarea rows="5" id="comments" name="comments" class="form-control"></textarea>
                                                 </div>

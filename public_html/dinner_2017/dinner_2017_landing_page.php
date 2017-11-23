@@ -295,6 +295,7 @@ if(empty($attendee_detail))
         <link href="assets/style.css" rel="stylesheet">
 	    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,800" rel="stylesheet">
 	    <link href="//fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link href=' http://fonts.googleapis.com/css?family=Amazone+BT' rel='stylesheet' type='text/css'>
         <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <script src="../js/bootstrap-datetimepicker.js"></script>
@@ -335,7 +336,6 @@ if(empty($attendee_detail))
             <div class="mu-hero-overlay">
                 <div class="container">
                     <div class="mu-hero-area">
-
                         <!-- Start hero featured area -->
                         <div class="mu-hero-featured-area">
                             <div class="col-sm-12">
@@ -351,9 +351,10 @@ if(empty($attendee_detail))
                                         <!-- End center Logo -->
 
                                         <div class="mu-hero-featured-content">
-
-                                            <h1>WELCOME TO INSTAFXNG DINNER 2017</h1>
-                                            <h2>The Ethnic Impression</h2>
+                                            <h2>Presents</h2>
+                                            <h1 style="font-family: 'Times New Roman'">THE ETHNIC IMPRESSION 2017</h1>
+                                            <!--<h1>WELCOME TO INSTAFXNG DINNER 2017</h1>
+                                            <h2>The Ethnic Impression</h2>-->
                                             <p class="mu-event-date-line">17 December, 2017. Lagos State, Nigeria</p>
 
                                             <div class="mu-event-counter-area">
@@ -530,11 +531,11 @@ if(empty($attendee_detail))
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mu-about-left">
-                                            <img class="" src="assets/images/Capture.PNG" alt="Men Speaker">
+                                            <img class="" src="assets/images/dinner revert 3 - Copy.jpg" alt="Men Speaker">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mu-about-right" style='font-family: "Bookman Old Style"'>
+                                        <div class="mu-about-right" style='font-family: "Arial Black" font-weight: bold'>
                                             <h2>About The Event</h2>
                                             <p class="text-justify" >This year’s dinner promises to be filled with great fun as we look deep into the riches of our culture and heritage.</p>
                                             <p class="text-justify">The expression of our cultural beauty, the ambience of our arts, the melody of our music, the rhythm of our folk story,
@@ -555,48 +556,51 @@ if(empty($attendee_detail))
             <!-- End About -->
 
             <!-- Start Video -->
-            <section id="mu-video">
+            <section id="mu-video" >
                 <div class="mu-video-overlay">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="mu-video-area" >
+                            <div   class="col-md-12">
+                                <div   class="mu-video-area" >
                                     <h2>Watch Previous Event Video</h2>
-                                    <div class="embed-responsive embed-responsive-16by9">
+                                    <!--<a class="mu-video-play-btn" href="#">
+                                        <i class="glyphicon glyphicon-play-circle" aria-hidden="true"></i>
+                                    </a>-->
+                                    <div style="opacity: 1!important;" class="embed-responsive embed-responsive-16by9">
                                         <iframe class="embed-responsive-item" src="//www.youtube.com/embed/tdHp4WGw7YE" frameborder="0" allowfullscreen></iframe>
                                     </div>
-                                    <!--<a class="mu-video-play-btn" href="#">
-                                        <i class="glyphicon glyphicon-play" aria-hidden="true"></i>
-                                    </a>-->
                                 </div>
+
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Start Video content -->
-                <div class="mu-video-content">
+
+
+                <!--<div class="mu-video-content">
                     <div class="mu-video-iframe-area">
                         <a class="mu-video-close-btn" href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
                         <iframe width="854" height="480" src="//www.youtube.com/embed/tdHp4WGw7YE" frameborder="0" allowfullscreen></iframe>
                     </div>
+                </div>-->
+
                 </div>
+
                 <!-- End Video content -->
 
             </section>
             <!-- End Video -->
 
-            <!-- Start Venue -->
-            <section id="mu-venue">
-                <div class="mu-venue-area">
-                    <div class="row">
 
+            <!-- Start Venue -->
+            <section id="mu-video" >
+                <div class="mu-video-overlay">
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="mu-venue-map">
                                 <iframe src="//www.google.com/maps/embed/v1/place?key=AIzaSyBDmmOQa-UXFfKtrcyowlYvq4FpbUfAjxw&q=Four+Points+by+Sheraton,Lagos" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="mu-venue-address">
                                 <h2>VENUE <i class="fa fa-chevron-right" aria-hidden="true"></i></h2>
@@ -605,7 +609,6 @@ if(empty($attendee_detail))
                                 <h4>Lagos State, Nigeria</h4>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
