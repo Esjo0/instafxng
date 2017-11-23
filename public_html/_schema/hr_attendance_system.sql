@@ -46,7 +46,16 @@ INSERT INTO `hr_attendance_locations` (`location_id`, `location`, `ip_address`, 
 
 -- --------------------------------------------------------
 
-
+DROP TABLE IF EXISTS `hr_attendance_log`;
+CREATE TABLE `hr_attendance_log` (
+ `log_id` int(11) NOT NULL AUTO_INCREMENT,
+ `date` varchar(255) NOT NULL,
+ `time` varchar(255) NOT NULL,
+ `admin_code` varchar(255) NOT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `location` varchar(255) NOT NULL,
+ PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for table `hr_attendance_locations`
