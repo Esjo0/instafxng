@@ -81,7 +81,7 @@ $thisPage = "Home";
                             </div>
 
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/deposit.php?x=msg" title="click for details"><img src="images/black%20friday%20website-02%20(1).jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/deposit.php?x=msg" title="click for details"><img src="images/black_friday.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>
