@@ -363,7 +363,7 @@ function client_group_query($client_group) {
         case '19': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_other = '2'"; break;
         case '20': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE u.campaign_subscribe = '1' AND (ud.status = '8' AND STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY ud.ifxaccount_id"; break;
         case '21': $query = "SELECT full_name AS first_name, email_address AS email, phone_number AS phone FROM pencil_comedy_reg"; break;
-        case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE email IN ('abegundeemmanuel@gmail.com', 'rightpma@gmail.com', 'utomudopercy@gmail.com', 'olagold4@yahoo.com', 'ademolaoyebode@gmail.com', 'Scar2010560@gmail.com', 'Joshuagoke08@gmail.com', 'olasomimercy@gmail.com', 'estellynab38@yahoo.com', 'bunmzyfad@yahoo.com', 'estherogunsola463@yahoo.com', 'afujah@yahoo.com', 'ayoola@instafxng.com')"; break;
+        case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE email IN ('abegundeemmanuel@gmail.com', 'rightpma@gmail.com', 'utomudopercy@gmail.com', 'olagold4@yahoo.com', 'ademolaoyebode@gmail.com', 'Scargger2010560@gmail.com', 'Joshuagoke08@gmail.com', 'olasomimercy@gmail.com', 'estellynab38@yahoo.com', 'bunmzyfad@yahoo.com', 'estherogunsola463@yahoo.com', 'afujah@yahoo.com', 'ayoola@instafxng.com')"; break;
         case '23': $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS first_name, u.email, u.phone FROM point_ranking AS pr INNER JOIN user AS u ON pr.user_code = u.user_code ORDER BY pr.year_rank DESC, first_name ASC LIMIT 20"; break;
         case '24': $query = "SELECT first_name, email_address, phone_number FROM career_user_application AS cua INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code WHERE cua.status = '2'"; break;
         case '25': $query = "SELECT u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned BETWEEN '$top_trader_from_date' AND '$top_trader_to_date'"; break;
@@ -606,7 +606,8 @@ function biodata_marriage_status($status) {
     return $message;
 }
 
-function biodata_competency_status($status) {
+function biodata_competency_status($status)
+{
     switch ($status) {
         case '1': $message = "Beginner"; break;
         case '2': $message = "Advanced"; break;
