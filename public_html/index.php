@@ -77,7 +77,7 @@ $thisPage = "Home";
                                 <p>Get a whopping 40% off the service charge every time you fund your InstaForex account between 12am on Friday 24th November and Monday 27th of December, 2017.</p>
                                 <p>There are no hidden terms and conditions, just fund your InstaForex ILPR account and you get 40% off the service charge just before you check out.</p>
                                 <p>Hurry now and take advantage of this deal.
-                                    <a href="https://instafxng.com/deposit.php?x=msg" title="click for details">Click here</a> to to fund your account now!</p>
+                                    <a href="https://instafxng.com/deposit.php?x=msg" title="click for details">Click here</a> to fund your account now!</p>
                             </div>
 
                             <div class="col-sm-6">

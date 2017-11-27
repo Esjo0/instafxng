@@ -221,7 +221,7 @@ button:focus {
 
 #mu-hero
 {
-	background-image: url("images/African Doodes.jpg");
+	background-image: url("images/African_Doodes.jpg");
 	/*background-image: url("images/dinner-seamless-doodle.png");*/
 	display: inline;
 	float: left;
@@ -450,7 +450,7 @@ button:focus {
 
 
 #mu-video {
-	background-image: url("images/African Doodes.jpg");
+	background-image: url("images/African_Doodes.jpg");
 	background-attachment: fixed;
 	background-position: center center;
 	-webkit-background-size: cover;
@@ -796,7 +796,7 @@ button:focus {
 	display: inline;
 	float: left;
 	width: 100%;
-	/*background-image: url("images/African Doodes.jpg");*/
+	/*background-image: url("images/African_Doodes.jpg");*/
 }
 
 .mu-venue-area {

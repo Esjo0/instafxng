@@ -531,7 +531,7 @@ if(empty($attendee_detail))
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mu-about-left">
-                                            <img class="" src="assets/images/dinner revert 3 - Copy.jpg" alt="Men Speaker">
+                                            <img class="" src="assets/images/dinner_revert 3_Copy.jpg" alt="Men Speaker">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
