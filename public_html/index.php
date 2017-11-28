@@ -20,18 +20,7 @@ $thisPage = "Home";
         <meta property="og:image" content="images/instaforex-100bonus.jpg" />
         <meta property="og:url" content="https://instafxng.com/" />
         <meta property="og:type" content="website" />
-        <script>
-            window.onload=function() {
-                var E = document.getElementsByClassName("item");
-                var m = E.length;
-                var n = parseInt(Math.random()*m);
-                for (var i=m-1;i>=0;i--) {
-                    var e = E[i];
-                    e.style.display='none';
-                }
-                E[n].style.display='';
-            }
-        </script>
+
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -47,7 +36,7 @@ $thisPage = "Home";
                     <?php $rand = rand(1, 2); ?>
 
 
-                    <div style="display: none" class="item super-shadow page-top-section">
+                    <div  class="item super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
                                 <h2>The Race to One Million Naira is Almost Over!</h2>
@@ -67,25 +56,7 @@ $thisPage = "Home";
                             </div>
                         </div>
                     </div>
-
-
-                    <div style="display: none"  class="item super-shadow page-top-section">
-                        <div class="row ">
-                            <div class="col-sm-6">
-                                <h2>Be a Part of Our Black Friday Deal!</h2>
-                                <p>Yay! It’s our first black Friday promo ever!</p>
-                                <p>Get a whopping 40% off the service charge every time you fund your InstaForex account between 12am on Friday 24th November and Monday 27th of December, 2017.</p>
-                                <p>There are no hidden terms and conditions, just fund your InstaForex ILPR account and you get 40% off the service charge just before you check out.</p>
-                                <p>Hurry now and take advantage of this deal.
-                                    <a href="https://instafxng.com/deposit.php?x=msg" title="click for details">Click here</a> to fund your account now!</p>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <a href="https://instafxng.com/deposit.php?x=msg" title="click for details"><img src="images/black_friday.jpg" alt="" class="img-responsive" /></a>
-                            </div>
-                        </div>
-                    </div>
-
+                    
                     <div id="welcome-note" class="section-tint super-shadow">
                         <h2 class="text-center">Welcome to Instaforex Nigeria</h2>
                         <p><i class="fa fa-quote-left fa-2x fa-pull-left fa-border"></i> InstaForex, the award winning and international forex broker seeks to serve her Nigerian clients better by the introduction of an InstaForex Nigeria Representative office. InstaFxNg.com is operated by Instant Web-Net Technologies Limited as a Nigerian InstaForex Representative / Introducing Broker Partner.</p>
