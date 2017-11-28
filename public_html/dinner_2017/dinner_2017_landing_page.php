@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             <p>I would really love you to make up your mind on time as the dinner promises 
             to be fun and we have a lot of clients on the waiting list.</p>
             <p>It wouldn’t be fair to them if you say maybe and you never get to come.</p>
-            <p>To this end, we have reserved your seat for the next 10 days as we expect 
+            <p>To this end, we have reserved your seat for the next 5 days as we expect 
             that you would have checked your schedule for December 17th and decide if you 
             would be able to make it to the dinner by then.</p>
             <p>I really do hope you would be able to attend as I don’t want you to miss the fun that awaits you.</p>
