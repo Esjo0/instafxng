@@ -138,7 +138,7 @@ if (isset($_POST['process']))
                                     <div class="panel-body">
                                             <fieldset>
                                                 <?php require_once '../layouts/feedback_message.php'; ?>
-                                                <p>Please fill the form below to reserve a spot at the Instaforex Afro Nite.</p>
+                                                <p>Please fill the form below to update your reservation.</p>
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
                                                         <div class="input-group">
