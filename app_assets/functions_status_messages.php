@@ -342,14 +342,14 @@ function client_group_query($client_group) {
     }
 
     switch ($client_group) {
-        case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1'"; break;
-        case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1'"; break;
-        case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign"; break;
-        case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1'"; break;
-        case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1'"; break;
-        case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1'"; break;
-        case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 9 MONTH) AND u.campaign_subscribe = '1'"; break;
-        case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2'"; break;
+        case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1' ORDER BY created ASC"; break;
+        case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1' ORDER BY created ASC"; break;
+        case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign ORDER BY created ASC"; break;
+        case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
+        case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
+        case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
+        case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 9 MONTH) AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
+        case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2' ORDER BY created ASC"; break;
         case '9': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u INNER JOIN user_meta AS um ON u.user_code = um.user_code LEFT JOIN state AS s ON um.state_id = s.state_id WHERE u.campaign_subscribe = '1' AND um.address LIKE '%Lagos%'"; break;
         case '10': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '3'"; break;
         case '11': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '2'"; break;

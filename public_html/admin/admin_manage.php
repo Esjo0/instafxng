@@ -301,6 +301,16 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="74" id="" <?php if (in_array(74, $my_pages)) { echo 'checked="checked"'; } ?>/> Education Forum Registration</label></div></div>
                                     </div>
                                     <hr/>
+
+                                    <p><strong>Education Transactions</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="67" id="" <?php if (in_array(67, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit Initiated</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="68" id="" <?php if (in_array(68, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit Notified</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="69" id="" <?php if (in_array(69, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit Completed</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="70" id="" <?php if (in_array(70, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit Declined</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="71" id="" <?php if (in_array(71, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit Failed</label></div></div>
+                                    </div>
+                                    <hr/>
                                     
                                     <p><strong>Article Management</strong></p>
                                     <div class="form-group row">

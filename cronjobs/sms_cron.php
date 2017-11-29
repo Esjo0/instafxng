@@ -36,7 +36,7 @@ if($db_handle->numOfRows($result) > 0) {
             $user_code = strtolower(trim($row['user_code']));
             $my_message = str_replace('[UC]', encrypt($user_code), $my_message);
             $my_message_new = str_replace('[UC]', '', $my_message);
-            $system_object->send_sms($client_phone, $my_message);
+            $system_object->send_sms($client_phone, $my_message_new);
         }
 
         // if the current offset plus limit is equal or greater than total recipient

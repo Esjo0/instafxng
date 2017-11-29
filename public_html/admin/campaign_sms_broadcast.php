@@ -49,7 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
 
         if(!empty($selected_member)) {
             $client_phone = ucwords(strtolower(trim($selected_member[0]['phone'])));
-            $system_object->send_sms($client_phone, $my_message);
+            $user_code = strtolower(trim($row['user_code']));
+            $my_message = str_replace('[UC]', encrypt($user_code), $my_message);
+            $my_message_new = str_replace('[UC]', '', $my_message);
+            $system_object->send_sms($client_phone, $my_message_new);
         }
         continue;
     }

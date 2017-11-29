@@ -38,7 +38,7 @@ if($db_handle->numOfRows($result) > 0) {
     $my_subject = trim($selected_campaign_email['subject']);
     $my_message = stripslashes($selected_campaign_email['content']);
 
-    $query = $recipient_query . " ORDER BY created ASC LIMIT $limit OFFSET $current_offset";
+    $query = $recipient_query . " LIMIT $limit OFFSET $current_offset";
     $result = $db_handle->runQuery($query);
     $all_selected_members = $db_handle->fetchAssoc($result);
 

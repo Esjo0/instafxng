@@ -1,7 +1,7 @@
 <?php
 // Development settings
 defined('DS') ? NULL : define('DS', DIRECTORY_SEPARATOR);
-defined('SITE_ROOT') ? NULL : define('SITE_ROOT', 'C:'.DS.'wamp64'.DS.'www'.DS.'instafxngwebsite_master');
+defined('SITE_ROOT') ? NULL : define('SITE_ROOT', 'C:'.DS.'wamp64'.DS.'www'.DS.'instafxngwebsite');
 defined('LIB_PATH') ? NULL : define('LIB_PATH', SITE_ROOT.DS.'app_assets');
 
 //// Production settings

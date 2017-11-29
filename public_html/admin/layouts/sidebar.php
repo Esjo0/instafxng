@@ -167,8 +167,6 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     <ul class="dropdown-menu multi-level">
                         <?php if (in_array(63, $my_pages_sidebar)) { ?><li><a href="edu_course.php">All Courses</a></li><?php } ?>
                         <?php if (in_array(64, $my_pages_sidebar)) { ?><li><a href="edu_support_ticket.php">Course Messages</a></li><?php } ?>
-                        <?php if (in_array(65, $my_pages_sidebar)) { ?><li><a href="edu_payment.php">Student Payments</a></li><?php } ?>
-                        <?php if (in_array(66, $my_pages_sidebar)) { ?><li><a href="edu_deposit.php">Student Deposits</a></li><?php } ?>
                         <?php if (in_array(63, $my_pages_sidebar)) { ?><li><a href="edu_student.php">All Students</a></li><?php } ?>
                         <li class="divider"></li>
                         <!-- // 66 - 72 -->
@@ -176,6 +174,16 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_free_training.php">Training Campaign</a></li><?php } ?>
                         <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_client_training_funded.php">Training Campaign Funded</a></li><?php } ?>
                         <?php if (in_array(74, $my_pages_sidebar)) { ?><li><a href="edu_forum_reg.php">Forum Registration</a></li><?php } ?>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-book fa-fw"></i> Education Transactions<b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-level">
+                        <?php if (in_array(67, $my_pages_sidebar)) { ?><li><a href="edu_deposit_initiated.php">Deposit Initiated</a></li><?php } ?>
+                        <?php if (in_array(68, $my_pages_sidebar)) { ?><li><a href="edu_deposit_notified.php">Deposit Notified</a></li><?php } ?>
+                        <?php if (in_array(69, $my_pages_sidebar)) { ?><li><a href="edu_deposit_completed.php">Deposit Completed</a></li><?php } ?>
+                        <?php if (in_array(70, $my_pages_sidebar)) { ?><li><a href="edu_deposit_declined.php">Deposit Declined</a></li><?php } ?>
+                        <?php if (in_array(71, $my_pages_sidebar)) { ?><li><a href="edu_deposit_failed.php">Deposit Failed</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
