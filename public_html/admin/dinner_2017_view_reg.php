@@ -202,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
 MAIL;
         $system_object->send_email($subject, $message, $email, $full_name);
         $db_handle->runQuery("UPDATE dinner_2017 SET invite = '1' WHERE reservation_code = '$reservation_code'");
-        echo $message;
+
     }
     if(isset($comments) && !empty($comments))
     {

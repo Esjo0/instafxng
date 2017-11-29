@@ -41,8 +41,10 @@ $total_vip_single_clients = $result;
 $result = $db_handle->numRows("SELECT * FROM dinner_2017 WHERE ticket_type = '3'");
 $total_vip_double_clients = $result;
 
-if(isset($page) && !empty($page)) {
-    switch($page) {
+if(isset($page) && !empty($page))
+{
+    switch($page)
+    {
         case 'all':
             $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Registered Guests";
@@ -89,8 +91,8 @@ if(isset($page) && !empty($page)) {
             $showing_msg = "Showing Results for All Plus One VIP Reservations";
             break;
         default:
-            $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
-            $showing_msg = "Showing Results for All Reservations";
+            $query = "SELECT * FROM dinner_2017 WHERE email LIKE '%$page%' OR full_name LIKE '%$page%' ORDER BY reservation_id DESC ";
+            $showing_msg = "Showing Search Results For ".'"'.$page.'"';
             break;
     }
 } else {
@@ -133,6 +135,20 @@ $dinner_reg = $db_handle->fetchAssoc($result);
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <?php require_once 'layouts/head_meta.php'; ?>
+    <script>
+        function show_form(div)
+        {
+            var x = document.getElementById(div);
+            if (x.style.display === 'none')
+            {
+                x.style.display = 'block';
+            }
+            else
+            {
+                x.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
 <?php require_once 'layouts/header.php'; ?>
@@ -189,6 +205,7 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                                     <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=double'; ?>" class="btn btn-default" title="Plus One (Double) Client Reservations">Plus One Clients</a>
                                     <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_single'; ?>" class="btn btn-default" title="Single VIP Reservations">Single VIP</a>
                                     <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_double'; ?>" class="btn btn-default" title="Plus One (Double) VIP Reservations">Plus One VIP</a>
+                                    <button onclick="show_form('search_form')" class="btn btn-default" title="Search Through Reservations">Search</button>
                                 </div>
                             </div>
                         </div>
@@ -197,6 +214,17 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                         <?php if(isset($showing_msg)) { ?>
                         <p class="text-center"><?php echo $showing_msg; ?></p>
                         <?php } ?>
+                        <div id="search_form" style="display: none;" class="form-group">
+                            <p>Enter the clients name or an email address to search...</p>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="search_item" name="search" placeholder="Search" required/>
+                                <span class="input-group-btn">
+                                    <button onclick="if(document.getElementById('search_item').value){window.location.href = '<?php echo $_SERVER['PHP_SELF'];?>'+'?p='+document.getElementById('search_item').value;}" class="btn btn-success" type="button">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
