@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
   <div class="container">
     <section>
       <div class="circle">
-        <img style="width: 100%; height: 100%; border-radius: 50%" src="http://instafxng.master/dinner_2017/assets/images/dinner_revert%203_Copy.jpg">
+        <img style="width: 100%; height: 100%; border-radius: 50%" src="http://instafxng.master/dinner_2017/assets/images/dinner_2017.jpg">
       </div>
       <div class="special">
       <div style="position: absolute;
@@ -200,9 +200,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
     </section>
   </div>
 MAIL;
+
+        /*//echo $message;
+        $dompdf->loadHtml($message);
+        // Render the HTML as PDF
+        $dompdf->render();
+        // Output the generated PDF (1 = download and 0 = preview)
+        $dompdf->stream($subject,array("Attachment"=>1));*/
+
         $system_object->send_email($subject, $message, $email, $full_name);
         $db_handle->runQuery("UPDATE dinner_2017 SET invite = '1' WHERE reservation_code = '$reservation_code'");
-
     }
     if(isset($comments) && !empty($comments))
     {
@@ -394,7 +401,7 @@ if(empty($attendee_detail))
                                 
                             </div>
 
-                            <div class="col-sm-12">
+                            <div style="max-height: 300px; overflow-x: scroll" class="col-sm-12">
                                 <h5>Admin Remarks</h5>
 
                                 <?php

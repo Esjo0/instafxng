@@ -101,7 +101,7 @@ if(isset($page) && !empty($page))
 
 $numrows = $db_handle->numRows($query);
 
-$rowsperpage = 60;
+$rowsperpage = 20;
 
 $totalpages = ceil($numrows / $rowsperpage);
 
@@ -226,41 +226,43 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                             </div>
                         </div>
 
-                        <table class="table table-responsive table-striped table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Phone Number</th>
-                                <th>Ticket Type</th>
-                                <th>Confirmation Status</th>
-                                <th>Created</th>
-                                <th>State Of Residence</th>
-                                <th>Comments</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            if(isset($dinner_reg) && !empty($dinner_reg)) {
-                                foreach ($dinner_reg as $row) {
-                                    ?>
+                        <div style="max-width: 100%" class="table-responsive">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
                                     <tr>
-                                        <td><?php echo $row['full_name']; ?></td>
-                                        <td><?php echo $row['email']; ?></td>
-                                        <td><?php echo $row['phone']; ?></td>
-                                        <td><?php echo dinner_ticket_type($row['ticket_type']); ?></td>
-                                        <td><?php echo dinner_confirmation_status($row['confirmation']); ?></td>
-                                        <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                        <td><?php echo $row['state_of_residence']; ?></td>
-                                        <td><?php echo nl2br(htmlspecialchars($row['comments'])) ; ?></td>
-                                        <td>
-                                            <a title="View" class="btn btn-info" href="dinner_2017_view_reg.php?id=<?php echo encrypt($row['reservation_code']); ?>"><i class="glyphicon glyphicon-arrow-right icon-white"></i></a>
-                                        </td>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Phone Number</th>
+                                        <th>Ticket Type</th>
+                                        <th>Confirmation Status</th>
+                                        <th>Created</th>
+                                        <th>State Of Residence</th>
+                                        <th>Comments</th>
+                                        <th></th>
                                     </tr>
-                                <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <?php
+                                if(isset($dinner_reg) && !empty($dinner_reg)) {
+                                    foreach ($dinner_reg as $row) {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row['full_name']; ?></td>
+                                            <td><?php echo $row['email']; ?></td>
+                                            <td><?php echo $row['phone']; ?></td>
+                                            <td><?php echo dinner_ticket_type($row['ticket_type']); ?></td>
+                                            <td><?php echo dinner_confirmation_status($row['confirmation']); ?></td>
+                                            <td><?php echo datetime_to_text2($row['created']); ?></td>
+                                            <td><?php echo $row['state_of_residence']; ?></td>
+                                            <td><?php if(strlen(nl2br(htmlspecialchars($row['comments']))) > 40){echo "<a href='#' data-toggle='tooltip' title='".nl2br(htmlspecialchars($row['comments']))."'>".substr(nl2br(htmlspecialchars($row['comments'])), 0, 40)."...";} else {echo nl2br(htmlspecialchars($row['comments']));}?></td>
+                                            <td>
+                                                <a title="View" class="btn btn-info" href="dinner_2017_view_reg.php?id=<?php echo encrypt($row['reservation_code']); ?>"><i class="glyphicon glyphicon-arrow-right icon-white"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                </tbody>
+                            </table>
+                        </div>
                         <br /><br />
 
                         <?php if(isset($dinner_reg) && !empty($dinner_reg)) { ?>
@@ -285,5 +287,10 @@ $dinner_reg = $db_handle->fetchAssoc($result);
     </div>
 </div>
 <?php require_once 'layouts/footer.php'; ?>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </body>
 </html>
