@@ -316,9 +316,9 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
 
                                     <?php if($allowed_export_profile) { ?>
                                     <p class="text-center">
-                                        <a id="create_pdf" type="button" class="btn btn-sm btn-info" >Export Result to PDF</a>
-                                        <a type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export Result to Excel</a>
-                                    </p>
+                                            <!--<a id="create_pdf" type="button" class="btn btn-sm btn-info" >Export Result to PDF</a>-->
+                                            <a type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export Result to Excel</a>
+                                        </p>
                                     <?php } ?>
 
                                 <?php } ?>
