@@ -200,14 +200,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
     </section>
   </div>
 MAIL;
-
-        /*//echo $message;
-        $dompdf->loadHtml($message);
-        // Render the HTML as PDF
-        $dompdf->render();
-        // Output the generated PDF (1 = download and 0 = preview)
-        $dompdf->stream($subject,array("Attachment"=>1));*/
-
         $system_object->send_email($subject, $message, $email, $full_name);
         $db_handle->runQuery("UPDATE dinner_2017 SET invite = '1' WHERE reservation_code = '$reservation_code'");
     }

@@ -91,7 +91,7 @@ if(isset($page) && !empty($page))
             $showing_msg = "Showing Results for All Plus One VIP Reservations";
             break;
         default:
-            $query = "SELECT * FROM dinner_2017 WHERE email LIKE '%$page%' OR full_name LIKE '%$page%' ORDER BY reservation_id DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE email LIKE '%$page%' OR full_name LIKE '%$page%' OR state_of_residence LIKE '%$page%' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Search Results For ".'"'.$page.'"';
             break;
     }
