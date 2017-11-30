@@ -1,4 +1,4 @@
-<p><a href="edu_deposit.php" class="btn btn-default" title="Go back to Education Deposits"><i class="fa fa-arrow-circle-left"></i> Go Back - Education Deposits</a></p>
+<p><a href="<?php if (isset($return_page)) { echo $return_page; } ?>" class="btn btn-default" title="Go back to Education Deposits"><i class="fa fa-arrow-circle-left"></i> Go Back - Education Deposits</a></p>
 
 <p>See details of deposit transactions for Education below, once confirmed, client will be able
     to access the course paid for.</p>
@@ -31,6 +31,12 @@
                        value="<?php if (isset($trans_detail['client_full_name'])) {
                            echo $trans_detail['client_full_name'];
                        } ?>" readonly="readonly">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="client_phone">Phone:</label>
+                <div class="col-sm-8">
+                    <input name="client_phone" type="text" class="form-control" id="client_phone" value="<?php if (isset($trans_detail['phone'])) { echo $trans_detail['phone']; } ?>" readonly="readonly">
                 </div>
             </div>
             <div class="form-group">
@@ -77,7 +83,7 @@
             </div>
 
             <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-8"><input name="edu_deposit_process" type="submit" class="btn btn-success" value="Process Deposit"/></div>
+                <div class="col-sm-offset-4 col-sm-8"><input name="edu_deposit_process_notified" type="submit" class="btn btn-success" value="Process Deposit"/></div>
             </div>
         </form>
     </div>

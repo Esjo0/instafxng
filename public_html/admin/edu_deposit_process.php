@@ -14,10 +14,12 @@ switch ($get_params['x']) {
     case 'initiated':
         $deposit_process_initiated = true;
         $page_title = '- INITIATED';
+        $return_page = 'edu_deposit_initiated.php';
         break;
     case 'notified':
         $deposit_process_notified = true;
         $page_title = '- NOTIFIED';
+        $return_page = 'edu_deposit_notified.php';
         break;
     default:
         $no_valid_page = true;
@@ -28,7 +30,27 @@ if ($no_valid_page) {
     header("Location: ./");
 }
 
-if (isset($_POST['edu_deposit_process'])) {
+if (isset($_POST['edu_deposit_process_comment'])) {
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+    extract($_POST);
+
+    $trans_id = decrypt(str_replace(" ", "+", $transaction_no));
+    $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+
+    $update_deposit_comment = $education_object->log_edu_deposit_comment($_SESSION['admin_unique_code'], $trans_id, $admin_comment);
+
+    if ($update_deposit_comment) {
+        $message_success = "You have successfully logged your comment.";
+    } else {
+        $message_error = "An error occurred, looks like there was a problem";
+    }
+
+
+}
+
+if (isset($_POST['edu_deposit_process_notified'])) {
     foreach ($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }

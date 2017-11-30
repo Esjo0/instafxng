@@ -40,7 +40,7 @@ $thisPage = "Home";
                         <div class="row ">
                             <div class="col-sm-6">
                                 <h2>The Race to One Million Naira is Almost Over!</h2>
-                                <p>It's <strong><?php echo 30 - date('d'); ?> days to the end of the promo</strong> and ONE hardworking and consistent
+                                <p><strong>Today is the last day of the promo</strong> and ONE hardworking and consistent
                                 trader will win a whopping sum of <strong>&#8358;<?php echo number_format(1000000); ?></strong>.</p>
 
                                 <p>Now, that's not all! There are CASH prizes for the 2nd to the 10th trader who

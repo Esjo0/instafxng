@@ -696,6 +696,12 @@ MAIL;
 
         $query = "INSERT INTO user_edu_deposits_comment (admin_code, trans_id, comment) VALUES ('$admin_code', '$transaction_no', '$admin_comment')";
         $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function modify_edu_deposit_order($transaction_no, $course_no, $user_no, $deposit_status, $admin_comment, $admin_code) {
@@ -716,6 +722,22 @@ MAIL;
         } else {
             return false;
         }
+    }
+
+    public function submit_payment_notification($transaction_no, $pay_date, $naira_amount, $admin_comment, $admin_code) {
+        global $db_handle;
+
+        $query = "UPDATE user_edu_deposits SET status = '2', pay_date = '$pay_date', amount_paid = '$naira_amount' WHERE trans_id = '$transaction_no' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            $this->log_edu_deposit_comment($admin_code, $transaction_no, $admin_comment);
+
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     // Get all lesson logged by the client - using answered exercises
