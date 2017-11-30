@@ -215,7 +215,7 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                         <p class="text-center"><?php echo $showing_msg; ?></p>
                         <?php } ?>
                         <div id="search_form" style="display: none;" class="form-group">
-                            <p>Enter the clients name or an email address to search...</p>
+                            <p>Enter the clients name, an email address or state of residence to search...</p>
                             <div class="input-group">
                                 <input class="form-control" type="text" id="search_item" name="search" placeholder="Search" required/>
                                 <span class="input-group-btn">
