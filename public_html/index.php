@@ -39,16 +39,14 @@ $thisPage = "Home";
                     <div  class="item super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
-                                <h2>The Race to One Million Naira is Almost Over!</h2>
-                                <p><strong>Today is the last day of the promo</strong> and ONE hardworking and consistent
+                                <h2>The Race to One Million Naira is Over!</h2>
+                                <p><strong>The 2017 round of the promo is over</strong> and ONE hardworking and consistent
                                 trader will win a whopping sum of <strong>&#8358;<?php echo number_format(1000000); ?></strong>.</p>
 
                                 <p>Now, that's not all! There are CASH prizes for the 2nd to the 10th trader who
                                 appears on the rank scale by the end of the Promo.</p>
 
-                                <p>You can be one of the hardworking traders who will win varying cash
-                                awards only if you start trading more than ever before.
-                                <a href="https://instafxng.com/news1/id/562/u/he-did-it-one-month-you-can/" title="click for details">Click here</a> to learn more.</p>
+                                <p><a href="https://instafxng.com/loyalty.php" title="click for details">Click here</a> to learn more.</p>
                             </div>
 
                             <div class="col-sm-6">
