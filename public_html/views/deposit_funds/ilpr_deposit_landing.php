@@ -1,16 +1,18 @@
 <?php
 /** Display the top earners for this SEASON ***********/
-$query = "SELECT start_date, end_date FROM point_season WHERE is_active = '1' AND type = '2' LIMIT 1";
+// Select all the archived years
+$query = "SELECT start_date FROM point_ranking_log WHERE type = '2' GROUP BY start_date DESC";
 $result = $db_handle->runQuery($query);
-$current_point_season = $db_handle->fetchAssoc($result);
+$selected_years = $db_handle->fetchAssoc($result);
+$start_date = $selected_years[0]['start_date'];
+////$from_date_year = $current_point_season[0]['start_date'];
+////$to_date_year = $current_point_season[0]['end_date'];
 
-$from_date_year = $current_point_season[0]['start_date'];
-$to_date_year = $current_point_season[0]['end_date'];
-
-$query = "SELECT pr.year_rank, pr.year_earned_archive, pr.point_claimed, u.last_name, u.first_name AS full_name
-      FROM point_ranking AS pr
-      INNER JOIN user AS u ON pr.user_code = u.user_code
-      ORDER BY pr.year_rank DESC, full_name ASC LIMIT 10";
+$query = "SELECT prl.position, prl.point_earned, u.last_name, u.first_name AS full_name
+                                                              FROM point_ranking_log AS prl
+                                                              INNER JOIN user AS u ON prl.user_code = u.user_code
+                                                              WHERE prl.start_date = '$start_date' AND prl.type = '2'
+                                                              ORDER BY prl.point_earned DESC LIMIT 10";
 
 $result = $db_handle->runQuery($query);
 $selected_loyalty_year = $db_handle->fetchAssoc($result);
@@ -44,8 +46,8 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
             <tr>
                 <td><?php echo $count; ?></td>
                 <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
-                <td><?php echo number_format(($row['year_rank']), 2, ".", ","); ?></td>
-                <td><?php echo "$".number_format(($row['year_rank']/10), 2, ".", ",") ."  -  N".number_format((($row['year_rank']/10)* WITHDRATE), 2, ".", ","); ?></td>
+                <td><?php echo number_format(($row['point_earned']), 2, ".", ","); ?></td>
+                <td><?php echo "$".number_format(($row['point_earned']/10), 2, ".", ",") ."  -  N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ","); ?></td>
                 <td><?php if($count == 1){echo "N1,000,000";}elseif ($count == 2){echo "N500,000";}elseif ($count == 3){echo "N250,000";}elseif ($count == 4){echo "N150,000";}elseif ($count == 5){echo "N100,000";}elseif (in_array($count, range(6,10))){echo "N50,000";} ?></td>
             </tr>
             <?php $count++; } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
