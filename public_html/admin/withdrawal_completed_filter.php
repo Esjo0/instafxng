@@ -82,6 +82,8 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
         <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
         <script>
@@ -301,17 +303,17 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
                                     </table>
                                 </div>
                                 <?php if(isset($completed_withdrawal_requests_filter) && !empty($completed_withdrawal_requests_filter)) { ?>
+                                    <script>
+                                        window.exportExcel =     function exportExcel()
+                                        {
+                                            var filename = 'withdrawal_completed_filter'+Math.floor(Date.now() / 1000);
+                                            alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#outputTable",{headers:true})');
+                                        }
+                                    </script>
                                 <div class="tool-footer text-right">
                                     <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                 </div>
                                 <?php } ?>
-                                <script>
-                                    window.exportExcel =     function exportExcel()
-                                    {
-                                        var filename = 'withdrawal_completed_filter'+Math.floor(Date.now() / 1000);
-                                        alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#outputTable",{headers:true})');
-                                    }
-                                </script>
                             </div>
                         </div>
                         
