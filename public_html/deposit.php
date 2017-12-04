@@ -5,7 +5,8 @@ $thisPage = "Traders";
 $get_params = allowed_get_params(['x']);
 $additional_msg = $get_params['x'];
 
-if($additional_msg == 'msg') {
+if($additional_msg == 'msg')
+{
     $special_msg = <<<msg
         <p>Funding your InstaForex Account is Fast and Easy!</p>
 
@@ -23,6 +24,14 @@ if($additional_msg == 'msg') {
         <br />
 msg;
 }
+
+if($additional_msg == 'msg_new')
+{
+    $special_msg = "page";
+    $special_msg_url = "views/deposit_funds/ilpr_deposit_landing.php";
+}
+
+
 
 $page_requested = "";
 
