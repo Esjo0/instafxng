@@ -16,6 +16,7 @@ $query = "SELECT
           FROM admin, accounting_system_req_order 
           WHERE accounting_system_req_order.req_order_code = '$cash_out_code' 
           AND accounting_system_req_order.status = '2'
+          AND accounting_system_req_order.admin_code = admin.admin_code
            AND accounting_system_req_order.payment_status = '1'LIMIT 1";
 $result = $db_handle->runQuery($query);
 $num_rows = $db_handle->numOfRows($result);
