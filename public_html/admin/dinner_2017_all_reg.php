@@ -223,9 +223,9 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                                         <li role="presentation"><a role="menuitem" tabindex="-1" title="Single VIP Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_single'; ?>">Single VIP</a></li>
                                         <li role="presentation"><a role="menuitem" tabindex="-1" title="Plus One (Double) VIP Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_double'; ?>">Plus One VIP</a></li>
                                         <li role="presentation" class="divider"></li>
-                                        <li role="presentation"><a onclick="show_form('search_form')" role="menuitem" tabindex="-1" href="#">Search By Name or Email</a></li>
+                                        <li role="presentation"><a onclick="show_form('search_form')" role="menuitem" tabindex="-1" href="javascript:void(0);">Search By Name or Email</a></li>
                                         <li role="presentation" class="divider"></li>
-                                        <li role="presentation"><a onclick="show_form('state_form')" role="menuitem" tabindex="-1" href="#">Filter By State Of Residence</a></li>
+                                        <li role="presentation"><a onclick="show_form('state_form')" role="menuitem" tabindex="-1" href="javascript:void(0);">Filter By State Of Residence</a></li>
                                     </ul>
                                 </div>
                             </div>
