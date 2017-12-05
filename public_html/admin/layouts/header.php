@@ -9,15 +9,22 @@
                     <div id="top-nav" class="col-sm-12 col-md-3" style="margin-top: 8px;">
                         <div style="font-size: 1.4em;">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Notifications"><span id="counter" class="label label-pill label-danger count" style="border-radius:10px;"></span><i class="fa fa-bell fa-fw"></i></a>
-                            <ul id="content" class="dropdown-menu"></ul>
+                            <div class="panel panel-info dropdown-menu">
+                                <div class="panel-heading"><b>Notifications</b></div>
+                                <div id="content" style="max-height: 400px; overflow-y: scroll; " class="panel-body">
+                                </div>
+                            </div>
+
                             <a href="profile_setting.php" title="Profile Settings"><i class="fa fa-user fa-fw"></i></a>&nbsp;&nbsp;
                             <a href="logout.php" title="Log Out"><i class="fa fa-sign-out fa-fw"></i></a>
                         </div>
                     </div>
+
                 </div>
             </div>
             <hr>
         </header>
+
 
         <script>
             $(document).ready(function()
@@ -54,6 +61,7 @@
                     if(rows <= 0)
                     {
                         document.getElementById("counter").innerHTML = "";
+                        document.getElementById('content').innerHTML = "<center><img class='img-responsive' src='../images/notification_empty.jpg'></center>";
                     }
                 }
             });

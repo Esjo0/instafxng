@@ -14,21 +14,18 @@ function GetFirstThree($ip)
 }
 
 $ip_address = GetFirstThree($db_handle->sanitizePost(gethostbyname(trim(`hostname`))));
-//var_dump(getHostByName(getHostName()));
 $today = $db_handle->sanitizePost(date("d-m-Y"));
 $time = $db_handle->sanitizePost(date("h:i:s"));
 $day = date('l', strtotime($today));
 if ($day != 'Saturday' || !$day != 'Sunday')
 {
     $admin_code = $_SESSION['admin_unique_code'];
-    //$location = $db_handle->sanitizePost($_POST['location']);
     $query = "SELECT * FROM hr_attendance_log WHERE hr_attendance_log.admin_code = '$admin_code' AND hr_attendance_log.date = '$today' ";
     $result = $db_handle->numRows($query);
     if($result < 1)
     {
         $query = "SELECT * FROM hr_attendance_locations WHERE ip_address = '$ip_address' ";
         $result = $db_handle->numRows($query);
-
         if($result > 0)
         {
             $result = $db_handle->runQuery($query);
