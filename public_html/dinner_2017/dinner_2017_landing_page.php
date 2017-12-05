@@ -1,6 +1,8 @@
 <?php
     require_once("../init/initialize_general.php");
     require_once("../init/initialize_admin.php");
+    redirect_to("signin.php");
+    exit;
 ?>
 <?php
 $get_params = allowed_get_params(['x', 'id']);
