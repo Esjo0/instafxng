@@ -39,18 +39,17 @@ $thisPage = "Home";
                     <div  class="item super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
-                                <h2>The Race to One Million Naira is Over!</h2>
-                                <p><strong>The 2017 round of the promo is over</strong> and ONE hardworking and consistent
-                                trader will win a whopping sum of <strong>&#8358;<?php echo number_format(1000000); ?></strong>.</p>
-
-                                <p>Now, that's not all! There are CASH prizes for the 2nd to the 10th trader who
-                                appears on the rank scale by the end of the Promo.</p>
-
-                                <p><a href="https://instafxng.com/loyalty.php" title="click for details">Click here</a> to learn more.</p>
+                                <h2>The Amazing Profit Opportunity in Litecoin and Ripple</h2>
+                                <p>Did you know that some people who invested in bitcoin in it's early days made
+                                    billion of dollars from it? That's right!</p>
+                                <p>You probably wish you had bought 10 bitcoins with $10 then.</p>
+                                <p>You don't have to worry about it, Here's another opportunity to invest in
+                                    litecoin and ripple coins...
+                                    <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details">Read more here</a></p>
                             </div>
 
                             <div class="col-sm-6">
-                                <a href="https://instafxng.com/news1/id/562/u/he-did-it-one-month-you-can/" title="click for details"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details"><img src="images/litecoin.jpg" alt="" class="img-responsive" /></a>
                             </div>
                         </div>
                     </div>
