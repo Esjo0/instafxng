@@ -345,7 +345,7 @@ class clientOperation {
     public function confirm_bank_account($user_code) {
         global $db_handle;
 
-        $query = "SELECT status FROM user_bank WHERE user_code = '$user_code' LIMIT 1";
+        $query = "SELECT status FROM user_bank WHERE is_active = 1 AND user_code = '$user_code' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $bank_status = $fetched_data[0]['status'];
