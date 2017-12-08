@@ -11,7 +11,7 @@ $all_admin_member = $admin_object->get_all_admin_member();
 if(isset($_POST['new_project']))
 {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
-    $description = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description'])));
+    $description = nl2br($db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description']))));
     $deadline = $db_handle->sanitizePost(trim($_POST['deadline']));
     $allowed_admin = $_POST["allowed_admin"];
 

@@ -333,9 +333,12 @@ switch($page_requested) {
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <div class="col-sm-12 text-danger">
-                                <h4><strong>Fund Your Instaforex Account</strong></h4>
-                            </div>
+                            <?php if($additional_msg != 'msg_new'): ?>
+                                <div class="col-sm-12 text-danger">
+                                    <h4><strong>Fund Your Instaforex Account</strong></h4>
+                                </div>
+                            <?php endif; ?>
+
                         </div>
                         <div class="row">
                             <div class="col-sm-12">

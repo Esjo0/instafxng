@@ -18,11 +18,10 @@ $result = $db_handle->runQuery($query);
 $selected_loyalty_year = $db_handle->fetchAssoc($result);
 /*****************************************************/
 ?>
-<p>Our <b>Instafxng Point Based Loyalty Program and Reward</b> for year 2017 has ended and a new one kicked off immediately!</p>
 
-<p>Here are the Guaranteed Winners and their Cash Prizes.</p>
 
-<header><h5>Top 10 Rank in current loyalty year</h5></header>
+
+<header><h5>Here are the Guaranteed Winners and their Cash Prizes.</h5></header>
 <article>
     <div class="table-responsive mtl">
         <table class="table table-striped table-bordered table-hover">
@@ -30,8 +29,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
             <tr>
                 <th>Position</th>
                 <th>Name</th>
-                <th>Rank Value</th>
-                <th>Cash Value</th>
+                <th>Points Earned</th>
                 <th>Prize Awarded</th>
             </tr>
             </thead>
@@ -47,8 +45,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                 <td><?php echo $count; ?></td>
                 <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
                 <td><?php echo number_format(($row['point_earned']), 2, ".", ","); ?></td>
-                <td><?php echo "$".number_format(($row['point_earned']/10), 2, ".", ",") ."  -  N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ","); ?></td>
-                <td><?php if($count == 1){echo "N1,000,000";}elseif ($count == 2){echo "N500,000";}elseif ($count == 3){echo "N250,000";}elseif ($count == 4){echo "N150,000";}elseif ($count == 5){echo "N100,000";}elseif (in_array($count, range(6,10))){echo "N50,000";} ?></td>
+                <td><?php if($count == 1){echo "N1,000,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",") ;}elseif ($count == 2){echo "N500,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");}elseif ($count == 3){echo "N250,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");}elseif ($count == 4){echo "N150,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");}elseif ($count == 5){echo "N100,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");}elseif (in_array($count, range(6,10))){echo "N50,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");} ?></td>
             </tr>
             <?php $count++; } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
             </tbody>
@@ -59,9 +56,9 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
 
 <p>There is no luck with this Promo.</p>
 
-<p>Only hardworking traders can benefit from it.</p>
+<p>Only active traders can benefit from it.</p>
 
-<p>Are you One? It's only your appearance on the rank scale that can tell!</p>
+<p>Are you One? </p>
 
 <p>Don't wait till the promo is almost rounding off to start.</p>
 
