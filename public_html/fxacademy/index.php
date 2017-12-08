@@ -160,7 +160,7 @@ if($get_learning_position) {
                             <div class="col-md-12">
                                 <?php
                                 $confirm_client_paid = $education_object->confirm_course_payment($_SESSION['client_unique_code'], $first_lesson_course['course_id']);
-                                if($go_to_next_course && $confirm_client_paid == false){?>
+                                if($go_to_next_lesson && $confirm_client_paid == false){?>
                                 <!--Modal - confirmation boxes-->
                                 <div id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                     <div class="modal-dialog">
