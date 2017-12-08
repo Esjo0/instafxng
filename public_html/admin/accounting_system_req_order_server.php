@@ -22,7 +22,7 @@ if($result):
     $result = $db_handle->fetchAssoc($result);
     $result = $result[0]['location'];
     $message_main .= 'Order Location: '.$result."</p>";
-    $recipients = "narCT";
+    $recipients = "Vi1DW";
     $type = '4';
     $obj_push_notification->add_new_notification($message_main, $recipients, $type);
     ?>
