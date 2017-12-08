@@ -113,34 +113,27 @@
             XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
             XMLHttpRequestObject.onreadystatechange = function()
             {
-                if (XMLHttpRequestObject.readyState == 4 &&
-                    XMLHttpRequestObject.status == 200)
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
                 {
                     var returnedData = XMLHttpRequestObject.responseText;
                     var messageDiv = document.getElementById('messageDiv');
                     messageDiv.innerHTML = returnedData;
                 }
             };
-            //var location = document.getElementById('location').value;
             var radios = document.getElementsByName('office_location');
-
-            for (var i = 0, length = radios.length; i < length; i++) {
-                if (radios[i].checked) {
-                    // do whatever you want with the checked radio
-                    var location = radios[i].value
-                        //alert(radios[i].value);
-
-                    // only one radio can be logically checked, don't check the rest
+            for (var i = 0, length = radios.length; i < length; i++)
+            {
+                if (radios[i].checked)
+                {
+                    var location = radios[i].value;
                     break;
                 }
             }
-
             clear_buttons(document.getElementById("order_list").getElementsByTagName("button"));
             var req_order = document.getElementById('order_list').innerHTML;
             var req_order_total = document.getElementById('requisition_total').innerHTML;
             var req_order_code = RandomString(7);
             XMLHttpRequestObject.send("req_order=" + req_order + "&req_order_code=" + req_order_code + "&req_order_total=" + req_order_total + "&location=" + location);
-            //location.reload();
         }
 
         return false;

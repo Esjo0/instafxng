@@ -35,6 +35,7 @@ if($db_handle->numOfRows($result) > 0) {
 
     $selected_campaign_email = $system_object->get_campaign_email_by_id($campaign_id);
 
+    $mail_sender = trim($selected_campaign_email['sender']);
     $my_subject = trim($selected_campaign_email['subject']);
     $my_message = stripslashes($selected_campaign_email['content']);
 
@@ -98,7 +99,7 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[UC]', '', $my_message_new);
             }
 
-            $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name);
+            $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name, $mail_sender);
         }
 
         // if the current offset plus limit is equal or greater than total recipient
