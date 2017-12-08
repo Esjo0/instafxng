@@ -2222,5 +2222,97 @@ MAIL;
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
+    public function send_startup_bonus_training_mail($client_full_name, $client_email) {
+        global $system_object;
+
+        $subject = "[FREE TRAINING] You Need this to Make More Profit, [NAME]";
+        $body = <<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello $client_full_name,</p>
+
+            <p>Do you know that the Forex Market is the most liquid market in the world with
+            over 5 trillion dollars traded on a daily basis?</p>
+
+            <p>That's right! Forex trading is highly profitable; in fact, you can make more
+            money trading the Forex market and even gain financial freedom from it.</p>
+
+            <p>Some months back, you got the $500 Startup bonus from InstaForex. This way you
+            became a part of the money making team.</p>
+
+            <p>But is that the only thing you need to make consistent income from Forex trading?
+            Not at all!</p>
+
+            <p>To keep making sustainable profit from the Forex market, you need KNOWLEDGE!</p>
+            <p>You need to acquire adequate knowledge of the Forex market and understand how to
+            trade profitably in the Forex market.</p>
+
+            <p>Our Free Online Forex training is currently on at the moment and guess what? The
+            training is FREE (at least for now).</p>
+
+            <p>As soon as you're done with the online training, you will be able to place informed
+            trades and increase your chances of taking your slice of the 5.3 Billion Dollars from
+            the Forex market.</p>
+
+            <p style="text-align: center"><a href="http://bit.ly/2ffEeKl">Click Here to Start the Training Now.</a></p>
+
+            <p>[NAME], we are taking in just 50 people at this time, for this brand new Forex
+            Money Maker Course and I really want you to be one of them. The slots are filling
+            up very fast.</p>
+
+            <p>Please don't miss this. Go ahead and login to the training immediately to secure
+            your spot. Don’t worry you can take a break and continue later, as long as you have
+            started and your spot is secured.</p>
+
+            <p style="text-align: center"><a href="http://bit.ly/2ffEeKl">Click Here to Start the Training Now.</a></p>
+
+            <p>This will be your best shot at generating a healthy side income from forex trading.
+            Go ahead and make the move now.</p>
+
+
+            <br /><br />
+            <p>Best Regards,</p>
+            <p>Bunmi,</p>
+            <p>Clients Relations Manager,<br />
+                www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+        // Replace [NAME] with clients full name
+        $body = str_replace('[NAME]', $client_full_name, $body);
+        $subject = str_replace('[NAME]', $client_full_name, $subject);
+
+        return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
+    }
+
 
 }
