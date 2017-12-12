@@ -122,6 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
 
         if($ivs)
         {
+            $r_code = encrypt($reservation_code);
             $target_file = str_replace('../dinner_2017/', '', $target_file);
             $from_name ="";
             $message = <<<MAIL
@@ -135,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
 			<p>The ticket is your pass to the dinner.</p>
 			<p>Kindly download to your smartphone, tablet device or print it out.</p>
 			<p>We look foward to recieving you on Sunday 17 December 2017 by 5pm.</p>
-			<p><a href='https://instafxng.com/dinner_2017/' >Click here to find more details about this event.<a></p>
+			<p><a href='https://instafxng.com/dinner_2017/index.php?id=$r_code' >Click here to find more details about this event.</a></p>
             <p>From me to you…. It’s see you soon!</p>
             <br /><br />
             <p>Best Regards,</p>

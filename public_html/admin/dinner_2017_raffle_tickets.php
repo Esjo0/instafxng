@@ -10,7 +10,7 @@ $page = $get_params['p'];
 $state = $get_params['x'];
 $key_word = $get_params['q'];
 
-$q = "SELECT * FROM dinner_2017 WHERE attended = '1' AND invite = '1' AND ticket_type = '0' OR ticket_type = '1' ORDER BY reservation_id DESC ";
+$q = "SELECT * FROM dinner_2017 WHERE attended = '1' AND invite = '1' AND (ticket_type = '0' OR ticket_type = '1') ORDER BY reservation_id DESC ";
 $q_entries = $db_handle->fetchAssoc($db_handle->runQuery($q));
 $total_entries = $db_handle->numRows($q);
 
