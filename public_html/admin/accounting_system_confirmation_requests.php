@@ -194,7 +194,6 @@ $refunds = $db_handle->fetchAssoc($result);
 
                             <?php if(isset($projects) && !empty($projects))
                             {
-                                //var_dump($projects);
                                 foreach ($projects as $row)
                                 { ?>
                                     <tr>
@@ -214,7 +213,7 @@ $refunds = $db_handle->fetchAssoc($result);
                                                             </div>
                                                             <div class="modal-body">
                                                                 <p><b>NAME:</b> <?php echo $row['author_name']; ?></p>
-                                                                <p><b>DATE:</b> <?php echo $row['created']; ?></p>
+                                                                <p><b>DATE:</b> <?php echo datetime_to_text($row['created']); ?></p>
 
                                                                 <?php echo $row['req_order'];?>
                                                                 <b>Your Remark:</b>

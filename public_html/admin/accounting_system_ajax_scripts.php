@@ -50,7 +50,7 @@
         var cell4 = row.insertCell(3);
         cell1.innerHTML = item_name;
         cell2.innerHTML = no_of_items;
-        cell3.innerHTML = unit_cost;
+        cell3.innerHTML = '₦'+unit_cost+' each';
         var del = '"';
         cell4.innerHTML = '₦'+item_total+"<p class='pull-right'><button onclick='delete_row("+del+item_code+del+")' style='width: 30px; height: 30px; text-align: center; padding: 6px 0; font-size: 12px; line-height: 1.428571429; border-radius: 15px;' class='btn btn-circle btn-sm btn-danger'><i class='glyphicon glyphicon-remove'></i></button></p>";
         var sum = parseInt(order_total) + parseInt(item_total);
