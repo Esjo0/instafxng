@@ -192,6 +192,7 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                 <div class="row">
                     <div class="col-sm-12">
                         <?php require_once 'layouts/feedback_message.php'; ?>
+                        <p class="pull-right"><a href="dinner_2017_raffle_tickets.php" class="btn btn-default" title="Guests In Attendance">Guests In Attendance    <i class="fa fa-arrow-circle-right"></i></a></p>
                         <p>Details of 2017 Dinner Reservations.</p>
                         <p>Reservation Insight: <br/><br/>
                             <strong>Pending:</strong> <?php echo $interested_notyet; ?><br />

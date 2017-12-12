@@ -106,6 +106,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
         $dime_y = 2;
         imagecopy($image, $watermark, $dime_x, $dime_y, 0, 0, $water_width, $water_height);
         $target_dir = "../dinner_2017/ivs/";
+
+        if (!file_exists($target_dir))
+        {
+            mkdir($target_dir, 0777);
+        }
+
         $newfilename = $reservation_code. '.jpg';
         $target_file = $target_dir.$newfilename;
         $ivs = imagejpeg($image, $target_file);
@@ -116,6 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
 
         if($ivs)
         {
+            $r_code = encrypt($reservation_code);
             $target_file = str_replace('../dinner_2017/', '', $target_file);
             $from_name ="";
             $message = <<<MAIL
@@ -129,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
 			<p>The ticket is your pass to the dinner.</p>
 			<p>Kindly download to your smartphone, tablet device or print it out.</p>
 			<p>We look foward to recieving you on Sunday 17 December 2017 by 5pm.</p>
-			<p><a href='https://instafxng.com/dinner_2017/' >Click here to find more details about this event.<a></p>
+			<p><a href='https://instafxng.com/dinner_2017/index.php?id=$r_code' >Click here to find more details about this event.</a></p>
             <p>From me to you…. It’s see you soon!</p>
             <br /><br />
             <p>Best Regards,</p>
@@ -166,6 +173,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
 MAIL;
             $system_object->send_email($subject, $message, $email, $full_name, $from_name);
             $update = $db_handle->runQuery("UPDATE dinner_2017 SET invite = '1', iv_url = '$target_file' WHERE reservation_code = '$reservation_code'");
+            $message_success = "You have successfully sent an invite.";
+        }
+        else
+        {
             $message_success = "You have successfully sent an invite.";
         }
 
@@ -239,9 +250,6 @@ if(empty($attendee_detail))
 
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                     <input name="reservation_code" type="hidden" value="<?php echo $attendee_detail['reservation_code']; ?>">
-                                    <!--<div class="form-group">
-                                        <img class="img-responsive" src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=<?php /*echo $attendee_detail['reservation_code']; */?>&choe=UTF-8" title="Reservation Barcode" />
-                                    </div>-->
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="name">Full Name:</label>
                                         <div class="col-sm-9 col-lg-5">
@@ -312,6 +320,15 @@ if(empty($attendee_detail))
                                             <input type="text" class="form-control" id="invite" name="invite" value="<?php echo dinner_2017_invite_status($attendee_detail['invite']); ?>" readonly>
                                         </div>
                                     </div>
+                                    <?php if($attendee_detail['invite'] == '1'): ?>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="invite">Ticket No:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                        <input type="text" class="form-control" id="ticket_no" name="ticket_no" value="<?php echo $attendee_detail['reservation_code']; ?>" readonly>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
+
                                     <?php if($attendee_detail['invite'] == '0'): ?>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="invite">Send Invite:</label>
