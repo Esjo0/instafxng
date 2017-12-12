@@ -11,7 +11,7 @@ $all_admin_member = $admin_object->get_all_admin_member();
 if(isset($_POST['new_project']))
 {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
-    $description = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description'])));
+    $description = nl2br($db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description']))));
     $deadline = $db_handle->sanitizePost(trim($_POST['deadline']));
     $allowed_admin = $_POST["allowed_admin"];
 
@@ -251,18 +251,18 @@ $projects = $db_handle->fetchAssoc($result);
                                 </div>
                             </div>
                             <div class="col-sm-12">
-                                <table class="table table-responsive  table-striped table-bordered table-hover">
+                                <table class="table table-responsive    table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Project Title</th>
-                                            <th>Project Description</th>
-                                            <th>Project Created</th>
-                                            <th>Project Deadline</th>
-                                            <th>Project Status</th>
-                                            <th>Project Executors</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Created</th>
+                                            <th>Deadline</th>
+                                            <th>Status</th>
+                                            <th>Executors</th>
                                             <th>Announcements</th>
-                                            <th></th>
-                                            <th></th>
+                                            <th> </th>
+                                            <th> </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -327,8 +327,8 @@ $projects = $db_handle->fetchAssoc($result);
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td><?php echo $row['created']; ?></td>
-                                                <td><?php echo $row['deadline']; ?></td>
+                                                <td><?php echo datetime_to_text($row['created']); ?></td>
+                                                <td><?php echo datetime_to_text2($row['deadline']); ?></td>
                                                 <td><?php echo $row['status']; ?></td>
 
                                                     <?php

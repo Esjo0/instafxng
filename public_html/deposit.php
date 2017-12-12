@@ -5,7 +5,8 @@ $thisPage = "Traders";
 $get_params = allowed_get_params(['x']);
 $additional_msg = $get_params['x'];
 
-if($additional_msg == 'msg') {
+if($additional_msg == 'msg')
+{
     $special_msg = <<<msg
         <p>Funding your InstaForex Account is Fast and Easy!</p>
 
@@ -23,6 +24,14 @@ if($additional_msg == 'msg') {
         <br />
 msg;
 }
+
+if($additional_msg == 'msg_new')
+{
+    $special_msg = "page";
+    $special_msg_url = "views/deposit_funds/ilpr_deposit_landing.php";
+}
+
+
 
 $page_requested = "";
 
@@ -162,7 +171,8 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
         // confirm total funding orders today, if > 2000, disallow this order
         if($client_operation->deposit_limit_exceeded($client_user_code, $ifx_dollar_amount)) {
             $message_error = "The requested amount will make your total funding order today exceed the allowed daily limit of $" . LEVEL_ONE_MAX_PER_DEPOSIT;
-            $message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.";
+            $message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.<br />";
+            $message_error .= "<br />Your address, valid ID, Passport Photograph and your Signature is required for verification.";
         } else {
             $max_per_deposit = LEVEL_ONE_MAX_PER_DEPOSIT;
             if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit) {
@@ -323,9 +333,12 @@ switch($page_requested) {
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <div class="col-sm-12 text-danger">
-                                <h4><strong>Fund Your Instaforex Account</strong></h4>
-                            </div>
+                            <?php if($additional_msg != 'msg_new'): ?>
+                                <div class="col-sm-12 text-danger">
+                                    <h4><strong>Fund Your Instaforex Account</strong></h4>
+                                </div>
+                            <?php endif; ?>
+
                         </div>
                         <div class="row">
                             <div class="col-sm-12">

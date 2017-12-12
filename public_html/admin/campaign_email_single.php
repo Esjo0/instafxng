@@ -3,7 +3,7 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-
+extract($_GET);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
     
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $my_content_new = str_replace('[NAME]', $name, $content);
         $my_subject_new = str_replace('[NAME]', $name, $subject);
 
-        $sent_email = $system_object->send_email($my_subject_new, $my_content_new, $email, $name);
+        $sent_email = $system_object->send_email($my_subject_new, $my_content_new, $email, $name, $sender);
 
         if($sent_email) {
             $message_success = "You have successfully sent the email.";
@@ -98,6 +98,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="sender">Sender:</label>
+                                        <div class="col-sm-10">
+                                            <input list="sender_names" type="text" name="sender" class="form-control" id="sender" value="<?php if(isset($selected_campaign_email['sender'])) { echo $selected_campaign_email['sender']; } ?>" placeholder="Sender" required/>
+                                            <datalist id="sender_names">
+                                                <option value="Bunmi from InstaFxNg">
+                                                <option value="Mercy from InstaFxNg">
+                                                <option value="Demola from InstaFxNg">
+                                                <option value="InstaFxNg">
+                                            </datalist>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="subject">Subject:</label>
                                         <div class="col-sm-10">

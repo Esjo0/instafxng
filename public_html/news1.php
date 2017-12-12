@@ -3,7 +3,6 @@ require_once 'init/initialize_general.php';
 $thisPage = "About";
 
 $news_id = $_GET['id'];
-//$news_id = 544;
 
 if (isset($_POST['post_comment']))
 {
@@ -84,7 +83,7 @@ if(strlen($news_id) > 4) {
         $db_handle->runQuery("UPDATE article SET view_count = view_count + 1 WHERE article_id = {$article_id} LIMIT 1");
 
         // Select the latest comments
-        $result = $db_handle->runQuery("SELECT * FROM article_comments, article_visitors  WHERE article_comments.visitor_id = article_visitors.visitor_id AND article_comments.article_id = $article_id AND article_comments.status = 'ON' ORDER BY comment_id DESC LIMIT 20");
+        $result = $db_handle->runQuery("SELECT * FROM article_comments, article_visitors  WHERE article_comments.visitor_id = article_visitors.visitor_id AND article_comments.article_id = $article_id AND article_comments.status = 'ON' ORDER BY article_comments.created ASC LIMIT 20");
         $latest_comments = $db_handle->fetchAssoc($result);
         
         // Select the latest news
@@ -113,104 +112,79 @@ if(strlen($news_id) > 4) {
                 display: inline;
             }
         </style>
-        <style>
-
-            body{
-                background:#eee;
-            }
-
-            hr {
-                margin-top: 20px;
-                margin-bottom: 20px;
-                border: 0;
-                border-top: 1px solid #FFFFFF;
-            }
-            a {
-                text-decoration: none;
-            }
-            .blog-comment::before,
-            .blog-comment::after,
-            .blog-comment-form::before,
-            .blog-comment-form::after{
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            .blog-comment{
-                /*padding-left: 15%;
-                padding-right: 15%;*/
-            }
-
-            .blog-comment ul{
-                list-style-type: none;
-                padding: 0;
-            }
-
-            .blog-comment img{
-                opacity: 1;
-                filter: Alpha(opacity=100);
-                -webkit-border-radius: 4px;
-                -moz-border-radius: 4px;
-                -o-border-radius: 4px;
-                border-radius: 4px;
-            }
-
-            .blog-comment img.avatar {
-                position: relative;
-                float: left;
-                margin-left: 0;
-                margin-top: 0;
-                width: 65px;
-                height: 65px;
-            }
-
-            .blog-comment .post-comments{
-                border: 1px solid #eee;
-                margin-bottom: 20px;
-                margin-left: 85px;
-                margin-right: 0px;
-                padding: 10px 20px;
-                position: relative;
-                -webkit-border-radius: 4px;
-                -moz-border-radius: 4px;
-                -o-border-radius: 4px;
-                border-radius: 4px;
-                background: #fff;
-                color: #6b6e80;
-                position: relative;
-            }
-
-            .blog-comment .meta {
-                font-size: 15px;
-                color: #000;
-                padding-bottom: 8px;
-                margin-bottom: 10px !important;
-                border-bottom: 1px solid #eee;
-            }
-
-            .blog-comment ul.comments ul{
-                list-style-type: none;
-                padding: 0;
-                margin-left: 85px;
-            }
-
-            .blog-comment-form{
-                padding-left: 15%;
-                padding-right: 15%;
-                padding-top: 40px;
-            }
-
-            .blog-comment h3,
-            .blog-comment-form h3{
-                margin-bottom: 40px;
-                font-size: 26px;
-                line-height: 30px;
-                font-weight: 800;
-            }
-        </style>
         <link href='//fonts.googleapis.com/css?family=Average' rel='stylesheet'>
         <meta property="fb:app_id" content="652051961615498" />
+        <style>
+            .media .media-object { max-width: 120px; }
+            .media-body { position: relative; }
+            .media-date {
+                position: absolute;
+                right: 25px;
+                top: 25px;
+            }
+            .media-date li { padding: 0; }
+            .media-date li:first-child:before { content: ''; }
+            .media-date li:before {
+                content: '.';
+                margin-left: -2px;
+                margin-right: 2px;
+            }
+            .media-comment { margin-bottom: 20px; }
+            .media-replied { margin: 0 0 20px 50px; }
+            .media-replied .media-heading { padding-left: 6px; }
+
+            .btn-circle {
+                font-weight: bold;
+                font-size: 12px;
+                padding: 6px 15px;
+                border-radius: 20px;
+            }
+            .btn-circle span { padding-right: 6px; }
+            .embed-responsive { margin-bottom: 20px; }
+            .tab-content {
+                padding: 50px 15px;
+                border: 1px solid #ddd;
+                border-top: 0;
+                border-bottom-right-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+            .custom-input-file {
+                overflow: hidden;
+                position: relative;
+                width: 120px;
+                height: 120px;
+                background: #eee url('//s3.amazonaws.com/uifaces/faces/twitter/walterstephanie/128.jpg');
+                background-size: 120px;
+                border-radius: 120px;
+            }
+            input[type="file"]{
+                z-index: 999;
+                line-height: 0;
+                font-size: 0;
+                position: absolute;
+                opacity: 0;
+                filter: alpha(opacity = 0);-ms-filter: "alpha(opacity=0)";
+                margin: 0;
+                padding:0;
+                left:0;
+            }
+            .uploadPhoto {
+                position: absolute;
+                top: 25%;
+                left: 25%;
+                display: none;
+                width: 50%;
+                height: 50%;
+                color: #fff;
+                text-align: center;
+                line-height: 60px;
+                text-transform: uppercase;
+                background-color: rgba(0,0,0,.3);
+                border-radius: 50px;
+                cursor: pointer;
+            }
+            .custom-input-file:hover .uploadPhoto { display: block; }
+        </style>
     </head>
     <body>
         
@@ -299,104 +273,152 @@ if(strlen($news_id) > 4) {
 
                                 <?php if(isset($latest_comments)) { ?>
                                 <h5>Previous Comments</h5>
-                                <div class="container bootstrap snippet">
-                                    <div class="row">
-                                        <div class="col-md-9">
-                                            <div class="blog-comment">
-
-                                    <?php foreach($latest_comments as $row)
-                                    {?>
-                                        <ul style="font-family: 'Average';font-size: 22px;" class="comments">
-                                            <li class="clearfix">
-                                                <div class="post-comments">
-                                                    <p class="meta"><span style="color: #23527c;" id="trans_remark_date"><i class="glyphicon glyphicon-time"></i><?php echo datetime_to_text($row['created'])?></span>
-                                                        <br/>
-                                                        <span id="trans_remark_author"><b><?php echo strtoupper($row['full_name']);?></b></span>
-
-                                                        <?php if($row['reply_to'] > 0):
-                                                            $query1 = $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
-                                                            $query2 = $db_handle->runQuery("SELECT @a_id:= article_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
-                                                            $reply_details = $db_handle->runQuery("SELECT full_name, title FROM article_visitors, article WHERE article_visitors.visitor_id = @v_id AND article.article_id = @a_id;");
-                                                            $reply_details = $db_handle->fetchAssoc($reply_details);
-                                                            foreach ($reply_details as $row1)
-                                                            {?>
-                                                                replying <span id="trans_remark_author"><b><?php echo strtoupper($row1['full_name']);?></b></span>
-                                                            <?php }
-                                                        endif; ?>
-                                                        <i class="pull-right">
-                                                            <a  data-target="#reply-comment<?php echo $row['comment_id'];?>" data-toggle="modal" href="#">
-                                                                <small>REPLY</small>
+                                    <br/>
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="comment-tabs">
+                                                    <ul class="media-list">
+                                                        <?php foreach($latest_comments as $row)
+                                                        {?>
+                                                        <li class="media" style="font-size:small;">
+                                                            <a class="pull-left" href="#">
+                                                                <?php if($row['full_name'] == 'Instaforex NG'):?>
+                                                                <img height="50px" width="50px" class="media-object img-circle" src="images/Insta_logo.jpg" alt="profile">
+                                                                <?php endif; ?>
                                                             </a>
-                                                        </i>
-                                                    </p>
-                                                    <span id="trans_remark"><?php echo $row['comment'];?></span>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <!--Modal - confirmation boxes-->
-                                        <div id="reply-comment<?php echo $row['comment_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                                class="close">&times;</button>
-                                                        <h4 class="modal-title">Reply Comment</h4></div>
-                                                    <div class="modal-body">
-                                                        <p>Reply <?php echo $row['full_name'] ?>'s comment on <?php echo $title?>.</p>
+                                                            <div class="media-body">
+                                                                <div class="well">
+                                                                    <h5>
+                                                                        <?php echo strtoupper($row['full_name']);?>
+                                                                    <?php if($row['reply_to'] > 0):
+                                                                        $query1 = $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
+                                                                        $query2 = $db_handle->runQuery("SELECT @a_id:= article_id FROM article_comments WHERE article_comments.comment_id = '" . $row['reply_to'] . "';");
+                                                                        $reply_details = $db_handle->runQuery("SELECT full_name, title FROM article_visitors, article WHERE article_visitors.visitor_id = @v_id AND article.article_id = @a_id;");
+                                                                        $reply_details = $db_handle->fetchAssoc($reply_details);
+                                                                        foreach ($reply_details as $row1)
+                                                                        {?>
+                                                                            <span class="glyphicon glyphicon-share-alt">  </span><?php echo strtoupper($row1['full_name']);?>
+                                                                        <?php }
+                                                                    endif; ?>
+                                                                    </h5>
+                                                                    <ul class="media-date text-uppercase reviews list-inline">
+                                                                        <small class="text-muted"><?php echo date_to_text($row['created']); ?></small>
+                                                                    </ul>
+                                                                    <p class="media-comment">
+                                                                        <?php echo $row['comment'];?>
+                                                                    </p>
+                                                                    <a data-target="#reply-comment<?php echo $row['comment_id'];?>" data-toggle="modal" class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                                                                </div>
+                                                            </div>
+                                                            <!--<div class="collapse" id="replyOne">
+                                                                <ul class="media-list">
+                                                                    <li class="media media-replied">
+                                                                        <a class="pull-left" href="#">
+                                                                            <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/ManikRathee/128.jpg" alt="profile">
+                                                                        </a>
+                                                                        <div class="media-body">
+                                                                            <div class="well well-lg">
+                                                                                <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> The Hipster</h4>
+                                                                                <ul class="media-date text-uppercase reviews list-inline">
+                                                                                    <li class="dd">22</li>
+                                                                                    <li class="mm">09</li>
+                                                                                    <li class="aaaa">2014</li>
+                                                                                </ul>
+                                                                                <p class="media-comment">
+                                                                                    Nice job Maria.
+                                                                                </p>
+                                                                                <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="media media-replied" id="replied">
+                                                                        <a class="pull-left" href="#">
+                                                                            <img class="media-object img-circle" src="https://pbs.twimg.com/profile_images/442656111636668417/Q_9oP8iZ.jpeg" alt="profile">
+                                                                        </a>
+                                                                        <div class="media-body">
+                                                                            <div class="well well-lg">
+                                                                                <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> Mary</h4></h4>
+                                                                                <ul class="media-date text-uppercase reviews list-inline">
+                                                                                    <li class="dd">22</li>
+                                                                                    <li class="mm">09</li>
+                                                                                    <li class="aaaa">2014</li>
+                                                                                </ul>
+                                                                                <p class="media-comment">
+                                                                                    Thank you Guys!
+                                                                                </p>
+                                                                                <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>-->
+                                                        </li>
+                                                            <!--Modal - confirmation boxes-->
+                                                            <div id="reply-comment<?php echo $row['comment_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                                    class="close">&times;</button>
+                                                                            <h4 class="modal-title">Reply Comment</h4></div>
+                                                                        <div class="modal-body">
+                                                                            <p>Reply <?php echo $row['full_name'] ?>'s comment on <?php echo $title?>.</p>
 
-                                                        <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-sm-3" for="name">Full Name:</label>
-                                                                <div class="col-sm-9">
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                                                        <input name="name" type="text" id="name" value="" class="form-control" required/>
+                                                                            <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-sm-3" for="name">Full Name:</label>
+                                                                                    <div class="col-sm-9">
+                                                                                        <div class="input-group">
+                                                                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                                                                            <input name="name" type="text" id="name" value="" class="form-control" required/>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-sm-3" for="email">Email Address:</label>
+                                                                                    <div class="col-sm-9">
+                                                                                        <div class="input-group">
+                                                                                            <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+                                                                                            <input name="email" type="text" id="email" value="" class="form-control" required/>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-sm-3" for="comment">Comment:</label>
+                                                                                    <div class="col-sm-9">
+                                                                                        <div class="input-group">
+                                                                                            <span class="input-group-addon"><i class="fa fa-comment-o fa-fw"></i></span>
+                                                                                            <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <div class="col-sm-offset-3 col-sm-9">
+                                                                                        <input type="hidden" name="article_id" value="<?php echo $news_id;?>"/>
+                                                                                        <input type="hidden" name="comment_id" value="<?php echo $row['comment_id'];?>"/>
+                                                                                        <input type="submit" name="reply_comment" class="btn btn-success" value="Submit Reply"/>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-sm-3" for="email">Email Address:</label>
-                                                                <div class="col-sm-9">
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
-                                                                        <input name="email" type="text" id="email" value="" class="form-control" required/>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-sm-3" for="comment">Comment:</label>
-                                                                <div class="col-sm-9">
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon"><i class="fa fa-comment-o fa-fw"></i></span>
-                                                                        <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="col-sm-offset-3 col-sm-9">
-                                                                    <input type="hidden" name="article_id" value="<?php echo $news_id;?>"/>
-                                                                    <input type="hidden" name="comment_id" value="<?php echo $row['comment_id'];?>"/>
-                                                                    <input type="submit" name="reply_comment" class="btn btn-success" value="Submit Reply"/>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
-
+                                                        <?php } ?>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+
                                 <?php } ?>
 
                                 <hr class=""/>
-
                                 <?php if(isset($latest_news)) { ?>
                                 <h5>Latest News</h5>
                                 <ul class="fa-ul">

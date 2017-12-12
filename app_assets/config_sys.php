@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Make all settings constants - available all through the system
  */
@@ -39,6 +40,9 @@ $client_group_DEFAULT = array(
     "24" => "Career Application Submitted",
     "25" => "Top Traders",
     "26" => "Prospect - Pencil Comedy Event",
-    "27" => "Prospect - 500 USD No-Deposit"
-
+    "27" => "Prospect - 500 USD No-Deposit",
+    "28" => "Online Trainee - Not Started",
+    "29" => "Point Winners (Dec '16 - Oct '17)",
+    "30" => "Commission Clients (Dec '16 - Oct '17)",
+    "31" => "Online Training - Completed Course 1"
 );

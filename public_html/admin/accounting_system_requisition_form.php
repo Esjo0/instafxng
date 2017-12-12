@@ -8,15 +8,10 @@ if (!$session_admin->is_logged_in())
 $query = "SELECT * FROM accounting_system_office_locations ";
 $result = $db_handle->runQuery($query);
 $locations = $db_handle->fetchAssoc($result);
-
+$author_code = $_SESSION['admin_unique_code'];
 if(isset($_POST['send_order']))
 {
-    //var_dump($_POST);
     $office_location = $db_handle->sanitizePost($_POST['office_location']);
-    $author_code = $_SESSION['admin_unique_code'];
-
-
-
 
     $req_order = $db_handle->sanitizePost($_POST['req_order']);
     $req_order_code = $db_handle->sanitizePost($_POST['req_order_code']);
@@ -55,7 +50,8 @@ $query = "SELECT
           accounting_system_req_order.comments AS comments,
           CONCAT(admin.first_name, SPACE(1), admin.last_name) AS author_name
           FROM admin, accounting_system_req_order 
-          WHERE accounting_system_req_order.author_code = admin.admin_code 
+          WHERE accounting_system_req_order.author_code = '$author_code'
+          AND admin.admin_code = '$author_code'
           ORDER BY accounting_system_req_order.created DESC ";
 
 $numrows = $db_handle->numRows($query);

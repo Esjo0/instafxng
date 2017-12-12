@@ -99,13 +99,18 @@ if(isset($_POST['search']))
                                                                 document.getElementById('reservation_code').value = content;
                                                                 document.getElementById('search').click();
                                                             });
-                                                            Instascan.Camera.getCameras().then(function (cameras) {
-                                                                if (cameras.length > 0) {
+                                                            Instascan.Camera.getCameras().then(function (cameras)
+                                                            {
+                                                                if (cameras.length > 0)
+                                                                {
                                                                     scanner.start(cameras[0]);
-                                                                } else {
+                                                                }
+                                                                else
+                                                                    {
                                                                     console.error('No cameras found.');
                                                                 }
-                                                            }).catch(function (e) {
+                                                            }).catch(function (e)
+                                                            {
                                                                 console.error(e);
                                                             });
                                                         </script>

@@ -108,7 +108,7 @@ $education_students = $db_handle->fetchAssoc($result);
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-
+                                <p class="text-right"><a href="edu_student2.php" target="_blank"  class="btn btn-default" title="Completed Course 1"><i class="fa fa-arrow-circle-right"></i> Completed Course 1</a></p>
                                 <p>List of students that have signed in to the FX Academy portal</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">

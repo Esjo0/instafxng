@@ -31,9 +31,9 @@ if (isset($_POST['post_comment']))
     $db_handle->runQuery("INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')");
     if($db_handle->affectedRows() > 0)
     {
-        $message_main = '<p style="font-size: small">Bulletin Title: '.$selected_bulletin['title']."</p>";
-        $message_main .= '<span style="font-size: small" id="trans_remark_author">'.$admin_object->get_admin_name_by_code($admin_code) ."</span>";
-        $message_main .= '<span style="font-size: small" id="trans_remark">'.$comment."</span>";
+        $message_main = '<p style="font-size: small">Bulletin Title: '.$selected_bulletin['title']."<br/>";
+        $message_main .= 'Author: '.$admin_object->get_admin_name_by_code($admin_code) ."<br/>";
+        $message_main .= 'Message: '.$comment."</p>";
         $recipients = implode(",", $allowed_admin);
         $type = '2';
         $obj_push_notification->add_new_notification($message_main, $recipients, $type);
@@ -61,7 +61,8 @@ if (isset($_POST['reply_comment']))
 
 
 // Select the latest comments
-$result = $db_handle->runQuery("SELECT * FROM admin_bulletin_comments, admin  WHERE admin_bulletin_comments.author_code = admin.admin_code AND admin_bulletin_comments.bulletin_id = '$bulletin_id' ORDER BY comment_id DESC");
+$query = "SELECT admin_code, admin_bulletin_comments.created, admin_bulletin_comments.comment FROM admin_bulletin_comments, admin  WHERE admin_bulletin_comments.author_code = admin.admin_code AND admin_bulletin_comments.bulletin_id = '$bulletin_id' ORDER BY comment_id DESC";
+$result = $db_handle->runQuery($query);
 $latest_comments = $db_handle->fetchAssoc($result);
 ?>
 <!DOCTYPE html>
@@ -95,7 +96,7 @@ $latest_comments = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <p><i class="fa fa-arrow-circle-left"></i> <a href="bulletin_centre.php" title="Bulletin Centre">Go Back To Bulletin Centre</a></p>
-                                <p><em>Posted on <?php echo datetime_to_text($selected_bulletin['created']); ?></em></p>
+                                <p><em>Posted on <?php echo datetime_to_text2($selected_bulletin['created']); ?></em></p>
                                 <p><strong>Author: </strong><?php echo $admin_object->get_admin_name_by_code($selected_bulletin['admin_code']); ?></p>
                                 <hr/>
                             </div>
@@ -140,7 +141,7 @@ $latest_comments = $db_handle->fetchAssoc($result);
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <div class="transaction-remarks">
-                                                            <span id="trans_remark_author"><?php echo $row['first_name']; ?> <?php echo $row['last_name']; ?></span>
+                                                            <span id="trans_remark_author"><?php echo $admin_object->get_admin_name_by_code($row['admin_code']); ?></span>
                                                             <span id="trans_remark"><?php echo $row['comment'];?></span>
                                                             <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
                                                         </div>

@@ -1,8 +1,4 @@
 <?php
-ini_set("xdebug.var_display_max_children", -1);
-ini_set("xdebug.var_display_max_data", -1);
-ini_set("xdebug.var_display_max_depth", -1);
-
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
@@ -17,7 +13,26 @@ if (isset($_POST['report']))
     }
     extract($_POST);
 
-    $query = "SELECT 
+    if(isset($location) && !empty($location))
+    {
+        $query = "SELECT 
+          accounting_system_req_order.req_order_total AS req_order_total,
+          accounting_system_req_order.req_order_code AS req_order_code, 
+          accounting_system_req_order.req_order AS req_order, 
+          accounting_system_req_order.created AS created, 
+          accounting_system_req_order.status AS status,
+          accounting_system_office_locations.location AS location,
+          CONCAT(admin.first_name, SPACE(1), admin.last_name) AS author_name
+          FROM admin, accounting_system_req_order, accounting_system_office_locations
+          WHERE accounting_system_req_order.author_code = admin.admin_code
+          AND accounting_system_req_order.location = accounting_system_office_locations.location_id
+          AND STR_TO_DATE(accounting_system_req_order.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
+          AND accounting_system_office_locations.location_id = '$location'
+          ORDER BY accounting_system_req_order.created DESC ";
+    }
+    else
+    {
+        $query = "SELECT 
           accounting_system_req_order.req_order_total AS req_order_total,
           accounting_system_req_order.req_order_code AS req_order_code, 
           accounting_system_req_order.req_order AS req_order, 
@@ -30,8 +45,7 @@ if (isset($_POST['report']))
           AND accounting_system_req_order.location = accounting_system_office_locations.location_id
           AND STR_TO_DATE(accounting_system_req_order.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
           ORDER BY accounting_system_req_order.created DESC ";
-
-    //var_dump($query);
+    }
 
     $numrows = $db_handle->numRows($query);
 
@@ -138,6 +152,27 @@ if (isset($_POST['report']))
                                             <div class="input-group date">
                                                 <input name="to_date" type="text" class="form-control" id="datetimepicker2" required>
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="location">Locations:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <div class="input-group date">
+                                                <select name="location" class="form-control" id="location">
+                                                    <option value="" selected>All Offices</option>
+                                                    <?php
+                                                    $query = "SELECT * FROM accounting_system_office_locations ";
+                                                    $result = $db_handle->runQuery($query);
+                                                    $result = $db_handle->fetchAssoc($result);
+                                                    foreach ($result as $row)
+                                                    {
+                                                        extract($row)
+                                                    ?>
+                                                        <option value="<?php echo $location_id;?>"><?php echo $location;?></option>
+                                                    <?php } ?>
+                                                </select>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
                                             </div>
                                         </div>
                                     </div>

@@ -5,8 +5,10 @@ if (!$session_admin->is_logged_in())
     redirect_to("login.php");
 }
 
-$get_params = allowed_get_params(['p']);
+$get_params = allowed_get_params(['p', 'x', 'q']);
 $page = $get_params['p'];
+$state = $get_params['x'];
+$key_word = $get_params['q'];
 
 $result = $db_handle->numRows("SELECT * FROM dinner_2017 WHERE confirmation = '0'");
 $interested_notyet = $result;
@@ -41,65 +43,82 @@ $total_vip_single_clients = $result;
 $result = $db_handle->numRows("SELECT * FROM dinner_2017 WHERE ticket_type = '3'");
 $total_vip_double_clients = $result;
 
-if(isset($page) && !empty($page)) {
-    switch($page) {
+if(isset($page) && !empty($page))
+{
+    switch($page)
+    {
         case 'all':
-            $query = "SELECT * FROM dinner_2017 ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Registered Guests";
             break;
 
         case 'yes':
-            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '2' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '2' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for Confirmed Registered Guests";
             break;
 
         case 'no':
-            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '3' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '3' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for Declined Registered Guests";
             break;
 
         case 'maybe':
-            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '1' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '1' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for the Waiting List (Maybe)";
             break;
 
         case 'staff':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '5' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '5' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Staff Reservations";
             break;
 
         case 'hired_help':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '4' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '4' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Hired Help Reservations";
             break;
         case 'single':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '0' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '0' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Single Client Reservations";
             break;
         case 'double':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '1' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '1' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Plus One Client Reservations";
             break;
         case 'vip_single':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '2' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '2' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Single VIP Reservations";
             break;
         case 'vip_double':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '3' ORDER BY created DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '3' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Plus One VIP Reservations";
             break;
+        case 'lagos':
+            $query = "SELECT * FROM dinner_2017 WHERE state_of_residence = 'Lagos State' ORDER BY reservation_id DESC ";
+            $showing_msg = "Showing Results for All Reservations With Lagos State as the state of residence.     ";
+            break;
         default:
-            $query = "SELECT * FROM dinner_2017 ORDER BY created DESC ";
-            $showing_msg = "Showing Results for All Reservations";
+            $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
+            $showing_msg = "Showing All Reservations";
             break;
     }
 } else {
-    $query = "SELECT * FROM dinner_2017 ORDER BY created DESC ";
+    $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
+}
+
+if(isset($state) && !empty($state))
+{
+    $query = "SELECT * FROM dinner_2017 WHERE state_of_residence = '$state' ORDER BY reservation_id DESC ";
+    $showing_msg = "Showing Results for All $state Residents";
+}
+if(isset($key_word) && !empty($key_word))
+{
+    $query = "SELECT * FROM dinner_2017 WHERE email LIKE '%$key_word%' OR full_name LIKE '%$key_word%'";
+    $showing_msg = "Showing Search Results For ".'"'.$key_word.'"';
 }
 
 $numrows = $db_handle->numRows($query);
 
-$rowsperpage = 60;
+$rowsperpage = 20;
 
 $totalpages = ceil($numrows / $rowsperpage);
 
@@ -133,6 +152,20 @@ $dinner_reg = $db_handle->fetchAssoc($result);
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <?php require_once 'layouts/head_meta.php'; ?>
+    <script>
+        function show_form(div)
+        {
+            var x = document.getElementById(div);
+            if (x.style.display === 'none')
+            {
+                x.style.display = 'block';
+            }
+            else
+            {
+                x.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
 <?php require_once 'layouts/header.php'; ?>
@@ -174,65 +207,109 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                             <strong>VIP Plus One (Double):</strong> <?php echo $total_vip_double_clients; ?><br />
                         </p>
 
-                        <!--<p><strong>Attended:</strong> <?php /*echo $attended; */?></p>-->
-
-                        <div class="row text-center">
+                        <div class="row">
                             <div class="col-sm-12">
-                                <div class="btn-group-sm btn-block  btn-breadcrumb">
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=all'; ?>" class="btn btn-default" title="See All Registrations">All</a>
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=yes'; ?>" class="btn btn-default" title="Clients that responded Yes">Confirmed</a>
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=no'; ?>" class="btn btn-default" title="Clients that responded No">Declined</a>
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=maybe'; ?>" class="btn btn-default" title="Clients that responded Maybe">Waiting List</a>
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=staff'; ?>" class="btn btn-default" title="Staff Reservations">Staff</a>
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=hired_help'; ?>" class="btn btn-default" title="Hired Help Reservations">Hired Help</a>
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=single'; ?>" class="btn btn-default" title="Single Client Reservations">Single Clients</a>
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=double'; ?>" class="btn btn-default" title="Plus One (Double) Client Reservations">Plus One Clients</a>
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_single'; ?>" class="btn btn-default" title="Single VIP Reservations">Single VIP</a>
-                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_double'; ?>" class="btn btn-default" title="Plus One (Double) VIP Reservations">Plus One VIP</a>
+                                <div class="dropdown">
+                                    <button class=" btn btn-info dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Apply Filter<span class="caret"></span></button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="See All Registrations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=all'; ?>" >All</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Clients that responded Yes" href="<?php echo $_SERVER['PHP_SELF'] . '?p=yes'; ?>">Confirmed</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Clients that responded No" href="<?php echo $_SERVER['PHP_SELF'] . '?p=no'; ?>">Declined</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Clients that responded Maybe" href="<?php echo $_SERVER['PHP_SELF'] . '?p=maybe'; ?>">Waiting List</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Staff Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=staff'; ?>">Staff</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Hired Help Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=hired_help'; ?>">Hired Help</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Single Client Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=single'; ?>">Single Clients</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Plus One (Double) Client Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=double'; ?>">Plus One Clients</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Single VIP Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_single'; ?>">Single VIP</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Plus One (Double) VIP Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_double'; ?>">Plus One VIP</a></li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li role="presentation"><a onclick="show_form('search_form')" role="menuitem" tabindex="-1" href="javascript:void(0);">Search By Name or Email</a></li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li role="presentation"><a onclick="show_form('state_form')" role="menuitem" tabindex="-1" href="javascript:void(0);">Filter By State Of Residence</a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                         <br />
-
                         <?php if(isset($showing_msg)) { ?>
                         <p class="text-center"><?php echo $showing_msg; ?></p>
                         <?php } ?>
-
-                        <table class="table table-responsive table-striped table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Phone Number</th>
-                                <th>Ticket Type</th>
-                                <th>Confirmation Status</th>
-                                <th>Created</th>
-                                <th>State Of Residence</th>
-                                <th>Comments</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                        <div id="search_form" style="display: none;" class="form-group">
+                            <p>Enter the clients name or an email address to search...</p>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="search_item" name="search" placeholder="Search" required/>
+                                <span class="input-group-btn">
+                                    <button onclick="if(document.getElementById('search_item').value){window.location.href = '<?php echo $_SERVER['PHP_SELF'];?>'+'?q='+document.getElementById('search_item').value;}" class="btn btn-success" type="button">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div id="state_form" style="display: none"  class="form-group">
+                            <p>Select The State To Search...</p>
                             <?php
-                            if(isset($dinner_reg) && !empty($dinner_reg)) {
-                                foreach ($dinner_reg as $row) {
-                                    ?>
+                            $query = "SELECT state_of_residence FROM dinner_2017";
+                            $result = $db_handle->runQuery($query);
+                            $states = $db_handle->fetchAssoc($result);
+                            $states_list = array();
+                            foreach ($states as $row)
+                            {
+                                $states_list[] = $row['state_of_residence'];
+                            }
+                            $states_list = array_unique($states_list);
+                            sort($states_list);
+                            ?>
+                            <div class="input-group">
+                                <select id="state" class="form-control">
+                                    <?php foreach($states_list as $key => $value) { ?>
+                                        <option value="<?php echo $value ?>"><?php echo $value ?></option>
+                                    <?php }?>
+                                </select>
+                                <span class="input-group-btn">
+                                    <button onclick="if(document.getElementById('state').value){window.location.href = '<?php echo $_SERVER['PHP_SELF'];?>'+'?x='+document.getElementById('state').value;}" class="btn btn-success" type="button">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div style="max-width: 100%" class="table-responsive">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
                                     <tr>
-                                        <td><?php echo $row['full_name']; ?></td>
-                                        <td><?php echo $row['email']; ?></td>
-                                        <td><?php echo $row['phone']; ?></td>
-                                        <td><?php echo dinner_ticket_type($row['ticket_type']); ?></td>
-                                        <td><?php echo dinner_confirmation_status($row['confirmation']); ?></td>
-                                        <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                        <td><?php echo $row['state_of_residence']; ?></td>
-                                        <td><?php echo $row['comments']; ?></td>
-                                        <td>
-                                            <a title="View" class="btn btn-info" href="dinner_2017_view_reg.php?id=<?php echo encrypt($row['reservation_code']); ?>"><i class="glyphicon glyphicon-arrow-right icon-white"></i></a>
-                                        </td>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Phone Number</th>
+                                        <th>Ticket Type</th>
+                                        <th>Confirmation Status</th>
+                                        <th>Created</th>
+                                        <th>State Of Residence</th>
+                                        <th>Comments</th>
+                                        <th></th>
                                     </tr>
-                                <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <?php
+                                if(isset($dinner_reg) && !empty($dinner_reg)) {
+                                    foreach ($dinner_reg as $row) {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row['full_name']; ?></td>
+                                            <td><?php echo $row['email']; ?></td>
+                                            <td><?php echo $row['phone']; ?></td>
+                                            <td><?php echo dinner_ticket_type($row['ticket_type']); ?></td>
+                                            <td><?php echo dinner_confirmation_status($row['confirmation']); ?></td>
+                                            <td><?php echo datetime_to_text2($row['created']); ?></td>
+                                            <td><?php echo $row['state_of_residence']; ?></td>
+                                            <td><?php if(strlen(nl2br(htmlspecialchars($row['comments']))) > 40){echo "<a href='#' data-toggle='tooltip' title='".nl2br(htmlspecialchars($row['comments']))."'>".substr(nl2br(htmlspecialchars($row['comments'])), 0, 40)."...";} else {echo nl2br(htmlspecialchars($row['comments']));}?></td>
+                                            <td>
+                                                <a title="View" class="btn btn-info" href="dinner_2017_view_reg.php?id=<?php echo encrypt($row['reservation_code']); ?>"><i class="glyphicon glyphicon-arrow-right icon-white"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                </tbody>
+                            </table>
+                        </div>
                         <br /><br />
 
                         <?php if(isset($dinner_reg) && !empty($dinner_reg)) { ?>
@@ -256,6 +333,11 @@ $dinner_reg = $db_handle->fetchAssoc($result);
 
     </div>
 </div>
-<?php require_once '../layouts/footer.php'; ?>
+<?php require_once 'layouts/footer.php'; ?>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </body>
 </html>

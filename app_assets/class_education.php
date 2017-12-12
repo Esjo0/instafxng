@@ -265,16 +265,16 @@ class Education {
     }
 
     // Get lessons belonging to a course by id
-    public function get_active_lessons_by_id($course_id) {
+    public function get_active_lessons_by_id($course_id)
+    {
         global $db_handle;
 
-        $query = "SELECT el.edu_lesson_id, el.course_id,
+        $query = "SELECT CONCAT(a.first_name, SPACE(1), a.last_name) AS admin_full_name, el.edu_lesson_id, el.course_id, el.admin_code,
             el.lesson_order, el.title, el.content, el.time_required, el.status, el.created
             FROM edu_lesson AS el
             INNER JOIN edu_course AS ec ON ec.edu_course_id = el.course_id
             INNER JOIN admin AS a ON a.admin_code = el.admin_code
             WHERE el.course_id = $course_id AND el.status = '2' ORDER BY el.lesson_order ASC";
-
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -571,10 +571,235 @@ MAIL;
         return $db_handle->numOfRows($result) > 0 ? $db_handle->fetchAssoc($result) : false;
     }
 
+    // Mail academy login detials
+    public function mail_academy_login_details($client_first_name, $client_email) {
+        global $system_object;
+
+        $subject = "$client_first_name, I've got something for you. Get in now!";
+        $message =
+<<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello&nbsp;$client_first_name,</p>
+            <p>My name is Bunmi from InstaForex Nigeria. Does the name ring a bell?</p>
+            <p>You registered to take our Free online Forex training course sometimes ago and I&rsquo;m super glad to inform you that you can now take the training wherever you are!</p>
+            <p>You wanted a very simple, easy to follow training that you can take from your house, office or even on your bed. Now you can even take the course from your phone.</p>
+            <p>Within the next hour, you will be placing informed trades and increase your chances of taking your slice of the 5.3 Billion Dollars from the Forex market.</p>
+            <p>Guess what! It is free (at least for now).</p>
+            <p><strong><a href="http://bit.ly/2ffEeKl" target="_blank">Click Here to Start the Training Now.</a></strong></p>
+            <p>$client_first_name, we are taking in just 100 people at this time, for this brand new Forex Money Maker Course and I really want you to be one of them. The slots are filling up very fast.</p>
+            <p>Please don&rsquo;t miss this. Go ahead and login to the training immediately to secure your spot. Don&rsquo;t worry you can take a break and continue later, so long as you have started and your spot is secured.</p>
+            <p><strong><a href="http://bit.ly/2ffEeKl" target="_blank">Click Here to Start the Training Now.</a></strong></p>
+            <p>This will be your best shot at generating a healthy side income from forex trading. Go ahead and make the move now.</p>
+            <p>Click <a href="http://bit.ly/2ffEeKl">here</a> to start the Forex Money Maker Course now so you can launch your Forex trading entry with a big bang.</p>
+            <p>See you on the other side. Secure your spot now. The 100 spots are filling up really fast. Don&rsquo;t wait till it will be too late.</p>
+            <p><a href="http://bit.ly/2ffEeKl" target="_blank">Here is the link to the online training again.</a></p>
+            <p>&nbsp;</p>
+            <p>Best Regards,&nbsp;</p>
+            <p>Bunmi,</p>
+            <p>Clients Relations Manager<br />Instafxng&nbsp;</p>
+            <p>&nbsp;</p>
+
+            <div style="margin-top: 50px;"><hr style="border: dotted 1px maroon;" /><img style="float: right; padding: 0 7px; width: 350px; max-height: 180px;" src="https://instafxng.com/images/point-based-rewards.jpg" alt="" />
+                <p><strong>Make Up To $4, 200 and N1, 000, 000 Extra While You Take Your Normal Trades</strong></p>
+                <p>The Race to <span style="color: #ff0000;">One Million Naira</span> is Almost Over, win extra cash in our ongoing Unified Reward Program.By consistently trading your account, you get a chance get more bonus point and you also get rewarded daily, monthly and in the year.</p>
+                <p style="text-align: center;"><!-- [if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://bit.ly/2gvoIEU" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="250%" strokecolor="#f21c2e" fillcolor="#f21c2e">
+                    <w:anchorlock/>
+                    <center style="color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;">See My Rank</center>
+                </v:roundrect>
+                <![endif]--><a style="background-color: #f21c2e; border: 1px solid #f21c2e; border-radius: 100px; color: #ffffff; display: inline-block; font-family: sans-serif; font-size: 13px; font-weight: bold; line-height: 40px; text-align: center; text-decoration: none; width: 200px; -webkit-text-size-adjust: none; mso-hide: all;" href="http://bit.ly/2gvoIEU">See My Rank</a></p>
+            </div>
+
+            <div style="margin-top: 50px;"><hr style="border: dotted 1px maroon;" /><img style="float: right; padding: 0 7px; width: 350px; max-height: 180px;" src="https://instafxng.com/images/forex-freedom-course-banner.jpg" alt="" /> <strong>Fund at a Reduced Price<br /></strong>
+                <p>Take advantage of the reduced funding rate now before the price goes up. Depositing into your InstaForex account is fast, quick and easy. It also qualifies you for our promos and contests.</p>
+                <p style="text-align: center;"><!-- [if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://bit.ly/2hnVw7d" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="250%" strokecolor="#f21c2e" fillcolor="#f21c2e">
+                    <w:anchorlock/>
+                    <center style="color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;">Fund Your Account Now</center>
+                </v:roundrect>
+                <![endif]--><a style="background-color: #f21c2e; border: 1px solid #f21c2e; border-radius: 100px; color: #ffffff; display: inline-block; font-family: sans-serif; font-size: 13px; font-weight: bold; line-height: 40px; text-align: center; text-decoration: none; width: 200px; -webkit-text-size-adjust: none; mso-hide: all;" href="http://bit.ly/2hnVw7d">Fund Your Account Now</a>&nbsp;</p>
+            </div>
+            </div>
+        </div>
+        <hr />
+
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+        $system_object->send_email($subject, $message, $client_email, $client_first_name);
+
+        return true;
+
+    }
+
+    // Get Education Deposit Transactions
+    public function get_edu_deposit_by_id($trans_id) {
+        global $db_handle;
+
+        $query = "SELECT ec.title, ec.edu_course_id, ec.course_cost, ued.amount, ued.stamp_duty, ued.gateway_charge, ued.pay_method, ued.deposit_origin,
+                ued.status, ued.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name, u.email, u.phone
+                FROM user_edu_deposits AS ued
+                INNER JOIN user AS u ON u.user_code = ued.user_code
+                INNER JOIN edu_course AS ec ON ec.edu_course_id = ued.course_id
+                WHERE ued.trans_id = '$trans_id' LIMIT 1";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $trans_detail = $fetched_data[0];
+
+        return $trans_detail ? $trans_detail : false;
+    }
+
+    public function get_edu_deposit_remark($trans_id) {
+        global $db_handle;
+
+        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, uedc.comment, uedc.created
+                FROM user_edu_deposits_comment AS uedc
+                INNER JOIN admin AS a ON uedc.admin_code = a.admin_code
+                WHERE uedc.trans_id = '$trans_id' ORDER BY uedc.created DESC";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+
+    }
+
+    public function log_edu_deposit_comment($admin_code, $transaction_no, $admin_comment) {
+        global $db_handle;
+
+        $query = "INSERT INTO user_edu_deposits_comment (admin_code, trans_id, comment) VALUES ('$admin_code', '$transaction_no', '$admin_comment')";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function modify_edu_deposit_order($transaction_no, $course_no, $user_no, $deposit_status, $admin_comment, $admin_code) {
+        global $db_handle;
+
+        $query = "UPDATE user_edu_deposits SET status = '$deposit_status' WHERE trans_id = '$transaction_no' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            $this->log_edu_deposit_comment($admin_code, $transaction_no, $admin_comment);
+
+            if($deposit_status == '3') {
+                $query = "INSERT INTO user_edu_fee_payment (reference, admin_code, user_code, course_id) VALUES ('$transaction_no', '$admin_code', '$user_no', $course_no)";
+                $db_handle->runQuery($query);
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function submit_payment_notification($transaction_no, $pay_date, $naira_amount, $admin_comment, $admin_code) {
+        global $db_handle;
+
+        $query = "UPDATE user_edu_deposits SET status = '2', pay_date = '$pay_date', amount_paid = '$naira_amount' WHERE trans_id = '$transaction_no' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            $this->log_edu_deposit_comment($admin_code, $transaction_no, $admin_comment);
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    // Get all lesson logged by the client - using answered exercises
+    public function get_client_lesson_history($user_code) {
+        global $db_handle;
+
+        $query = "SELECT ueel.created AS lesson_log_date, el.title AS lesson_title, ec.title AS course_title
+              FROM user_edu_exercise_log AS ueel
+              INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
+              INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
+              WHERE ueel.user_code = '$user_code' GROUP BY (ueel.lesson_id) ORDER BY ec.course_order ASC, ueel.created ASC";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
+    // get client detail with unique code
+    public function get_client_detail_by_code($unique_code) {
+        global $db_handle;
+
+        $query = "SELECT CONCAT(first_name, SPACE(1), last_name) AS full_name FROM user WHERE user_code = '$unique_code' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $fetched_data = $fetched_data[0];
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
+    // get admin detail with unique code
+    public function get_admin_detail_by_code($unique_code) {
+        global $db_handle;
+
+        $query = "SELECT first_name AS admin_first_name, CONCAT(first_name, SPACE(1), last_name) AS full_name FROM admin WHERE admin_code = '$unique_code' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $fetched_data = $fetched_data[0];
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
+    public function close_support_ticket($ticket_code) {
+        global $db_handle;
+
+        $query = "UPDATE user_edu_support_request SET status = '2' WHERE support_request_code = '$ticket_code' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
     // Set support reply
     public function set_lesson_support_reply($category, $support_id, $comment_reply, $unique_code, $request_status, $client_email, $client_first_name) {
         global $db_handle;
         global $system_object;
+
+        $query = "SELECT support_request_code FROM user_edu_support_request WHERE user_edu_support_request_id = $support_id LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $support_request_code = $fetched_data[0]['support_request_code'];
+
+        $return_url = "https://instafxng.com/fxacademy/index.php?se=" . $client_email . "&sid=" . encrypt($support_request_code) . "&c=" . encrypt("1");
 
         $query = "INSERT INTO user_edu_support_answer (author, category, request_id, response) VALUES ('$unique_code', '$category', $support_id, '$comment_reply')";
         $db_handle->runQuery($query);
@@ -595,13 +820,10 @@ MAIL;
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Hello $client_first_name,</p>
 
-            <p>Your enquiry has been responded to.</p>
-            <p>Here is the response from your instructor:</p>
-            <p>-----</p>
-            <p style="color: #9D0000; font-weight: bold">$comment_reply_mail</p>
-            <p>-----</p>
-            <p>Kindly <a href="https://instafxng.com/fxacademy/">click here</a> to login to the
-             FX Academy portal to see the full support thread.</p>
+            <p>Your support request on the FX Academy has been responsded to by an Admin.</p>
+
+            <p>Kindly <a href="$return_url">click here</a> to login to the
+             FX Academy portal to see the reply and the full support thread.</p>
 
             <br /><br />
             <p>Best Regards,<br/>Curry</p>
@@ -644,103 +866,12 @@ MAIL;
         }
     }
 
-    // Get Education Deposit Transactions
-    public function get_edu_deposit_by_id($trans_id) {
+    //Set lesson rating
+    public function set_lesson_rating($user_code, $lesson_id, $course_id, $rating, $comments)
+    {
         global $db_handle;
-
-        $query = "SELECT ec.title, ec.edu_course_id, ec.course_cost, ued.amount, ued.stamp_duty, ued.gateway_charge, ued.pay_method, ued.deposit_origin,
-                ued.status, ued.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name, u.email, u.phone
-                FROM user_edu_deposits AS ued
-                INNER JOIN user AS u ON u.user_code = ued.user_code
-                INNER JOIN edu_course AS ec ON ec.edu_course_id = ued.course_id
-                WHERE ued.trans_id = '$trans_id' LIMIT 1";
-
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-        $trans_detail = $fetched_data[0];
-
-        return $trans_detail ? $trans_detail : false;
-    }
-
-    public function get_edu_deposit_remark($trans_id) {
-        global $db_handle;
-
-        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, uedc.comment, uedc.created
-                FROM user_edu_deposits_comment AS uedc
-                INNER JOIN admin AS a ON uedc.admin_code = a.admin_code
-                WHERE uedc.trans_id = '$trans_id' ORDER BY uedc.created DESC";
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-
-        return $fetched_data ? $fetched_data : false;
-
-    }
-
-    public function log_edu_deposit_comment($admin_code, $transaction_no, $admin_comment) {
-        global $db_handle;
-
-        $query = "INSERT INTO user_edu_deposits_comment (admin_code, trans_id, comment) VALUES ('$admin_code', '$transaction_no', '$admin_comment')";
+        $query = "INSERT INTO edu_lesson_rating (user_code, lesson_id, course_id, rating, comments) VALUES('$user_code','$lesson_id','$course_id','$rating','$comments')";
         $db_handle->runQuery($query);
-    }
-
-    public function modify_edu_deposit_order($transaction_no, $course_no, $user_no, $deposit_status, $admin_comment, $admin_code) {
-        global $db_handle;
-
-        $query = "UPDATE user_edu_deposits SET status = '$deposit_status' WHERE trans_id = '$transaction_no' LIMIT 1";
-        $db_handle->runQuery($query);
-
-        if($db_handle->affectedRows() > 0) {
-            $this->log_edu_deposit_comment($admin_code, $transaction_no, $admin_comment);
-
-            if($deposit_status == '3') {
-                $query = "INSERT INTO user_edu_fee_payment (reference, admin_code, user_code, course_id) VALUES ('$transaction_no', '$admin_code', '$user_no', $course_no)";
-                $db_handle->runQuery($query);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    // Get all lesson logged by the client - using answered exercises
-    public function get_client_lesson_history($user_code) {
-        global $db_handle;
-
-        $query = "SELECT ueel.created AS lesson_log_date, el.title AS lesson_title, ec.title AS course_title
-              FROM user_edu_exercise_log AS ueel
-              INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
-              INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
-              WHERE ueel.user_code = '$user_code' GROUP BY (ueel.lesson_id) ORDER BY ec.course_order ASC, ueel.created ASC";
-
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-
-        return $fetched_data ? $fetched_data : false;
-    }
-
-    // get client detail with unique code
-    public function get_client_detail_by_code($unique_code) {
-        global $db_handle;
-
-        $query = "SELECT CONCAT(first_name, SPACE(1), last_name) AS full_name FROM user WHERE user_code = '$unique_code' LIMIT 1";
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-        $fetched_data = $fetched_data[0];
-
-        return $fetched_data ? $fetched_data : false;
-    }
-
-    // get admin detail with unique code
-    public function get_admin_detail_by_code($unique_code) {
-        global $db_handle;
-
-        $query = "SELECT first_name AS admin_first_name, CONCAT(first_name, SPACE(1), last_name) AS full_name FROM admin WHERE admin_code = '$unique_code' LIMIT 1";
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-        $fetched_data = $fetched_data[0];
-
-        return $fetched_data ? $fetched_data : false;
     }
 }
 

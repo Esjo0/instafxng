@@ -3,7 +3,81 @@ require_once '../init/initialize_client.php';
 $thisPage = "";
 
 if (!$session_client->is_logged_in()) {
-    redirect_to("login.php");
+
+    // Check whether this client is following link in an email to get to course messages
+    $get_params = allowed_get_params(['se', 'sid', 'c']);
+
+    $control_code_encrypted = $get_params['c'];
+    $control_code = decrypt(str_replace(" ", "+", $control_code_encrypted));
+    $control_code = preg_replace("/[^A-Za-z0-9 ]/", '', $control_code);
+
+    if(!empty($get_params['se']) && !empty($get_params['sid']) && $control_code == "1") {
+
+        $student_email = $get_params['se'];
+
+        $support_id_encrypted = $get_params['sid'];
+
+        $client_operation = new clientOperation();
+        $user_code = $client_operation->get_user_by_email($student_email);
+
+        if(empty($user_code) || !isset($user_code)) { redirect_to("register.php?id=$student_email"); }
+
+        $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
+
+        if($user_ifx_details) {
+            $found_user = array(
+                'user_code' => $user_ifx_details['client_user_code'],
+                'status' => $user_ifx_details['client_status'],
+                'first_name' => $user_ifx_details['client_first_name'],
+                'last_name' => $user_ifx_details['client_last_name'],
+                'email' => $user_ifx_details['client_email']
+            );
+            $session_client->login($found_user);
+
+            redirect_to("support_message.php?id=" . $support_id_encrypted);
+
+        }
+    } else {
+        redirect_to("login.php");
+    }
+} else {
+
+    // TODO: Refactor this
+
+    // Check whether this client is following link in an email to get to course messages
+    $get_params = allowed_get_params(['se', 'sid', 'c']);
+
+    $control_code_encrypted = $get_params['c'];
+    $control_code = decrypt(str_replace(" ", "+", $control_code_encrypted));
+    $control_code = preg_replace("/[^A-Za-z0-9 ]/", '', $control_code);
+
+    if(!empty($get_params['se']) && !empty($get_params['sid']) && $control_code == "1") {
+
+        $student_email = $get_params['se'];
+
+        $support_id_encrypted = $get_params['sid'];
+
+        $client_operation = new clientOperation();
+        $user_code = $client_operation->get_user_by_email($student_email);
+
+        if(empty($user_code) || !isset($user_code)) { redirect_to("register.php?id=$student_email"); }
+
+        $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
+
+        if($user_ifx_details) {
+            $found_user = array(
+                'user_code' => $user_ifx_details['client_user_code'],
+                'status' => $user_ifx_details['client_status'],
+                'first_name' => $user_ifx_details['client_first_name'],
+                'last_name' => $user_ifx_details['client_last_name'],
+                'email' => $user_ifx_details['client_email']
+            );
+            $session_client->login($found_user);
+
+            redirect_to("support_message.php?id=" . $support_id_encrypted);
+
+        }
+    }
 }
 
 $get_course_library = $education_object->get_courses_attempted($_SESSION['client_unique_code']);
@@ -84,6 +158,37 @@ if($get_learning_position) {
                     <div id="main-container" class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-md-12">
+                                <?php
+                                $confirm_client_paid = $education_object->confirm_course_payment($_SESSION['client_unique_code'], $first_lesson_course['course_id']);
+                                if($go_to_next_lesson && $confirm_client_paid == false){?>
+                                <!--Modal - confirmation boxes-->
+                                <div id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                                <h4 class="modal-title">Wow, Santa Came Early!!!</h4></div>
+                                            <div class="modal-body">
+                                                <center><img class="img-responsive img-thumbnail" src="../images/fxacademy_price_slash.jpg"></center>
+                                                <p class="text-justify">Take advantage of the Price Slash on the Forex Profit Optimizer Course.</p>
+                                                <p class="text-justify"><a href="fxacademy/course_payment.php?id=<?php echo encrypt($first_lesson_course['course_id']); ?>" title="Click to make payment" class="btn btn-success btn-lg">Make Payment</a></p>
+                                                <small class="text-justify text-muted">NB: This Promo is only valid till Wednesday 13th December 2017.</small>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(document).ready(function()
+                                    {
+                                        $('#confirm-add-admin').modal("show");
+                                    });
+                                </script>
+                                <?php } ?>
+
+
                                 <p><strong>Welcome <?php echo $_SESSION['client_first_name']; ?>,</strong></p>
                                 <p>This is your dashboard where you can check your learning progress, latest message from your instructor
                                 and other quick information about your study at our Forex Trading School.</p>

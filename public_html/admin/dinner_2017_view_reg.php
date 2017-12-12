@@ -5,14 +5,42 @@ if (!$session_admin->is_logged_in())
     redirect_to("login.php");
 }
 
+function addImageWatermark($SourceFile, $WaterMark, $DestinationFile=NULL, $opacity)
+{
+    $main_img = $SourceFile;
+    $watermark_img = $WaterMark;
+    $padding = 5;
+    $opacity = $opacity;
+    // create watermark
+    $watermark = imagecreatefrompng($watermark_img);
+    $image = imagecreatefromjpeg($main_img);
+    if(!$image || !$watermark) die("Error: main image or watermark image could not be loaded!");
+    $watermark_size = getimagesize($watermark_img);
+    $watermark_width = $watermark_size[0];
+    $watermark_height = $watermark_size[1];
+    $image_size = getimagesize($main_img);
+    $dest_x = $image_size[0] - $watermark_width - $padding;
+    $dest_y = $image_size[1] - $watermark_height - $padding;
+    imagecopymerge($image, $watermark, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, $opacity);
+    if ($DestinationFile<>'')
+    {
+        imagejpeg($image, $DestinationFile, 100);
+    } else
+    {
+        header('Content-Type: image/jpeg');
+        imagejpeg($image);
+    }
+    imagedestroy($image);
+    imagedestroy($watermark);
+}
+
 function get_dinner_reg_remark($reg_code)
 {
     global $db_handle;
-
     $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, dc.comment, dc.created
                 FROM dinner2017_comment AS dc
                 INNER JOIN admin AS a ON dc.admin_code = a.admin_code
-                WHERE dc.reservation_code = $reg_code ORDER BY dc.created DESC";
+                WHERE dc.reservation_code = '$reg_code' ORDER BY dc.created DESC";
     $result = $db_handle->runQuery($query);
     $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -24,6 +52,11 @@ $get_params = allowed_get_params(['x', 'id']);
 $reg_code_encrypted = $get_params['id'];
 $reg_code = decrypt(str_replace(" ", "+", $reg_code_encrypted));
 $reg_code = preg_replace("/[^A-Za-z0-9 ]/", '', $reg_code);
+
+$attendee_detail = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM dinner_2017 WHERE reservation_code = '$reg_code'"));
+$attendee_detail = $attendee_detail[0];
+
+extract($attendee_detail);
 
 // Process comment
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
@@ -41,62 +74,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
     }
     if(isset($_POST['send_invite']) && !empty($_POST['send_invite']))
     {
-        $attendee_detail = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM dinner_2017 WHERE id_dinner_2017 = '$reservation_code'"));
-        $attendee_detail = $attendee_detail[0];
-        extract($attendee_detail);
-        $subject = "SPECIAL INVITATION";
-        $message = <<<MAIL
+        $imgPath = '../images/final iv.jpg';
+        $image = imagecreatefromjpeg($imgPath);
+        $color = imagecolorallocate($image, 255, 255, 255);
+        //NAME
+        $string = strtoupper($full_name);
+        $fontSize = 5;
+        $x = 78;
+        $y = 134;
+        imagestring($image, $fontSize, $x, $y, $string, $color);
+        //TICKET TYPE
+        $string = strtoupper(dinner_ticket_type($ticket_type));
+        $fontSize = 5;
+        $x = 126;
+        $y = 194;
+        imagestring($image, $fontSize, $x, $y, $string, $color);
+        //tICKET NO
+        $string = strtoupper($reservation_code);
+        $fontSize = 5;
+        $x = 110;
+        $y = 255;
+        imagestring($image, $fontSize, $x, $y, $string, $color);
+
+        //barcode
+        $watermark = imagecreatefrompng('https://chart.googleapis.com/chart?chs=68x60&cht=qr&chl='.$reservation_code.'&choe=UTF-8');
+        $water_width = imagesx($watermark);
+        $water_height = imagesy($watermark);
+        $main_width = imagesx($image);
+        $main_height = imagesy($image);
+        $dime_x = 626;
+        $dime_y = 2;
+        imagecopy($image, $watermark, $dime_x, $dime_y, 0, 0, $water_width, $water_height);
+        $target_dir = "../dinner_2017/ivs/";
+        $newfilename = $reservation_code. '.jpg';
+        $target_file = $target_dir.$newfilename;
+        $ivs = imagejpeg($image, $target_file);
+        imagedestroy($image);
+
+        $subject = "InstaFxNg Dinner 2017: THE ETHNIC IMPRESSION";
+        $ticket_type = dinner_ticket_type($ticket_type);
+
+        if($ivs)
+        {
+            $target_file = str_replace('../dinner_2017/', '', $target_file);
+            $from_name ="";
+            $message = <<<MAIL
     <div style="background-color: #F3F1F2">
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $full_name,</p>
-
-            <p>It’s been almost 365 days and a lot has happened during the year,
-            but get ready for one more!</p>
-
-            <p>I want to take this opportunity to appreciate you for showing
-            consistent confidence in the services we render and allowing us to
-            service you this year. You are truly one of the most loyal clients
-            of our company and serving you remains our pleasure.</p>
-
-            <p>To roundup the year together, I humbly request that you join us
-            for an exciting and entertaining time at our annual Christmas Dinner
-            Event specially designed so you could relax and have fun with the
-            members of our team and other Forex traders like yourself.</p>
-
-            <p>This year’s dinner is themed the <strong>Classic 80s Night</strong>. When you step
-            inside the venue; the music, the theme and overall ambience will
-            transport you to a simpler and more innocent time where you can have the
-            feel of what it used to be in the 80s.</p>
-
-            <p>If you love to have fun, you should be at this event as the outfit,
-            the looks the music and the venue will represent what it used to be
-            from way back 80s, and there would be lots of exciting activities lined
-            up alongside the 3 course dinner to be served.</p>
-
-            <p style="text-align: center"><strong>One last thing ...</strong></p>
-
-            <p>We have one last surprise for you before the year ends, you will
-            witness the launch of a new service created to make you more money
-            daily even as you trade.</p>
-
-            <p style="text-align: center">You can
-            <a href="https://instafxng.com/dinner.php?x=$id_encrypt">click here</a>
-            to reserve your seat now.</p>
-
-            <p><strong>NOTE: Admission is strictly by Invitation and you can only secure
-            your reservation by clicking on the link.</strong></p>
-
-            <p>It would be an honor to have you at the event as I earnestly look
-            forward to welcoming you and meeting you in person.</p>
-
+            <p>Hi $full_name,</p>
+            <p>Kindly <a href='https://instafxng.com/dinner_2017/$target_file' download>click here to download your ticket to the InstaFxNg dinner</a>, themed "The Ethnic Impression".</p>
+			<p>The ticket is your pass to the dinner.</p>
+			<p>Kindly download to your smartphone, tablet device or print it out.</p>
+			<p>We look foward to recieving you on Sunday 17 December 2017 by 5pm.</p>
+			<p><a href='https://instafxng.com/dinner_2017/' >Click here to find more details about this event.<a></p>
+            <p>From me to you…. It’s see you soon!</p>
             <br /><br />
             <p>Best Regards,</p>
-            <p>Fujah Abideen,<br />
-            Corporate Communications Manager<br />
-                www.instafxng.com</p>
+            <p>Mercy,</p>
+            <p>Marketing Executive,</p>
+            <p>www.instafxng.com</p>
             <br /><br />
         </div>
         <hr />
@@ -110,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
                     <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
                 </p>
                 <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
                 <p><strong>Office Number:</strong> 08028281192</p>
                 <br />
             </div>
@@ -125,8 +164,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
     </div>
 </div>
 MAIL;
-        $system_object->send_email($subject, $message, $email, $full_name);
-        $db_handle->runQuery("UPDATE dinner_2017 SET invite = '1' WHERE reservation_code = '$reservation_code'");
+            $system_object->send_email($subject, $message, $email, $full_name, $from_name);
+            $update = $db_handle->runQuery("UPDATE dinner_2017 SET invite = '1', iv_url = '$target_file' WHERE reservation_code = '$reservation_code'");
+            $message_success = "You have successfully sent an invite.";
+        }
+
     }
     if(isset($comments) && !empty($comments))
     {
@@ -138,13 +180,7 @@ MAIL;
             $message_success = "You have successfully added a comment about this guest.";
         }
     }
-
 }
-
-
-$attendee_detail = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM dinner_2017 WHERE reservation_code = '$reg_code'"));
-$attendee_detail = $attendee_detail[0];
-
 if(empty($attendee_detail))
 {
     redirect_to("./");
@@ -249,7 +285,7 @@ if(empty($attendee_detail))
                                                 <label><input type="radio" name="ticket_type" value="4" <?php if($attendee_detail['ticket_type'] == '4') { echo "checked"; }; ?>>Hired Help</label>
                                             </div>
                                             <div class="radio">
-                                                <label><input type="radio" name="ticket_type" value="5" <?php if($attendee_detail['ticket_type'] == '5') { echo "checked"; }; ?>>Staff</label>
+                                                <label><input type="radio" name="ticket_type" value="5" <?php if($attendee_detail['ticket_type'] == '5') { echo  "checked"; }; ?>>Staff</label>
                                             </div>
                                         </div>
                                     </div>
@@ -309,7 +345,7 @@ if(empty($attendee_detail))
                                                     <button type="button" data-dismiss="modal" aria-hidden="true"
                                                         class="close">&times;</button>
                                                     <h4 class="modal-title">Update Reservation</h4></div>
-                                                <div class="modal-body">Are you sure you want to save attendance? This action cannot be reversed.</div>
+                                                <div class="modal-body">Are you sure you want to update this reservation? </div>
                                                 <div class="modal-footer">
                                                     <input name="process" type="submit" class="btn btn-success" value="Proceed">
                                                     <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
@@ -324,7 +360,7 @@ if(empty($attendee_detail))
                                 
                             </div>
 
-                            <div class="col-sm-12">
+                            <div style="max-height: 300px; overflow-x: scroll" class="col-sm-12">
                                 <h5>Admin Remarks</h5>
 
                                 <?php

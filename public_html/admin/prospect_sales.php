@@ -40,6 +40,24 @@ if (isset($_POST['process'])) {
     }
 }
 
+if (isset($_POST['send_training_mail'])) {
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    extract($_POST);
+
+    $client_operation = new clientOperation();
+
+    $result = $client_operation->send_startup_bonus_training_mail($client_name, $client_email);
+
+    if($result) {
+        $message_success = "Email Sent Successfully";
+    } else {
+        $message_error = "Looks like something went wrong, please try again.";
+    }
+}
+
 $query = "SELECT pb.email_address, pb.first_name, pb.last_name,
         pb.phone_number, pb.created, ps.source_name, pb.prospect_biodata_id
         FROM prospect_biodata AS pb
@@ -161,6 +179,18 @@ $selected_comment = $db_handle->fetchAssoc($result);
                                     </div>
                                     
                                     <div class="col-lg-5">
+
+                                        <form class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                            <input type="hidden" name="client_email" value="<?php echo $user_detail['email_address'];  ?>" />
+                                            <input type="hidden" name="client_name" value="<?php echo $user_detail['first_name']; ?>" />
+
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-3 col-sm-9">
+                                                    <input name="send_training_mail" type="submit" class="btn btn-success" value="Send Training Mail">
+                                                </div>
+                                            </div>
+                                        </form>
+
                                         <!-- comment history goes here -->
                                         <h5>Admin Remarks</h5>
                                         <div class="row" style="max-height: 500px !important; overflow: scroll;">

@@ -20,7 +20,7 @@ if($db_handle->numOfRows($result) > 0) {
 
     $my_message = stripslashes($selected_campaign_sms['content']);
 
-    $query = $recipient_query . " ORDER BY phone ASC LIMIT $limit OFFSET $current_offset";
+    $query = $recipient_query . " LIMIT $limit OFFSET $current_offset";
     $result = $db_handle->runQuery($query);
     $all_selected_members = $db_handle->fetchAssoc($result);
 
@@ -30,9 +30,13 @@ if($db_handle->numOfRows($result) > 0) {
     $result = $db_handle->runQuery($query);
 
     if($result) {
-        foreach ($all_selected_members as $row) {
+        foreach ($all_selected_members as $row)
+        {
             $client_phone = strtolower(trim($row['phone']));
-            $system_object->send_sms($client_phone, $my_message);
+            $user_code = strtolower(trim($row['user_code']));
+            $my_message = str_replace('[UC]', encrypt($user_code), $my_message);
+            $my_message_new = str_replace('[UC]', '', $my_message);
+            $system_object->send_sms($client_phone, $my_message_new);
         }
 
         // if the current offset plus limit is equal or greater than total recipient

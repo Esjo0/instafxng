@@ -221,8 +221,8 @@ button:focus {
 
 #mu-hero
 {
-	background-image: url("images/head-featured-bg.jpg");
-	/*background-image: url("assets/images/head-featured-bg.jpg");*/
+	background-image: url("images/African_Doodes.jpg");
+	/*background-image: url("images/dinner-seamless-doodle.png");*/
 	display: inline;
 	float: left;
 	width: 100%;
@@ -450,7 +450,7 @@ button:focus {
 
 
 #mu-video {
-	background-image: url("images/about-video-bg.jpg");
+	background-image: url("images/African_Doodes.jpg");
 	background-attachment: fixed;
 	background-position: center center;
 	-webkit-background-size: cover;
@@ -463,8 +463,8 @@ button:focus {
 .mu-video-overlay {
 	display: inline;
 	float: left;
-	opacity: 0.85;
 	width: 100%;
+	opacity: 0.98;
 }
 
 .mu-video-area {
@@ -488,14 +488,13 @@ button:focus {
 .mu-video-play-btn,
 .mu-video-close-btn {
 	color: #fff;
-	font-size: 22px;
-	border: 5px solid #fff;
+	font-size: 100px;
 	border-radius: 50%;
-	width: 60px;
+	width: 100px;
 	display: inline-block;
-	height: 60px;
+	height: 100px;
 	line-height: 55px;
-	/*text-align: center;*/
+	text-align: center;
 	margin-top: 100px;
 	-webkit-transition: all 0.5s;
 	-o-transition: all 0.5s;
@@ -506,14 +505,14 @@ button:focus {
 .mu-video-play-btn:focus {
 	color: #fff;
 	-webkit-transform: scale(1.2);
-	        transform: scale(1.2);
+	transform: scale(1.2);
 }
 
 .mu-video-close-btn {
 	border-radius: 50%;
 	color: #fff;
 	font-size: 18px;
-	border: 2px solid #fff;
+
 	position: absolute;
 	top: 0;
 	right: 15%;
@@ -532,7 +531,7 @@ button:focus {
 .mu-video-close-btn:focus {
 	color: #fff;
 	-webkit-transform: scale(1.2);
-	        transform: scale(1.2);
+	transform: scale(1.2);
 }
 
 .mu-video-iframe-area {
@@ -560,6 +559,7 @@ button:focus {
 .mu-video-iframe-area iframe {
 
 }
+
 
 
 /*--------------------*/
@@ -796,6 +796,7 @@ button:focus {
 	display: inline;
 	float: left;
 	width: 100%;
+	/*background-image: url("images/African_Doodes.jpg");*/
 }
 
 .mu-venue-area {
@@ -1721,7 +1722,7 @@ button:focus {
 	}
 
 	.mu-video-area {
-		padding: 50px 0;
+		padding: 20px 0;
 	}
 
 	.mu-video-iframe-area {
@@ -1730,8 +1731,8 @@ button:focus {
 
 	.mu-video-play-btn, .mu-video-close-btn {
 		font-size: 18px;
-		width: 50px;
-		height: 50px;
+		width: 100px;
+		height: 100px;
 		line-height: 46px;
 		margin-top: 50px;
 	}

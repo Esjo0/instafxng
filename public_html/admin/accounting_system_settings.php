@@ -162,7 +162,7 @@ $budgets = $db_handle->fetchAssoc($result);
                                                             <td>
                                                                 <?php echo strtoupper($row['location']); ?>
                                                             </td>
-                                                            <td><?php echo datetime_to_text($row['created']); ?></td>
+                                                            <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                         </tr>
                                                         <?php
                                                     }
