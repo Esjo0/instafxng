@@ -64,6 +64,16 @@ if (isset($_POST['process']))
     <script src="../js/jquery_2.1.1.min.js"></script>
     <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script>
+        function printDiv(divName)
+        {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
 </head>
 <body>
 <!-- Start Header -->
@@ -138,6 +148,7 @@ if (isset($_POST['process']))
                                     <div class="panel-body">
                                             <fieldset>
                                                 <?php require_once '../layouts/feedback_message.php'; ?>
+                                                <?php if($attendee_detail['invite'] < 1): ?>
                                                 <p>Please fill the form below to update your reservation.</p>
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
@@ -186,8 +197,18 @@ if (isset($_POST['process']))
                                                         <input data-target="#confirm-save-attendance" data-toggle="modal" name="process" type="button" class="btn btn-success" value="Update My Reservation!">
                                                     </div>
                                                 </div>
+                                                <?php endif; ?>
+                                                <?php if($attendee_detail['invite'] == 1): ?>
+                                                    <p>Your invite is ready. Print or download it.</p>
+                                                    <div id="iv" style="display: none">
+                                                        <img src="<?php echo $attendee_detail['iv_url'];?>">
+                                                    </div>
+                                                    <div>
+                                                        <a class="btn btn-info" href="<?php echo $attendee_detail['iv_url'];?>" download >Download</a>
+                                                        <button class="btn btn-info" onclick="printDiv('iv')" >Print</button>
+                                                    </div>
+                                                <?php endif; ?>
                                             </fieldset>
-
                                     </div>
                                 </div>
                             </div>

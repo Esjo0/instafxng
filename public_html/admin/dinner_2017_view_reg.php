@@ -5,6 +5,35 @@ if (!$session_admin->is_logged_in())
     redirect_to("login.php");
 }
 
+function addImageWatermark($SourceFile, $WaterMark, $DestinationFile=NULL, $opacity)
+{
+    $main_img = $SourceFile;
+    $watermark_img = $WaterMark;
+    $padding = 5;
+    $opacity = $opacity;
+    // create watermark
+    $watermark = imagecreatefrompng($watermark_img);
+    $image = imagecreatefromjpeg($main_img);
+    if(!$image || !$watermark) die("Error: main image or watermark image could not be loaded!");
+    $watermark_size = getimagesize($watermark_img);
+    $watermark_width = $watermark_size[0];
+    $watermark_height = $watermark_size[1];
+    $image_size = getimagesize($main_img);
+    $dest_x = $image_size[0] - $watermark_width - $padding;
+    $dest_y = $image_size[1] - $watermark_height - $padding;
+    imagecopymerge($image, $watermark, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, $opacity);
+    if ($DestinationFile<>'')
+    {
+        imagejpeg($image, $DestinationFile, 100);
+    } else
+    {
+        header('Content-Type: image/jpeg');
+        imagejpeg($image);
+    }
+    imagedestroy($image);
+    imagedestroy($watermark);
+}
+
 function get_dinner_reg_remark($reg_code)
 {
     global $db_handle;
@@ -45,163 +74,101 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
     }
     if(isset($_POST['send_invite']) && !empty($_POST['send_invite']))
     {
+        $imgPath = '../images/final iv.jpg';
+        $image = imagecreatefromjpeg($imgPath);
+        $color = imagecolorallocate($image, 255, 255, 255);
+        //NAME
+        $string = strtoupper($full_name);
+        $fontSize = 5;
+        $x = 78;
+        $y = 134;
+        imagestring($image, $fontSize, $x, $y, $string, $color);
+        //TICKET TYPE
+        $string = strtoupper($ticket_type);
+        $fontSize = 5;
+        $x = 126;
+        $y = 194;
+        imagestring($image, $fontSize, $x, $y, $string, $color);
+        //tICKET NO
+        $string = strtoupper($reservation_code);
+        $fontSize = 5;
+        $x = 110;
+        $y = 255;
+        imagestring($image, $fontSize, $x, $y, $string, $color);
+
+        //barcode
+        $watermark = imagecreatefrompng('https://chart.googleapis.com/chart?chs=68x60&cht=qr&chl='.$reservation_code.'&choe=UTF-8');
+        $water_width = imagesx($watermark);
+        $water_height = imagesy($watermark);
+        $main_width = imagesx($image);
+        $main_height = imagesy($image);
+        $dime_x = 626;
+        $dime_y = 2;
+        imagecopy($image, $watermark, $dime_x, $dime_y, 0, 0, $water_width, $water_height);
+        $target_dir = "../dinner_2017/ivs/";
+        $newfilename = $reservation_code. '.jpg';
+        $target_file = $target_dir.$newfilename;
+        $ivs = imagejpeg($image, $target_file);
+        imagedestroy($image);
+
         $subject = "InstaFxNg Dinner 2017: THE ETHNIC IMPRESSION";
         $ticket_type = dinner_ticket_type($ticket_type);
-        $message = <<<MAIL
 
-<head>
-  <link href='https://fonts.googleapis.com/css?family=Lobster|Kreon:400,700' rel='stylesheet' type='text/css'>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta http-equiv="content-type" content="text-html; charset=utf-8">
-</head>
-
-<style>
-  body {
-    margin: 0;
-    color: #494140;
-    font-family: "Kreon", serif;
-    font-weight: 400;
-    font-size: 30px;
-  }
-
-  .container {
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  section {
-    position: relative;
-    float: left;
-    width: 685px;
-  }
-  section .special {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    position: relative;
-    height: 60px;
-    padding: 10px 150px 0;
-    background-color: #494140;
-    color: #fff;
-    text-align: center;
-  }
-  section .special:nth-child(2n+1) {
-    background-color: #93ACA2;
-  }
-  section .special:nth-child(6), section .special:nth-child(7) {
-    z-index: 1;
-  }
-  section .circle {
-    position: absolute;
-    top: 10px;
-    left: 215px;
-    width: 255px;
-    height: 255px;
-    background-color: #fff;
-    border-radius: 50%;
-    box-shadow: 0px 10px 4px 0px rgba(0, 0, 0, 0.5);
-    text-align: center;
-    line-height: 30px;
-    z-index: 1;
-  }
-  section .circle .event {
-    width: 150px;
-    margin: 25px auto 25px;
-    font-size: 1.12em;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-  section .circle .title {
-    color: #93ACA2;
-    font-family: "Lobster", cursive;
-    font-size: 2.48em;
-  }
-  section .seats {
-    position: absolute;
-    top: 10px;
-    left: 30px;
-    color: #fff;
-    font-weight: 700;
-  }
-  section .seats span .barcode {
-    display: inline-block;
-  }
-  section .seats .label {
-    width: 40px;
-    margin-right: 20px;
-    padding-top: 8px;
-    font-size: 0.36em;
-    font-weight: 400;
-    text-align: right;
-    text-transform: uppercase;
-    vertical-align: top;
-  }
-  
-    section .barcode .label {
-    width: 60px;
-    margin-right: 20px;
-    padding-top: 8px;
-    font-size: 0.36em;
-    font-weight: 400;
-    text-align: left;
-    text-transform: uppercase;
-    vertical-align: top;
-  }
-
-
-  aside {
-    float: right;
-    width: 110px;
-  }
-  aside figure {
-    height: 100%;
-    margin: 0;
-    text-align: center;
-  }
-  aside figure img {
-    margin-top: 25px;
-  }
-</style>
-  <div class="container">
-    <section>
-      <div class="circle">
-        <img style="width: 100%; height: 100%; border-radius: 50%" src="http://instafxng.master/dinner_2017/assets/images/dinner_2017.jpg">
-      </div>
-      <div class="special">
-      <div style="position: absolute;
-    top: 0px;
-    right: 0px;">
-          <span><img style="height: 60px; width: 60px;" src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$reservation_code&choe=UTF-8"></span>
+        if($ivs)
+        {
+            $target_file = str_replace('../dinner_2017/', '', $target_file);
+            $from_name ="";
+            $message = <<<MAIL
+    <div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hi $full_name,</p>
+            <p>Kindly <a href='https://instafxng.com/dinner_2017/$target_file' download>click here to download your ticket to the InstaFxNg dinner</a>, themed "The Ethnic Impression".</p>
+			<p>The ticket is your pass to the dinner.</p>
+			<p>Kindly download to your smartphone, tablet device or print it out.</p>
+			<p>We look foward to recieving you on Sunday 17 December 2017 by 5pm.</p>
+			<p><a href='https://instafxng.com/dinner_2017/' >Click here to find more details about this event.<a></p>
+            <p>From me to you…. It’s see you soon!</p>
+            <br /><br />
+            <p>Best Regards,</p>
+            <p>Mercy,</p>
+            <p>Marketing Executive,</p>
+            <p>www.instafxng.com</p>
+            <br /><br />
         </div>
-      </div>
-      <div class="special"></div>
-      <div class="special">
-        <div class="seats">
-          <span>NAME: $full_name</span>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
         </div>
-      </div>
-      <div class="special">
-      <div style="200px" class="seats">
-          <span>TICKET TYPE: $ticket_type</span>
-        </div>
-      </div>
-      <div class="special">
-        <div class="seats">
-          <span>TICKET NO: $reservation_code</span>
-        </div>
-        SUNDAY, DECEMBER 17 2017
-      </div>
-      <div class="special">
-        <b>Four Points by Sheraton Lagos, 
-        Plot 9/10, Block 2, Oniru Chieftaincy Estate,
-        Lagos State, Nigeria.</b>
-        
-      </div>
-    </section>
-  </div>
+    </div>
+</div>
 MAIL;
-        $system_object->send_email($subject, $message, $email, $full_name);
-        $db_handle->runQuery("UPDATE dinner_2017 SET invite = '1' WHERE reservation_code = '$reservation_code'");
+            $system_object->send_email($subject, $message, $email, $full_name, $from_name);
+            $update = $db_handle->runQuery("UPDATE dinner_2017 SET invite = '1', iv_url = '$target_file' WHERE reservation_code = '$reservation_code'");
+            $message_success = "You have successfully sent an invite.";
+        }
+
     }
     if(isset($comments) && !empty($comments))
     {
@@ -378,7 +345,7 @@ if(empty($attendee_detail))
                                                     <button type="button" data-dismiss="modal" aria-hidden="true"
                                                         class="close">&times;</button>
                                                     <h4 class="modal-title">Update Reservation</h4></div>
-                                                <div class="modal-body">Are you sure you want to save attendance? This action cannot be reversed.</div>
+                                                <div class="modal-body">Are you sure you want to update this reservation? </div>
                                                 <div class="modal-footer">
                                                     <input name="process" type="submit" class="btn btn-success" value="Proceed">
                                                     <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
