@@ -171,7 +171,7 @@ if($get_learning_position) {
                                             <div class="modal-body">
                                                 <center><img class="img-responsive img-thumbnail" src="../images/fxacademy_price_slash.jpg"></center>
                                                 <p class="text-justify">Take advantage of the Price Slash on the Forex Profit Optimizer Course.</p>
-                                                <p class="text-justify"><a href="fxacademy/course_payment.php?id=<?php echo encrypt($first_lesson_course['course_id']); ?>" title="Click to make payment" class="btn btn-success btn-lg">Make Payment</a></p>
+                                                <p class="text-justify"><a href="fxacademy/course_payment.php?id=<?php echo encrypt(3); ?>" title="Click to make payment" class="btn btn-success btn-lg">Make Payment</a></p>
                                                 <small class="text-justify text-muted">NB: This Promo is only valid till Wednesday 13th December 2017.</small>
                                             </div>
                                             <div class="modal-footer">

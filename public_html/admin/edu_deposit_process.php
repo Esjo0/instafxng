@@ -21,6 +21,11 @@ switch ($get_params['x']) {
         $page_title = '- NOTIFIED';
         $return_page = 'edu_deposit_notified.php';
         break;
+    case 'completed':
+        $deposit_process_completed = true;
+        $page_title = '- COMPLETED';
+        $return_page = 'edu_deposit_completed.php';
+        break;
     default:
         $no_valid_page = true;
         break;
@@ -128,6 +133,7 @@ if (empty($trans_detail)) {
                         <?php
                             if($deposit_process_initiated) { include_once 'views/edu_deposit_process/deposit_process_initiated.php'; }
                             if($deposit_process_notified) { include_once 'views/edu_deposit_process/deposit_process_notified.php'; }
+                            if($deposit_process_completed) { include_once 'views/edu_deposit_process/deposit_process_completed.php'; }
                         ?>
 
                     </div>

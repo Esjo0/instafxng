@@ -7,18 +7,16 @@ if (!$session_admin->is_logged_in()) {
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
-    $query = "SELECT ued.status, ued.amount, ued.stamp_duty, ued.gateway_charge,
-            ued.trans_id, ued.pay_method, ued.deposit_origin, ued.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
             FROM user_edu_deposits AS ued
             INNER JOIN user AS u ON ued.user_code = u.user_code
-            WHERE ued.status = '1'
+            WHERE ued.status = '1' GROUP BY ued.user_code
             ORDER BY ued.created DESC ";
 } else {
-    $query = "SELECT ued.status, ued.amount, ued.stamp_duty, ued.gateway_charge,
-            ued.trans_id, ued.pay_method, ued.deposit_origin, ued.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
             FROM user_edu_deposits AS ued
             INNER JOIN user AS u ON ued.user_code = u.user_code
-            WHERE ued.status = '1'
+            WHERE ued.status = '1' GROUP BY ued.user_code
             ORDER BY ued.created DESC ";
 }
 $numrows = $db_handle->numRows($query);
@@ -95,29 +93,56 @@ $education_deposit = $db_handle->fetchAssoc($result);
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Trans ID</th>
-                                        <th>Client Name</th>
-                                        <th>Client Phone</th>
-                                        <th>Amount</th>
-                                        <th>Created</th>
-                                        <th></th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php if(isset($education_deposit) && !empty($education_deposit)) { foreach ($education_deposit as $row) {
-                                        $total_amount = $row['amount'] + $row['stamp_duty'] + $row['gateway_charge'];
+                                    <?php
+
+                                        $count = 1;
+                                        if(isset($education_deposit) && !empty($education_deposit)) { foreach ($education_deposit as $row) {
+                                            $table_design = $count % 2 == 0 ? "success" : "warning";
+                                            $count++;
                                         ?>
+                                        <tr class="<?php echo $table_design; ?>">
+                                            <td><strong><?php echo $row['full_name']; ?></strong></td>
+                                            <td><strong><?php echo $row['phone']; ?></strong></td>
+                                            <td><strong><?php echo $row['email']; ?></strong></td>
+                                        </tr>
                                         <tr>
-                                            <td><?php echo $row['trans_id']; ?></td>
-                                            <td><?php echo $row['full_name']; ?></td>
-                                            <td><?php echo $row['phone']; ?></td>
-                                            <td class="nowrap">&#8358; <?php echo number_format($total_amount, 2, ".", ","); ?></td>
-                                            <td><?php echo datetime_to_text($row['created']); ?></td>
-                                            <td class="nowrap">
-                                                <a class="btn btn-info" href="edu_deposit_pay_notify.php?x=initiated&id=<?php echo encrypt($row['trans_id']); ?>" title="Payment Notification"><i class="fa fa-bell-o" aria-hidden="true"></i></a>
-                                                <a class="btn btn-info" href="edu_deposit_process.php?x=initiated&id=<?php echo encrypt($row['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
+                                            <td colspan="3">
+                                                <table class="table table-responsive">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Trans ID</th>
+                                                        <th>Amount</th>
+                                                        <th>Created</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php
+                                                        $selected_trans = $education_object->get_initiated_trans_by_code($row['user_code']);
+                                                        if(isset($selected_trans)) { foreach ($selected_trans as $data) {
+                                                        $total_amount = $data['amount'] + $data['stamp_duty'] + $data['gateway_charge'];
+                                                    ?>
+                                                        <tr>
+                                                            <td><?php echo $data['trans_id']; ?></td>
+                                                            <td class="nowrap">&#8358; <?php echo number_format($total_amount, 2, ".", ","); ?></td>
+                                                            <td><?php echo datetime_to_text($data['created']); ?></td>
+                                                            <td class="nowrap">
+                                                                <a class="btn btn-info" href="edu_deposit_pay_notify.php?x=initiated&id=<?php echo encrypt($data['trans_id']); ?>" title="Payment Notification"><i class="fa fa-bell-o" aria-hidden="true"></i></a>
+                                                                <a class="btn btn-info" href="edu_deposit_process.php?x=initiated&id=<?php echo encrypt($data['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    <?php } } ?>
+                                                    </tbody>
+                                                </table>
                                             </td>
                                         </tr>
+
                                     <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>

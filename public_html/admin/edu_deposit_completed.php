@@ -99,8 +99,8 @@ $education_deposit = $db_handle->fetchAssoc($result);
                                 <th>Client Name</th>
                                 <th>Client Phone</th>
                                 <th>Amount</th>
-                                <th>Status</th>
                                 <th>Created</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -112,8 +112,8 @@ $education_deposit = $db_handle->fetchAssoc($result);
                                     <td><?php echo $row['full_name']; ?></td>
                                     <td><?php echo $row['phone']; ?></td>
                                     <td class="nowrap">&#8358; <?php echo number_format($total_amount, 2, ".", ","); ?></td>
-                                    <td><?php echo status_edu_deposit($row['status']); ?></td>
                                     <td><?php echo datetime_to_text($row['created']); ?></td>
+                                    <td><a class="btn btn-info" href="edu_deposit_process.php?x=completed&id=<?php echo encrypt($row['trans_id']); ?>" title="View"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                             <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                             </tbody>

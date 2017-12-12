@@ -724,14 +724,16 @@ MAIL;
         }
     }
 
-    public function submit_payment_notification($transaction_no, $pay_date, $naira_amount, $admin_comment, $admin_code) {
+    public function submit_payment_notification($transaction_no, $pay_date, $naira_amount, $admin_comment = false, $admin_code = false) {
         global $db_handle;
 
         $query = "UPDATE user_edu_deposits SET status = '2', pay_date = '$pay_date', amount_paid = '$naira_amount' WHERE trans_id = '$transaction_no' LIMIT 1";
         $db_handle->runQuery($query);
 
         if($db_handle->affectedRows() > 0) {
-            $this->log_edu_deposit_comment($admin_code, $transaction_no, $admin_comment);
+            if($admin_comment) {
+                $this->log_edu_deposit_comment($admin_code, $transaction_no, $admin_comment);
+            }
 
             return true;
         } else {
@@ -872,6 +874,22 @@ MAIL;
         global $db_handle;
         $query = "INSERT INTO edu_lesson_rating (user_code, lesson_id, course_id, rating, comments) VALUES('$user_code','$lesson_id','$course_id','$rating','$comments')";
         $db_handle->runQuery($query);
+    }
+
+    // Get all initiated transactions by user_code
+    public function get_initiated_trans_by_code($user_code) {
+        global $db_handle;
+
+        $query = "SELECT status, amount, stamp_duty, gateway_charge, trans_id, pay_method, deposit_origin,
+            created
+            FROM user_edu_deposits
+            WHERE status = '1' AND user_code = '$user_code'
+            ORDER BY created DESC ";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
     }
 }
 

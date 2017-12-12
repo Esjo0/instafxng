@@ -16,6 +16,16 @@
                    } ?>">
 
             <div class="form-group">
+                <label class="control-label col-sm-4" for="transaction_id">Transaction ID:</label>
+                <div class="col-sm-8">
+                    <input name="transaction_id" type="text" class="form-control" id="transaction_id"
+                           value="<?php if (isset($trans_id)) {
+                               echo $trans_id;
+                           } ?>" readonly="readonly">
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label class="control-label col-sm-4" for="course_name">Course:</label>
                 <div class="col-sm-8">
                     <input name="course_name" type="text" class="form-control" id="course_name"

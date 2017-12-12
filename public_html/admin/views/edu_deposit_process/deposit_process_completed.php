@@ -1,6 +1,6 @@
 <p><a href="<?php if (isset($return_page)) { echo $return_page; } ?>" class="btn btn-default" title="Go back to Education Deposits"><i class="fa fa-arrow-circle-left"></i> Go Back - Education Deposits</a></p>
 
-<p>Enter comment about the selected transaction.</p>
+<p>See details of the selected deposit transactions.</p>
 
 <div class="row">
 
@@ -28,15 +28,18 @@
                 <label class="control-label col-sm-4" for="course_name">Course:</label>
                 <div class="col-sm-8">
                     <input name="course_name" type="text" class="form-control" id="course_name"
-                           value="<?php if (isset($trans_detail['title'])) {
-                               echo $trans_detail['title'];
-                           } ?>" readonly="readonly">
+                       value="<?php if (isset($trans_detail['title'])) {
+                           echo $trans_detail['title'];
+                       } ?>" readonly="readonly">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-4" for="client_name">Client Name:</label>
                 <div class="col-sm-8">
-                    <input name="client_name" type="text" class="form-control" id="client_name" value="<?php if (isset($trans_detail['client_full_name'])) { echo $trans_detail['client_full_name']; } ?>" readonly="readonly">
+                    <input name="client_name" type="text" class="form-control" id="client_name"
+                       value="<?php if (isset($trans_detail['client_full_name'])) {
+                           echo $trans_detail['client_full_name'];
+                       } ?>" readonly="readonly">
                 </div>
             </div>
             <div class="form-group">
@@ -74,14 +77,6 @@
                                 echo number_format($total_payable, 2, ".", ",");
                             } ?></strong></p>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-4" for="admin_comment">Comment:</label>
-                <div class="col-sm-8"><textarea name="admin_comment" class="form-control" rows="7" id="admin_comment"></textarea></div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-8"><input name="edu_deposit_process_comment" type="submit" class="btn btn-success" value="Submit Comment"/></div>
             </div>
         </form>
     </div>

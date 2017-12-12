@@ -1,3 +1,10 @@
+<?php
+
+$user_code = $_SESSION['client_unique_code'];
+$initiated_trans = $education_object->get_initiated_trans_by_code($user_code);
+
+?>
+
 <div class="section-tint-red super-shadow">
     <div class="row">
         <div class="col-sm-9 text-center">
@@ -23,7 +30,10 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li><a href="fxacademy/index.php" title="Dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
-                            <li><a href="fxacademy/support_message.php" title="Dashboard"><i class="fa fa-envelope fa-fw"></i> Messages</a></li>
+                            <li><a href="fxacademy/support_message.php" title=""><i class="fa fa-envelope fa-fw"></i> Messages</a></li>
+                            <?php if($initiated_trans) { ?>
+                            <li><a href="fxacademy/pay_notify.php" title=""><i class="fa fa-envelope fa-fw"></i> Notification</a></li>
+                            <?php } ?>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="fxacademy/logout.php" title="Log Out"><i class="fa fa-sign-out fa-fw"></i> Log Out</a></li>
