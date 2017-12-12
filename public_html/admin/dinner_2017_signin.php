@@ -84,11 +84,13 @@ if(isset($_POST['search']))
                                         <div class="form-group">
                                             <div class="col-sm-12">
                                                 <div class="row">
-                                                    <div class="col-md-5">
-                                                        <input name="reservation_code" type="text" id="reservation_code" placeholder="Reservation Code" class="form-control" required>
-                                                    </div>
-                                                    <div class="col-md-1">
-                                                        <button id="search" name="search" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <input name="reservation_code" type="text" id="reservation_code" placeholder="Reservation Code" class="form-control" required>
+                                                            <span class="input-group-btn">
+                                                                <button id="search" name="search" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <video width="400" height="400" class="img-responsive" id="preview"></video>
@@ -122,16 +124,14 @@ if(isset($_POST['search']))
                                 </div>
                                 <div  class="col-sm-12">
                                     <?php
-                                    if(isset($attendee_detail) && !empty($attendee_detail)): ?>
+                                    if(isset($attendee_detail) && !empty($attendee_detail)){ ?>
                                             <p><b>Full Name: </b><?php echo $attendee_detail['full_name']; ?></p>
                                             <p><b>Ticket Type: </b><?php echo dinner_ticket_type($attendee_detail['ticket_type']); ?></p>
                                         <p><b>Reservation Code: </b><?php echo $attendee_detail['reservation_code']; ?></p>
-                                        <?php
-                                        if($attendee_detail['attended'] > 0):?>
+                                        <?php if($attendee_detail['attended'] > 0):?>
                                             <p><b>Guest Signed In Already</b></p>
-                                            <?php endif; ?>
-                                        <?php
-                                            if(isset($admin_remark) && !empty($admin_remark))
+                                        <?php endif; ?>
+                                        <?php  if(isset($admin_remark) && !empty($admin_remark))
                                             {
                                                 foreach ($admin_remark as $row2) {
                                                     ?>
@@ -145,7 +145,10 @@ if(isset($_POST['search']))
                                                         </div>
                                                     </div>
                                                 <?php } }  ?>
-                                        <?php endif; ?>
+                                    <?php }
+                                    elseif(isset($reservation_code) && empty($attendee_detail)) {?>
+                                        <p class="text-danger"><b>Sorry, this reservation code is invalid, please cross check the code and try again.</b><p>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
