@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
         $y = 134;
         imagestring($image, $fontSize, $x, $y, $string, $color);
         //TICKET TYPE
-        $string = strtoupper($ticket_type);
+        $string = strtoupper(dinner_ticket_type($ticket_type));
         $fontSize = 5;
         $x = 126;
         $y = 194;
