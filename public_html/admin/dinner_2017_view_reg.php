@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             <p>Did I mention that there will be a raffle draw and you can win amazing prizes during the InstaFxNg Ethnic Impression Dinner?</p>
 			<p>Yea! We are all set to receive you on Sunday 17th December 2017 by 5PM and there's just one more thing to do...</p>
 			<p>Kindly click the image below to download your ticket to the dinner.</p>
-			<a href="https://instafxng.com/dinner_2017/ivs/download.php?x=$ticket_url"><img  style="width: 100%; height: 80%;" src="https://instafxng.com/dinner_2017/ivs/$ticket_url" ></a>
+			<center><a href="https://instafxng.com/dinner_2017/ivs/download.php?x=$ticket_url"><img  style="width: 70%; height: 50%;" src="https://instafxng.com/dinner_2017/ivs/$ticket_url" ></a></center>
 			<p>The ticket is your pass to the dinner and it will also be used in the raffle draw, 
 			so endeavour to either download it on your mobile device or print it out and bring it along.</p>
             <p>I am really excited and I cannot wait to welcome you personally.</p>
