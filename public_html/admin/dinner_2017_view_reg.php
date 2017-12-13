@@ -80,20 +80,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
         //NAME
         $string = strtoupper($full_name);
         $fontSize = 5;
-        $x = 78;
-        $y = 134;
+        $x = 67;
+        $y = 191;
         imagestring($image, $fontSize, $x, $y, $string, $color);
         //TICKET TYPE
-        $string = strtoupper(dinner_ticket_type($ticket_type));
+        /*$string = strtoupper(dinner_ticket_type($ticket_type));
         $fontSize = 5;
         $x = 126;
-        $y = 194;
+        $y = 194;*/
         imagestring($image, $fontSize, $x, $y, $string, $color);
         //tICKET NO
         $string = strtoupper($reservation_code);
         $fontSize = 5;
-        $x = 110;
-        $y = 255;
+        $x = 112;
+        $y = 248;
         imagestring($image, $fontSize, $x, $y, $string, $color);
 
         //barcode
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
 
         $newfilename = $reservation_code. '.jpg';
         $target_file = $target_dir.$newfilename;
-        $ivs = imagejpeg($image, $target_file);
+        $ivs = imagejpeg($image, $target_file, 100);
         imagedestroy($image);
 
         $subject = "InstaFxNg Dinner 2017: THE ETHNIC IMPRESSION";
@@ -124,29 +124,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
         {
             $r_code = encrypt($reservation_code);
             $target_file = str_replace('../dinner_2017/', '', $target_file);
+            $ticket_url = str_replace('ivs/', '', $target_file);
             $from_name ="";
             $message = <<<MAIL
-    <div style="background-color: #F3F1F2">
-    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
-        <img src="https://instafxng.com/images/ifxlogo.png" />
-        <hr />
-        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Hi $full_name,</p>
-            <p>Kindly <a href='https://instafxng.com/dinner_2017/$target_file' download>click here to download your ticket to the InstaFxNg dinner</a>, themed "The Ethnic Impression".</p>
-			<p>The ticket is your pass to the dinner.</p>
-			<p>Kindly download to your smartphone, tablet device or print it out.</p>
-			<p>We look foward to recieving you on Sunday 17 December 2017 by 5pm.</p>
-			<p><a href='https://instafxng.com/dinner_2017/index.php?id=$r_code' >Click here to find more details about this event.</a></p>
-            <p>From me to you…. It’s see you soon!</p>
+            <div style="background-color: #F3F1F2">
+            <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+            <img src="https://instafxng.com/images/ifxlogo.png" />
+            <hr />
+            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Yay! Its 5 days to the InstaFxNg Ethnic Impression Dinner.</p>
+            <p>Did I mention that there will be a raffle draw and you can win amazing prizes during the InstaFxNg Ethnic Impression Dinner?</p>
+			<p>Yea! We are all set to receive you on Sunday 17th December 2017 by 5PM and there's just one more thing to do...</p>
+			<p>Kindly click the image below to download your ticket to the dinner.</p>
+			<a href="https://instafxng.com/dinner_2017/ivs/download.php?x=$ticket_url"><img  style="width: 100%; height: 80%;" src="https://instafxng.com/dinner_2017/ivs/$ticket_url" ></a>
+			<p>The ticket is your pass to the dinner and it will also be used in the raffle draw, 
+			so endeavour to either download it on your mobile device or print it out and bring it along.</p>
+            <p>I am really excited and I cannot wait to welcome you personally.</p>
+            <p><a href="https://instafxng.com/dinner_2017/ivs/download.php?x=$ticket_url">Don't forget to download your ticket here.</a></p>
+            <p>See you on Sunday by 5PM!</p>
             <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Marketing Executive,</p>
             <p>www.instafxng.com</p>
             <br /><br />
-        </div>
-        <hr />
-        <div style="background-color: #EBDEE9;">
+            </div>
+            <hr />
+            <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
                     <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>

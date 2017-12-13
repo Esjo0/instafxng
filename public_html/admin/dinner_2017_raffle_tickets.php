@@ -73,10 +73,7 @@ if(isset($page) && !empty($page))
             $showing_msg = "Showing All Reservations";
             break;
     }
-} else {
-    $query = "SELECT * FROM dinner_2017 WHERE attended = '1' ORDER BY reservation_id DESC ";
-}
-
+} else {    $query = "SELECT * FROM dinner_2017 WHERE attended = '1' ORDER BY reservation_id DESC "; }
 
 $numrows = $db_handle->numRows($query);
 
@@ -85,18 +82,12 @@ $rowsperpage = 20;
 $totalpages = ceil($numrows / $rowsperpage);
 
 // get the current page or set a default
-if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
-    $currentpage = (int) $_GET['pg'];
-} else {
-    $currentpage = 1;
-}
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {    $currentpage = (int) $_GET['pg'];} else {    $currentpage = 1;}
 if ($currentpage > $totalpages) { $currentpage = $totalpages; }
 if ($currentpage < 1) { $currentpage = 1; }
-
 $prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
 $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
-
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
