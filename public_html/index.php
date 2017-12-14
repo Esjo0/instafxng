@@ -33,12 +33,9 @@ $thisPage = "Home";
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    <?php $rand = rand(1, 2); ?>
-
-
                     <div  class="item super-shadow page-top-section">
                         <div class="row ">
-                            <div class="col-sm-6">
+                            <!--<div class="col-sm-6">
                                 <h2>The Amazing Profit Opportunity in Litecoin and Ripple</h2>
                                 <p>Did you know that some people who invested in bitcoin in it's early days made
                                     billion of dollars from it? That's right!</p>
@@ -46,11 +43,10 @@ $thisPage = "Home";
                                 <p>You don't have to worry about it, Here's another opportunity to invest in
                                     litecoin and ripple coins...
                                     <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details">Read more here</a></p>
-                            </div>
+                            </div>-->
 
-                            <div class="col-sm-6">
-                                <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details"><img src="images/litecoin.jpg" alt="" class="img-responsive" /></a>
-                            </div>
+                                <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/ilpr_lead_image.jpg" alt="" class="img-responsive" /></a>
+
                         </div>
                     </div>
                     

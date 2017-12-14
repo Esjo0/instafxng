@@ -20,8 +20,7 @@ $type = '1';
 
 $obj_push_notification->add_new_notification($message_main, $recipients, $type);
 //var_dump($new_notification);
-
-$created = date('y-m-d h-i-sa');
+$created = date('y-m-d');
 $obj_project_management->project_messages_email_notification($project_details['project_title'], $message, $created, $recipients, $author_code);
 
 

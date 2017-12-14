@@ -289,13 +289,9 @@ MAIL;
     {
         $admin_object = new AdminUser();
         $system_object = new InstafxngSystem();
-
         $author = $admin_object->get_admin_name_by_code($admin_code);
-        $created = datetime_to_text($created);
-        $recipients = "Emmanuel@instafxng.com,Scragger2010560@gmail.com,Emmanuel.Audu.Developer@gmail.com";
-
+        $created = date_to_text($created);
         $recipients = explode("," ,$recipients);
-        var_dump($recipients);
         for ($i = 0; $i < count($recipients); $i++)
         {
             $destination_details = $admin_object->get_admin_detail_by_code($recipients[$i]);
