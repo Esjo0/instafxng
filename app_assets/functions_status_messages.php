@@ -543,6 +543,7 @@ function dinner_confirmation_status($status) {
         case '1': $message = "Maybe"; break;
         case '2': $message = "Confirmed"; break;
         case '3': $message = "Declined"; break;
+        case '4': $message = "Attendance Confirmed"; break;
         default: $message = "Unknown"; break;
     }
     return $message;

@@ -22,6 +22,12 @@ $interested_no = $result;
 $result = $db_handle->numRows("SELECT * FROM dinner_2017 WHERE confirmation = '1'");
 $interested_maybe = $result;
 
+$result = $db_handle->numRows("SELECT * FROM dinner_2017 WHERE confirmation = '4' AND ticket_type IN ('0','2') ");
+$a_c_s = $result;
+
+$result = $db_handle->numRows("SELECT * FROM dinner_2017 WHERE confirmation = '4' AND ticket_type IN ('1','3') ");
+$a_c_p = $result;
+
 
 
 
@@ -51,27 +57,22 @@ if(isset($page) && !empty($page))
             $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Registered Guests";
             break;
-
         case 'yes':
             $query = "SELECT * FROM dinner_2017 WHERE confirmation = '2' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for Confirmed Registered Guests";
             break;
-
         case 'no':
             $query = "SELECT * FROM dinner_2017 WHERE confirmation = '3' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for Declined Registered Guests";
             break;
-
         case 'maybe':
             $query = "SELECT * FROM dinner_2017 WHERE confirmation = '1' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for the Waiting List (Maybe)";
             break;
-
         case 'staff':
             $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '5' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Staff Reservations";
             break;
-
         case 'hired_help':
             $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '4' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Hired Help Reservations";
@@ -96,6 +97,10 @@ if(isset($page) && !empty($page))
             $query = "SELECT * FROM dinner_2017 WHERE state_of_residence = 'Lagos State' ORDER BY reservation_id DESC ";
             $showing_msg = "Showing Results for All Reservations With Lagos State as the state of residence.     ";
             break;
+        case 'attendance_confirmed':
+            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' ORDER BY reservation_id DESC ";
+            $showing_msg = 'Showing Results for All Guests whose Attendance has been <b>CONFIRMED</b>.';
+            break;
         default:
             $query = "SELECT * FROM dinner_2017 ORDER BY reservation_id DESC ";
             $showing_msg = "Showing All Reservations";
@@ -114,6 +119,146 @@ if(isset($key_word) && !empty($key_word))
 {
     $query = "SELECT * FROM dinner_2017 WHERE email LIKE '%$key_word%' OR full_name LIKE '%$key_word%'";
     $showing_msg = "Showing Search Results For ".'"'.$key_word.'"';
+}
+
+$export_list = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM dinner_2017 WHERE confirmation = '4' AND ticket_type IN ('0','2', '1', '3') "));
+
+if(($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['iv_text'] == true))
+{
+    $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' AND ticket_type IN ('0', '1', '2', '3') ";
+    $list = $db_handle->runQuery($query);
+    $list = $db_handle->fetchAssoc($list);
+    foreach ($list as $row)
+    {
+        $client_phone = strtolower(trim($row['phone']));
+        $my_message = "This is the text they will recieve.";
+        $system_object->send_sms($client_phone, $my_message);
+        $message_success = "You have successfully sent invites via Text Message.";
+    }
+    $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' ORDER BY reservation_id DESC ";
+    $showing_msg = 'Showing Results for All Guests whose Attendance has been <b>CONFIRMED</b>.';
+}
+
+if(($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['iv_mail'] == true))
+{
+    $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' AND ticket_type IN ('0', '1', '2', '3') ";
+    $list = $db_handle->runQuery($query);
+    $list = $db_handle->fetchAssoc($list);
+    foreach ($list as $row)
+    {
+        extract($row);
+        $imgPath = '../images/final iv.jpg';
+        $image = imagecreatefromjpeg($imgPath);
+        $color = imagecolorallocate($image, 255, 255, 255);
+        //NAME
+        $string = strtoupper($full_name);
+        $fontSize = 5;
+        $x = 67;
+        $y = 191;
+        imagestring($image, $fontSize, $x, $y, $string, $color);
+        //TICKET TYPE
+        /*$string = strtoupper(dinner_ticket_type($ticket_type));
+        $fontSize = 5;
+        $x = 126;
+        $y = 194;*/
+        imagestring($image, $fontSize, $x, $y, $string, $color);
+        //tICKET NO
+        $string = strtoupper($reservation_code);
+        $fontSize = 5;
+        $x = 112;
+        $y = 248;
+        imagestring($image, $fontSize, $x, $y, $string, $color);
+
+        //barcode
+        $watermark = imagecreatefrompng('https://chart.googleapis.com/chart?chs=68x60&cht=qr&chl='.$reservation_code.'&choe=UTF-8');
+        $water_width = imagesx($watermark);
+        $water_height = imagesy($watermark);
+        $main_width = imagesx($image);
+        $main_height = imagesy($image);
+        $dime_x = 626;
+        $dime_y = 2;
+        imagecopy($image, $watermark, $dime_x, $dime_y, 0, 0, $water_width, $water_height);
+        $target_dir = "../dinner_2017/ivs/";
+
+        if (!file_exists($target_dir))
+        {
+            mkdir($target_dir, 0777);
+        }
+
+        $newfilename = $reservation_code. '.jpg';
+        $target_file = $target_dir.$newfilename;
+        $ivs = imagejpeg($image, $target_file, 100);
+        imagedestroy($image);
+
+        $subject = "InstaFxNg Dinner 2017: THE ETHNIC IMPRESSION";
+        $ticket_type = dinner_ticket_type($ticket_type);
+
+        if($ivs)
+        {
+            $r_code = encrypt($reservation_code);
+            $target_file = str_replace('../dinner_2017/', '', $target_file);
+            $ticket_url = str_replace('ivs/', '', $target_file);
+            $from_name ="";
+            $message = <<<MAIL
+            <div style="background-color: #F3F1F2">
+            <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+            <img src="https://instafxng.com/images/ifxlogo.png" />
+            <hr />
+            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Yay! Its 5 days to the InstaFxNg Ethnic Impression Dinner.</p>
+            <p>Did I mention that there will be a raffle draw and you can win amazing prizes during the InstaFxNg Ethnic Impression Dinner?</p>
+			<p>Yea! We are all set to receive you on Sunday 17th December 2017 by 5PM and there's just one more thing to do...</p>
+			<p>Kindly click on the image below to download your invite for the dinner.</p>
+			<center><a href="https://instafxng.com/dinner_2017/ivs/download.php?x=$ticket_url"><img  style="width: 70%; height: 50%;" src="https://instafxng.com/dinner_2017/ivs/$ticket_url" ></a></center>
+			<p>The invite grants you to the dinner and it will also be used in the raffle draw, 
+			so endeavour to either download it on your mobile device or print it out and bring it along.</p>
+            <p>I am really excited and I cannot wait to welcome you personally.</p>
+            <p><a href="https://instafxng.com/dinner_2017/ivs/download.php?x=$ticket_url">Don't forget to download your ticket here.</a></p>
+            <p>See you on Sunday by 5PM!</p>
+            <br /><br />
+            <p>Best Regards,</p>
+            <p>Mercy,</p>
+            <p>Marketing Executive,</p>
+            <p>www.instafxng.com</p>
+            <br /><br />
+            </div>
+            <hr />
+            <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+            $system_object->send_email($subject, $message, $email, $full_name, $from_name);
+            $update = $db_handle->runQuery("UPDATE dinner_2017 SET invite = '1', iv_url = '$target_file' WHERE reservation_code = '$reservation_code'");
+            $message_success = "You have successfully sent invites via E-mail.";
+        }
+        else
+        {
+            $message_error = "The action was not successfull.";
+        }
+    }
+    $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' ORDER BY reservation_id DESC ";
+    $showing_msg = 'Showing Results for All Guests whose Attendance has been <b>CONFIRMED</b>.';
 }
 
 $numrows = $db_handle->numRows($query);
@@ -151,6 +296,10 @@ $dinner_reg = $db_handle->fetchAssoc($result);
     <meta name="title" content="Instaforex Nigeria | All Dinner Registration" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
+    <script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
     <?php require_once 'layouts/head_meta.php'; ?>
     <script>
         function show_form(div)
@@ -199,13 +348,22 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                             <strong>Confirmed:</strong> <?php echo $interested_yes; ?><br />
                             <strong>Declined:</strong> <?php echo $interested_no; ?><br />
                             <strong>Maybe:</strong> <?php echo $interested_maybe; ?><br />
-
                             <strong>Staff:</strong> <?php echo $total_staff; ?><br />
                             <strong>Hired Help:</strong> <?php echo $total_hired_help; ?><br />
                             <strong>Client Single:</strong> <?php echo $total_single_clients; ?><br />
                             <strong>Client Plus One (Double):</strong> <?php echo $total_double_clients; ?><br />
                             <strong>VIP Single:</strong> <?php echo $total_vip_single_clients; ?><br />
                             <strong>VIP Plus One (Double):</strong> <?php echo $total_vip_double_clients; ?><br />
+                            <br />
+                            <br />
+                            <strong>Attendance Confirmed: </strong>
+                            <br/>
+                            Single <?php echo $a_c_s; ?> person(s).
+                            <br/>
+                            Plus One <?php echo $a_c_p; ?> person(s), each coming with a companion.
+                            <br/>
+                            Total: <?php echo $a_c_s + ($a_c_p * 2); ?> person(s)
+                            <br />
                         </p>
 
                         <div class="row">
@@ -223,6 +381,7 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                                         <li role="presentation"><a role="menuitem" tabindex="-1" title="Plus One (Double) Client Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=double'; ?>">Plus One Clients</a></li>
                                         <li role="presentation"><a role="menuitem" tabindex="-1" title="Single VIP Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_single'; ?>">Single VIP</a></li>
                                         <li role="presentation"><a role="menuitem" tabindex="-1" title="Plus One (Double) VIP Reservations" href="<?php echo $_SERVER['PHP_SELF'] . '?p=vip_double'; ?>">Plus One VIP</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Guest who have confirmed attendance." href="<?php echo $_SERVER['PHP_SELF'] . '?p=attendance_confirmed'; ?>">Confirmed Attendance</a></li>
                                         <li role="presentation" class="divider"></li>
                                         <li role="presentation"><a onclick="show_form('search_form')" role="menuitem" tabindex="-1" href="javascript:void(0);">Search By Name or Email</a></li>
                                         <li role="presentation" class="divider"></li>
@@ -234,6 +393,23 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                         <br />
                         <?php if(isset($showing_msg)) { ?>
                         <p class="text-center"><?php echo $showing_msg; ?></p>
+                        <?php if($showing_msg == "Showing Results for All Guests whose Attendance has been <b>CONFIRMED</b>.") { ?>
+
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <div class="row text-center">
+                                        <div class="col-sm-12">
+                                            <div class="btn-group btn-breadcrumb">
+                                        <a type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export Result to Excel</a>
+                                        <input name="iv_mail" type="submit" class="btn btn-sm btn-info" value="Send Invites (Mail)" title="Send Invites To This Category." />
+                                        <input name="iv_text" type="submit" class="btn btn-sm btn-info" value="Send Invites (Text Message)" title="Send Invites To This Category." />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br/>
+                                <br/>
+
+                            <?php } ?>
                         <?php } ?>
                         <div id="search_form" style="display: none;" class="form-group">
                             <p>Enter the clients name or an email address to search...</p>
@@ -312,7 +488,6 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                             </table>
                         </div>
                         <br /><br />
-
                         <?php if(isset($dinner_reg) && !empty($dinner_reg)) { ?>
                             <div class="tool-footer text-right">
                                 <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
@@ -320,6 +495,49 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                         <?php } ?>
 
                         <?php if(isset($dinner_reg) && !empty($dinner_reg)) { require_once 'layouts/pagination_links.php'; } ?>
+
+                        <div id="outputTable" style="display: none" >
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Phone Number</th>
+                                    <th>Ticket Type</th>
+                                    <th>Ticket No</th>
+                                    <th>Confirmation Status</th>
+                                    <th>Created</th>
+                                    <th>State Of Residence</th>
+                                    <th>Guests Comments</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                if(isset($export_list) && !empty($export_list)) {
+                                    foreach ($export_list as $row) {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row['full_name']; ?></td>
+                                            <td><?php echo $row['email']; ?></td>
+                                            <td><?php echo $row['phone']; ?></td>
+                                            <td><?php echo dinner_ticket_type($row['ticket_type']); ?></td>
+                                            <td><?php echo $row['reservation_code'] ?></td>
+                                            <td><?php echo dinner_confirmation_status($row['confirmation']); ?></td>
+                                            <td><?php echo datetime_to_text2($row['created']); ?></td>
+                                            <td><?php echo $row['state_of_residence']; ?></td>
+                                            <td><?php echo nl2br(htmlspecialchars($row['comments'])) ?></td>
+                                        </tr>
+                                    <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <script>
+                            window.exportExcel =     function exportExcel()
+                            {
+                                var filename = 'Guest_list_'+Math.floor(Date.now() / 1000);
+                                alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#outputTable",{headers:true})');
+                            }
+                        </script>
 
 
                     </div>
