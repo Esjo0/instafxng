@@ -135,9 +135,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             <p>Yay! Its 5 days to the InstaFxNg Ethnic Impression Dinner.</p>
             <p>Did I mention that there will be a raffle draw and you can win amazing prizes during the InstaFxNg Ethnic Impression Dinner?</p>
 			<p>Yea! We are all set to receive you on Sunday 17th December 2017 by 5PM and there's just one more thing to do...</p>
-			<p>Kindly click the image below to download your ticket to the dinner.</p>
+			<p>Kindly click on the image below to download your invite for the dinner.</p>
 			<center><a href="https://instafxng.com/dinner_2017/ivs/download.php?x=$ticket_url"><img  style="width: 70%; height: 50%;" src="https://instafxng.com/dinner_2017/ivs/$ticket_url" ></a></center>
-			<p>The ticket is your pass to the dinner and it will also be used in the raffle draw, 
+			<p>The invite grants you to the dinner and it will also be used in the raffle draw, 
 			so endeavour to either download it on your mobile device or print it out and bring it along.</p>
             <p>I am really excited and I cannot wait to welcome you personally.</p>
             <p><a href="https://instafxng.com/dinner_2017/ivs/download.php?x=$ticket_url">Don't forget to download your ticket here.</a></p>
@@ -196,6 +196,29 @@ MAIL;
         }
     }
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['attendance_confirmed'] == true)
+{
+    extract($_POST);
+    $query = "UPDATE dinner_2017 SET confirmation = '4' WHERE reservation_code = '$reservation_code' ";
+    $update = $db_handle->runQuery($query);
+    if($update)
+    {
+        $message_success = "You have successfully <b class='text-uppercase'>confirmed</b> this guests attendance.";
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['attendance_declined'] == true)
+{
+    extract($_POST);
+    $query = "UPDATE dinner_2017 SET confirmation = '2' WHERE reservation_code = '$reservation_code' ";
+    $update = $db_handle->runQuery($query);
+    if($update)
+    {
+        $message_success = "You have successfully <b class='text-uppercase'>declined</b> this guests attendance.";
+    }
+}
+
 if(empty($attendee_detail))
 {
     redirect_to("./");
@@ -242,13 +265,17 @@ if(empty($attendee_detail))
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                    <input name="reservation_code" type="hidden" value="<?php echo $attendee_detail['reservation_code']; ?>">
+                                    <input name="<?php if($attendee_detail['confirmation'] == '4'){echo 'attendance_declined';}else{echo 'attendance_confirmed';} ?>" value="<?php if($attendee_detail['confirmation'] == '4'){echo 'Will Not Be In Attendance';}else{echo 'Will Be In Attendance';} ?>" type="submit" class="pull-right btn btn-lg btn-success <?php if($attendee_detail['confirmation'] == '4'){echo 'btn-danger';}else{echo 'btn-success';} ?>" title="<?php if($attendee_detail['confirmation'] == '4'){echo 'Guest has confirmed his/her attendance.';}else{echo 'Confirm that the guest will attend the event.';} ?> " />
+                                </form>
                                 <p>
                                     <a href="dinner_2017_all_reg.php" class="btn btn-default" title="Go back to All Registrations">
                                         <i class="fa fa-arrow-circle-left"></i>
                                         Go Back - All Reservations
                                     </a>
                                 </p>
-                                
+
                                 <?php require_once '../layouts/feedback_message.php'; ?>
                                 <p>Update and record your comment.</p>
 
@@ -278,7 +305,7 @@ if(empty($attendee_detail))
                                             <input type="text" class="form-control" id="state_of_residence" name="state_of_residence" value="<?php echo $attendee_detail['state_of_residence']; ?>" readonly>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div  class="form-group">
                                         <label class="control-label col-sm-3" for="ticket_type">Ticket Type:</label>
                                         <div class="col-sm-9 col-lg-5">
                                             <div class="radio">
@@ -301,7 +328,7 @@ if(empty($attendee_detail))
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div <?php if($attendee_detail['confirmation'] == '4'){echo 'style="display: none;"';}; ?> class="form-group">
                                         <label class="control-label col-sm-3" for="confirmation_status">Confirmation Status:</label>
                                         <div class="col-sm-9 col-lg-5">
                                             <div class="radio">

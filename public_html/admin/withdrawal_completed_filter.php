@@ -271,8 +271,39 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
 
                                 <?php if(isset($completed_withdrawal_requests_filter) && !empty($completed_withdrawal_requests_filter)) { require 'layouts/pagination_links.php'; } ?>
 
-                                <div class="container-fluid" >
+                                <div  style="display: none" class="container-fluid" >
                                     <table id="outputTable" class="table table-responsive table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Transaction ID</th>
+                                            <th>Client Name</th>
+                                            <th>IFX Account</th>
+                                            <th>Dollar Amount</th>
+                                            <th>Amount To Pay</th>
+                                            <th>Date Created</th>
+                                            <th>Last Updated</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        if(isset($completed_withdrawal_requests_filter_export) && !empty($completed_withdrawal_requests_filter_export)) {
+                                            foreach ($completed_withdrawal_requests_filter_export as $row) {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $row['trans_id']; ?></td>
+                                                    <td><?php echo $row['full_name']; ?></td>
+                                                    <td><?php echo $row['ifx_acct_no']; ?></td>
+                                                    <td class="nowrap">&dollar; <?php echo number_format($row['dollar_withdraw'], 2, ".", ","); ?></td>
+                                                    <td class="nowrap">&#8358; <?php echo number_format($row['naira_total_withdrawable'], 2, ".", ","); ?></td>
+                                                    <td><?php echo datetime_to_text($row['created']); ?></td>
+                                                    <td><?php echo datetime_to_text($row['updated']); ?></td>
+                                                </tr>
+                                            <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="container-fluid" >
+                                    <table class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th>Transaction ID</th>

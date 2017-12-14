@@ -39,12 +39,12 @@ if (isset($_POST['process']))
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Dear $full_name,</p>
-            <p>Yay! I’m so excited you are coming to the InstaFxNg 2017 Dinner themed The Ethnic Impression.</p>
+            <p>Yay! I'm so excited you are coming to the InstaFxNg 2017 Dinner themed The Ethnic Impression.</p>
             <p>Your VIP seat has been reserved at the dinner.</p> 
             <p>I assure you nothing short of a great time of fun, great food and entertainment.</p>
-            <p>It promises to be awesome and I can’t wait to receive you at the dinner.</p>
+            <p>It promises to be awesome and I can't wait to receive you at the dinner.</p>
             <p>I look forward to giving you a royal welcome on the 17th of December.</p>
-            <p>From me to you…. It’s see you soon!</p>
+            <p>From me to you…. It's see you soon!</p>
             <br /><br />
             <p>Best Regards,</p>
             <p>Mercy,</p>
