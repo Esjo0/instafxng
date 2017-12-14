@@ -156,7 +156,7 @@ class Project_Management
         $admin_name = $destination_details['first_name'];
         $admin_email = $destination_details['email'];
         $subject = 'NEW PROJECT ASSIGNMENT';
-        $message = <<<MAIL
+        $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -172,9 +172,9 @@ MAIL;
         $all_allowed_admin = explode("," ,$all_allowed_admin);
         for ($i = 0; $i < count($all_allowed_admin); $i++)
         {
-            $message .= $admin_object->get_admin_name_by_code($all_allowed_admin[$i])."<br/>";
+            $message_final .= $admin_object->get_admin_name_by_code($all_allowed_admin[$i])."<br/>";
         }
-        $message .= <<<MAIL
+        $message_final .= <<<MAIL
                                 <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />
                                 <p>Best Regards,</p>
@@ -210,7 +210,7 @@ MAIL;
 MAIL;
         //echo $message;
         $system_object = new InstafxngSystem();
-        $system_object->send_email($subject, $message, $admin_email, $admin_name);
+        $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
         //echo $message;
     }
 
@@ -226,7 +226,7 @@ MAIL;
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
             $subject = 'NEW PROJECT ASSIGNMENT';
-            $message = <<<MAIL
+            $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -242,9 +242,9 @@ MAIL;
             $all_allowed_admin = explode("," ,$all_allowed_admin);
             for ($i = 0; $i < count($all_allowed_admin); $i++)
             {
-                $message .= $admin_object->get_admin_name_by_code($all_allowed_admin[$i])."<br/>";
+                $message_final .= $admin_object->get_admin_name_by_code($all_allowed_admin[$i])."<br/>";
             }
-            $message .= <<<MAIL
+            $message_final .= <<<MAIL
                                 <p>On this project, you will be reporting to $supervisor.<p>
                                 <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />
@@ -280,7 +280,7 @@ MAIL;
                     </div>
 MAIL;
             //echo $message;
-            $system_object->send_email($subject, $message, $admin_email, $admin_name);
+            $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
             //echo $message;
         }
     }
@@ -292,15 +292,17 @@ MAIL;
 
         $author = $admin_object->get_admin_name_by_code($admin_code);
         $created = datetime_to_text($created);
+        $recipients = "Emmanuel@instafxng.com,Scragger2010560@gmail.com,Emmanuel.Audu.Developer@gmail.com";
 
         $recipients = explode("," ,$recipients);
+        var_dump($recipients);
         for ($i = 0; $i < count($recipients); $i++)
         {
             $destination_details = $admin_object->get_admin_detail_by_code($recipients[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
             $subject = 'NEW PROJECT MESSAGE';
-            $message = <<<MAIL
+            $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -344,9 +346,7 @@ MAIL;
                         </div>
                     </div>
 MAIL;
-            //echo $message;
-            $system_object->send_email($subject, $message, $admin_email, $admin_name);
-            //echo $message;
+            $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
         }
     }
 
