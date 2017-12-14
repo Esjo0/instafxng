@@ -22,10 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         
         if($_POST['process'] == 'Save') {            
-            $new_campaign_email = $system_object->add_new_campaign_email($campaign_email_no, $subject, $sender, $campaign_category, $content, $_SESSION['admin_unique_code'], $campaign_email_status);
+            $new_campaign_email = $system_object->add_new_campaign_email($campaign_email_no, $sender, $subject, $campaign_category, $content, $_SESSION['admin_unique_code'], $campaign_email_status);
         } else {
             unset($campaign_email_no);
-            $new_campaign_email = $system_object->add_new_campaign_email($campaign_email_no, $subject, $sender, $campaign_category, $content, $_SESSION['admin_unique_code'], $campaign_email_status);
+            $new_campaign_email = $system_object->add_new_campaign_email($campaign_email_no, $sender, $subject, $campaign_category, $content, $_SESSION['admin_unique_code'], $campaign_email_status);
         }
         
         if($new_campaign_email) {
