@@ -18,9 +18,11 @@ $result = $db_handle->runQuery($query);
 $selected_loyalty_year = $db_handle->fetchAssoc($result);
 /*****************************************************/
 ?>
-
-
-
+<div class="row ">
+    <img src="images/ilpr_landing_image.jpg" alt="" class="img-responsive" />
+</div>
+<br/>
+<br/>
 <header><h5>Here are the Guaranteed Winners and their Cash Prizes.</h5></header>
 <article>
     <div class="table-responsive mtl">
@@ -44,8 +46,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
             <tr>
                 <td><?php echo $count; ?></td>
                 <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
-                <td><?php echo number_format(($row['point_earned']), 2, ".", ","); ?></td>
-                <td><?php if($count == 1){echo "N1,000,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",") ;}elseif ($count == 2){echo "N500,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");}elseif ($count == 3){echo "N250,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");}elseif ($count == 4){echo "N150,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");}elseif ($count == 5){echo "N100,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");}elseif (in_array($count, range(6,10))){echo "N50,000 + "."$".number_format(($row['point_earned']/10), 2, ".", ",")." OR "."N".number_format((($row['point_earned']/10)* WITHDRATE), 2, ".", ",");} ?></td>
+                <td><?php if($count == 1){echo "N1,000,000" ;}elseif ($count == 2){echo "N500,000";}elseif ($count == 3){echo "N250,000";}elseif ($count == 4){echo "N150,000";}elseif ($count == 5){echo "N100,000";}elseif (in_array($count, range(6,10))){echo "N50,000";} ?></td>
             </tr>
             <?php $count++; } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
             </tbody>

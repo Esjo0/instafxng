@@ -83,9 +83,9 @@ if(strlen($news_id) > 4) {
         $db_handle->runQuery("UPDATE article SET view_count = view_count + 1 WHERE article_id = {$article_id} LIMIT 1");
 
         // Select the latest comments
-        $result = $db_handle->runQuery("SELECT * FROM article_comments, article_visitors  WHERE article_comments.visitor_id = article_visitors.visitor_id AND article_comments.article_id = $article_id AND article_comments.status = 'ON' ORDER BY article_comments.created ASC LIMIT 20");
+        $result = $db_handle->runQuery("SELECT *, article_comments.created FROM article_comments, article_visitors  WHERE article_comments.visitor_id = article_visitors.visitor_id AND article_comments.article_id = $article_id AND article_comments.status = 'ON' ORDER BY article_comments.created ASC LIMIT 20");
         $latest_comments = $db_handle->fetchAssoc($result);
-        
+
         // Select the latest news
         $result = $db_handle->runQuery("SELECT * FROM article ORDER BY article_id DESC LIMIT  1, 6");
         $latest_news = $db_handle->fetchAssoc($result);
@@ -303,7 +303,7 @@ if(strlen($news_id) > 4) {
                                                                     endif; ?>
                                                                     </h5>
                                                                     <ul class="media-date text-uppercase reviews list-inline">
-                                                                        <small class="text-muted"><?php echo date_to_text($row['created']); ?></small>
+                                                                        <small class="text-muted"><?php echo datetime_to_text($row['created']); ?></small>
                                                                     </ul>
                                                                     <p class="media-comment">
                                                                         <?php echo $row['comment'];?>
@@ -311,48 +311,6 @@ if(strlen($news_id) > 4) {
                                                                     <a data-target="#reply-comment<?php echo $row['comment_id'];?>" data-toggle="modal" class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
                                                                 </div>
                                                             </div>
-                                                            <!--<div class="collapse" id="replyOne">
-                                                                <ul class="media-list">
-                                                                    <li class="media media-replied">
-                                                                        <a class="pull-left" href="#">
-                                                                            <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/ManikRathee/128.jpg" alt="profile">
-                                                                        </a>
-                                                                        <div class="media-body">
-                                                                            <div class="well well-lg">
-                                                                                <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> The Hipster</h4>
-                                                                                <ul class="media-date text-uppercase reviews list-inline">
-                                                                                    <li class="dd">22</li>
-                                                                                    <li class="mm">09</li>
-                                                                                    <li class="aaaa">2014</li>
-                                                                                </ul>
-                                                                                <p class="media-comment">
-                                                                                    Nice job Maria.
-                                                                                </p>
-                                                                                <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="media media-replied" id="replied">
-                                                                        <a class="pull-left" href="#">
-                                                                            <img class="media-object img-circle" src="https://pbs.twimg.com/profile_images/442656111636668417/Q_9oP8iZ.jpeg" alt="profile">
-                                                                        </a>
-                                                                        <div class="media-body">
-                                                                            <div class="well well-lg">
-                                                                                <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> Mary</h4></h4>
-                                                                                <ul class="media-date text-uppercase reviews list-inline">
-                                                                                    <li class="dd">22</li>
-                                                                                    <li class="mm">09</li>
-                                                                                    <li class="aaaa">2014</li>
-                                                                                </ul>
-                                                                                <p class="media-comment">
-                                                                                    Thank you Guys!
-                                                                                </p>
-                                                                                <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>-->
                                                         </li>
                                                             <!--Modal - confirmation boxes-->
                                                             <div id="reply-comment<?php echo $row['comment_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
