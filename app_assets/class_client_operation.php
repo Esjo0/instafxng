@@ -622,7 +622,7 @@ MAIL;
     public function get_deposit_transaction($trans_id) {
         global $db_handle;
 
-        $query = "SELECT ud.dollar_ordered, ud.naira_total_payable, ud.status, ud.created,
+        $query = "SELECT ud.dollar_ordered, ud.naira_total_payable, ud.status, ud.created, ud.client_pay_method,
                 ui.user_code, ui.ifx_acct_no, u.first_name, u.last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
                 u.phone, u.email
                 FROM user_deposit AS ud
@@ -637,13 +637,13 @@ MAIL;
         return $deposit_details ? $deposit_details : false;
     }
 
-    public function user_payment_notification($trans_id, $pay_method, $pay_date, $teller_no, $naira_amount, $comment = "") {
+    public function user_payment_notification($trans_id, $pay_date, $teller_no, $naira_amount, $comment = "") {
         global $db_handle;
 
         $transaction_detail = $this->get_deposit_transaction($trans_id);
 
         if($transaction_detail['status'] == 1) {
-            $query = "UPDATE user_deposit SET status = '2', client_pay_method = '$pay_method', client_pay_date = '$pay_date',
+            $query = "UPDATE user_deposit SET status = '2', client_pay_date = '$pay_date',
             client_reference = '$teller_no', client_naira_notified = '$naira_amount', client_comment = '$comment',
             client_notified_date = NOW() WHERE trans_id = '$trans_id' LIMIT 1";
 
@@ -1045,6 +1045,67 @@ MAIL;
         $db_handle->runQuery($query);
 
         return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    public function log_deposit_pay_method($trans_id, $pay_method) {
+        global $db_handle;
+
+        $query = "UPDATE user_deposit SET client_pay_method = '$pay_method' WHERE trans_id = '$trans_id' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    public function requery_webpay_deposit($trans_id) {
+        global $db_handle;
+
+        /***************** GTPAY REQUERY FEATURE **********************************/
+        $query = "SELECT naira_total_payable, status FROM user_deposit WHERE trans_id = '$trans_id' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $trans_detail = $fetched_data[0];
+
+        if(!empty($trans_detail)) {
+            $naira_total_payable = $trans_detail['naira_total_payable'];
+            $amount = $naira_total_payable * 100;
+
+            // GTPay hashing instruction using hash id provide by GTPay
+            $to_hash = "4745" . $trans_id . "804726DAB9A13B6A8BD1473A0EF6D9DA8D839DFADC9592D5AD3D0EC0A8E8866D927911F77C2B0162981068D0FA0BEEE27E29C4D02C4474583DCE385BE88CA7B8";
+            $hash_key = hash("SHA512", $to_hash);
+
+            $verifyResponse = file_get_contents('https://ibank.gtbank.com/GTPayService/gettransactionstatus.json?mertid=4745&amount=' . $amount . '&tranxid=' . $trans_id . '&hash=' . $hash_key);
+            $responseData = json_decode($verifyResponse);
+
+            if($responseData->ResponseCode == '00') {
+                $client_naira_notified = $responseData->Amount / 100;
+                $query = "UPDATE user_deposit SET client_naira_notified = '$client_naira_notified', client_pay_date = NOW(), client_notified_date = NOW(), status = '2' WHERE trans_id = '$trans_id' LIMIT 1";
+                $db_handle->runQuery($query);
+
+                $message_success = "The transaction ID: $trans_id was SUCCESSFUL on the GTPay platform and has been moved to Notified Deposit.";
+                $return_msg = array(
+                    'type' => 1,
+                    'resp' => $message_success
+                );
+
+                return $return_msg;
+            } else {
+                // Move Transaction to Failed if not already in failed
+                if($trans_detail['status'] != '9') {
+                    $query = "UPDATE user_deposit SET status = '9' WHERE trans_id = '$trans_id' LIMIT 1";
+                    $db_handle->runQuery($query);
+                }
+
+                $message_error = "The transaction ID: $trans_id was NOT SUCCESSFUL on the GTPay platform and would remain in Deposit Failed. <strong>GTPAY Response: " . $responseData->ResponseDescription . "</strong>";
+                $return_msg = array(
+                    'type' => 2,
+                    'resp' => $message_error
+                );
+
+                return $return_msg;
+            }
+        } else {
+            return false;
+        }
     }
 
     public function log_withdrawal($trans_id, $ifx_acc_id, $exchange, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, $phone_password) {

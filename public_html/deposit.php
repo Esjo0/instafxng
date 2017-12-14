@@ -257,13 +257,15 @@ if(isset($_POST['deposit_funds_finalize'])) {
 
 // This section processes - views/deposit_funds_pay_type.php
 if(isset($_POST['deposit_funds_pay_type'])) {
+    $client_operation = new clientOperation();
+
     $trans_id_encrypted = $db_handle->sanitizePost($_POST['transaction_no']);
     $trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
     $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
     
     $pay_type = $db_handle->sanitizePost($_POST['pay_type']);
-    
-    $client_operation = new clientOperation();
+    $client_operation->log_deposit_pay_method($trans_id, $pay_type); // Update payment method selected
+
     $transaction = $client_operation->get_deposit_by_id_mini($trans_id);
     extract($transaction);
     

@@ -4,39 +4,26 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-/***************** GTPAY REQUERY FEATURE **********************************/
 $get_params = allowed_get_params(['id']);
 $trans_id_encrypted = $get_params['id'];
 $trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
 $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 
-$query = "SELECT naira_total_payable FROM user_deposit WHERE trans_id = '$trans_id' LIMIT 1";
-$result = $db_handle->runQuery($query);
-$fetched_data = $db_handle->fetchAssoc($result);
-$trans_detail = $fetched_data[0];
+if($get_params['id'] && !empty($trans_id)) {
+    $client_operation = new clientOperation();
+    $requery_feedback = $client_operation->requery_webpay_deposit($trans_id);
 
-if(!empty($trans_detail)) {
-    $naira_total_payable = $trans_detail['naira_total_payable'];
-    $amount = $naira_total_payable * 100;
-
-    // GTPay hashing instruction using hash id provide by GTPay
-    $to_hash = "4745" . $trans_id . "804726DAB9A13B6A8BD1473A0EF6D9DA8D839DFADC9592D5AD3D0EC0A8E8866D927911F77C2B0162981068D0FA0BEEE27E29C4D02C4474583DCE385BE88CA7B8";
-    $hash_key = hash("SHA512", $to_hash);
-
-    $verifyResponse = file_get_contents('https://ibank.gtbank.com/GTPayService/gettransactionstatus.json?mertid=4745&amount=' . $amount . '&tranxid=' . $trans_id . '&hash=' . $hash_key);
-    $responseData = json_decode($verifyResponse);
-
-    if($responseData->ResponseCode == '00') {
-        $client_naira_notified = $responseData->Amount / 100;
-        $query = "UPDATE user_deposit SET client_naira_notified = '$client_naira_notified', client_pay_date = NOW(), client_pay_method = '1', client_notified_date = NOW(), status = '2' WHERE trans_id = '$trans_id' LIMIT 1";
-        $db_handle->runQuery($query);
-
-        $message_success = "The transaction ID: $trans_id was SUCCESSFUL on the GTPay platform and has been moved to Notified Deposit.";
+    if($requery_feedback) {
+        switch ($requery_feedback['type']) {
+            case 1: $message_success = $requery_feedback['resp']; break;
+            case 2: $message_error = $requery_feedback['resp']; break;
+            default: $message_error = "An error occurred, please try again.";
+        }
     } else {
-        $message_error = "The transaction ID: $trans_id was NOT SUCCESSFUL on the GTPay platform and would remain in Deposit Failed. <strong>GTPAY Response: " . $responseData->ResponseDescription . "</strong>";
+        $message_error = "The transaction ID specified could not be found.";
     }
 }
-/******************* END: GTPAY REQUERY FEATURE **********************/
+
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
