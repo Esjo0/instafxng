@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             <img src="https://instafxng.com/images/ifxlogo.png" />
             <hr />
             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Yay! Its 5 days to the InstaFxNg Ethnic Impression Dinner.</p>
+            <p>Yay! Its 2 days to the InstaFxNg Ethnic Impression Dinner.</p>
             <p>Did I mention that there will be a raffle draw and you can win amazing prizes during the InstaFxNg Ethnic Impression Dinner?</p>
 			<p>Yea! We are all set to receive you on Sunday 17th December 2017 by 5PM and there's just one more thing to do...</p>
 			<p>Kindly click on the image below to download your invite for the dinner.</p>
@@ -328,9 +328,12 @@ if(empty($attendee_detail))
                                             </div>
                                         </div>
                                     </div>
-                                    <div <?php if($attendee_detail['confirmation'] == '4'){echo 'style="display: none;"';}; ?> class="form-group">
+                                    <div  class="form-group">
                                         <label class="control-label col-sm-3" for="confirmation_status">Confirmation Status:</label>
                                         <div class="col-sm-9 col-lg-5">
+                                            <div class="radio">
+                                                <label><input type="radio" name="confirmation_status" value="4" <?php if($attendee_detail['confirmation'] == '4') { echo "checked"; }; ?>><b class="text-uppercase text-success">Will Be In Attendance</b></label>
+                                            </div>
                                             <div class="radio">
                                                 <label><input type="radio" name="confirmation_status" value="1" <?php if($attendee_detail['confirmation'] == '1') { echo "checked"; }; ?>>Maybe</label>
                                             </div>
