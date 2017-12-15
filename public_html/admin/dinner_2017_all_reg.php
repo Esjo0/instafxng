@@ -5,6 +5,7 @@ if (!$session_admin->is_logged_in())
     redirect_to("login.php");
 }
 
+
 $get_params = allowed_get_params(['p', 'x', 'q']);
 $page = $get_params['p'];
 $state = $get_params['x'];
@@ -78,27 +79,27 @@ if(isset($page) && !empty($page))
             $showing_msg = "Showing Results for All Hired Help Reservations";
             break;
         case 'single':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '0' ORDER BY reservation_id DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '0' ORDER BY reservation_id ASC ";
             $showing_msg = "Showing Results for All Single Client Reservations";
             break;
         case 'double':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '1' ORDER BY reservation_id DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '1' ORDER BY reservation_id ASC ";
             $showing_msg = "Showing Results for All Plus One Client Reservations";
             break;
         case 'vip_single':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '2' ORDER BY reservation_id DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '2' ORDER BY reservation_id ASC ";
             $showing_msg = "Showing Results for All Single VIP Reservations";
             break;
         case 'vip_double':
-            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '3' ORDER BY reservation_id DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE ticket_type = '3' ORDER BY reservation_id ASC ";
             $showing_msg = "Showing Results for All Plus One VIP Reservations";
             break;
         case 'lagos':
-            $query = "SELECT * FROM dinner_2017 WHERE state_of_residence = 'Lagos State' ORDER BY reservation_id DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE state_of_residence = 'Lagos State' ORDER BY reservation_id ASC ";
             $showing_msg = "Showing Results for All Reservations With Lagos State as the state of residence.     ";
             break;
         case 'attendance_confirmed':
-            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' ORDER BY reservation_id DESC ";
+            $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' ORDER BY reservation_id ASC ";
             $showing_msg = 'Showing Results for All Guests whose Attendance has been <b>CONFIRMED</b>.';
             break;
         default:
@@ -112,7 +113,7 @@ if(isset($page) && !empty($page))
 
 if(isset($state) && !empty($state))
 {
-    $query = "SELECT * FROM dinner_2017 WHERE state_of_residence = '$state' ORDER BY reservation_id DESC ";
+    $query = "SELECT * FROM dinner_2017 WHERE state_of_residence = '$state' ORDER BY reservation_id ASC ";
     $showing_msg = "Showing Results for All $state Residents";
 }
 if(isset($key_word) && !empty($key_word))
@@ -130,12 +131,15 @@ if(($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['iv_text'] == true))
     $list = $db_handle->fetchAssoc($list);
     foreach ($list as $row)
     {
+        extract($row);
         $client_phone = strtolower(trim($row['phone']));
-        $my_message = "This is the text they will recieve.";
+        $my_message = "We look forward to seeing you tomorrow 
+        17/12/17 by 5pm at Four Points by Sheraton Hotel,Plot 9/10, 
+        Block 2, Oniru Chieftaincy Estate,Victoria Island,Lagos. Ticket No: ".strtoupper($reservation_code);
         $system_object->send_sms($client_phone, $my_message);
         $message_success = "You have successfully sent invites via Text Message.";
     }
-    $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' ORDER BY reservation_id DESC ";
+    $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' ORDER BY reservation_id ASC ";
     $showing_msg = 'Showing Results for All Guests whose Attendance has been <b>CONFIRMED</b>.';
 }
 
@@ -257,13 +261,13 @@ MAIL;
             $message_error = "The action was not successfull.";
         }
     }
-    $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' ORDER BY reservation_id DESC ";
+    $query = "SELECT * FROM dinner_2017 WHERE confirmation = '4' ORDER BY reservation_id ASC ";
     $showing_msg = 'Showing Results for All Guests whose Attendance has been <b>CONFIRMED</b>.';
 }
 
 $numrows = $db_handle->numRows($query);
 
-$rowsperpage = 20;
+$rowsperpage = 1;
 
 $totalpages = ceil($numrows / $rowsperpage);
 
@@ -494,7 +498,61 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                             </div>
                         <?php } ?>
 
-                        <?php if(isset($dinner_reg) && !empty($dinner_reg)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($dinner_reg) && !empty($dinner_reg)):?>
+                            <div class="row text-center" style="padding: 0 25px;">
+                                <div class="col-sm-12">
+                                    <ul class="pagination pagination-sm">
+                                        <?php
+                                        $CurrentURL = getCurrentURL();
+                                        $CurrentURL = str_replace('&pg=1', '', $CurrentURL);
+                                        $CurrentURL = str_replace('&pg='.$prevpage, '', $CurrentURL);
+                                        $CurrentURL = str_replace('&pg='.$x, '', $CurrentURL);
+                                        $CurrentURL = str_replace('&pg='.$nextpage, '', $CurrentURL);
+                                        $CurrentURL = str_replace('&pg='.$totalpages, '', $CurrentURL);
+                                        //var_dump($CurrentURL);
+                                        $range = 4;
+
+                                        // if not on page 1, don't show back links
+                                        if ($currentpage > 1) {
+                                            // show << link to go back to page 1
+                                            echo "<li><a href=\"{$CurrentURL}&pg=1\">First</a></li>";
+                                            // get previous page num
+                                            $prevpage = $currentpage - 1;
+                                            // show < link to go back to 1 page
+                                            echo "<li><a href='{$CurrentURL}&pg=$prevpage'><</a><li>";
+                                        }
+
+                                        // loop to show links to range of pages around current page
+                                        for ($x = ($currentpage - $range); $x < (($currentpage + $range) + 1); $x++) {
+                                            // if it's a valid page number...
+                                            if (($x > 0) && ($x <= $totalpages)) {
+                                                // if we're on current page...
+                                                if ($x == $currentpage) {
+                                                    // 'highlight' it but don't make a link
+                                                    echo "<li class=\"active\"><a href=''>$x</a></li>";
+                                                    // if not current page...
+                                                } else {
+                                                    // make it a link
+                                                    echo "<li><a href='{$CurrentURL}&pg=$x'>$x</a></li>";
+                                                } // end else
+                                            } // end if
+                                        } // end for
+
+                                        // if not on last page, show forward and last page links
+                                        if ($currentpage != $totalpages) {
+                                            // get next page
+                                            $nextpage = $currentpage + 1;
+                                            // echo forward link for next page
+                                            echo "<li><a href='{$CurrentURL}&pg=$nextpage'>></a></li>";
+                                            // echo forward link for lastpage
+                                            echo "<li><a href='$CurrentURL}&pg=$totalpages'>Last</a></li>";
+                                        } // end if
+                                        /****** end build pagination links ******/
+                                        ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php endif; ?>
 
                         <div id="outputTable" style="display: none" >
                             <table class="table">
