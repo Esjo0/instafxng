@@ -267,7 +267,7 @@ MAIL;
 
 $numrows = $db_handle->numRows($query);
 
-$rowsperpage = 1;
+$rowsperpage = 20;
 
 $totalpages = ceil($numrows / $rowsperpage);
 
