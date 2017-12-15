@@ -126,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             $target_file = str_replace('../dinner_2017/', '', $target_file);
             $ticket_url = str_replace('ivs/', '', $target_file);
             $from_name ="";
+            $stg = strtoupper($reservation_code);
             $message = <<<MAIL
             <div style="background-color: #F3F1F2">
             <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
@@ -135,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
             <p>Yay! Its 2 days to the InstaFxNg Ethnic Impression Dinner.</p>
             <p>Did I mention that there will be a raffle draw and you can win amazing prizes during the InstaFxNg Ethnic Impression Dinner?</p>
 			<p>Yea! We are all set to receive you on Sunday 17th December 2017 by 5PM and there's just one more thing to do...</p>
+			<p><b>Your Ticket Number is $stg</b></p>
 			<p>Kindly click on the image below to download your invite for the dinner.</p>
 			<center><a href="https://instafxng.com/dinner_2017/ivs/download.php?x=$ticket_url"><img  style="width: 70%; height: 50%;" src="https://instafxng.com/dinner_2017/ivs/$ticket_url" ></a></center>
 			<p>The invite grants you to the dinner and it will also be used in the raffle draw, 
