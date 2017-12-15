@@ -10,6 +10,8 @@ if (isset($_POST['reply_comment']))
     $email = $db_handle->sanitizePost($_POST['email']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
     $article_id = $db_handle->sanitizePost($_POST['article_id']);
+    $article_title = $db_handle->sanitizePost($_POST['article_title']);
+    $article_url = $db_handle->sanitizePost($_POST['article_url']);
     $comment_id = $db_handle->sanitizePost($_POST['comment_id']);
 
     if(empty($name) || empty($email) || empty($comment)) {
@@ -21,6 +23,53 @@ if (isset($_POST['reply_comment']))
         $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('".$email."', '".$name."')");
         $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_visitors WHERE email = '".$email."';");
         $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment, reply_to, status) VALUES(@v_id, '".$article_id."', '".$comment."', '".$comment_id."', 'ON')");
+
+        $name = explode(' ', $name);
+        $name = $name[0];
+        $subject = strtoupper($name).", Your Comment Has Been Replied";
+        $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>Dear $name,</p>
+                                <p>Your comment on '$article_title' has been replied.</p>                                                              
+                                <p><a href="$article_url">Click here to view all the replies to your comments on this article.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Instafxng Support,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
+                                    <p><strong>Office Number:</strong> 08028281192</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+        $system_object->send_email($subject, $message_final, $email, $name);
+
         $message_success = "You have successfully added a reply.";
     }
 }
@@ -174,7 +223,8 @@ if (isset($_POST['delete_comment']))
                                                                         <input name="name" type="hidden" id="name" value="Instaforex NG" class="form-control" required/>
                                                                         <input type="hidden" name="article_id" value="<?php echo $row['article_id'];?>"/>
                                                                         <input type="hidden" name="comment_id" value="<?php echo $row['comment_id'];?>"/>
-
+                                                                        <input type="hidden" name="article_title" value="<?php echo $row['title']; ?>"/>
+                                                                        <input type="hidden" name="article_url" value="https://instafxng.com/news1/id/<?php echo $row['article_id'] . '/u/' . $row['url'] . '/'; ?>"/>
                                                                     </div>
                                                                 </div>
 
