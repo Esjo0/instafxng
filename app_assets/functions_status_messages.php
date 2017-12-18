@@ -373,6 +373,7 @@ function client_group_query($client_group) {
         case '29': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM point_ranking_log AS prl INNER JOIN user AS u ON prl.user_code = u.user_code WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code"; break;
         case '30': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE (td.date_earned BETWEEN '2016-12-01' AND '2017-11-30') AND u.user_code NOT IN (SELECT prl.user_code FROM point_ranking_log AS prl WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code) GROUP BY u.email"; break;
         case '31': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL GROUP BY ueel.user_code"; break;
+        case '32': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2017 WHERE attended = '1' ORDER BY created ASC"; break;
         default: $query = false; break;
     }
     return $query;

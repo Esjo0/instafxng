@@ -45,7 +45,7 @@ $thisPage = "Home";
                                     <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details">Read more here</a></p>
                             </div>-->
 
-                                <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/ilpr_lead_image.jpg" alt="" class="img-responsive" /></a>
+                                <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/instafxng_loyalty_program_and_rewards.jpg" alt="" class="img-responsive" /></a>
 
                         </div>
                     </div>
