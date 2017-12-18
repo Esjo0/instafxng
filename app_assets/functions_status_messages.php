@@ -316,6 +316,7 @@ function client_group_campaign_category($status) {
         case '29': $message = "Point Winners (Dec '16 - Oct '17)"; break;
         case '30': $message = "Commission Clients (Dec '16 - Oct '17)"; break;
         case '31': $message = "Online Training - Completed Course 1"; break;
+        case '32': $message = "2017 Dinner Guests"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
