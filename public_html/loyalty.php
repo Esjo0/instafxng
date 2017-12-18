@@ -299,7 +299,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $count; ?></td>
-                                                        <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
+                                                        <td><?php if($row['full_name'] == 'Management' || empty($row['full_name'])) { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
                                                         <td><?php echo number_format(($row['month_rank']), 2, ".", ","); ?></td>
                                                     </tr>
                                                     <?php $count++; } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -349,7 +349,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                                 ?>
                                             <tr>
                                                 <td><?php echo $count; ?></td>
-                                                <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
+                                                <td><?php if($row['full_name'] == 'Management' || empty($row['full_name'])) { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
                                                 <td><?php echo number_format(($row['year_rank']), 2, ".", ","); ?></td>
                                             </tr>
                                             <?php $count++; } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
