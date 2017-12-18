@@ -31,7 +31,6 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
             <tr>
                 <th>Position</th>
                 <th>Name</th>
-                <th>Points Earned</th>
                 <th>Prize Awarded</th>
             </tr>
             </thead>
