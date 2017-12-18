@@ -504,12 +504,9 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                                     <ul class="pagination pagination-sm">
                                         <?php
                                         $CurrentURL = getCurrentURL();
-                                        $CurrentURL = str_replace('&pg=1', '', $CurrentURL);
-                                        $CurrentURL = str_replace('&pg='.$prevpage, '', $CurrentURL);
-                                        $CurrentURL = str_replace('&pg='.$x, '', $CurrentURL);
-                                        $CurrentURL = str_replace('&pg='.$nextpage, '', $CurrentURL);
-                                        $CurrentURL = str_replace('&pg='.$totalpages, '', $CurrentURL);
-                                        //var_dump($CurrentURL);
+                                        $pos = stripos($CurrentURL, '&pg=');
+                                        $num = strlen($CurrentURL);
+                                        $CurrentURL = substr_replace($CurrentURL, '', $pos);//, $num - $pos
                                         $range = 4;
 
                                         // if not on page 1, don't show back links
@@ -545,7 +542,7 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                                             // echo forward link for next page
                                             echo "<li><a href='{$CurrentURL}&pg=$nextpage'>></a></li>";
                                             // echo forward link for lastpage
-                                            echo "<li><a href='$CurrentURL}&pg=$totalpages'>Last</a></li>";
+                                            echo "<li><a href='{$CurrentURL}&pg=$totalpages'>Last</a></li>";
                                         } // end if
                                         /****** end build pagination links ******/
                                         ?>

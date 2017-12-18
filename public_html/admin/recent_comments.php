@@ -24,7 +24,10 @@ if (isset($_POST['reply_comment']))
         $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_visitors WHERE email = '".$email."';");
         $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment, reply_to, status) VALUES(@v_id, '".$article_id."', '".$comment."', '".$comment_id."', 'ON')");
 
-        $name = explode(' ', $name);
+        $admin_name = $name;
+        $poster_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT full_name, email FROM article_visitors, article_comments WHERE comment_id = '$comment_id' AND article_visitors.visitor_id = article_comments.visitor_id "));
+        $poster_details = $poster_details[0];
+        $name = explode(' ', $poster_details['full_name']);
         $name = $name[0];
         $subject = strtoupper($name).", Your Comment Has Been Replied";
         $message_final = <<<MAIL
@@ -68,8 +71,7 @@ if (isset($_POST['reply_comment']))
                         </div>
                     </div>
 MAIL;
-        $system_object->send_email($subject, $message_final, $email, $name);
-
+        $system_object->send_email($subject, $message_final, $poster_details['email'], $name,$admin_name);
         $message_success = "You have successfully added a reply.";
     }
 }
