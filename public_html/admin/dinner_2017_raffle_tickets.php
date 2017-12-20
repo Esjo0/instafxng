@@ -14,6 +14,11 @@ $q = "SELECT * FROM dinner_2017 WHERE attended = '1' AND invite = '1' AND (ticke
 $q_entries = $db_handle->fetchAssoc($db_handle->runQuery($q));
 $total_entries = $db_handle->numRows($q);
 
+$result = $db_handle->numRows("SELECT * FROM dinner_2017 WHERE confirmation = '4' AND ticket_type IN ('0','2') AND attended = '1'");
+$a_c_s = $result;
+
+$result = $db_handle->numRows("SELECT * FROM dinner_2017 WHERE confirmation = '4' AND ticket_type IN ('1','3') AND attended = '1'");
+$a_c_p = $result;
 
 if(isset($page) && !empty($page))
 {
@@ -143,6 +148,8 @@ $dinner_reg = $db_handle->fetchAssoc($result);
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
+
+                        <p>Total Number of People In Attendance: <b><?php echo $a_c_s + ($a_c_p * 2); ?></b></p>
 
                         <div style="max-width: 100%" class="table-responsive">
                             <table class="table table-bordered table-condensed">

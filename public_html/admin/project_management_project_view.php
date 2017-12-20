@@ -83,11 +83,56 @@ if(isset($_POST['new_comment']))
     }
 }*/
 
-if(isset($_POST['completed']))
+if(isset($_POST['suspended']))
 {
     $project_code = $db_handle->sanitizePost(trim($_POST['project_code']));
 
-    $query = "UPDATE project_management_projects SET status = 'INACTIVE' WHERE project_code = '$project_code' LIMIT 1";
+    $query = "UPDATE project_management_projects SET status = '0', completion_stamp = CURRENT_TIMESTAMP WHERE project_code = '$project_code' LIMIT 1";
+    $update_project = $db_handle->runQuery($query);
+    if ($update_project)
+    {
+        $message_success = "You have successfully updated a project.";
+    }
+    else
+    {
+        $message_error = "The operation was not successful, please try again.";
+    }
+}
+
+if(isset($_POST['completed']))
+{
+    $project_code = $db_handle->sanitizePost(trim($_POST['project_code']));
+    $query = "UPDATE project_management_projects SET status = '2', completion_stamp = CURRENT_TIMESTAMP WHERE project_code = '$project_code' LIMIT 1";
+    $update_project = $db_handle->runQuery($query);
+    if ($update_project)
+    {
+        $message_success = "You have successfully updated a project.";
+    }
+    else
+    {
+        $message_error = "The operation was not successful, please try again.";
+    }
+}
+
+if(isset($_POST['reopen']))
+{
+    $project_code = $db_handle->sanitizePost(trim($_POST['project_code']));
+    $query = "UPDATE project_management_projects SET status = '1', completion_stamp = CURRENT_TIMESTAMP WHERE project_code = '$project_code' LIMIT 1";
+    $update_project = $db_handle->runQuery($query);
+    if ($update_project)
+    {
+        $message_success = "You have successfully updated a project.";
+    }
+    else
+    {
+        $message_error = "The operation was not successful, please try again.";
+    }
+}
+
+if(isset($_POST['resume']))
+{
+    $project_code = $db_handle->sanitizePost(trim($_POST['project_code']));
+    $query = "UPDATE project_management_projects SET status = '1', completion_stamp = CURRENT_TIMESTAMP WHERE project_code = '$project_code' LIMIT 1";
     $update_project = $db_handle->runQuery($query);
     if ($update_project)
     {
@@ -401,15 +446,15 @@ $project_reports = $db_handle->fetchAssoc($result);
 
                                             <p>
                                                 <strong>Project Status: </strong>
-                                                <?php echo $project_details['status'];?>
+                                                <?php echo project_management_status($project_details['status']);?>
                                             </p>
                                             <hr/>
                                             <a href="project_management_report_add.php?x=<?php echo encrypt($project_details['project_code']); ?>">
-                                                <button class="btn btn-success">Send Report</button>
+                                                <button class="btn btn-success btn-sm">Report</button>
                                             </a>
                                             <?php
                                             if($project_details['supervisor_code'] == $admin_code):?>
-                                                <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $project_details['project_code'] ?>" class="btn btn-info">Edit Project</button>
+                                                <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $project_details['project_code'] ?>" class="btn btn-info btn-sm"><i class='glyphicon glyphicon-edit'></i></button>
                                                 <div id="edit_project<?php echo $project_details['project_code'] ?>" class="modal fade" role="dialog">
                                                     <div class="modal-dialog">
                                                         <!-- Modal content-->
@@ -472,13 +517,18 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </div>
                                             <?php endif ?>
-                                            <?php
-                                            if($project_details['supervisor_code'] == $admin_code):?>
+                                            <?php if($project_details['supervisor_code'] == $admin_code):?>
                                                 <!--<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">-->
                                                 <input type="hidden" name="project_code" value="<?php echo $project_details['project_code'];?>" />
-                                                <button title="Suspend Project" name="completed" type="submit" class="btn btn-success">Suspend Project</button>
-                                                </form>
+                                                <button title="<?php if($project_details['status'] == '1'){echo 'Suspend Project';}else{echo 'Resume Project';}?>" name="<?php if($project_details['status'] == '1'){echo 'suspended';}else{echo 'resume';}?>" type="submit" class="btn btn-warning btn-sm" ><?php if($project_details['status'] == '1'){echo "<i class='glyphicon glyphicon-pause'></i>";}else{echo "<i class='glyphicon glyphicon-play'></i>";}?></button>
+
                                             <?php endif ?>
+                                            <?php if($project_details['supervisor_code'] == $admin_code):?>
+                                                <!--<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">-->
+                                                <input type="hidden" name="project_code" value="<?php echo $project_details['project_code'];?>" />
+                                                <button title="<?php if($project_details['status'] == '1' || $project_details['status'] == '0'){echo 'Project Completed';}else{echo 'Re-open Completed';}?>" name="<?php if($project_details['status'] == '1' || $project_details['status'] == '0'){echo 'completed';}else{echo 're-open';}?>" type="submit" class="btn btn-success btn-sm"><i class='glyphicon glyphicon-check'></i></button>
+                                            <?php endif ?>
+                                            </form>
                                         </div>
                                     </div>
                                     <!-- PROJECT DESCRIPTION -- end -->

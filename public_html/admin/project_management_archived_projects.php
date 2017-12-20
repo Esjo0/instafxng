@@ -11,7 +11,7 @@ $all_admin_member = $admin_object->get_all_admin_member();
 if(isset($_POST['new_project']))
 {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
-    $description = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description'])));
+    $description = nl2br($db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description']))));
     $deadline = $db_handle->sanitizePost(trim($_POST['deadline']));
     $allowed_admin = $_POST["allowed_admin"];
 
@@ -79,7 +79,7 @@ if(isset($_POST['new_comment']))
 
 
 
-$query = "SELECT * FROM project_management_projects WHERE status = '1' ORDER BY created DESC  ";
+$query = "SELECT * FROM project_management_projects WHERE status IN ('0', '2') ORDER BY created DESC  ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -158,7 +158,7 @@ $projects = $db_handle->fetchAssoc($result);
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>ACTIVE PROJECTS</strong></h4>
+                            <h4><strong>ARCHIVED PROJECTS</strong></h4>
                         </div>
                     </div>
                     
@@ -251,24 +251,29 @@ $projects = $db_handle->fetchAssoc($result);
                                 </div>
                             </div>
                             <div class="col-sm-12">
-                                <table class="table table-responsive  table-striped table-bordered table-hover">
+                                <table class="table table-responsive    table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Project Title</th>
-                                            <th>Project Description</th>
-                                            <th>Project Created</th>
-                                            <th>Project Deadline</th>
-                                            <th>Project Status</th>
-                                            <th>Project Executors</th>
-                                            <th>Announcements</th>
-                                            <th>Edit</th>
-                                            <th>View</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Created</th>
+                                            <th>Deadline</th>
+                                            <th>Status</th>
+                                            <th>Executors</th>
+                                            <th>Completion/Suspension Date</th>
+                                            <th> </th>
+                                            <th> </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <?php if(isset($projects) && !empty($projects))
                                     {
                                     foreach ($projects as $row) { ?>
+                                        <?php
+                                        $executors = explode("," ,$row['executors']);
+                                        //
+                                        if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code)
+                                        :?>
                                             <tr>
                                                 <td><?php echo $row['title']; ?></td>
                                                 <td>
@@ -323,8 +328,8 @@ $projects = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </td>
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                                <td><?php echo $row['deadline']; ?></td>
-                                                <td><?php echo project_management_status($row['status']) ; ?></td>
+                                                <td><?php echo datetime_to_text2($row['deadline']); ?></td>
+                                                <td><?php echo project_management_status($row['status']); ?></td>
                                                     <?php
                                                     $executors = explode("," ,$row['executors']);
                                                     echo "<td>";
@@ -334,87 +339,9 @@ $projects = $db_handle->fetchAssoc($result);
                                                     }
                                                     echo "</td>";
                                                     ?>
-                                                <td>
-                                                    <button title="View Announcements" type="button" data-toggle="modal" data-target="#view_comment<?php echo $row['project_code']?>" class="btn btn-info"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                    <br/>
-                                                    <br/>
-                                                    <button title="Add New Announcement" type="button" data-toggle="modal" data-target="#new_comment<? echo $row['project_code']?>" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i></button>
-
-                                                    <div id="new_comment<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
-                                                        <div class="modal-dialog">
-                                                            <!-- Modal content-->
-                                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                        <h4 class="modal-title">Project Announcements</h4>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="col-sm-12">
-                                                                                <p><strong>Project Title:</strong></p>
-                                                                                <p><?php echo $row['title']; ?></p>
-                                                                                <hr/>
-
-                                                                                <p><strong>New Announcement:</strong></p>
-                                                                                <input name="project_code" type="hidden" value="<?php echo $row['project_code'] ?>">
-                                                                                <textarea name="comment" rows="5" class="form-control" placeholder="Enter a new announcement here..." required></textarea>
-                                                                                <hr/>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <input name="new_comment" type="submit" class="btn btn-success" value="Post Announcement"/>
-                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                    <div id="view_comment<?php echo $row['project_code']?>" class="modal fade" role="dialog">
-                                                        <div class="modal-dialog">
-                                                            <!-- Modal content-->
-                                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                        <h4 class="modal-title">Project Announcements</h4>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="col-sm-12">
-
-                                                                                <p><strong>Project Title:</strong></p>
-                                                                                <p><?php echo $row['title']; ?></p>
-                                                                                <hr/>
-
-                                                                                <?php $comments = $obj_project_management->get_project_comments($row['project_code']);
-                                                                                //var_dump($comments);
-                                                                                if(isset($comments) && !empty($comments))
-                                                                                {
-                                                                                    foreach ($comments as $row1)
-                                                                                    { ?>
-
-                                                                                        <div class="text-left">
-                                                                                            <strong>Author:</strong><?php echo $row1['author_name'] ?>
-                                                                                            <p class="text-left"><strong>Date:</strong><?php echo datetime_to_text2($row1['created']); ?></p>
-                                                                                            <p class="text-justify"><?php echo $row1['comment'] ?></p>
-                                                                                        </div>
-
-                                                                                        <hr/>
-                                                                                    <?php } }  ?>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                <td><?php echo datetime_to_text2($row['completion_stamp']); ?></td>
+                                                <?php
+                                                if($row['supervisor_code'] == $admin_code):?>
                                                     <td>
                                                         <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $row['project_code'] ?>" class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
                                                         <div id="edit_project<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
@@ -479,6 +406,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                             </div>
                                                         </div>
                                                     </td>
+                                                <?php endif ?>
                                                 <td>
                                                     <a target="_blank" href="project_management_project_view.php?x=<?php echo encrypt($row['project_code']);?>">
                                                         <button title="View Complete Details" class="btn btn-sm btn-success">
@@ -487,7 +415,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                     </a>
                                                 </td>
                                             </tr>
-                                        <?php ?>
+                                        <?php endif;?>
 
 
                                     <?php }

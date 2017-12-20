@@ -645,3 +645,20 @@ function status_point_claimed($status) {
 
     return $message;
 }
+
+
+/*
+ * Table: Dinner 2017
+ * Column: invite
+ */
+function project_management_status($status)
+{
+    switch ($status)
+    {
+        case '0': $message = "Suspended"; break;
+        case '1': $message = "In Progress"; break;
+        case '2': $message = "Completed"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
