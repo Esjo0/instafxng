@@ -164,7 +164,13 @@ if(isset($_POST['withdraw_funds_qty'])) {
 
             if($log_withdrawal) {
                 $client_operation->send_withdrawal_invoice($client_full_name, $client_email, $trans_id, $account_no, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, $client_bank_name, $client_acct_name, $client_acct_no);
-                $message_success = "<p>Withdrawal Request Submitted - See the summary of your withdrawal below. Your Withdrawal will be processed and payment made within one business day. Thank you for choosing InstaForex.</p>
+                $message_success = "<p>Withdrawal Request Submitted - See the summary of your withdrawal below. Your Withdrawal will
+                                    be processed and payment made within one business day.</p>
+                                    <p>In a few cases some requests fall outside the category of withdrawals we can process from
+                                    our office and has to be sent to InstaForex office. Withdrawal requests in this category can take
+                                    up to 3 Business days.</p>
+                                    <p>If your withdrawal request falls within this category, we will inform you immediately.</p>
+                                    <p>Thank you for choosing InstaForex.</p>
                                     <p class='text-danger' style='font-size: 1.3em'><strong>NOTE: </strong>Your payment will be made based on the rate as at the time the fund
                                     is debited from your Instaforex account.</p>";
                 $page_requested = 'withdraw_funds_finalize_php';

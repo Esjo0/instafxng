@@ -1137,6 +1137,12 @@ MAIL;
             <p>Withdrawal Request Was Successfully Submitted - See the summary of your withdrawal below.
             Your Withdrawal will be processed and payment made within one business day.</p>
 
+            <p>In a few cases some requests fall outside the category of withdrawals we can process from
+            our office and has to be sent to InstaForex office. Withdrawal requests in this category can take
+            up to 3 Business days.</p>
+
+            <p>If your withdrawal request falls within this category, we will inform you immediately.</p>
+
             <p style="font-size: 1.3em; color: #AE0000;"><strong>NOTE: </strong>Your
             payment will be made based on the rate as at the time the fund is debited from your
             Instaforex account.</p>
