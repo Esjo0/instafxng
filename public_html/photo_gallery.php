@@ -43,6 +43,45 @@ $thisPage = "About";
                             <div class="col-sm-12">
                                 <p>See photos of our company events below</p>
 
+                                <h5>2017 End of the Year Dinner at Four Points by Sheraton, VI, Lagos.(The Ethinc Impression Edition) - December 17, 2017</h5>
+                                <p></p>
+                                <ul class="gallery clearfix photo_g">
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-1.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-1.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-2.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-2.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-3.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-3.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-4.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-4.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-5.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-5.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-6.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-6.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-7.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-7.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-8.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-8.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-9.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-9.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-10.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-10.jpg" alt=" " /></a></li>
+
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-11.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-11.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-12.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-12.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-13.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-13.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-14.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-14.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-15.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-15.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-16.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-16.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-17.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-17.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-18.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-18.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-19.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-19.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-20.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-20.jpg" alt=" " /></a></li>
+
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-21.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-21.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-22.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-22.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-23.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-23.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-24.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-24.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-25.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-25.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-26.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-26.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-27.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-27.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-28.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-28.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-29.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-29.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-30.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-30.jpg" alt=" " /></a></li>
+                                    <li><a href="https://instafxng.com/images/dinner-2017/dinner-2017-31.jpg" rel="prettyPhoto[gallery4]" title=""><img src="https://instafxng.com/images/dinner-2017/thumbnails/dinner-2017-31.jpg" alt=" " /></a></li>
+
+                                </ul>
+
                                 <h5>Annual Staff Retreat 2017</h5>
                                 <p></p>
                                 <ul class="gallery clearfix photo_g">
