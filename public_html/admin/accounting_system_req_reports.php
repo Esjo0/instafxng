@@ -25,6 +25,7 @@ if (isset($_POST['report']))
           CONCAT(admin.first_name, SPACE(1), admin.last_name) AS author_name
           FROM admin, accounting_system_req_order, accounting_system_office_locations
           WHERE accounting_system_req_order.author_code = admin.admin_code
+          AND accounting_system_req_order.payment_status = '2'
           AND accounting_system_req_order.location = accounting_system_office_locations.location_id
           AND STR_TO_DATE(accounting_system_req_order.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
           AND accounting_system_office_locations.location_id = '$location'

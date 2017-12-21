@@ -29,7 +29,6 @@ $result = $db_handle->fetchAssoc($result);
 
 if(isset($_POST['accept']))
 {
-    var_dump($_POST);
     extract($_POST);
     $query = "UPDATE project_management_reports SET status = 'APPROVED' WHERE report_code = '$report_code' ";
     $accept1 = $db_handle->runQuery($query);
@@ -96,9 +95,11 @@ if(isset($_POST['decline']))
         <div id="main-body" class="container-fluid">
             <div class="row no-gutter">
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-                <div id="main-body-content-area" class="col-lg-1">
+                <!-- Main Body - Side Bar  -->
+                <div id="main-body-side-bar" class="col-md-4 col-lg-3 left-nav">
+                    <?php require_once 'layouts/sidebar.php'; ?>
                 </div>
-                <div id="main-body-content-area" class="col-lg-10">
+                <div id="main-body-content-area" class="col-md-8 col-lg-9">
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
