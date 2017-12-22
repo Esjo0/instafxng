@@ -271,9 +271,9 @@ $projects = $db_handle->fetchAssoc($result);
                                     foreach ($projects as $row) { ?>
                                         <?php
                                         $executors = explode("," ,$row['executors']);
-                                        //
-                                        if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code)
-                                        :?>
+                                        if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code):
+                                            ?>
+
                                             <tr>
                                                 <td><?php echo $row['title']; ?></td>
                                                 <td>
@@ -502,8 +502,6 @@ $projects = $db_handle->fetchAssoc($result);
                                                 </td>
                                             </tr>
                                         <?php endif;?>
-
-
                                     <?php }
                                     } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
