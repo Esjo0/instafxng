@@ -9,12 +9,12 @@ $yesterday = time() - $one_day;
 $date_today = date('Y-m-d');
 $date_yesterday = date('Y-m-d', $yesterday);
 
-$query = "SELECT SUM(real_dollar_equivalent) AS sum_dollar, SUM(real_naira_confirmed) AS sum_naira FROM user_deposit WHERE status = '8' AND updated LIKE '$date_today%'";
+$query = "SELECT SUM(real_dollar_equivalent) AS sum_dollar, SUM(real_naira_confirmed) AS sum_naira FROM user_deposit WHERE status = '8' AND order_complete_time LIKE '$date_today%'";
 $result = $db_handle->runQuery($query);
 $fetched_data = $db_handle->fetchAssoc($result);
 $deposit_today = $fetched_data[0];
 
-$query = "SELECT SUM(real_dollar_equivalent) AS sum_dollar, SUM(real_naira_confirmed) AS sum_naira FROM user_deposit WHERE status = '8' AND updated LIKE '$date_yesterday%'";
+$query = "SELECT SUM(real_dollar_equivalent) AS sum_dollar, SUM(real_naira_confirmed) AS sum_naira FROM user_deposit WHERE status = '8' AND order_complete_time LIKE '$date_yesterday%'";
 $result = $db_handle->runQuery($query);
 $fetched_data = $db_handle->fetchAssoc($result);
 $deposit_yesterday = $fetched_data[0];
@@ -24,13 +24,13 @@ $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_paya
         ud.client_naira_notified, ud.client_pay_date, ud.client_reference, ud.client_pay_method,
         ud.client_notified_date, ud.status AS deposit_status, ud.points_claimed_id, u.user_code,
         ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-        uc.passport, ui.ifxaccount_id, ud.updated, pbc.dollar_amount AS points_dollar_value
+        uc.passport, ui.ifxaccount_id, ud.updated, ud.order_complete_time, pbc.dollar_amount AS points_dollar_value
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
         LEFT JOIN point_based_claimed AS pbc ON ud.points_claimed_id = pbc.point_based_claimed_id
-        WHERE ud.status = '8' ORDER BY ud.updated DESC ";
+        WHERE ud.status = '8' ORDER BY ud.order_complete_time DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -109,7 +109,7 @@ $completed_deposit_requests = $db_handle->fetchAssoc($result);
                                             <th>Points Claimed</th>
                                             <th>Total Confirmed</th>
                                             <th>Date Created</th>
-                                            <th>Last Updated</th>
+                                            <th>Order Completed Time</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -127,7 +127,7 @@ $completed_deposit_requests = $db_handle->fetchAssoc($result);
                                             <td class="nowrap">&dollar; <?php echo number_format($row['points_dollar_value'], 2, ".", ","); ?></td>
                                             <td class="nowrap">&#8358; <?php echo number_format($row['real_naira_confirmed'], 2, ".", ","); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
-                                            <td><?php echo datetime_to_text($row['updated']); ?></td>
+                                            <td><?php echo datetime_to_text($row['order_complete_time']); ?></td>
                                             <td><a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                         </tr>
                                         <tr>

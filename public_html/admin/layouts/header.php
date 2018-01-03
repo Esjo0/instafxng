@@ -4,7 +4,7 @@
             <div class="container-fluid no-gutter masthead">
                 <div class="row">
                     <div id="main-logo" class="col-sm-12 col-md-9">
-                        <a href="./" title="Home Page"><img src="../images/ifxlogo-xmas.png?v=1.1" alt="Instaforex Nigeria Logo" /></a>
+                        <a href="./" title="Home Page"><img src="../images/ifxlogo.png?v=1.1" alt="Instaforex Nigeria Logo" /></a>
                     </div>
                     <div id="top-nav" class="col-sm-12 col-md-3" style="margin-top: 8px;">
                         <div style="font-size: 1.4em;">

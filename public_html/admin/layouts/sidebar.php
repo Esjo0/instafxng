@@ -164,6 +164,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(60, $my_pages_sidebar)) { ?><li><a href="rewards_report.php">Reports</a></li><?php } ?>
                         <?php if (in_array(61, $my_pages_sidebar)) { ?><li><a href="loyalty_rank_archive.php">Loyalty Rank Archive</a></li><?php } ?>
                         <?php if (in_array(62, $my_pages_sidebar)) { ?><li><a href="loyalty_point_claimed.php">Loyalty Point Claimed</a></li><?php } ?>
+                        <?php if (in_array(233, $my_pages_sidebar)) { ?><li><a href="client_expired_points.php">Expired Loyalty Point</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">

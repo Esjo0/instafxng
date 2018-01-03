@@ -19,7 +19,7 @@ foreach ($selected AS $row) {
         $additional_expired_point = 0; // we do not allow negative
     }
 
-    $point_balance = ($total_point_earned - $spent_point) - $expired_point;
+    $point_balance = ($total_point_earned - $spent_point) - $additional_expired_point;
 
     // Make update to the point balance, total point claimed, total point earned, expired point
     $query = "UPDATE user_loyalty_log SET
