@@ -6,10 +6,34 @@ if (!$session_admin->is_logged_in())
 }
 function GetFirstThree($ip)
 {
+    $admin_object = new AdminUser();
+    $ip_address = $ip;
+    $admin_name = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
+    $system_object = new InstafxngSystem();
+
     if(strlen($ip) <= 10) { $pos = strpos($ip, '.', strlen($ip)-3);}
     else {$pos = strpos($ip, '.', strlen($ip)-4);}
     $ip = substr($ip, 0, $pos);
     $ip = substr($ip, 0, strlen($ip));
+
+
+    $subject = "Admin Users IP Address";
+    $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>Name: $admin_name</p>
+                                <p>IP Address: $ip_address</p>
+                                <p>Constant IP Address: $ip</p>
+                            </div>      
+                        </div>
+                    </div>
+MAIL;
+    $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
+
+
     return $ip;
 }
 
