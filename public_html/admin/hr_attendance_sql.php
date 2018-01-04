@@ -1,3 +1,6 @@
+DROP TABLE `hr_attendance_locations`, `hr_attendance_log`;
+
+
 CREATE TABLE `hr_attendance_locations` (
 `location_id` int(11) NOT NULL,
 `location` varchar(255) NOT NULL,
@@ -13,4 +16,4 @@ CREATE TABLE `hr_attendance_log` (
 `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `location` varchar(255) NOT NULL,
 PRIMARY KEY (`log_id`)
-) 
+)
