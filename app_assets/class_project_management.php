@@ -155,7 +155,8 @@ class Project_Management
         $destination_details = $admin_object->get_admin_detail_by_code($admin_code);
         $admin_name = $destination_details['first_name'];
         $admin_email = $destination_details['email'];
-        $subject = 'NEW PROJECT ASSIGNMENT';
+        $description = nl2br($description);
+        $subject = 'New Project Assignment - '.$title;
         $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
@@ -225,7 +226,8 @@ MAIL;
             $destination_details = $admin_object->get_admin_detail_by_code($all_allowed_admin[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $subject = 'NEW PROJECT ASSIGNMENT';
+            $description = nl2br($description);
+            $subject = 'New Project Assignment - '.$title;
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
@@ -297,7 +299,8 @@ MAIL;
             $destination_details = $admin_object->get_admin_detail_by_code($recipients[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $subject = 'NEW PROJECT MESSAGE';
+            $message = nl2br($message);
+            $subject = 'New Project Message - '.$title;
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
