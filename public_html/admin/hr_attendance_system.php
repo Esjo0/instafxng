@@ -17,7 +17,7 @@ $ip_address = GetFirstThree($db_handle->sanitizePost(gethostbyname(trim(`hostnam
 $today = $db_handle->sanitizePost(date("d-m-Y"));
 $time = $db_handle->sanitizePost(date("h:i:s"));
 $day = date('l', strtotime($today));
-if ($day != 'Saturday' || !$day != 'Sunday')
+if ($day != 'Saturday' || $day != 'Sunday')
 {
     $admin_code = $_SESSION['admin_unique_code'];
     $query = "SELECT * FROM hr_attendance_log WHERE hr_attendance_log.admin_code = '$admin_code' AND hr_attendance_log.date = '$today' ";
@@ -34,6 +34,7 @@ if ($day != 'Saturday' || !$day != 'Sunday')
             $location_details = $location_details[0];
             $query = "INSERT INTO hr_attendance_log (admin_code, date, time, location) VALUES ('$admin_code', '$today', '$time', '".$location_details['location']."')";
             $result = $db_handle->runQuery($query);
+            //var_dump($query);
             if($result):?>
                 <!--Modal - confirmation boxes-->
                 <div id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
