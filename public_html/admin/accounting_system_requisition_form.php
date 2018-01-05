@@ -202,7 +202,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                 {
                                                     XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
                                                 }
-                                                function send_order()
+                                                function send_order_new_function()
                                                 {
                                                     var radios = document.getElementsByName('office_location');
                                                     for (var i = 0, length = radios.length; i < length; i++)
