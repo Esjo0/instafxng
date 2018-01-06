@@ -93,6 +93,7 @@
             </div>
         </div>
         <br/>
+        <?php if(!in_array('42b', $my_pages_sidebar)):?>
         <form  data-toggle="validator" role="form" method="post" action="">
             <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
             <div class="form-group">
@@ -154,6 +155,7 @@
                 </div>
             </div>
         </form>
+        <?php endif; ?>
     </div>
 
     <div class="col-sm-6">
