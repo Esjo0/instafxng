@@ -5,6 +5,8 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$total_point_balance = $obj_loyalty_point->get_general_point_analysis();
+
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT ull.expired_point AS total_expired_point, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code, u.email, u.phone, u.created,
@@ -109,16 +111,32 @@ $clients_expired_points = $db_handle->fetchAssoc($result);
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <?php require_once 'layouts/feedback_message.php'; ?>
 
-                                <p>Below is a table of clients with points that have expired.</p>
+                                <p>Table of general point analysis.</p>
+                                <table class="table table-responsive table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Points Earned</th>
+                                            <th>Points Claimed</th>
+                                            <th>Expired Points</th>
+                                            <th>Point Balance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><?php echo number_format($total_point_balance['total_point_earned'], 2, ".", ","); ?></td>
+                                            <td><?php echo number_format($total_point_balance['total_point_claimed'], 2, ".", ","); ?></td>
+                                            <td><?php echo number_format($total_point_balance['total_expired_point'], 2, ".", ","); ?></td>
+                                            <td><?php echo number_format($total_point_balance['total_point_balance'], 2, ".", ","); ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-                                <?php if(isset($numrows)) { ?>
-                                    <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
-                                <?php } ?>
+                                <hr />
 
                                 <?php if(isset($clients_expired_points) && !empty($clients_expired_points)) { require 'layouts/pagination_links.php'; } ?>
 
+                                <p>Table of clients with points that have expired.</p>
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>

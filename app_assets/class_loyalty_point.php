@@ -117,6 +117,18 @@ class loyaltyPoint {
 
         return $point_details ? $point_details : false;
     }
+
+    function get_general_point_analysis() {
+        global $db_handle;
+
+        $query = "SELECT SUM(point_balance) AS total_point_balance, SUM(expired_point) AS total_expired_point,
+            SUM(total_point_earned) AS total_point_earned, SUM(total_point_claimed) AS total_point_claimed FROM user_loyalty_log";
+        $result = $db_handle->runQuery($query);
+        $selected = $db_handle->fetchAssoc($result);
+        $point_details = $selected[0];
+
+        return $point_details ? $point_details : false;
+    }
 }
 
 $obj_loyalty_point = new loyaltyPoint();
