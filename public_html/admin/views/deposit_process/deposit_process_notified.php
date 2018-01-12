@@ -168,7 +168,7 @@ you must enter a remark for this transaction.</p>
                 <label class="control-label text-danger" for="realDolVal">Real Dollar Value (&#36;):</label>
                 <div id="realDol"> </div>
             </div>
-            <?php if(!in_array('32b', $my_pages_sidebar)): ?>
+
             <div class="form-group">
                 <label class="control-label" for="remarks">Your Remark:</label>
                 <div><textarea name="remarks" id="message" rows="3" class="form-control" placeholder="Enter your remark" required></textarea></div>
@@ -178,7 +178,7 @@ you must enter a remark for this transaction.</p>
                 <button type="button" data-target="#confirm-deposit-decline" data-toggle="modal" class="btn btn-danger">Decline Deposit</button>
                 <button type="button" data-target="#confirm-deposit-pend" data-toggle="modal" class="btn btn-info">Pend Deposit</button>
             </div>
-            <?php endif;?>
+
 
              <!--Modal - confirmation boxes--> 
             <div id="confirm-deposit-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
