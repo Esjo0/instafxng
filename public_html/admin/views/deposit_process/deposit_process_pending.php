@@ -87,7 +87,7 @@
         <form  data-toggle="validator" role="form" method="post" action="">
             <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
 
-            <?php if(!in_array('32b', $my_pages_sidebar)): ?>
+
             <div class="form-group">
                 <label class="control-label" for="remarks">Your Remark:</label>
                 <div><textarea name="remarks" id="message" rows="3" class="form-control" placeholder="Enter your remark" required></textarea></div>
@@ -95,7 +95,7 @@
             <div class="form-group">
                 <button type="button" data-target="#save-comment" data-toggle="modal" class="btn btn-success">Save Comment</button>
             </div>
-            <?php endif; ?>
+
 
              <!--Modal - confirmation boxes--> 
             <div id="save-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">

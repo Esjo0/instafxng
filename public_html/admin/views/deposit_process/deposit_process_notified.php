@@ -101,7 +101,7 @@ you must enter a remark for this transaction.</p>
                     <p style="text-align: right"><em>Comment Replied</em></p>
                     
                     <?php } else { ?>
-                                <?php if(!in_array('32b', $my_pages_sidebar)): ?>
+
                         <p style="text-align: right">
                             <button type="button" data-target="#reply-client-comment" data-toggle="modal" class="btn btn-default">Reply Comment</button>
                         </p>
@@ -136,7 +136,7 @@ you must enter a remark for this transaction.</p>
                                 </div>
                             </div>
                         </div>
-                                    <?php endif; ?>
+
                     <?php } } ?>
                     
                 </div>
