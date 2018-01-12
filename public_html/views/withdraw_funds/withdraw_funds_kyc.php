@@ -22,7 +22,8 @@ $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
     <div class="form-group">
         <label class="control-label col-sm-3" for="phone">Phone Number:</label>
         <div class="col-sm-9 col-lg-5">
-            <input name="phone" type="text" class="form-control" id="phone" required="required">
+            <input name="phone" type="text" class="form-control" id="phone" data-minlength="11" maxlength="11" required="required">
+            <div class="help-block">Example - 08031234567</div>
         </div>
     </div>
     <div class="form-group">

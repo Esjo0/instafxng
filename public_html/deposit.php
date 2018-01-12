@@ -109,6 +109,8 @@ if(isset($_POST['deposit_funds_kyc'])) {
         $message_error = "All fields must be filled.";
     } elseif (!check_email($email_address)) {
         $message_error = "You have provided an invalid email address. Please try again.";
+    } elseif (check_number($phone_number) != 5) {
+        $message_error = "The supplied phone number is invalid.";
     } else {
         $user_code = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 1);
         

@@ -33,20 +33,35 @@ $thisPage = "Home";
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    <div  class="item super-shadow page-top-section">
-                        <div class="row ">
-                            <!--<div class="col-sm-6">
-                                <h2>The Amazing Profit Opportunity in Litecoin and Ripple</h2>
-                                <p>Did you know that some people who invested in bitcoin in it's early days made
-                                    billion of dollars from it? That's right!</p>
-                                <p>You probably wish you had bought 10 bitcoins with $10 then.</p>
-                                <p>You don't have to worry about it, Here's another opportunity to invest in
-                                    litecoin and ripple coins...
-                                    <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details">Read more here</a></p>
-                            </div>-->
+<!--                    <div  class="item super-shadow page-top-section">-->
+<!--                        <div class="row ">-->
+<!--                            <div class="col-sm-6">-->
+<!--                                <h2>The Amazing Profit Opportunity in Litecoin and Ripple</h2>-->
+<!--                                <p>Did you know that some people who invested in bitcoin in it's early days made-->
+<!--                                    billion of dollars from it? That's right!</p>-->
+<!--                                <p>You probably wish you had bought 10 bitcoins with $10 then.</p>-->
+<!--                                <p>You don't have to worry about it, Here's another opportunity to invest in-->
+<!--                                    litecoin and ripple coins...-->
+<!--                                    <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details">Read more here</a></p>-->
+<!--                            </div>-->
+<!--                                <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/instafxng_loyalty_program_and_rewards.jpg" alt="" class="img-responsive" /></a>-->
+<!---->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                                <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/instafxng_loyalty_program_and_rewards.jpg" alt="" class="img-responsive" /></a>
-
+                    <div class="item super-shadow page-top-section">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h3 style="margin: 0;">Make 2018 a Memorable One</h3>
+                                <p style="margin-top: 0">Join us on Saturday 13th of January, 2018 as we
+                                    discuss simple winning strategies you need to use in order to make
+                                    consistent profits this year. Time: 12 - 2pm.</p>
+                                <p><strong><a href="traders_forum.php">Click here</a></strong> to reserve your seat
+                                    and stand a chance to win $20.</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="traders_forum.php"><img src="https://instafxng.com/images/forex-traders-forum-smart-investors.jpg" alt="" class="img-responsive" /></a>
+                            </div>
                         </div>
                     </div>
                     

@@ -46,5 +46,6 @@ $client_group_DEFAULT = array(
     "30" => "Commission Clients (Dec '16 - Oct '17)",
     "31" => "Online Training - Completed Course 1",
     "32" => "2017 Dinner Guests",
-    "33" => "Office Funding Clients"
+    "33" => "Office Funding Clients",
+    "34" => "Failed SMS Clients"
 );
