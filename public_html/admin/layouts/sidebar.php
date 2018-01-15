@@ -93,7 +93,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(30, $my_pages_sidebar)) { ?><li><a href="deposit_pending.php" title="Pending Deposit">Deposit - Pending</a></li><?php } ?>
                         <?php if (in_array(31, $my_pages_sidebar)) { ?><li><a href="deposit_notified.php" title="Notified Deposit">Deposit - Notified</a></li><?php } ?>
                         <?php if (in_array(32, $my_pages_sidebar)) { ?><li><a href="deposit_confirmed.php" title="Confirmed Deposit">Deposit - Confirmed</a></li><?php } ?>
-                        <?php if (in_array(320, $my_pages_sidebar)) { ?><li><a href="deposit_confirmed_view_only.php" title="Confirmed Deposit (View Only)">Deposit - Confirmed (View Only)</a></li><?php } ?>
+                        <?php if (in_array(234, $my_pages_sidebar)) { ?><li><a href="deposit_confirmed_view_only.php" title="Confirmed Deposit (View Only)">Deposit - Confirmed (View Only)</a></li><?php } ?>
                         <?php if (in_array(33, $my_pages_sidebar)) { ?><li><a href="deposit_completed.php" title="Completed Deposit">Deposit - Completed</a></li><?php } ?>
                         <?php if (in_array(34, $my_pages_sidebar)) { ?><li><a href="deposit_declined.php" title="Declined Deposit">Deposit - Declined</a></li><?php } ?>
                         <?php if (in_array(35, $my_pages_sidebar)) { ?><li><a href="deposit_failed.php" title="Failed Deposit">Deposit - Failed</a></li><?php } ?>
@@ -108,7 +108,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(40, $my_pages_sidebar)) { ?><li><a href="withdrawal_search.php" title="Search Withdrawal">Withdrawal - Search</a></li><?php } ?>
                         <?php if (in_array(41, $my_pages_sidebar)) { ?><li><a href="withdrawal_initiated.php" title="Initiated Withdrawal">Withdrawal - Initiated</a></li><?php } ?>
                         <?php if (in_array(42, $my_pages_sidebar)) { ?><li><a href="withdrawal_confirmed.php" title="Confirmed Withdrawal">Withdrawal - Confirmed</a></li><?php } ?>
-                        <?php if (in_array(320, $my_pages_sidebar)) { ?><li><a href="withdrawal_confirmed_view_only.php" title="Confirmed Withdrawal (View Only)">Withdrawal - Confirmed (View Only)</a></li><?php } ?>
+                        <?php if (in_array(235, $my_pages_sidebar)) { ?><li><a href="withdrawal_confirmed_view_only.php" title="Confirmed Withdrawal (View Only)">Withdrawal - Confirmed (View Only)</a></li><?php } ?>
                         <?php if (in_array(43, $my_pages_sidebar)) { ?><li><a href="withdrawal_ifx_debited.php" title="IFX Debited Withdrawal">Withdrawal - IFX Debited</a></li><?php } ?>
                         <?php if (in_array(44, $my_pages_sidebar)) { ?><li><a href="withdrawal_completed.php" title="Completed Withdrawal">Withdrawal - Completed</a></li><?php } ?>
                         <?php if (in_array(45, $my_pages_sidebar)) { ?><li><a href="withdrawal_declined.php" title="Declined/Failed Withdrawal">Withdrawal - Declined/Failed</a></li><?php } ?>
