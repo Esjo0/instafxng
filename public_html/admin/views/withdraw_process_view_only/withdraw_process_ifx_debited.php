@@ -1,5 +1,6 @@
+<?php $user_bank_account = $client_operation->get_user_bank_account($trans_detail['user_code']); ?>
 <p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
-<p>Make Modification to this order below. You are to confirm that the Phone Password is correct.</p>
+<p>Make Modification to this order below. You are to make payment to the client's bank account.</p>
 <div class="row">
     <div class="col-sm-6">
         <div class="trans_item">
@@ -59,18 +60,14 @@
                 <div class="row">
                     <div class="col-sm-12 ">
                         <span id="transaction_identity"><?php echo $trans_id; ?></span>
-                        <span><strong>Withdraw:</strong> &dollar; <?php echo $trans_detail['dollar_withdraw']; ?> - &#8358; <?php echo number_format($trans_detail['naira_total_withdrawable'], 2, ".", ","); ?></span>
+                        <span><strong>Withdraw: </strong> &dollar; <?php echo $trans_detail['dollar_withdraw']; ?> - &#8358; <?php echo number_format($trans_detail['naira_total_withdrawable'], 2, ".", ","); ?></span>
                         <span><strong>Date: </strong><?php echo datetime_to_text($trans_detail['withdrawal_created']); ?></span>
-                        <span><strong>Account:</strong> <?php echo $trans_detail['ifx_acct_no']; ?></span>
-                        <span><strong>Phone Password:</strong> 
-                            <?php 
-                                $phone_password_encrypted = $trans_detail['client_phone_password'];
-                                $client_phone_password = decrypt(str_replace(" ", "+", $phone_password_encrypted));
-                                $client_phone_password = preg_replace("/[^A-Za-z0-9 ]/", '', $client_phone_password);
-                                echo $client_phone_password;
-                            ?>
-                        </span>
+                        <span><strong>Account: </strong> <?php echo $trans_detail['ifx_acct_no']; ?></span>
                         <hr/>
+                        <span><strong>Bank Name: </strong><?php echo $user_bank_account['client_bank_name']; ?></span>
+                        <span><strong>Account Name: </strong><?php echo $user_bank_account['client_acct_name']; ?></span>
+                        <span><strong>Account Number: </strong><?php echo $user_bank_account['client_acct_no']; ?></span>
+                        <span><strong>Amount To Pay: </strong>&#8358; <?php echo number_format($trans_detail['naira_total_withdrawable'], 2, ".", ","); ?></span>
                     </div>
                 </div>
             </div>
@@ -96,66 +93,65 @@
 
         <form  data-toggle="validator" role="form" method="post" action="">
             <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label class="control-label" for="remarks">Your Remark:</label>
                 <div><textarea name="remarks" id="message" rows="3" class="form-control" placeholder="Enter your remark" required></textarea></div>
             </div>
             <div class="form-group">
-                <button type="button" data-target="#account-check-approve" data-toggle="modal" class="btn btn-success">Confirm Account</button>
-                <button type="button" data-target="#account-check-decline" data-toggle="modal" class="btn btn-danger">Decline Account</button>
-                <button type="button" data-target="#account-check-pend" data-toggle="modal" class="btn btn-info">Pend Account</button>
-            </div>
+                <button type="button" data-target="#complete-payment-approve" data-toggle="modal" class="btn btn-success">Complete Payment</button>
+                <button type="button" data-target="#complete-payment-decline" data-toggle="modal" class="btn btn-danger">Decline Payment</button>
+                <button type="button" data-target="#complete-payment-pend" data-toggle="modal" class="btn btn-info">Pend Payment</button>
+            </div>-->
 
              <!--Modal - confirmation boxes--> 
-            <div id="account-check-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+            <div id="complete-payment-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                 class="close">&times;</button>
-                            <h4 class="modal-title">Confirm Account Check</h4></div>
-                        <div class="modal-body">Are you sure you want to CONFIRM this withdrawal? This action cannot be reversed.</div>
+                            <h4 class="modal-title">Complete Payment</h4></div>
+                        <div class="modal-body">Are you sure you want to COMPLETE this payment? This action cannot be reversed.</div>
                         <div class="modal-footer">
-                            <input name="process" type="submit" class="btn btn-success" value="Confirm Account Check">
+                            <input name="process" type="submit" class="btn btn-success" value="Complete Payment">
                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="account-check-decline" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+            <div id="complete-payment-decline" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                 class="close">&times;</button>
-                            <h4 class="modal-title">Decline Account Check</h4></div>
-                        <div class="modal-body">Are you sure you want to DECLINE this withdrawal? This action cannot be reversed.</div>
+                            <h4 class="modal-title">Decline Payment</h4></div>
+                        <div class="modal-body">Are you sure you want to DECLINE this payment? This action cannot be reversed.</div>
                         <div class="modal-footer">
-                            <input name="process" type="submit" class="btn btn-success" value="Decline Account Check">
+                            <input name="process" type="submit" class="btn btn-success" value="Decline Payment">
                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="account-check-pend" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+            <div id="complete-payment-pend" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                 class="close">&times;</button>
-                            <h4 class="modal-title">Pend Account Check</h4></div>
-                        <div class="modal-body">Are you sure you want to PEND this withdrawal? This action cannot be reversed.</div>
+                            <h4 class="modal-title">Pend Payment</h4></div>
+                        <div class="modal-body">Are you sure you want to PEND this payment?</div>
                         <div class="modal-footer">
-                            <input name="process" type="submit" class="btn btn-success" value="Pend Account Check">
+                            <input name="process" type="submit" class="btn btn-success" value="Pend Payment">
                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-
     </div>
 
     <div class="col-sm-6">

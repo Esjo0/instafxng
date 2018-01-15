@@ -7,7 +7,8 @@ if(!empty($trans_detail['points_claimed_id'])) {
 
 <p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
 <p>Make Modification to this order below.</p>
-<p>Fill the transfer reference, add your remark, then process this transaction. Please note that you must enter a remark for this transaction.</p>
+<p>Fill the actual amount paid for the order as confirmed with the bank, add your remark, then process this transaction. Please note that
+you must enter a remark for this transaction.</p>
 <div class="row">
     <div class="col-sm-6">
         <div class="trans_item">
@@ -90,105 +91,96 @@ if(!empty($trans_detail['points_claimed_id'])) {
                 <div class="transaction-remarks">
                     <span id="trans_remark_author">Client Comment:</span>
                     <span class="text-danger"><em><?php if(isset($trans_detail['client_comment'])) { echo $trans_detail['client_comment']; } else { echo "-----"; } ?></em></span>
+                    
+                    <?php 
+                        // allow admin to reply to client comment 
+                        if(isset($trans_detail['client_comment']) && strlen(trim($trans_detail['client_comment'])) > 10) {
+                            if($trans_detail['client_comment_response'] == '1') { // Comment has been replied by an Admin
+                    ?>
+                    <hr />
+                    <p style="text-align: right"><em>Comment Replied</em></p>
+                    
+                    <?php } else { ?>
 
-                    <?php
-                    // allow admin to reply to client comment
-                    if(isset($trans_detail['client_comment']) && strlen(trim($trans_detail['client_comment'])) > 10) {
-                        if($trans_detail['client_comment_response'] == '1') { // Comment has been replied by an Admin
-                            ?>
-                            <hr />
-                            <p style="text-align: right"><em>Comment Replied</em></p>
-
-                        <?php } else { ?>
-
-                            <p style="text-align: right">
-                                <button type="button" data-target="#reply-client-comment" data-toggle="modal" class="btn btn-default">Reply Comment</button>
-                            </p>
-
-                            <!-- Modal - confirmation boxes -->
-                            <div id="reply-client-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                    class="close">&times;</button>
-                                            <h4 class="modal-title">Reply Client Comment on Transaction</h4>
-                                        </div>
-
-                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
-                                            <input type="hidden" name="client_name" value="<?php echo $trans_detail['full_name']; ?>" />
-                                            <input type="hidden" name="client_email" value="<?php echo $trans_detail['email']; ?>" />
-                                            <input type="hidden" name="trans_id" value="<?php echo $trans_id; ?>" />
-                                            <div class="modal-body">
-                                                <p>Type your reply in the space below. Use [NAME] wherever you want the client name inserted.</p>
-                                                <label class="control-label" for="content">Message:</label>
-                                                <div class="form-group">
-                                                    <div class="col-sm-12"><textarea name="content" id="content" rows="3" class="form-control"></textarea></div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input name="reply-deposit-comment" type="submit" class="btn btn-success" value="Send" />
-                                                <button type="submit" name="decline" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
-                                            </div>
-                                        </form>
-
+                        <!--<p style="text-align: right">
+                            <button type="button" data-target="#reply-client-comment" data-toggle="modal" class="btn btn-default">Reply Comment</button>
+                        </p>-->
+                        
+                        <!-- Modal - confirmation boxes -->
+                        <div id="reply-client-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" data-dismiss="modal" aria-hidden="true"
+                                            class="close">&times;</button>
+                                        <h4 class="modal-title">Reply Client Comment on Transaction</h4>
                                     </div>
+                                    
+                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
+                                        <input type="hidden" name="client_name" value="<?php echo $trans_detail['full_name']; ?>" />
+                                        <input type="hidden" name="client_email" value="<?php echo $trans_detail['email']; ?>" />
+                                        <input type="hidden" name="trans_id" value="<?php echo $trans_id; ?>" />
+                                        <div class="modal-body">
+                                            <p>Type your reply in the space below. Use [NAME] wherever you want the client name inserted.</p>
+                                            <label class="control-label" for="content">Message:</label>
+                                            <div class="form-group">
+                                                <div class="col-sm-12"><textarea name="content" id="content" rows="3" class="form-control"></textarea></div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input name="reply-deposit-comment" type="submit" class="btn btn-success" value="Send" />
+                                            <button type="submit" name="decline" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
+                                        </div>
+                                    </form>
+                                    
                                 </div>
                             </div>
+                        </div>
 
-                        <?php } } ?>
-
+                    <?php } } ?>
+                    
                 </div>
             </div>
         </div>
         <br/>
         <form  data-toggle="validator" role="form" method="post" action="">
-            <input type="hidden" class="form-control" id="transaction_id" name="transaction_id" value="<?php echo $trans_id; ?>">
+            <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
+            <?php if(!empty($trans_detail['points_claimed_id'])) { ?>
+            <input type="hidden" name="points_claimed_id" value="<?php echo $trans_detail['points_claimed_id']; ?>" />
+            <?php } ?>
+
+            <?php if(isset($point_dollar_amount)) { ?>
+                <div class="form-group">
+                    <label class="control-label text-danger" for="point_dollar_amount">Loyalty Point Dollar Value (&#36;):</label>
+                    <div>
+                        <input type="text" class="form-control" id="point_dollar_amount" name="point_dollar_amount" value="<?php echo number_format($point_dollar_amount, 2, ".", ","); ?>" readonly>
+                    </div>
+                </div>
+            <?php } ?>
+
             <div class="form-group">
                 <label class="control-label text-danger" for="realamtpaid">Actual Amount Paid (&#8358;):</label>
                 <div>
-                    <input type="text" class="form-control" id="realamtpaid" name="realamtpaid" value="<?php echo number_format($trans_detail['real_naira_confirmed'], 2, ".", ","); ?>" readonly/>
+                    <input type="text" class="form-control" id="realamtpaid" name="realamtpaid" value=""  onchange="showdolval(this.value,<?php echo $trans_detail['exchange_rate']; ?>,<?php echo $trans_detail['deposit_origin']; ?>);" onFocus="showdolval(this.value,<?php echo $trans_detail['exchange_rate']; ?>,<?php echo $trans_detail['deposit_origin']; ?>)" onBlur="showdolval(this.value,<?php echo $trans_detail['exchange_rate']; ?>,<?php echo $trans_detail['deposit_origin']; ?>)" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label text-danger" for="realDolVal">Real Dollar Value (&#36;):</label>
-                <div id="realDol"><input type="text" class="form-control" id="realDolVal" name="realDolVal" value="<?php echo number_format($trans_detail['real_dollar_equivalent'], 2, ".", ","); ?>" readonly></div>
+                <div id="realDol"> </div>
             </div>
-            
-            <?php if(isset($point_dollar_amount)) { ?>
-            <div class="form-group">
-                <label class="control-label text-danger" for="point_dollar_amount">Loyalty Point Dollar Value (&#36;):</label>
-                <div>
-                    <input type="hidden" name="points_claimed_id" value="<?php echo $trans_detail['points_claimed_id']; ?>" />
-                    <input type="text" class="form-control" id="point_dollar_amount" name="point_dollar_amount" value="<?php echo number_format($point_dollar_amount, 2, ".", ","); ?>" readonly>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label text-danger">Total Amount To Fund Client:</label>
-                <div>
-                    <p style="font-size: 1.3em; padding: 0; color: green;"><strong>&dollar; <?php echo number_format(($trans_detail['real_dollar_equivalent'] + $point_dollar_amount), 2, ".", ","); ?></strong> (points inclusive)</p>
-                </div>
-            </div>
-            <?php } ?>
-
-
-            <div class="form-group">
-                <label class="control-label" for="trans_ref">IFX Transfer Reference:</label>
-                <div><textarea name="trans_ref" id="trans_ref" rows="3" class="form-control" placeholder="Enter IFX Transfer Reference"></textarea></div>
-            </div>
+            <?php if(!in_array('32b', $my_pages_sidebar)): ?>
             <div class="form-group">
                 <label class="control-label" for="remarks">Your Remark:</label>
-                <div><textarea name="remarks" id="remarks" rows="3" class="form-control" placeholder="Enter your remark" required></textarea></div>
+                <div><textarea name="remarks" id="message" rows="3" class="form-control" placeholder="Enter your remark" required></textarea></div>
             </div>
             <div class="form-group">
-                <button type="button" data-target="#confirm-deposit-approve" data-toggle="modal" class="btn btn-success">Complete Deposit</button>
+                <button type="button" data-target="#confirm-deposit-approve" data-toggle="modal" class="btn btn-success">Confirm Deposit</button>
                 <button type="button" data-target="#confirm-deposit-decline" data-toggle="modal" class="btn btn-danger">Decline Deposit</button>
                 <button type="button" data-target="#confirm-deposit-pend" data-toggle="modal" class="btn btn-info">Pend Deposit</button>
             </div>
+            <?php endif;?>
 
-
-            <!--Modal - confirmation boxes--> 
+             <!--Modal - confirmation boxes--> 
             <div id="confirm-deposit-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -196,9 +188,9 @@ if(!empty($trans_detail['points_claimed_id'])) {
                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                 class="close">&times;</button>
                             <h4 class="modal-title">Approve Deposit</h4></div>
-                        <div class="modal-body">Are you sure you want to APPROVE this deposit? This action cannot be reversed.</div>
+                        <div class="modal-body">Are you sure you want to CONFIRM this deposit? This action cannot be reversed.</div>
                         <div class="modal-footer">
-                            <input name="process" type="submit" class="btn btn-success" value="Complete Deposit">
+                            <input name="process" type="submit" class="btn btn-success" value="Confirm Deposit">
                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                         </div>
                     </div>
