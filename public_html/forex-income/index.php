@@ -133,52 +133,39 @@ $all_states = $system_object->get_all_states();
                         <hr />
                         <p class="text-center"><img src="images/free-training-banner-1.jpg" alt="" class="center-block img-responsive"></p>
 
-                        <p>I can never forget year 2016 as it brought about an abrupt change for me financially.</p>
-                        <p>My woes started with fuel scarcity as we entered into year 2016 and it became
-                            uncontrollable when tomatoes started turning to Gold.</p>
-                        <p>I was confused, shocked and fed up. First in January the fuel scarcity, next the
-                            Naira fell against the dollar, the things I could afford without thinking twice
-                            became a board meeting with my wife for approval.</p>
-                        <p>The cost of living skyrocketed as a result of the increment in the prices of food stuffs
-                            but my salary was still the same.</p>
+                        <p>I can never forget 2017 as it brought an abrupt change for me financially.</p>
+                        <p>I entered into the year full of hopes, hope that I would get my money that was stuck in the famous Ponzi Scheme back, hope that cost of living will go back to being normal, hope upon hope...</p>
+                        <p>I didn’t have the least inkling that my hope will be dashed and I will have to help myself as it appears that nothing was going back to normal, the happenings in the country have come to stay and there was no way out of the situation.</p>
+                        <p>The truth is, I was stuck. Stuck with my 9-5 job that could no longer provide me with the basic amenities I need to keep my family going.</p>
+
                         <p class="text-center"><img src="images/free-training-banner-2.jpg" alt="" class="center-block img-responsive"></p>
-                        <p>
-                            What do I do now? It was scary and confusing. My kids had to resume school 
-                            (By the way, school fees had increased), fuel price had doubled again and 
-                            I was still in the same old job, getting paid the same old salary and I still 
-                            had to drive through the Lagos traffic to get to work. 
-                        </p>
-                        <p>
-                            My only choice was to find how I could make money online, as I went on with my 
-                            day to day activities.
-                        </p>
+
+                        <p>Three years ago, I wouldn’t have been as worried and anxious as I was and the reason for the way I felt wasn’t farfetched.</p>
+                        <p>Three years ago, my job was the only thing I needed to live the life of my dreams. It brought me fulfillment and my attractive salary was more than enough to live on and to even extend a hand of help to the needy.</p>
+                        <p>But the situation in the country has changed, my company hit rock bottom and salaries were cut, the cost of living had skyrocketed, (I could barely feed my family on my salary in fact, sour three square meal had turned to two unsure meals.</p>
+                        <p>My only choice was to find how I could make money online, as I went on with my day to day activities.  I needed something that I could do without having to quit my job (I needed all the money I could make).</p>
+
                         <p class="text-center"><img src="images/free-training-banner-3.jpg" alt="" class="center-block img-responsive"></p>
-                        <p>I first heard of buying and selling of currencies (Forex) 
-                            in 2007, how it was profitable and you could make oil money by trading. On the 
-                            other hand, I heard it was too volatile a business and the risk involved was great. 
-                            "Which business has no risk?" While I made inquiries on trading Forex, I learnt why 
-                            people fail in Forex.
-                        </p>
+
+                        <p>I first heard of buying and selling of currencies (Forex) in 2016, how it was profitable and how anyone could make oil money by trading, at the other side I heard it was too volatile a business and the risk involved was great. “Which business has no risk?”</p>
+                        <p>While I made inquiries on trading Forex, I learnt why people fail in Forex</p>
+
                         <ul>
-                            <li>People run into forex thinking it is a get rich quick scheme</li>
-                            <li>People start trading without adequate training (Information)</li>
+                            <li>People run into forex thinking it is a get rich quick Scheme</li>
+                            <li>People start trading without adequate Training (Information)</li>
                             <li>People gamble</li>
                         </ul>
+
                         <h5 class="text-center">I Found the Gold Mine ...</h5>
                         <p class="text-center"><img src="images/free-training-banner-4.jpg" alt="" class="center-block img-responsive" /></p>
-                        <p>
-                            I started to trade FOREX in the month of March and it has been the 
-                            best channel for an extra income because while sleeping or working, 
-                            I still get to make money. Even if the naira crashes against the 
-                            dollar or not, my cash flows in steadily. 
-                        </p>
-                        <p>
-                            Today the story has changed, I am not the man I used to be since I 
-                            started trading Forex, yes, things are still expensive, yes, fuel 
-                            price is still high, my children’s school fees is still on the 
-                            increase but I am able to win over the situation since I now make 
-                            more money trading Forex. 
-                        </p>
+
+                        <p>Forex is as every other Business, you need to gain adequate information and follow these information so as to make profit.</p>
+                        <p>This is what I did...</p>
+
+                        <p>I started to trade FOREX in the month of October and it has been the best channel for an extra income because while sleeping or working, I get to make money.</p>
+                        <p>By December, I had made a total of &dollar;5,000 (&#8358;1,825,000) in profit from my trades and I even won a whooping sum of One million Naira in the InstaFxNg Loyalty Rewards Program.</p>
+                        <p>Today the story has changed, I am not the man I used to be since I started trading Forex, yes, things are still expensive, the Naira value still fluctuates but I am able to win over the situation since I now make more money trading Forex.</p>
+
                         <hr />
                         <p class="color-red text-center">
                             <strong>Would you also like to increase your cash flow and achieve a greater 
@@ -203,12 +190,12 @@ $all_states = $system_object->get_all_states();
                         <h5 class="text-center">But don't be intimidated by the risks...</h5>
                         <p>
                             Here is something that is true: I believe you can make a (really good) 
-                            living if you know how to trade FOREX in this recession. Thousands of 
+                            living if you know how to trade FOREX. Thousands of
                             Nigerians are making steady income and consistent living trading the 
                             Forex market and you should be among them too.
                         </p>
                         <p class="color-blue text-center">
-                            <strong>It is time to make one of the most important decisions in this recession, 
+                            <strong>It is time to make one of the most important decisions this year,
                                 let me show you how. Kindly fill the form below to get started...</strong>
                         </p>
                         

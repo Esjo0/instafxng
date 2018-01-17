@@ -4,6 +4,30 @@ if (!$session_admin->is_logged_in())
 {
     redirect_to("login.php");
 }
+
+$locations = array(
+    array (
+      'location_id' => '1',
+      'location' => 'Diamond Estate Office',
+      'ip_address' => '192.168.1',
+      'created' => '2017-11-13 09:27:30'
+    ),
+    array (
+      'location_id' => '2',
+      'location' => 'Diamond Estate Office',
+      'ip_address' => '169.254.206'
+    ),
+    array (
+      'location_id' => '3',
+      'location' => 'HFP Eastline Office',
+      'ip_address' => '192.168.0'
+  ),
+    array (
+      'location_id' => '4',
+      'location' => 'HFP Eastline Office',
+      'ip_address' => '192.168.8')
+);
+
 function GetFirstThree($ip)
 {
     $admin_object = new AdminUser();
@@ -31,15 +55,26 @@ function GetFirstThree($ip)
                         </div>
                     </div>
 MAIL;
-    $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
+    $system_object->send_email($subject, $message_final, "Emmanuel@instafxng.com", $admin_name);
 
 
     return $ip;
 }
+function searchForId($id, $array, $key_identifier)
+{
+    foreach ($array as $key => $val)
+    {
+        if ($val[$key_identifier] === $id)
+        {
+            return $key;
+        }
+    }
+    return null;
+}
 
 $ip_address = GetFirstThree($db_handle->sanitizePost(gethostbyname(trim(`hostname`))));
 $today = $db_handle->sanitizePost(date("d-m-Y"));
-$time = $db_handle->sanitizePost(date("h:i:s"));
+$time = $db_handle->sanitizePost(date("H:i:s"));
 $day = date('l', strtotime($today));
 if ($day != 'Saturday' || $day != 'Sunday')
 {
@@ -48,17 +83,17 @@ if ($day != 'Saturday' || $day != 'Sunday')
     $result = $db_handle->numRows($query);
     if($result < 1)
     {
-        $query = "SELECT * FROM hr_attendance_locations WHERE ip_address = '$ip_address' ";
-        $result = $db_handle->numRows($query);
-        if($result > 0)
+        //$query = "SELECT * FROM hr_attendance_locations WHERE ip_address = '$ip_address' ";
+        //$result = $db_handle->numRows($query);
+        $search_result = searchForId($ip_address, $locations, 'ip_address');
+        if($search_result >= 0 && $search_result != null)
         {
             $result = $db_handle->runQuery($query);
             $location_details = $db_handle->fetchAssoc($result);
             extract($location_details);
             $location_details = $location_details[0];
-            $query = "INSERT INTO hr_attendance_log (admin_code, date, time, location) VALUES ('$admin_code', '$today', '$time', '".$location_details['location']."')";
+            $query = "INSERT INTO hr_attendance_log (admin_code, date, time, location) VALUES ('$admin_code', '$today', '$time', '".$locations[$search_result]['location']."')";
             $result = $db_handle->runQuery($query);
-            //var_dump($query);
             if($result):?>
                 <!--Modal - confirmation boxes-->
                 <div id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -71,11 +106,11 @@ if ($day != 'Saturday' || $day != 'Sunday')
                                 <p class="text-justify">You have successfully signed in.</p>
                                 <p class="text-justify">TIME: <?php echo date("h:i:s A", strtotime($time))  ?></p>
                                 <p class="text-justify">DATE: <?php echo date("l jS F Y ", strtotime($today));?></p>
-                                <p class="text-justify">LOCATION: <?php echo $location_details['location'];?></p>
+                                <p class="text-justify">LOCATION: <?php echo $locations[$search_result]['location'];?></p>
                                 <small class="text-justify text-muted">NB: If these details are not correct, please contact the HR team, immediately.</small>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                             </div>
                         </div>
                     </div>

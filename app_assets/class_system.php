@@ -430,7 +430,7 @@ class InstafxngSystem {
             $fetched_data = $db_handle->fetchAssoc($result);
             $client_group = $fetched_data[0]['client_group'];
 
-            $recipient_query = $db_handle->sanitizePost(client_group_query($client_group));
+            $recipient_query = $db_handle->sanitizePost(client_group_query($client_group, 1));
             $total_recipient = $db_handle->numRows(stripslashes($recipient_query));
 
             // schedule campaign
@@ -457,7 +457,7 @@ class InstafxngSystem {
             $fetched_data = $db_handle->fetchAssoc($result);
             $client_group = $fetched_data[0]['client_group'];
 
-            $recipient_query = $db_handle->sanitizePost(client_group_query($client_group));
+            $recipient_query = $db_handle->sanitizePost(client_group_query($client_group, 2));
             $total_recipient = $db_handle->numRows(stripslashes($recipient_query));
 
             // schedule campaign

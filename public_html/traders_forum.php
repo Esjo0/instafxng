@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
-            <p>At the Forum this month, we will discuss how to make 2018 a memorable one and how to close more profitable
-            trades in the new year .</p>
+            <p>At the Forum this month, we will discuss simple winning strategies you need to use
+            in order to make consistent profits this year.</p>
 
             <p>You will also have the opportunity of meeting other Forex traders and you
             could be one of two lucky winners to win $20 trading bonus. Isn’t that cool?</p>
@@ -164,9 +164,7 @@ MAIL;
                             <div class="col-sm-6">
                                 <h3 style="margin: 0;">Make 2018 a Memorable One</h3>
                                 <p style="margin-top: 0">
-                                    Join us on Saturday 13th of January, 2018 as discuss how to make 2018 a memorable one and
-                                    how to close more profitable trades in the new year.
-                                        Time: 12 - 2pm.<br />
+                                    Join us on Saturday 13th of January, 2018 as we discuss simple winning strategies you need to use in order to make consistent profits this year. Time: 12 - 2pm.<br />
                                     <strong>Reserve your seat below to stand a chance to win $20.</strong>
                                 </p>
                             </div>
@@ -277,9 +275,9 @@ MAIL;
                                             <div class="radio">
                                                 <label><input id="venue" type="radio" name="venue" value="Diamond Estate" checked required>Block 1A, Plot 8, Diamond Estate, LASU/Isheri road, Isheri Olofin, Lagos.</label>
                                             </div>
-<!--                                            <div class="radio">-->
-<!--                                                <label><input id="venue" type="radio" name="venue" value="Ajah Office" required>Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</label>-->
-<!--                                            </div>-->
+                                            <div class="radio">
+                                                <label><input id="venue" type="radio" name="venue" value="Ajah Office" required>Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</label>
+                                            </div>
                                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                         </div>
                                         <div class="form-group">
