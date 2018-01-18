@@ -101,9 +101,9 @@ if(!empty($trans_detail['points_claimed_id'])) {
 
                         <?php } else { ?>
 
-                            <p style="text-align: right">
+                            <!--<p style="text-align: right">
                                 <button type="button" data-target="#reply-client-comment" data-toggle="modal" class="btn btn-default">Reply Comment</button>
-                            </p>
+                            </p>-->
 
                             <!-- Modal - confirmation boxes -->
                             <div id="reply-client-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -147,12 +147,12 @@ if(!empty($trans_detail['points_claimed_id'])) {
             <div class="form-group">
                 <label class="control-label text-danger" for="realamtpaid">Actual Amount Paid (&#8358;):</label>
                 <div>
-                    <input type="text" class="form-control" id="realamtpaid" name="realamtpaid" value="<?php echo number_format($trans_detail['real_naira_confirmed'], 2, ".", ","); ?>" readonly/>
+                    <input type="text" class="form-control" id="realamtpaid" name="realamtpaid" value="<?php echo number_format($trans_detail['real_naira_confirmed'], 2, ".", ","); ?>" disabled/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label text-danger" for="realDolVal">Real Dollar Value (&#36;):</label>
-                <div id="realDol"><input type="text" class="form-control" id="realDolVal" name="realDolVal" value="<?php echo number_format($trans_detail['real_dollar_equivalent'], 2, ".", ","); ?>" readonly></div>
+                <div id="realDol"><input type="text" class="form-control" id="realDolVal" name="realDolVal" value="<?php echo number_format($trans_detail['real_dollar_equivalent'], 2, ".", ","); ?>" disabled></div>
             </div>
             
             <?php if(isset($point_dollar_amount)) { ?>
@@ -160,7 +160,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
                 <label class="control-label text-danger" for="point_dollar_amount">Loyalty Point Dollar Value (&#36;):</label>
                 <div>
                     <input type="hidden" name="points_claimed_id" value="<?php echo $trans_detail['points_claimed_id']; ?>" />
-                    <input type="text" class="form-control" id="point_dollar_amount" name="point_dollar_amount" value="<?php echo number_format($point_dollar_amount, 2, ".", ","); ?>" readonly>
+                    <input type="text" class="form-control" id="point_dollar_amount" name="point_dollar_amount" value="<?php echo number_format($point_dollar_amount, 2, ".", ","); ?>" disabled>
                 </div>
             </div>
 
@@ -173,7 +173,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
             <?php } ?>
 
 
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label class="control-label" for="trans_ref">IFX Transfer Reference:</label>
                 <div><textarea name="trans_ref" id="trans_ref" rows="3" class="form-control" placeholder="Enter IFX Transfer Reference"></textarea></div>
             </div>
@@ -185,7 +185,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
                 <button type="button" data-target="#confirm-deposit-approve" data-toggle="modal" class="btn btn-success">Complete Deposit</button>
                 <button type="button" data-target="#confirm-deposit-decline" data-toggle="modal" class="btn btn-danger">Decline Deposit</button>
                 <button type="button" data-target="#confirm-deposit-pend" data-toggle="modal" class="btn btn-info">Pend Deposit</button>
-            </div>
+            </div>-->
 
 
             <!--Modal - confirmation boxes--> 

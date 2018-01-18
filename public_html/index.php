@@ -35,16 +35,15 @@ $thisPage = "Home";
                     ================================================== -->
                     <div  class="item super-shadow page-top-section">
                         <div class="row ">
-                            <!--<div class="col-sm-6">
-                                <h2>The Amazing Profit Opportunity in Litecoin and Ripple</h2>
-                                <p>Did you know that some people who invested in bitcoin in it's early days made
-                                    billion of dollars from it? That's right!</p>
-                                <p>You probably wish you had bought 10 bitcoins with $10 then.</p>
-                                <p>You don't have to worry about it, Here's another opportunity to invest in
-                                    litecoin and ripple coins...
-                                    <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details">Read more here</a></p>
-                            </div>-->
-
+<!--                            <div class="col-sm-6">-->
+<!--                                <h2>The Amazing Profit Opportunity in Litecoin and Ripple</h2>-->
+<!--                                <p>Did you know that some people who invested in bitcoin in it's early days made-->
+<!--                                    billion of dollars from it? That's right!</p>-->
+<!--                                <p>You probably wish you had bought 10 bitcoins with $10 then.</p>-->
+<!--                                <p>You don't have to worry about it, Here's another opportunity to invest in-->
+<!--                                    litecoin and ripple coins...-->
+<!--                                    <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details">Read more here</a></p>-->
+<!--                            </div>-->
                                 <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/instafxng_loyalty_program_and_rewards.jpg" alt="" class="img-responsive" /></a>
 
                         </div>

@@ -1,5 +1,5 @@
 <p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
-<p>Make Modification to this order below. You are to confirm that the Phone Password is correct.</p>
+<p>Make Modification to this order below. You are to debit the client's Instaforex account.</p>
 <div class="row">
     <div class="col-sm-6">
         <div class="trans_item">
@@ -62,14 +62,6 @@
                         <span><strong>Withdraw:</strong> &dollar; <?php echo $trans_detail['dollar_withdraw']; ?> - &#8358; <?php echo number_format($trans_detail['naira_total_withdrawable'], 2, ".", ","); ?></span>
                         <span><strong>Date: </strong><?php echo datetime_to_text($trans_detail['withdrawal_created']); ?></span>
                         <span><strong>Account:</strong> <?php echo $trans_detail['ifx_acct_no']; ?></span>
-                        <span><strong>Phone Password:</strong> 
-                            <?php 
-                                $phone_password_encrypted = $trans_detail['client_phone_password'];
-                                $client_phone_password = decrypt(str_replace(" ", "+", $phone_password_encrypted));
-                                $client_phone_password = preg_replace("/[^A-Za-z0-9 ]/", '', $client_phone_password);
-                                echo $client_phone_password;
-                            ?>
-                        </span>
                         <hr/>
                     </div>
                 </div>
@@ -93,62 +85,65 @@
             </div>
         </div>
         <br/>
-
         <form  data-toggle="validator" role="form" method="post" action="">
             <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
+            <!--<div class="form-group">
+                <label class="control-label" for="trans_ref">IFX Transfer Reference:</label>
+                <div><textarea name="trans_ref" id="message" rows="3" class="form-control" placeholder="Enter IFX Transfer Reference"></textarea></div>
+            </div>
             <div class="form-group">
                 <label class="control-label" for="remarks">Your Remark:</label>
                 <div><textarea name="remarks" id="message" rows="3" class="form-control" placeholder="Enter your remark" required></textarea></div>
             </div>
             <div class="form-group">
-                <button type="button" data-target="#account-check-approve" data-toggle="modal" class="btn btn-success">Confirm Account</button>
-                <button type="button" data-target="#account-check-decline" data-toggle="modal" class="btn btn-danger">Decline Account</button>
-                <button type="button" data-target="#account-check-pend" data-toggle="modal" class="btn btn-info">Pend Account</button>
-            </div>
+                <button type="button" data-target="#account-debit-approve" data-toggle="modal" class="btn btn-success">Confirm IFX Debit</button>
+                <button type="button" data-target="#account-debit-decline" data-toggle="modal" class="btn btn-danger">Decline IFX Debit</button>
+                <button type="button" data-target="#account-debit-pend" data-toggle="modal" class="btn btn-info">Pend IFX Debit</button>
+            </div>-->
 
              <!--Modal - confirmation boxes--> 
-            <div id="account-check-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+            <div id="account-debit-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                 class="close">&times;</button>
-                            <h4 class="modal-title">Confirm Account Check</h4></div>
+                            <h4 class="modal-title">Confirm IFX Debit</h4></div>
                         <div class="modal-body">Are you sure you want to CONFIRM this withdrawal? This action cannot be reversed.</div>
                         <div class="modal-footer">
-                            <input name="process" type="submit" class="btn btn-success" value="Confirm Account Check">
+                            <input name="process" type="submit" class="btn btn-success" value="Confirm IFX Debit">
                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="account-check-decline" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+            <div id="account-debit-decline" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                 class="close">&times;</button>
-                            <h4 class="modal-title">Decline Account Check</h4></div>
+                            <h4 class="modal-title">Decline IFX Debit</h4></div>
                         <div class="modal-body">Are you sure you want to DECLINE this withdrawal? This action cannot be reversed.</div>
                         <div class="modal-footer">
-                            <input name="process" type="submit" class="btn btn-success" value="Decline Account Check">
+                            <input name="process" type="submit" class="btn btn-success" value="Decline IFX Debit">
                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="account-check-pend" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+            <div id="account-debit-pend" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                 class="close">&times;</button>
-                            <h4 class="modal-title">Pend Account Check</h4></div>
+                            <h4 class="modal-title">Pend IFX Debit</h4></div>
                         <div class="modal-body">Are you sure you want to PEND this withdrawal? This action cannot be reversed.</div>
                         <div class="modal-footer">
-                            <input name="process" type="submit" class="btn btn-success" value="Pend Account Check">
+                            <input name="process" type="submit" class="btn btn-success" value="Pend IFX Debit">
                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
                         </div>
                     </div>

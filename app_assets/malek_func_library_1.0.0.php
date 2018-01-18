@@ -49,7 +49,7 @@ function check_email($email) {
  */
 function check_number($number) {
     //All Nigerian Phone Network Prefixes and Number Ranges
-    $nigerian_phone_number_prefixes = array('0701', '0702', '0703', '0704', '0705', '0706', '0707', '0708', '0709', '0802', '0803', '0804', '0805', '0806', '0807', '0808', '0809', '0810', '0811', '0812', '0813', '0814', '0815', '0816', '0817', '0818', '0819', '0909', '0902', '0903', '0905');
+    $nigerian_phone_number_prefixes = array('0701', '0702', '0703', '0704', '0705', '0706', '0707', '0708', '0709', '0802', '0803', '0804', '0805', '0806', '0807', '0808', '0809', '0810', '0811', '0812', '0813', '0814', '0815', '0816', '0817', '0818', '0819', '0901', '0902', '0903', '0904', '0905', '0906', '0907', '0908', '0909');
 
     //Strip whitespace (or other characters) from the beginning and end of a string
     $number = trim($number);

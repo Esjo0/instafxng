@@ -19,6 +19,8 @@ if (isset($_POST['submit'])) {
         $message_error = "All fields must be filled, please try again";
     } elseif (!check_email($email_address)) {
         $message_error = "You have supplied an invalid email address, please try again.";
+    } elseif (check_number($phone_number) != 5) {
+        $message_error = "The supplied phone number is invalid.";
     } else {
 
         $client_full_name = $full_name;
@@ -140,7 +142,10 @@ if (isset($_POST['submit'])) {
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="phone">Phone Number:</label>
-                                        <div class="col-sm-9 col-lg-7"><input name="phone_number" type="text" class="form-control" id="phone" maxlength="11" required></div>
+                                        <div class="col-sm-9 col-lg-7">
+                                            <input name="phone_number" type="text" class="form-control" id="phone" data-minlength="11" maxlength="11" required>
+                                            <div class="help-block">Example - 08031234567</div>
+                                        </div>
                                     </div>
 
                                     <div class="form-group">

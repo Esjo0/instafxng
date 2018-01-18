@@ -134,18 +134,21 @@ $education_tickets = $db_handle->fetchAssoc($result);
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php if(isset($education_tickets) && !empty($education_tickets)) { foreach ($education_tickets as $row) { ?>
+                                    <?php
+                                        $count = 1;
+                                        if(isset($education_tickets) && !empty($education_tickets)) { foreach ($education_tickets as $row) {
+                                    ?>
                                         <tr>
                                             <td>
                                                 <div class="dropdown">
                                                     <a class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Action <span class="caret"></span></a>
                                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                                         <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" title="View" href="edu_support_ticket_view.php?id=<?php echo encrypt($row['support_request_code']); ?>"><i class="fa fa-eye fa-fw"></i> View</a></li>
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#close-ticket"><i class="fa fa-lock fa-fw"></i> Close Ticket</a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#close-ticket-<?php echo $count; ?>"><i class="fa fa-lock fa-fw"></i> Close Ticket</a></li>
                                                     </ul>
                                                 </div>
 
-                                                <div id="close-ticket" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                <div id="close-ticket-<?php echo $count; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -171,7 +174,7 @@ $education_tickets = $db_handle->fetchAssoc($result);
                                             <td><?php echo substr($row['request'], 0, 160) . ' ...'; ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                         </tr>
-                                    <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <?php $count++; } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
 

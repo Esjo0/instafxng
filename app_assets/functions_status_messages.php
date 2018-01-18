@@ -318,6 +318,7 @@ function client_group_campaign_category($status) {
         case '31': $message = "Online Training - Completed Course 1"; break;
         case '32': $message = "2017 Dinner Guests"; break;
         case '33': $message = "Office Funding Clients"; break;
+        case '34': $message = "Failed SMS Clients"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -327,7 +328,7 @@ function client_group_campaign_category($status) {
  * Table: Campaign Category
  * Column: client_group
  */
-function client_group_query($client_group) {
+function client_group_query($client_group, $campaign_type) {
     $from_date = date('Y-m-d', strtotime('first day of last month'));
     $to_date = date('Y-m-d', strtotime('last day of last month'));
 
@@ -343,42 +344,91 @@ function client_group_query($client_group) {
         $top_trader_to_date = date('Y-m') . '-15';
     }
 
-    switch ($client_group) {
-        case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1' ORDER BY created ASC"; break;
-        case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1' ORDER BY created ASC"; break;
-        case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign ORDER BY created ASC"; break;
-        case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
-        case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
-        case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
-        case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 9 MONTH) AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
-        case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2' ORDER BY created ASC"; break;
-        case '9': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u INNER JOIN user_meta AS um ON u.user_code = um.user_code LEFT JOIN state AS s ON um.state_id = s.state_id WHERE u.campaign_subscribe = '1' AND um.address LIKE '%Lagos%'"; break;
-        case '10': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '3'"; break;
-        case '11': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '2'"; break;
-        case '12': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '1'"; break;
-        case '13': $query = "SELECT first_name, email, phone FROM forum_participant"; break;
-        case '14': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_training = '2'"; break;
-        case '15': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_funding = '2'"; break;
-        case '16': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_bonus = '2'"; break;
-        case '17': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_investment = '2'"; break;
-        case '18': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_services = '2'"; break;
-        case '19': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_other = '2'"; break;
-        case '20': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE u.campaign_subscribe = '1' AND (ud.status = '8' AND STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY ud.ifxaccount_id"; break;
-        case '21': $query = "SELECT full_name AS first_name, email_address AS email, phone_number AS phone FROM pencil_comedy_reg"; break;
-        case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE email IN ('abegundeemmanuel@gmail.com', 'rightpma@gmail.com', 'utomudopercy@gmail.com', 'olagold4@yahoo.com', 'ademolaoyebode@gmail.com', 'Scargger2010560@gmail.com', 'Joshuagoke08@gmail.com', 'olasomimercy@gmail.com', 'estellynab38@yahoo.com', 'bunmzyfad@yahoo.com', 'estherogunsola463@yahoo.com', 'afujah@yahoo.com', 'ayoola@instafxng.com')"; break;
-        case '23': $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS first_name, u.email, u.phone FROM point_ranking AS pr INNER JOIN user AS u ON pr.user_code = u.user_code ORDER BY pr.year_rank DESC, first_name ASC LIMIT 20"; break;
-        case '24': $query = "SELECT first_name, email_address, phone_number FROM career_user_application AS cua INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code WHERE cua.status = '2'"; break;
-        case '25': $query = "SELECT u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned BETWEEN '$top_trader_from_date' AND '$top_trader_to_date'"; break;
-        case '26': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 1"; break;
-        case '27': $query = "SELECT CONCAT(last_name, SPACE(1), first_name) AS first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 2"; break;
-        case '28': $query = "SELECT CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS first_name, ftc.email, ftc.phone FROM free_training_campaign AS ftc LEFT JOIN user AS u on u.email = ftc.email WHERE training_centre = '3' AND ftc.email NOT IN (SELECT email AS c_email FROM user WHERE academy_signup IS NOT NULL)"; break;
-        case '29': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM point_ranking_log AS prl INNER JOIN user AS u ON prl.user_code = u.user_code WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code"; break;
-        case '30': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE (td.date_earned BETWEEN '2016-12-01' AND '2017-11-30') AND u.user_code NOT IN (SELECT prl.user_code FROM point_ranking_log AS prl WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code) GROUP BY u.email"; break;
-        case '31': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL GROUP BY ueel.user_code"; break;
-        case '32': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2017 WHERE attended = '1'"; break;
-        case '33': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.deposit_origin IN ('2', '3') GROUP BY u.user_code"; break;
-        default: $query = false; break;
+    if($campaign_type == 1) {
+        // This is an email campaign
+
+        switch ($client_group) {
+            case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1' ORDER BY created ASC"; break;
+            case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1' ORDER BY created ASC"; break;
+            case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign ORDER BY created ASC"; break;
+            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
+            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
+            case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
+            case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 9 MONTH) AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
+            case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2' ORDER BY created ASC"; break;
+            case '9': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u INNER JOIN user_meta AS um ON u.user_code = um.user_code LEFT JOIN state AS s ON um.state_id = s.state_id WHERE u.campaign_subscribe = '1' AND um.address LIKE '%Lagos%'"; break;
+            case '10': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '3'"; break;
+            case '11': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '2'"; break;
+            case '12': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '1'"; break;
+            case '13': $query = "SELECT first_name, email, phone FROM forum_participant"; break;
+            case '14': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_training = '2'"; break;
+            case '15': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_funding = '2'"; break;
+            case '16': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_bonus = '2'"; break;
+            case '17': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_investment = '2'"; break;
+            case '18': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_services = '2'"; break;
+            case '19': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_other = '2'"; break;
+            case '20': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE u.campaign_subscribe = '1' AND (ud.status = '8' AND STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY ud.ifxaccount_id"; break;
+            case '21': $query = "SELECT full_name AS first_name, email_address AS email, phone_number AS phone FROM pencil_comedy_reg"; break;
+            case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE email IN ('abegundeemmanuel@gmail.com', 'rightpma@gmail.com', 'utomudopercy@gmail.com', 'olagold4@yahoo.com', 'ademolaoyebode@gmail.com', 'Scargger2010560@gmail.com', 'Joshuagoke08@gmail.com', 'olasomimercy@gmail.com', 'estellynab38@yahoo.com', 'bunmzyfad@yahoo.com', 'estherogunsola463@yahoo.com', 'afujah@yahoo.com', 'ayoola@instafxng.com')"; break;
+            case '23': $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS first_name, u.email, u.phone FROM point_ranking AS pr INNER JOIN user AS u ON pr.user_code = u.user_code ORDER BY pr.year_rank DESC, first_name ASC LIMIT 20"; break;
+            case '24': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM career_user_application AS cua INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code WHERE cua.status = '2'"; break;
+            case '25': $query = "SELECT u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned BETWEEN '$top_trader_from_date' AND '$top_trader_to_date'"; break;
+            case '26': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 1"; break;
+            case '27': $query = "SELECT CONCAT(last_name, SPACE(1), first_name) AS first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 2"; break;
+            case '28': $query = "SELECT CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS first_name, ftc.email, ftc.phone FROM free_training_campaign AS ftc LEFT JOIN user AS u on u.email = ftc.email WHERE training_centre = '3' AND ftc.email NOT IN (SELECT email AS c_email FROM user WHERE academy_signup IS NOT NULL)"; break;
+            case '29': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM point_ranking_log AS prl INNER JOIN user AS u ON prl.user_code = u.user_code WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code"; break;
+            case '30': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE (td.date_earned BETWEEN '2016-12-01' AND '2017-11-30') AND u.user_code NOT IN (SELECT prl.user_code FROM point_ranking_log AS prl WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code) GROUP BY u.email"; break;
+            case '31': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL GROUP BY ueel.user_code"; break;
+            case '32': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2017 WHERE attended = '1'"; break;
+            case '33': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.deposit_origin IN ('2', '3') GROUP BY u.user_code"; break;
+            case '34': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON u.user_code = uv.user_code WHERE uv.user_code = u.user_code AND u.password IS NULL"; break;
+            default: $query = false; break;
+        }
+
+    } else {
+        // This is an SMS campaign
+        // Reformat queries and group by phone to avoid repetition of phone numbers
+
+        switch ($client_group) {
+            case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1' GROUP BY phone ORDER BY created ASC"; break;
+            case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1' GROUP BY phone ORDER BY created ASC"; break;
+            case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign GROUP BY phone ORDER BY created ASC"; break;
+            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1' GROUP BY u.phone ORDER BY u.created ASC"; break;
+            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1' GROUP BY u.phone ORDER BY u.created ASC"; break;
+            case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1' GROUP BY u.phone ORDER BY u.created ASC"; break;
+            case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 9 MONTH) AND u.campaign_subscribe = '1' GROUP BY u.phone ORDER BY u.created ASC"; break;
+            case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2' GROUP BY phone ORDER BY created ASC"; break;
+            case '9': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u INNER JOIN user_meta AS um ON u.user_code = um.user_code LEFT JOIN state AS s ON um.state_id = s.state_id WHERE u.campaign_subscribe = '1' AND um.address LIKE '%Lagos%' GROUP BY u.phone"; break;
+            case '10': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '3' GROUP BY phone"; break;
+            case '11': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '2' GROUP BY phone"; break;
+            case '12': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '1' GROUP BY phone"; break;
+            case '13': $query = "SELECT first_name, email, phone FROM forum_participant GROUP BY phone"; break;
+            case '14': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_training = '2' GROUP BY u.phone"; break;
+            case '15': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_funding = '2' GROUP BY u.phone"; break;
+            case '16': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_bonus = '2' GROUP BY u.phone"; break;
+            case '17': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_investment = '2' GROUP BY u.phone"; break;
+            case '18': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_services = '2' GROUP BY u.phone"; break;
+            case '19': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_other = '2' GROUP BY u.phone"; break;
+            case '20': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE u.campaign_subscribe = '1' AND (ud.status = '8' AND STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.phone GROUP BY ud.ifxaccount_id"; break;
+            case '21': $query = "SELECT full_name AS first_name, email_address AS email, phone_number AS phone FROM pencil_comedy_reg"; break;
+            case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE email IN ('abegundeemmanuel@gmail.com', 'rightpma@gmail.com', 'utomudopercy@gmail.com', 'olagold4@yahoo.com', 'ademolaoyebode@gmail.com', 'Scargger2010560@gmail.com', 'Joshuagoke08@gmail.com', 'olasomimercy@gmail.com', 'estellynab38@yahoo.com', 'bunmzyfad@yahoo.com', 'estherogunsola463@yahoo.com', 'afujah@yahoo.com', 'ayoola@instafxng.com') GROUP BY phone"; break;
+            case '23': $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS first_name, u.email, u.phone FROM point_ranking AS pr INNER JOIN user AS u ON pr.user_code = u.user_code ORDER BY pr.year_rank DESC, first_name ASC LIMIT 20"; break;
+            case '24': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM career_user_application AS cua INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code WHERE cua.status = '2' GROUP BY phone"; break;
+            case '25': $query = "SELECT u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned BETWEEN '$top_trader_from_date' AND '$top_trader_to_date' GROUP BY phone"; break;
+            case '26': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 1 GROUP BY phone"; break;
+            case '27': $query = "SELECT CONCAT(last_name, SPACE(1), first_name) AS first_name, email_address AS email, phone_number AS phone FROM prospect_biodata WHERE prospect_source = 2 GROUP BY phone"; break;
+            case '28': $query = "SELECT CONCAT(ftc.last_name, SPACE(1), ftc.first_name) AS first_name, ftc.email, ftc.phone FROM free_training_campaign AS ftc LEFT JOIN user AS u on u.email = ftc.email WHERE training_centre = '3' AND ftc.email NOT IN (SELECT email AS c_email FROM user WHERE academy_signup IS NOT NULL) GROUP BY ftc.phone"; break;
+            case '29': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM point_ranking_log AS prl INNER JOIN user AS u ON prl.user_code = u.user_code WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code"; break;
+            case '30': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE (td.date_earned BETWEEN '2016-12-01' AND '2017-11-30') AND u.user_code NOT IN (SELECT prl.user_code FROM point_ranking_log AS prl WHERE prl.position IN ('1', '2', '3', '4', '5') AND prl.start_date BETWEEN '2016-12-01' AND '2017-10-01' GROUP BY user_code) GROUP BY u.email"; break;
+            case '31': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL GROUP BY ueel.u.phone"; break;
+            case '32': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2017 WHERE attended = '1' GROUP BY u.phone"; break;
+            case '33': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.deposit_origin IN ('2', '3') GROUP BY u.phone"; break;
+            case '34': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON u.user_code = uv.user_code WHERE uv.user_code = u.user_code AND u.password IS NULL GROUP BY u.phone"; break;
+            default: $query = false; break;
+        }
+
     }
+
     return $query;
 }
 
