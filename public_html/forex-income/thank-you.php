@@ -31,28 +31,20 @@
   <body id="page-top">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <nav class="navbar-shrink navbar navbar-expand-lg navbar-light fixed-top " id="mainNav"  >
       <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="#page-top">
             <img class="img-responsive" src="img/ifxlogo.png"></a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
-          <i class="fa fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-          </ul>
-        </div>
       </div>
     </nav>
 
-    <header class="masthead" style="background: url(img/bg-pattern.png),linear-gradient(to left,#dc2430,#ffffff) !important;">
+    <!--<header class="masthead" style="background: url(img/bg-pattern.png),linear-gradient(to left,#dc2430,#ffffff) !important;">
       <div class="container h-100" >
         <div class="row h-100" >
           <div class="col-lg-6 my-auto"  style="background: rgba(0, 0, 0, 0.42);">
             <div class="header-content mx-auto" style="width: 100%; height: 100%">
               <h2><b>Thank you for registering!</b></h2>
-              <!--<a href="#form" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>-->
+              <!--<a href="#form" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>
                <p style="font-size: large; color: #ffffff" class="text-justify">Here is something that is true: I believe you can make a (really good) living if you know how to trade FOREX.
                     Thousands of Nigerians are making steady income and consistent living trading the Forex market and you should
                     be among them too.</p>
@@ -76,17 +68,19 @@
             </div>
         </div>
       </div>
-    </header>
+    </header>-->
 
 
-    <section class="cta" id="form">
+    <section class="cta" id="form" >
         <div class="cta-content">
             <div class="container">
                 <div class="row ">
                     <div class="col-lg-12 text-center">
                         <h2 style="max-width: inherit !important;">Welcome to the Instafxng Forex Profit Academy</h2>
+                        <p style="font-size: large; color: #ffffff" class="text-center">Adequate training/education on forex trading is the first step to making steady income trading Forex. It is the key to financial stability through Forex because it helps you gain the understanding of the basics and variables of the market.</p>
                         <p style="font-size: large; color: #ffffff" class="text-center">You have been enrolled for our online <strong>Forex Profit Academy</strong> where you will learn
                             how to make money trading the forex market. The lessons are easy and you can start immediately.</p>
+                        <p style="font-size: large; color: #ffffff" class="text-center">Our Free Forex training programme will introduce you to practical ways of trading the Forex market.</p>
                         <p style="font-size: large; color: #ffffff" class="text-center">Click the button below to go to the Academy and login with the email address you used for registration.</p>
                         <p style="font-size: large; color: #ffffff" class="text-center"><a href="https://instafxng.com/fxacademy/" class="btn btn-lg btn-success">Forex Profit Academy</a></p>
                     </div>

@@ -158,21 +158,21 @@ $all_states = $system_object->get_all_states();
             <div class="row align-items-center">
                 <div class="col-lg-6 order-lg-2">
                     <div class="p-5">
-                        <img class="img-fluid img-thumbnail" src="img/free-training-banner-1.jpg" alt="">
+                        <img class="img-fluid img-thumbnail" src="img/new-stock/sad-man-2.jpeg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6 order-lg-1">
                     <div class="p-5">
                         <h2 class="display-4">The beginning...</h2>
-                        <p>I can never forget 2017 as it brought an abrupt change for me financially.</p>
-                        <p>I entered into the year full of hopes, hope that I would get my money that was
+                        <p class="text-justify">I can never forget 2017 as it brought an abrupt change for me financially.</p>
+                        <p class="text-justify">I entered into the year full of hopes, hope that I would get my money that was
                             stuck in the famous Ponzi Scheme back, hope that cost of living will go back to
                             being normal, hope upon hope...</p>
-                        <p>I didn’t have the least inkling that my hope will be dashed and I will have
+                        <p class="text-justify">I didn’t have the least inkling that my hope will be dashed and I will have
                             to help myself as it appears that nothing was going back to normal,
                             the happenings in the country have come to stay and there was no way
                             out of the situation.</p>
-                        <p>The truth is, I was stuck. Stuck with my 9-5 job that could no longer
+                        <p class="text-justify">The truth is, I was stuck. Stuck with my 9-5 job that could no longer
                             provide me with the basic amenities I need to keep my family going.</p>
                     </div>
                 </div>
@@ -185,21 +185,21 @@ $all_states = $system_object->get_all_states();
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="p-5">
-                        <img class="img-fluid img-thumbnail" src="img/free-training-banner-2.jpg" alt="">
+                        <img class="img-fluid img-thumbnail" src="img/new-stock/sad-man-3.jpeg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="p-5">
                         <h2 class="display-4">The search...</h2>
-                        <p>Three years ago, I wouldn’t have been as worried and anxious as I was and the reason for the
+                        <p class="text-justify">Three years ago, I wouldn’t have been as worried and anxious as I was and the reason for the
                             way I felt wasn’t farfetched.</p>
-                        <p>Three years ago, my job was the only thing I needed to live the life of my dreams. It brought
+                        <p class="text-justify">Three years ago, my job was the only thing I needed to live the life of my dreams. It brought
                             me fulfillment and my attractive salary was more than enough to live on and to even extend
                             a hand of help to the needy.</p>
-                        <p>But the situation in the country has changed, my company hit rock bottom and salaries were cut,
+                        <p class="text-justify">But the situation in the country has changed, my company hit rock bottom and salaries were cut,
                             the cost of living had skyrocketed, (I could barely feed my family on my salary in fact,
                             our three square meal had turned to two unsure meals.</p>
-                        <p>My only choice was to find how I could make money online, as I went on with my day to day activities.
+                        <p class="text-justify">My only choice was to find how I could make money online, as I went on with my day to day activities.
                             I needed something that I could do without having to quit my job (I needed all the money I could make).</p>
                     </div>
                 </div>
@@ -210,11 +210,6 @@ $all_states = $system_object->get_all_states();
     <section>
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 order-lg-2">
-                    <div class="p-5">
-                        <img class="img-fluid img-thumbnail" src="img/free-training-banner-3.jpg" alt="">
-                    </div>
-                </div>
                 <div class="col-lg-6 order-lg-1">
                     <div class="p-5">
                         <h2 class="display-4">The break...</h2>
@@ -229,11 +224,17 @@ $all_states = $system_object->get_all_states();
                         </ul>
                     </div>
                 </div>
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid" src="img/new-stock/10-broken-chain-png-image.png" alt="">
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <section class="cta" style="background-image:url(img/free-training-banner-4.jpg) !important; padding:0px 0!important;">
+    <!--<section class="cta" style="background-image:url(img/free-training-banner-4.jpg) !important; padding:0px 0!important;">
         <div class="cta-content">
             <div class="container">
                 <div class="row">
@@ -253,6 +254,37 @@ $all_states = $system_object->get_all_states();
             </div>
         </div>
         <div class=""></div>
+    </section>-->
+    <section class="cta" style="background-image:url(img/new-stock/banner.jpg);">
+        <div class="cta-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h2>The Gold Mine ...</h2>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">Forex is as every other Business,
+                            you need to gain adequate information and follow these information so as to make profit.</p>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">This is what I did...</p>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">I started to trade FOREX in the
+                            month of October and it has been the best channel for an extra income because while sleeping
+                            or working, I get to make money.</p>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">By December, I had made a total
+                            of &dollar;5,000 (&#8358;1,825,000) in profit from my trades and I even won a whooping sum of One
+                            million Naira in the InstaFxNg Loyalty Rewards Program.</p>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">Today the story has changed, I
+                            am not the man I used to be since I started trading Forex, yes, things are still expensive,
+                            the Naira value still fluctuates but I am able to win over the situation since I now make
+                            more money trading Forex.</p>
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                </div>
+
+                <!-- -->
+
+                <a href="javascript:void(0);" onclick="document.getElementById('full_name').focus();" class="btn btn-outline btn-xl js-scroll-trigger">Let's Get You Started <i class="icon-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="overlay"></div>
     </section>
 
 
@@ -381,7 +413,7 @@ $all_states = $system_object->get_all_states();
 
     <footer>
       <div class="container">
-        <p>&copy; 2018 InstaFxNg.com. All Rights Reserved.</p>
+        <p>&copy; <?php echo date('Y'); ?>, All rights reserved. Instant Web-Net Technologies Limited (www.instafxng.com)</p>
         <!--<ul class="list-inline">
           <li class="list-inline-item">
             <a href="#">Privacy</a>
