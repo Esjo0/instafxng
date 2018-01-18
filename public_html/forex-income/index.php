@@ -70,189 +70,342 @@ $all_states = $system_object->get_all_states();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <base target="_self">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Create Multiple Streams of Income | Instaforex Nigeria</title>
-        <meta name="title" content="" />
-        <meta name="keywords" content="" />
-        <meta name="description" content="" />
-        <base href="https://instafxng.com/" />
-        <meta http-equiv="Content-Language" content="en" />
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta http-equiv="Pragma" content="no-cache" />
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="Instant Web-Net Technologies Limited" />
-        <meta name="publisher" content="Instant Web-Net Technologies Limited" />
-        <meta name="copyright" content="Instant Web-Net Technologies Limited" />
-        <meta name="rating" content="General" />
-        <meta name="doc-rights" content="Private" />
-        <meta name="doc-class" content="Living Document" />
-        <link rel="stylesheet" href="forex-income/css/instafx_fi.css">
-        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script src="js/ie10-viewport-bug-workaround.js"></script>
-        <script src="js/validator.min.js"></script>
-        <script src="js/npm.js"></script>
-    </head>
-    <body>
-        <!-- Header Section: Logo and Live Chat  -->
-        <header id="header">
-            <div class="container-fluid no-gutter masthead">
-                <div class="row">
-                    <div id="main-logo" class="col-sm-12 col-md-5">
-                        <img src="images/ifxlogo.png" alt="Instaforex Nigeria Logo" />
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Create Multiple Streams of Income | Instaforex Nigeria</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="device-mockups/device-mockups.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="css/new-age.min.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container" >
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">
+            <img class="img-responsive" src="img/ifxlogo.png"></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <!--<li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#download">Download</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#features">Features</a>
+            </li>-->
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#form" style="font-size: large">Get Started Now</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header class="masthead" style="background:url(img/FXDINNER-223.jpg)  no-repeat !important; ">
+      <div class="container h-100" >
+        <div class="row h-100" >
+          <div class="col-lg-7 my-auto"  style="background: rgba(0, 0, 0, 0.42); padding: 5%">
+            <div class="header-content mx-auto">
+              <h1 class="mb-5">A Proven Pathway to Multiple Streams of Income</h1>
+              <a href="#form" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>
+            </div>
+          </div>
+          <div class="col-lg-5 my-auto">
+            <div class="device-container">
+              <div class="device-mockup iphone6_plus portrait white">
+                <div class="device">
+                  <div class="screen">
+                    <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
+                    <!--<img src="img/FXDINNER-223.jpg"  class="img-fluid" alt="">-->
+                  </div>
+                  <div class="button">
+                    <!-- You can hook the "home button" to some JavaScript events or just remove it -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid img-thumbnail" src="img/free-training-banner-1.jpg" alt="">
                     </div>
-                    <div id="top-nav" class="col-sm-12 col-md-7 text-right">
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">The beginning...</h2>
+                        <p>I can never forget 2017 as it brought an abrupt change for me financially.</p>
+                        <p>I entered into the year full of hopes, hope that I would get my money that was
+                            stuck in the famous Ponzi Scheme back, hope that cost of living will go back to
+                            being normal, hope upon hope...</p>
+                        <p>I didn’t have the least inkling that my hope will be dashed and I will have
+                            to help myself as it appears that nothing was going back to normal,
+                            the happenings in the country have come to stay and there was no way
+                            out of the situation.</p>
+                        <p>The truth is, I was stuck. Stuck with my 9-5 job that could no longer
+                            provide me with the basic amenities I need to keep my family going.</p>
                     </div>
                 </div>
             </div>
-            <hr />
-        </header>
-                
-        <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
-        <div id="main-body" class="container-fluid">
-            <div class="row no-gutter">
-                
-                <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-                <div id="main-body-content-area" class="col-md-12">
-                    
-                    <!-- Unique Page Content Starts Here
-                    ================================================== -->
-                                       
-                    <div class="section-tint super-shadow">
-                        <h2 class="text-center color-red">
-                            A Proven Pathway to Multiple <br />
-                            Streams of Income
-                        </h2><br />
-                        <h5 class="text-center color-black">True Story - You can be next!</h5>
-                        <hr />
-                        <p class="text-center"><img src="images/free-training-banner-1.jpg" alt="" class="center-block img-responsive"></p>
+        </div>
+    </section>
 
-                        <p>I can never forget 2017 as it brought an abrupt change for me financially.</p>
-                        <p>I entered into the year full of hopes, hope that I would get my money that was stuck in the famous Ponzi Scheme back, hope that cost of living will go back to being normal, hope upon hope...</p>
-                        <p>I didn’t have the least inkling that my hope will be dashed and I will have to help myself as it appears that nothing was going back to normal, the happenings in the country have come to stay and there was no way out of the situation.</p>
-                        <p>The truth is, I was stuck. Stuck with my 9-5 job that could no longer provide me with the basic amenities I need to keep my family going.</p>
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <img class="img-fluid img-thumbnail" src="img/free-training-banner-2.jpg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <h2 class="display-4">The search...</h2>
+                        <p>Three years ago, I wouldn’t have been as worried and anxious as I was and the reason for the
+                            way I felt wasn’t farfetched.</p>
+                        <p>Three years ago, my job was the only thing I needed to live the life of my dreams. It brought
+                            me fulfillment and my attractive salary was more than enough to live on and to even extend
+                            a hand of help to the needy.</p>
+                        <p>But the situation in the country has changed, my company hit rock bottom and salaries were cut,
+                            the cost of living had skyrocketed, (I could barely feed my family on my salary in fact,
+                            our three square meal had turned to two unsure meals.</p>
+                        <p>My only choice was to find how I could make money online, as I went on with my day to day activities.
+                            I needed something that I could do without having to quit my job (I needed all the money I could make).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                        <p class="text-center"><img src="images/free-training-banner-2.jpg" alt="" class="center-block img-responsive"></p>
-
-                        <p>Three years ago, I wouldn’t have been as worried and anxious as I was and the reason for the way I felt wasn’t farfetched.</p>
-                        <p>Three years ago, my job was the only thing I needed to live the life of my dreams. It brought me fulfillment and my attractive salary was more than enough to live on and to even extend a hand of help to the needy.</p>
-                        <p>But the situation in the country has changed, my company hit rock bottom and salaries were cut, the cost of living had skyrocketed, (I could barely feed my family on my salary in fact, sour three square meal had turned to two unsure meals.</p>
-                        <p>My only choice was to find how I could make money online, as I went on with my day to day activities.  I needed something that I could do without having to quit my job (I needed all the money I could make).</p>
-
-                        <p class="text-center"><img src="images/free-training-banner-3.jpg" alt="" class="center-block img-responsive"></p>
-
-                        <p>I first heard of buying and selling of currencies (Forex) in 2016, how it was profitable and how anyone could make oil money by trading, at the other side I heard it was too volatile a business and the risk involved was great. “Which business has no risk?”</p>
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid img-thumbnail" src="img/free-training-banner-3.jpg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">The break...</h2>
+                        <p>I first heard of buying and selling of currencies (Forex) in 2016, how it was profitable and
+                            how anyone could make oil money by trading, at the other side I heard it was too volatile a
+                            business and the risk involved was great. “Which business has no risk?”</p>
                         <p>While I made inquiries on trading Forex, I learnt why people fail in Forex</p>
-
                         <ul>
                             <li>People run into forex thinking it is a get rich quick Scheme</li>
                             <li>People start trading without adequate Training (Information)</li>
                             <li>People gamble</li>
                         </ul>
-
-                        <h5 class="text-center">I Found the Gold Mine ...</h5>
-                        <p class="text-center"><img src="images/free-training-banner-4.jpg" alt="" class="center-block img-responsive" /></p>
-
-                        <p>Forex is as every other Business, you need to gain adequate information and follow these information so as to make profit.</p>
-                        <p>This is what I did...</p>
-
-                        <p>I started to trade FOREX in the month of October and it has been the best channel for an extra income because while sleeping or working, I get to make money.</p>
-                        <p>By December, I had made a total of &dollar;5,000 (&#8358;1,825,000) in profit from my trades and I even won a whooping sum of One million Naira in the InstaFxNg Loyalty Rewards Program.</p>
-                        <p>Today the story has changed, I am not the man I used to be since I started trading Forex, yes, things are still expensive, the Naira value still fluctuates but I am able to win over the situation since I now make more money trading Forex.</p>
-
-                        <hr />
-                        <p class="color-red text-center">
-                            <strong>Would you also like to increase your cash flow and achieve a greater 
-                                quality of life for yourself and your loved ones? You are on the right page!</strong>
-                        </p>
-                        
-                        
-                        <div class="section-tint-blue super-shadow">
-                            <h5 class="text-center">Online Forex Trading for Financial Freedom</h5>
-                            <p class="text-center"><img src="images/free-training-banner-5.jpg" alt="" class="center-block img-responsive"></p>
-                            <p>
-                                Forex trading is not what many people explain it to be. 
-                                It is quite easy until you complicate matters by yourself;
-                            </p>
-                            <ol>
-                                <li>Trading Forex is easy and very profitable once you have gained adequate training.</li>
-                                <li>Trading Forex gets better because you get mentored daily and get trading signals and analysis that increase your profit.</li>
-                                <li>And the best part is, you get to practice with a Demo account before you go live so your risks are mitigated.</li>
-                            </ol>
-                        </div>
-                        <br />
-                        <h5 class="text-center">But don't be intimidated by the risks...</h5>
-                        <p>
-                            Here is something that is true: I believe you can make a (really good) 
-                            living if you know how to trade FOREX. Thousands of
-                            Nigerians are making steady income and consistent living trading the 
-                            Forex market and you should be among them too.
-                        </p>
-                        <p class="color-blue text-center">
-                            <strong>It is time to make one of the most important decisions this year,
-                                let me show you how. Kindly fill the form below to get started...</strong>
-                        </p>
-                        
-                        
-                        <div class="row">
-                            <div class="col-md-4">
-                                <p class="text-center"><img src="images/free-training-banner-6.jpg" alt="" class="center-block img-responsive"></p>
-                            </div>
-                            <div class="col-md-8">
-
-                                <div style="max-width: 850px; margin: 0 auto; ">
-                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                        <div class="form-group">
-                                            <label class="control-label col-sm-3" for="full_name">Full Name:</label>
-                                            <div class="col-sm-9 col-lg-7"><input name="full_name" type="text" class="form-control" id="full_name" maxlength="120" required></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-sm-3" for="email">Email Address:</label>
-                                            <div class="col-sm-9 col-lg-7"><input name="email_address" type="email" class="form-control" id="email" maxlength="50" required></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-sm-3" for="phone">Phone Number:</label>
-                                            <div class="col-sm-9 col-lg-7"><input name="phone_number" type="text" class="form-control" id="phone" maxlength="11" required></div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-sm-offset-3 col-sm-9">
-                                                <input name="submit" type="submit" class="btn btn-success btn-lg" value="Get Me Started Now!" />
-                                            </div>
-                                            <div class="col-sm-offset-3 col-sm-9">
-                                                <br />
-                                                <span>*All fields are required</span>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                                
                     </div>
-
-                    <!-- Unique Page Content Ends Here
-                    ================================================== -->
                 </div>
             </div>
-            
-            
         </div>
-        <footer id="footer" class="super-shadow">
-            <div class="container-fluid no-gutter">
-                <div class="col-sm-12">
-                    <div class="row">
-                        <p class="text-center" style="font-size: 16px !important;">&copy; <?php echo date('Y'); ?>, All rights reserved. Instant Web-Net Technologies Limited (www.instafxng.com)</p>
+    </section>
+
+    <section class="cta" style="background-image:url(img/free-training-banner-4.jpg) !important; padding:0px 0!important;">
+        <div class="cta-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 " style="background-color: rgb(6, 6, 3); opacity: 0.9">
+                        <h2 class="text-center">The Gold Mine ...</h2>
+                        <div style="font-size: large; color: #ffffff" class="text-justify">
+                            <p>Forex is as every other Business, you need to gain adequate information and follow these information so as to make profit.</p>
+                            <p>This is what I did...</p>
+                            <p>I started to trade FOREX in the month of October and it has been the best channel for an extra income because while sleeping or working, I get to make money.</p>
+                            <p>By December, I had made a total of &dollar;5,000 (&#8358;1,825,000) in profit from my trades and I even won a whooping sum of One million Naira in the InstaFxNg Loyalty Rewards Program.</p>
+                            <p>Today the story has changed, I am not the man I used to be since I started trading Forex, yes, things are still expensive, the Naira value still fluctuates but I am able to win over the situation since I now make more money trading Forex.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
                     </div>
                 </div>
             </div>
-        </footer>
-    </body>
+        </div>
+        <div class=""></div>
+    </section>
+
+
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-heading text-center">
+          <h2>Online Forex Trading for Financial Freedom</h2>
+          <p class="text-muted">Forex trading is not what many people explain it to be.
+              It is quite easy until you complicate matters by yourself;</p>
+            <hr>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 my-auto">
+            <div class="device-container">
+              <div class="device-mockup iphone6_plus portrait white">
+                <div class="device">
+                  <div class="screen">
+                    <img src="img/essentials_of_successful_forex_trading.jpg" class="img-fluid" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 my-auto">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="feature-item">
+                    <!--<i class="icon-screen-smartphone text-primary"></i>-->
+                      <i class="icon-check text-primary"></i>
+                    <!--<h3>Device Mockups</h3>-->
+                    <p class="text-muted">Trading Forex is easy and very profitable once you have gained adequate training.</p>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="feature-item">
+                    <!--<i class="icon-camera text-primary"></i>-->
+                    <!--<h3>Flexible Use</h3>-->
+                      <i class="icon-check text-primary"></i>
+                    <p class="text-muted">Trading Forex gets better because you get mentored daily and get trading signals and
+                        analysis that increase your profit.</p>
+                  </div>
+                </div>
+                  <div class="col-lg-4">
+                      <div class="feature-item">
+                          <!--<i class="icon-present text-primary"></i>-->
+                          <!--<h3>Free to Use</h3>-->
+                          <i class="icon-check text-primary"></i>
+                          <p class="text-muted">And the best part is, you get to practice with a Demo account before you go live so
+                              your risks are mitigated.</p>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="form">
+      <div class="cta-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2>But don't be intimidated by the risks...</h2>
+                    <p style="font-size: large; color: #ffffff" class="text-justify">Here is something that is true: I believe you can make a (really good) living if you know how to trade FOREX.
+                        Thousands of Nigerians are making steady income and consistent living trading the Forex market and you should
+                        be among them too.</p>
+                </div>
+                <div class="col-lg-6">
+                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="/forex-income/">
+                        <div class="form-group">
+                            <div class="col-sm-12"><input name="full_name" placeholder="Full Name" type="text" class="form-control" id="full_name" maxlength="120" required></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12"><input name="email_address" placeholder="Email Address" type="email" class="form-control" id="email" maxlength="50" required></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12"><input name="phone_number" placeholder="Phone Number" type="text" class="form-control" id="phone" maxlength="11" required></div>
+                        </div>
+                        <div class="col-sm-12">
+                            <span style="color: #ffffff">*All fields are required</span>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input name="submit" type="submit" class="btn btn-success btn-lg form-control" value="Get Me Started Now!" />
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+           <!-- -->
+
+          <a href="javascript:void(0);" onclick="document.getElementById('full_name').focus();" class="btn btn-outline btn-xl js-scroll-trigger">Let's Get You Started <i class="icon-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="overlay"></div>
+    </section>
+
+    <!--<section class="contact bg-primary" id="contact">
+      <div class="container">
+        <h2>We
+          <i class="fa fa-heart"></i>
+          new friends!</h2>
+        <ul class="list-inline list-social">
+          <li class="list-inline-item social-twitter">
+            <a href="#">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li class="list-inline-item social-facebook">
+            <a href="#">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li class="list-inline-item social-google-plus">
+            <a href="#">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>-->
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2018 InstaFxNg.com. All Rights Reserved.</p>
+        <!--<ul class="list-inline">
+          <li class="list-inline-item">
+            <a href="#">Privacy</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">Terms</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">FAQ</a>
+          </li>
+        </ul>-->
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/new-age.min.js"></script>
+
+  </body>
+
 </html>
