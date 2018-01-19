@@ -58,6 +58,22 @@ if (isset($_POST['submit'])) {
             $log_new_client = $client_operation->new_user_ordinary($client_full_name, $email_address, $phone_number, $assigned_account_officer);
             //...//
 
+            $user_code = $client_operation->get_user_by_email($email_address);
+            $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
+            $found_user = array(
+                'user_code' => $user_ifx_details['client_user_code'],
+                'status' => $user_ifx_details['client_status'],
+                'first_name' => $user_ifx_details['client_first_name'],
+                'last_name' => $user_ifx_details['client_last_name'],
+                'email' => $user_ifx_details['client_email']
+            );
+            $session_client->login($found_user);
+
+            // Check if this is a first time login, then log the date
+            if(empty($user_ifx_details['client_academy_first_login']) || is_null($user_ifx_details['client_academy_first_login'])) {
+                $client_operation->log_academy_first_login($user_ifx_details['client_first_name'], $user_ifx_details['client_email'], $user_ifx_details['client_user_code']);
+            }
+
             redirect_to('thank_you.php');
         } else {
             $message_error = "An error occurred, please try again.";
@@ -118,23 +134,17 @@ $all_states = $system_object->get_all_states();
               <a class="nav-link js-scroll-trigger" href="#features">Features</a>
             </li>-->
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#form" style="font-size: large">Get Started Now</a>
+              <a class="nav-link js-scroll-trigger" href="javascript:void(0);" onclick="document.getElementById('full_name').focus();" style="font-size: large">Get Started Now</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <header class="masthead" style="background:url(img/FXDINNER-223.jpg)  no-repeat !important; ">
+    <header class="masthead" style="background:url(img/FXDINNER-223.jpg) center no-repeat !important; ">
       <div class="container h-100" >
         <div class="row h-100" >
-          <div class="col-lg-7 my-auto"  style="background: rgba(0, 0, 0, 0.42); padding: 5%">
-            <div class="header-content mx-auto">
-              <h1 class="mb-5">A Proven Pathway to Multiple Streams of Income</h1>
-              <a href="#form" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>
-            </div>
-          </div>
-          <div class="col-lg-5 my-auto">
+          <div class="col-lg-3 my-auto">
             <div class="device-container">
               <div class="device-mockup iphone6_plus portrait white">
                 <div class="device">
@@ -149,6 +159,26 @@ $all_states = $system_object->get_all_states();
               </div>
             </div>
           </div>
+            <div class="col-lg-9 my-auto"  style="background: rgba(0, 0, 0, 0.62); padding: 5%">
+                <div class="header-content mx-auto">
+                    <h1 class="mb-5 text-justify" ><b>I made my first million in one month and you can too...</b></h1>
+                    <!--<p class="text-justify">
+                        <i class="icon-check"></i>
+                            <b>To have a consistent inflow of cash.</b>
+                        </p>
+                    <p class="text-justify">
+                        <i class="icon-check"></i>
+                        <b>Be your own boss and spend more time with the people you love.</b>
+                        </p>
+                    <p class="text-justify">
+                        <i class="icon-check"></i>
+                        <b>Live life on your own terms.</b>
+                        </p>-->
+
+                    <!--<p class="text-justify">Imagine what it feels like to have a consistent inflow of cash, travel around the world and live life on your own terms... </p>-->
+                    <a href="javascript:void(0);" onclick="document.getElementById('full_name').focus();" class="btn btn-outline btn-xl js-scroll-trigger"><b>Get Started Now!</b></a>
+                </div>
+            </div>
         </div>
       </div>
     </header>
@@ -158,21 +188,21 @@ $all_states = $system_object->get_all_states();
             <div class="row align-items-center">
                 <div class="col-lg-6 order-lg-2">
                     <div class="p-5">
-                        <img class="img-fluid img-thumbnail" src="img/free-training-banner-1.jpg" alt="">
+                        <img class="img-fluid img-thumbnail" src="img/new-stock/sad-man-2.jpeg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6 order-lg-1">
                     <div class="p-5">
                         <h2 class="display-4">The beginning...</h2>
-                        <p>I can never forget 2017 as it brought an abrupt change for me financially.</p>
-                        <p>I entered into the year full of hopes, hope that I would get my money that was
+                        <p class="text-justify">I can never forget 2017 as it brought an abrupt change for me financially.</p>
+                        <p class="text-justify">I entered into the year full of hopes, hope that I would get my money that was
                             stuck in the famous Ponzi Scheme back, hope that cost of living will go back to
                             being normal, hope upon hope...</p>
-                        <p>I didn’t have the least inkling that my hope will be dashed and I will have
+                        <p class="text-justify">I didn’t have the least inkling that my hope will be dashed and I will have
                             to help myself as it appears that nothing was going back to normal,
                             the happenings in the country have come to stay and there was no way
                             out of the situation.</p>
-                        <p>The truth is, I was stuck. Stuck with my 9-5 job that could no longer
+                        <p class="text-justify">The truth is, I was stuck. Stuck with my 9-5 job that could no longer
                             provide me with the basic amenities I need to keep my family going.</p>
                     </div>
                 </div>
@@ -185,21 +215,21 @@ $all_states = $system_object->get_all_states();
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="p-5">
-                        <img class="img-fluid img-thumbnail" src="img/free-training-banner-2.jpg" alt="">
+                        <img class="img-fluid img-thumbnail" src="img/new-stock/sad-man-3.jpeg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="p-5">
                         <h2 class="display-4">The search...</h2>
-                        <p>Three years ago, I wouldn’t have been as worried and anxious as I was and the reason for the
+                        <p class="text-justify">Three years ago, I wouldn’t have been as worried and anxious as I was and the reason for the
                             way I felt wasn’t farfetched.</p>
-                        <p>Three years ago, my job was the only thing I needed to live the life of my dreams. It brought
+                        <p class="text-justify">Three years ago, my job was the only thing I needed to live the life of my dreams. It brought
                             me fulfillment and my attractive salary was more than enough to live on and to even extend
                             a hand of help to the needy.</p>
-                        <p>But the situation in the country has changed, my company hit rock bottom and salaries were cut,
+                        <p class="text-justify">But the situation in the country has changed, my company hit rock bottom and salaries were cut,
                             the cost of living had skyrocketed, (I could barely feed my family on my salary in fact,
                             our three square meal had turned to two unsure meals.</p>
-                        <p>My only choice was to find how I could make money online, as I went on with my day to day activities.
+                        <p class="text-justify">My only choice was to find how I could make money online, as I went on with my day to day activities.
                             I needed something that I could do without having to quit my job (I needed all the money I could make).</p>
                     </div>
                 </div>
@@ -210,11 +240,6 @@ $all_states = $system_object->get_all_states();
     <section>
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 order-lg-2">
-                    <div class="p-5">
-                        <img class="img-fluid img-thumbnail" src="img/free-training-banner-3.jpg" alt="">
-                    </div>
-                </div>
                 <div class="col-lg-6 order-lg-1">
                     <div class="p-5">
                         <h2 class="display-4">The break...</h2>
@@ -229,11 +254,17 @@ $all_states = $system_object->get_all_states();
                         </ul>
                     </div>
                 </div>
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid" src="img/new-stock/10-broken-chain-png-image.png" alt="">
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <section class="cta" style="background-image:url(img/free-training-banner-4.jpg) !important; padding:0px 0!important;">
+    <!--<section class="cta" style="background-image:url(img/free-training-banner-4.jpg) !important; padding:0px 0!important;">
         <div class="cta-content">
             <div class="container">
                 <div class="row">
@@ -253,6 +284,37 @@ $all_states = $system_object->get_all_states();
             </div>
         </div>
         <div class=""></div>
+    </section>-->
+    <section class="cta" style="background-image:url(img/new-stock/banner.jpg);">
+        <div class="cta-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h2>The Gold Mine ...</h2>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">Forex is as every other Business,
+                            you need to gain adequate information and follow these information so as to make profit.</p>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">This is what I did...</p>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">I started to trade FOREX in the
+                            month of October and it has been the best channel for an extra income because while sleeping
+                            or working, I get to make money.</p>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">By December, I had made a total
+                            of &dollar;5,000 (&#8358;1,825,000) in profit from my trades and I even won a whooping sum of One
+                            million Naira in the InstaFxNg Loyalty Rewards Program.</p>
+                        <p style="font-size: large; color: #ffffff" class="text-justify">Today the story has changed, I
+                            am not the man I used to be since I started trading Forex, yes, things are still expensive,
+                            the Naira value still fluctuates but I am able to win over the situation since I now make
+                            more money trading Forex.</p>
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                </div>
+
+                <!-- -->
+
+                <a href="javascript:void(0);" onclick="document.getElementById('full_name').focus();" class="btn btn-outline btn-xl js-scroll-trigger">Let's Get You Started <i class="icon-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="overlay"></div>
     </section>
 
 
@@ -381,7 +443,7 @@ $all_states = $system_object->get_all_states();
 
     <footer>
       <div class="container">
-        <p>&copy; 2018 InstaFxNg.com. All Rights Reserved.</p>
+        <p>&copy; <?php echo date('Y'); ?>, All rights reserved. Instant Web-Net Technologies Limited (www.instafxng.com)</p>
         <!--<ul class="list-inline">
           <li class="list-inline-item">
             <a href="#">Privacy</a>
