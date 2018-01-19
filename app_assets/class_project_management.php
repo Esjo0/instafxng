@@ -68,8 +68,8 @@ class Project_Management
         $project_code = $this->generate_code();
         $query = "INSERT INTO project_management_projects (title, description, deadline, executors, supervisor_code, project_code) VALUES ('$title','$description','$deadline','$all_allowed_admin','$admin_code','$project_code')";
         $db_handle->runQuery($query);
-        $this->notify_supervisor($title, $description, $deadline, $all_allowed_admin, $admin_code);
-        $this->notify_executors($title, $description, $deadline, $all_allowed_admin, $admin_code);
+        $this->notify_supervisor($title, nl2br($description), $deadline, $all_allowed_admin, $admin_code);
+        $this->notify_executors($title, nl2br($description), $deadline, $all_allowed_admin, $admin_code);
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 

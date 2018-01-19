@@ -130,8 +130,9 @@ $all_states = $system_object->get_all_states();
         <div class="row h-100" >
           <div class="col-lg-7 my-auto"  style="background: rgba(0, 0, 0, 0.42); padding: 5%">
             <div class="header-content mx-auto">
-              <h1 class="mb-5">A Proven Pathway to Multiple Streams of Income</h1>
-              <a href="#form" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>
+              <h1 class="mb-5 text-center">ITS POSSIBLE...</h1>
+              <p class="text-justify">Imagine what it feels like to have a consistent inflow of cash, travel around the world and live life on your own terms... </p>
+                <a href="#form" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>
             </div>
           </div>
           <div class="col-lg-5 my-auto">
