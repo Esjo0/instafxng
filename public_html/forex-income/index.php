@@ -134,7 +134,7 @@ $all_states = $system_object->get_all_states();
               <a class="nav-link js-scroll-trigger" href="#features">Features</a>
             </li>-->
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#form" style="font-size: large">Get Started Now</a>
+              <a class="nav-link js-scroll-trigger" href="javascript:void(0);" onclick="document.getElementById('full_name').focus();" style="font-size: large">Get Started Now</a>
             </li>
           </ul>
         </div>
@@ -161,7 +161,7 @@ $all_states = $system_object->get_all_states();
                     </p>
 
               <!--<p class="text-justify">Imagine what it feels like to have a consistent inflow of cash, travel around the world and live life on your own terms... </p>-->
-                <a href="#form" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>
+                <a href="javascript:void(0);" onclick="document.getElementById('full_name').focus();" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>
             </div>
           </div>
           <div class="col-lg-3 my-auto">
