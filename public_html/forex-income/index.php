@@ -128,14 +128,26 @@ $all_states = $system_object->get_all_states();
     <header class="masthead" style="background:url(img/FXDINNER-223.jpg)  no-repeat !important; ">
       <div class="container h-100" >
         <div class="row h-100" >
-          <div class="col-lg-7 my-auto"  style="background: rgba(0, 0, 0, 0.42); padding: 5%">
+          <div class="col-lg-9 my-auto"  style="background: rgba(0, 0, 0, 0.42); padding: 5%">
             <div class="header-content mx-auto">
-              <h1 class="mb-5 text-center">ITS POSSIBLE...</h1>
-              <p class="text-justify">Imagine what it feels like to have a consistent inflow of cash, travel around the world and live life on your own terms... </p>
+              <h1 class="mb-5 ">ITS POSSIBLE FOR YOU...</h1>
+                <p class="text-justify">
+                    <i class="icon-check"></i>
+                        To have a consistent inflow of cash.
+                    </p>
+                <p class="text-justify">
+                    <i class="icon-check"></i>Be your own boss and spend more time with the people you love.
+                    </p>
+                <p class="text-justify">
+                    <i class="icon-check"></i>
+                        Live life on your own terms.
+                    </p>
+                </ul>
+              <!--<p class="text-justify">Imagine what it feels like to have a consistent inflow of cash, travel around the world and live life on your own terms... </p>-->
                 <a href="#form" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>
             </div>
           </div>
-          <div class="col-lg-5 my-auto">
+          <div class="col-lg-3 my-auto">
             <div class="device-container">
               <div class="device-mockup iphone6_plus portrait white">
                 <div class="device">
