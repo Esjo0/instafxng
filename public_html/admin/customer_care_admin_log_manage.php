@@ -116,7 +116,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                     echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
                                                     echo "<strong>Phone : </strong>".$client_details['phone']."<br/>";
                                                     echo "<strong>Email : </strong>".$client_details['email']."<br/>";
-                                                    echo "<strong>Account Number : </strong>".$client_details['ifx_acct_no']."<br/>";
+                                                    echo "<strong>Account Number : </strong>".$row['ifx_acct_no']."<br/>";
                                                 }
                                                 elseif ($row['log_type'] == '2')
                                                 {
@@ -157,7 +157,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                         echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
                                                                         echo "<strong>Phone : </strong>".$client_details['phone']."<br/>";
                                                                         echo "<strong>Email : </strong>".$client_details['email']."<br/>";
-                                                                        echo "<strong>Account Number : </strong>".$client_details['ifx_acct_no']."<br/>";
+                                                                        echo "<strong>Account Number : </strong>".$row['ifx_acct_no']."<br/>";
                                                                     }
                                                                     elseif ($row['log_type'] == '2')
                                                                     {
@@ -206,7 +206,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                 </table>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                             </div>
                                                         </div>
                                                     </div>
