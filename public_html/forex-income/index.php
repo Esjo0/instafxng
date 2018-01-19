@@ -144,26 +144,6 @@ $all_states = $system_object->get_all_states();
     <header class="masthead" style="background:url(img/FXDINNER-223.jpg) center no-repeat !important; ">
       <div class="container h-100" >
         <div class="row h-100" >
-          <div class="col-lg-9 my-auto"  style="background: rgba(0, 0, 0, 0.42); padding: 5%">
-            <div class="header-content mx-auto">
-              <h1 class="mb-5"><b>ITS POSSIBLE FOR YOU...</b></h1>
-                <p class="text-justify">
-                    <i class="icon-check"></i>
-                        <b>To have a consistent inflow of cash.</b>
-                    </p>
-                <p class="text-justify">
-                    <i class="icon-check"></i>
-                    <b>Be your own boss and spend more time with the people you love.</b>
-                    </p>
-                <p class="text-justify">
-                    <i class="icon-check"></i>
-                    <b>Live life on your own terms.</b>
-                    </p>
-
-              <!--<p class="text-justify">Imagine what it feels like to have a consistent inflow of cash, travel around the world and live life on your own terms... </p>-->
-                <a href="javascript:void(0);" onclick="document.getElementById('full_name').focus();" class="btn btn-outline btn-xl js-scroll-trigger">Get Started Now!</a>
-            </div>
-          </div>
           <div class="col-lg-3 my-auto">
             <div class="device-container">
               <div class="device-mockup iphone6_plus portrait white">
@@ -179,6 +159,26 @@ $all_states = $system_object->get_all_states();
               </div>
             </div>
           </div>
+            <div class="col-lg-9 my-auto"  style="background: rgba(0, 0, 0, 0.62); padding: 5%">
+                <div class="header-content mx-auto">
+                    <h1 class="mb-5 text-justify" ><b>I made my first million in one month and you can too...</b></h1>
+                    <!--<p class="text-justify">
+                        <i class="icon-check"></i>
+                            <b>To have a consistent inflow of cash.</b>
+                        </p>
+                    <p class="text-justify">
+                        <i class="icon-check"></i>
+                        <b>Be your own boss and spend more time with the people you love.</b>
+                        </p>
+                    <p class="text-justify">
+                        <i class="icon-check"></i>
+                        <b>Live life on your own terms.</b>
+                        </p>-->
+
+                    <!--<p class="text-justify">Imagine what it feels like to have a consistent inflow of cash, travel around the world and live life on your own terms... </p>-->
+                    <a href="javascript:void(0);" onclick="document.getElementById('full_name').focus();" class="btn btn-outline btn-xl js-scroll-trigger"><b>Get Started Now!</b></a>
+                </div>
+            </div>
         </div>
       </div>
     </header>
