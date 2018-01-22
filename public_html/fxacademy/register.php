@@ -50,7 +50,7 @@ if (isset($_POST['submit'])) {
             $last_name = "";
         }
 
-        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number')";
+        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, campaign_period) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '2')";
         $result = $db_handle->runQuery($query);
         $inserted_id = $db_handle->insertedId();
 

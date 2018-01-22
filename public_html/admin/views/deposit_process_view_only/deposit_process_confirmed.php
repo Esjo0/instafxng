@@ -5,7 +5,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
 }
 ?>
 
-<p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
+<!--<p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>-->
 <p>Make Modification to this order below.</p>
 <p>Fill the transfer reference, add your remark, then process this transaction. Please note that you must enter a remark for this transaction.</p>
 <div class="row">
