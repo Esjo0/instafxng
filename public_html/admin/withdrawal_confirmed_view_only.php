@@ -171,7 +171,7 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                 </table>
                                             </div>
 
-                                            <div id="transaction_info_<?php echo $row['trans_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                            <div id="transaction_info_<?php echo $row['trans_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal modal-lg fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -209,7 +209,7 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                 </div>
                                             </div>
 
-                                            <div id="client_profile_<?php echo $row['user_code'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                            <div id="client_profile_<?php echo $row['user_code'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal modal-lg fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">

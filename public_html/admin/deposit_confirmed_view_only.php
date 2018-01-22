@@ -77,16 +77,8 @@ $confirmed_deposit_requests = $db_handle->fetchAssoc($result);
                 <div class="row">
                     <div class="col-sm-12">
                         <?php require_once 'layouts/feedback_message.php'; ?>
-
                         <p>Below is the list of all deposit requests that have been confirmed.</p>
-
-
-
-
-
                         <div class="row">
-
-
                             <?php if(isset($confirmed_deposit_requests) && !empty($confirmed_deposit_requests))
                             {
                                 foreach ($confirmed_deposit_requests as $row)
@@ -116,18 +108,16 @@ $confirmed_deposit_requests = $db_handle->fetchAssoc($result);
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div id="transaction_info_<?php echo $row['trans_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div id="transaction_info_<?php echo $row['trans_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal modal-lg fade">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                            class="close">&times;</button>
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
                                                     <h4 class="modal-title">CONFIRMED DEPOSIT</h4></div>
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="col-sm-12">
                                                             <?php require_once 'layouts/feedback_message.php'; ?>
-
                                                             <?php
                                                             switch('confirmed')
                                                             {
@@ -139,6 +129,7 @@ $confirmed_deposit_requests = $db_handle->fetchAssoc($result);
                                                                 default: $no_valid_page = true; break;
                                                             }
                                                             $trans_detail = $client_operation->get_deposit_by_id_full($row['trans_id']);
+                                                            $trans_remark = $client_operation->get_deposit_remark($row['trans_id']);
                                                             if($deposit_process_pending) { include_once 'views/deposit_process_view_only/deposit_process_pending.php'; }
                                                             if($deposit_process_confirmed) { include_once 'views/deposit_process_view_only/deposit_process_confirmed.php'; }
                                                             if($deposit_process_inspect) { include_once 'views/deposit_process_view_only/deposit_process_inspect.php'; }
@@ -156,7 +147,7 @@ $confirmed_deposit_requests = $db_handle->fetchAssoc($result);
                                         </div>
                                     </div>
 
-                                    <div id="client_profile_<?php echo $row['user_code'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div id="client_profile_<?php echo $row['user_code'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal modal-lg fade">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -548,27 +539,6 @@ $confirmed_deposit_requests = $db_handle->fetchAssoc($result);
                                 </div>
                             <?php } ?>
                         </div>
-                        <!-- Modal-- View Order List -->
-                        <div id="view_info" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="/admin/deposit_confirmed_view_only.php">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">DEPOSIT CONFIRMED - DETAILS</h4>
-                                        </div>
-                                        <div class="modal-body">
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- close -->
                     </div>
                 </div>
 
