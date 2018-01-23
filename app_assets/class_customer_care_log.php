@@ -18,7 +18,7 @@ class Customer_Care
     {
         global $db_handle;
         $db_handle->runQuery("SELECT @u_code:= user_code FROM user_ifxaccount WHERE user_ifxaccount.ifx_acct_no = '$acc_no'");
-        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type) VALUES('$con_desc', '$admin_code', @u_code, '1')");
+        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type, ifx_acct_no) VALUES('$con_desc', '$admin_code', @u_code, '1', '$acc_no')");
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 

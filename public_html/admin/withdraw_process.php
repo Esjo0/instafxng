@@ -124,7 +124,8 @@ if ($withdraw_process_ifx_debited && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_
                                 <p>Client Phone Number: $_phone</p>
                                 <p>Client Email: $_email</p>
                                 <br/>
-                                <p>Withdraw: &dollar;$_dollar_withdraw - &#8358;$_naira_total_withdrawable</p>
+                                <p>Transaction ID: $transaction_id</p>
+                                <p>Withdraw: $$_dollar_withdraw - &#8358;$_naira_total_withdrawable</p>
                                 <p>Date: $_withdrawal_created</p>
                                 <p>Account: $_ifx_acct_no</p>
                                 <br/>
