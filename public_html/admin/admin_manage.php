@@ -298,10 +298,13 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="63" id="" <?php if (in_array(63, $my_pages)) { echo 'checked="checked"'; } ?>/> All Courses</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="64" id="" <?php if (in_array(64, $my_pages)) { echo 'checked="checked"'; } ?>/> Course Messages</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="65" id="" <?php if (in_array(65, $my_pages)) { echo 'checked="checked"'; } ?>/> Student Payments</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="66" id="" <?php if (in_array(66, $my_pages)) { echo 'checked="checked"'; } ?>/> Student Deposits</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="73" id="" <?php if (in_array(73, $my_pages)) { echo 'checked="checked"'; } ?>/> Free Training Campaign</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="74" id="" <?php if (in_array(74, $my_pages)) { echo 'checked="checked"'; } ?>/> Education Forum Registration</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="65" id="" <?php if (in_array(65, $my_pages)) { echo 'checked="checked"'; } ?>/> All Students</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="66" id="" <?php if (in_array(66, $my_pages)) { echo 'checked="checked"'; } ?>/> Category 1 Students</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="236" id="" <?php if (in_array(236, $my_pages)) { echo 'checked="checked"'; } ?>/> Category 2 Students</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="237" id="" <?php if (in_array(237, $my_pages)) { echo 'checked="checked"'; } ?>/> Category 3 Students</label></div></div>
+
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="73" id="" <?php if (in_array(73, $my_pages)) { echo 'checked="checked"'; } ?>/> Training Campaign</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="74" id="" <?php if (in_array(74, $my_pages)) { echo 'checked="checked"'; } ?>/> Forum Registration</label></div></div>
                                     </div>
                                     <hr/>
 

@@ -62,7 +62,7 @@ $education_students = $db_handle->fetchAssoc($result);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Instaforex Nigeria | Admin - All Category 1 Students</title>
-        <meta name="title" content="Instaforex Nigeria | Admin - All Students" />
+        <meta name="title" content="Instaforex Nigeria | Admin - All Category 1 Students" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
