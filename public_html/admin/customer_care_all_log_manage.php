@@ -238,12 +238,6 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
 
                 <hr>
 
-                <!--<div class="row">
-                    <div class="col-sm-12">
-                        <p>All interaction logs that have been added on this platform, can be viewed below.</p>
-                    </div>
-                </div>-->
-
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="table table-responsive table-striped table-bordered table-hover">
@@ -346,10 +340,14 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                                                         <?php echo $row1['created'] ?>
                                                                     </td>
                                                                     <td>
+                                                                        <?php if($row1['status'] == '1'):?>
                                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                             <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
-                                                                            <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
+                                                                            <button name="process_treated" type="submit" class="btn btn-success">
+                                                                                <i class="glyphicon glyphicon-check"></i>
+                                                                            </button>
                                                                         </form>
+                                                                    <?php endif; ?>
                                                                     </td>
                                                                 </tr>
                                                             <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -364,10 +362,12 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                         </div>
                                     </td>
                                     <td>
+                                <?php if($row1['status'] == '1'):?>
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                             <input type="hidden" name="log_id" value="<?php echo $row['log_id']?>">
                                             <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
                                         </form>
+                                    <?php endif; ?>
                                     </td>
                                 </tr>
 
