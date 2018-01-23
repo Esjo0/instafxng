@@ -325,7 +325,7 @@ $all_states = $system_object->get_all_states();
                 <div class="col-lg-6">
                     <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="/forex-income/">
                         <div class="form-group">
-                            <div class="col-sm-12"><input name="full_name" placeholder="Full Name" type="text" class="form-control" id="full_name" maxlength="120" required></div>
+                            <div class="col-sm-12"><input name="full_name" placeholder="First name and Surname" type="text" class="form-control" id="full_name" maxlength="120" required></div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12"><input name="email_address" placeholder="Email Address" type="email" class="form-control" id="email" maxlength="50" required></div>

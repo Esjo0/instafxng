@@ -6,7 +6,7 @@
     <div class="form-group">
         <label class="control-label col-sm-3" for="full_name">Full Name:</label>
         <div class="col-sm-9 col-lg-5">
-            <input name="full_name" type="text" class="form-control" id="full_name" required>
+            <input placeholder="First name and Surname" name="full_name" type="text" class="form-control" id="full_name" required>
         </div>
     </div>
     <div class="form-group">
