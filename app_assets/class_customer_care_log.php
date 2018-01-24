@@ -7,10 +7,9 @@ class Customer_Care
         global $db_handle;
         $query = "INSERT IGNORE INTO prospect_biodata (admin_code, first_name, last_name, other_names, email_address, phone_number, prospect_source) VALUES ('$admin_code', '$first_name', '$last_name', '$other_name','$email','$phone', '$prospect_source')";
         $db_handle->runQuery($query);
-        $query = "SELECT @prospect_id:= prospect_biodata_id FROM prospect_biodata WHERE email_address = '$email' OR phone_number = '$phone' ";
+        $query = "SELECT @prospect_id:= prospect_biodata_id FROM prospect_biodata WHERE email_address = '$email'";
         $db_handle->runQuery($query);
-        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type) VALUES('$con_desc', '$admin_code', @prospect_id, '2') ");
-
+        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type, prospect_source) VALUES('$con_desc', '$admin_code', @prospect_id, '2', '$prospect_source') ");
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
