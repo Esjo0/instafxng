@@ -13,9 +13,9 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN user AS u ON ueel.user_code = u.user_code
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-          LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id != 5 AND uefp.user_code IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
-          GROUP BY ueel.user_code ";
+          LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
+          WHERE ued.status = '3' AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
+          GROUP BY u.user_code ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
           u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
@@ -23,18 +23,9 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN user AS u ON ueel.user_code = u.user_code
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-          LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id IN (1, 2, 3, 4) AND uefp.user_code IS NULL AND u.user_code NOT IN
-          (
-          SELECT u.user_code
-          FROM user_edu_exercise_log AS ueel
-          INNER JOIN user AS u ON ueel.user_code = u.user_code
-          INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-          INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-          LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL
-          )
-          GROUP BY ueel.user_code ";
+          LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
+          WHERE ued.status = '3'
+          GROUP BY u.user_code ";
 }
 
 $numrows = $db_handle->numRows($query);
@@ -72,8 +63,8 @@ $education_students = $db_handle->fetchAssoc($result);
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin - All Category 2 Students</title>
-        <meta name="title" content="Instaforex Nigeria | Admin - All Category 2 Students" />
+        <title>Instaforex Nigeria | Admin - All Category 4 Students</title>
+        <meta name="title" content="Instaforex Nigeria | Admin - All Category 4 Students" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
@@ -112,7 +103,7 @@ $education_students = $db_handle->fetchAssoc($result);
 
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>STUDENTS - Category 2</strong></h4>
+                            <h4><strong>STUDENTS - Category 4</strong></h4>
                         </div>
                     </div>
 
@@ -120,7 +111,7 @@ $education_students = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
 
-                                <p>List of students that have already started taking lessons in course 1. This category includes anyone in lessons 1-4.</p>
+                                <p>List of students that have made payments and taking course 2.</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
@@ -140,7 +131,7 @@ $education_students = $db_handle->fetchAssoc($result);
                                             <td><?php echo date_to_text($row['academy_signup']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
-                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_2'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 2'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_4'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 4'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>

@@ -178,6 +178,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(66, $my_pages_sidebar)) { ?><li><a href="edu_student_category_1.php">Category 1 Students</a></li><?php } ?>
                         <?php if (in_array(236, $my_pages_sidebar)) { ?><li><a href="edu_student_category_2.php">Category 2 Students</a></li><?php } ?>
                         <?php if (in_array(237, $my_pages_sidebar)) { ?><li><a href="edu_student_category_3.php">Category 3 Students</a></li><?php } ?>
+                        <?php if (in_array(238, $my_pages_sidebar)) { ?><li><a href="edu_student_category_4.php">Category 4 Students</a></li><?php } ?>
                         <li class="divider"></li>
                         <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_free_training_reg.php">Training Campaign - New Reg</a></li><?php } ?>
                         <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_free_training.php">Training Campaign</a></li><?php } ?>
