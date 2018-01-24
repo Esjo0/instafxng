@@ -5,7 +5,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
 }
 ?>
 
-<!--<p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>-->
+<p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
 <p>Make Modification to this order below.</p>
 <p>Fill the transfer reference, add your remark, then process this transaction. Please note that you must enter a remark for this transaction.</p>
 <div class="row">
@@ -14,8 +14,8 @@ if(!empty($trans_detail['points_claimed_id'])) {
             <div class="trans_item_content">
                 <div class="row">
                     <div class="col-sm-4 trans_item-thumb">
-                        <!--<p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php /*echo encrypt($trans_detail['user_code']); */?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
-                        --><?php
+                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($trans_detail['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
+                        <?php
                         if(!empty($trans_detail['passport'])) { $file_location = "../userfiles/" . $trans_detail['passport']; }
 
                         if(file_exists($file_location)) {
