@@ -5,7 +5,8 @@ $thisPage = "Traders";
 $get_params = allowed_get_params(['x']);
 $additional_msg = $get_params['x'];
 
-if($additional_msg == 'msg') {
+if($additional_msg == 'msg')
+{
     $special_msg = <<<msg
         <p>Funding your InstaForex Account is Fast and Easy!</p>
 
@@ -23,6 +24,14 @@ if($additional_msg == 'msg') {
         <br />
 msg;
 }
+
+if($additional_msg == 'msg_new')
+{
+    $special_msg = "page";
+    $special_msg_url = "views/deposit_funds/ilpr_deposit_landing.php";
+}
+
+
 
 $page_requested = "";
 
@@ -100,6 +109,8 @@ if(isset($_POST['deposit_funds_kyc'])) {
         $message_error = "All fields must be filled.";
     } elseif (!check_email($email_address)) {
         $message_error = "You have provided an invalid email address. Please try again.";
+    } elseif (check_number($phone_number) != 5) {
+        $message_error = "The supplied phone number is invalid.";
     } else {
         $user_code = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 1);
         
@@ -162,7 +173,8 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
         // confirm total funding orders today, if > 2000, disallow this order
         if($client_operation->deposit_limit_exceeded($client_user_code, $ifx_dollar_amount)) {
             $message_error = "The requested amount will make your total funding order today exceed the allowed daily limit of $" . LEVEL_ONE_MAX_PER_DEPOSIT;
-            $message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.";
+            $message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.<br />";
+            $message_error .= "<br />Your address, valid ID, Passport Photograph and your Signature is required for verification.";
         } else {
             $max_per_deposit = LEVEL_ONE_MAX_PER_DEPOSIT;
             if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit) {
@@ -247,13 +259,15 @@ if(isset($_POST['deposit_funds_finalize'])) {
 
 // This section processes - views/deposit_funds_pay_type.php
 if(isset($_POST['deposit_funds_pay_type'])) {
+    $client_operation = new clientOperation();
+
     $trans_id_encrypted = $db_handle->sanitizePost($_POST['transaction_no']);
     $trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
     $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
     
     $pay_type = $db_handle->sanitizePost($_POST['pay_type']);
-    
-    $client_operation = new clientOperation();
+    $client_operation->log_deposit_pay_method($trans_id, $pay_type); // Update payment method selected
+
     $transaction = $client_operation->get_deposit_by_id_mini($trans_id);
     extract($transaction);
     
@@ -323,9 +337,12 @@ switch($page_requested) {
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <div class="col-sm-12 text-danger">
-                                <h4><strong>Fund Your Instaforex Account</strong></h4>
-                            </div>
+                            <?php if($additional_msg != 'msg_new'): ?>
+                                <div class="col-sm-12 text-danger">
+                                    <h4><strong>Fund Your Instaforex Account</strong></h4>
+                                </div>
+                            <?php endif; ?>
+
                         </div>
                         <div class="row">
                             <div class="col-sm-12">

@@ -16,7 +16,7 @@ if (isset($_POST['delete_campaign'])) {
     $system_object->delete_campaign_by_id($campaign_id);
 }
 
-$query = "SELECT ce.send_date AS campaign_send_date, ce.created AS campaign_created, ce.subject AS campaign_subject, ce.status AS campaign_status,
+$query = "SELECT ce.sender AS campaign_sender, ce.send_date AS campaign_send_date, ce.created AS campaign_created, ce.subject AS campaign_subject, ce.status AS campaign_status,
       ce.send_status AS campaign_send_status, ce.campaign_email_id AS campaign_id, ce.send_date AS campaign_send_date, cc.title AS campaign_category
       FROM campaign_email AS ce
       INNER JOIN campaign_category AS cc ON ce.campaign_category_id = cc.campaign_category_id
@@ -90,6 +90,7 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                     <thead>
                                         <tr>
                                             <th></th>
+                                            <th>Sender</th>
                                             <th>Subject</th>
                                             <th>Category</th>
                                             <th>Status</th>
@@ -139,6 +140,7 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </div>
                                             </td>
+                                            <td><?php echo $row['campaign_sender']; ?></td>
                                             <td><?php echo $row['campaign_subject']; ?></td>
                                             <td><?php echo $row['campaign_category']; ?></td>
                                             <td class="nowrap"><?php echo status_campaign_email($row['campaign_status']); ?></td>

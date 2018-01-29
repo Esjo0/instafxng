@@ -20,6 +20,7 @@ $thisPage = "Home";
         <meta property="og:image" content="images/instaforex-100bonus.jpg" />
         <meta property="og:url" content="https://instafxng.com/" />
         <meta property="og:type" content="website" />
+
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -32,29 +33,22 @@ $thisPage = "Home";
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    <?php $rand = rand(1, 2); ?>
-
-                    <div class="super-shadow page-top-section">
+                    <div  class="item super-shadow page-top-section">
                         <div class="row ">
-                            <div class="col-sm-6">
-                                <h2>The Race to One Million Naira is Almost Over!</h2>
-                                <p>It's <strong><?php echo 30 - date('d'); ?> days to the end of the promo</strong> and ONE hardworking and consistent
-                                trader will win a whopping sum of <strong>&#8358;<?php echo number_format(1000000); ?></strong>.</p>
+<!--                            <div class="col-sm-6">-->
+<!--                                <h2>The Amazing Profit Opportunity in Litecoin and Ripple</h2>-->
+<!--                                <p>Did you know that some people who invested in bitcoin in it's early days made-->
+<!--                                    billion of dollars from it? That's right!</p>-->
+<!--                                <p>You probably wish you had bought 10 bitcoins with $10 then.</p>-->
+<!--                                <p>You don't have to worry about it, Here's another opportunity to invest in-->
+<!--                                    litecoin and ripple coins...-->
+<!--                                    <a href="https://instafxng.com/news1/id/568/u/amazing-profit-opportunity-litecoin-ripple/" title="click for details">Read more here</a></p>-->
+<!--                            </div>-->
+                                <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/instafxng_loyalty_program_and_rewards.jpg" alt="" class="img-responsive" /></a>
 
-                                <p>Now, that's not all! There are CASH prizes for the 2nd to the 10th trader who
-                                appears on the rank scale by the end of the Promo.</p>
-
-                                <p>You can be one of the hardworking traders who will win varying cash
-                                awards only if you start trading more than ever before.
-                                <a href="https://instafxng.com/news1/id/562/u/he-did-it-one-month-you-can/" title="click for details">Click here</a> to learn more.</p>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <a href="https://instafxng.com/news1/id/562/u/he-did-it-one-month-you-can/" title="click for details"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
-                            </div>
                         </div>
                     </div>
-
+                    
                     <div id="welcome-note" class="section-tint super-shadow">
                         <h2 class="text-center">Welcome to Instaforex Nigeria</h2>
                         <p><i class="fa fa-quote-left fa-2x fa-pull-left fa-border"></i> InstaForex, the award winning and international forex broker seeks to serve her Nigerian clients better by the introduction of an InstaForex Nigeria Representative office. InstaFxNg.com is operated by Instant Web-Net Technologies Limited as a Nigerian InstaForex Representative / Introducing Broker Partner.</p>

@@ -31,9 +31,9 @@ if (isset($_POST['process'])) {
 
         if($new_bulletin)
         {
-            $message_main = '<p style="font-size: small">Bulletin Title: '.$title."</p>";
-            $message_main .= '<span style="font-size: small" id="trans_remark_author">'.$admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']) ."</span>";
-            $message_main .= '<span style="font-size: small" id="trans_remark">Visit the <a href="bulletin_centre.php">Bulletin Centre</a> to read more.</span>';
+            $message_main = '<p style="font-size: small">Bulletin Title: '.$title."<br/>";
+            $message_main .= 'Author : '.$admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']) ."<br/>";
+            $message_main .= 'Visit the <a href="bulletin_centre.php">Bulletin Centre</a> to read more.</p>';
             $recipients = $all_allowed_admin;
             $type = '3';
             $obj_push_notification->add_new_notification($message_main, $recipients, $type);

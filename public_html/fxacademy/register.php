@@ -19,6 +19,8 @@ if (isset($_POST['submit'])) {
         $message_error = "All fields must be filled, please try again";
     } elseif (!check_email($email_address)) {
         $message_error = "You have supplied an invalid email address, please try again.";
+    } elseif (check_number($phone_number) != 5) {
+        $message_error = "The supplied phone number is invalid.";
     } else {
 
         $client_full_name = $full_name;
@@ -48,7 +50,7 @@ if (isset($_POST['submit'])) {
             $last_name = "";
         }
 
-        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number')";
+        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, campaign_period) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '2')";
         $result = $db_handle->runQuery($query);
         $inserted_id = $db_handle->insertedId();
 
@@ -136,11 +138,14 @@ if (isset($_POST['submit'])) {
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="full_name">Full Name:</label>
-                                        <div class="col-sm-9 col-lg-7"><input name="full_name" type="text" class="form-control" id="full_name" maxlength="120" required></div>
+                                        <div class="col-sm-9 col-lg-7"><input name="full_name" placeholder="First name and Surname" type="text" class="form-control" id="full_name" maxlength="120" required></div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="phone">Phone Number:</label>
-                                        <div class="col-sm-9 col-lg-7"><input name="phone_number" type="text" class="form-control" id="phone" maxlength="11" required></div>
+                                        <div class="col-sm-9 col-lg-7">
+                                            <input name="phone_number" type="text" class="form-control" id="phone" data-minlength="11" maxlength="11" required>
+                                            <div class="help-block">Example - 08031234567</div>
+                                        </div>
                                     </div>
 
                                     <div class="form-group">

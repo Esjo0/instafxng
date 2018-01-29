@@ -36,7 +36,7 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
             ud.client_naira_notified, ud.client_pay_date, ud.client_reference, ud.client_pay_method,
             ud.client_notified_date, ud.status AS deposit_status, u.user_code,
             ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-            uc.passport, ui.ifxaccount_id, ud.updated
+            uc.passport, ui.ifxaccount_id, ud.updated, ud.order_complete_time
             FROM user_deposit AS ud
             INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
             INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -44,7 +44,7 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
 
         $where_clause = " WHERE ud.status = '8' ";
         $where_clause .= $query_add;
-        $where_clause .= " AND (STR_TO_DATE(ud.updated, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY ud.updated DESC ";
+        $where_clause .= " AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY ud.order_complete_time DESC ";
 
         $query .= $where_clause;
 
@@ -316,9 +316,9 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
 
                                     <?php if($allowed_export_profile) { ?>
                                     <p class="text-center">
-                                        <a id="create_pdf" type="button" class="btn btn-sm btn-info" >Export Result to PDF</a>
-                                        <a type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export Result to Excel</a>
-                                    </p>
+                                            <!--<a id="create_pdf" type="button" class="btn btn-sm btn-info" >Export Result to PDF</a>-->
+                                            <a type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export Result to Excel</a>
+                                        </p>
                                     <?php } ?>
 
                                 <?php } ?>
@@ -334,7 +334,7 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                             <th>Amount Funded</th>
                                             <th>Total Confirmed</th>
                                             <th>Date Created</th>
-                                            <th>Last Updated</th>
+                                            <th>Order Completed Time</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -349,7 +349,7 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                             <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
                                             <td class="nowrap">&#8358; <?php echo number_format($row['real_naira_confirmed'], 2, ".", ","); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
-                                            <td><?php echo datetime_to_text($row['updated']); ?></td>
+                                            <td><?php echo datetime_to_text($row['order_complete_time']); ?></td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>

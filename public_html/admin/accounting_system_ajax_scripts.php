@@ -50,7 +50,7 @@
         var cell4 = row.insertCell(3);
         cell1.innerHTML = item_name;
         cell2.innerHTML = no_of_items;
-        cell3.innerHTML = unit_cost;
+        cell3.innerHTML = '₦'+unit_cost+' each';
         var del = '"';
         cell4.innerHTML = '₦'+item_total+"<p class='pull-right'><button onclick='delete_row("+del+item_code+del+")' style='width: 30px; height: 30px; text-align: center; padding: 6px 0; font-size: 12px; line-height: 1.428571429; border-radius: 15px;' class='btn btn-circle btn-sm btn-danger'><i class='glyphicon glyphicon-remove'></i></button></p>";
         var sum = parseInt(order_total) + parseInt(item_total);
@@ -113,34 +113,27 @@
             XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
             XMLHttpRequestObject.onreadystatechange = function()
             {
-                if (XMLHttpRequestObject.readyState == 4 &&
-                    XMLHttpRequestObject.status == 200)
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
                 {
                     var returnedData = XMLHttpRequestObject.responseText;
                     var messageDiv = document.getElementById('messageDiv');
                     messageDiv.innerHTML = returnedData;
                 }
             };
-            //var location = document.getElementById('location').value;
             var radios = document.getElementsByName('office_location');
-
-            for (var i = 0, length = radios.length; i < length; i++) {
-                if (radios[i].checked) {
-                    // do whatever you want with the checked radio
-                    var location = radios[i].value
-                        //alert(radios[i].value);
-
-                    // only one radio can be logically checked, don't check the rest
+            for (var i = 0, length = radios.length; i < length; i++)
+            {
+                if (radios[i].checked)
+                {
+                    var location = radios[i].value;
                     break;
                 }
             }
-
             clear_buttons(document.getElementById("order_list").getElementsByTagName("button"));
             var req_order = document.getElementById('order_list').innerHTML;
             var req_order_total = document.getElementById('requisition_total').innerHTML;
             var req_order_code = RandomString(7);
             XMLHttpRequestObject.send("req_order=" + req_order + "&req_order_code=" + req_order_code + "&req_order_total=" + req_order_total + "&location=" + location);
-            //location.reload();
         }
 
         return false;

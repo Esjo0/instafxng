@@ -52,6 +52,9 @@ if(isset($_POST['withdraw_funds_pcode'])) {
             if(!$client_operation->confirm_credential($client_user_code)) {
                 $message_error = "You have not verified your account by uploading identification documents. You must verify your account ";
                 $message_error .= "before proceeding with your withdrawal. Please verify your account by <a href='verify_account.php'> clicking here.</a></p>";
+            } elseif (!$client_operation->confirm_client_address($client_user_code)) {
+                $message_error = "You have not verified your contact address or your verification is still been processed. You must verify your address to proceed. ";
+                $message_error .= "Please verify your account by <a href='verify_account.php'> clicking here.</a> or <a href='contact_info.php'>contact us</a> for help</p>";
             } elseif (!$client_operation->confirm_bank_account($client_user_code)) {
                 $all_banks = $system_object->get_all_banks();
                 $page_requested = withdraw_funds_add_bank_php;
@@ -83,6 +86,8 @@ if(isset($_POST['withdraw_funds_kyc'])) {
         $message_error = "All fields must be filled.";
     } elseif (!check_email($email_address)) {
         $message_error = "You have provided an invalid email address. Please try again.";
+    } elseif (check_number($phone_number) != 5) {
+        $message_error = "The supplied phone number is invalid.";
     } else {
         $user_code = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 1);
 
@@ -121,7 +126,7 @@ if(isset($_POST['withdraw_funds_add_bank'])) {
             extract($user_ifx_details);
 
             $client_operation->set_bank_account($client_user_code, $bank_acct_name, $bank_acct_number, $bank_name);
-            $page_requested = 'withdraw_funds_qty_php';
+            $message_success = "Your bank information have been submitted. Please hold on for approval. You can <a href='contact_info.php'>contact us</a> if you need any help.";
         } else {
             $message_error = "Something went wrong, the operation could not be completed.";
         }
@@ -161,7 +166,13 @@ if(isset($_POST['withdraw_funds_qty'])) {
 
             if($log_withdrawal) {
                 $client_operation->send_withdrawal_invoice($client_full_name, $client_email, $trans_id, $account_no, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, $client_bank_name, $client_acct_name, $client_acct_no);
-                $message_success = "<p>Withdrawal Request Submitted - See the summary of your withdrawal below. Your Withdrawal will be processed and payment made within one business day. Thank you for choosing InstaForex.</p>
+                $message_success = "<p>Withdrawal Request Submitted - See the summary of your withdrawal below. Your Withdrawal will
+                                    be processed and payment made within one business day.</p>
+                                    <p>In a few cases some requests fall outside the category of withdrawals we can process from
+                                    our office and has to be sent to InstaForex office. Withdrawal requests in this category can take
+                                    up to 3 Business days.</p>
+                                    <p>If your withdrawal request falls within this category, we will inform you immediately.</p>
+                                    <p>Thank you for choosing InstaForex.</p>
                                     <p class='text-danger' style='font-size: 1.3em'><strong>NOTE: </strong>Your payment will be made based on the rate as at the time the fund
                                     is debited from your Instaforex account.</p>";
                 $page_requested = 'withdraw_funds_finalize_php';
@@ -180,7 +191,21 @@ switch($page_requested) {
     case 'withdraw_funds_pcode_php': $withdraw_funds_pcode_php = true; break;
     case 'withdraw_funds_pcode_new_php': $withdraw_funds_pcode_new_php = true; break;
     case 'withdraw_funds_kyc_php': $withdraw_funds_kyc_php = true; break;
-    case 'withdraw_funds_add_bank_php': $withdraw_funds_add_bank_php = true; break;
+    case 'withdraw_funds_add_bank_php': {
+        $query = "SELECT status FROM user_bank WHERE user_code = '$client_user_code' AND is_active = '1' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $bank_status = $fetched_data[0]['status'];
+
+        if($bank_status == '1') {
+            $message_error = "Your bank account information is not yet approved, please <a href='contact_info.php'>contact us</a> for help.";
+            $submit_btn = false;
+        } else {
+            $submit_btn = true;
+        }
+
+        $withdraw_funds_add_bank_php = true;
+    }; break;
     case 'withdraw_funds_qty_php': $withdraw_funds_qty_php = true; break;
     case 'withdraw_funds_finalize_php': $withdraw_funds_finalize_php = true; break;
     default: $withdraw_funds_ifx_acct_php = true;

@@ -3,7 +3,7 @@
 class InstafxngSystem {
     
     // function to send SMTP emails
-    public function send_email($subject, $message, $sendto_email, $sendto_name, $from_name = '', $attachment = '') {
+    public function send_email($subject, $message, $sendto_email, $sendto_name, $from_name, $attachment = '') {
         
         //PHPMailer Object
         $mail = new PHPMailer;
@@ -285,17 +285,18 @@ class InstafxngSystem {
     }
 
     // Add a new campaign
-    public function add_new_campaign_email($campaign_email_no, $subject, $campaign_category, $content, $admin_code, $campaign_email_status = '1') {
+    public function add_new_campaign_email($campaign_email_no, $sender, $subject, $campaign_category, $content, $admin_code, $campaign_email_status = '1') {
         global $db_handle;
 
-        if(!empty($campaign_email_no)) {
-            $query = "UPDATE campaign_email SET campaign_category_id = '$campaign_category', subject = '$subject', content = '$content', status = '$campaign_email_status' WHERE campaign_email_id = $campaign_email_no LIMIT 1";
-        } else {
-            $query = "INSERT INTO campaign_email (admin_code, campaign_category_id, subject, content, status) VALUES ('$admin_code', $campaign_category, '$subject', '$content', '$campaign_email_status')";
+        if(!empty($campaign_email_no))
+        {
+            $query = "UPDATE campaign_email SET campaign_category_id = '$campaign_category', sender = '$sender', subject = '$subject', content = '$content', status = '$campaign_email_status' WHERE campaign_email_id = $campaign_email_no LIMIT 1";
         }
-
+        else
+        {
+            $query = "INSERT INTO campaign_email (admin_code, campaign_category_id, subject, sender, content, status) VALUES ('$admin_code', $campaign_category, '$subject', '$sender', '$content', '$campaign_email_status')";
+        }
         $db_handle->runQuery($query);
-
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
@@ -429,7 +430,7 @@ class InstafxngSystem {
             $fetched_data = $db_handle->fetchAssoc($result);
             $client_group = $fetched_data[0]['client_group'];
 
-            $recipient_query = $db_handle->sanitizePost(client_group_query($client_group));
+            $recipient_query = $db_handle->sanitizePost(client_group_query($client_group, 1));
             $total_recipient = $db_handle->numRows(stripslashes($recipient_query));
 
             // schedule campaign
@@ -456,7 +457,7 @@ class InstafxngSystem {
             $fetched_data = $db_handle->fetchAssoc($result);
             $client_group = $fetched_data[0]['client_group'];
 
-            $recipient_query = $db_handle->sanitizePost(client_group_query($client_group));
+            $recipient_query = $db_handle->sanitizePost(client_group_query($client_group, 2));
             $total_recipient = $db_handle->numRows(stripslashes($recipient_query));
 
             // schedule campaign

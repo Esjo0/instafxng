@@ -3,8 +3,8 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-
-$query = "SELECT * FROM hr_attendance_log ORDER BY created DESC ";
+$today = date("d-m-Y");
+$query = "SELECT * FROM hr_attendance_log WHERE date = '$today' ORDER BY created DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -67,7 +67,7 @@ $completed_deposit_requests = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <p class="text-right"><a href="hr_attendance_system_logs_filter.php"  class="btn btn-default" title="Attendance Logs - Filter"><i class="fa fa-arrow-circle-right"></i> Attendance Logs - Filter</a></p>
-                                <p>Below is the a list of Attendance Logs</p>
+                                <p>Today's ( <b><?php echo date_to_text($today); ?></b> ) Attendance Logs.</p>
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -88,7 +88,7 @@ $completed_deposit_requests = $db_handle->fetchAssoc($result);
                                             <td><?php echo $admin_object->get_admin_name_by_code($row['admin_code']);?></td>
                                             <td><?php echo date_to_text($row['date']) ?></td>
                                             <td><?php echo date('h:i A', mktime($row['time'])); ?></td>
-                                            <td><?php echo office_location($row['location']); ?></td>
+                                            <td><?php echo $row['location']; ?></td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>

@@ -7,7 +7,7 @@ class Project_Management
         global $db_handle;
         $query = "SELECT 
                   project_management_projects.title AS project_title,
-                  CONCAT(project_management_projects.supervisor_code, project_management_projects.executors) AS recipients
+                  CONCAT(project_management_projects.supervisor_code,',', project_management_projects.executors) AS recipients
                   FROM project_management_projects
                   WHERE 
                   project_management_projects.project_code = '$project_code' ";
@@ -68,8 +68,8 @@ class Project_Management
         $project_code = $this->generate_code();
         $query = "INSERT INTO project_management_projects (title, description, deadline, executors, supervisor_code, project_code) VALUES ('$title','$description','$deadline','$all_allowed_admin','$admin_code','$project_code')";
         $db_handle->runQuery($query);
-        $this->notify_supervisor($title, $description, $deadline, $all_allowed_admin, $admin_code);
-        $this->notify_executors($title, $description, $deadline, $all_allowed_admin, $admin_code);
+        $this->notify_supervisor($title, nl2br($description), $deadline, $all_allowed_admin, $admin_code);
+        $this->notify_executors($title, nl2br($description), $deadline, $all_allowed_admin, $admin_code);
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
@@ -155,8 +155,9 @@ class Project_Management
         $destination_details = $admin_object->get_admin_detail_by_code($admin_code);
         $admin_name = $destination_details['first_name'];
         $admin_email = $destination_details['email'];
-        $subject = 'NEW PROJECT ASSIGNMENT';
-        $message = <<<MAIL
+        $description = nl2br($description);
+        $subject = 'New Project Assignment - '.$title;
+        $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -172,9 +173,9 @@ MAIL;
         $all_allowed_admin = explode("," ,$all_allowed_admin);
         for ($i = 0; $i < count($all_allowed_admin); $i++)
         {
-            $message .= $admin_object->get_admin_name_by_code($all_allowed_admin[$i])."<br/>";
+            $message_final .= $admin_object->get_admin_name_by_code($all_allowed_admin[$i])."<br/>";
         }
-        $message .= <<<MAIL
+        $message_final .= <<<MAIL
                                 <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />
                                 <p>Best Regards,</p>
@@ -210,7 +211,7 @@ MAIL;
 MAIL;
         //echo $message;
         $system_object = new InstafxngSystem();
-        $system_object->send_email($subject, $message, $admin_email, $admin_name);
+        $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
         //echo $message;
     }
 
@@ -225,8 +226,9 @@ MAIL;
             $destination_details = $admin_object->get_admin_detail_by_code($all_allowed_admin[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $subject = 'NEW PROJECT ASSIGNMENT';
-            $message = <<<MAIL
+            $description = nl2br($description);
+            $subject = 'New Project Assignment - '.$title;
+            $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -242,9 +244,9 @@ MAIL;
             $all_allowed_admin = explode("," ,$all_allowed_admin);
             for ($i = 0; $i < count($all_allowed_admin); $i++)
             {
-                $message .= $admin_object->get_admin_name_by_code($all_allowed_admin[$i])."<br/>";
+                $message_final .= $admin_object->get_admin_name_by_code($all_allowed_admin[$i])."<br/>";
             }
-            $message .= <<<MAIL
+            $message_final .= <<<MAIL
                                 <p>On this project, you will be reporting to $supervisor.<p>
                                 <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />
@@ -280,7 +282,7 @@ MAIL;
                     </div>
 MAIL;
             //echo $message;
-            $system_object->send_email($subject, $message, $admin_email, $admin_name);
+            $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
             //echo $message;
         }
     }
@@ -289,18 +291,17 @@ MAIL;
     {
         $admin_object = new AdminUser();
         $system_object = new InstafxngSystem();
-
         $author = $admin_object->get_admin_name_by_code($admin_code);
-        $created = datetime_to_text($created);
-
+        $created = date_to_text($created);
         $recipients = explode("," ,$recipients);
         for ($i = 0; $i < count($recipients); $i++)
         {
             $destination_details = $admin_object->get_admin_detail_by_code($recipients[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $subject = 'NEW PROJECT MESSAGE';
-            $message = <<<MAIL
+            $message = nl2br($message);
+            $subject = 'New Project Message - '.$title;
+            $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -344,9 +345,7 @@ MAIL;
                         </div>
                     </div>
 MAIL;
-            //echo $message;
-            $system_object->send_email($subject, $message, $admin_email, $admin_name);
-            //echo $message;
+            $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
         }
     }
 

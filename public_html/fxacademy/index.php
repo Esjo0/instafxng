@@ -158,6 +158,7 @@ if($get_learning_position) {
                     <div id="main-container" class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-md-12">
+
                                 <p><strong>Welcome <?php echo $_SESSION['client_first_name']; ?>,</strong></p>
                                 <p>This is your dashboard where you can check your learning progress, latest message from your instructor
                                 and other quick information about your study at our Forex Trading School.</p>

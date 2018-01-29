@@ -100,6 +100,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
                             <p style="text-align: right"><em>Comment Replied</em></p>
 
                         <?php } else { ?>
+
                             <p style="text-align: right">
                                 <button type="button" data-target="#reply-client-comment" data-toggle="modal" class="btn btn-default">Reply Comment</button>
                             </p>
@@ -134,6 +135,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
                                     </div>
                                 </div>
                             </div>
+
                         <?php } } ?>
 
                 </div>
@@ -169,7 +171,8 @@ if(!empty($trans_detail['points_claimed_id'])) {
                 </div>
             </div>
             <?php } ?>
-            
+
+
             <div class="form-group">
                 <label class="control-label" for="trans_ref">IFX Transfer Reference:</label>
                 <div><textarea name="trans_ref" id="trans_ref" rows="3" class="form-control" placeholder="Enter IFX Transfer Reference"></textarea></div>
@@ -183,6 +186,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
                 <button type="button" data-target="#confirm-deposit-decline" data-toggle="modal" class="btn btn-danger">Decline Deposit</button>
                 <button type="button" data-target="#confirm-deposit-pend" data-toggle="modal" class="btn btn-info">Pend Deposit</button>
             </div>
+
 
             <!--Modal - confirmation boxes--> 
             <div id="confirm-deposit-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">

@@ -103,7 +103,10 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
 
                     <div class="super-shadow page-top-section">
                         <div class="row ">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
+                                <img style="" src="images/ilpr_landing_image.jpg" alt="" class="img-thumbnail img img-responsive" />
+                            </div>
+                            <div class="col-sm-12">
                                 <h2>Instafxng Point Based Loyalty Program and Reward</h2>
                                 <p>Make Up To $4, 200 and N1, 000, 000 Extra While You Take Your Normal Trades.</p>
                                 <p><strong>Current Round:</strong><br />
@@ -112,9 +115,6 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 </p>
                             </div>
 
-                            <div class="col-sm-6">
-                                <img src="images/point-based-rewards.jpg" alt="" class="img-responsive" />
-                            </div>
                         </div>
                     </div>
 
@@ -299,7 +299,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $count; ?></td>
-                                                        <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
+                                                        <td><?php if($row['full_name'] == 'Management' || empty($row['full_name'])) { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
                                                         <td><?php echo number_format(($row['month_rank']), 2, ".", ","); ?></td>
                                                     </tr>
                                                     <?php $count++; } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -349,7 +349,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                                 ?>
                                             <tr>
                                                 <td><?php echo $count; ?></td>
-                                                <td><?php if($row['full_name'] == 'Management') { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
+                                                <td><?php if($row['full_name'] == 'Management' || empty($row['full_name'])) { echo $row['last_name']; } else { echo $row['full_name']; }; ?></td>
                                                 <td><?php echo number_format(($row['year_rank']), 2, ".", ","); ?></td>
                                             </tr>
                                             <?php $count++; } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

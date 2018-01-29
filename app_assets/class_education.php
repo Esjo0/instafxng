@@ -265,16 +265,16 @@ class Education {
     }
 
     // Get lessons belonging to a course by id
-    public function get_active_lessons_by_id($course_id) {
+    public function get_active_lessons_by_id($course_id)
+    {
         global $db_handle;
 
-        $query = "SELECT el.edu_lesson_id, el.course_id,
+        $query = "SELECT CONCAT(a.first_name, SPACE(1), a.last_name) AS admin_full_name, el.edu_lesson_id, el.course_id, el.admin_code,
             el.lesson_order, el.title, el.content, el.time_required, el.status, el.created
             FROM edu_lesson AS el
             INNER JOIN edu_course AS ec ON ec.edu_course_id = el.course_id
             INNER JOIN admin AS a ON a.admin_code = el.admin_code
             WHERE el.course_id = $course_id AND el.status = '2' ORDER BY el.lesson_order ASC";
-
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -696,6 +696,12 @@ MAIL;
 
         $query = "INSERT INTO user_edu_deposits_comment (admin_code, trans_id, comment) VALUES ('$admin_code', '$transaction_no', '$admin_comment')";
         $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function modify_edu_deposit_order($transaction_no, $course_no, $user_no, $deposit_status, $admin_comment, $admin_code) {
@@ -716,6 +722,24 @@ MAIL;
         } else {
             return false;
         }
+    }
+
+    public function submit_payment_notification($transaction_no, $pay_date, $naira_amount, $admin_comment = false, $admin_code = false) {
+        global $db_handle;
+
+        $query = "UPDATE user_edu_deposits SET status = '2', pay_date = '$pay_date', amount_paid = '$naira_amount' WHERE trans_id = '$transaction_no' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            if($admin_comment) {
+                $this->log_edu_deposit_comment($admin_code, $transaction_no, $admin_comment);
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     // Get all lesson logged by the client - using answered exercises
@@ -844,6 +868,29 @@ MAIL;
         }
     }
 
+    //Set lesson rating
+    public function set_lesson_rating($user_code, $lesson_id, $course_id, $rating, $comments)
+    {
+        global $db_handle;
+        $query = "INSERT INTO edu_lesson_rating (user_code, lesson_id, course_id, rating, comments) VALUES('$user_code','$lesson_id','$course_id','$rating','$comments')";
+        $db_handle->runQuery($query);
+    }
+
+    // Get all initiated transactions by user_code
+    public function get_initiated_trans_by_code($user_code) {
+        global $db_handle;
+
+        $query = "SELECT status, amount, stamp_duty, gateway_charge, trans_id, pay_method, deposit_origin,
+            created
+            FROM user_edu_deposits
+            WHERE status = '1' AND user_code = '$user_code'
+            ORDER BY created DESC ";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
 }
 
 $education_object = new Education();

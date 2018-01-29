@@ -14,7 +14,8 @@ if (isset($_POST['process'])) {
 
     extract($_POST);
 
-    if($db_handle->numRows("SELECT * FROM signal_daily WHERE signal_date LIKE '$signal_date'") > 0) {
+    if($db_handle->numRows("SELECT * FROM signal_daily WHERE signal_date LIKE '$signal_date'") > 0)
+    {
         $message_error = "You have already uploaded forex signal for the selected date, please choose another date.";
     } else {
         $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, signal_date) VALUES
@@ -24,12 +25,9 @@ if (isset($_POST['process'])) {
             (2, 'SELL', '$gbp_usd_sell_price', '$gbp_usd_sell_tp', '$gbp_usd_sell_sl', '$signal_date'),
             (3, 'BUY', '$usd_cad_buy_price', '$usd_cad_buy_tp', '$usd_cad_buy_sl', '$signal_date'),
             (3, 'SELL', '$usd_cad_sell_price', '$usd_cad_sell_tp', '$usd_cad_sell_sl', '$signal_date')";
-        $db_handle->runQuery($query);
-
-        $message_success = "Your changes have been saved.";
+        $result = $db_handle->runQuery($query);
+        $result ? $message_success = "Your changes have been saved." : $message_error = "No Changes Made";
     }
-
-
 }
 
 
@@ -63,7 +61,6 @@ foreach($signals as $row) {
         $usd_cad_sell_price = $row['price']; $usd_cad_sell_tp = $row['take_profit']; $usd_cad_sell_sl = $row['stop_loss'];
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +126,7 @@ foreach($signals as $row) {
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="">EURUSD:</label>
+                                        <label class="control-label col-sm-3" for="">EUR/USD:</label>
                                         <div class="col-sm-9 col-lg-8">
                                             <div class="row">
                                                 <div class="col-sm-3"><input name="eur_usd_buy_order" type="text" value="BUY" class="form-control" placeholder="BUY" disabled/></div>
@@ -141,7 +138,7 @@ foreach($signals as $row) {
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="">EURUSD:</label>
+                                        <label class="control-label col-sm-3" for="">EUR/USD:</label>
                                         <div class="col-sm-9 col-lg-8">
                                             <div class="row">
                                                 <div class="col-sm-3"><input name="eur_usd_sell_order" type="text" value="SELL" class="form-control" placeholder="SELL" disabled/></div>
@@ -154,7 +151,7 @@ foreach($signals as $row) {
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="">GBPUSD:</label>
+                                        <label class="control-label col-sm-3" for="">GBP/USD:</label>
                                         <div class="col-sm-9 col-lg-8">
                                             <div class="row">
                                                 <div class="col-sm-3"><input name="gbp_usd_buy_order" type="text" value="BUY" class="form-control" placeholder="BUY" disabled/></div>
@@ -166,7 +163,7 @@ foreach($signals as $row) {
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="">GBPUSD:</label>
+                                        <label class="control-label col-sm-3" for="">GBP/USD:</label>
                                         <div class="col-sm-9 col-lg-8">
                                             <div class="row">
                                                 <div class="col-sm-3"><input name="gbp_usd_sell_order" type="text" value="SELL" class="form-control" placeholder="SELL" disabled/></div>
@@ -179,7 +176,7 @@ foreach($signals as $row) {
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="">USDCAD:</label>
+                                        <label class="control-label col-sm-3" for="">USD/CAD:</label>
                                         <div class="col-sm-9 col-lg-8">
                                             <div class="row">
                                                 <div class="col-sm-3"><input name="usd_cad_buy_order" type="text" value="BUY" class="form-control" placeholder="BUY" disabled/></div>
@@ -191,7 +188,7 @@ foreach($signals as $row) {
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="">USDCAD:</label>
+                                        <label class="control-label col-sm-3" for="">USD/CAD:</label>
                                         <div class="col-sm-9 col-lg-8">
                                             <div class="row">
                                                 <div class="col-sm-3"><input name="usd_cad_sell_order" type="text" value="SELL" class="form-control" placeholder="SELL" disabled/></div>

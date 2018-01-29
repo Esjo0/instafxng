@@ -4,19 +4,13 @@ if (!$session_admin->is_logged_in())
 {
     redirect_to("login.php");
 }
-
 $query = "SELECT * FROM accounting_system_office_locations ";
 $result = $db_handle->runQuery($query);
 $locations = $db_handle->fetchAssoc($result);
-
+$author_code = $_SESSION['admin_unique_code'];
 if(isset($_POST['send_order']))
 {
-    //var_dump($_POST);
     $office_location = $db_handle->sanitizePost($_POST['office_location']);
-    $author_code = $_SESSION['admin_unique_code'];
-
-
-
 
     $req_order = $db_handle->sanitizePost($_POST['req_order']);
     $req_order_code = $db_handle->sanitizePost($_POST['req_order_code']);
@@ -26,7 +20,6 @@ if(isset($_POST['send_order']))
           VALUES ('$author_code', '$req_order_code', '$req_order', '$req_order_total', '$office_location')";
     $result = $db_handle->runQuery($query);
 }
-
 if(isset($_POST['process_refund']))
 {
     $req_order_total = $db_handle->sanitizePost(trim($_POST['req_order_total']));
@@ -44,7 +37,6 @@ if(isset($_POST['process_refund']))
         $message_success = "Your refund would be processed shortly.";
     }
 }
-
 $query = "SELECT 
           payment_status,
           accounting_system_req_order.req_order_total AS req_order_total,
@@ -55,30 +47,20 @@ $query = "SELECT
           accounting_system_req_order.comments AS comments,
           CONCAT(admin.first_name, SPACE(1), admin.last_name) AS author_name
           FROM admin, accounting_system_req_order 
-          WHERE accounting_system_req_order.author_code = admin.admin_code 
+          WHERE accounting_system_req_order.author_code = '$author_code'
+          AND admin.admin_code = '$author_code'
           ORDER BY accounting_system_req_order.created DESC ";
-
 $numrows = $db_handle->numRows($query);
-
 $rowsperpage = 20;
-
 $totalpages = ceil($numrows / $rowsperpage);
-// get the current page or set a default
-if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
-    $currentpage = (int) $_GET['pg'];
-} else {
-    $currentpage = 1;
-}
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {    $currentpage = (int) $_GET['pg'];} else {    $currentpage = 1;}
 if ($currentpage > $totalpages) { $currentpage = $totalpages; }
 if ($currentpage < 1) { $currentpage = 1; }
-
 $prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
 $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
-
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
-
 $result = $db_handle->runQuery($query);
 $projects = $db_handle->fetchAssoc($result);
 ?>
@@ -169,15 +151,19 @@ $projects = $db_handle->fetchAssoc($result);
                                             </tr>
                                             </thead>
                                             <tbody id="requisitionOrder">
-                                            <tr>
+                                            <!--<tr>
                                                 <td colspan="4" >
                                                     <p class="pull-right">
                                                         Order Total : <b>₦</b><b id="requisition_total">0</b>
                                                     </p>
                                                 </td>
-                                            </tr>
+                                            </tr>-->
                                             </tbody>
                                         </table>
+                                        <p class="pull-right">
+                                            Order Total : <b>₦</b><b id="requisition_total">0</b>
+                                        </p>
+                                        <br/>
                                     </div>
                                     <p><b>Select Location:</b></p>
                                     <?php if(isset($locations) && !empty($locations))
@@ -205,6 +191,52 @@ $projects = $db_handle->fetchAssoc($result);
                                             <button onclick="send_order()"  name="send_order" type="button" class="btn btn-success"><i class="glyphicon glyphicon-send"></i> Submit Order</button>
                                             <!--<button data-toggle="modal" data-target="#submit_order" type="button" class="btn btn-success">
                                                 <i class="glyphicon glyphicon-send"></i> Submit Order</button>-->
+                                            <script>
+                                                var XMLHttpRequestObject = false;
+
+                                                if (window.XMLHttpRequest)
+                                                {
+                                                    XMLHttpRequestObject = new XMLHttpRequest();
+                                                }
+                                                else if (window.ActiveXObject)
+                                                {
+                                                    XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+                                                }
+                                                function send_order_new_function()
+                                                {
+                                                    var radios = document.getElementsByName('office_location');
+                                                    for (var i = 0, length = radios.length; i < length; i++)
+                                                    {
+                                                        if (radios[i].checked)
+                                                        {
+                                                            var location = radios[i].value;
+                                                            break;
+                                                        }
+                                                    }
+                                                    clear_buttons(document.getElementById("order_list").getElementsByTagName("button"));
+                                                    var admin_code = '<?php echo $author_code;?>';
+                                                    var req_order_code = RandomString(7);
+                                                    var req_order_total = document.getElementById('requisition_total').innerHTML;
+                                                    var query = "INSERT INTO accounting_system_req_order (author_code, req_order_code, req_order_total, location) VALUES ('"+admin_code+"', '"+req_order_code+"', '"+req_order_total+"', '"+location+"')";
+                                                    ajax_call("query=" + query);
+                                                    //XMLHttpRequestObject.send();
+                                                    var req_order = document.getElementById('requisitionOrder');//.innerHTML
+                                                    for (var x = 0, length1 = req_order.rows.length; x < length1; x++)
+                                                    {
+                                                        var Cells = req_order.rows[x].getElementsByTagName("td");
+                                                        var item_desc = Cells[0].innerText;
+                                                        var no_of_items = Cells[1].innerText;
+                                                        var unit_cost = Cells[2].innerText;
+                                                        unit_cost = unit_cost.match(/\d+/g)[0];
+                                                        var item_total = Cells[3].innerText;
+                                                        item_total = item_total.match(/\d+/g)[0];
+                                                        var query1 = "INSERT INTO accounting_system_req_item (order_code, item_desc, no_of_items, unit_cost, total_cost) VALUES ('"+req_order_code+"', '"+item_desc+"', '"+no_of_items+"', '"+unit_cost+"' , '"+item_total+"')";
+                                                        console.log(query1);
+                                                        //ajax_call("query=" + query1)
+                                                    }
+
+                                                }
+                                            </script>
                                         </div>
                                     </div>
                                 </div>

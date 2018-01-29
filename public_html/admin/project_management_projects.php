@@ -11,7 +11,9 @@ $all_admin_member = $admin_object->get_all_admin_member();
 if(isset($_POST['new_project']))
 {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
-    $description = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description'])));
+    $description = nl2br($db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description']))));
+    $description = str_replace('\r\n', "", $description);
+    $description = htmlspecialchars_decode(stripslashes(trim($description)));
     $deadline = $db_handle->sanitizePost(trim($_POST['deadline']));
     $allowed_admin = $_POST["allowed_admin"];
 
@@ -79,7 +81,7 @@ if(isset($_POST['new_comment']))
 
 
 
-$query = "SELECT * FROM project_management_projects WHERE status = 'IN PROGRESS' ORDER BY created DESC  ";
+$query = "SELECT * FROM project_management_projects WHERE status = '1' ORDER BY created DESC  ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -251,7 +253,7 @@ $projects = $db_handle->fetchAssoc($result);
                                 </div>
                             </div>
                             <div class="col-sm-12">
-                                <table class="table table-responsive  table-striped table-bordered table-hover">
+                                <table class="table table-responsive    table-hover">
                                     <thead>
                                         <tr>
                                             <th>Title</th>
@@ -261,8 +263,8 @@ $projects = $db_handle->fetchAssoc($result);
                                             <th>Status</th>
                                             <th>Executors</th>
                                             <th>Announcements</th>
-                                            <th>Edit</th>
-                                            <th>View</th>
+                                            <th> </th>
+                                            <th> </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -271,9 +273,9 @@ $projects = $db_handle->fetchAssoc($result);
                                     foreach ($projects as $row) { ?>
                                         <?php
                                         $executors = explode("," ,$row['executors']);
-                                        //
-                                        if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code)
-                                        :?>
+                                        if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code):
+                                            ?>
+
                                             <tr>
                                                 <td><?php echo $row['title']; ?></td>
                                                 <td>
@@ -329,7 +331,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                 </td>
                                                 <td><?php echo datetime_to_text($row['created']); ?></td>
                                                 <td><?php echo datetime_to_text2($row['deadline']); ?></td>
-                                                <td><?php echo $row['status']; ?></td>
+                                                <td><?php echo project_management_status($row['status']); ?></td>
 
                                                     <?php
                                                     $executors = explode("," ,$row['executors']);
@@ -502,8 +504,6 @@ $projects = $db_handle->fetchAssoc($result);
                                                 </td>
                                             </tr>
                                         <?php endif;?>
-
-
                                     <?php }
                                     } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>

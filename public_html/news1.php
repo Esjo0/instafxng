@@ -83,9 +83,9 @@ if(strlen($news_id) > 4) {
         $db_handle->runQuery("UPDATE article SET view_count = view_count + 1 WHERE article_id = {$article_id} LIMIT 1");
 
         // Select the latest comments
-        $result = $db_handle->runQuery("SELECT * FROM article_comments, article_visitors  WHERE article_comments.visitor_id = article_visitors.visitor_id AND article_comments.article_id = $article_id AND article_comments.status = 'ON' ORDER BY article_comments.created ASC LIMIT 20");
+        $result = $db_handle->runQuery("SELECT *, article_comments.created FROM article_comments, article_visitors  WHERE article_comments.visitor_id = article_visitors.visitor_id AND article_comments.article_id = $article_id AND article_comments.status = 'ON' AND (article_comments.reply_to IS NULL OR article_comments.reply_to = '')  ORDER BY article_comments.created ASC LIMIT 20");
         $latest_comments = $db_handle->fetchAssoc($result);
-        
+
         // Select the latest news
         $result = $db_handle->runQuery("SELECT * FROM article ORDER BY article_id DESC LIMIT  1, 6");
         $latest_news = $db_handle->fetchAssoc($result);
@@ -94,6 +94,111 @@ if(strlen($news_id) > 4) {
     }
 }
 
+function print_reply($replies)
+{
+    global $db_handle, $title, $news_id;
+    if(isset($replies) && !empty($replies))
+    {?>
+        <div id="<?php echo $replies[0]['comment_id'];?>" style="padding-left: 2%; display: none;">
+       <?php foreach($replies as $key)
+        {
+            ?>
+
+                <li class="media" style="font-size:small;">
+                    <a class="pull-left" href="#">
+                        <?php if($key['full_name'] == 'Instaforex NG'):?>
+                            <img height="50px" width="50px" class="media-object img-circle" src="images/Insta_logo.jpg" alt="profile">
+                        <?php endif; ?>
+                    </a>
+                    <div class="media-body">
+                        <div class="well">
+                            <h5>
+                                <?php echo strtoupper($key['full_name']);?>
+                                <?php if($key['reply_to'] > 0):
+                                    $query1 = $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_comments WHERE article_comments.comment_id = '" . $key['reply_to'] . "';");
+                                    $query2 = $db_handle->runQuery("SELECT @a_id:= article_id FROM article_comments WHERE article_comments.comment_id = '" . $key['reply_to'] . "';");
+                                    $reply_details = $db_handle->runQuery("SELECT full_name, title FROM article_visitors, article WHERE article_visitors.visitor_id = @v_id AND article.article_id = @a_id;");
+                                    $reply_details = $db_handle->fetchAssoc($reply_details);
+                                    $reply_full_name = $reply_details[0]['full_name'];
+                                endif; ?>
+                                <span class="glyphicon glyphicon-share-alt">  </span><?php echo strtoupper($reply_full_name);?>
+                            </h5>
+                            <ul class="media-date text-uppercase reviews list-inline">
+                                <small class="text-muted"><?php echo datetime_to_text($key['created']); ?></small>
+                            </ul>
+                            <p class="media-comment">
+                                <?php echo $key['comment'];?>
+                            </p>
+                            <?php
+                            $query3 = $db_handle->runQuery("SELECT *, article_comments.created FROM article_comments, article_visitors WHERE article_comments.reply_to = '" . $key['comment_id'] . "' AND article_visitors.visitor_id = '" . $key['visitor_id'] . "' ;");
+                            $replies = $db_handle->fetchAssoc($query3);
+                            if(isset($replies) && !empty($replies)):
+                                ?>
+                                <a onclick="show_chat('<?php echo $replies[0]['comment_id'];?>')" class="btn btn-warning btn-circle text-uppercase" href="javascript:void(0);" id="reply"><span class="glyphicon glyphicon-share-alt"></span> <span id="btn_text_<?php echo $replies[0]['comment_id'];?>">View Replies</span></a>
+                            <?php endif; ?>
+                            <a data-target="#reply-comment<?php echo $key['comment_id'];?>" data-toggle="modal" class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                        </div>
+                    </div>
+                </li>
+                <!--Modal - confirmation boxes-->
+                <div id="reply-comment<?php echo $key['comment_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                <h4 class="modal-title">Reply Comment</h4></div>
+                            <div class="modal-body">
+                                <p>Reply <?php echo $key['full_name'] ?>'s comment on <?php echo $title?>.</p>
+
+                                <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="name">Full Name:</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                                <input name="name" type="text" id="name" value="" class="form-control" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="email">Email Address:</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+                                                <input name="email" type="text" id="email" value="" class="form-control" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="comment">Comment:</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-comment-o fa-fw"></i></span>
+                                                <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-3 col-sm-9">
+                                            <input type="hidden" name="article_id" value="<?php echo $news_id;?>"/>
+                                            <input type="hidden" name="comment_id" value="<?php echo $key['comment_id'];?>"/>
+                                            <input type="submit" name="reply_comment" class="btn btn-success" value="Submit Reply"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php print_reply($replies); ?>
+
+        <?php }?>
+        </div>
+                <?php }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -185,6 +290,22 @@ if(strlen($news_id) > 4) {
             }
             .custom-input-file:hover .uploadPhoto { display: block; }
         </style>
+        <script>
+            function show_chat(div)
+            {
+                var x = document.getElementById(div);
+                if (x.style.display === 'none')
+                {
+                    x.style.display = 'block';
+                    document.getElementById('btn_text_'+div).innerHTML = 'Hide Replies';
+                }
+                else
+                {
+                    x.style.display = 'none';
+                    document.getElementById('btn_text_'+div).innerHTML = 'View Replies';
+                }
+            }
+        </script>
     </head>
     <body>
         
@@ -303,56 +424,22 @@ if(strlen($news_id) > 4) {
                                                                     endif; ?>
                                                                     </h5>
                                                                     <ul class="media-date text-uppercase reviews list-inline">
-                                                                        <small class="text-muted"><?php echo date_to_text($row['created']); ?></small>
+                                                                        <small class="text-muted"><?php echo datetime_to_text($row['created']); ?></small>
                                                                     </ul>
                                                                     <p class="media-comment">
                                                                         <?php echo $row['comment'];?>
                                                                     </p>
+                                                                    <?php
+                                                                    $query3 = $db_handle->runQuery("SELECT *, article_comments.created FROM article_comments, article_visitors WHERE article_comments.reply_to = '" . $row['comment_id'] . "' AND article_visitors.visitor_id  = article_comments.visitor_id ORDER BY article_comments.comment_id ASC  ;");
+                                                                    $replies = $db_handle->fetchAssoc($query3);
+                                                                    if(isset($replies) && !empty($replies)):
+                                                                    ?>
+
+                                                                        <a onclick="show_chat('<?php echo $replies[0]['comment_id'];?>')" class="btn btn-warning btn-circle text-uppercase" href="javascript:void(0);" id="reply"><span class="glyphicon glyphicon-share-alt"></span> <span id="btn_text_<?php echo $replies[0]['comment_id'];?>">View Replies</span></a>
+                                                                    <?php endif; ?>
                                                                     <a data-target="#reply-comment<?php echo $row['comment_id'];?>" data-toggle="modal" class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
                                                                 </div>
                                                             </div>
-                                                            <!--<div class="collapse" id="replyOne">
-                                                                <ul class="media-list">
-                                                                    <li class="media media-replied">
-                                                                        <a class="pull-left" href="#">
-                                                                            <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/ManikRathee/128.jpg" alt="profile">
-                                                                        </a>
-                                                                        <div class="media-body">
-                                                                            <div class="well well-lg">
-                                                                                <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> The Hipster</h4>
-                                                                                <ul class="media-date text-uppercase reviews list-inline">
-                                                                                    <li class="dd">22</li>
-                                                                                    <li class="mm">09</li>
-                                                                                    <li class="aaaa">2014</li>
-                                                                                </ul>
-                                                                                <p class="media-comment">
-                                                                                    Nice job Maria.
-                                                                                </p>
-                                                                                <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="media media-replied" id="replied">
-                                                                        <a class="pull-left" href="#">
-                                                                            <img class="media-object img-circle" src="https://pbs.twimg.com/profile_images/442656111636668417/Q_9oP8iZ.jpeg" alt="profile">
-                                                                        </a>
-                                                                        <div class="media-body">
-                                                                            <div class="well well-lg">
-                                                                                <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> Mary</h4></h4>
-                                                                                <ul class="media-date text-uppercase reviews list-inline">
-                                                                                    <li class="dd">22</li>
-                                                                                    <li class="mm">09</li>
-                                                                                    <li class="aaaa">2014</li>
-                                                                                </ul>
-                                                                                <p class="media-comment">
-                                                                                    Thank you Guys!
-                                                                                </p>
-                                                                                <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>-->
                                                         </li>
                                                             <!--Modal - confirmation boxes-->
                                                             <div id="reply-comment<?php echo $row['comment_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -408,6 +495,12 @@ if(strlen($news_id) > 4) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+
+
+                                                        <?php
+                                                        if(isset($replies) && !empty($replies))
+                                                        {
+                                                            print_reply($replies);} ?>
                                                         <?php } ?>
                                                     </ul>
                                                 </div>

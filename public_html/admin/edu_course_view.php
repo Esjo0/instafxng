@@ -23,9 +23,9 @@ $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
 $selected_course = $education_object->get_course_by_id($course_id);
 
 if(empty($selected_course)) {
-    redirect_to("edu_course.php"); // cannot find course or URL tampered
-} else {
-    $course_lessons = $education_object->get_course_lessons_id($course_id);
+} else
+    {
+    $course_lessons = $education_object->get_active_lessons_by_id($course_id);
 }
 
 ?>
@@ -79,19 +79,14 @@ if(empty($selected_course)) {
 
                                                 <p><a href="edu_course_new.php?x=edit&id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Edit Course"><i class="fa fa-edit"></i> Edit Course</a></p>
                                                 <table class="table table-responsive table-striped table-bordered table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
+
                                                     <tbody>
-                                                        <tr><td>Author</td><td><?php echo $selected_course['admin_full_name']; ?></td></tr>
-                                                        <tr><td>Course Code</td><td><?php echo $selected_course['course_code']; ?></td></tr>
-                                                        <tr><td>Course Order</td><td><?php echo $selected_course['course_order']; ?></td></tr>
-                                                        <tr><td>Title</td><td><?php echo $selected_course['title']; ?></td></tr>
-                                                        <tr><td>Description</td><td><?php echo $selected_course['description']; ?></td></tr>
-                                                        <tr><td>Course Cost (&#8358;)</td><td><?php echo $selected_course['course_cost']; ?></td></tr>
+                                                        <tr><td><b>Author</b></td><td><?php echo $selected_course['admin_full_name']; ?></td></tr>
+                                                        <tr><td><b>Course Code</b></td><td><?php echo $selected_course['course_code']; ?></td></tr>
+                                                        <tr><td><b>Course Order</b></td><td><?php echo $selected_course['course_order']; ?></td></tr>
+                                                        <tr><td><b>Title</b></td><td><?php echo $selected_course['title']; ?></td></tr>
+                                                        <tr><td><b>Description</b></td><td><?php echo $selected_course['description']; ?></td></tr>
+                                                        <tr><td><b>Course Cost (&#8358;)</b></td><td><?php echo $selected_course['course_cost']; ?></td></tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -130,11 +125,13 @@ if(empty($selected_course)) {
                                                 <th>Title</th>
                                                 <th>Order</th>
                                                 <th>Exercise Count</th>
+                                                <th>Rating</th>
                                                 <th>Status</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <?php if(isset($course_lessons) && !empty($course_lessons)) { foreach ($course_lessons as $row) { ?>
+                                            <?php if(isset($course_lessons) && !empty($course_lessons)) { foreach ($course_lessons as $row)
+                                            {?>
                                                 <tr>
                                                     <td>
                                                         <div class="dropdown">
@@ -175,6 +172,21 @@ if(empty($selected_course)) {
                                                     <td><?php echo $row['title']; ?></td>
                                                     <td><?php echo $row['lesson_order']; ?></td>
                                                     <td><?php echo $db_handle->numRows("SELECT edu_lesson_exercise_id FROM edu_lesson_exercise WHERE lesson_id = {$row['edu_lesson_id']}"); ?></td>
+                                                    <?php
+                                                    $query = "SELECT * FROM edu_lesson_rating WHERE lesson_id = {$row['edu_lesson_id']} AND course_id = $course_id ";
+                                                    $result = $db_handle->runQuery($query);
+                                                    $result = $db_handle->fetchAssoc($result);
+                                                    $rating = array();
+                                                    foreach ($result as $row1)
+                                                    {
+                                                        $rating[] = $row1['rating'];
+                                                    }
+                                                    $rating = modes_of_array($rating);
+                                                    $ratings = array_sum($rating);
+                                                    $num_of_items = count($rating);
+                                                    $average_rating = $ratings / $num_of_items;
+                                                    ?>
+                                                    <td><?php echo lesson_rating(ceil($average_rating)); ?></td>
                                                     <td><?php echo status_edu_lesson($row['status']); ?></td>
 
                                                 </tr>

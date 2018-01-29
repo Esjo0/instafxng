@@ -1,0 +1,27 @@
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+ErrorDocument 404 /notfound.php
+
+Options -Indexes
+
+Options +FollowSymLinks
+
+IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
+
+<Limit GET POST>
+order deny,allow
+deny from all
+allow from all
+</Limit>
+<Limit PUT DELETE>
+order deny,allow
+deny from all
+</Limit>
+AuthName instafxng.com
+
+RewriteCond %{HTTP_HOST} ^instafxng\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.instafxng\.com$
+RewriteRule news1/id/(.*)/u/(.*)/ news1.php?id=$1&u=$2
+RewriteRule my_val/id/(.*)/ my_val.php?id=$1

@@ -93,6 +93,7 @@
             </div>
         </div>
         <br/>
+
         <form  data-toggle="validator" role="form" method="post" action="">
             <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
             <div class="form-group">
@@ -154,6 +155,7 @@
                 </div>
             </div>
         </form>
+
     </div>
 
     <div class="col-sm-6">

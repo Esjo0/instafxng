@@ -14,7 +14,8 @@ $query = "SELECT
            accounting_system_req_order.status AS status,
           CONCAT(admin.first_name, SPACE(1), admin.last_name) AS author_name
           FROM admin, accounting_system_req_order 
-          WHERE accounting_system_req_order.req_order_code = '$cash_out_code' 
+          WHERE accounting_system_req_order.req_order_code = '$cash_out_code'
+           AND admin.admin_code = accounting_system_req_order.author_code
           AND accounting_system_req_order.status = '2'
            AND accounting_system_req_order.payment_status = '1'LIMIT 1";
 $result = $db_handle->runQuery($query);

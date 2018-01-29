@@ -4,6 +4,37 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+
+// LOYALTY POINT ARCHIVING
+//$start_date = "2017-12-01";
+//$end_date = "2017-12-31";
+//
+//$query = "SELECT pr.month_rank, u.user_code, u.first_name AS full_name
+//      FROM point_ranking AS pr
+//      INNER JOIN user AS u ON pr.user_code = u.user_code
+//      ORDER BY pr.month_rank DESC, full_name ASC LIMIT 20";
+//
+//$result = $db_handle->runQuery($query);
+//$selected_loyalty = $db_handle->fetchAssoc($result);
+//
+//$count = 1;
+//if(isset($selected_loyalty) && !empty($selected_loyalty)) {
+//    foreach ($selected_loyalty as $row) {
+//
+//        $position = $count;
+//        $points = $row['month_rank'];
+//        $user_code = $row['user_code'];
+//
+//        $query = "INSERT INTO point_ranking_log (user_code, position, point_earned, type, start_date, end_date)
+//            VALUES ('$user_code', $position, $points, '1', '$start_date', '$end_date')";
+//
+//        $db_handle->runQuery($query);
+//
+//        $count++;
+//    }
+//}
+////END LOYALTY POINT ARCHIVING////
+
 //$query = "SELECT user_code FROM user_loyalty_log";
 //$result = $db_handle->runQuery($query);
 //$selected = $db_handle->fetchAssoc($result);
@@ -94,33 +125,33 @@ if (!$session_admin->is_logged_in()) {
 //$ifx_account_count = $fetched_data[0]['total_account'];
 //echo $ifx_account_count . "<br /><br />";
 
-$date_start = '2017-10-01';
-$date_end = '2017-10-24';
-
-$query = "SELECT SUM(ud.real_dollar_equivalent) AS total
-    FROM user_deposit AS ud
-    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-    INNER JOIN user AS u ON ui.user_code = u.user_code
-    INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
-    WHERE ud.status = '8' AND ftc.attendant = '1' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$date_start' AND '$date_end')
-    ";
-$result = $db_handle->runQuery($query);
-$total_result = $db_handle->fetchAssoc($result);
-
-var_dump($total_result);
-echo "<br /><br />";
-
-$query = "SELECT COUNT(ui.user_code) AS count
-    FROM user_deposit AS ud
-    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-    INNER JOIN user AS u ON ui.user_code = u.user_code
-    INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
-    WHERE ud.status = '8' AND ftc.attendant = '1' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$date_start' AND '$date_end')
-    GROUP BY ui.user_code";
-$result = $db_handle->runQuery($query);
-$total_count = $db_handle->fetchAssoc($result);
-
-var_dump($total_count);
+//$date_start = '2017-10-01';
+//$date_end = '2017-10-24';
+//
+//$query = "SELECT SUM(ud.real_dollar_equivalent) AS total
+//    FROM user_deposit AS ud
+//    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+//    INNER JOIN user AS u ON ui.user_code = u.user_code
+//    INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
+//    WHERE ud.status = '8' AND ftc.attendant = '1' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$date_start' AND '$date_end')
+//    ";
+//$result = $db_handle->runQuery($query);
+//$total_result = $db_handle->fetchAssoc($result);
+//
+//var_dump($total_result);
+//echo "<br /><br />";
+//
+//$query = "SELECT COUNT(ui.user_code) AS count
+//    FROM user_deposit AS ud
+//    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+//    INNER JOIN user AS u ON ui.user_code = u.user_code
+//    INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
+//    WHERE ud.status = '8' AND ftc.attendant = '1' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$date_start' AND '$date_end')
+//    GROUP BY ui.user_code";
+//$result = $db_handle->runQuery($query);
+//$total_count = $db_handle->fetchAssoc($result);
+//
+//var_dump($total_count);
 
 /////////////////////////////////////////////////////////////////
 

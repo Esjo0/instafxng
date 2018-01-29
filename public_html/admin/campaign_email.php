@@ -22,10 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         
         if($_POST['process'] == 'Save') {            
-            $new_campaign_email = $system_object->add_new_campaign_email($campaign_email_no, $subject, $campaign_category, $content, $_SESSION['admin_unique_code'], $campaign_email_status);
+            $new_campaign_email = $system_object->add_new_campaign_email($campaign_email_no, $sender, $subject, $campaign_category, $content, $_SESSION['admin_unique_code'], $campaign_email_status);
         } else {
             unset($campaign_email_no);
-            $new_campaign_email = $system_object->add_new_campaign_email($campaign_email_no, $subject, $campaign_category, $content, $_SESSION['admin_unique_code'], $campaign_email_status);
+            $new_campaign_email = $system_object->add_new_campaign_email($campaign_email_no, $sender, $subject, $campaign_category, $content, $_SESSION['admin_unique_code'], $campaign_email_status);
         }
         
         if($new_campaign_email) {
@@ -148,6 +148,18 @@ if($get_params['x'] == 'duplicate') {
                                 
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                     <input type="hidden" name="campaign_email_no" value="<?php if(isset($selected_campaign_email['campaign_email_id'])) { echo $selected_campaign_email['campaign_email_id']; } ?>" />
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="sender">Sender:</label>
+                                        <div class="col-sm-10">
+                                            <input list="sender_names" type="text" name="sender" class="form-control" id="sender" value="<?php if(isset($selected_campaign_email['sender'])) { echo $selected_campaign_email['sender']; } ?>" placeholder="Sender" required/>
+                                            <datalist id="sender_names">
+                                                <option value="Bunmi from InstaFxNg">
+                                                <option value="Mercy from InstaFxNg">
+                                                <option value="Demola from InstaFxNg">
+                                                <option value="InstaFxNg">
+                                            </datalist>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="subject">Subject:</label>
                                         <div class="col-sm-10">

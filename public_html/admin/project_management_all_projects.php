@@ -79,7 +79,7 @@ if(isset($_POST['new_comment']))
 
 
 
-$query = "SELECT * FROM project_management_projects WHERE status = 'IN PROGRESS' ORDER BY created DESC  ";
+$query = "SELECT * FROM project_management_projects WHERE status = '1' ORDER BY created DESC  ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -158,7 +158,7 @@ $projects = $db_handle->fetchAssoc($result);
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>PROJECTS</strong></h4>
+                            <h4><strong>ACTIVE PROJECTS</strong></h4>
                         </div>
                     </div>
                     
@@ -322,10 +322,9 @@ $projects = $db_handle->fetchAssoc($result);
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td><?php echo $row['created']; ?></td>
+                                                <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                 <td><?php echo $row['deadline']; ?></td>
-                                                <td><?php echo $row['status']; ?></td>
-
+                                                <td><?php echo project_management_status($row['status']) ; ?></td>
                                                     <?php
                                                     $executors = explode("," ,$row['executors']);
                                                     echo "<td>";

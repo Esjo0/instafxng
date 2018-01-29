@@ -18,8 +18,15 @@ if (isset($_POST['apply_filter'])) {
 
 if(isset($_SESSION['training_centre_filter']) && $_SESSION['training_centre_filter'] <> 'all') {
     $training_centre = $_SESSION['training_centre_filter'];
-    $query_add_1 = " AND training_centre = '$training_centre' ";
-    $query_add_2 = " WHERE training_centre = '$training_centre' ";
+
+    if($training_centre == '4') {
+        $query_add_1 = " AND campaign_period = '2' "; // Jan 2018 value is 2
+        $query_add_2 = " WHERE campaign_period = '2' ";
+    } else {
+        $query_add_1 = " AND training_centre = '$training_centre' ";
+        $query_add_2 = " WHERE training_centre = '$training_centre' ";
+    }
+
     $filter_on = true;
 }
 
@@ -170,12 +177,13 @@ $all_registrations = $db_handle->fetchAssoc($result);
 
                                 <form data-toggle="validator" class="form-inline" role="form" method="post" action="">
                                     <div class="form-group">
-                                        <label for="training_centre">Filter By Training Centre:</label>
+                                        <label for="training_centre">Filter By:</label>
                                         <select name="training_centre" class="form-control" id="training_centre" required>
                                             <option value="all"> All Centres</option>
                                             <option value="1" <?php if(isset($_SESSION['training_centre_filter']) && $_SESSION['training_centre_filter'] == '1') { echo "selected='selected'"; } ?>>Diamond Centre</option>
                                             <option value="2" <?php if(isset($_SESSION['training_centre_filter']) && $_SESSION['training_centre_filter'] == '2') { echo "selected='selected'"; } ?>>Lekki Centre</option>
                                             <option value="3" <?php if(isset($_SESSION['training_centre_filter']) && $_SESSION['training_centre_filter'] == '3') { echo "selected='selected'"; } ?>>Online Centre</option>
+                                            <option value="4" <?php if(isset($_SESSION['training_centre_filter']) && $_SESSION['training_centre_filter'] == '4') { echo "selected='selected'"; } ?>>Jan 2018 Campaign</option>
                                         </select>
                                     </div>
                                     <input name="apply_filter" type="submit" class="btn btn-primary" value="Apply Filter">

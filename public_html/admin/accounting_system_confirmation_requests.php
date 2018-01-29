@@ -144,11 +144,8 @@ $refunds = $db_handle->fetchAssoc($result);
         function show_chat(div)
         {
             var x = document.getElementById(div);
-            if (x.style.display === 'none') {
-                x.style.display = 'block';
-            } else {
-                x.style.display = 'none';
-            }
+            if (x.style.display === 'none') {x.style.display = 'block';}
+            else {x.style.display = 'none';}
         }
     </script>
 </head>

@@ -345,12 +345,23 @@ class clientOperation {
     public function confirm_bank_account($user_code) {
         global $db_handle;
 
-        $query = "SELECT status FROM user_bank WHERE user_code = '$user_code' LIMIT 1";
+        $query = "SELECT status FROM user_bank WHERE is_active = 1 AND user_code = '$user_code' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $bank_status = $fetched_data[0]['status'];
 
         return $bank_status == '2' ? true : false;
+    }
+
+    public function confirm_client_address($user_code) {
+        global $db_handle;
+
+        $query = "SELECT status FROM user_meta WHERE user_code = '$user_code' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $address_status = $fetched_data[0]['status'];
+
+        return $address_status == '2' ? true : false;
     }
 
     // set a new bank account
@@ -373,7 +384,7 @@ class clientOperation {
         $query = "SELECT bank_acct_name AS client_acct_name, bank_acct_no AS client_acct_no,
                 b.bank_name AS client_bank_name FROM user_bank AS ub
                 INNER JOIN bank AS b ON ub.bank_id = b.bank_id
-                WHERE ub.user_code = '$user_code' AND ub.status = '2' LIMIT 1";
+                WHERE ub.user_code = '$user_code' AND ub.status = '2' AND is_active = '1' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -402,7 +413,11 @@ class clientOperation {
     public function update_bank_account_status($user_bank_id, $bank_account_status) {
         global $db_handle;
 
-        $query = "UPDATE user_bank SET status = '$bank_account_status' WHERE user_bank_id = '$user_bank_id' LIMIT 1";
+        if($bank_account_status == '3') {
+            $query = "UPDATE user_bank SET status = '$bank_account_status', is_active = '2' WHERE user_bank_id = '$user_bank_id' LIMIT 1";
+        } else {
+            $query = "UPDATE user_bank SET status = '$bank_account_status' WHERE user_bank_id = '$user_bank_id' LIMIT 1";
+        }
         $db_handle->runQuery($query);
 
         return $db_handle->affectedRows() > 0 ? true : false;
@@ -414,7 +429,9 @@ class clientOperation {
         $query = "SELECT * FROM user_verification WHERE phone_status = '2' AND user_code = '$user_code' LIMIT 1";
         if($db_handle->numRows($query) > 0) { $level_one = true; }
 
-        $query = "SELECT * FROM user_credential  WHERE doc_status = '111' AND user_code = '$user_code' LIMIT 1";
+        $query = "SELECT * FROM user_credential AS uc
+            LEFT JOIN user_meta AS um ON uc.user_code = um.user_code
+            WHERE uc.doc_status = '111' AND um.status = '2' AND uc.user_code = '$user_code' LIMIT 1";
         if($db_handle->numRows($query) > 0) { $level_two = true; }
 
         $query = "SELECT * FROM user_bank WHERE is_active = '1' AND status = '2' AND user_code = '$user_code' LIMIT 1";
@@ -605,7 +622,7 @@ MAIL;
     public function get_deposit_transaction($trans_id) {
         global $db_handle;
 
-        $query = "SELECT ud.dollar_ordered, ud.naira_total_payable, ud.status, ud.created,
+        $query = "SELECT ud.dollar_ordered, ud.naira_total_payable, ud.status, ud.created, ud.client_pay_method,
                 ui.user_code, ui.ifx_acct_no, u.first_name, u.last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
                 u.phone, u.email
                 FROM user_deposit AS ud
@@ -620,13 +637,13 @@ MAIL;
         return $deposit_details ? $deposit_details : false;
     }
 
-    public function user_payment_notification($trans_id, $pay_method, $pay_date, $teller_no, $naira_amount, $comment = "") {
+    public function user_payment_notification($trans_id, $pay_date, $teller_no, $naira_amount, $comment = "") {
         global $db_handle;
 
         $transaction_detail = $this->get_deposit_transaction($trans_id);
 
         if($transaction_detail['status'] == 1) {
-            $query = "UPDATE user_deposit SET status = '2', client_pay_method = '$pay_method', client_pay_date = '$pay_date',
+            $query = "UPDATE user_deposit SET status = '2', client_pay_date = '$pay_date',
             client_reference = '$teller_no', client_naira_notified = '$naira_amount', client_comment = '$comment',
             client_notified_date = NOW() WHERE trans_id = '$trans_id' LIMIT 1";
 
@@ -707,11 +724,7 @@ MAIL;
 
         $status = $fetched_data[0]['status'];
 
-        if($status == '1') {
-            return true;
-        } else {
-            return false;
-        }
+        return $status == '1' ? true : false;
     }
     
     // Check whether an unverified user has not passed the allowed daily limit of 1
@@ -1034,6 +1047,67 @@ MAIL;
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
+    public function log_deposit_pay_method($trans_id, $pay_method) {
+        global $db_handle;
+
+        $query = "UPDATE user_deposit SET client_pay_method = '$pay_method' WHERE trans_id = '$trans_id' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    public function requery_webpay_deposit($trans_id) {
+        global $db_handle;
+
+        /***************** GTPAY REQUERY FEATURE **********************************/
+        $query = "SELECT naira_total_payable, status FROM user_deposit WHERE trans_id = '$trans_id' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $trans_detail = $fetched_data[0];
+
+        if(!empty($trans_detail)) {
+            $naira_total_payable = $trans_detail['naira_total_payable'];
+            $amount = $naira_total_payable * 100;
+
+            // GTPay hashing instruction using hash id provide by GTPay
+            $to_hash = "4745" . $trans_id . "804726DAB9A13B6A8BD1473A0EF6D9DA8D839DFADC9592D5AD3D0EC0A8E8866D927911F77C2B0162981068D0FA0BEEE27E29C4D02C4474583DCE385BE88CA7B8";
+            $hash_key = hash("SHA512", $to_hash);
+
+            $verifyResponse = file_get_contents('https://ibank.gtbank.com/GTPayService/gettransactionstatus.json?mertid=4745&amount=' . $amount . '&tranxid=' . $trans_id . '&hash=' . $hash_key);
+            $responseData = json_decode($verifyResponse);
+
+            if($responseData->ResponseCode == '00') {
+                $client_naira_notified = $responseData->Amount / 100;
+                $query = "UPDATE user_deposit SET client_naira_notified = '$client_naira_notified', client_pay_date = NOW(), client_notified_date = NOW(), status = '2' WHERE trans_id = '$trans_id' LIMIT 1";
+                $db_handle->runQuery($query);
+
+                $message_success = "The transaction ID: $trans_id was SUCCESSFUL on the GTPay platform and has been moved to Notified Deposit.";
+                $return_msg = array(
+                    'type' => 1,
+                    'resp' => $message_success
+                );
+
+                return $return_msg;
+            } else {
+                // Move Transaction to Failed if not already in failed
+                if($trans_detail['status'] != '9') {
+                    $query = "UPDATE user_deposit SET status = '9' WHERE trans_id = '$trans_id' LIMIT 1";
+                    $db_handle->runQuery($query);
+                }
+
+                $message_error = "The transaction ID: $trans_id was NOT SUCCESSFUL on the GTPay platform and would remain in Deposit Failed. <strong>GTPAY Response: " . $responseData->ResponseDescription . "</strong>";
+                $return_msg = array(
+                    'type' => 2,
+                    'resp' => $message_error
+                );
+
+                return $return_msg;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public function log_withdrawal($trans_id, $ifx_acc_id, $exchange, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, $phone_password) {
         global $db_handle;
 
@@ -1062,6 +1136,12 @@ MAIL;
 
             <p>Withdrawal Request Was Successfully Submitted - See the summary of your withdrawal below.
             Your Withdrawal will be processed and payment made within one business day.</p>
+
+            <p>In a few cases some requests fall outside the category of withdrawals we can process from
+            our office and has to be sent to InstaForex office. Withdrawal requests in this category can take
+            up to 3 Business days.</p>
+
+            <p>If your withdrawal request falls within this category, we will inform you immediately.</p>
 
             <p style="font-size: 1.3em; color: #AE0000;"><strong>NOTE: </strong>Your
             payment will be made based on the rate as at the time the fund is debited from your
@@ -2207,6 +2287,98 @@ MAIL;
         $system_object->send_email($subject, $message, $email_address, $first_name);
 
         return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    public function send_startup_bonus_training_mail($client_full_name, $client_email) {
+        global $system_object;
+
+        $subject = "[FREE TRAINING] You Need this to Make More Profit, [NAME]";
+        $body = <<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello $client_full_name,</p>
+
+            <p>Do you know that the Forex Market is the most liquid market in the world with
+            over 5 trillion dollars traded on a daily basis?</p>
+
+            <p>That's right! Forex trading is highly profitable; in fact, you can make more
+            money trading the Forex market and even gain financial freedom from it.</p>
+
+            <p>Some months back, you got the $500 Startup bonus from InstaForex. This way you
+            became a part of the money making team.</p>
+
+            <p>But is that the only thing you need to make consistent income from Forex trading?
+            Not at all!</p>
+
+            <p>To keep making sustainable profit from the Forex market, you need KNOWLEDGE!</p>
+            <p>You need to acquire adequate knowledge of the Forex market and understand how to
+            trade profitably in the Forex market.</p>
+
+            <p>Our Free Online Forex training is currently on at the moment and guess what? The
+            training is FREE (at least for now).</p>
+
+            <p>As soon as you're done with the online training, you will be able to place informed
+            trades and increase your chances of taking your slice of the 5.3 Billion Dollars from
+            the Forex market.</p>
+
+            <p style="text-align: center"><a href="http://bit.ly/2ffEeKl">Click Here to Start the Training Now.</a></p>
+
+            <p>[NAME], we are taking in just 50 people at this time, for this brand new Forex
+            Money Maker Course and I really want you to be one of them. The slots are filling
+            up very fast.</p>
+
+            <p>Please don't miss this. Go ahead and login to the training immediately to secure
+            your spot. Don’t worry you can take a break and continue later, as long as you have
+            started and your spot is secured.</p>
+
+            <p style="text-align: center"><a href="http://bit.ly/2ffEeKl">Click Here to Start the Training Now.</a></p>
+
+            <p>This will be your best shot at generating a healthy side income from forex trading.
+            Go ahead and make the move now.</p>
+
+
+            <br /><br />
+            <p>Best Regards,</p>
+            <p>Bunmi,</p>
+            <p>Clients Relations Manager,<br />
+                www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+        // Replace [NAME] with clients full name
+        $body = str_replace('[NAME]', $client_full_name, $body);
+        $subject = str_replace('[NAME]', $client_full_name, $subject);
+
+        return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
     }
 
 

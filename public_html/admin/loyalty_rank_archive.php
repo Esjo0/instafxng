@@ -9,6 +9,11 @@ $query = "SELECT start_date FROM point_ranking_log WHERE type = '1' GROUP BY sta
 $result = $db_handle->runQuery($query);
 $selected_months = $db_handle->fetchAssoc($result);
 
+// Select all the archived years
+$query = "SELECT start_date FROM point_ranking_log WHERE type = '2' GROUP BY start_date DESC";
+$result = $db_handle->runQuery($query);
+$selected_years = $db_handle->fetchAssoc($result);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +51,67 @@ $selected_months = $db_handle->fetchAssoc($result);
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
-                        <p>View Monthly Loyalty Ranks Archived. Top 5 ranks for each month are rewarded with the equivalent money prize</p>
+                        <h5>View Yearly Loyalty Ranks Archived</h5>
+                        <p>Top 10 ranks for each year are rewarded with the equivalent money prize</p>
+
+                        <div class="panel-group" id="accordion">
+                            <?php
+                            $count = 1;
+                            foreach ($selected_years as $row) {
+                                $start_date = $row['start_date'];
+                                ?>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse_year<?php echo $count; ?>">Top 20 Rank in 2017</a></h5>
+                                    </div>
+                                    <div id="collapse_year<?php echo $count; ?>" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div class="table-responsive mtl">
+                                                <table class="table table-striped table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Position</th>
+                                                        <th>Full Name</th>
+                                                        <th>Phone</th>
+                                                        <th>Rank Value</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    <?php
+                                                    $query = "SELECT prl.position, prl.point_earned, CONCAT(u.first_name, SPACE(1), u.last_name) AS full_name, u.phone, u.user_code
+                                                              FROM point_ranking_log AS prl
+                                                              INNER JOIN user AS u ON prl.user_code = u.user_code
+                                                              WHERE prl.start_date = '$start_date' AND prl.type = '2'
+                                                              ORDER BY prl.point_earned DESC LIMIT 20";
+
+                                                    $result = $db_handle->runQuery($query);
+                                                    $selected_loyalty = $db_handle->fetchAssoc($result);
+
+                                                    if(isset($selected_loyalty) && !empty($selected_loyalty)) {
+                                                        foreach ($selected_loyalty as $row) {
+                                                            ?>
+                                                            <tr>
+                                                                <td><?php echo $row['position']; ?></td>
+                                                                <td><?php echo $row['full_name']; ?></td>
+                                                                <td><?php echo $row['phone']; ?></td>
+                                                                <td><?php echo number_format(($row['point_earned']), 2, ".", ","); ?></td>
+                                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                                            </tr>
+                                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php $count++; } ?>
+                        </div>
+                        <hr />
+
+                        <h5>View Monthly Loyalty Ranks Archived.</h5>
+                        <p>Top 5 ranks for each month are rewarded with the equivalent money prize</p>
 
                         <div class="panel-group" id="accordion">
                             <?php
@@ -90,10 +155,10 @@ $selected_months = $db_handle->fetchAssoc($result);
                                                                 <td><?php echo $row['position']; ?></td>
                                                                 <td><?php echo $row['full_name']; ?></td>
                                                                 <td><?php echo $row['phone']; ?></td>
-                                                                <td><?php echo $row['point_earned']; ?></td>
+                                                                <td><?php echo number_format(($row['point_earned']), 2, ".", ","); ?></td>
                                                                 <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                                             </tr>
-                                                        <?php } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
