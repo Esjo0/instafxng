@@ -279,7 +279,7 @@ $all_states = $system_object->get_all_states();
 					<div class="col-md-6 welcome-w3left">
 						<h3>Need Some Extra Cash?</h3>
 						<!--<h4>Sit at the comfort of your home or office and make over $20 day!</h4>-->
-						<p class="text-justify">Could you use an extra $20 every day? $100 every week? Or even $400 every month?</p>
+						<!--<p class="text-justify">Could you use an extra $20 every day? $100 every week? Or even $400 every month?</p>-->
 						<p class="text-justify">Are you used to spending hours, surfing the Internet, looking for a particular business
 							which you can do alongside your business or 9-5 job?</p>
 						<p class="text-justify">If so, you are one of the many people who would benefit from Forex Trading.</p>
@@ -356,110 +356,7 @@ $all_states = $system_object->get_all_states();
 				</div>
 		</div>
 		</div>
-		<!--//services-->
-		<!-- agents -->
-		<!--<div class="jarallax w3ls-section team1" id="agents">
-			<div class="container">
-				<div class="w3-heading-all">
-					<h3><span>A</span>gents</h3>
-				</div>
-				<div id="team" class="team">
-				<div class="team-info">
-					<div class="col-md-4 team-grids">
-						<img class="img-responsive" src="images/tm1.jpg" alt="">
-						<div class="agileits-captn">
-							<div class="social-icons">
-								<ul>
-									<li><a href="#" class="fa fa-facebook icon-border facebook"> </a></li>
-									<li><a href="#" class="fa fa-twitter icon-border twitter"> </a></li>
-									<li><a href="#" class="fa fa-google-plus icon-border googleplus"> </a></li>
-									<li><a href="#" class="fa fa-rss icon-border rss"> </a></li>
-								</ul>
-							</div>
-						</div>
-						<h4>pulvinar</h4>
-						<p>Aenean pulvinar ac enimet</p>
-					</div>
-					<div class="col-md-4 team-grids">
-						<img class="img-responsive" src="images/tm2.jpg" alt="">
-						<div class="agileits-captn">
-							<div class="social-icons">
-								<ul>
-									<li><a href="#" class="fa fa-facebook icon-border facebook"> </a></li>
-									<li><a href="#" class="fa fa-twitter icon-border twitter"> </a></li>
-									<li><a href="#" class="fa fa-google-plus icon-border googleplus"> </a></li>
-									<li><a href="#" class="fa fa-rss icon-border rss"> </a></li>
-								</ul>
-							</div>
-						</div>
-						<h4>Enimet</h4>
-						<p>Aenean pulvinar ac enimet</p>
-					</div>
-					<div class="col-md-4 team-grids">
-						<img class="img-responsive" src="images/tm3.jpg" alt="">
-						<div class="agileits-captn">
-							<div class="social-icons">
-								<ul>
-									<li><a href="#" class="fa fa-facebook icon-border facebook"> </a></li>
-									<li><a href="#" class="fa fa-twitter icon-border twitter"> </a></li>
-									<li><a href="#" class="fa fa-google-plus icon-border googleplus"> </a></li>
-									<li><a href="#" class="fa fa-rss icon-border rss"> </a></li>
-								</ul>
-							</div>
-						</div>
-						<h4>Tincidun</h4>
-						<p>Aenean pulvinar ac enimet</p>
-					</div>
-					<div class="col-md-4 team-grids">
-						<img class="img-responsive" src="images/tm4.jpg" alt="">
-						<div class="agileits-captn">
-							<div class="social-icons">
-								<ul>
-									<li><a href="#" class="fa fa-facebook icon-border facebook"> </a></li>
-									<li><a href="#" class="fa fa-twitter icon-border twitter"> </a></li>
-									<li><a href="#" class="fa fa-google-plus icon-border googleplus"> </a></li>
-									<li><a href="#" class="fa fa-rss icon-border rss"> </a></li>
-								</ul>
-							</div>
-						</div>
-						<h4>Inaren</h4>
-						<p>Aenean pulvinar ac enimet</p>
-					</div>
-				<div class="clearfix"></div>
-			</div>
-		 </div>
-		</div>
-		</div>-->
-		<!-- //agents -->
-		<!-- Counter -->
-		<!--<div class="stats">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-3 col-sm-3 stats-grid stats-grid-1 gridw3">
-						<i class="fa fa-smile-o" aria-hidden="true"></i>
-						<div class="numscroller" data-slno='1' data-min='0' data-max='158' data-delay='3' data-increment="1">85</div>
-						<h4>Happy Customers</h4>
-					</div>
-					<div class="col-md-3 col-sm-3 stats-grid stats-grid-2 gridw3">
-						<i class="fa fa-trophy" aria-hidden="true"></i>
-						<div class="numscroller" data-slno='1' data-min='0' data-max='63' data-delay='3' data-increment="1">95</div>
-						<h4>Awards </h4>
-					</div>
-					<div class="col-md-3 col-sm-3 stats-grid stats-grid-3 gridw3">
-						<i class="fa fa-laptop" aria-hidden="true"></i>
-						<div class="numscroller" data-slno='1' data-min='0' data-max='421' data-delay='3' data-increment="1">80</div>
-						<h4>collabaration</h4>
-					</div>
-					<div class="col-md-3 col-sm-3 stats-grid stats-grid-4 gridw3">
-						<i class="fa fa-users" aria-hidden="true"></i>
-						<div class="numscroller" data-slno='1' data-min='0' data-max='562' data-delay='3' data-increment="1">90</div>
-						<h4>Members</h4>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-			</div>
-		</div>-->
-		<!-- //Counter -->
+
 		<!-- testimonials -->
 			<div class="testimonials" id="testimonials">
 				<div class="container">
@@ -514,7 +411,7 @@ $all_states = $system_object->get_all_states();
 							 <div class="agileits_testimonial_grid">
 								 <div class="w3l_testimonial_grid">
 									 <p class="text-justify">The online training is so informative, the tone is funny, simple and easy to follow.
-										 I had a great time taking the course./p>
+										 I had a great time taking the course.</p>
 									 <h4>Emmanuel Audu</h4>
 									 <h5>Software Engineer</h5>
 									 <div class="readmore-w3-about col-lg-12">
