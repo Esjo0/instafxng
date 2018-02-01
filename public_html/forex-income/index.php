@@ -102,24 +102,24 @@ $all_states = $system_object->get_all_states();
 		<link href="//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i" rel="stylesheet">
 		<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
 		<!-- Facebook Pixel Code -->
-		<script>
-			!function(f,b,e,v,n,t,s)
-			{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-				n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-				if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-				n.queue=[];t=b.createElement(e);t.async=!0;
-				t.src=v;s=b.getElementsByTagName(e)[0];
-				s.parentNode.insertBefore(t,s)}(window,document,'script',
-				'https://connect.facebook.net/en_US/fbevents.js');
-			fbq('init', '859859360822977');
-			fbq('track', 'CompleteRegistration');
-		</script>
-		<noscript>
-			<img height="1" width="1"
-				 src="https://www.facebook.com/tr?id=859859360822977&ev=CompleteRegistration
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+ fbq('init', '177357696206919'); 
+fbq('track', 'PageView');
+</script>
+<noscript>
+ <img height="1" width="1" 
+src="https://www.facebook.com/tr?id=177357696206919&ev=PageView
 &noscript=1"/>
-		</noscript>
-		<!-- End Facebook Pixel Code -->
+</noscript>
+<!-- End Facebook Pixel Code -->
 	</head>
 	<body>
 		<div class="header fixed-top">
