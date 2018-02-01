@@ -11,8 +11,9 @@ if (isset($_POST['saldo_report'])) {
     
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
+    $trans_type = $_POST['trans_type'];
 
-    $saldo = $system_object->get_saldo_report($from_date, $to_date);
+    $saldo = $system_object->get_saldo_report($from_date, $to_date, $trans_type);
     
     $total_deposit = number_format($saldo['deposit'], 2, ".", ",");
     $total_deposit_dollar = number_format($saldo['deposit_dollar'], 2, ".", ",");
@@ -23,6 +24,13 @@ if (isset($_POST['saldo_report'])) {
 
     $deposit_avg = number_format($saldo['deposit_avg'], 2, ".", ",");
     $withdrawal_avg = number_format($saldo['withdrawal_avg'], 2, ".", ",");
+
+    switch ($saldo['category']) {
+        case 'all': $trans_category = "All Transactions"; break;
+        case '1': $trans_category = "ILPR Transactions"; break;
+        case '2': $trans_category = "NON - ILPR Transactions"; break;
+        default: $trans_category = "Unknown"; break;
+    }
 }
 
 ?>
@@ -86,6 +94,16 @@ if (isset($_POST['saldo_report'])) {
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="control-label col-sm-3" for="trans_type">Transaction Category:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <select name="trans_type" class="form-control" id="trans_type">
+                                                <option value="all" selected>All Transactions</option>
+                                                <option value="1">ILPR Transactions</option>
+                                                <option value="2">Non-ILPR Transactions</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9"><input name="saldo_report" type="submit" class="btn btn-success" value="Calculate" /></div>
                                     </div>
                                     <script type="text/javascript">
@@ -101,7 +119,9 @@ if (isset($_POST['saldo_report'])) {
                                 <?php if(isset($saldo_calculated)) { ?>
                                     <h5>Saldo Report from <strong><?php echo date('d-M-Y', strtotime($from_date)); ?></strong> to <strong><?php echo date('d-M-Y', strtotime($to_date)); ?></strong></h5>
                                     <p><strong>Average Deposit Rate:</strong> &dollar; <br />
-                                        <strong>Average Withdrawal Rate:</strong> &dollar; </p>
+                                        <strong>Average Withdrawal Rate:</strong> &dollar; <br />
+                                        <strong>Selected Category: </strong> <?php echo $trans_category; ?>
+                                    </p>
 
                                     <table class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>

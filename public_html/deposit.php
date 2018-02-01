@@ -8,19 +8,12 @@ $additional_msg = $get_params['x'];
 if($additional_msg == 'msg')
 {
     $special_msg = <<<msg
-        <p>Funding your InstaForex Account is Fast and Easy!</p>
-
-        <p>You stand to enjoy amazing benefits whenever you make a deposit into your
-        InstaForex account and trade with it. A lot of successful traders are making
-        consistent income trading Forex. You can be one too.</p>
-
-        <p>When you fund your account, you will be funded at a deeply discounted rate.</p>
-
-        <p>That's not all!</p>
-
-        <p>Funding and trading your InstaForex account also makes you stand a chance to be
-        amongst 10 traders who will win Cash Prizes for trading actively in the ongoing
-        InstaFxNg Loyalty Points Promo.</p>
+        <p>To get more, you need to do more!</p>
+        <p>Funding your Instaforex account and trading actively increases your loyalty points
+        and qualifies you for the monthly reward of $500.</p>
+        <p>To be one of the 5 traders to get $500 in February, you need to start earning points
+        early!</p>
+        <p>Let's Get you Started</p>
         <br />
 msg;
 }
