@@ -54,7 +54,7 @@ if(isset($_GET['s']) && $_GET['s'] == 1) {
                                     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>
                                         <strong>Lekki Office Address</strong><br>
                                         Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos, Nigeria.<br>
-                                        <strong>Support Phones:</strong> 07081036115, 08083956750
+                                        <strong>Support Phones:</strong> 08139250268, 08083956750
                                     </li>
                                 </ul>
                                 <h5>Kindly fill the form below to contact us</h5>
