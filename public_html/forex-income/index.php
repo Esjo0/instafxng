@@ -46,9 +46,7 @@ if (isset($_POST['submit']))
 		$query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, campaign_period) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '2')";
 		$result = $db_handle->runQuery($query);
 		$inserted_id = $db_handle->insertedId();
-
-		if($result) {
-
+		if($result){
 			$assigned_account_officer = $system_object->next_account_officer();
 
 			$query = "UPDATE free_training_campaign SET attendant = $assigned_account_officer WHERE free_training_campaign_id = $inserted_id LIMIT 1";
@@ -75,7 +73,7 @@ if (isset($_POST['submit']))
 				$client_operation->log_academy_first_login($user_ifx_details['client_first_name'], $user_ifx_details['client_email'], $user_ifx_details['client_user_code']);
 			}
 
-			redirect_to('../forex-income-2018/thank-you/thank-you.php');
+			redirect_to('thank-you/thank-you.php');
 		} else {
 			$message_error = "An error occurred, please try again.";
 		}
@@ -132,9 +130,6 @@ src="https://www.facebook.com/tr?id=177357696206919&ev=PageView
 							</div>
 							<!-- navbar-header -->
 							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-								<!--<ul class="nav navbar-nav navbar-right">
-									<li><a href="#" class="scroll">Get Started</a>
-								</ul>-->
 							</div>
 							<div class="clearfix"> </div>
 				</nav>
@@ -163,53 +158,12 @@ src="https://www.facebook.com/tr?id=177357696206919&ev=PageView
 							</div>
 						</div>
 					</li>
-					<!--<li>
-						<div class="w3layouts-banner-top">
-							<div class="banner-dott">
-							<div class="container">
-								<div class="slider-info">
-									<div class="col-md-8 slider-info-txt">
-										<h3>credit card processing services</h3>
-										<div class="w3ls-button">
-											<a href="#" data-toggle="modal" data-target="#myModal">More About Our Bank</a>
-										</div>
-
-									</div>
-									<div class="col-md-4">
-
-									</div>
-								</div>
-							</div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="w3layouts-banner-top w3layouts-banner-top3">
-							<div class="banner-dott">
-							<div class="container">
-								<div class="slider-info">
-									<div class="col-md-8 slider-info-txt">
-										<h3>Services for all your customer needs</h3>
-
-										<div class="w3ls-button">
-											<a href="#" data-toggle="modal" data-target="#myModal">More About Our Bank</a>
-										</div>
-
-									</div>
-									<div class="col-md-4">
-
-									</div>
-								</div>
-							</div>
-							</div>
-						</div>
-					</li>-->
 				</ul>
 			</div>
 			<div class="clearfix"></div>
 			<div id="reg_form" class="main add">
 					<h2>Get Started For Free</h2>
-				<form  data-toggle="validator" class="form-horizontal" role="form" method="post" action="/training-2018/">
+				<form  data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
 					<div class="form-group">
 						<div class="col-sm-12"><input name="full_name" placeholder="Full Name" type="text" class="form-control" id="full_name" maxlength="120" required></div>
 					</div>
@@ -242,7 +196,7 @@ src="https://www.facebook.com/tr?id=177357696206919&ev=PageView
 						<div class="modal-body">
 							<div style="padding: 10px">
 							<h2>Get Started For Free</h2>
-							<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="/training-2018/">
+							<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
 									<div class="form-group">
 										<div class="col-sm-12"><input name="full_name" placeholder="Full Name" type="text" class="form-control"  maxlength="120" required></div>
 									</div>
