@@ -31,12 +31,12 @@ if (isset($_POST['process'])) {
 
         if($new_bulletin)
         {
-            $message_main = '<p style="font-size: small">Bulletin Title: '.$title."<br/>";
-            $message_main .= 'Author : '.$admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']) ."<br/>";
-            $message_main .= 'Visit the <a href="bulletin_centre.php">Bulletin Centre</a> to read more.</p>';
+            $author .= 'Author : '.$admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']) ."<br/>";
+
             $recipients = $all_allowed_admin;
             $type = '3';
-            $obj_push_notification->add_new_notification($message_main, $recipients, $type);
+            //($title, $message, $recipients, $author, $notification_type, $source_url)
+            $obj_push_notification->add_new_notification("New Buletin Message - ".$title, "Click the home button above to view this message.", $recipients, $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']), $type, "bulletin_centre.php");
             $message_success = "You have successfully saved the bulletin";
         }
         else
