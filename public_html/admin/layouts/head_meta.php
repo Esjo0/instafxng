@@ -1,4 +1,4 @@
-        <base href="https://instafxng.com/admin/" />
+        <!--<base href="https://instafxng.com/admin/" />-->
         <meta http-equiv="Content-Language" content="en" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="author" content="Instant Web-Net Technologies Limited" />
@@ -14,21 +14,16 @@
         <link href="../css/bootstrap-datetimepicker.css" rel="stylesheet">
         <script src="../js/jquery_2.1.1.min.js"></script>
         <script src="../js/bootstrap_3.3.5.min.js"></script>
-
         <!--        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
         <!--        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">-->
         <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
         <!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
         <!--        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-
-
         <script src="../js/ie10-viewport-bug-workaround.js"></script>
         <script src="../js/validator.min.js"></script>
         <script src="../js/npm.js"></script>
         <script src="../js/Chart.min.js"></script>
         <script src="../js/instafx_admin.js"></script>
-
-
         <!-- NOTIFICATION CSS -->
         <style>
                 .modal.fade .modal-dialog
@@ -62,3 +57,14 @@
                 }
         </style>
         <!-- NOTIFICATION CSS -->
+        <script src="../../app_assets/class_push_notification.js"></script>
+        <script src="//code.createjs.com/soundjs-0.6.2.min.js"></script>
+        <script>
+                function playSound(){ var audio = new Audio('../sounds/plucky.mp3'); audio.play();}
+                $(document).ready(function()
+                {
+                        push_notifications.count_notifications();
+                        setInterval(function(){push_notifications.load_last_notification();}, 5000);//TODO: Fix this back to 5000
+                        push_notifications.count_notifications();
+                });
+        </script>

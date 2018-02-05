@@ -13,7 +13,7 @@ class Push_Notification_System
     public function get_notifications()
     {
         global $db_handle;
-        $query = "SELECT * FROM push_notifications ORDER BY created DESC ";
+        $query = "SELECT * FROM push_notifications_01 ORDER BY created DESC ";
         $result = $db_handle->runQuery($query);
         $result = $db_handle->fetchAssoc($result);
             return $result;
