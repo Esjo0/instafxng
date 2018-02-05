@@ -18,7 +18,12 @@ if (isset($_POST['notify'])) {
     $payment_notified = $education_object->submit_payment_notification($transaction_no, $pay_date, $naira_amount);
 
     if ($payment_notified) {
-        $message_success = "You have successfully submitted deposit notification.";
+        $message_success = <<<MSG
+<p>Payment Notification submitted.</p>
+<p>Your payment will be confirmed and your order will be treated shortly.</p>
+<p>Please note that your order will be completed within 5-30 minutes.</p>
+<p>Your order will be completed as soon your payment is received.</p>
+MSG;
     } else {
         $message_error = "An error occurred, looks like you have already notified or the transaction does not exist.";
     }
