@@ -22,10 +22,10 @@ class Push_Notification_System
     public function update_notification_as_old($notification_id)
     {
         global $db_handle;
-        $query = "UPDATE push_notifications_01 SET status = '1' WHERE notification = '$notification_id' ";
+        $query = "UPDATE push_notifications_01 SET status = '1' WHERE notification_id = '$notification_id' ";
         $result = $db_handle->runQuery($query);
         $result = $db_handle->fetchAssoc($result);
-        return $result;
+        return $result ? true : false;
     }
 
     public function dismiss_notification($admin_code, $notification_id)

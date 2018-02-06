@@ -21,14 +21,10 @@ $notifications = $obj_push_notification->get_notifications();
         {
             ?>
             <div onclick="$('#view_<?php echo $row['notification_id'] ?>').modal('show');" class="alert <?php if($row['status'] == "0"){echo 'alert-success';}else{echo 'alert-info';}?>">
-                <a href="#" onclick="dismiss_notification('<?php echo $row['notification_id']; ?>')" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <!--<a href="#" onclick="dismiss_notification('<?php /*echo $row['notification_id']; */?>')" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
                 <strong><?php echo $row['title'] ?></strong>
                 <p style="font-size: x-small !important;" class="text-sm-left text-muted"><?php echo datetime_to_text2($row['created']) ?></p>
-                <?php if($row['status'] == "0"){?>
-                    <script >
-                        playSound();
-                    </script>
-                <?php $update = $obj_push_notification->update_notification_as_old($row['notification_id']);} ?>
+                <?php if($row['status'] == "0"){ $update = $obj_push_notification->update_notification_as_old($row['notification_id']); var_dump($update);} ?>
             </div>
             <?php
         }

@@ -20,6 +20,8 @@ function Push_Notifications()
         this.ajax_request('list_content', '', '1');
         this.ajax_request('content', '', '2');
         this.count_notifications();
+        this.playSound();
+        this.new_notification_alert();
     };
 
     this.ajax_request = function(response_div, query, type)
@@ -36,7 +38,9 @@ function Push_Notifications()
             {
                 if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
                 {
-                    document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;
+                    if(response_div == 'content'){document.getElementById(response_div).innerHTML += XMLHttpRequestObject.responseText;}
+                    else{document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;}
+
                 }
             };
         }
@@ -48,6 +52,16 @@ function Push_Notifications()
         var type = '0';
         XMLHttpRequestObject.send("type=" + type + "&notification_id=" + notification_id);
         count_notifications();
+    };
+
+    this.playSound = function(){ var audio = new Audio('https://localhost/instafxngwebsite_master/public_html/sounds/plucky.mp3');  audio.play();};
+    this.new_notification_alert = function()
+    {
+        var slides = document.getElementById("list_content").getElementsByClassName("alert-success");
+        for(var i = 0; i < slides.length; i++)
+        {
+            this.playSound();
+        }
     };
 }
 var push_notifications = new Push_Notifications();
