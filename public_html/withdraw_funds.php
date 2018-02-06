@@ -166,11 +166,18 @@ if(isset($_POST['withdraw_funds_qty'])) {
 
             if($log_withdrawal) {
                 $client_operation->send_withdrawal_invoice($client_full_name, $client_email, $trans_id, $account_no, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, $client_bank_name, $client_acct_name, $client_acct_no);
-                $title = "New Withdrawal Support Request";
-                $message = $comment;
-                $recipients = $obj_push_notification->get_recipients_by_access(64);
-                $author = $_SESSION['client_first_name']." ".$_SESSION['client_last_name'];
-                $source_url = "https://instafxng.com/admin/edu_support_ticket.php";
+                $title = "New Withdrawal Notification";
+                $message = "Transaction ID: $trans_id <br/>
+                            Client Name: $client_full_name <br/>
+                            Client Email: $client_email <br/>
+                            Account No: $account_no <br/>
+                            Amount : N $total_withdrawal_payable <br/>
+                            Client Bank Name: $client_bank_name <br/>
+                            Client Account Name: $client_acct_name <br/>
+                            Client Account No: $client_acct_no <br/>";
+                $recipients = $obj_push_notification->get_recipients_by_access(41);
+                $author = $client_full_name;
+                $source_url = "https://instafxng.com/admin/withdrawal_initiated.php";
                 $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
 
 
