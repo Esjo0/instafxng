@@ -2,10 +2,10 @@
 
 class Push_Notification_System
 {
-    public function add_new_notification($title, $message, $recipients, $author, $notification_type, $source_url)
+    public function add_new_notification($title, $message, $recipients, $author, $source_url)
     {
         global $db_handle;
-        $query = "INSERT INTO push_notifications (title, message, recipients, author, notification_type, source_url) VALUES ('$title', '$message', '$recipients','$author', '$notification_type', '$source_url')";
+        $query = "INSERT INTO push_notifications (title, message, recipients, author, source_url) VALUES ('$title', '$message', '$recipients','$author', '$source_url')";
         $result = $db_handle->runQuery($query);
         return $result ? true : false;
     }
@@ -48,6 +48,24 @@ class Push_Notification_System
         $index = array_search($item, $array);
         if ( $index !== false ) {unset( $array[$index] );}
         return $array;
+    }
+
+    public function get_recipients_by_access($access_id)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM admin_privilege ";
+        $result = $db_handle->runQuery($query);
+        $result = $db_handle->fetchAssoc($result);
+        $recipients = '';
+        foreach ($result as $row)
+        {
+            $access = explode(',', $row['allowed_pages']);
+            if(in_array($access_id, $access))
+            {
+                $recipients.= $row['admin_code'].',';
+            }
+        }
+        return $recipients;
     }
 }
 
