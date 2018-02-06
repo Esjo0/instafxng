@@ -164,7 +164,8 @@ MAIL;
                             <div class="col-sm-6">
                                 <h3 style="margin: 0;">Make 2018 a Memorable One</h3>
                                 <p style="margin-top: 0">
-                                    Join us on Saturday 13th of January, 2018 as we discuss simple winning strategies you need to use in order to make consistent profits this year. Time: 12 - 2pm.<br />
+                                    Join us on Saturday 10th of February, 2018 as we examine how to trade Forex News profitably.
+                                    Time: 12 - 2pm.<br />
                                     <strong>Reserve your seat below to stand a chance to win $20.</strong>
                                 </p>
                             </div>
