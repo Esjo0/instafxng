@@ -161,7 +161,7 @@ MAIL;
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Make 2018 a Memorable One</h3>
+                                <h3 style="margin: 0;">How to Trade Forex Profitably</h3>
                                 <p style="margin-top: 0">
                                     Join us on Saturday 10th of February, 2018 as we examine how to trade Forex News profitably.
                                     Time: 12 - 2pm.<br />
@@ -169,7 +169,7 @@ MAIL;
                                 </p>
                             </div>
                             <div class="col-sm-6">
-                                <img src="images/Traders_Forum.png" alt="" class="img-responsive" />
+                                <img src="images/Traders_Forum.jpg" alt="" class="img-responsive" />
                             </div>
                         </div>
                     </div>
