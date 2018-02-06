@@ -76,8 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
-            <p>At the Forum this month, we will discuss simple winning strategies you need to use
-            in order to make consistent profits this year.</p>
+            <p>At the Forum this month, we will examine how to trade Forex News profitably.</p>
 
             <p>You will also have the opportunity of meeting other Forex traders and you
             could be one of two lucky winners to win $20 trading bonus. Isn’t that cool?</p>
@@ -85,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: 13th of January, 2018<br /><br />
+            Date: 10th of February, 2018<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -164,12 +163,13 @@ MAIL;
                             <div class="col-sm-6">
                                 <h3 style="margin: 0;">Make 2018 a Memorable One</h3>
                                 <p style="margin-top: 0">
-                                    Join us on Saturday 13th of January, 2018 as we discuss simple winning strategies you need to use in order to make consistent profits this year. Time: 12 - 2pm.<br />
+                                    Join us on Saturday 10th of February, 2018 as we examine how to trade Forex News profitably.
+                                    Time: 12 - 2pm.<br />
                                     <strong>Reserve your seat below to stand a chance to win $20.</strong>
                                 </p>
                             </div>
                             <div class="col-sm-6">
-                                <img src="https://instafxng.com/images/forex-traders-forum-smart-investors.jpg" alt="" class="img-responsive" />
+                                <img src="images/Traders_Forum.png" alt="" class="img-responsive" />
                             </div>
                         </div>
                     </div>
