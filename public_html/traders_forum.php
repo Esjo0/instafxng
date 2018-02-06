@@ -170,7 +170,7 @@ MAIL;
                                 </p>
                             </div>
                             <div class="col-sm-6">
-                                <img src="https://instafxng.com/images/forex-traders-forum-smart-investors.jpg" alt="" class="img-responsive" />
+                                <img src="images/Traders_Forum.png" alt="" class="img-responsive" />
                             </div>
                         </div>
                     </div>
