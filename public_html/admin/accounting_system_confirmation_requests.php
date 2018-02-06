@@ -20,6 +20,8 @@ if(isset($_POST['approve']))
     {
         $ticket_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM accounting_system_req_order WHERE req_order_code = '$req_order_code' "))[0];
 
+        $_order_Reviewer = $admin_object->get_admin_name_by_code($admin_code);
+        $_order_author = $admin_object->get_admin_name_by_code($ticket_details['author_code']);
         $_order_location = $db_handle->fetchAssoc($db_handle->runQuery("SELECT location FROM accounting_system_office_locations WHERE location_id = '".$ticket_details['location']."' "))[0];
         $_order_created = datetime_to_text2($ticket_details['created']);
         $_order_total = $ticket_details['req_order_total'];
@@ -31,11 +33,11 @@ if(isset($_POST['approve']))
                             <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>Reviewer's Name: $_author_name</p>
-                                <p>Reviewer's Remark: $ip_address</p>
+                                <p>Reviewer's Name: $_order_Reviewer</p>
+                                <p>Reviewer's Remark: $comment</p>
                                 <br/>
-                                <p>Author's Name: $_full_name</p>
-                                <p>Requisition location: $_phone</p>
+                                <p>Author's Name: $_order_author</p>
+                                <p>Requisition location: $_order_location</p>
                                 <p>Date: $_order_created</p>
                                 <p>Amount: $_order_total</p>
                                 <br/>

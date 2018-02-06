@@ -166,6 +166,14 @@ if(isset($_POST['withdraw_funds_qty'])) {
 
             if($log_withdrawal) {
                 $client_operation->send_withdrawal_invoice($client_full_name, $client_email, $trans_id, $account_no, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, $client_bank_name, $client_acct_name, $client_acct_no);
+                $title = "New Withdrawal Support Request";
+                $message = $comment;
+                $recipients = $obj_push_notification->get_recipients_by_access(64);
+                $author = $_SESSION['client_first_name']." ".$_SESSION['client_last_name'];
+                $source_url = "https://instafxng.com/admin/edu_support_ticket.php";
+                $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
+
+
                 $message_success = "<p>Withdrawal Request Submitted - See the summary of your withdrawal below. Your Withdrawal will
                                     be processed and payment made within one business day.</p>
                                     <p>In a few cases some requests fall outside the category of withdrawals we can process from
