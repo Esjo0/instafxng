@@ -3,7 +3,7 @@
 class InstafxngSystem {
     
     // function to send SMTP emails
-    public function send_email($subject, $message, $sendto_email, $sendto_name, $from_name, $attachment = '') {
+    public function send_email($subject, $message, $sendto_email, $sendto_name, $from_name = '', $attachment = '') {
         
         //PHPMailer Object
         $mail = new PHPMailer;

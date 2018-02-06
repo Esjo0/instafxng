@@ -51,12 +51,12 @@ if(isset($_POST['course_payment_summary'])) {
 
     switch ($pay_type) {
         case '1':
-            $education_object->log_course_deposit($_SESSION['client_unique_code'], $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit);
+            $education_object->log_course_deposit($_SESSION['client_unique_code'], $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
             $page_requested = "course_payment_pay_type_card_php";
             break;
         default :
             $card_processing = 0;
-            $education_object->log_course_deposit($_SESSION['client_unique_code'], $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit);
+            $education_object->log_course_deposit($_SESSION['client_unique_code'], $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
             $page_requested = "course_payment_pay_type_bank_php";
     }
 }
