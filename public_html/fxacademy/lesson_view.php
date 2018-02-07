@@ -37,6 +37,13 @@ if (isset($_POST['submit_question'])) {
     $question_submitted = $education_object->set_lesson_support_request($course_id, $course_lesson_id, $comment, $_SESSION['client_unique_code'], $_SESSION['client_first_name'], $_SESSION['client_email']);
 
     if($question_submitted) {
+        $title = "New FxAcademy Support Request";
+        $message = $comment;
+        $recipients = $obj_push_notification->get_recipients_by_access(64);
+        $author = $_SESSION['client_first_name']." ".$_SESSION['client_last_name'];
+        $source_url = "https://instafxng.com/admin/edu_support_ticket.php";
+        $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
+
         $message_success = "Your support request has been submitted successfully, your Instructor will respond soon.
                     Go to <a href='fxacademy/support_message.php'>Support Message</a> to follow responses on all your support request.";
 

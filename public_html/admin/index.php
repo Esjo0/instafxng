@@ -40,7 +40,6 @@ $total_expired_point = $obj_loyalty_point->total_expired_point();
 $total_expired_point_dollar_amount = $total_expired_point * DOLLAR_PER_POINT;
 
 $failed_sms_code = $system_object->get_failed_sms_code();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,8 +51,9 @@ $failed_sms_code = $system_object->get_failed_sms_code();
         <meta name="title" content="Instaforex Nigeria | Admin" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
-        <?php require_once 'layouts/head_meta.php'; ?>
+        <?php  require_once 'layouts/head_meta.php'; ?>
         <?php require_once 'hr_attendance_system.php'; ?>
+
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>

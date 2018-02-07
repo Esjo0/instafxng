@@ -31,12 +31,24 @@ if (isset($_POST['process'])) {
 
         if($new_bulletin)
         {
-            $message_main = '<p style="font-size: small">Bulletin Title: '.$title."<br/>";
-            $message_main .= 'Author : '.$admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']) ."<br/>";
-            $message_main .= 'Visit the <a href="bulletin_centre.php">Bulletin Centre</a> to read more.</p>';
-            $recipients = $all_allowed_admin;
-            $type = '3';
-            $obj_push_notification->add_new_notification($message_main, $recipients, $type);
+            if($bulletin_status == '1')
+            {
+                $title = "New Bulletin Added";
+                $message = "Bulletin Title: $title <br/>  $content ";
+                $recipients = $all_allowed_admin;
+                $author = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
+                if(isset($bulletin_no) && !empty($bulletin_no))
+                {
+                    $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".encrypt($bulletin_no);
+                }
+                else
+                {
+                    $query = "SELECT admin_bulletin_id FROM admin_bulletin WHERE title = '$title', content = '$content' ";
+                    $bulletin_no = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
+                    $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".encrypt($bulletin_no);
+                }
+                $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
+            }
             $message_success = "You have successfully saved the bulletin";
         }
         else

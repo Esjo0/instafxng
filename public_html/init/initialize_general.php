@@ -31,6 +31,7 @@ require_once(LIB_PATH.DS."class_project_management.php");
 require_once(LIB_PATH.DS."class_quiz.php");
 require_once(LIB_PATH.DS."session_quiz_participant.php");
 require_once(LIB_PATH.DS."class_loyalty_point.php");
+require_once(LIB_PATH.DS."class_push_notification.php");
 
 /*
  * TRACK CLIENTS THAT PARTNERS REFER
