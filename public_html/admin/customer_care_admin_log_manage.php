@@ -116,7 +116,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                     echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
                                                     echo "<strong>Phone : </strong>".$client_details['phone']."<br/>";
                                                     echo "<strong>Email : </strong>".$client_details['email']."<br/>";
-                                                    echo "<strong>Account Number : </strong>".$row['ifx_acct_no']."<br/>";
+                                                    echo "<strong>Account Number : </strong>".$row['ifx_acc_no']."<br/>";
                                                 }
                                                 elseif ($row['log_type'] == '2')
                                                 {
@@ -130,7 +130,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                             </td>
                                             <td><?php echo $row['con_desc'] ?></td>
                                             <td>
-                                                <button class="btn btn-info" data-target="#conversations<?php echo $row['log_id']?>" data-toggle="modal"><i class="glyphicon glyphicon-info-sign"></i></button>
+                                                <button class="btn btn-info btn-sm" data-target="#conversations<?php echo $row['log_id']?>" data-toggle="modal"><i class="glyphicon glyphicon-info-sign"></i></button>
                                                 <!--Modal - confirmation boxes-->
                                                 <div id="conversations<?php echo $row['log_id']?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog">
@@ -157,7 +157,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                         echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
                                                                         echo "<strong>Phone : </strong>".$client_details['phone']."<br/>";
                                                                         echo "<strong>Email : </strong>".$client_details['email']."<br/>";
-                                                                        echo "<strong>Account Number : </strong>".$row['ifx_acct_no']."<br/>";
+                                                                        echo "<strong>Account Number : </strong>".$row['ifx_acc_no']."<br/>";
                                                                     }
                                                                     elseif ($row['log_type'] == '2')
                                                                     {
@@ -196,7 +196,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                                 if($row1['status'] == '1'):?>
                                                                                     <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                                         <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
-                                                                                        <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
+                                                                                        <button name="process_treated" type="submit" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i></button>
                                                                                     </form>
                                                                                 <?php endif; ?>
                                                                             </td>
@@ -206,7 +206,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                                 </table>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger btn-sm">Close!</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -214,10 +214,10 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                             </td>
                                             <td>
                                                 <?php
-                                                if($row1['status'] == '1'):?>
+                                                if($row['status'] == '1'):?>
                                                     <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                         <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
-                                                        <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
+                                                        <button name="process_treated" type="submit" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i></button>
                                                     </form>
                                                 <?php endif; ?>
                                             </td>
