@@ -14,8 +14,6 @@
         <link href="../css/bootstrap-datetimepicker.css" rel="stylesheet">
         <script src="../js/jquery_2.1.1.min.js"></script>
         <script src="../js/bootstrap_3.3.5.min.js"></script>
-        <!--        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
-        <!--        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">-->
         <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
 
         <script src="../js/ie10-viewport-bug-workaround.js"></script>
@@ -24,40 +22,7 @@
         <script src="../js/Chart.min.js"></script>
         <script src="../js/instafx_admin.js"></script>
         <!-- NOTIFICATION CSS -->
-        <style>
-                .modal.fade .modal-dialog
-                {
-                        transform: translate(0px, -25%);
-                        transition: transform 0.3s ease-out 0s;
-                }
-                .modal.fade.in .modal-dialog
-                {
-                        transform: translate(0px, 0px);
-                }
-
-                .flyover
-                {
-                        left: 150%;
-                        overflow: hidden;
-                        position: fixed;
-                        width: 50%;
-                        opacity: 0.95;
-                        z-index: 1050;
-                        transition: left 0.6s ease-out 0s;
-                }
-
-                .flyover-centered {
-                        top: 50%;
-                        transform: translate(-50%, -50%);
-                }
-
-                .flyover.in {
-                        left: 50%;
-                }
-        </style>
-        <!-- NOTIFICATION CSS -->
         <script src="../../app_assets/class_push_notification.js"></script>
-        <script src="//code.createjs.com/soundjs-0.6.2.min.js"></script>
         <script>
                 $(document).ready(function()
                 {
@@ -66,3 +31,4 @@
                         push_notifications.count_notifications();
                 });
         </script>
+

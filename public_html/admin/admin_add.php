@@ -109,8 +109,7 @@ if (isset($_POST['process'])) {
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                        class="close">&times;</button>
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
                                                     <h4 class="modal-title">Add Admin</h4></div>
                                                 <div class="modal-body">Are you sure you want to add a new admin profile? This action cannot be reversed.</div>
                                                 <div class="modal-footer">
