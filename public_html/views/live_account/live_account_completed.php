@@ -8,7 +8,7 @@
 
 <p><strong>What Next?</strong></p>
 <ol>
-    <li><strong>Register for FREE Forex Education:</strong> Learn the basics of forex trading through demo-trading up to the point of profitable live trading. Take this one time opportunity, <a href="beginner_traders_course.php" title="Register for FREE Forex Education">Click here to register NOW</a>.</li>
+    <li><strong>Register for FREE Forex Education:</strong> Learn the basics of forex trading through demo-trading up to the point of profitable live trading. Take this one time opportunity, <a href="fxacademy/welcome/" title="Register for FREE Forex Education">Click here to register NOW</a>.</li>
     <li><strong>Fund your Instaforex Account:</strong> You can start trading and making profits 
         from Forex immediately. <a href="deposit_funds.php" title="Click here to fund your account">Click here to fund your account</a>, it is very fast and easy.</li>
 </ol>
