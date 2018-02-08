@@ -21,3 +21,23 @@
     <hr>
 </header>
 <div id="content"></div>
+<?php $admin_code = $_SESSION['admin_unique_code'];
+$query = "SELECT * FROM hr_attendance_log WHERE hr_attendance_log.admin_code = '$admin_code' AND hr_attendance_log.date = '$today' ";
+$result = $db_handle->numRows($query);
+$today = $db_handle->sanitizePost(date("d-m-Y"));
+$day = date('l', strtotime($today));
+if(($result < 1) && ($day != 'Saturday' || $day != 'Sunday')): ?>
+    <script>
+        var browser_info = BrowserDetection();
+        if(browser_info['browser'] == 'ff' || browser_info['browser'] == 'gc')
+        {
+            get_lan_ip();
+
+        }
+        else
+        {
+            window.alert("To log your attendance in please sign in with Mozilla Firefox or Google Chrome.");
+        }
+    </script>
+<?php endif; ?>
+<div id="hr_attendance_system"></div>
