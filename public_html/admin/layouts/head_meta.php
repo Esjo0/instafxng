@@ -22,7 +22,7 @@
         <script src="../js/Chart.min.js"></script>
         <script src="../js/instafx_admin.js"></script>
         <!-- NOTIFICATION CSS -->
-        <script src="../../app_assets/class_push_notification.js"></script>
+        <script src="../js/class_push_notification.js"></script>
         <script>
                 $(document).ready(function()
                 {
