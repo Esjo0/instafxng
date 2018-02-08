@@ -66,12 +66,12 @@ if (isset($_POST['submit']))
 				'last_name' => $user_ifx_details['client_last_name'],
 				'email' => $user_ifx_details['client_email']
 			);
-			$session_client->login($found_user);
-
-			// Check if this is a first time login, then log the date
-			if(empty($user_ifx_details['client_academy_first_login']) || is_null($user_ifx_details['client_academy_first_login'])) {
-				$client_operation->log_academy_first_login($user_ifx_details['client_first_name'], $user_ifx_details['client_email'], $user_ifx_details['client_user_code']);
-			}
+//			$session_client->login($found_user);
+//
+//			// Check if this is a first time login, then log the date
+//			if(empty($user_ifx_details['client_academy_first_login']) || is_null($user_ifx_details['client_academy_first_login'])) {
+//				$client_operation->log_academy_first_login($user_ifx_details['client_first_name'], $user_ifx_details['client_email'], $user_ifx_details['client_user_code']);
+//			}
 
 			redirect_to('thank-you/thank-you.php');
 		} else {

@@ -43,10 +43,10 @@
                 <div class="row ">
                     <div class="col-lg-12 text-center">
                         <h2 style="max-width: inherit !important;">Forex Profit Academy</h2>
-                        <p style="font-size: large; color: #ffffff" class="text-center">Forex education is the first step to making steady income trading Forex....<a href="http://localhost/instafxngwebsite_master/public_html/forex-income/Thank-you/fxacademy.php#more">
+                        <p style="font-size: large; color: #ffffff" class="text-center">Forex education is the first step to making steady income trading Forex....<a href="#">
                                         <strong>More</strong>
                                     </a></p>
-                        <p style="font-size: large; color: #ffffff" class="text-center"><a href="../../fxacademy/" class="btn btn-lg btn-success">GET STARTED</a></p>
+                        <p style="font-size: large; color: #ffffff" class="text-center"><a href="https://instafxng.com/fxacademy/" class="btn btn-lg btn-success">GET STARTED</a></p>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                                 The Forex Profit Academy is a beginner’s guide to Forex Trading which is made up of very well explained lessons including a practical trading class.
                             </p>
                                 <br/>
-                            <center><a href="../../fxacademy/" class="btn btn-info btn-sm font-bold btn-rounded"><strong>START NOW</strong></a></center>
+                            <center><a href="https://instafxng.com/fxacademy/" class="btn btn-info btn-sm font-bold btn-rounded"><strong>START NOW</strong></a></center>
 
 
                         </div>
@@ -101,7 +101,7 @@
                             <p class="card-text text-justify">I almost forgot! The training is set using one of the best learning tools available at the moment.<br/>You also get to interact with a personal instructor assigned to you in case you have any question or need more clarity on any of the lessons taken in the academy.
                             </p>
                             <br/>
-                            <center> <a href="../../fxacademy/" class="btn btn-info btn-sm font-bold btn-rounded"><strong>START NOW</strong></a></center>
+                            <center> <a href="https://instafxng.com/fxacademy/" class="btn btn-info btn-sm font-bold btn-rounded"><strong>START NOW</strong></a></center>
                         </div>
 
                     </div>
@@ -125,7 +125,7 @@
                             <p class="card-text text-justify">By the end of the course, you would have learnt how to trade Forex profitably and make money.<br/>Be sure to give all the lessons in the academy your 100% attention and thoroughly go through each lesson without forgetting to attempt all the test exercises which you must complete to proceed to the next lesson.
                             </p>
                             <br/>
-                            <center><a href="http://localhost/instafxngwebsite_master/public_html/forex-income/Thank-you/fxacademy.php#more" class="btn btn-info btn-sm font-bold btn-rounded">
+                            <center><a href="#" class="btn btn-info btn-sm font-bold btn-rounded">
                                         <strong>START NOW</strong>
                                 </a></center>
                         </div>

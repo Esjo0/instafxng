@@ -817,7 +817,7 @@ MAIL;
     public function submit_payment_notification($transaction_no, $pay_date, $naira_amount, $admin_comment = false, $admin_code = false) {
         global $db_handle;
 
-        $query = "UPDATE user_edu_deposits SET status = '2', pay_date = '$pay_date', amount_paid = '$naira_amount' WHERE trans_id = '$transaction_no' LIMIT 1";
+        $query = "UPDATE user_edu_deposits SET status = '2', pay_date = '$pay_date', amount_paid = $naira_amount WHERE trans_id = '$transaction_no' LIMIT 1";
         $db_handle->runQuery($query);
 
         if($db_handle->affectedRows() > 0) {

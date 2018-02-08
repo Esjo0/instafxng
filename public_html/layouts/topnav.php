@@ -45,8 +45,8 @@
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="fxacademy/welcome/" title="Forex Profit Academy">Forex Profit Academy</a></li>
-                            <!--<li><a href="traders_forum.php" title="Forex Traders Forum">Traders Forum</a></li>
-                            <li><a href="beginner_traders_course.php" title="Beginner Trader Course">Beginner Trader Course</a></li>
+                            <li><a href="traders_forum.php" title="Forex Traders Forum">Traders Forum</a></li>
+                            <!--<li><a href="beginner_traders_course.php" title="Beginner Trader Course">Beginner Trader Course</a></li>
                             <li><a href="advanced_traders_course.php" title="Advance Trader Course">Advance Trader Course</a></li>
                             <li><a href="course.php" title="Forex Freedom Course">Forex Freedom Course</a></li>
                             <li><a href="private_course.php" title="Forex Private Course">Forex Private Course</a></li>

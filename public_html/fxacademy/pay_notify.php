@@ -12,8 +12,7 @@ if (isset($_POST['notify'])) {
     }
     extract($_POST);
 
-    $transaction_no = decrypt(str_replace(" ", "+", $transaction_no));
-    $transaction_no = preg_replace("/[^A-Za-z0-9 ]/", '', $transaction_no);
+    $naira_amount = str_replace(",", "", $naira_amount);
 
     $payment_notified = $education_object->submit_payment_notification($transaction_no, $pay_date, $naira_amount);
 
