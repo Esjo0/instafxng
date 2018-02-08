@@ -1,4 +1,4 @@
-        <!--<base href="https://instafxng.com/admin/" />-->
+        <base href="https://instafxng.com/admin/" />
         <meta http-equiv="Content-Language" content="en" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="author" content="Instant Web-Net Technologies Limited" />
@@ -22,7 +22,7 @@
         <script src="../js/Chart.min.js"></script>
         <script src="../js/instafx_admin.js"></script>
         <!-- NOTIFICATION CSS -->
-        <script src="../../app_assets/class_push_notification.js"></script>
+        <script src="../js/class_push_notification.js"></script>
         <script>
                 $(document).ready(function()
                 {
