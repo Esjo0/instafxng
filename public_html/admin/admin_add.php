@@ -114,7 +114,7 @@ if (isset($_POST['process'])) {
                                                 <div class="modal-body">Are you sure you want to add a new admin profile? This action cannot be reversed.</div>
                                                 <div class="modal-footer">
                                                     <input name="process" type="submit" class="btn btn-success" value="Proceed">
-                                                    <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                    <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                 </div>
                                             </div>
                                         </div>

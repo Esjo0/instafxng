@@ -262,6 +262,7 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
 
                                     <p><strong>Project Management</strong></p>
                                     <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="209" id="" <?php if (in_array(209, $my_pages)) { echo 'checked="checked"'; } ?>/> All Projects</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="203" id="" <?php if (in_array(203, $my_pages)) { echo 'checked="checked"'; } ?>/> Projects</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="204" id="" <?php if (in_array(204, $my_pages)) { echo 'checked="checked"'; } ?>/> Project Reports</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="205" id="" <?php if (in_array(205, $my_pages)) { echo 'checked="checked"'; } ?>/> Confirmation Requests</label></div></div>
