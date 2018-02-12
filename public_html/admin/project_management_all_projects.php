@@ -373,10 +373,8 @@ $projects = $db_handle->fetchAssoc($result);
                                                                     <div class="row">
                                                                         <div class="col-sm-12">
 
-                                                                            <p><strong>Project Title:</strong></p>
-                                                                            <p><?php echo $row['title']; ?></p>
+                                                                            <p><strong>Project Title:</strong> <?php echo $row['title']; ?></p>
                                                                             <hr/>
-
                                                                             <?php $comments = $obj_project_management->get_project_comments($row['project_code']);
                                                                             //var_dump($comments);
                                                                             if(isset($comments) && !empty($comments))

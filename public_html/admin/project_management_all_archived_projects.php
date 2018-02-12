@@ -246,14 +246,15 @@ $projects = $db_handle->fetchAssoc($result);
                                 <table class="table table-responsive  table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Project Title</th>
-                                            <th>Project Description</th>
-                                            <th>Project Created</th>
-                                            <th>Project Deadline</th>
-                                            <th>Project Status</th>
-                                            <th>Project Executors</th>
-                                            <th>Completion/Suspension Date</th>
-                                            <th>View</th>
+                                            <th> Title</th>
+                                            <th> Description</th>
+                                            <th> Created</th>
+                                            <th> Deadline</th>
+                                            <th> Status</th>
+                                            <th> Executors</th>
+                                            <th>Completion / Suspension Date</th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -263,10 +264,10 @@ $projects = $db_handle->fetchAssoc($result);
                                             <tr>
                                                 <td><?php echo $row['title']; ?></td>
                                                 <td>
-                                                    <button type="button" data-toggle="modal" data-target="#view_project<?php echo $row['project_code']; ?>" class="btn btn-default">Project Description</button>
+                                                    <button type="button" data-toggle="modal" data-target="#view_project<?php echo $row['project_code']; ?>" class="btn btn-default">View</button>
                                                     <!-- Modal-- View Project Details -->
                                                     <div id="view_project<?php echo $row['project_code']; ?>" class="modal fade" role="dialog">
-                                                        <div class="modal-dialog">
+                                                        <div class="modal-dialog modal-lg">
                                                             <!-- Modal content-->
                                                             <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                                                 <div class="modal-content">
@@ -306,7 +307,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </td>
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                                <td><?php echo $row['deadline']; ?></td>
+                                                <td><?php echo datetime_to_text2($row['deadline']); ?></td>
                                                 <td><?php echo project_management_status($row['status']); ?></td>
                                                     <?php
                                                     $executors = explode("," ,$row['executors']);
@@ -321,7 +322,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                     <td>
                                                         <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $row['project_code'] ?>" class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
                                                         <div id="edit_project<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
-                                                            <div class="modal-dialog">
+                                                            <div class="modal-dialog modal-lg">
                                                                 <!-- Modal content-->
                                                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                     <div class="modal-content">

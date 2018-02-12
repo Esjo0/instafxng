@@ -168,7 +168,7 @@ if($get_params['x'] == 'edit') {
                                                 <div class="col-sm-4">
                                                     <div class="checkbox">
                                                         <label for="">
-                                                            <input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } if($key['full_name'] == 'Audu Emmanuel'){/*Toye Oyeleke*/ echo'checked="checked" disabled';} ?>/> <?php echo $key['full_name']; ?>
+                                                            <input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } if($key['full_name'] == 'Toye Oyeleke'){ echo'checked="checked" disabled';} ?>/> <?php echo $key['full_name']; ?>
                                                         </label>
                                                     </div>
                                                 </div>

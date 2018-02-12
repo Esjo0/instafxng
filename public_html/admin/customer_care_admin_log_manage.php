@@ -132,7 +132,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
                                                 <button class="btn btn-info btn-sm" data-target="#conversations<?php echo $row['log_id']?>" data-toggle="modal"><i class="glyphicon glyphicon-info-sign"></i></button>
                                                 <!--Modal - confirmation boxes-->
                                                 <div id="conversations<?php echo $row['log_id']?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                                    <div class="modal-dialog">
+                                                    <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
