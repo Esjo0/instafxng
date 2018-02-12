@@ -637,13 +637,13 @@ MAIL;
         return $deposit_details ? $deposit_details : false;
     }
 
-    public function user_payment_notification($trans_id, $pay_date, $teller_no, $naira_amount, $comment = "") {
+    public function user_payment_notification($trans_id, $pay_method, $pay_date, $teller_no, $naira_amount, $comment = "") {
         global $db_handle;
 
         $transaction_detail = $this->get_deposit_transaction($trans_id);
 
         if($transaction_detail['status'] == 1) {
-            $query = "UPDATE user_deposit SET status = '2', client_pay_date = '$pay_date',
+            $query = "UPDATE user_deposit SET status = '2', client_pay_date = '$pay_date', client_pay_method = '$pay_method',
             client_reference = '$teller_no', client_naira_notified = '$naira_amount', client_comment = '$comment',
             client_notified_date = NOW() WHERE trans_id = '$trans_id' LIMIT 1";
 
