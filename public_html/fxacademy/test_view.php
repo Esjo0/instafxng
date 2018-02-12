@@ -4,7 +4,7 @@ $thisPage = "";
 
 if (!$session_client->is_logged_in())
 {
-    //redirect_to("login.php");
+    redirect_to("login.php");
 }
 
 $get_params = allowed_get_params(['lid', 'cid']);
