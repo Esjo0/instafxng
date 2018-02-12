@@ -11,7 +11,11 @@ if (isset($_POST['process'])) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
 
-    extract($_POST);
+//    extract($_POST);
+
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $email = $_POST['email'];
     
     if(empty($firstname) || empty($lastname) || empty($email)) {
         $message_error = "All fields are compulsory, please try again.";
