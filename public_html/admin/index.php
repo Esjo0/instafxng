@@ -29,6 +29,9 @@ $percentage_active_training_client = ($total_active_training_clients / $total_tr
 // GET ACTIVE ACCOUNTS
 $total_active_accounts = $system_object->get_total_active_accounts();
 
+// GET TOTAL ACCOUNTS
+$total_accounts = $system_object->get_total_accounts();
+
 // GET TOTAL CLIENTS
 $total_clients = $system_object->get_total_clients();
 
@@ -53,7 +56,49 @@ $failed_sms_code = $system_object->get_failed_sms_code();
         <meta name="description" content="" />
         <?php  require_once 'layouts/head_meta.php'; ?>
         <?php require_once 'hr_attendance_system.php'; ?>
+        <script type="text/javascript" src="//gstatic.com/charts/loader.js"></script>
+        <script>
+            var total_clients = <?php echo number_format($total_clients); ?>;
+            var total_active_clients = <?php echo number_format($total_active_clients); ?>;
+            var total_inactive_clients = total_clients - total_active_clients;
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart_Activity);
+            // Draw the chart and set the chart values
+            function drawChart_Activity() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Category', 'Number'],
+                    ['Active Clients', total_active_clients],
+                    ['Inactive Clients', total_inactive_clients]
+                ]);
+                // Optional; add a title and set the width and height of the chart
+                var options = {'title':'Client Activity Overview', is3D:true};
 
+                // Display the chart inside the <div> element with id="piechart"
+                var chart = new google.visualization.PieChart(document.getElementById('piechart_activity'));
+                chart.draw(data, options);
+            }
+        </script>
+        <script>
+            var total_accounts = <?php echo number_format($total_accounts); ?>;
+            var total_active_accounts = <?php echo number_format($total_active_accounts); ?>;
+            var total_inactive_accounts = total_accounts - total_active_accounts;
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart_Activity);
+            // Draw the chart and set the chart values
+            function drawChart_Activity() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Category', 'Number'],
+                    ['Active Accounts', total_active_accounts],
+                    ['Inactive Accounts', total_inactive_accounts]
+                ]);
+                // Optional; add a title and set the width and height of the chart
+                var options = {'title':'Client Accounts Activity Overview', is3D:true};
+
+                // Display the chart inside the <div> element with id="piechart"
+                var chart = new google.visualization.PieChart(document.getElementById('piechart_accounts'));
+                chart.draw(data, options);
+            }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -77,15 +122,43 @@ $failed_sms_code = $system_object->get_failed_sms_code();
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-12">
                             <div class="super-shadow dashboard-stats">
-                                <header class="text-center"><strong>Active Clients</strong></header>
+                                <header class="text-center"><strong>Clients Overview</strong></header>
                                 <article class="text-center">
-                                    Clients: <strong><?php echo number_format($total_active_clients); ?></strong>&nbsp; | &nbsp;
-                                    Accts: <strong><?php echo number_format($total_active_accounts); ?></strong>
+                                     <div class="row">
+                                            <div class="col-sm-6">
+                                                <div id="piechart_activity"></div>
+                                                <div class="text-center">
+                                                    Active Clients: <strong><?php echo number_format($total_active_clients); ?></strong>&nbsp; | &nbsp;
+                                                    Inactive Clients: <strong><?php echo number_format($total_clients - $total_active_clients); ?></strong> |
+                                                    Total Clients: <strong><?php echo number_format($total_clients); ?></strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div id="piechart_accounts"></div>
+                                                <div class="text-center">
+                                                    Active Accounts: <strong><?php echo number_format($total_active_accounts); ?></strong>&nbsp; | &nbsp;
+                                                    Inactive Accounts: <strong><?php echo number_format($total_accounts - $total_active_accounts); ?></strong> |
+                                                    Total Accounts: <strong><?php echo number_format($total_accounts); ?></strong>
+                                                </div>
+                                            </div>
+
+                                    </div>
                                 </article>
                             </div>
                         </div>
+
+
+                        <!--<div class="col-sm-3">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Active Clients</strong></header>
+                                <article class="text-center">
+                                    Clients: <strong><?php /*echo number_format($total_active_clients); */?></strong>&nbsp; | &nbsp;
+                                    Accts: <strong><?php /*echo number_format($total_active_accounts); */?></strong>
+                                </article>
+                            </div>
+                        </div>-->
 
                         <div class="col-sm-3">
                             <div class="super-shadow dashboard-stats">
@@ -97,14 +170,14 @@ $failed_sms_code = $system_object->get_failed_sms_code();
                             </div>
                         </div>
 
-                        <div class="col-sm-3">
+                        <!--<div class="col-sm-3">
                             <div class="super-shadow dashboard-stats">
                                 <header class="text-center"><strong>Total Clients</strong></header>
                                 <article class="text-center">
-                                    <strong><?php echo number_format($total_clients); ?></strong>
+                                    <strong><?php /*echo number_format($total_clients); */?></strong>
                                 </article>
                             </div>
-                        </div>
+                        </div>-->
 
                         <div class="col-sm-3">
                             <div class="super-shadow dashboard-stats">
