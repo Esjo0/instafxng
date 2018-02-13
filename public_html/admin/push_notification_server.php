@@ -1,9 +1,5 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in())
-{
-    //redirect_to("login.php");
-}
 $admin_code = $_SESSION['admin_unique_code'];
 $type = $_POST['type'];
 if ($type == '0')

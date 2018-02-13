@@ -42,9 +42,12 @@ if (isset($_POST['process_customer']))
     {
         $message_error = "All fields are compulsory, please try again.";
     }
-    elseif (!check_email($email))
+    elseif(isset($email) && !empty($email))
     {
-        $message_error = "You have provided an invalid email address. Please try again.";
+        if(!check_email($email))
+        {
+            $message_error = "You have provided an invalid email address. Please try again.";
+        }
     }
     else
         {
