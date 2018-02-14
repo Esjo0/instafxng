@@ -38,7 +38,7 @@ $thisPage = "Home";
                         <div class="row ">
                             <a href="https://instafxng.com/deposit_funds.php" title="click for details">
                                 <center>
-                                    <img src="images/INSTAFXNG_VALENTINE.png" alt="" class="img-responsive" />
+                                    <img src="images/VALENTINE.png" alt="" class="img-responsive" />
                                 </center>
                             </a>
                         </div>
