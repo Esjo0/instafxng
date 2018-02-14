@@ -58,8 +58,8 @@ $failed_sms_code = $system_object->get_failed_sms_code();
         <?php require_once 'hr_attendance_system.php'; ?>
         <script type="text/javascript" src="//www.gstatic.com/charts/loader.js"></script>
         <script>
-            var total_clients = <?php echo number_format($total_clients); ?>;
-            var total_active_clients = <?php echo number_format($total_active_clients); ?>;
+            var total_clients = <?php echo $total_clients; ?>;
+            var total_active_clients = <?php echo $total_active_clients; ?>;
             var total_inactive_clients = total_clients - total_active_clients;
             google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(drawChart_Activity);
@@ -79,8 +79,8 @@ $failed_sms_code = $system_object->get_failed_sms_code();
             }
         </script>
         <script>
-            var total_accounts = <?php echo number_format($total_accounts); ?>;
-            var total_active_accounts = <?php echo number_format($total_active_accounts); ?>;
+            var total_accounts = <?php echo $total_accounts; ?>;
+            var total_active_accounts = <?php echo $total_active_accounts; ?>;
             var total_inactive_accounts = total_accounts - total_active_accounts;
             google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(drawChart_Activity);
