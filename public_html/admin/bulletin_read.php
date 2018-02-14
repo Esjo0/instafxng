@@ -31,12 +31,14 @@ if (isset($_POST['post_comment']))
     $db_handle->runQuery("INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')");
     if($db_handle->affectedRows() > 0)
     {
-        $message_main = '<p style="font-size: small">Bulletin Title: '.$selected_bulletin['title']."<br/>";
-        $message_main .= 'Author: '.$admin_object->get_admin_name_by_code($admin_code) ."<br/>";
-        $message_main .= 'Message: '.$comment."</p>";
+        $content = 'Author: '.$admin_object->get_admin_name_by_code($admin_code) ."<br/>";
+        $content .= 'Message: '.$comment;
+        $title = "New Bulletin Comment";
+        $message = "Bulletin Title: ".$selected_bulletin['title']." <br/>  $content ";
         $recipients = implode(",", $allowed_admin);
-        $type = '2';
-        $obj_push_notification->add_new_notification($message_main, $recipients, $type);
+        $author = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
+        $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".encrypt($bulletin_id);
+        $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
         $message_success = "You have successfully added a new comment.";
 
 

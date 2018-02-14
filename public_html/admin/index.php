@@ -56,7 +56,7 @@ $failed_sms_code = $system_object->get_failed_sms_code();
         <meta name="description" content="" />
         <?php  require_once 'layouts/head_meta.php'; ?>
         <?php require_once 'hr_attendance_system.php'; ?>
-        <script type="text/javascript" src="//gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="//www.gstatic.com/charts/loader.js"></script>
         <script>
             var total_clients = <?php echo number_format($total_clients); ?>;
             var total_active_clients = <?php echo number_format($total_active_clients); ?>;
@@ -127,23 +127,22 @@ $failed_sms_code = $system_object->get_failed_sms_code();
                                 <header class="text-center"><strong>Clients Overview</strong></header>
                                 <article class="text-center">
                                      <div class="row">
-                                            <div class="col-sm-6">
-                                                <div id="piechart_activity"></div>
-                                                <div class="text-center">
-                                                    Active Clients: <strong><?php echo number_format($total_active_clients); ?></strong>&nbsp; | &nbsp;
-                                                    Inactive Clients: <strong><?php echo number_format($total_clients - $total_active_clients); ?></strong> |
-                                                    Total Clients: <strong><?php echo number_format($total_clients); ?></strong>
-                                                </div>
+                                        <div class="col-sm-6">
+                                            <div id="piechart_activity"></div>
+                                            <div class="text-center">
+                                                Active Clients: <strong><?php echo number_format($total_active_clients); ?></strong>&nbsp; | &nbsp;
+                                                Inactive Clients: <strong><?php echo number_format($total_clients - $total_active_clients); ?></strong> |
+                                                Total Clients: <strong><?php echo number_format($total_clients); ?></strong>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <div id="piechart_accounts"></div>
-                                                <div class="text-center">
-                                                    Active Accounts: <strong><?php echo number_format($total_active_accounts); ?></strong>&nbsp; | &nbsp;
-                                                    Inactive Accounts: <strong><?php echo number_format($total_accounts - $total_active_accounts); ?></strong> |
-                                                    Total Accounts: <strong><?php echo number_format($total_accounts); ?></strong>
-                                                </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div id="piechart_accounts"></div>
+                                            <div class="text-center">
+                                                Active Accounts: <strong><?php echo number_format($total_active_accounts); ?></strong>&nbsp; | &nbsp;
+                                                Inactive Accounts: <strong><?php echo number_format($total_accounts - $total_active_accounts); ?></strong> |
+                                                Total Accounts: <strong><?php echo number_format($total_accounts); ?></strong>
                                             </div>
-
+                                        </div>
                                     </div>
                                 </article>
                             </div>
