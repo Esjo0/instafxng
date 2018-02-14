@@ -349,6 +349,17 @@ MAIL;
         }
     }
 
+    public function get_super_admin_by_name($full_name)
+    {
+        global $admin_object;
+        $result = $admin_object->get_all_admin_member();
+        foreach ($result as $row)
+        {
+            if($row['full_name'] == $full_name){$admin_code = $row['admin_code'];}
+        }
+        return $admin_code;
+    }
+
 }
 
 $obj_project_management = new Project_Management();

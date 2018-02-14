@@ -63,7 +63,7 @@ class Customer_Care
     public function get_all_conversations($tag)
     {
         global $db_handle;
-        $query = "SELECT log_id, con_desc, status, created FROM customer_care_log WHERE tag = '$tag' ";
+        $query = "SELECT log_id, con_desc, status, created, updated FROM customer_care_log WHERE tag = '$tag' ";
         $result = $db_handle->runQuery($query);
         $customer_details = $db_handle->fetchAssoc($result);
         return $customer_details;
@@ -79,7 +79,7 @@ class Customer_Care
     public function log_treated($log_id)
     {
         global $db_handle;
-        $query = "UPDATE customer_care_log SET status = '2' WHERE log_id = '$log_id'";
+        $query = "UPDATE customer_care_log SET status = '2', updated = now() WHERE log_id = '$log_id'";
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
     }

@@ -294,7 +294,7 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                         <button class="btn btn-info" data-target="#conversations<?php echo $row['log_id']?>" data-toggle="modal"><i class="glyphicon glyphicon-info-sign"></i></button>
                                         <!--Modal - confirmation boxes-->
                                         <div id="conversations<?php echo $row['log_id']?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
@@ -343,20 +343,22 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                                                         {
                                                                             echo 'PENDING';
                                                                         }
-                                                                        elseif($row1['status'] == '2')
-                                                                        {
-                                                                            echo 'TREATED';
-                                                                        }
-                                                                        ?>
+                                                                        if($row1['status'] == '2')
+                                                                            :?>
+                                                                            TREATED <br/> <?php echo datetime_to_text($row1['updated']);?>
+                                                                        <?php endif; ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php echo $row1['created'] ?>
+                                                                        <?php echo datetime_to_text($row1['created']); ?>
                                                                     </td>
                                                                     <td>
+                                                                        <?php
+                                                                        if($row1['status'] == '1'):?>
                                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                             <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
                                                                             <button name="process_treated" type="submit" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i></button>
                                                                         </form>
+                                                                            <?php endif;?>
                                                                     </td>
                                                                 </tr>
                                                             <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -371,10 +373,15 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                         </div>
                                     </td>
                                     <td>
+                                <?php if($row['status'] == '2'):?>
+                                    TREATED <br/> <?php echo datetime_to_text2($row['updated']);
+                                endif;
+                                if($row['status'] == '1'):?>
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                             <input type="hidden" name="log_id" value="<?php echo $row['log_id']?>">
                                             <button name="process_treated" type="submit" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i></button>
                                         </form>
+                                    <?php endif; ?>
                                     </td>
                                 </tr>
 

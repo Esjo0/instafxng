@@ -209,60 +209,7 @@ $all_bulletin = $db_handle->fetchAssoc($result);
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
-                        <!--<div class="col-sm-12 well" style="display: inline-flex">
-                            <div id="search" class="col-sm-8 form-group input-group">
-                                <input placeholder="Enter a project title here..." type="text" class="form-control"/>
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-                                </span>
-                            </div>
-                            <!--<div id="new_thread" class="col-sm-4 form-group input-group" >
-                                <span class="text-center input-group-btn">
-                                    <button class="btn btn-default" data-toggle="modal" data-target="#add_new_thread" type="button">
-                                        <i class="glyphicon glyphicon-plus-sign"></i> Start New Message Thread</button>
-                                </span>
-                            </div>
-                            <!-- Modal-- Start New Thread
-                            <div id="add_new_thread" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
-                                    <!-- Modal content
-                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Start New Message Thread</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <p><strong>Project Title</strong></p>
-                                                        <select name="project_title"  required class="form-control">
-                                                            <option></option>
-                                                            <option value="Project Title">Project Title</option>
-                                                        </select>
-                                                        <hr/>
 
-                                                        <p><strong>Task Title</strong></p>
-                                                        <select name="task_title"  required class="form-control">
-                                                            <option></option>
-                                                            <option value="Task Title">Task Title</option>
-                                                        </select>
-                                                        <hr/>
-
-                                                        <p><strong>Message</strong></p>
-                                                        <textarea class="form-control" name="message" cols="5"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input name="new_project" type="submit" class="btn btn-success" value="Post"/>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>-->
                     </div>
                 </div>
 

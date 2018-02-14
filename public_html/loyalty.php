@@ -125,23 +125,41 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     than just trading as usual. You do not enter for a draw or trade a particular
                                     lot size to qualify "Just Trade!"</p>
 
-                                <h4>What is it?</h4>
-                                <p>Our new unified reward program which rewards every single one of our loyal clients daily, monthly and annually.</p>
-                                <p>Several tens of thousands of dollars will be paid out to clients in rewards and redemptions during the one year duration of each round of the promo.</p>
-                                <p>The exciting thing is that everyone is a winner. Every client gets a piece of the pie as long as you deposit funds to your account or you complete trades on any of your accounts held with us.</p>
+                                <h4>What is the Instafxng Point Based Loyalty Program and Reward?</h4>
+                                <p>Our new unified reward program which rewards every single one
+                                    of our loyal clients daily, monthly and annually.</p>
+                                <p>The first round of the InstaFxNg Point Based Loyalty Program and Reward ended on the 30th of
+                                    November, 2017 with 10 amazing winners who got cash prizes ranging from N50, 000 up to
+                                    N1 000 000.</p>
+                                <p>What is thrilling is about the Loyalty rewards how much you can get without doing anything
+                                    extra other than just trading as usual.</p>
+                                <p>You do not enter for a draw or trade a particular lot size to qualify <b>"Just Trade!"</b></p>
+                                <p>A total of N4 390 000 was paid out to clients in rewards during the one year duration of the last
+                                    round of the promo. This does not even include the thousands of dollars withdrawn as loyalty
+                                    points!</p>
+                                <p>In the current round, you can be one of the clients that will be paid tens of thousands dollars
+                                    during the one year duration of this round of the promo.</p>
+                                <p>Now, the exciting thing is that everyone is a winner. You get a piece of the pie as long as you
+                                    deposit funds to your account or you complete trades on any of your accounts held with us</p>
+                                <p>Isn’t that exciting?</p>
+                                <p>The Star winner of the 2016/2017 round started trading actively in July 2017 and kept trading
+                                    consistently till he worked his way up to the top of the rank scale and emerged the winner of a
+                                    whopping <b>One Million Naira</b>.</p>
+                                <p>It’s neither too late nor too early for you to emerge the star winner by the end of the 2018 round.</p>
 
-                                <h4>How does it work?</h4>
-                                <p>Each time you make a deposit to your account or trade as usual you earn some point’s equivalent to your deposit or trading actions. Our proprietary reward technology automatically calculates the points you have earned and your reward account is updated accordingly.</p>
+                                <h4>Here is how it works...</h4>
+                                <p>Each time you make a deposit to your account or trade as usual you earn some point’s equivalent
+                                    to your deposit or trading actions. Our proprietary reward technology automatically calculates
+                                    the points you have earned and your reward account is updated accordingly.</p>
 
                                 <h4>When can I redeem points?</h4>
                                 <ol>
                                     <li>You can only redeem your points to credit your instaforex account from 100 points and above.</li>
-                                    <li>If you have a minimum of 100 points you will be presented with the option of redeeming some of
-                                        your points for InstaForex credit to your account. For example if you are initiating a deposit
-                                        transaction of $100 to your InstaForex account and you have 1000 reward points, you will be able
-                                        to redeem up to 1000 points for another $100 hence your InstaForex account will be credited with
-                                        a total of $200. Every client is eligible for this as long as you have earned the minimum 100
-                                        reward points.</li>
+                                    <li>If you have a minimum of 100 points you will be presented with the option of redeeming some of your
+                                        points for InstaForex credit to your account. For example if you are initiating a deposit transaction
+                                        of $100 to your InstaForex account and you have 1000 reward points, you will be able to redeem up to
+                                        1000 points for another $100 hence your InstaForex account will be credited with a total of $200.
+                                        Every client is eligible for this as long as you have earned the minimum 100 reward points.</li>
                                     <li>Points can only be redeemed when depositing funds.</li>
                                 </ol>
 
@@ -173,7 +191,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 </ul>
                                 <p>Prizes will be presented to winners during our end of the year dinner in December</p>
 
-                                <h4>HOW much can you earn from this rewards Program...?</h4>
+                                <h4>How much can you earn from this rewards Program...?</h4>
                                 <p>You can earn up to $4,200 and N1,000,000 every year. Below is a breakdown of how easy it is.</p>
                                 <p>If your deposit and trading activities earn you an average of 2, 000 points every month making you
                                     the highest point earner every single month of the year, then you will earn the following.</p>
@@ -184,8 +202,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     </li>
                                     <li>As the first prize annual cumulative winner, you will get one million naira (N1,000,000).</li>
                                 </ol>
-                                <p>This is an awesome opportunity to make money in the New Year. Get set and take your positions
-                                    immediately and make the points start counting.</p>
+                                <p>This is an awesome opportunity for you to make earn while you earn. Get set and take your positions immediately and make the points start counting.</p>
 
                                 <p class="text-left"><a href="loyalty_archive.php" class="btn btn-success" title="Archived Results"><i class="fa fa-arrow-circle-right"></i> Archived Results</a></p>
                                 <br /><hr />

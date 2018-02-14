@@ -138,9 +138,10 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(209, $my_pages_sidebar)) { ?><li><a href="project_management_all_archived_projects.php" title="All Projects">All Archived Projects</a></li><?php } ?>
                         <?php if (in_array(203, $my_pages_sidebar)) { ?><li><a href="project_management_archived_projects.php" title="Projects">Archived Projects</a></li><?php } ?>
                         <!--                        --><?php //if (in_array(204, $my_pages_sidebar)) { ?><!--<li><a href="project_management_project_report.php" title="Project Reports">Project Reports</a></li>--><?php //} ?>
-                        <?php if (in_array(205, $my_pages_sidebar)) { ?><li><a href="project_management_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li><?php } ?>
+                        <?php /*if (in_array(205, $my_pages_sidebar)) { */?><!--<li><a href="project_management_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li>--><?php /*} */?>
                         <?php if (in_array(210, $my_pages_sidebar)) { ?><li><a href="project_management_all_messages.php" title="All Messaging Boards">All Messaging Boards</a></li><?php } ?>
-                        <!--                        --><?php //if (in_array(206, $my_pages_sidebar)) { ?><!--<li><a href="project_management_messages.php" title="Messaging Board">Messaging Board</a></li>--><?php //} ?>
+
+                        <?php //if (in_array(206, $my_pages_sidebar)) { ?><!--<li><a href="project_management_messages.php" title="Messaging Board">Messaging Board</a></li>--><?php //} ?>
                         <?php if (in_array(207, $my_pages_sidebar)) { ?><li><a href="project_management_reminder_add.php" title="Add New Reminder" >Add New Reminder</a></li><?php } ?>
                         <?php if (in_array(208, $my_pages_sidebar)) { ?><li><a href="project_management_reminder_manage.php" title="Manage Reminders">Manage Reminders</a></li><?php } ?>
                     </ul>

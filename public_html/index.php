@@ -28,28 +28,22 @@ $thisPage = "Home";
         <div id="main-body" class="container-fluid">
             <div class="row no-gutter">
                 <?php require_once 'layouts/topnav.php'; ?>
+
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
                 <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
-                    
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
+
                     <div  class="item super-shadow page-top-section">
                         <div class="row ">
-                            <div class="col-sm-6">
-                                <h3 style="margin: 0;">How to Trade Forex News Profitably</h3>
-                                <p style="margin-top: 0">
-                                    Join us on Saturday 10th of February, 2018 as we examine how to trade Forex News Profitably.
-                                    Time: 12 - 2pm.</p>
-                                <p><strong>Reserve your seat <a href="traders_forum.php#signup-section">here</a> to stand a chance to win $20.</strong></p>
-                            </div>
-                            <div class="col-sm-6">
-                                <a href="traders_forum.php#signup-section"><img src="images/Traders_Forum.jpg" alt="" class="img-responsive" /></a>
-                            </div>
-<!--                                <a href="https://instafxng.com/loyalty.php" title="click for details"><img src="images/instafxng_loyalty_program_and_rewards.jpg" alt="" class="img-responsive" /></a>-->
-
+                            <a href="https://instafxng.com/deposit_funds.php" title="click for details">
+                                <center>
+                                    <img src="images/INSTAFXNG_VALENTINE.png" alt="" class="img-responsive" />
+                                </center>
+                            </a>
                         </div>
                     </div>
-                    
+
                     <div id="welcome-note" class="section-tint super-shadow">
                         <h2 class="text-center">Welcome to Instaforex Nigeria</h2>
                         <p><i class="fa fa-quote-left fa-2x fa-pull-left fa-border"></i> InstaForex, the award winning and international forex broker seeks to serve her Nigerian clients better by the introduction of an InstaForex Nigeria Representative office. InstaFxNg.com is operated by Instant Web-Net Technologies Limited as a Nigerian InstaForex Representative / Introducing Broker Partner.</p>
