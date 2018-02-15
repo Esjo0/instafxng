@@ -16,12 +16,14 @@ $notifications = $obj_push_notification->get_notifications();
         if (in_array($admin_code, $recipients, true))
         {
             ?>
-            <div onclick="$('#view_<?php echo $row['notification_id'] ?>').modal('show');" class="alert <?php if($row['status'] == "0"){echo 'alert-success';}else{echo 'alert-info';}?>">
-                <!--<a href="#" onclick="dismiss_notification('<?php /*echo $row['notification_id']; */?>')" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
+            <div class="alert <?php if($row['status'] == "0"){echo 'alert-success';}else{echo 'alert-info';}?>">
+                <button type="button" data-target="#view_<?php echo $row['notification_id'] ?>" data-toggle="modal" class="btn btn-xs"><i class="glyphicon glyphicon-expand"></i></button>
+                <a href="#" onclick="push_notifications.dismiss_notification('<?php echo $row['notification_id']; ?>')" class="close"  aria-label="close">&times;</a>
+                <hr/>
                 <strong><?php echo $row['title'] ?></strong>
-                <p style="font-size: x-small !important;" class="text-sm-left text-muted"><?php echo datetime_to_text2($row['created']) ?></p>
+                <p style="font-size: x-small !important;" class="text-sm-left text-muted"><?php echo datetime_to_text($row['created']) ?></p>
             </div>
-            <?php if($row['status'] == "0"){ $update = $obj_push_notification->update_notification_as_old($row['notification_id']); var_dump($update);} ?>
+            <?php if($row['status'] == "0"){ $update = $obj_push_notification->update_notification_as_old($row['notification_id']); } ?>
             <?php
         }
     }
@@ -47,10 +49,9 @@ if ($type == '2')
                                         <h4 class="modal-title"><?php echo $row['title'] ?></h4>
                                     <p style="font-size: small !important;" class="text-sm-left text-muted"><?php echo datetime_to_text2($row['created']) ?></p></div>
                                     <div class="col-sm-4">
-
                                         <a href="<?php echo $row['source_url'] ?>" title="View Source"  class="btn btn-sm btn-default"><i class="glyphicon glyphicon-home"></i></a>
                                         <button data-dismiss="modal" aria-hidden="true" title="Dismiss Notification" onclick="push_notifications.dismiss_notification('<?php echo $row['notification_id'] ?>');" type="button"  class="btn btn-sm btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
-                                        <button onclick="window.close();" title="Close" type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                                        <button title="Close" onClick="window.close();" type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-remove"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -68,4 +69,3 @@ if ($type == '2')
     }
 }
 ?>
-
