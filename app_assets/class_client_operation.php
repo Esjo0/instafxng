@@ -2252,7 +2252,7 @@ MAIL;
             <br /><br />
             <p>Best Regards,</p>
             <p>Your friend,<br />
-            Bunmi,<br />
+            Mercy,<br />
             Client relations manager<br /></p>
             <p>www.instafxng.com</p>
             <br /><br />
