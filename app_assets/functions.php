@@ -468,5 +468,30 @@ function getCurrentURL()
     $currentURL .= $_SERVER["REQUEST_URI"];
     return $currentURL;
 }
+function endsWith($haystack, $needle) {
+    // search forward starting from end minus needle length characters
+    return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
+}
+
+function add_activity_log()
+{
+    global $admin_object;
+    $admin_code = $_SESSION['admin_unique_code'];
+    $name = $admin_object->get_admin_name_by_code($admin_code);
+    $ip = gethostbyname(gethostname());
+    $date = date('d-m-Y');
+    $time = date('h:i:s A');
+    $url = getCurrentURL();
+    $filepath = "logs".DIRECTORY_SEPARATOR.$admin_code.".txt";
+    if(!file_exists($filepath)){mkdir("logs");}
+    $new_log = fopen($filepath, 'a');
+    $log = "Name: ".$name."\n"
+        ."Ip Address: ".$ip."\n"
+        ."Date: ".$date."\n"
+        ."Time: ".$time."\n"
+        ."Url: ".$url."\n\n";
+    fwrite($new_log, $log);
+    fclose($new_log);
+}
 
 
