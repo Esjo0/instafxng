@@ -333,9 +333,10 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     </div>
                                     <hr/>
                                     
-                                    <p><strong>System Messages</strong></p>
+                                    <p><strong>System</strong></p>
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="79" id="" <?php if (in_array(79, $my_pages)) { echo 'checked="checked"'; } ?>/> System Messages</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="239" id="" <?php if (in_array(239, $my_pages)) { echo 'checked="checked"'; } ?>/> System Activity Logs</label></div></div>
                                     </div>
                                     <hr/>
                                     

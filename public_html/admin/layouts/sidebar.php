@@ -207,7 +207,16 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(76, $my_pages_sidebar)) { ?><li><a href="list_of_visitors.php">List Of Visitors</a></li><?php } ?>
                     </ul>
                 </li>
-                <?php if (in_array(79, $my_pages_sidebar)) { ?><li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li><?php } ?>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear fa-fw"></i> System<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(79, $my_pages_sidebar)) { ?><li><a href="system_message.php">System Messages</a></li><?php } ?>
+                        <div class="divider"></div>
+                        <!-- 84 -->
+                        <?php if (in_array(239, $my_pages_sidebar)) { ?><li><a href="system_activity_logs.php"> System Activity Logs</a></li><?php } ?>
+                    </ul>
+                </li>
+                <?php /*if (in_array(79, $my_pages_sidebar)) { */?><!--<li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li>--><?php /*} */?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bookmark fa-fw"></i> Campaign<b class="caret"></b></a>
                     <ul class="dropdown-menu">
