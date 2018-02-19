@@ -665,7 +665,7 @@ MAIL;
     public function mail_academy_login_details($client_first_name, $client_email) {
         global $system_object;
 
-        $subject = "$client_first_name, I've got something for you. Get in now!";
+        $subject = "$client_first_name, your Journey to Consistent Income Starts Here";
         $message =
 <<<MAIL
 <div style="background-color: #F3F1F2">
@@ -673,23 +673,21 @@ MAIL;
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Hello&nbsp;$client_first_name,</p>
-            <p>My name is Bunmi from InstaForex Nigeria. Does the name ring a bell?</p>
-            <p>You registered to take our Free online Forex training course sometimes ago and I&rsquo;m super glad to inform you that you can now take the training wherever you are!</p>
-            <p>You wanted a very simple, easy to follow training that you can take from your house, office or even on your bed. Now you can even take the course from your phone.</p>
-            <p>Within the next hour, you will be placing informed trades and increase your chances of taking your slice of the 5.3 Billion Dollars from the Forex market.</p>
-            <p>Guess what! It is free (at least for now).</p>
-            <p><strong><a href="http://bit.ly/2ffEeKl" target="_blank">Click Here to Start the Training Now.</a></strong></p>
-            <p>$client_first_name, we are taking in just 100 people at this time, for this brand new Forex Money Maker Course and I really want you to be one of them. The slots are filling up very fast.</p>
-            <p>Please don&rsquo;t miss this. Go ahead and login to the training immediately to secure your spot. Don&rsquo;t worry you can take a break and continue later, so long as you have started and your spot is secured.</p>
-            <p><strong><a href="http://bit.ly/2ffEeKl" target="_blank">Click Here to Start the Training Now.</a></strong></p>
-            <p>This will be your best shot at generating a healthy side income from forex trading. Go ahead and make the move now.</p>
-            <p>Click <a href="http://bit.ly/2ffEeKl">here</a> to start the Forex Money Maker Course now so you can launch your Forex trading entry with a big bang.</p>
-            <p>See you on the other side. Secure your spot now. The 100 spots are filling up really fast. Don&rsquo;t wait till it will be too late.</p>
+            <p>Hello $client_first_name,</p>
+            <p>A very warm welcome to you. The first step on the journey to making consistent income from Forex trading is getting adequate knowledge and I’m glad yours has begun.</p>
+            <p>Tighten your seat belt as this is going to be an amazing journey and I can only giggle right now as I know that when you are done, you will be armed with enough knowledge to conquer the world, in this case, take all that you deserve from life instead of just settling with what life has to offer. </p>
+            <li>
+                <ul>Be sure to give this training your 100% attention and thoroughly go through each lesson without forgetting to attempt all the test exercises.</ul>
+                <ul>Don’t hesitate to use any of the message box to ask a question when you need more clarity on something or you have a hard time understanding a particular lesson and you will be swiftly responded to.</ul>
+                <ul>Rest assured that I am fully committed to holding your hands even as I guide you through all the lessons of this course.</ul>
+            </li>
+            <p>$client_first_name, brace up for you are about to start one heck of an amazing journey that leads you to getting all that you deserve from life.</p>
+            <p>It’s a Big Welcome once again from me to you and I look forward to seeing you on the other side.</p>
             <p><a href="http://bit.ly/2ffEeKl" target="_blank">Here is the link to the online training again.</a></p>
             <p>&nbsp;</p>
             <p>Best Regards,&nbsp;</p>
-            <p>Bunmi,</p>
+            <p>Your friend,</p>
+            <p>Mercy,</p>
             <p>Clients Relations Manager<br />Instafxng&nbsp;</p>
             <p>&nbsp;</p>
 
