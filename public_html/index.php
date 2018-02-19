@@ -36,9 +36,9 @@ $thisPage = "Home";
 
                     <div  class="item super-shadow page-top-section">
                         <div class="row ">
-                            <a href="https://instafxng.com/deposit_funds.php" title="click for details">
+                            <a href="https://instafxng.com/loyalty.php" title="click for details">
                                 <center>
-                                    <img src="images/VALENTINE.png" alt="" class="img-responsive" />
+                                    <img src="images/ilpr_lead_image.jpg" alt="" class="img-responsive" />
                                 </center>
                             </a>
                         </div>
