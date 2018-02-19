@@ -2381,5 +2381,20 @@ MAIL;
         return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
     }
 
+    public function get_last_trade_date($user_code) {
+        global $db_handle;
+
+        $query = "SELECT td.date_earned
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE u.user_code = '$user_code' ORDER BY td.date_earned DESC LIMIT 1";
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $last_trade_date = $fetched_data[0]['date_earned'];
+
+        return $last_trade_date ? $last_trade_date : false;
+    }
 
 }

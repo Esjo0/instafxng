@@ -48,6 +48,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(1, $my_pages_sidebar)) { ?><li><a href="account_officers.php" title="Account Officers">Account Officers</a></li><?php } ?>
                     </ul>
                 </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-fw"></i> Client Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -63,6 +64,12 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(15, $my_pages_sidebar)) { ?><li><a href="client_doc_verify.php" title="Verify Documents">Verify Documents</a></li><?php } ?>
                         <?php if (in_array(202, $my_pages_sidebar)) { ?><li><a href="client_failed_sms_code.php" title="Failed SMS Code">Failed SMS Code</a></li><?php } ?>
                         <?php if (in_array(16, $my_pages_sidebar)) { ?><li><a href="client_bank_verify.php" title="Moderate Bank Account">Moderate Bank Account</a></li><?php } ?>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-map fa-fw"></i> Client Category<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
                         <?php if (in_array(17, $my_pages_sidebar)) { ?><li><a href="client_level_one.php" title="Level One Clients">Level 1 Clients</a></li><?php } ?>
                         <?php if (in_array(18, $my_pages_sidebar)) { ?><li><a href="client_level_two.php" title="Level Two Clients">Level 2 Clients</a></li><?php } ?>
                         <?php if (in_array(19, $my_pages_sidebar)) { ?><li><a href="client_level_three.php" title="Level Three Clients">Level 3 Clients</a></li><?php } ?>
@@ -73,6 +80,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_commission_17.php" title="Commission Clients 17">Commission Clients 17</a></li><?php } ?>
                     </ul>
                 </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-star-half-o fa-fw"></i> System Insights<b class="caret"></b></a>
                     <ul class="dropdown-menu">
