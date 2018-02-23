@@ -53,61 +53,21 @@ $thisPage = "Home";
                     </div>
                     
                     <div class="text-center section-tint super-shadow">
-                        <h2>Forex Education</h2>
-                        <h4>All successful traders once started as newbies and studied trading from 
-                            scratch gradually discovering its basics and gaining experience.</h4>
-                        <p>Enrol for any course and get up to $100 Education Bonus</p>
+                        <!--<p>Enrol for any course and get up to $100 Education Bonus</p>-->
                         <br>
                         <div class="row">
-                            <div class="col-sm-4">
-                                <span class="fa fa-money fa-3x icon-tune"></span>
-                                <h4>FREE SEMINAR</h4>
-                                <p>The free seminar showcases the numerous ways to earn in the
-                                    Forex market. Grab this unique opportunity.</p>
-                                <a href="free_seminar.php" title="Free Seminar for Newbies" class="btn btn-default">Learn More</a>
+                            <div class="col-sm-6">
+                                <h2>Forex Profit Academy</h2>
+                                <b class="text-justify">All successful traders once started as newbies and studied trading from
+                                    scratch gradually discovering its basics and gaining experience.</b>
+                                <p>This course is designed to take a beginner by the hand, step by step to become a professional and profitable trader.</p>
+                                <div class="text-center" style="margin-bottom: 10px;"><a href="forex_profit_academy.php" title="Free Profit Academy" class="btn btn-default">Learn More</a></div>
                             </div>
-                            <div class="col-sm-4">
-                                <span class="fa fa-signal fa-3x icon-tune"></span>
-                                <h4>BEGINNER COURSE</h4>
-                                <p>The Forex Beginner course is designed to take newcomers 
-                                    and Forex beginners from the basics through demo-trading 
-                                    up to the point of profitable live trading.</p>
-                                <a href="beginner_traders_course.php" title="Beginner Course" class="btn btn-default">Learn More</a>
-                            </div>
-                            <div class="col-sm-4">
-                                <span class="fa fa-bars fa-3x icon-tune"></span>
-                                <h4>ADVANCE COURSE</h4>
-                                <p>The Forex Advance course is designed to take amateur Traders 
-                                    through different Trading Systems to creating their own 
-                                    system and finally up to the point of profitable trading.</p>
-                                <a href="advanced_traders_course.php" title="Advance Course" class="btn btn-default">Learn More</a>
+                            <div class="col-sm-6">
+                                <img src="images/train.png" alt="" class="img-responsive img-thumbnail" />
                             </div>
                         </div>
                         <br>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <span class="fa fa-graduation-cap fa-3x icon-tune"></span>
-                                <h4>FREEDOM COURSE</h4>
-                                <p>This course is designed to take a beginner by the hand, step
-                                by step to become a professional and profitable trader.</p>
-                                <a href="course.php" title="Freedom Course" class="btn btn-default">Learn More</a>
-                            </div>
-                            <div class="col-sm-4">
-                                <span class="fa fa-credit-card fa-3x icon-tune"></span>
-                                <h4>PRIVATE COURSE</h4>
-                                <p>You can now register for private training and be trained right 
-                                    in your house or selected places of your choice.</p>
-                                <a href="private_course.php" title="Private Course" class="btn btn-default">Learn More</a>
-                            </div>
-                            <div class="col-sm-4">
-                                <span class="fa fa-line-chart fa-3x icon-tune"></span>
-                                <h4>INVESTOR COURSE</h4>
-                                <p>This course is designed for busy people, Investors, who do not 
-                                    wish to trade but wish to make profit by investing in the trading 
-                                    activity of expert traders.</p>
-                                <a href="investor_course.php" title="Investor Course" class="btn btn-default">Learn More</a>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="text-center section-tint super-shadow">
