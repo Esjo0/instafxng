@@ -31,10 +31,10 @@ if (isset($_POST['post_comment']))
     $db_handle->runQuery("INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')");
     if($db_handle->affectedRows() > 0)
     {
-        $content = 'Author: '.$admin_object->get_admin_name_by_code($admin_code) ."\n";
+        //$content = 'Author: '.$admin_object->get_admin_name_by_code($admin_code) ."";
         $content .= 'Message: '.$comment;
         $title = "New Bulletin Comment";
-        $message = "Bulletin Title: ".$selected_bulletin['title']." \n  $content ";
+        $message = "Bulletin Title: ".$selected_bulletin['title']."\r\n     ".$content;
         $recipients = implode(",", $allowed_admin);
         $author = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
         $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".encrypt($bulletin_id);

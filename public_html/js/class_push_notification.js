@@ -35,7 +35,6 @@ function Push_Notifications()
                 if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
                 {
                     document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;
-                    console.log(XMLHttpRequestObject.responseText);
                 }
             };
         }
@@ -57,11 +56,10 @@ function Push_Notifications()
     };
     this.show_alert = function(title, created, author, message, notification_id)
     {
-        alert('Title:'+title+'\n'+
-                'Created: '+created+'\n'+
-                'Author: '+author+'\n'+ message
-        );
-        this.dismiss_notification(notification_id);
+        //console.log('Tit');
+        //console.log('Title:'+title+'\n'+'Created: '+created+'\n'+'Author: '+author+'\n'+ message);
+        alert('Title:'+title+'\n'+'Created: '+created+'\n'+'Author: '+author+'\n'+ message);
+        //this.dismiss_notification(notification_id);
     };
 }
 var push_notifications = new Push_Notifications();
