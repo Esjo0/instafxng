@@ -109,7 +109,7 @@ $education_students = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
 
-                                <p>List of students that have registered but not taken any course.</p>
+                                <p>List of students that actually logged in to the FX Academy portal and are yet to take any course.</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>

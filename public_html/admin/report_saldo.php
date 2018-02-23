@@ -11,26 +11,10 @@ if (isset($_POST['saldo_report'])) {
     
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
-    $trans_type = $_POST['trans_type'];
 
-    $saldo = $system_object->get_saldo_report($from_date, $to_date, $trans_type);
-    
-    $total_deposit = number_format($saldo['deposit'], 2, ".", ",");
-    $total_deposit_dollar = number_format($saldo['deposit_dollar'], 2, ".", ",");
-    $total_withdrawal = number_format($saldo['withdrawal'], 2, ".", ",");
-    $total_withdrawal_dollar = number_format($saldo['withdrawal_dollar'], 2, ".", ",");
-    $saldo_calculated = number_format($saldo['saldo'], 2, ".", ",");
-    $saldo_calculated_dollar = number_format($saldo['saldo_dollar'], 2, ".", ",");
-
-    $deposit_avg = number_format($saldo['deposit_avg'], 2, ".", ",");
-    $withdrawal_avg = number_format($saldo['withdrawal_avg'], 2, ".", ",");
-
-    switch ($saldo['category']) {
-        case 'all': $trans_category = "All Transactions"; break;
-        case '1': $trans_category = "ILPR Transactions"; break;
-        case '2': $trans_category = "NON - ILPR Transactions"; break;
-        default: $trans_category = "Unknown"; break;
-    }
+    $saldo_all = $system_object->get_saldo_report($from_date, $to_date, 'all');
+    $saldo_ilpr = $system_object->get_saldo_report($from_date, $to_date, '1');
+    $saldo_nonilpr = $system_object->get_saldo_report($from_date, $to_date, '2');
 }
 
 ?>
@@ -93,16 +77,7 @@ if (isset($_POST['saldo_report'])) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="trans_type">Transaction Category:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <select name="trans_type" class="form-control" id="trans_type">
-                                                <option value="all" selected>All Transactions</option>
-                                                <option value="1">ILPR Transactions</option>
-                                                <option value="2">Non-ILPR Transactions</option>
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9"><input name="saldo_report" type="submit" class="btn btn-success" value="Calculate" /></div>
                                     </div>
@@ -116,32 +91,36 @@ if (isset($_POST['saldo_report'])) {
                                 </form>
                                 
                                 <hr>
-                                <?php if(isset($saldo_calculated)) { ?>
+                                <?php if(isset($saldo_all)) { ?>
                                     <h5>Saldo Report from <strong><?php echo date('d-M-Y', strtotime($from_date)); ?></strong> to <strong><?php echo date('d-M-Y', strtotime($to_date)); ?></strong></h5>
-                                    <p><strong>Average Deposit Rate:</strong> &dollar; <br />
-                                        <strong>Average Withdrawal Rate:</strong> &dollar; <br />
-                                        <strong>Selected Category: </strong> <?php echo $trans_category; ?>
-                                    </p>
 
                                     <table class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>
                                         <tr>
-                                            <th>Total Deposit</th>
-                                            <th>Total Deposit</th>
-                                            <th>Total Withdrawal</th>
-                                            <th>Total Withdrawal</th>
-                                            <th>Saldo</th>
-                                            <th>Saldo</th>
+                                            <th></th>
+                                            <th>All Transactions</th>
+                                            <th>ILPR Transactions</th>
+                                            <th>Non-ILPR Transactions</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>&#8358; <?php echo $total_deposit; ?></td>
-                                                <td>&dollar; <?php echo $total_deposit_dollar; ?></td>
-                                                <td>&#8358; <?php echo $total_withdrawal; ?></td>
-                                                <td>&dollar; <?php echo $total_withdrawal_dollar; ?></td>
-                                                <td>&#8358; <?php echo $saldo_calculated ?></td>
-                                                <td>&dollar; <?php echo $saldo_calculated_dollar ?></td>
+                                                <td>Total Deposit</td>
+                                                <td>&#8358; <?php echo number_format($saldo_all['deposit'], 2, ".", ","); ?><br />&dollar; <?php echo number_format($saldo_all['deposit_dollar'], 2, ".", ","); ?></td>
+                                                <td>&#8358; <?php echo number_format($saldo_ilpr['deposit'], 2, ".", ","); ?><br />&dollar; <?php echo number_format($saldo_ilpr['deposit_dollar'], 2, ".", ","); ?></td>
+                                                <td>&#8358; <?php echo number_format($saldo_nonilpr['deposit'], 2, ".", ","); ?><br />&dollar; <?php echo number_format($saldo_nonilpr['deposit_dollar'], 2, ".", ","); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Withdrawal</td>
+                                                <td>&#8358; <?php echo number_format($saldo_all['withdrawal'], 2, ".", ","); ?><br />&dollar; <?php echo number_format($saldo_all['withdrawal_dollar'], 2, ".", ","); ?></td>
+                                                <td>&#8358; <?php echo number_format($saldo_ilpr['withdrawal'], 2, ".", ","); ?><br />&dollar; <?php echo number_format($saldo_ilpr['withdrawal_dollar'], 2, ".", ","); ?></td>
+                                                <td>&#8358; <?php echo number_format($saldo_nonilpr['withdrawal'], 2, ".", ","); ?><br />&dollar; <?php echo number_format($saldo_nonilpr['withdrawal_dollar'], 2, ".", ","); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Saldo</td>
+                                                <td>&#8358; <?php echo number_format($saldo_all['saldo'], 2, ".", ","); ?><br />&dollar; <?php echo number_format($saldo_all['saldo_dollar'], 2, ".", ","); ?></td>
+                                                <td>&#8358; <?php echo number_format($saldo_ilpr['saldo'], 2, ".", ","); ?><br />&dollar; <?php echo number_format($saldo_ilpr['saldo_dollar'], 2, ".", ","); ?></td>
+                                                <td>&#8358; <?php echo number_format($saldo_nonilpr['saldo'], 2, ".", ","); ?><br />&dollar; <?php echo number_format($saldo_nonilpr['saldo_dollar'], 2, ".", ","); ?></td>
                                             </tr>
                                         </tbody>
                                     </table>
