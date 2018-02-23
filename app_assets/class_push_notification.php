@@ -6,9 +6,8 @@ class Push_Notification_System
     {
         global $db_handle;
         $query = "INSERT INTO push_notifications (title, message, recipients, author, source_url) VALUES ('$title', '$message', '$recipients','$author', '$source_url')";
-//        $result = $db_handle->runQuery($query);
-//        return $result ? true : false;
-        return true;
+        $result = $db_handle->runQuery($query);
+       return $result ? true : false;
     }
 
     public function get_notifications()
@@ -17,9 +16,8 @@ class Push_Notification_System
         $query = "SELECT * FROM push_notifications ORDER BY created DESC ";
         $result = $db_handle->runQuery($query);
         $result = $db_handle->fetchAssoc($result);
-//        return $result;
-        $result = array();
         return $result;
+
     }
 
     public function update_notification_as_old($notification_id)

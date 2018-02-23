@@ -20,4 +20,3 @@
     </div>
     <hr>
 </header>
-<div id="content"></div>
