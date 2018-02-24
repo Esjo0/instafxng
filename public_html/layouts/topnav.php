@@ -44,7 +44,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-book fa-fw"></i> Education
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="fxacademy/welcome/" title="Forex Profit Academy">Forex Profit Academy</a></li>
+                            <li><a href="forex_profit_academy.php" title="Forex Profit Academy">Forex Profit Academy</a></li>
                             <li><a href="traders_forum.php" title="Forex Traders Forum">Traders Forum</a></li>
                             <!--<li><a href="beginner_traders_course.php" title="Beginner Trader Course">Beginner Trader Course</a></li>
                             <li><a href="advanced_traders_course.php" title="Advance Trader Course">Advance Trader Course</a></li>
