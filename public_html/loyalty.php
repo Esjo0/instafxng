@@ -131,6 +131,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <p>The first round of the InstaFxNg Point Based Loyalty Program and Reward ended on the 30th of
                                     November, 2017 with 10 amazing winners who got cash prizes ranging from N50, 000 up to
                                     N1 000 000.</p>
+                                <center><img src="images/Winners_of_Loyalty_Promo_in_2017.jpeg" class="img-responsive img-thumbnail"></center>
                                 <p>What is thrilling is about the Loyalty rewards how much you can get without doing anything
                                     extra other than just trading as usual.</p>
                                 <p>You do not enter for a draw or trade a particular lot size to qualify <b>"Just Trade!"</b></p>
@@ -145,6 +146,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <p>The Star winner of the 2016/2017 round started trading actively in July 2017 and kept trading
                                     consistently till he worked his way up to the top of the rank scale and emerged the winner of a
                                     whopping <b>One Million Naira</b>.</p>
+                                <center><img src="images/FXDINNER-224.jpg" class="img-responsive img-thumbnail"></center>
                                 <p>It’s neither too late nor too early for you to emerge the star winner by the end of the 2018 round.</p>
 
                                 <h4>Here is how it works...</h4>
@@ -166,13 +168,13 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <h4>But that's not all...</h4>
                                 <p>We will be rewarding $500 to five (5) clients with the highest number of loyalty points as seen from the
                                     monthly ranking for the month in view. The prizes are as follows</p>
-                                <ul>
+                                <center><b><ul>
                                     <li>1st Prize = $150</li>
                                     <li>2nd Prize = $120</li>
                                     <li>3rd Prize = $100</li>
                                     <li>4th Prize = $80</li>
                                     <li>5th prize = $50</li>
-                                </ul>
+                                </ul></b></center>
                                 <p>In addition to the prizes, each winner gets a guaranteed invite to our annual lavish dinner which holds at the
                                     end of every year in December.</p>
 
@@ -181,14 +183,14 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     clients with the highest number of reward points as seen from the cumulative annual
                                     ranking will be awarded prizes. An annual cycle runs from December 1 to November 30 of
                                     the following year. The prizes are as follows</p>
-                                <ul>
+                                <center><b><ul>
                                     <li>1st Prize = N1,000,000</li>
                                     <li>2nd Prize = N500,000</li>
                                     <li>3rd Prize = N250,000</li>
                                     <li>4th Prize = N150,000</li>
                                     <li>5th Prize = N100,000</li>
                                     <li>6th – 10th Prize = N50,000 each</li>
-                                </ul>
+                                </ul></b></center>
                                 <p>Prizes will be presented to winners during our end of the year dinner in December</p>
 
                                 <h4>How much can you earn from this rewards Program...?</h4>
@@ -206,7 +208,6 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
 
                                 <p class="text-left"><a href="loyalty_archive.php" class="btn btn-success" title="Archived Results"><i class="fa fa-arrow-circle-right"></i> Archived Results</a></p>
                                 <br /><hr />
-
                             </div>
 
                             <div class="col-sm-12">
@@ -236,7 +237,6 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse2">How winners are chosen</a></h5>
@@ -266,7 +266,6 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Presentation of Prizes</a></h5>
@@ -280,9 +279,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>
