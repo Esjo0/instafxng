@@ -312,7 +312,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-money fa-fw"></i> Accounting System<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-money fa-fw"></i> Requisition Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(222, $my_pages_sidebar)) { ?><li><a href="accounting_system_requisition_form.php" title="Requisition Form">Requisition Form</a></li><?php } ?>
                         <?php if (in_array(222, $my_pages_sidebar)) { ?><li><a href="accounting_system_requisition_orders.php" title="Requisition Orders">Requisition Orders</a></li><?php } ?>

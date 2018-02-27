@@ -14,6 +14,7 @@ if(isset($_POST['paid']))
 if(isset($_POST['search']))
 {
     $cash_out_details = $obj_acc_system->get_cash_out_details($_POST['cash_out_code']);
+    !isset($cash_out_details) && empty($cash_out_details) ? $message_error = "No Result Found!" : $message_success = "<b>1</b> Result Found!";
 
 }
 
@@ -78,8 +79,8 @@ if(isset($_POST['search']))
                                 <div  class="col-sm-12">
                                     <?php if(isset($_POST['search']))
                                     {
-
-                                        if(isset($cash_out_details) && !empty($cash_out_details)){ ?>
+                                        if(isset($cash_out_details) && !empty($cash_out_details))
+                                        {  ?>
                                         <p><b>NAME: </b> <?php echo $cash_out_details['author_name']; ?></p>
                                         <p><b>AMOUNT: </b>₦<?php echo number_format($cash_out_details['req_order_total'], 2, ".", ","); ?></p>
                                         <p class="text-center"><b>REQUISITION ORDER SUMMARY</b></p>
@@ -113,8 +114,6 @@ if(isset($_POST['search']))
                                             <input name="req_order_code" type="hidden" value="<?php echo $cash_out_details['req_order_code']; ?>">
                                             <button type="submit" name="paid" class="btn btn-success"><i class="glyphicon glyphicon-credit-card"></i> Paid</button>
                                         </form>
-                                    <?php }else{ ?>
-                                        <p class="text-center"><b>Sorry This Cash Out Code Does Not Exist Or Its Order Is Yet To Be Approved Or It Has Already Been Cashed Out.</b></p>
                                     <?php }} ?>
                                 </div>
                             </div>

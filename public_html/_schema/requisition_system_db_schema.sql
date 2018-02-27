@@ -58,4 +58,4 @@ CREATE TABLE `accounting_system_req_order` (
  PRIMARY KEY (`req_order_id`),
  UNIQUE KEY `order_id` (`req_order_id`),
  UNIQUE KEY `req_order_code` (`req_order_code`)
-) 
+)

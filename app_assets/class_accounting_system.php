@@ -8,7 +8,6 @@ public function get_cash_out_details($cash_out_code)
         $query = "SELECT 
           accounting_system_req_order.req_order_total AS req_order_total,
           accounting_system_req_order.req_order_code AS req_order_code, 
-          accounting_system_req_order.req_order AS req_order, 
           accounting_system_req_order.created AS created, 
            accounting_system_req_order.status AS status,
           CONCAT(admin.first_name, SPACE(1), admin.last_name) AS author_name

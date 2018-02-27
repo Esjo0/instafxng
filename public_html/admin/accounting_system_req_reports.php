@@ -12,6 +12,8 @@ if (isset($_POST['report']))
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
     extract($_POST);
+    if($options == '0'){$ps = 1;}
+    if($options == '2'){$ps = 2;}
 
     if(isset($location) && !empty($location))
     {
@@ -25,7 +27,7 @@ if (isset($_POST['report']))
           CONCAT(admin.first_name, SPACE(1), admin.last_name) AS author_name
           FROM admin, accounting_system_req_order, accounting_system_office_locations, accounting_system_req_item
           WHERE accounting_system_req_order.author_code = admin.admin_code
-          AND accounting_system_req_order.payment_status = '2'
+          AND accounting_system_req_order.payment_status = '$ps'
           AND accounting_system_req_order.location = accounting_system_office_locations.location_id
           AND STR_TO_DATE(accounting_system_req_order.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
           AND accounting_system_req_item.item_app = '$options'
@@ -45,7 +47,7 @@ if (isset($_POST['report']))
           CONCAT(admin.first_name, SPACE(1), admin.last_name) AS author_name
           FROM admin, accounting_system_req_order, accounting_system_office_locations, accounting_system_req_item
           WHERE accounting_system_req_order.author_code = admin.admin_code
-          AND accounting_system_req_order.payment_status = '2'
+          AND accounting_system_req_order.payment_status = '$ps'
           AND accounting_system_req_order.location = accounting_system_office_locations.location_id
           AND STR_TO_DATE(accounting_system_req_order.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
           AND accounting_system_req_item.item_app = '$options'
@@ -100,8 +102,8 @@ if (isset($_POST['report']))
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
-        <script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+        <!--<script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>-->
         <script>
             function print_report(divName)
             {
@@ -198,7 +200,7 @@ if (isset($_POST['report']))
                                                 <div class="col-sm-4">
                                                     <div class="radio-inline">
                                                         <label for="">
-                                                            <input id="2" class="radio" type="radio" name="options" value="2" required checked/> Approved
+                                                            <input id="2" class="radio" type="radio" name="options" value="2" required /> Approved
                                                         </label>
                                                     </div>
                                                 </div>
@@ -227,8 +229,10 @@ if (isset($_POST['report']))
                                 <hr>
                                 <?php if((isset($from_date) && isset($to_date)) && isset($reports)):?>
                                     <div id="dvTable">
-                                    <h5>Requisition Reports between <strong><?php echo $from_date." and ".$to_date; ?> </strong></h5>
+                                    <h5><?php if($options == '2'){ echo 'Approved';}if($options == '0'){ echo 'Declined';} ?> Requisition Reports between <strong><?php echo $from_date." and ".$to_date; ?> </strong></h5>
+                                        <?php if(!$options == '0'){ ?>
                                     <p><strong>Total Expenses:</strong>₦<?php echo number_format($stats['total_expenses'], 2, ".", ","); ?></p>
+                                        <?php } ?>
 
 
                                     <table  class="table table-responsive table-striped table-bordered table-hover">

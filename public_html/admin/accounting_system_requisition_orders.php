@@ -23,10 +23,9 @@ if(isset($_POST['process_refund']))
     $db_handle->affectedRows() > 0 ? $message_success = "Your refund would be processed shortly." : $message_error = "The process failed please try again.";
 }
 $query = "SELECT 
-          payment_status,
+          accounting_system_req_order.payment_status,
           accounting_system_req_order.req_order_total AS req_order_total,
           accounting_system_req_order.req_order_code AS req_order_code, 
-          accounting_system_req_order.req_order AS req_order, 
           accounting_system_req_order.created AS created, 
           accounting_system_req_order.status AS status,
           accounting_system_req_order.comments AS comments,
@@ -217,7 +216,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                                                                 <?php if ($row['status'] == "DECLINED"): ?>
                                                                                                     <p class="text-center"><b>This requisition order has been DECLINED.</b></p>
                                                                                                 <?php endif; ?>
-                                                                                                <?php include 'layouts/footer.php'; ?>
+                                                                                                <?php //include 'layouts/footer.php'; ?>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
