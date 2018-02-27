@@ -222,7 +222,6 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <div class="divider"></div>
                         <!-- 84 -->
                         <?php if (in_array(239, $my_pages_sidebar)) { ?><li><a href="system_activity_logs.php"> System Activity Logs</a></li><?php } ?>
-                        <?php if (in_array(240, $my_pages_sidebar)) { ?><li><a href="system_digital_signage.php"> Digital Signage</a></li><?php } ?>
                     </ul>
                 </li>
                 <?php /*if (in_array(79, $my_pages_sidebar)) { */?><!--<li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li>--><?php /*} */?>
