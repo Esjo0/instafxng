@@ -59,6 +59,20 @@ $projects = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script>
+            function validate_refund(id, max_value, btn_id)
+            {
+                var value = parseFloat(document.getElementById(id).value);
+                var max_value1 = parseFloat(max_value);
+                if(value > max_value1)
+                {
+                    alert("Please cross check the amount that was spent\n" +
+                        "It should not be above the allocated amount for this item.");
+                    document.getElementById(id).value = max_value;
+                    return;
+                }
+            }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -283,10 +297,9 @@ $projects = $db_handle->fetchAssoc($result);
                                                                                     <td><input type="hidden" name="<?php echo $row4['item_id'] ?>[item_id]" value="<?php echo $row4['item_id'] ?>" />
                                                                                         <div class="input-group">
                                                                                             <span class="input-group-addon">₦</span>
-                                                                                        <input class="form-control" type="text" name="<?php echo $row4['item_id'] ?>[spent]" />
+                                                                                        <input id="<?php echo $row4['item_id'] ?>_spent" onchange="validate_refund('<?php echo $row4['item_id'] ?>_spent', <?php echo $row4['app_total_cost']; ?>, 'process_refund_<?php echo $row4['item_id'] ?>')" class="form-control" type="number" name="<?php echo $row4['item_id'] ?>[spent]" required/>
                                                                                         </div>
                                                                                     </td>
-
                                                                                 </tr>
                                                                             <?php }?>
                                                                             </tbody>
@@ -294,7 +307,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <input type="hidden" name="req_order_code" value="<?php echo $row['req_order_code']; ?>">
-                                                                        <button name="process_refund" type="submit" class="btn btn-info">Process</button>
+                                                                        <button id="process_refund_<?php echo $row4['item_id'] ?>" name="process_refund" type="submit" class="btn btn-info">Process</button>
                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                                                     </div>
                                                                 </div>
