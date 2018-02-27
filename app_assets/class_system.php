@@ -874,6 +874,12 @@ class InstafxngSystem {
 
     }
 
+    public function get_total_accounts() {
+        global $db_handle;
+        $query = "SELECT ifx_acct_no FROM user_ifxaccount";
+        return $db_handle->numRows($query);
+    }
+
     public function get_total_clients() {
         global $db_handle;
 

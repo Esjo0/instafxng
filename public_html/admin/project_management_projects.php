@@ -24,7 +24,8 @@ if(isset($_POST['new_project']))
 
     $all_allowed_admin = substr_replace($all_allowed_admin, "", 0, 1);
 
-    $new_project = $obj_project_management->create_new_project($title, $description, $deadline, $all_allowed_admin, $admin_code);
+    $supervisor = $obj_project_management->get_super_admin_by_name('Toye Oyeleke').",".$admin_code;
+    $new_project = $obj_project_management->create_new_project($title, $description, $deadline, $all_allowed_admin, $supervisor);
     if ($new_project)
     {
         $message_success = "You have successfully created a new project.";
@@ -34,7 +35,6 @@ if(isset($_POST['new_project']))
         $message_error = "The operation was not successful, please try again.";
     }
 }
-
 if(isset($_POST['edit_project']))
 {
 
@@ -48,19 +48,11 @@ if(isset($_POST['edit_project']))
     {
         $all_allowed_admin = $all_allowed_admin . "," . $allowed_admin[$i];
     }
-    //$all_allowed_admin = substr_replace($all_allowed_admin, "", 0, 1);
-    //var_dump($all_allowed_admin);
-    $update_project = $obj_project_management->update_project($title, $description, $deadline, $all_allowed_admin, $admin_code, $project_code);
-    if ($update_project)
-    {
-        $message_success = "You have successfully updated a project.";
-    }
-    else
-    {
-        $message_error = "The operation was not successful, please try again.";
-    }
+    $supervisor = $obj_project_management->get_super_admin_by_name('Toye Oyeleke').",".$admin_code;
+    $update_project = $obj_project_management->update_project($title, $description, $deadline, $all_allowed_admin, $supervisor, $project_code);
+    if ($update_project){$message_success = "You have successfully updated a project.";}
+    else{$message_error = "The operation was not successful, please try again.";}
 }
-
 if(isset($_POST['new_comment']))
 {
     $project_code = $db_handle->sanitizePost(trim($_POST['project_code']));
@@ -210,7 +202,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                                             <div class="col-sm-4">
                                                                                 <div class="checkbox">
                                                                                     <label for="">
-                                                                                        <input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" />
+                                                                                        <input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if($key['full_name'] == 'Toye Oyeleke'){echo "disabled";} ?>/>
                                                                                         <?php echo $key['full_name']; ?>
                                                                                     </label>
                                                                                 </div>
@@ -237,8 +229,6 @@ $projects = $db_handle->fetchAssoc($result);
                                                                     });
                                                                 </script>
                                                                 <hr/>
-
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -273,7 +263,8 @@ $projects = $db_handle->fetchAssoc($result);
                                     foreach ($projects as $row) { ?>
                                         <?php
                                         $executors = explode("," ,$row['executors']);
-                                        if (in_array($admin_code, $executors, true) || $row['supervisor_code'] == $admin_code):
+                                        $supervisor_code = explode("," ,$row['supervisor_code']);
+                                        if (in_array($admin_code, $executors, true) || in_array($admin_code, $supervisor_code, true)):
                                             ?>
 
                                             <tr>
@@ -297,8 +288,6 @@ $projects = $db_handle->fetchAssoc($result);
                                                                                     <strong>Project Title: </strong><?php echo $row['title'];?>
                                                                                 </p>
                                                                                 <hr/>
-
-
                                                                                 <p class="text-center">
                                                                                     <strong>Description</strong>
                                                                                 </p>
@@ -312,12 +301,6 @@ $projects = $db_handle->fetchAssoc($result);
                                                                                     <?php echo $row['deadline'];?>
                                                                                 </p>
                                                                                 <hr/>
-
-
-
-
-
-
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -348,7 +331,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                     <br/>
                                                     <?php
                                                     
-                                                    if($row['supervisor_code'] == $admin_code)
+                                                    if(in_array($admin_code, $supervisor_code, true))
                                                     {
                                                         echo '<button title="Add New Announcement" type="button" data-toggle="modal" data-target="#new_comment'.$row['project_code'].'" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i></button>';
                                                     }
@@ -429,7 +412,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </td>
                                                 <?php
-                                                if($row['supervisor_code'] == $admin_code):?>
+                                                if(in_array($admin_code, $supervisor_code, true)):?>
                                                     <td>
                                                         <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $row['project_code'] ?>" class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
                                                         <div id="edit_project<?php echo $row['project_code'] ?>" class="modal fade" role="dialog">
@@ -459,7 +442,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                                                         <div class="col-sm-10">
                                                                                             <?php $allowed_admin = explode(",", $row['executors']);
                                                                                             foreach($all_admin_member AS $key) { ?>
-                                                                                                <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
+                                                                                                <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } if($key['full_name'] == 'Toye Oyeleke'){echo "disabled";}?>/> <?php echo $key['full_name']; ?></label></div></div>
                                                                                             <?php } ?>
                                                                                         </div>
                                                                                     </div>

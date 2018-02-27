@@ -35,7 +35,10 @@ function Push_Notifications()
             {
                 if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
                 {
-                    if(response_div == 'content'){document.getElementById(response_div).innerHTML += XMLHttpRequestObject.responseText;}
+                    if(response_div == 'content')
+                    {
+                        document.getElementById(response_div).innerHTML += XMLHttpRequestObject.responseText;
+                    }
                     else{document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;}
 
                 }

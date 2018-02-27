@@ -51,6 +51,8 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
 
         $selected_point_frozen_trans_id = $client_operation->get_loyalty_point_frozen_transaction($user_code);
 
+        $last_trade_date = $client_operation->get_last_trade_date($user_code);
+
         switch($client_verification) {
             case '0': $verification_level = "Not Verified"; break;
             case '1': $verification_level = "Level 1 Verified"; break;
@@ -264,7 +266,8 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                                         
                                                     </tbody>
                                                 </table>
-                                                
+
+                                                <p><strong>Last Trading Date: </strong> <?php if($last_trade_date) { echo datetime_to_text2($last_trade_date); } else { echo 'Nil'; } ?></p>
                                             </div>
                                         </div>
                                     </div>

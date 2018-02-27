@@ -42,14 +42,13 @@ if (isset($_POST['process_customer']))
     {
         $message_error = "All fields are compulsory, please try again.";
     }
-    elseif (!check_email($email))
+    elseif(!check_email($email))
     {
         $message_error = "You have provided an invalid email address. Please try again.";
     }
     else
         {
         $new_log = $obj_customer_care_log->add_new_customer_log($_SESSION['admin_unique_code'], $first_name, $last_name, $email, $phone, $con_desc, $prospect_source, $other_name);
-        //($_SESSION['admin_unique_code'], $first_name, $other_name, $last_name, $email_address, $phone_no, $con_desc, $prospect_source);
             if($new_log)
             {
                 $message_success = "You have successfully created a new log.";

@@ -48,6 +48,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(1, $my_pages_sidebar)) { ?><li><a href="account_officers.php" title="Account Officers">Account Officers</a></li><?php } ?>
                     </ul>
                 </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-fw"></i> Client Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -63,6 +64,12 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(15, $my_pages_sidebar)) { ?><li><a href="client_doc_verify.php" title="Verify Documents">Verify Documents</a></li><?php } ?>
                         <?php if (in_array(202, $my_pages_sidebar)) { ?><li><a href="client_failed_sms_code.php" title="Failed SMS Code">Failed SMS Code</a></li><?php } ?>
                         <?php if (in_array(16, $my_pages_sidebar)) { ?><li><a href="client_bank_verify.php" title="Moderate Bank Account">Moderate Bank Account</a></li><?php } ?>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-map fa-fw"></i> Client Category<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
                         <?php if (in_array(17, $my_pages_sidebar)) { ?><li><a href="client_level_one.php" title="Level One Clients">Level 1 Clients</a></li><?php } ?>
                         <?php if (in_array(18, $my_pages_sidebar)) { ?><li><a href="client_level_two.php" title="Level Two Clients">Level 2 Clients</a></li><?php } ?>
                         <?php if (in_array(19, $my_pages_sidebar)) { ?><li><a href="client_level_three.php" title="Level Three Clients">Level 3 Clients</a></li><?php } ?>
@@ -73,6 +80,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_commission_17.php" title="Commission Clients 17">Commission Clients 17</a></li><?php } ?>
                     </ul>
                 </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-star-half-o fa-fw"></i> System Insights<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -138,9 +146,10 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(209, $my_pages_sidebar)) { ?><li><a href="project_management_all_archived_projects.php" title="All Projects">All Archived Projects</a></li><?php } ?>
                         <?php if (in_array(203, $my_pages_sidebar)) { ?><li><a href="project_management_archived_projects.php" title="Projects">Archived Projects</a></li><?php } ?>
                         <!--                        --><?php //if (in_array(204, $my_pages_sidebar)) { ?><!--<li><a href="project_management_project_report.php" title="Project Reports">Project Reports</a></li>--><?php //} ?>
-                        <?php if (in_array(205, $my_pages_sidebar)) { ?><li><a href="project_management_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li><?php } ?>
+                        <?php /*if (in_array(205, $my_pages_sidebar)) { */?><!--<li><a href="project_management_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li>--><?php /*} */?>
                         <?php if (in_array(210, $my_pages_sidebar)) { ?><li><a href="project_management_all_messages.php" title="All Messaging Boards">All Messaging Boards</a></li><?php } ?>
-                        <!--                        --><?php //if (in_array(206, $my_pages_sidebar)) { ?><!--<li><a href="project_management_messages.php" title="Messaging Board">Messaging Board</a></li>--><?php //} ?>
+
+                        <?php //if (in_array(206, $my_pages_sidebar)) { ?><!--<li><a href="project_management_messages.php" title="Messaging Board">Messaging Board</a></li>--><?php //} ?>
                         <?php if (in_array(207, $my_pages_sidebar)) { ?><li><a href="project_management_reminder_add.php" title="Add New Reminder" >Add New Reminder</a></li><?php } ?>
                         <?php if (in_array(208, $my_pages_sidebar)) { ?><li><a href="project_management_reminder_manage.php" title="Manage Reminders">Manage Reminders</a></li><?php } ?>
                     </ul>
@@ -206,7 +215,17 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(76, $my_pages_sidebar)) { ?><li><a href="list_of_visitors.php">List Of Visitors</a></li><?php } ?>
                     </ul>
                 </li>
-                <?php if (in_array(79, $my_pages_sidebar)) { ?><li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li><?php } ?>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear fa-fw"></i> System<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(79, $my_pages_sidebar)) { ?><li><a href="system_message.php">System Messages</a></li><?php } ?>
+                        <div class="divider"></div>
+                        <!-- 84 -->
+                        <?php if (in_array(239, $my_pages_sidebar)) { ?><li><a href="system_activity_logs.php"> System Activity Logs</a></li><?php } ?>
+                        <?php if (in_array(240, $my_pages_sidebar)) { ?><li><a href="system_digital_signage.php"> Digital Signage</a></li><?php } ?>
+                    </ul>
+                </li>
+                <?php /*if (in_array(79, $my_pages_sidebar)) { */?><!--<li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li>--><?php /*} */?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bookmark fa-fw"></i> Campaign<b class="caret"></b></a>
                     <ul class="dropdown-menu">

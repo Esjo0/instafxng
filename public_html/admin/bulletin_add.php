@@ -165,7 +165,16 @@ if($get_params['x'] == 'edit') {
                                         <label class="control-label col-sm-2" for="allowed_admin">Allowed Admin:</label>
                                         <div class="col-sm-10">
                                             <?php foreach($all_admin_member AS $key) { ?>
-                                                <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
+                                                <div class="col-sm-4">
+                                                    <div class="checkbox">
+                                                        <label for="">
+                                                            <input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } if($key['full_name'] == 'Toye Oyeleke'){ echo'checked="checked" disabled';} ?>/> <?php echo $key['full_name']; ?>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <?php if($key['full_name'] == 'Toye Oyeleke'){?>
+                                                <input type="hidden" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>"/>
+                                                <?php } ?>
                                             <?php } ?>
                                         </div>
                                     </div>

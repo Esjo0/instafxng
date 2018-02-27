@@ -173,7 +173,7 @@ if(empty($selected_course)) {
                                                     <td><?php echo $row['lesson_order']; ?></td>
                                                     <td><?php echo $db_handle->numRows("SELECT edu_lesson_exercise_id FROM edu_lesson_exercise WHERE lesson_id = {$row['edu_lesson_id']}"); ?></td>
                                                     <?php
-                                                    $query = "SELECT * FROM edu_lesson_rating WHERE lesson_id = {$row['edu_lesson_id']} AND course_id = $course_id ";
+                                                    $query = "SELECT rating FROM edu_lesson_rating WHERE lesson_id = {$row['edu_lesson_id']} AND course_id = $course_id ";
                                                     $result = $db_handle->runQuery($query);
                                                     $result = $db_handle->fetchAssoc($result);
                                                     $rating = array();

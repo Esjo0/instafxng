@@ -46,12 +46,12 @@
                             <header><i class="fa fa-sitemap fa-fw icon-tune"></i> <strong>Forex Education</strong></header>
                             <article>
                                 <ul>
-                                    <li><a href="free_seminar.php" title="Free Forex Seminars">Free Seminar</a></li>
-                                    <li><a href="beginner_traders_course.php" title="Beginner Trader Course">Beginner Trader Course</a></li>
+                                    <li><a href="forex_profit_academy.php" title="Forex Profit Academy">Forex Profit Academy</a></li>
+                                    <!--<li><a href="beginner_traders_course.php" title="Beginner Trader Course">Beginner Trader Course</a></li>
                                     <li><a href="advanced_traders_course.php" title="Advance Trader Course">Advance Trader Course</a></li>
                                     <li><a href="course.php" title="Forex Freedom Course">Forex Freedom Course</a></li>
                                     <li><a href="private_course.php" title="Forex Private Course">Forex Private Course</a></li>
-                                    <li><a href="investor_course.php" title="Investor Course">Investor Course</a></li>
+                                    <li><a href="investor_course.php" title="Investor Course">Investor Course</a></li>-->
                                 </ul>
                             </article>
                             <header><i class="fa fa-sitemap fa-fw icon-tune"></i> <strong>Sponsored</strong></header>
