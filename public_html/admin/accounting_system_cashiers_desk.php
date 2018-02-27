@@ -7,17 +7,14 @@ if (!$session_admin->is_logged_in())
 
 if(isset($_POST['paid']))
 {
-    $req_order_code = $_POST['req_order_code'];
-    $query = "UPDATE accounting_system_req_order SET payment_status = '2' WHERE req_order_code = '$req_order_code' LIMIT 1 ";
-    $result = $db_handle->runQuery($query);
-    if($result)
-    {
-        $message_success = "Operation Successful";
-    }
-    else
-    {
-        $message_error = "Operation Failed";
-    }
+    $result = $obj_acc_system->paid_req_order($_POST['req_order_code']);
+    $result ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
+}
+
+if(isset($_POST['search']))
+{
+    $cash_out_details = $obj_acc_system->get_cash_out_details($_POST['cash_out_code']);
+
 }
 
 ?>
@@ -32,58 +29,7 @@ if(isset($_POST['paid']))
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
-        <script type="text/javascript">
-            var XMLHttpRequestObject = false;
-
-            if (window.XMLHttpRequest)
-            {
-                XMLHttpRequestObject = new XMLHttpRequest();
-            }
-            else if (window.ActiveXObject)
-            {
-                XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            function getRandomInt(min, max)
-            {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
-            function RandomString(strlen)
-            {
-                const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-                var result = "";
-                for (var i=0; i<strlen; i++) {
-                    result += chars[getRandomInt(0,35)];
-                }
-                return result;
-            }
-            function search()
-            {
-
-                if(XMLHttpRequestObject)
-                {
-                    XMLHttpRequestObject.open("POST", "accounting_system_cashiers_desk_server.php");
-                    XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-                    XMLHttpRequestObject.onreadystatechange = function()
-                    {
-                        if (XMLHttpRequestObject.readyState == 4 &&
-                            XMLHttpRequestObject.status == 200)
-                        {
-                            var returnedData = XMLHttpRequestObject.responseText;
-                            var messageDiv = document.getElementById('messageDiv');
-                            messageDiv.innerHTML = returnedData;
-                        }
-                    };
-                    var cash_out_code = document.getElementById('cash_out_code').value;
-                    //window.alert("req_order=" + req_order + "&req_order_code=" + req_order_code + "&req_order_total=" + req_order_total);
-
-                    XMLHttpRequestObject.send("cash_out_code=" + cash_out_code);
-                    //document.getElementById('cash_out_code').innerHTML = "";
-                }
-
-                return false;
-            }
-
-        </script>
+        <script src="../js/class_accounting_system.js"></script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -122,7 +68,7 @@ if(isset($_POST['paid']))
                                                         <input name="cash_out_code" type="text" id="cash_out_code" placeholder="Enter A Cash Out Code Here..." class="form-control" required>
                                                     </div>
                                                     <div class="col-md-1">
-                                                        <button onclick="search()" type="button" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+                                                        <button name="search" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -130,9 +76,46 @@ if(isset($_POST['paid']))
                                     </form>
                                 </div>
                                 <div  class="col-sm-12">
-                                    <div id="messageDiv">
+                                    <?php if(isset($_POST['search']))
+                                    {
 
-                                    </div>
+                                        if(isset($cash_out_details) && !empty($cash_out_details)){ ?>
+                                        <p><b>NAME: </b> <?php echo $cash_out_details['author_name']; ?></p>
+                                        <p><b>AMOUNT: </b>₦<?php echo number_format($cash_out_details['req_order_total'], 2, ".", ","); ?></p>
+                                        <p class="text-center"><b>REQUISITION ORDER SUMMARY</b></p>
+                                        <div class="col-sm-12">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Item Description</th>
+                                                    <th>Number Of Items</th>
+                                                    <th>Approved Unit Cost</th>
+                                                    <th>Approved Total Cost</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php
+                                                $order_list = $obj_acc_system->get_order_list($cash_out_details['req_order_code']);
+                                                foreach($order_list as $row3) {?>
+                                                    <tr>
+                                                        <td><?php echo $obj_acc_system->item_app_status($row3['item_app']);?></td>
+                                                        <td><?php echo $row3['item_desc'];?></td>
+                                                        <td><?php echo $row3['app_no_of_items'];?></td>
+                                                        <td>₦ <?php echo number_format($row3['app_unit_cost'], 2, ".", ",") ;?></td>
+                                                        <td>₦ <?php echo number_format($row3['app_total_cost'], 2, ".", ",") ;?></td>
+                                                    </tr>
+                                                <?php }?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                            <input name="req_order_code" type="hidden" value="<?php echo $cash_out_details['req_order_code']; ?>">
+                                            <button type="submit" name="paid" class="btn btn-success"><i class="glyphicon glyphicon-credit-card"></i> Paid</button>
+                                        </form>
+                                    <?php }else{ ?>
+                                        <p class="text-center"><b>Sorry This Cash Out Code Does Not Exist Or Its Order Is Yet To Be Approved Or It Has Already Been Cashed Out.</b></p>
+                                    <?php }} ?>
                                 </div>
                             </div>
                         </div>
