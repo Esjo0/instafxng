@@ -59,16 +59,10 @@ function Push_Notifications()
         //console.log('hello');
         var message2 = message.replace(/<br\s*[\/]?>/gi, "\n");
         alert('Title:'+title+'\n'+'Created: '+created+'\n'+'Author: '+author+'\n'+ message2);
-        //this.dismiss_notification(notification_id);
+        this.dismiss_notification(notification_id);
     };
 }
 var push_notifications = new Push_Notifications();
 
-function show_alert(title, created, author, message, notification_id)
-{
-    //console.log('hello');
-    var message2 = message.replace(/<br\s*[\/]?>/gi, "\n");
-    alert('Title:'+title+'\n'+'Created: '+created+'\n'+'Author: '+author+'\n'+ message2);
-    //this.dismiss_notification(notification_id);
-}
+
 
