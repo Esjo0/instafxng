@@ -1,20 +1,21 @@
 <?php
-require_once '../init/initialize_general.php';
+require_once '../init/initialize_client.php';
 $thisPage = "";
 
 if (isset($_POST['submit2']) || isset($_POST['submit'])) {
     foreach ($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
-
     extract($_POST);
-
     if (empty($full_name) || empty($email_address) || empty($phone_number)) {
         $message_error = "All fields must be filled, please try again";
     } elseif (!check_email($email_address)) {
         $message_error = "You have supplied an invalid email address, please try again.";
-    } else {
-
+    } elseif (check_number($phone_number) != 5) {
+        $message_error = "You have supplied an invalid phone number, please try again.";
+    } elseif (check_duplicate($email_address, $phone_number)) {
+    $message_error = "Duplicate Registration. <br/> Please use another phone number or email address."; }
+    else {
         $client_full_name = $full_name;
         $full_name = str_replace(".", "", $full_name);
         $full_name = ucwords(strtolower(trim($full_name)));
@@ -44,42 +45,63 @@ if (isset($_POST['submit2']) || isset($_POST['submit'])) {
 
         $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, campaign_period) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '2')";
         $result = $db_handle->runQuery($query);
+        $inserted_id = $db_handle->insertedId();
 
-        if($db_handle->affectedRows() > 0) {
+        if ($result) {
+
             $assigned_account_officer = $system_object->next_account_officer();
 
-            $query = "UPDATE free_training_campaign SET attendant = $assigned_account_officer WHERE email = '$email_address' LIMIT 1";
+            $query = "UPDATE free_training_campaign SET attendant = $assigned_account_officer WHERE free_training_campaign_id = $inserted_id LIMIT 1";
             $db_handle->runQuery($query);
 
             // create profile for this client
-			$client_operation = new clientOperation();
-			$log_new_client = $client_operation->new_user_ordinary($client_full_name, $email_address, $phone_number, $assigned_account_officer);
+            $client_operation = new clientOperation();
+            $log_new_client = $client_operation->new_user_ordinary($client_full_name, $email_address, $phone_number, $assigned_account_officer);
+            //...//
 
-//			$user_code = $client_operation->get_user_by_email($email_address);
-//			$user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
-//			$found_user = array(
-//				'user_code' => $user_ifx_details['client_user_code'],
-//				'status' => $user_ifx_details['client_status'],
-//				'first_name' => $user_ifx_details['client_first_name'],
-//				'last_name' => $user_ifx_details['client_last_name'],
-//				'email' => $user_ifx_details['client_email']
-//			);
-//			$session_client->login($found_user);
-//
-//			// Check if this is a first time login, then log the date
-//			if(empty($user_ifx_details['client_academy_first_login']) || is_null($user_ifx_details['client_academy_first_login'])) {
-//				$client_operation->log_academy_first_login($user_ifx_details['client_first_name'], $user_ifx_details['client_email'], $user_ifx_details['client_user_code']);
-//			}
 
-            header("Location: https://instafxng.com/forex-income/thank-you/thank-you.php");
-//            redirect_to('thank-you/thank-you.php');
-        } else {
-            $message_error = "An error occurred, please try again.";
+            $user_code = $client_operation->get_user_by_email($email_address);
+
+            if (empty($user_code) || !isset($user_code)) {
+                redirect_to("https://instafxng.com/fxacademy/register.php?id=$email_address");
+            }
+
+            $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
+
+            if ($user_ifx_details) {
+                $found_user = array(
+                    'user_code' => $user_ifx_details['client_user_code'],
+                    'status' => $user_ifx_details['client_status'],
+                    'first_name' => $user_ifx_details['client_first_name'],
+                    'last_name' => $user_ifx_details['client_last_name'],
+                    'email' => $user_ifx_details['client_email']
+                );
+                $session_client->login($found_user);
+
+                // Check if this is a first time login, then log the date
+                if (empty($user_ifx_details['client_academy_first_login']) || is_null($user_ifx_details['client_academy_first_login'])) {
+                    $client_operation->log_academy_first_login($user_ifx_details['client_first_name'], $user_ifx_details['client_email'], $user_ifx_details['client_user_code']);
+                }
+
+                redirect_to("https://instafxng.com/fxacademy/index.php");
+
+                //redirect_to('https://instafxng.com/forex-income/thank-you/thank-you.php');
+            } else
+                {
+                $message_error = "An error occurred, please try again.";
+            }
         }
     }
 }
 
 $all_states = $system_object->get_all_states();
+
+function check_duplicate($email_address, $phone_number)
+{
+    global $db_handle;
+    $query = "SELECT * FROM free_training_campaign WHERE phone = '$phone_number' OR email = '$email_address' ";
+    return $db_handle->numRows($query) ? true : false;
+}
 
 ?>
 <!DOCTYPE html>
@@ -90,12 +112,8 @@ $all_states = $system_object->get_all_states();
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content=""/>
     <script type="application/x-javascript">
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
+        addEventListener("load", function () { setTimeout(hideURLbar, 0); }, false);
+        function hideURLbar() { window.scrollTo(0, 1); }
     </script>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/style.css" type="text/css" media="all"/>
@@ -140,8 +158,8 @@ $all_states = $system_object->get_all_states();
             <h1><a href="index.php"><img class="img-responsive" src="../images/ifxlogo.png"></a></h1>
         </div>
         <div class="top-nav-text">
-            <div class="nav-contact-w3ls"><i class="glyphicon glyphicon-phone-alt" aria-hidden="true"></i>
-                <p style="color: #000000"><b> +(234) 0802 828 1192</b></p></div>
+            <div class="nav-contact-w3ls">
+                <p style="color: #000000"><i class="glyphicon glyphicon-phone-alt" aria-hidden="true"></i><b> +(234) 08028281192</b></p></div>
         </div>
         <!-- navbar-header -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -178,18 +196,27 @@ $all_states = $system_object->get_all_states();
     <div class="clearfix"></div>
     <div id="reg_form" class="main add">
         <h2>Get Started For Free</h2>
+        <?php if(isset($message_success)): ?>
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> <?php echo $message_success; ?>
+            </div>
+            <?php endif ?>
+            <?php if(isset($message_error)): ?>
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Oops!</strong> <?php echo $message_error; ?>
+            </div>
+            <?php endif;?>
         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
             <div class="form-group">
-                <div class="col-sm-12"><input name="full_name" placeholder="Full Name" type="text" class="form-control"
-                                              id="full_name" maxlength="120" required></div>
+                <div class="col-sm-12"><input name="full_name" placeholder="Full Name" type="text" class="form-control" id="full_name" maxlength="120" required></div>
             </div>
             <div class="form-group">
-                <div class="col-sm-12"><input name="email_address" placeholder="Email Address" type="email"
-                                              class="form-control" id="email" maxlength="50" required></div>
+                <div class="col-sm-12"><input name="email_address" placeholder="Email Address" type="email" class="form-control" id="email" maxlength="50" required></div>
             </div>
             <div class="form-group">
-                <div class="col-sm-12"><input name="phone_number" placeholder="Phone Number" type="text"
-                                              class="form-control" id="phone" maxlength="11" required></div>
+                <div class="col-sm-12"><input name="phone_number" placeholder="Phone Number" type="text" class="form-control" id="phone" maxlength="11" required></div>
             </div>
             <div class="col-sm-12">
                 <span style="color: #ffffff">*All fields are required</span>
@@ -226,7 +253,7 @@ $all_states = $system_object->get_all_states();
                                                           class="form-control" maxlength="50" required></div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-12"><input name="phone_number" placeholder="Phone Number" type="text"
+                            <div class="col-sm-12"><input name="phone_number" placeholder="080********" type="text"
                                                           class="form-control" maxlength="11" required></div>
                         </div>
                         <div class="col-sm-12">

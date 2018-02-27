@@ -104,33 +104,28 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-12">
-                                <img style="" src="images/ilpr_landing_image.jpg" alt="" class="img-thumbnail img img-responsive" />
+                                <img style="" src="images/Loyalty_Points_Images/ilpr_landing_image.jpg" alt="" class="img-thumbnail img img-responsive" />
                             </div>
                             <div class="col-sm-12">
-                                <h2>Instafxng Point Based Loyalty Program and Reward</h2>
+                                <center><h2>Instafxng Point Based Loyalty Program and Reward</h2>
                                 <p>Make Up To $4, 200 and N1, 000, 000 Extra While You Take Your Normal Trades.</p>
-                                <p><strong>Current Round:</strong><br />
-                                    <strong>Start Date:</strong> <?php echo datetime_to_text2($from_date_year); ?><br />
-                                    <strong>End Date:</strong> <?php echo datetime_to_text2($to_date_year); ?>
-                                </p>
+                                <h4>Current Round:</h4>
+                                    <p><strong>Starts </strong> <?php echo datetime_to_text2($from_date_year); ?>   <i class="glyphicon glyphicon-arrow-right"></i>  <strong>Ends </strong> <?php echo datetime_to_text2($to_date_year); ?></p>
+                                </center>
                             </div>
-
                         </div>
                     </div>
 
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <p>What is thrilling is how much you can get without doing anything extra other
-                                    than just trading as usual. You do not enter for a draw or trade a particular
-                                    lot size to qualify "Just Trade!"</p>
-
                                 <h4>What is the Instafxng Point Based Loyalty Program and Reward?</h4>
                                 <p>Our new unified reward program which rewards every single one
                                     of our loyal clients daily, monthly and annually.</p>
                                 <p>The first round of the InstaFxNg Point Based Loyalty Program and Reward ended on the 30th of
                                     November, 2017 with 10 amazing winners who got cash prizes ranging from N50, 000 up to
                                     N1 000 000.</p>
+                                <center><img src="images/Loyalty_Points_Images/ILPR_Collage.jpg" class="img-responsive img-thumbnail"></center>
                                 <p>What is thrilling is about the Loyalty rewards how much you can get without doing anything
                                     extra other than just trading as usual.</p>
                                 <p>You do not enter for a draw or trade a particular lot size to qualify <b>"Just Trade!"</b></p>
@@ -145,6 +140,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <p>The Star winner of the 2016/2017 round started trading actively in July 2017 and kept trading
                                     consistently till he worked his way up to the top of the rank scale and emerged the winner of a
                                     whopping <b>One Million Naira</b>.</p>
+                                <center><img src="images/Loyalty_Points_Images/FXDINNER-232.jpg" class="img-responsive img-thumbnail"></center>
                                 <p>It’s neither too late nor too early for you to emerge the star winner by the end of the 2018 round.</p>
 
                                 <h4>Here is how it works...</h4>
@@ -166,13 +162,26 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <h4>But that's not all...</h4>
                                 <p>We will be rewarding $500 to five (5) clients with the highest number of loyalty points as seen from the
                                     monthly ranking for the month in view. The prizes are as follows</p>
-                                <ul>
-                                    <li>1st Prize = $150</li>
-                                    <li>2nd Prize = $120</li>
-                                    <li>3rd Prize = $100</li>
-                                    <li>4th Prize = $80</li>
-                                    <li>5th prize = $50</li>
-                                </ul>
+                                <div class="row ">
+                                    <div class="col-sm-6">
+                                        <img style="max-height: 320px" src="images/Loyalty_Points_Images/FXDINNER-106.jpg" alt="" class="img-thumbnail img img-responsive" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>1st Prize = $150</h4>
+                                        <br/>
+                                        <h4>2nd Prize = $120</h4>
+                                        <br/>
+                                        <h4>3rd Prize = $100</h4>
+                                        <br/>
+                                        <h4>4th Prize = $80</h4>
+                                        <br/>
+                                        <h4>5th Prize = $50</h4>
+                                    </div>
+                                </div>
+
+
+
+
                                 <p>In addition to the prizes, each winner gets a guaranteed invite to our annual lavish dinner which holds at the
                                     end of every year in December.</p>
 
@@ -181,14 +190,24 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     clients with the highest number of reward points as seen from the cumulative annual
                                     ranking will be awarded prizes. An annual cycle runs from December 1 to November 30 of
                                     the following year. The prizes are as follows</p>
-                                <ul>
-                                    <li>1st Prize = N1,000,000</li>
-                                    <li>2nd Prize = N500,000</li>
-                                    <li>3rd Prize = N250,000</li>
-                                    <li>4th Prize = N150,000</li>
-                                    <li>5th Prize = N100,000</li>
-                                    <li>6th – 10th Prize = N50,000 each</li>
-                                </ul>
+                                <div class="row ">
+                                    <div class="col-sm-6">
+                                        <h4 class=" text-center">1st Prize = N1,000,000</h4>
+                                        <br/>
+                                        <h4 class=" text-center">2nd Prize = N500,000</h4>
+                                        <br/>
+                                        <h4 class=" text-center">3rd Prize = N250,000</h4>
+                                        <br/>
+                                        <h4 class=" text-center">4th Prize = N150,000</h4>
+                                        <br/>
+                                        <h4 class=" text-center">5th Prize = N100,000</h4>
+                                        <br/>
+                                        <h4 class=" text-center">6th – 10th Prize = N50,000 each</h4>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <img style="max-height: 360px" src="images/Loyalty_Points_Images/FXDINNER-117.jpg" alt="" class="img-thumbnail img img-responsive" />
+                                    </div>
+                                </div>
                                 <p>Prizes will be presented to winners during our end of the year dinner in December</p>
 
                                 <h4>How much can you earn from this rewards Program...?</h4>
@@ -206,7 +225,6 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
 
                                 <p class="text-left"><a href="loyalty_archive.php" class="btn btn-success" title="Archived Results"><i class="fa fa-arrow-circle-right"></i> Archived Results</a></p>
                                 <br /><hr />
-
                             </div>
 
                             <div class="col-sm-12">
@@ -236,7 +254,6 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse2">How winners are chosen</a></h5>
@@ -266,7 +283,6 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Presentation of Prizes</a></h5>
@@ -280,9 +296,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>

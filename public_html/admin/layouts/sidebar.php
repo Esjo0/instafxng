@@ -222,7 +222,6 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <div class="divider"></div>
                         <!-- 84 -->
                         <?php if (in_array(239, $my_pages_sidebar)) { ?><li><a href="system_activity_logs.php"> System Activity Logs</a></li><?php } ?>
-                        <?php if (in_array(240, $my_pages_sidebar)) { ?><li><a href="system_digital_signage.php"> Digital Signage</a></li><?php } ?>
                     </ul>
                 </li>
                 <?php /*if (in_array(79, $my_pages_sidebar)) { */?><!--<li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li>--><?php /*} */?>
@@ -312,9 +311,10 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-money fa-fw"></i> Accounting System<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-money fa-fw"></i> Requisition Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(222, $my_pages_sidebar)) { ?><li><a href="accounting_system_requisition_form.php" title="Requisition Form">Requisition Form</a></li><?php } ?>
+                        <?php if (in_array(222, $my_pages_sidebar)) { ?><li><a href="accounting_system_requisition_orders.php" title="Requisition Orders">Requisition Orders</a></li><?php } ?>
                         <?php if (in_array(223, $my_pages_sidebar)) { ?><li><a href="accounting_system_confirmation_requests.php" title="Confirmation Requests">Confirmation Requests</a></li><?php } ?>
                         <?php if (in_array(224, $my_pages_sidebar)) { ?><li><a href="accounting_system_cashiers_desk.php" title="Cashiers Desk">Cashiers Desk</a></li><?php } ?>
                         <?php if (in_array(225, $my_pages_sidebar)) { ?><li><a href="accounting_system_req_reports.php" title="Requisition Report">Requisition Report</a></li><?php } ?>

@@ -17,7 +17,6 @@ CREATE TABLE `accounting_system_office_locations` (
 )
 
 
-
 CREATE TABLE `accounting_system_refunds` (
  `refund_id` int(11) NOT NULL AUTO_INCREMENT,
  `req_order_code` varchar(255) NOT NULL,
@@ -44,6 +43,8 @@ CREATE TABLE `accounting_system_req_item` (
 )
 
 
+
+
 CREATE TABLE `accounting_system_req_order` (
  `req_order_id` int(11) NOT NULL AUTO_INCREMENT,
  `req_order_code` varchar(255) NOT NULL,
@@ -59,3 +60,6 @@ CREATE TABLE `accounting_system_req_order` (
  UNIQUE KEY `order_id` (`req_order_id`),
  UNIQUE KEY `req_order_code` (`req_order_code`)
 )
+
+
+

@@ -75,9 +75,33 @@ $projects = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
-        <?php require_once 'accounting_system_ajax_scripts.php'; ?>
+        <style>
+            div#preloader
+            {
+                position: fixed;
+                left: 0;
+                top: 0;
+                z-index: 999;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                background: #ffffff url('../images/Spinner.gif') no-repeat center center;
+            }
+        </style>
+        <script>
+            jQuery(document).ready(function($) {
+
+                // site preloader -- also uncomment the div in the header and the css style for #preloader
+                $(window).load(function(){
+                    $('#preloader').fadeOut('slow',function(){$(this).remove();});
+                });
+
+            });
+        </script>
+        <script src="../js/class_accounting_system.js"></script>
     </head>
     <body>
+    <div id="preloader"></div>
         <?php require_once 'layouts/header.php'; ?>
         <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
         <div id="main-body" class="container-fluid">
@@ -103,8 +127,7 @@ $projects = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <div id="messageDiv">
-                                    </div>
+                                <div id="messageDiv"></div>
                                 <div class="col-sm-12">
                                     <form id="requisition_form" data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                         <p>Fill the form below to add a new item to your requisition order.</p>
@@ -122,17 +145,17 @@ $projects = $db_handle->fetchAssoc($result);
                                                     <div class="col-md-2">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">₦</span>
-                                                            <input onblur="get_total()"  name="unit_price" type="text" id="unit_price" placeholder="Unit Cost"  class="form-control" required>
+                                                            <input onblur="acc_system.get_total('no_of_items', 'unit_price', 'item_total_price')"  name="unit_price" type="text" id="unit_price" placeholder="Unit Cost"  class="form-control" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">₦</span>
-                                                            <input onfocus="get_total()"  name="item_total_price" type="text" id="item_total_price" placeholder="Total Cost"  class="form-control" required>
+                                                            <input onfocus="acc_system.get_total('no_of_items', 'unit_price', 'item_total_price')"  name="item_total_price" type="text" id="item_total_price" placeholder="Total Cost"  class="form-control" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-1">
-                                                        <button onclick="AddtoList()" type="button" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></button>
+                                                        <button onclick="acc_system.AddToList()" type="button" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -151,13 +174,6 @@ $projects = $db_handle->fetchAssoc($result);
                                             </tr>
                                             </thead>
                                             <tbody id="requisitionOrder">
-                                            <!--<tr>
-                                                <td colspan="4" >
-                                                    <p class="pull-right">
-                                                        Order Total : <b>₦</b><b id="requisition_total">0</b>
-                                                    </p>
-                                                </td>
-                                            </tr>-->
                                             </tbody>
                                         </table>
                                         <p class="pull-right">
@@ -170,73 +186,22 @@ $projects = $db_handle->fetchAssoc($result);
                                     {
                                     foreach ($locations as $row)
                                     { ?>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6">
-                                            <div class="radio-inline">
-                                                <label for="">
-                                                    <input id="location" type="radio" name="office_location" value="<?php echo $row['location_id']; ?>"  required/>
-                                                    <?php echo strtoupper($row['location']); ?>
-                                                </label>
+                                    <form id="location_list">
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <div class="radio-inline">
+                                                    <label for="">
+                                                        <input id="location" type="radio" name="office_location" value="<?php echo $row['location_id']; ?>"  required/>
+                                                        <?php echo strtoupper($row['location']); ?>
+                                                    </label>
+                                                </div>
                                             </div>
+                                            <?php }}else{ echo "No results to display..."; } ?>
                                         </div>
-
-                                        <?php
-                                        }
-                                        }
-                                        else
-                                        { echo "No results to display..."; } ?>
-                                    </div>
+                                    </form>
                                     <div class="form-group">
                                         <div class="col-sm-offset-10 col-sm-3">
-                                            <button onclick="send_order()"  name="send_order" type="button" class="btn btn-success"><i class="glyphicon glyphicon-send"></i> Submit Order</button>
-                                            <!--<button data-toggle="modal" data-target="#submit_order" type="button" class="btn btn-success">
-                                                <i class="glyphicon glyphicon-send"></i> Submit Order</button>-->
-                                            <script>
-                                                var XMLHttpRequestObject = false;
-
-                                                if (window.XMLHttpRequest)
-                                                {
-                                                    XMLHttpRequestObject = new XMLHttpRequest();
-                                                }
-                                                else if (window.ActiveXObject)
-                                                {
-                                                    XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
-                                                }
-                                                function send_order_new_function()
-                                                {
-                                                    var radios = document.getElementsByName('office_location');
-                                                    for (var i = 0, length = radios.length; i < length; i++)
-                                                    {
-                                                        if (radios[i].checked)
-                                                        {
-                                                            var location = radios[i].value;
-                                                            break;
-                                                        }
-                                                    }
-                                                    clear_buttons(document.getElementById("order_list").getElementsByTagName("button"));
-                                                    var admin_code = '<?php echo $author_code;?>';
-                                                    var req_order_code = RandomString(7);
-                                                    var req_order_total = document.getElementById('requisition_total').innerHTML;
-                                                    var query = "INSERT INTO accounting_system_req_order (author_code, req_order_code, req_order_total, location) VALUES ('"+admin_code+"', '"+req_order_code+"', '"+req_order_total+"', '"+location+"')";
-                                                    ajax_call("query=" + query);
-                                                    //XMLHttpRequestObject.send();
-                                                    var req_order = document.getElementById('requisitionOrder');//.innerHTML
-                                                    for (var x = 0, length1 = req_order.rows.length; x < length1; x++)
-                                                    {
-                                                        var Cells = req_order.rows[x].getElementsByTagName("td");
-                                                        var item_desc = Cells[0].innerText;
-                                                        var no_of_items = Cells[1].innerText;
-                                                        var unit_cost = Cells[2].innerText;
-                                                        unit_cost = unit_cost.match(/\d+/g)[0];
-                                                        var item_total = Cells[3].innerText;
-                                                        item_total = item_total.match(/\d+/g)[0];
-                                                        var query1 = "INSERT INTO accounting_system_req_item (order_code, item_desc, no_of_items, unit_cost, total_cost) VALUES ('"+req_order_code+"', '"+item_desc+"', '"+no_of_items+"', '"+unit_cost+"' , '"+item_total+"')";
-                                                        console.log(query1);
-                                                        //ajax_call("query=" + query1)
-                                                    }
-
-                                                }
-                                            </script>
+                                            <button id="s_o_btn" onclick="acc_system.send_order_new_function('office_location', '<?php echo $_SESSION['admin_unique_code']?>', document.getElementById('requisition_total').innerHTML)"  name="send_order" type="button" class="btn btn-success "><i class="glyphicon glyphicon-send"></i> Submit Order</button>
                                         </div>
                                     </div>
                                 </div>
@@ -244,206 +209,6 @@ $projects = $db_handle->fetchAssoc($result);
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-sm-12 text-danger">
-                            <h4><strong>REQUISITION ORDERS</strong></h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <?php require_once 'layouts/feedback_message.php'; ?>
-                        </div>
-                        <div class="col-sm-12">
-                        </div>
-                        <div class="col-sm-12">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Order List</th>
-                                    <th>Order Total</th>
-                                    <th>Comments</th>
-                                    <th>Status</th>
-                                    <th>Cash Out Code</th>
-                                    <th>Created </th>
-                                    <th>Refund</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                <?php if(isset($projects) && !empty($projects))
-                                {
-                                    foreach ($projects as $row)
-                                    { ?>
-                                        <tr>
-                                            <td>
-                                                <button type="button" data-toggle="modal" data-target="#view_order<?php echo $row['req_order_code']; ?>" class="btn btn-default">View Order</button>
-                                                <!-- Modal-- View Order List -->
-                                                <div id="view_order<?php echo $row['req_order_code']; ?>" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog">
-                                                        <!-- Modal content-->
-                                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                    <h4 class="modal-title">REQUSITION ORDER</h4>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <p><b>DATE:</b> <?php echo $row['created']; ?></p>
-                                                                    <?php echo $row['req_order']?>
-                                                                    <div id="printout<?php echo $row['req_order_code']; ?>" class="container-fluid" style="display: none">
-                                                                        <div class="row no-gutter">
-                                                                            <div class="col-lg-1">
-                                                                            </div>
-                                                                            <div id="main-body-content-area" class="col-lg-10">
-                                                                                <!-- Unique Page Content Starts Here
-                                                                                ==================================================--->
-                                                                                <div class="section-tint super-shadow">
-                                                                                    <div class="row">
-                                                                                        <div class="col-sm-12">
-                                                                                            <div id="main-logo" class=" col-sm-12 col-md-9">
-                                                                                                <a title="Home Page"><img src="../images/ifxlogo.png?v=1.1" alt="Instaforex Nigeria Logo" /></a>
-                                                                                            </div>
-                                                                                            <div class="row">
-                                                                                                <div class="col-sm-12 text-danger">
-                                                                                                    <h4 class="text-center"><strong>REQUISITION ORDER</strong></h4>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <p><b>AUTHOR NAME:</b> <?php echo $row['author_name']; ?></p>
-                                                                                            <p><b>DATE:</b> <?php echo $row['created']; ?></p>
-                                                                                            <br/>
-                                                                                            <br/>
-                                                                                            <p class="text-justify"> <?php echo $row['req_order'] ?> </p>
-                                                                                            <br/>
-                                                                                            <br/>
-                                                                                            <?php if ($row['status'] == "APPROVED"): ?>
-                                                                                                <p class="text-center"><b>This requisition order has been APPROVED.</b></p>
-                                                                                            <?php endif; ?>
-                                                                                            <?php if ($row['status'] == "DECLINED"): ?>
-                                                                                                <p class="text-center"><b>This requisition order has been DECLINED.</b></p>
-                                                                                            <?php endif; ?>
-                                                                                            <?php include 'layouts/footer.php'; ?>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!-- Unique Page Content Ends Here
-                                                                                ==================================================-->
-                                                                            </div>
-                                                                            <div class="col-lg-1">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <input type="hidden" name="req_order_code" value="<?php echo $row['req_order_code']; ?>">
-                                                                    <button name="print" onclick="print_report('printout<?php echo $row['req_order_code']; ?>')" type="button" class="btn btn-info">Print</button>
-                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>₦<?php echo $row['req_order_total']; ?></td>
-                                            <td><?php echo $row['comments']; ?></td>
-                                            <td>
-                                                <?php if($row['status'] == '2'){echo 'APPROVED';} ?>
-                                                <?php if($row['status'] == '1'){echo 'AWAITING CONFIRMATION';} ?>
-                                                <?php if($row['status'] == '3'){echo 'DECLINED';} ?>
-                                            </td>
-                                            <td><?php if($row['status'] == '2'){echo $row['req_order_code'];} ?></td>
-                                            <td><?php echo datetime_to_text($row['created']); ?></td>
-                                            <td>
-                                                <?php if($row['status'] == '2' && $row['payment_status'] == '2'):?>
-                                                    <button type="button" data-toggle="modal" data-target="#refund<?php echo $row['req_order_code']; ?>" class="btn btn-success"><i class="glyphicon glyphicon-repeat"></i></button>
-                                                <?php endif; ?>
-                                                <!-- Modal-- refund -->
-                                                <div id="refund<?php echo $row['req_order_code']; ?>" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog">
-                                                        <!-- Modal content-->
-                                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                    <h4 class="modal-title">REFUND</h4>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <div class="row">
-                                                                                <div class="col-md-4">
-                                                                                    <label for="order_total_spent"><b><b>ORDER DATE : </b></b><label>
-                                                                                </div>
-                                                                                <div class="col-md-7">
-                                                                                    <div class="input-group">
-                                                                                        <span class="input-group-addon">₦</span>
-                                                                                        <input value="<?php echo datetime_to_text($row['created']); ?>"  type="text"   class="form-control" disabled>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <div class="row">
-                                                                                <div class="col-md-4">
-                                                                                    <label for="order_total_spent"><b>ORDER TOTAL:</b><label>
-                                                                                </div>
-                                                                                <div class="col-md-7">
-                                                                                    <div class="input-group">
-                                                                                        <span class="input-group-addon">₦</span>
-                                                                                        <input value="<?php echo number_format($row['req_order_total'], 2, ".", ","); ?>"  type="text"   class="form-control" disabled>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <div class="row">
-                                                                                <div class="col-md-4">
-                                                                                    <label for="order_total_spent">TOTAL AMOUNT SPENT : <label>
-                                                                                </div>
-                                                                                <div class="col-md-7">
-                                                                                    <div class="input-group">
-                                                                                        <span class="input-group-addon">₦</span>
-                                                                                        <input  name="order_total_spent" type="text" id="order_total_spent"  class="form-control" required>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <input type="hidden" name="req_order_total" value="<?php echo $row['req_order_total']; ?>">
-                                                                    <input type="hidden" name="req_order_code" value="<?php echo $row['req_order_code']; ?>">
-                                                                    <button name="process_refund" type="submit" class="btn btn-info">Process</button>
-                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <?php
-                                    }
-                                }
-                                else
-                                { echo "<em>No results to display...</em>"; } ?>
-
-                                </tbody>
-                            </table>
-                            <?php if(isset($projects) && !empty($projects)) { ?>
-                                <div class="tool-footer text-right">
-                                    <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
-                                </div>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <?php if(isset($projects) && !empty($projects)) { require_once 'layouts/pagination_links.php'; } ?>
 
 
                     <!-- Unique Page Content Ends Here

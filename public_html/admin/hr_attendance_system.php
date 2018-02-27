@@ -7,34 +7,29 @@ if (!$session_admin->is_logged_in())
 
 $locations = array(
     array (
-      'location_id' => '1',
-      'location' => 'Diamond Estate Office',
-      'ip_address' => '192.168.1',
-      'created' => '2017-11-13 09:27:30'
+        'location_id' => '1',
+        'location' => 'Diamond Estate Office',
+        'ip_address' => '192.168.1',
+        'created' => '2017-11-13 09:27:30'
     ),
     array (
-      'location_id' => '2',
-      'location' => 'Diamond Estate Office',
-      'ip_address' => '169.254.206'
+        'location_id' => '2',
+        'location' => 'Diamond Estate Office',
+        'ip_address' => '169.254.206'
     ),
     array (
-      'location_id' => '3',
-      'location' => 'HFP Eastline Office',
-      'ip_address' => '192.168.0'
-  ),
+        'location_id' => '3',
+        'location' => 'HFP Eastline Office',
+        'ip_address' => '192.168.0'
+    ),
     array (
-      'location_id' => '4',
-      'location' => 'HFP Eastline Office',
-      'ip_address' => '192.168.8')
+        'location_id' => '4',
+        'location' => 'HFP Eastline Office',
+        'ip_address' => '192.168.8')
 );
 
 function GetFirstThree($ip)
 {
-    $admin_object = new AdminUser();
-    $ip_address = $ip;
-    $admin_name = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
-    $system_object = new InstafxngSystem();
-
     if(strlen($ip) <= 10) { $pos = strpos($ip, '.', strlen($ip)-3);}
     else {$pos = strpos($ip, '.', strlen($ip)-4);}
     $ip = substr($ip, 0, $pos);
@@ -53,7 +48,7 @@ function searchForId($id, $array, $key_identifier)
     return null;
 }
 
-$ip_address = GetFirstThree($db_handle->sanitizePost(gethostbyname(trim(`hostname`))));
+$ip_address = GetFirstThree($db_handle->sanitizePost($_POST['lan_ip']));
 $today = $db_handle->sanitizePost(date("d-m-Y"));
 $time = $db_handle->sanitizePost(date("H:i:s"));
 $day = date('l', strtotime($today));
@@ -64,8 +59,6 @@ if ($day != 'Saturday' || $day != 'Sunday')
     $result = $db_handle->numRows($query);
     if($result < 1)
     {
-        //$query = "SELECT * FROM hr_attendance_locations WHERE ip_address = '$ip_address' ";
-        //$result = $db_handle->numRows($query);
         $search_result = searchForId($ip_address, $locations, 'ip_address');
         if($search_result >= 0 && $search_result != null)
         {
@@ -96,12 +89,6 @@ if ($day != 'Saturday' || $day != 'Sunday')
                         </div>
                     </div>
                 </div>
-                <script>
-                    $(document).ready(function()
-                    {
-                        $('#confirm-add-admin').modal("show");
-                    });
-                </script>
             <?php endif;
         }
     }

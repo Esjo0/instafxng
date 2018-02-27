@@ -66,7 +66,7 @@ if (isset($_POST['submit'])) {
             $log_new_client = $client_operation->new_user_ordinary($client_full_name, $email_address, $phone_number, $assigned_account_officer);
             //...//
 
-            redirect_to('https://instafxng.com/forex-income/thank_you.php');
+            redirect_to('https://instafxng.com/forex-income/thank-you/thank-you.php');
         } else {
             $message_error = "An error occurred, please try again.";
         }
