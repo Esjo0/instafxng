@@ -1,3 +1,6 @@
+DROP TABLE `accounting_system_budgets`, `accounting_system_office_locations`, `accounting_system_refunds`, `accounting_system_req_order`;
+
+
 CREATE TABLE `accounting_system_budgets` (
  `budget_id` int(11) NOT NULL AUTO_INCREMENT,
  `month_year` varchar(255) NOT NULL,
