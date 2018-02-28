@@ -17,7 +17,7 @@ $notifications = $obj_push_notification->get_notifications();
         {
             ?>
             <div class="alert <?php if($row['status'] == "0"){echo 'alert-success';}else{echo 'alert-info';}?>">
-                <button type="button" data-target="#view_<?php echo $row['notification_id'] ?>" data-toggle="modal" class="btn btn-xs"><i class="glyphicon glyphicon-expand"></i></button>
+                <button type="button" onclick="push_notifications.show_alert('<?php echo $row['title'] ?>', '<?php echo datetime_to_text($row['created']) ?>', '<?php echo $row['author'] ?>', '<?php echo $row['message'] ?>', '<?php echo $row['notification_id']; ?>')" class="btn btn-xs"><i class="glyphicon glyphicon-expand"></i></button>
                 <a href="#" onclick="push_notifications.dismiss_notification('<?php echo $row['notification_id']; ?>')" class="close"  aria-label="close">&times;</a>
                 <hr/>
                 <strong><?php echo $row['title'] ?></strong>

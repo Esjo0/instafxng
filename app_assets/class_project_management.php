@@ -155,7 +155,7 @@ class Project_Management
         $destination_details = $admin_object->get_admin_detail_by_code($admin_code);
         $admin_name = $destination_details['first_name'];
         $admin_email = $destination_details['email'];
-        $description = nl2br($description);
+        $description =  str_replace("/r/n","<br/>",nl2br($description));
         $subject = 'New Project Assignment - '.$title;
         $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -226,7 +226,7 @@ MAIL;
             $destination_details = $admin_object->get_admin_detail_by_code($all_allowed_admin[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $description = nl2br($description);
+            $description =  str_replace("/r/n","<br/>",nl2br($description));
             $subject = 'New Project Assignment - '.$title;
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -299,7 +299,7 @@ MAIL;
             $destination_details = $admin_object->get_admin_detail_by_code($recipients[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $message = nl2br($message);
+            $message =  str_replace("/r/n","<br/>",nl2br($message));
             $subject = 'New Project Message - '.$title;
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">

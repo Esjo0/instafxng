@@ -21,6 +21,7 @@
     <hr>
 </header>
 
+
 <script>
     var XMLHttpRequestObject = false;
 
@@ -99,3 +100,4 @@ if(($result < 1) && ($day != 'Saturday' || $day != 'Sunday')): ?>
     </script>
 <?php endif; ?>
 <div id="hr_attendance_system"></div>
+

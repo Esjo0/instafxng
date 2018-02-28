@@ -17,7 +17,6 @@ function Push_Notifications()
     {
         this.count_notifications();
         this.ajax_request('list_content', '', '1');
-        this.ajax_request('content', '', '2');
         this.count_notifications();
         this.new_notification_alert();
     };
@@ -35,12 +34,7 @@ function Push_Notifications()
             {
                 if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
                 {
-                    if(response_div == 'content')
-                    {
-                        document.getElementById(response_div).innerHTML += XMLHttpRequestObject.responseText;
-                    }
-                    else{document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;}
-
+                    document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;
                 }
             };
         }
@@ -59,6 +53,13 @@ function Push_Notifications()
         {
             this.playSound();
         }
+    };
+    this.show_alert = function(title, created, author, message, notification_id)
+    {
+        //console.log('hello');
+        var message2 = message.replace(/<br\s*[\/]?>/gi, "\n");
+        alert('Title:'+title+'\n'+'Created: '+created+'\n'+'Author: '+author+'\n'+ message2);
+        this.dismiss_notification(notification_id);
     };
 }
 var push_notifications = new Push_Notifications();
