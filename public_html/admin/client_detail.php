@@ -133,7 +133,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                         <span class="span-title">Opening Date</span>
                                         <p><em><?php echo datetime_to_text2($created); ?></em></p>
                                         <span class="span-title">Client Address</span>
-                                        <p><em><?php echo $client_address['address']; ?></em></p>
+                                        <p><em><?php echo $client_address['address'] . ' ' . $client_address['address2'] . ' ' . $client_address['city'] . ' ' . $client_address['state']; ?></em></p>
                                         <span class="span-title">Client SMS Code</span>
                                         <p>Code: <?php echo $client_phone_code['phone_code']; ?> &nbsp;&nbsp; Status: <?php echo phone_code_status($client_phone_code['phone_status']); ?></p>
                                         <span class="span-title">Verification Status</span>

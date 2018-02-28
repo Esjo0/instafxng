@@ -24,7 +24,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
           WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL
           ) AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
-          GROUP BY ueel.user_code ";
+          GROUP BY ueel.user_code ORDER BY u.academy_signup DESC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
           u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
@@ -43,7 +43,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
           WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL
           )
-          GROUP BY ueel.user_code ";
+          GROUP BY ueel.user_code ORDER BY u.academy_signup DESC ";
 }
 
 $numrows = $db_handle->numRows($query);

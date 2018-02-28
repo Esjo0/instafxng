@@ -14,7 +14,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3 || isset($_
 
         $search_text = $_POST['search_text'];
 
-        $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+        $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.middle_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
                     FROM user AS u
                     INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
                     INNER JOIN admin AS a ON ao.admin_code = a.admin_code
