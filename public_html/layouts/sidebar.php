@@ -22,11 +22,15 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
         <div class="nav-display super-shadow">
             <header><i class="fa fa-bars fa-fw"></i> Need Help?</header>
             <article class="text-center">
-                <!-- LiveZilla Chat Button Link Code (ALWAYS PLACE IN BODY ELEMENT) --><!-- LiveZilla Tracking Code (ALWAYS PLACE IN BODY ELEMENT) --><div id="livezilla_tracking" style="display:none"></div><script type="text/javascript">
-                /* <![CDATA[ */
-                var script = document.createElement("script");script.async=true;script.type="text/javascript";var src = "https://instafxng.com/livechat/server.php?a=cbe6b&rqst=track&output=jcrpt&nse="+Math.random();setTimeout("script.src=src;document.getElementById('livezilla_tracking').appendChild(script)",1);
-                /* ]]> */
-                </script><noscript><img src="https://instafxng.com/livechat/server.php?a=cbe6b&amp;rqst=track&amp;output=nojcrpt" width="0" height="0" style="visibility:hidden;" alt="" /></noscript><!-- http://www.LiveZilla.net Tracking Code --><a href="javascript:void(window.open('https://instafxng.com/livechat/chat.php?a=95744','','width=590,height=760,left=0,top=0,resizable=yes,menubar=no,location=no,status=yes,scrollbars=yes'))" class="lz_cbl"><img src="https://instafxng.com/livechat/image.php?a=e2c79&amp;id=4&amp;type=inlay" width="210" height="66" style="border:0px;" alt="LiveZilla Live Chat Software" /></a><!-- http://www.LiveZilla.net Chat Button Link Code -->
+
+                <!-- livezilla.net PLACE WHERE YOU WANT TO SHOW GRAPHIC BUTTON -->
+                <a href="javascript:void(window.open('https://instafxng.com/livechat/chat.php?v=2','','width=590,height=760,left=0,top=0,resizable=yes,menubar=no,location=no,status=yes,scrollbars=yes'))" class="lz_cbl"><img src="https://instafxng.com/livechat/image.php?id=4&type=inlay" width="210" height="66" style="border:0;" alt="LiveZilla Live Chat Software"></a>
+                <!-- livezilla.net PLACE WHERE YOU WANT TO SHOW GRAPHIC BUTTON -->
+
+                <!-- livezilla.net PLACE SOMEWHERE IN BODY -->
+                <div id="lvztr_b5e" style="display:none"></div><script id="lz_r_scr_3adcd252cbea832dd6e9443fc0789dd5" type="text/javascript">lz_code_id="3adcd252cbea832dd6e9443fc0789dd5";var script = document.createElement("script");script.async=true;script.type="text/javascript";var src = "https://instafxng.com/livechat/server.php?rqst=track&output=jcrpt&nse="+Math.random();script.src=src;document.getElementById('lvztr_b5e').appendChild(script);</script>
+                <!-- livezilla.net PLACE SOMEWHERE IN BODY -->
+
                 <p><i class="fa fa-phone-square fa-fw"></i> +234 802 828 1192</p>
                 <a class="btn btn-default" href="contact_info.php" title="Our full contact details">Contact Details</a>
             </article>
