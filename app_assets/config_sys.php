@@ -47,5 +47,9 @@ $client_group_DEFAULT = array(
     "31" => "Online Training - Completed Course 1",
     "32" => "2017 Dinner Guests",
     "33" => "Office Funding Clients",
-    "34" => "Failed SMS Clients"
+    "34" => "Failed SMS Clients",
+    "35" => "Students Category 1",
+    "36" => "Students Category 2",
+    "37" => "Students Category 3",
+    "38" => "Students Category 4"
 );

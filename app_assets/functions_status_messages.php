@@ -319,6 +319,10 @@ function client_group_campaign_category($status) {
         case '32': $message = "2017 Dinner Guests"; break;
         case '33': $message = "Office Funding Clients"; break;
         case '34': $message = "Failed SMS Clients"; break;
+        case '35': $message = "Students Category 1"; break;
+        case '36': $message = "Students Category 2"; break;
+        case '37': $message = "Students Category 3"; break;
+        case '38': $message = "Students Category 4"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -382,6 +386,10 @@ function client_group_query($client_group, $campaign_type) {
             case '32': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2017 WHERE attended = '1'"; break;
             case '33': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.deposit_origin IN ('2', '3') GROUP BY u.user_code"; break;
             case '34': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON u.user_code = uv.user_code WHERE uv.user_code = u.user_code AND u.password IS NULL"; break;
+            case '35': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_edu_exercise_log AS ueel ON u.user_code = ueel.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL "; break;
+            case '36': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id IN (1, 2, 3, 4) AND uefp.user_code IS NULL AND u.user_code NOT IN (SELECT u.user_code FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL) GROUP BY ueel.user_code"; break;
+            case '37': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id > 4 AND uefp.user_code IS NULL GROUP BY ueel.user_code"; break;
+            case '38': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code WHERE ued.status = '3' GROUP BY u.user_code"; break;
             default: $query = false; break;
         }
 
@@ -424,6 +432,10 @@ function client_group_query($client_group, $campaign_type) {
             case '32': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2017 WHERE attended = '1' GROUP BY u.phone"; break;
             case '33': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.deposit_origin IN ('2', '3') GROUP BY u.phone"; break;
             case '34': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON u.user_code = uv.user_code WHERE uv.user_code = u.user_code AND u.password IS NULL GROUP BY u.phone"; break;
+            case '35': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_edu_exercise_log AS ueel ON u.user_code = ueel.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL GROUP BY u.phone"; break;
+            case '36': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id IN (1, 2, 3, 4) AND uefp.user_code IS NULL AND u.user_code NOT IN (SELECT u.user_code FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL) GROUP BY u.phone"; break;
+            case '37': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code WHERE ueel.lesson_id > 4 AND uefp.user_code IS NULL GROUP BY u.phone"; break;
+            case '38': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_edu_exercise_log AS ueel INNER JOIN user AS u ON ueel.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code WHERE ued.status = '3' GROUP BY u.phone"; break;
             default: $query = false; break;
         }
 

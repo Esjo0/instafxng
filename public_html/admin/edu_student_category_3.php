@@ -128,7 +128,7 @@ $education_students = $db_handle->fetchAssoc($result);
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
-                                            <td><?php echo date_to_text($row['academy_signup']); ?></td>
+                                            <td><?php echo datetime_to_text($row['academy_signup']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
                                                 <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_3'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 3'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
