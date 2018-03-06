@@ -172,6 +172,25 @@ class clientOperation {
     public function new_user($account_no, $full_name, $email_address, $phone_number, $type, $my_refferer = "", $attendant = "") {
         global $db_handle;
         global $system_object;
+
+        $full_name = preg_replace("/[^A-Za-z0-9 ]/", '', $full_name);
+        $full_name = ucwords(strtolower(trim($full_name)));
+        $full_name = explode(" ", $full_name);
+
+        if(count($full_name) == 3) {
+            $last_name = $full_name[0];
+            if(strlen($full_name[2]) < 3) {
+                $middle_name = $full_name[2];
+                $first_name = $full_name[1];
+            } else {
+                $middle_name = $full_name[1];
+                $first_name = $full_name[2];
+            }
+        } else {
+            $last_name = $full_name[0];
+            $middle_name = "";
+            $first_name = $full_name[1];
+        }
         
         // Check whether the email is existing
         $query = "SELECT user_code FROM user WHERE email = '$email_address' LIMIT 1";
@@ -180,6 +199,15 @@ class clientOperation {
         if($db_handle->numOfRows($result) > 0) {
             $fetched_data = $db_handle->fetchAssoc($result);
             $user_code = $fetched_data[0]['user_code'];
+
+            // We want to send welcome email to someone who has a profile but no account,
+            // since we are logging his first account, he should get a welcome email
+            $query = "SELECT ui.ifx_acct_no FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE u.email = '$email_address'";
+            $result = $db_handle->runQuery($query);
+
+            if($db_handle->numOfRows($result) == 0) {
+                $this->send_welcome_email($last_name, $email_address);
+            }
             
             if($this->ifx_account_is_duplicate($account_no)) {
                 return false;
@@ -201,25 +229,6 @@ class clientOperation {
             if($db_handle->numRows("SELECT user_code FROM user WHERE user_code = '$user_code'") > 0) { goto usercode; };
             
             $pass_salt = hash("SHA256", "$user_code");
-
-            $full_name = preg_replace("/[^A-Za-z0-9 ]/", '', $full_name);
-            $full_name = ucwords(strtolower(trim($full_name)));
-            $full_name = explode(" ", $full_name);
-
-            if(count($full_name) == 3) {
-                $last_name = $full_name[0];
-                if(strlen($full_name[2]) < 3) {
-                    $middle_name = $full_name[2];
-                    $first_name = $full_name[1];
-                } else {
-                    $middle_name = $full_name[1];
-                    $first_name = $full_name[2];
-                }
-            } else {
-                $last_name = $full_name[0];
-                $middle_name = "";
-                $first_name = $full_name[1];
-            }
 
             if(empty($attendant)) {
                 $attendant = $system_object->next_account_officer();
@@ -305,11 +314,11 @@ class clientOperation {
             if(empty($middle_name)) {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                $this->send_welcome_email($last_name, $email_address);
+
             } else {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                $this->send_welcome_email($last_name, $email_address);
+
             }
 
             // Create a record for the user on the loyalty log table

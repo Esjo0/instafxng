@@ -34,13 +34,28 @@ $thisPage = "Home";
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
 
-                    <div  class="item super-shadow page-top-section">
-                        <div class="row ">
-                            <a href="https://instafxng.com/loyalty.php" title="click for details">
-                                <center>
-                                    <img src="images/ilpr_lead_image.jpg" alt="" class="img-responsive" />
-                                </center>
-                            </a>
+<!--                    <div  class="item super-shadow page-top-section">-->
+<!--                        <div class="row ">-->
+<!--                            <a href="https://instafxng.com/loyalty.php" title="click for details">-->
+<!--                                <center>-->
+<!--                                    <img src="images/ilpr_lead_image.jpg" alt="" class="img-responsive" />-->
+<!--                                </center>-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <div class="super-shadow page-top-section">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h3 style="margin: 0;">Harnessing ForexCopy for Big Profit</h3>
+                                <p style="margin-top: 0">
+                                    Join us on Saturday 10th of March,
+                                    2018 as we examine how  you can exploit the potentials of Forex copy to deliver consistent profit  to you. Time: 12 - 2pm.</p>
+                                <p><strong><span style="color: black;"><a href="traders_forum.php#more">Click here to reserve your seat and stand a chance to win $20.</a></span></strong></p>
+                            </div>
+                            <div class="col-sm-6">
+                                <img src="images/forum-forex-copy.jpg" alt="" class="img-responsive" />
+                            </div>
                         </div>
                     </div>
 

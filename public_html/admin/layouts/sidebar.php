@@ -184,6 +184,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(63, $my_pages_sidebar)) { ?><li><a href="edu_course.php">All Courses</a></li><?php } ?>
                         <?php if (in_array(64, $my_pages_sidebar)) { ?><li><a href="edu_support_ticket.php">Course Messages</a></li><?php } ?>
                         <?php if (in_array(65, $my_pages_sidebar)) { ?><li><a href="edu_student.php">All Students</a></li><?php } ?>
+                        <?php if (in_array(66, $my_pages_sidebar)) { ?><li><a href="edu_student_category_0.php">Category 0 Students</a></li><?php } ?>
                         <?php if (in_array(66, $my_pages_sidebar)) { ?><li><a href="edu_student_category_1.php">Category 1 Students</a></li><?php } ?>
                         <?php if (in_array(236, $my_pages_sidebar)) { ?><li><a href="edu_student_category_2.php">Category 2 Students</a></li><?php } ?>
                         <?php if (in_array(237, $my_pages_sidebar)) { ?><li><a href="edu_student_category_3.php">Category 3 Students</a></li><?php } ?>

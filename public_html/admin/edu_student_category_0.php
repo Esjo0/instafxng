@@ -7,23 +7,23 @@ if (!$session_admin->is_logged_in()) {
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, ftc.created,
             u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
-            FROM user AS u
-            LEFT JOIN user_edu_exercise_log AS ueel ON u.user_code = ueel.user_code
+            FROM free_training_campaign AS ftc
+            INNER JOIN user AS u ON ftc.email = u.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
-            ORDER BY u.academy_signup DESC ";
+            WHERE STR_TO_DATE(ftc.created, '%Y-%m-%d') > '2018-01-01' AND u.academy_signup IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
+            ORDER BY ftc.created DESC ";
 } else {
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, ftc.created,
             u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
-            FROM user AS u
-            LEFT JOIN user_edu_exercise_log AS ueel ON u.user_code = ueel.user_code
+            FROM free_training_campaign AS ftc
+            INNER JOIN user AS u ON ftc.email = u.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL
-            ORDER BY u.academy_signup DESC ";
+            WHERE STR_TO_DATE(ftc.created, '%Y-%m-%d') > '2018-01-01' AND u.academy_signup IS NULL
+            ORDER BY ftc.created DESC ";
 }
 
 $numrows = $db_handle->numRows($query);
@@ -109,14 +109,14 @@ $education_students = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
 
-                                <p>List of students that never logged in to the FX Academy portal.</p>
+                                <p>List of students that never logged in to the FX Academy portal. Covers Jan 2018 till date.</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>Client Name</th>
                                         <th>Client Phone</th>
-                                        <th>First Login</th>
+                                        <th>Reg Date</th>
                                         <th>Officer</th>
                                         <th>Action</th>
                                     </tr>
@@ -126,10 +126,10 @@ $education_students = $db_handle->fetchAssoc($result);
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
-                                            <td><?php echo datetime_to_text($row['academy_signup']); ?></td>
+                                            <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
-                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_1'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 1'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_0'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 0'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>

@@ -9,12 +9,12 @@ $client_operation = new clientOperation();
 
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
-    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
-        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-        $responseData = json_decode($verifyResponse);
-
-        if ($responseData->success) {
+//    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+//        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+//        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+//        $responseData = json_decode($verifyResponse);
+//
+//        if ($responseData->success) {
             $client_email = $db_handle->sanitizePost($_POST['client_email']);
             $user_code = $client_operation->get_user_by_email($client_email);
 
@@ -42,12 +42,12 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             } else {
                 redirect_to("register.php?id=$client_email");
             }
-        } else {
-            $message_error = "Please try the robot test again.";
-        }
-    } else {
-        $message_error = "Please confirm that you are not a robot. :)";
-    }
+//        } else {
+//            $message_error = "Please try the robot test again.";
+//        }
+//    } else {
+//        $message_error = "Please confirm that you are not a robot. :)";
+//    }
 } else { // Form has not been submitted.
     $username = "";
     $password = "";
@@ -130,7 +130,7 @@ if(isset($_GET['logout'])) {
                                             <input type="text" placeholder="Email Address" name="client_email" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="form-group"><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>
+<!--                                    <div class="form-group"><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>-->
                                     <div class="form-group">
                                         <input type="submit" name="submit" class="btn btn-lg btn-success" value="Start Learning">
                                     </div>

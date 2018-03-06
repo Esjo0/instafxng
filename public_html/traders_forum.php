@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
-            <p>At the Forum this month, we will examine how to trade Forex News profitably.</p>
+            <p>At the Forum this month, we will discuss Harnessing ForexCopy for Big Profit.</p>
 
             <p>You will also have the opportunity of meeting other Forex traders and you
             could be one of two lucky winners to win $20 trading bonus. Isn’t that cool?</p>
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: 10th of February, 2018<br /><br />
+            Date: 10th of March, 2018<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -161,15 +161,14 @@ MAIL;
                     <div class="super-shadow page-top-section">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">How to Trade Forex News Profitably</h3>
+                                <h3 style="margin: 0;">Harnessing ForexCopy for Big Profit</h3>
                                 <p style="margin-top: 0">
-                                    Join us on Saturday 10th of February, 2018 as we examine how to trade Forex News profitably.
-                                    Time: 12 - 2pm.<br />
-                                    <strong>Reserve your seat below to stand a chance to win $20.</strong>
-                                </p>
+                                    Join us on Saturday 10th of March,
+                                    2018 as we examine how  you can exploit the potentials of Forex copy to deliver consistent profit  to you. Time: 12 - 2pm.</p>
+                                <p><strong><span style="color: black;"><a href="traders_forum.php#more">Reserve your seat below to stand a chance to win $20.</a></span></strong></p>
                             </div>
                             <div class="col-sm-6">
-                                <img src="images/Traders_Forum.jpg" alt="" class="img-responsive" />
+                                <img src="images/forum-forex-copy.jpg" alt="" class="img-responsive" />
                             </div>
                         </div>
                     </div>
@@ -188,8 +187,8 @@ MAIL;
                                     success. They share their experiences, learn from other traders, meet new
                                     people and go home with lots of exciting prizes such bonus account and Instaforex
                                     branded materials. </p>
-                                <p>Join us on Saturday, 13th of January, 2018 for another exciting edition of
-                                    Nigerian Forex traders Forum as we examine how to make 2018 a memorable one.</p>
+                                <p>Join us on Saturday, 10th of March, 2018 for another exciting edition of
+                                    Nigerian Forex traders Forum as we discuss Harnessing ForexCopy for Big Profits.</p>
                             </div>
                         </div>
 
@@ -234,6 +233,8 @@ MAIL;
                             </div>
 
                             <span id="opt"></span>
+
+                            <section id="more">
 
                             <div class="row">
                                 <div class="col-sm-12">
@@ -287,6 +288,8 @@ MAIL;
                                     </form>
                                 </div>
                             </div>
+
+                            </section>
 
                         </div>
 

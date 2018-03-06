@@ -201,6 +201,32 @@ $my_message_3 =
 </div>
 MAIL;
 
+// Mail 0 : This mail is to be sent exactly 7 days after someone registers and did not log in
+
+$today = date('Y-m-d');
+
+$query = "SELECT u.first_name, u.email
+        FROM free_training_campaign AS ftc
+        INNER JOIN user AS u ON ftc.email = u.email
+        WHERE (DATEDIFF('$today', STR_TO_DATE(ftc.created, '%Y-%m-%d')) = 7) AND u.academy_signup IS NULL
+        ORDER BY ftc.created DESC ";
+
+$result = $db_handle->runQuery($query);
+$fetched_data = $db_handle->fetchAssoc($result);
+
+foreach ($fetched_data as $row) {
+    $client_name = ucwords(strtolower(trim($row['first_name'])));
+    $client_email = strtolower(trim($row['email']));
+
+    $my_subject = $my_subject_1;
+    $my_message = $my_message_1;
+
+    // Replace [NAME] with clients full name
+    $my_message_new = str_replace('[NAME]', $client_name, $my_message);
+    $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
+
+    $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name);
+}
 
 // Mail 1 : This mail is to be sent exactly 7 days after registration, this client is still yet to start lesson 1
 
@@ -209,8 +235,6 @@ $today = date('Y-m-d');
 $query = "SELECT u.first_name, u.email
         FROM user AS u
         LEFT JOIN user_edu_exercise_log AS ueel ON u.user_code = ueel.user_code
-        INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-        INNER JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE (DATEDIFF('$today', STR_TO_DATE(u.academy_signup, '%Y-%m-%d')) = 7) AND u.academy_signup IS NOT NULL AND ueel.user_code IS NULL
         ORDER BY u.academy_signup DESC ";
 
@@ -238,8 +262,6 @@ $today = date('Y-m-d');
 $query = "SELECT u.first_name, u.email
         FROM user AS u
         LEFT JOIN user_edu_exercise_log AS ueel ON u.user_code = ueel.user_code
-        INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-        INNER JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE (DATEDIFF('$today', STR_TO_DATE(u.academy_signup, '%Y-%m-%d')) = 14) AND u.academy_signup IS NOT NULL AND ueel.user_code IS NULL
         ORDER BY u.academy_signup DESC ";
 
@@ -267,8 +289,6 @@ $today = date('Y-m-d');
 $query = "SELECT u.first_name, u.email
         FROM user AS u
         LEFT JOIN user_edu_exercise_log AS ueel ON u.user_code = ueel.user_code
-        INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-        INNER JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE (DATEDIFF('$today', STR_TO_DATE(u.academy_signup, '%Y-%m-%d')) = 28) AND u.academy_signup IS NOT NULL AND ueel.user_code IS NULL
         ORDER BY u.academy_signup DESC ";
 
