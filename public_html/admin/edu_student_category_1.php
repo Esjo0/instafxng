@@ -14,7 +14,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
-            ORDER BY u.academy_signup DESC ";
+            ORDER BY u.academy_signup DESC, u.last_name ASC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
             u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
@@ -23,7 +23,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL
-            ORDER BY u.academy_signup DESC ";
+            ORDER BY u.academy_signup DESC, u.last_name ASC ";
 }
 
 $numrows = $db_handle->numRows($query);

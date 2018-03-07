@@ -2259,8 +2259,7 @@ MAIL;
 
 
             <br /><br />
-            <p>Best Regards,</p>
-            <p>Your friend,<br />
+            <p>Best Regards,<br />
             Mercy,<br />
             Client relations manager<br /></p>
             <p>www.instafxng.com</p>

@@ -107,7 +107,7 @@ $my_message_2 =
             <br /><br />
             <p>Best Regards,</p>
 
-            <p>Your friend,<br />Bunmi,<br />Client Relations Manager.</p>
+            <p>Your friend,<br />Mercy,<br />Client Relations Manager.</p>
             <p>Instaforex Nigeria,<br />
                 www.instafxng.com</p>
             <br /><br />

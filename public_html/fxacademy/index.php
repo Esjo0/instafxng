@@ -14,7 +14,7 @@ $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS ful
 
 $result = $db_handle->runQuery($query);
 if($db_handle->numOfRows($result) > 0) {
-    redirect_to("https://instafxng.com/fxacademy/course_view.php?id=gqiWbQaGlXLxpjk1xBeGsg==");
+//    redirect_to("https://instafxng.com/fxacademy/course_view.php?id=gqiWbQaGlXLxpjk1xBeGsg==");
 }
 
 if (!$session_client->is_logged_in()) {

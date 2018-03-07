@@ -15,7 +15,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
           WHERE ued.status = '3' AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
-          GROUP BY u.user_code ORDER BY u.academy_signup DESC ";
+          GROUP BY u.user_code ORDER BY u.academy_signup DESC, u.last_name ASC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
           u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
@@ -25,7 +25,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
           WHERE ued.status = '3'
-          GROUP BY u.user_code ORDER BY u.academy_signup DESC ";
+          GROUP BY u.user_code ORDER BY u.academy_signup DESC, u.last_name ASC ";
 }
 
 $numrows = $db_handle->numRows($query);
