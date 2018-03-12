@@ -99,7 +99,6 @@ $budgets = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
-        <?php require_once 'accounting_system_ajax_scripts.php'; ?>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
