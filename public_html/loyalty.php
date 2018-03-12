@@ -236,7 +236,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                         <div id="collapse1" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <p>InstaForex Nigeria provides clients with the opportunity to make more money through the Instafxng Loyalty Programme.</p>
-                                                <p>This campaign will be held from December 1, 2016 and will run till November 30, 2017.</p>
+                                                <p>This campaign will be held from December 1, 2017 and will run till November 30, 2018.</p>
                                                 <ul>
                                                     <li>Points are earned for all account deposit actions.</li>
                                                     <li>Points are earned for all account trading activity.</li>

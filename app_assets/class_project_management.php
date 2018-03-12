@@ -194,8 +194,8 @@ MAIL;
                                         <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
                                     </p>
                                     <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                                    <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
-                                    <p><strong>Office Number:</strong> 08028281192</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
                                     <br />
                                 </div>
                                 <div style="font-size: 10px !important; padding: 15px; text-align: center;">
@@ -266,8 +266,8 @@ MAIL;
                                         <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
                                     </p>
                                     <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                                    <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
-                                    <p><strong>Office Number:</strong> 08028281192</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
                                     <br />
                                 </div>
                                 <div style="font-size: 10px !important; padding: 15px; text-align: center;">
@@ -330,8 +330,8 @@ MAIL;
                                         <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
                                     </p>
                                     <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                                    <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
-                                    <p><strong>Office Number:</strong> 08028281192</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
                                     <br />
                                 </div>
                                 <div style="font-size: 10px !important; padding: 15px; text-align: center;">
