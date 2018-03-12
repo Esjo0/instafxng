@@ -12,7 +12,7 @@ if(isset($_POST['new_project']))
 {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
     $description = nl2br($db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description']))));
-    $description = str_replace('\r\n', "", $description);
+    $description = str_replace("\r\n", "<br/>", $description);
     $description = htmlspecialchars_decode(stripslashes(trim($description)));
     $deadline = $db_handle->sanitizePost(trim($_POST['deadline']));
     $allowed_admin = $_POST["allowed_admin"];
