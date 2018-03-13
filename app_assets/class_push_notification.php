@@ -43,6 +43,25 @@ class Push_Notification_System
         $result = $db_handle->runQuery($query);
         return $result ? true : false;
     }
+    public function dismiss_all_notifications($admin_code)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM push_notifications ";
+        $result = $db_handle->runQuery($query);
+        $result = $db_handle->fetchAssoc($result);
+        foreach ($result as $row)
+        {
+            $recipients = explode("," ,$row['recipients']);
+            if(in_array($admin_code, $recipients))
+            {
+                $recipients = $this->remove_array_item($recipients, $admin_code);
+            }
+            $recipients = implode("," ,$recipients);
+            $query = "UPDATE push_notifications SET recipients = '$recipients' WHERE notification_id = '".$row['notification_id']."' ";
+            $result = $db_handle->runQuery($query);
+        }
+        return $result ? true : false;
+    }
 
     public function remove_array_item( $array, $item )
     {
