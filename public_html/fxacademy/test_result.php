@@ -38,7 +38,7 @@ if (isset($_POST['process_test']))
     $course_lesson_id = decrypt(str_replace(" ", "+", $lesson_no));
     $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
 
-    $education_object->set_lesson_rating($_SESSION['client_unique_code'],$course_lesson_id,$course_id,$_POST['rating'],$_POST['comments']);
+//    $education_object->set_lesson_rating($_SESSION['client_unique_code'],$course_lesson_id,$course_id,$_POST['rating'],$_POST['comments']);
 
     $assessment_result = $education_object->set_assessment_result($question_answered, $course_lesson_id, $_SESSION['client_unique_code']);
 
