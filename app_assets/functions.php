@@ -494,4 +494,41 @@ function add_activity_log()
     fclose($new_log);
 }
 
+function get_all_mail_templates()
+{
+    $path = '../mail_templates';
+    $files = scandir($path);
+    $count = 0;
+    $count_image = 0;
+    $count_html = 0;
+    $templates = array();
+    $images = array();
+    $htmls = array();
+    foreach ($files as $row)
+    {
+        $row = (string)$row;
+        if(strlen($row) > 2 && (endsWith($row, 'JPG') || endsWith($row, 'jpg') || endsWith($row, 'PNG') || endsWith($row, 'png')))
+        {
+            $images[$count_image] = $row;
+            $count_image++;
+        }
+    }
+    foreach ($files as $row)
+    {
+        $row = (string)$row;
+        if(strlen($row) > 2 && (endsWith($row, 'HTML') || endsWith($row, 'html')))
+        {
+            $htmls[$count_html] = $row;
+            $count_html++;
+        }
+    }
+    for($i=0; $i<count($htmls); $i++)
+    {
+        $templates[$count] = array('image'=>$images[$i], 'html'=>$htmls[$i]);
+        $count++;
+    }
+    return $templates;
+}
+
+
 
