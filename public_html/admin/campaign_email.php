@@ -178,6 +178,12 @@ if($get_params['x'] == 'duplicate') {
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="control-label col-sm-2" for="subject">Mail Templates:</label>
+                                        <div class="col-sm-10">
+                                            <div class="col-sm-3"><a href="javascript"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="control-label col-sm-2" for="content">Message:</label>
                                         <div class="col-sm-10"><textarea name="content" id="content" rows="3" class="form-control"><?php if(isset($selected_campaign_email['content'])) { echo $selected_campaign_email['content']; } ?></textarea></div>
                                     </div>
