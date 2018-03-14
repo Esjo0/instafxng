@@ -39,7 +39,6 @@ if(isset($_POST['work'])){
     $prior = $db_handle->sanitizePost($_POST['priority']);
     $status = "pending" ;
     $query = "INSERT into facility_work(created_by,title,location,details,priority,status,pro) VALUES('$admin','$title','$location','$details','$prior','$status','10')";
-    var_dump($query);
     $result = $db_handle->runQuery($query);
     if($result) {
         $message_success = "You have successfully Submitted Your work Request";
@@ -221,9 +220,8 @@ $rep = $db_handle->fetchAssoc($result);
                                 <div class="col-sm-8 col-lg-8">
                                     <div class="input-group date">
                                         <select name="location" class="form-control" id="location">
-                                            <option value="" selected>All Offices</option>
                                             <?php
-                                            $query = "SELECT * FROM accounting_system_office_locations ";
+                                            $query = "SELECT * FROM facility_location ";
                                             $result = $db_handle->runQuery($query);
                                             $result = $db_handle->fetchAssoc($result);
                                             foreach ($result as $row)
@@ -255,7 +253,7 @@ $rep = $db_handle->fetchAssoc($result);
                         </form>
                     </div>
 
-                    <div class="section-tint super-shadow">
+                    <div class="section-tint super-shadow" style="display: none">
                         <h5>Incidence Form</h5>
                         <hr/>
                         <form data-toggle="validator" class="form-vertical" role="form" method="post" action="">
@@ -277,9 +275,8 @@ $rep = $db_handle->fetchAssoc($result);
                                 <div class="col-sm-8 col-lg-8">
                                     <div class="input-group date">
                                         <select name="location" class="form-control" id="location">
-                                            <option value="" selected>All Offices</option>
                                             <?php
-                                            $query = "SELECT * FROM accounting_system_office_locations ";
+                                            $query = "SELECT * FROM facility_location";
                                             $result = $db_handle->runQuery($query);
                                             $result = $db_handle->fetchAssoc($result);
                                             foreach ($result as $row)

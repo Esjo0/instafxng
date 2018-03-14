@@ -334,9 +334,8 @@ $rep = $db_handle->fetchAssoc($result);
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-map-marker "></i></span>
                                                 <select  type="text" name="location" class="form-control " id="location" >
-                                                    <option value="" selected>All Offices</option>
                                                     <?php
-                                                    $query = "SELECT * FROM accounting_system_office_locations ";
+                                                    $query = "SELECT * FROM facility_location";
                                                     $result = $db_handle->runQuery($query);
                                                     $result = $db_handle->fetchAssoc($result);
                                                     foreach ($result as $row)

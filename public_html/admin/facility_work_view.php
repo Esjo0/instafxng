@@ -28,9 +28,9 @@ foreach ($check as $row) {
           facility_work.details AS details, 
           facility_work.created AS w_date,
           facility_work.location AS wlocation,
-          accounting_system_office_locations.location AS location, 
+          facility_location.location AS location, 
           CONCAT(admin.first_name, SPACE(1), admin.last_name) AS name 
-          FROM admin,facility_work,accounting_system_office_locations WHERE id = '$id' AND facility_work.created_by = admin.admin_code AND facility_work.location = accounting_system_office_locations.location_id
+          FROM admin,facility_work,facility_location WHERE id = '$id' AND facility_work.created_by = admin.admin_code AND facility_work.location = facility_location.location_id
           ORDER BY facility_work.created DESC ";
 
 

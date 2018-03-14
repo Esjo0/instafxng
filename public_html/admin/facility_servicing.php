@@ -99,8 +99,6 @@ $reps = $db_handle->fetchAssoc($result);
     <meta name="description" content="" />
     <?php require_once 'layouts/head_meta.php'; ?>
     <?php require_once 'hr_attendance_system.php'; ?>
-    <script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
     <script>
         function goBack() {
             window.history.back();
@@ -225,7 +223,7 @@ $reps = $db_handle->fetchAssoc($result);
                                                                     </div>
                                                                 </div>
                                                                     <div class="form-group">
-                                                                        <label for="comment">Details:</label>
+                                                                        <label class="control-label col-sm-3" for="comment">Details:</label>
                                                                         <div class="col-sm-8 ">
                                                                         <div class="input-group">
                                                                             <span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
@@ -251,10 +249,7 @@ $reps = $db_handle->fetchAssoc($result);
                                                         </div>
                                                         <form>
 
-                                                            <div class="modal-footer">
-                                                                <input name="process" type="submit" class="btn btn-success" value="Report">
-                                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
-                                                            </div>
+
                                                             <script type="text/javascript">
                                                                 $(function () {
                                                                     $('#datetimepicker, #datetimepicker2').datetimepicker({
@@ -350,7 +345,7 @@ $reps = $db_handle->fetchAssoc($result);
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-sm-3" for="from_date">Next:</label>
                                                                                     <div class="">
-                                                                                        <div class="input-group date col-sm-8">
+                                                                                        <div class="input-group date col-sm-6">
                                                                                             <input name="next" type="text" class="form-control" id="datetimepicker" required>
                                                                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                                                         </div>

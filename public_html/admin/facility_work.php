@@ -128,35 +128,41 @@ facility_work.created AS date,
                                                 <td> <button type="button" data-target="#check<?php echo $row['id']; ?>" data-toggle="modal"
                                                              class="btn btn-success">Assign Work
                                                     </button>
-                                                    <div id="check<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                                            class="close">&times;</button>
-                                                                    <h4 class="modal-title">Assign Equipment User</h4></div>
-                                                                <form data-toggle="validator" class="form-vertical" role="form" method="post" action="">
-                                                                    <div class="modal-body">
-                                                                        <input name="invent_id" type="hidden" id="id" value="<?php echo $row['inventoryid'];?>" class="form-control">
+                                                        <!--Modal - confirmation boxes-->
+                                                            <div id="check<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                                class="close">&times;</button>
+                                                                        <h4 class="modal-title">Assign Equipments</h4></div>
 
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-sm-2" for="allowed_admin">Assign Admin:</label>
-                                                                            <div class="col-sm-10">
-                                                                                <?php foreach($all_admin_member AS $key) { ?>
-                                                                                    <div class="col-sm-5"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
-                                                                                <?php } ?>
+                                                                    <form data-toggle="validator" class="form-vertical" role="form" method="post" action="">
+                                                                        <div class="modal-body">Details for <?php echo $row['name'];?>
+                                                                            <div class="row">
+
+                                                                                <input name="invent_id" type="hidden" id="id" value="<?php echo $row['inventoryid'];?>" class="form-control">
+
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-sm-2" for="allowed_admin">Select Equipment User's:</label>
+                                                                                    <div class="col-sm-10">
+                                                                                        <?php foreach($all_admin_member AS $key) { ?>
+                                                                                            <div class="col-sm-5"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
+                                                                                        <?php } ?>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
+
                                                                         </div>
-                                                                    </div>
-                                                                    <input name="work_id" type="text"  value="<?php echo $row['id']; ?>" hidden>
-                                                                    <div class="modal-footer">
-                                                                        <input name="assign" type="submit" class="btn btn-success" value="Assign">
-                                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
-                                                                    </div>
-                                                                </form>
+                                                                        <input name="work_id" type="text"  value="<?php echo $row['id']; ?>" hidden>
+                                                                        <div class="modal-footer">
+                                                                            <input name="assign" type="submit" class="btn btn-success" value="Assign">
+                                                                            <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
                                                 </td>
                                                 <td><?php echo $row['status']; ?></td>
                                             </tr>
