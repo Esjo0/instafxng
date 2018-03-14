@@ -3,6 +3,7 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$mail_templates = get_all_mail_templates();
 
 $get_params = allowed_get_params(['x', 'id']);
 $campaign_email_id_encrypted = $get_params['id'];
@@ -100,6 +101,21 @@ if($get_params['x'] == 'duplicate') {
 //                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
 
             });
+
+            function add_template(template_name)
+            {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function()
+                {
+                    if (this.readyState == 4 && this.status == 200)
+                    {
+                        tinymce.get("content").execCommand('mceSetContent', false, this.responseText);
+                    }
+                };
+                xhttp.open("GET", "../mail_templates/"+template_name, true);
+                xhttp.send();
+                return;
+            }
         </script>
     </head>
     <body>
@@ -175,6 +191,20 @@ if($get_params['x'] == 'duplicate') {
                                                 <option value="<?php echo $row['campaign_category_id']; ?>" <?php if(isset($selected_campaign_email['campaign_category_id']) && $row['campaign_category_id'] == $selected_campaign_email['campaign_category_id']) { echo "selected='selected'"; } ?>><?php echo $row['title']; ?></option>
                                                 <?php } } ?>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="subject">Mail Templates:</label>
+                                        <div class="col-sm-10">
+                                            <?php if(isset($mail_templates) && !empty($mail_templates)){ ?>
+                                                <?php foreach ($mail_templates as $row){ ?>
+                                                <div class="col-sm-3">
+                                                    <a onclick="add_template('<?php echo $row['html']?>')" href="javascript:void(0);">
+                                                        <img class="img-thumbnail img-responsive" src="../mail_templates/<?php echo $row['image']?>"/>
+                                                    </a>
+                                                </div>
+                                                <?php } ?>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                     <div class="form-group">

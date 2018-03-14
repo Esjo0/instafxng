@@ -55,7 +55,7 @@ if (isset($_POST['process'])) {
                     $destination_details = $admin_object->get_admin_detail_by_code($row);
                     $admin_name = $destination_details['first_name'];
                     $admin_email = $destination_details['email'];
-                    $message =  str_replace("/r/n","<br/>",nl2br($content));
+                    $message =  str_replace("\r\n","<br/>",nl2br($content));
                     $subject = 'New Bulletin - '.$title;
                     $created = date('d-m-y h:i:s a');
                     $message_final = <<<MAIL

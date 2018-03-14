@@ -10,7 +10,10 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Notifications"><span id="counter" class="label label-pill label-danger count" style="border-radius:10px;"></span><i class="fa fa-bell fa-fw"></i></a>
                     <div class="panel panel-info dropdown-menu">
                         <div class="panel-heading"><b>Notifications</b></div>
-                        <div id="list_content" style="max-height: 400px; overflow-y: scroll; max-width: 300px; min-width: 300px;" class="panel-body"></div>
+                        <div style="max-height: 400px; overflow-y: scroll; max-width: 300px; min-width: 300px;" class="panel-body">
+                            <div style="display: none" id="clear_btn"><button onclick="push_notifications.dismiss_all_notification()" class="btn btn-group-justified btn-xs btn-danger">Clear All</button></div>
+                           <div id="list_content"></div>
+                        </div>
                     </div>
                     <a href="profile_setting.php" title="Profile Settings"><i class="fa fa-user fa-fw"></i></a>&nbsp;&nbsp;
                     <a href="logout.php" title="Log Out"><i class="fa fa-sign-out fa-fw"></i></a>
@@ -20,7 +23,7 @@
     </div>
     <hr>
 </header>
-
+<div id="list_expand"></div>
 
 <script>
     var XMLHttpRequestObject = false;

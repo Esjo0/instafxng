@@ -2,7 +2,11 @@
 require_once("../init/initialize_admin.php");
 $admin_code = $_SESSION['admin_unique_code'];
 $type = $_POST['type'];
-if ($type == '0')
+if ($type === '00')
+{
+    $dismiss_notification = $obj_push_notification->dismiss_all_notifications($admin_code);
+}
+if ($type === '0')
 {
     $notification_id = $_POST['id'];
     $dismiss_notification = $obj_push_notification->dismiss_notification($admin_code, $notification_id);
@@ -18,7 +22,7 @@ $notifications = $obj_push_notification->get_notifications();
             ?>
             <div class="alert <?php if($row['status'] == "0"){echo 'alert-success';}else{echo 'alert-info';}?>">
                 <button type="button" onclick="push_notifications.show_alert('<?php echo $row['title'] ?>', '<?php echo datetime_to_text($row['created']) ?>', '<?php echo $row['author'] ?>', '<?php echo $row['message'] ?>', '<?php echo $row['notification_id']; ?>')" class="btn btn-xs"><i class="glyphicon glyphicon-expand"></i></button>
-                <a href="#" onclick="push_notifications.dismiss_notification('<?php echo $row['notification_id']; ?>')" class="close"  aria-label="close">&times;</a>
+                <a href="javascript:void(0);" onclick="push_notifications.dismiss_notification('<?php echo $row['notification_id']; ?>')" class="close"  aria-label="close">&times;</a>
                 <hr/>
                 <strong><?php echo $row['title'] ?></strong>
                 <p style="font-size: x-small !important;" class="text-sm-left text-muted"><?php echo datetime_to_text($row['created']) ?></p>
