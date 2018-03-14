@@ -331,9 +331,9 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-institution fa-fw"></i> Facility Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <?php //if (in_array(48, $my_pages_sidebar)) { ?><li><a href="facility_manager.php" title="Inventory">Inventory</a></li><?php //} ?>
-                        <?php //if (in_array(48, $my_pages_sidebar)) { ?><li><a href="facility_admin.php" title="Facility_Admin">Facility Admin</a></li><?php //} ?>
-                        <?php //if (in_array(48, $my_pages_sidebar)) { ?><li><a href="facility_user.php" title="Facility_User">Facility User</a></li><?php //} ?>
+                        <?php if (in_array(240, $my_pages_sidebar)) { ?><li><a href="facility_manager.php" title="Inventory">Inventory</a></li><?php } ?>
+                        <?php if (in_array(241, $my_pages_sidebar)) { ?><li><a href="facility_admin.php" title="Facility_Admin">Facility Admin</a></li><?php } ?>
+                        <?php if (in_array(242, $my_pages_sidebar)) { ?><li><a href="facility_user.php" title="Facility_User">Facility User</a></li><?php } ?>
                     </ul>
                 </li>
                 <li><a href="logout.php" title="Log Out"><i class="fa fa-sign-out fa-fw"></i> Log Out</a></li>
