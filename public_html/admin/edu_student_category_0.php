@@ -13,7 +13,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN user AS u ON ftc.email = u.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE STR_TO_DATE(ftc.created, '%Y-%m-%d') > '2018-01-01' AND u.academy_signup IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
+            WHERE u.academy_signup IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
             ORDER BY ftc.created DESC, u.last_name ASC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, ftc.created,
@@ -22,7 +22,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN user AS u ON ftc.email = u.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE STR_TO_DATE(ftc.created, '%Y-%m-%d') > '2018-01-01' AND u.academy_signup IS NULL
+            WHERE u.academy_signup IS NULL
             ORDER BY ftc.created DESC, u.last_name ASC ";
 }
 
