@@ -34,13 +34,7 @@ $thisPage = "Home";
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div  class="item super-shadow page-top-section">
-                        <div class="row ">
-                            <a href="https://instafxng.com/loyalty.php" title="click for details">
-                                <center>
-                                    <img src="images/instafxng_loyalty_program_and_rewards.jpg" alt="" class="img-responsive" />
-                                </center>
-                            </a>
-                        </div>
+                        <?php include "views/general_pages/advert_div.html"; ?>
                     </div>
                     <div id="welcome-note" class="section-tint super-shadow">
                         <h2 class="text-center">Welcome to Instaforex Nigeria</h2>
