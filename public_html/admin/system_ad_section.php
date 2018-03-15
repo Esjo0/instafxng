@@ -5,11 +5,13 @@ if (!$session_admin->is_logged_in()) {
 }
 if(isset($_POST['update']))
 {
-    foreach($_POST as $key => $value) {
+    /*foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
-    }
-    $message =  str_replace("\n","<br>",$_POST['content_section']);
-    $message =  str_replace("\r","<br>",nl2br($message));
+    }*/
+
+    $message = htmlentities($_POST['content_section']);
+    $message = stripslashes($message);
+    $message = str_replace('â€™', "'", $message);
     $filepath = "../views/general_pages/advert_div.html";
     if(file_exists($filepath))
     {
@@ -20,8 +22,6 @@ if(isset($_POST['update']))
     $update ? $message_success = "Advert Section updated." : $message_error = "Operation Failed. Please Try Again.";
 }
 $page_contents = file_get_contents("../views/general_pages/advert_div.html");
-$page_contents =  str_replace("\n","",$page_contents);
-$page_contents =  str_replace("\r","",$page_contents);
 
 ?>
 <!DOCTYPE html>
@@ -31,7 +31,7 @@ $page_contents =  str_replace("\r","",$page_contents);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Instaforex Nigeria | Admin - Front-End Advert Section</title>
-        <meta name="title" content="Instaforex Nigeria | Admin - View Admin Members" />
+        <meta name="title" content="Instaforex Nigeria | Admin - Front-End Advert Section" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
@@ -41,6 +41,7 @@ $page_contents =  str_replace("\r","",$page_contents);
                 selector: "textarea#content_section",
                 height: 500,
                 theme: "modern",
+                remove_linebreaks : true,
                 relative_urls: false,
                 remove_script_host: false,
                 convert_urls: true,
@@ -83,7 +84,7 @@ $page_contents =  str_replace("\r","",$page_contents);
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <p>Please edit the advert section of the front end below.</p>
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                <form data-toggle="validator" enctype="multipart/form-data" class="form-horizontal" role="form" method="post" action="">
                                     <textarea rows="7" name="content_section" id="content_section" class="form-control" required><?php echo $page_contents; ?></textarea>
                                     <br/>
                                     <input value="Update" type="submit" name="update" class="btn btn-info" />

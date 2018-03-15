@@ -34,7 +34,7 @@ $thisPage = "Home";
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div  class="item super-shadow page-top-section">
-                        <?php include "views/general_pages/advert_div.html"; ?>
+                        <?php  echo htmlspecialchars_decode(stripslashes(trim(file_get_contents("views/general_pages/advert_div.html"))));  ?>
                     </div>
                     <div id="welcome-note" class="section-tint super-shadow">
                         <h2 class="text-center">Welcome to Instaforex Nigeria</h2>
