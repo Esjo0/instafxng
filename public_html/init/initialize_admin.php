@@ -36,5 +36,6 @@ require_once(LIB_PATH.DS."class_push_notification.php");
 require_once(LIB_PATH.DS."class_loyalty_point.php");
 require_once(LIB_PATH.DS."class_support_emails.php");
 require_once(LIB_PATH.DS."class_accounting_system.php");
+require_once(LIB_PATH.DS."class_facility.php");
 
 if(!endsWith(getCurrentURL(), "push_notification_server.php")){add_activity_log();}

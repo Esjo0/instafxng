@@ -440,6 +440,14 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     </div>
                                     <hr/>
 
+                                    <p><strong>Facility Management</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="222" id="" <?php if (in_array(240, $my_pages)) { echo 'checked="checked"'; } ?>/> Inventory</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="223" id="" <?php if (in_array(241, $my_pages)) { echo 'checked="checked"'; } ?>/> Facility Admin</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="224" id="" <?php if (in_array(242, $my_pages)) { echo 'checked="checked"'; } ?>/> Facility User</label></div></div>
+                                    </div>
+                                    <hr/>
+
                                     <br/>
                                     <div class="form-group">
                                         <div class="col-sm-12">
