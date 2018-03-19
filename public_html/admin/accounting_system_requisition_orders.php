@@ -22,6 +22,17 @@ if(isset($_POST['process_refund']))
     }
     $db_handle->affectedRows() > 0 ? $message_success = "Your refund would be processed shortly." : $message_error = "The process failed please try again.";
 }
+
+if(isset($_POST['send_code']))
+{
+    $title = "New Cash Out Notification";
+    $message = 'A new requisition cash out code was added <br><b>Code:</b>'.$_POST['code'].'<br>Copy the code and click the link below to disburse cash.</a>';
+    $recipients = $_POST['send_code'];
+    $author = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
+    $source_url = "https://instafxng.com/admin/accounting_system_confirmation_requests.php";
+    $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
+}
+
 $query = "SELECT 
           accounting_system_req_order.payment_status,
           accounting_system_req_order.req_order_total AS req_order_total,
@@ -47,6 +58,9 @@ $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $projects = $db_handle->fetchAssoc($result);
+
+
+$reviewers = $obj_push_notification->get_recipients_by_access(223);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -259,7 +273,38 @@ $projects = $db_handle->fetchAssoc($result);
                                                     <?php if($row['status'] == '3'){echo 'DECLINED';} ?>
                                                     <?php if($row['status'] == '0'){echo '<b>N/A</b>';} ?>
                                                 </td>
-                                                <td><?php if($row['status'] == '2'){echo strtoupper($row['req_order_code']);}else{echo "<b>N/A</b>";} ?></td>
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <?php if($row['status'] == '2'){ echo strtoupper($row['req_order_code']);}else{echo "<b>N/A</b>";} ?>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <?php if($row['status'] == '2'): ?>
+                                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                                                    <input name="code" type="hidden" value="<?php echo $row['req_order_code'];?>">
+                                                                    <div class="pull-right">
+                                                                        <div class="btn-group">
+                                                                            <button title="Send Cash Out Code" class="btn btn-success btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <i class="glyphicon glyphicon-share"></i>
+                                                                            </button>
+                                                                            <div class="dropdown-menu">
+                                                                                <?php if(isset($reviewers) && !empty($reviewers)){ $x = explode(',', $reviewers);  ?>
+                                                                                    <?php foreach ($x as $key)
+                                                                                    {if($key != ''): ?>
+                                                                                        <button name="send_code" class="btn btn-group-justified btn-sm btn-default" type="submit" value="<?php echo $key;?>">
+                                                                                            <?php echo $admin_object->get_admin_name_by_code($key);?>
+                                                                                        </button>
+                                                                                    <?php endif;
+                                                                                    } ?>
+                                                                                <?php }else{ echo '<em>No Reviewer Available</em>';} ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            <?PHP endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td><?php echo datetime_to_text($row['created']); ?></td>
                                                 <td>
                                                     <?php if($row['status'] == '2' && $row['payment_status'] == '2'){?>

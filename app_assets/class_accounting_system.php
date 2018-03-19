@@ -28,23 +28,7 @@ public function get_cash_out_details($cash_out_code)
         return $result ? true : false;
     }
 
-    public function notify_of_new_order($author_code)
-    {
-        global $admin_object;
-        global $obj_push_notification;
-        global $db_handle;
 
-        /*$message_main = '<p style="font-size: small">Author: '.$admin_object->get_admin_name_by_code($author_code)."<br/>";
-        $message_main .= 'Order Total: N'.number_format($req_order_total, 2)."<br/>";
-        $query ="SELECT location FROM accounting_system_office_locations WHERE location_id = '$location' LIMIT 1";
-        $result = $db_handle->runQuery($query);
-        $result = $db_handle->fetchAssoc($result);
-        $result = $result[0]['location'];
-        $message_main .= 'Order Location: '.$result."</p>";
-        $recipients = "Vi1DW";
-        $type = '4';
-        $obj_push_notification->add_new_notification($message_main, $recipients, $type);*/
-    }
 
     public function get_order_list($order_code)
     {
