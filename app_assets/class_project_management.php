@@ -155,7 +155,10 @@ class Project_Management
         $destination_details = $admin_object->get_admin_detail_by_code($admin_code);
         $admin_name = $destination_details['first_name'];
         $admin_email = $destination_details['email'];
-        $description =  str_replace("/r/n","<br/>",nl2br($description));
+        $description = htmlentities($description);
+        $description = stripslashes($description);
+        $description = str_replace('â€™', "'", $description);
+        $description = htmlspecialchars_decode(stripslashes(trim($description)));
         $subject = 'New Project Assignment - '.$title;
         $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -226,7 +229,10 @@ MAIL;
             $destination_details = $admin_object->get_admin_detail_by_code($all_allowed_admin[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $description =  str_replace("/r/n","<br/>",nl2br($description));
+            $description = htmlentities($description);
+            $description = stripslashes($description);
+            $description = str_replace('â€™', "'", $description);
+            $description = htmlspecialchars_decode(stripslashes(trim($description)));
             $subject = 'New Project Assignment - '.$title;
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -299,7 +305,10 @@ MAIL;
             $destination_details = $admin_object->get_admin_detail_by_code($recipients[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $message =  str_replace("/r/n","<br/>",nl2br($message));
+            $message = htmlentities($message);
+            $message = stripslashes($message);
+            $message = str_replace('â€™', "'", $message);
+            $message = htmlspecialchars_decode(stripslashes(trim($message)));
             $subject = 'New Project Message - '.$title;
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">

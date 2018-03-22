@@ -13,7 +13,7 @@ $all_admin_member = $admin_object->get_all_admin_member();
 
 if (isset($_POST['process'])) {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
-    $content = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['content'])));
+    //$content = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['content'])));
     $bulletin_no = $db_handle->sanitizePost(trim($_POST['bulletin_no']));
     $bulletin_status = $db_handle->sanitizePost(trim($_POST['bulletin_status']));
 
@@ -55,7 +55,11 @@ if (isset($_POST['process'])) {
                     $destination_details = $admin_object->get_admin_detail_by_code($row);
                     $admin_name = $destination_details['first_name'];
                     $admin_email = $destination_details['email'];
-                    $message =  str_replace("\r\n","<br/>",nl2br($content));
+                    $admin_email = $destination_details['email'];
+                    $message = htmlentities($content);
+                    $message = stripslashes($message);
+                    $message = str_replace('â€™', "'", $message);
+                    $message = htmlspecialchars_decode(stripslashes(trim($message)));
                     $subject = 'New Bulletin - '.$title;
                     $created = date('d-m-y h:i:s a');
                     $message_final = <<<MAIL
@@ -87,8 +91,8 @@ if (isset($_POST['process'])) {
                                         <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
                                     </p>
                                     <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                                    <p><strong>Lekki Office Address:</strong> Road 5, Suite K137, Ikota Shopping Complex, Lekki/Ajah Express Road, Lagos State</p>
-                                    <p><strong>Office Number:</strong> 08028281192</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
                                     <br />
                                 </div>
                                 <div style="font-size: 10px !important; padding: 15px; text-align: center;">
