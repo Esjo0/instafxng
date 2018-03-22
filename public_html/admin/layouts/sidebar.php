@@ -77,6 +77,8 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(21, $my_pages_sidebar)) { ?><li><a href="client_ilpr.php" title="ILPR Clients">View ILPR Clients</a></li><?php } ?>
                         <?php if (in_array(22, $my_pages_sidebar)) { ?><li><a href="client_non_ilpr.php" title="Non-ILPR Clients">View Non-ILPR Clients</a></li><?php } ?>
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_top_traders.php" title="View Top Traders">View Top Traders</a></li><?php } ?>
+                        <?php if (in_array(244, $my_pages_sidebar)) { ?><li><a href="client_active.php" title="Active Clients">Active Clients</a></li><?php } ?>
+                        <?php if (in_array(245, $my_pages_sidebar)) { ?><li><a href="client_inactive.php" title="Inactive Clients">Inactive Clients</a></li><?php } ?>
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_commission_17.php" title="Commission Clients 17">Commission Clients 17</a></li><?php } ?>
                     </ul>
                 </li>
@@ -225,7 +227,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(239, $my_pages_sidebar)) { ?><li><a href="system_activity_logs.php"> System Activity Logs</a></li><?php } ?>
                         <div class="divider"></div>
                         <!-- 84 -->
-                        <?php if (in_array(240, $my_pages_sidebar)) { ?><li><a href="system_ad_section.php"> Front-End Advert Section</a></li><?php } ?>
+                        <?php if (in_array(243, $my_pages_sidebar)) { ?><li><a href="system_ad_section.php"> Front-End Advert Section</a></li><?php } ?>
                     </ul>
                 </li>
                 <?php /*if (in_array(79, $my_pages_sidebar)) { */?><!--<li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li>--><?php /*} */?>

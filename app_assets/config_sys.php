@@ -51,5 +51,11 @@ $client_group_DEFAULT = array(
     "35" => "Students Category 1",
     "36" => "Students Category 2",
     "37" => "Students Category 3",
-    "38" => "Students Category 4"
+    "38" => "Students Category 4",
+    "39" => "3 Months Active Clients",
+    "40" => "6 Months Active Clients",
+    "41" => "12 Months Active Clients",
+    "42" => "3 Months Inactive Clients",
+    "43" => "6 Months Inactive Clients",
+    "44" => "12 Months Inactive Clients"
 );
