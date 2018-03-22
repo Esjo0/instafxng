@@ -25,7 +25,7 @@ if(!$selected_bulletin)
 
 if (isset($_POST['post_comment']))
 {
-    $comment = $db_handle->sanitizePost($_POST['comment']);
+    /*$comment = $db_handle->sanitizePost($_POST['comment']);*/
     $bulletin_id = $db_handle->sanitizePost($_POST['bulletin_id']);
 
     $db_handle->runQuery("INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')");
@@ -45,9 +45,10 @@ if (isset($_POST['post_comment']))
             $destination_details = $admin_object->get_admin_detail_by_code($row);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $message =  str_replace("\r\n","<br/>",nl2br($comment));
-            $message =  str_replace("\n","<br/>",nl2br($comment));
-            $message =  str_replace("\r","<br/>",nl2br($comment));
+            $comment = htmlentities($comment);
+            $comment = stripslashes($comment);
+            $message1 = str_replace('â€™', "'", $comment);
+            $message1 = htmlspecialchars_decode(stripslashes(trim($message1)));
             $subject = 'New Bulletin Comment - '.$selected_bulletin['title'];
             $title = $selected_bulletin['title'];
             $created = date('d-m-y h:i:s a');
@@ -60,7 +61,7 @@ if (isset($_POST['post_comment']))
                                 <p>Dear $admin_name,</p>
                                 <p>$author left a new comment.</p>
                                 <p><b>BULLETIN TITLE: </b>$title</p>
-                                <p><b>COMMENT: </b><br/>$message</p>
+                                <p><b>COMMENT: </b><br/>$message1</p>
                                 <p><b>DATE AND TIME: </b>$created</p>                                
                                 <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />

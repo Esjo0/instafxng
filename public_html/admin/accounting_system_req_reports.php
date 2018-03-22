@@ -102,8 +102,8 @@ if (isset($_POST['report']))
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
-        <!--<script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>-->
+        <script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
         <script>
             function print_report(divName)
             {

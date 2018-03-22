@@ -60,7 +60,7 @@ $result = $db_handle->runQuery($query);
 $projects = $db_handle->fetchAssoc($result);
 
 
-$reviewers = $obj_push_notification->get_recipients_by_access(223);
+$reviewers = $obj_push_notification->get_recipients_by_access(224);
 ?>
 <!DOCTYPE html>
 <html lang="en">
