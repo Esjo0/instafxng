@@ -5,15 +5,13 @@ class facility{
         global $db_handle;
 
         $query = "INSERT INTO facility_inventory (invent_id,name,cost,date,admin,location,category) VALUES ('$invent_id','$iname','$cost','$idate','$all_allowed_admin','$location','$cart')";
-        $db_handle->runQuery($query) ? true : false;
-        //return true;
+        return $db_handle->runQuery($query) ? true : false;
     }
     public function servicing($invent_id, $cost, $executor, $type ,$next, $details) {
         global $db_handle;
 
         $query2 = "INSERT INTO facility_servicing (invent_id,cost,executor,type,next,details) VALUES ('$invent_id','$cost','$executor','$type','$next','$details')";
-        $db_handle->runQuery($query2);
-        return true;
+        return $db_handle->runQuery($query2) ? true : false;
     }
     public function get_admin_detail_by_code($admin_code) {
         global $db_handle;
