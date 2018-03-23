@@ -59,7 +59,7 @@ if (isset($_POST['submit2']) || isset($_POST['submit']))
             <p>Dear $first_name,</p>
             <p>Welcome on board!</p>
             <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
-            <p>You have joined over 14 000 thousand Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
+            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
             <p>At InstaFxNg, we consider it a privilege to serve and provide you with excellent and unparalleled service at all times.</p>
             <p>Here, our job is to take care of everything else while you focus on trading and making money. </p>
             <p>From making deposit into your account (locally and easily) to instant stress free withdrawals (to your bank account) to unmatched customer support, we have you covered. </p>
@@ -105,6 +105,7 @@ if (isset($_POST['submit2']) || isset($_POST['submit']))
 MAIL;
 			$system_object->send_email($subject, $message, $email, $full_name);
 			$message_success = "Welcome to Instaforex Nigeria.";
+			redirect_to("https://instafxng.com/live_account.php?id=lp");
 		}
 		if(!$result)
 		{
