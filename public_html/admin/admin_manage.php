@@ -399,7 +399,7 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="110" id="" <?php if (in_array(110, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Prospect Source</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="111" id="" <?php if (in_array(111, $my_pages)) { echo 'checked="checked"'; } ?>/> Add New Prospect</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="112" id="" <?php if (in_array(112, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Prospects</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="243" id="" <?php if (in_array(243, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage ILPR Prospects</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="246" id="" <?php if (in_array(246, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage ILPR Prospects</label></div></div>
                                     </div>
                                     <hr/>
 
