@@ -61,13 +61,14 @@ if (isset($_POST['submit2']) || isset($_POST['submit']))
             <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
             <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
             <p>At InstaFxNg, we consider it a privilege to serve and provide you with excellent and unparalleled service at all times.</p>
-            <p>Here, our job is to take care of everything else while you focus on trading and making money. </p>
+            <p>Our job is to take care of everything else while you focus on trading and making money. </p>
             <p>From making deposit into your account (locally and easily) to instant stress free withdrawals (to your bank account) to unmatched customer support, we have you covered. </p>
             <p>We are dedicated to working effectively to ensure swift service delivery to you consistently.</p>
-            <p>So, here is what you can expect from me…</p>
+            <p>To start your journey to earning more money in our Loyalty Rewards Program, kindly click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open an InstaForex account immediately.</p>
             <p>Very shortly you're going to receive a call welcoming you on board from our ever cheerful customer service representatives who will assist you in opening an InstaForex account so you can get started immediately.</p>
             <p>Subsequently you will receive Emails.</p>
             <p>These emails will continue to educate you on how to trade, grow your Profits, take advantage of bonuses and earn more loyalty points. (I promise not to disturb you with my mails).</p>
+            <p>Don’t forget to click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open your InstaForex account. You can also click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account so you can get started immediately.</p>
             <p>I’m so glad you are here and I can’t wait for you to start earning from your trades and in the InstaFxNg Loyalty Points and Reward Program.</p>
             <br/><br/>
             <p>Best Regards,</p>
