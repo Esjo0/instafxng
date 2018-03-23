@@ -18,6 +18,29 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $all_prospect = $db_handle->fetchAssoc($result);
 
+// This section processes - views/live_account_ilpr_reg.php
+if(isset($_POST['live_account_ilpr_reg'])) {
+    $page_requested = "live_account_ilpr_reg_php";
+    $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
+    $full_name = $db_handle->sanitizePost($_POST['full_name']);
+    $email_address = $db_handle->sanitizePost($_POST['email']);
+    $phone_number = $db_handle->sanitizePost($_POST['phone']);
+    if(empty($full_name) || empty($email_address) || empty($phone_number) || empty($account_no)) {
+        $message_error = "All fields must be filled.";
+    } elseif (!check_email($email_address)) {
+        $message_error = "You have provided an invalid email addresss. Please try again.";
+    } else {
+
+        $client_operation = new clientOperation();
+        $log_new_ifxaccount = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2, $my_refferer);
+
+        if($log_new_ifxaccount) {
+            $message_success = "Live Account Opening Completed";
+        } else {
+            $message_error = "Something went wrong, the operation could not be completed. Please try again.";
+        }
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -71,14 +94,9 @@ $all_prospect = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <div id="filter_trigger" class="row">
-                                    <center>
-                                        <button onclick="show_form('filters')" class="btn btn-sm btn-default">
-                                            <i class="fa fa-caret-down"></i>
-                                        </button>
-                                    </center>
-                                </div>
+                                <div id="filter_trigger" class="row"><center><button onclick="show_form('filters')" class="btn btn-sm btn-default"><i class="fa fa-caret-down"></i></button></center></div>
                                 <div style="display: none" id="filters" class="row">
+                                    <br/>
                                     <div class="col-sm-6">
                                         <form id="requisition_form" data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                             <div class="form-group">
@@ -143,7 +161,7 @@ $all_prospect = $db_handle->fetchAssoc($result);
                                     </thead>
                                     <tbody>
                                     <?php if(isset($all_prospect) && !empty($all_prospect)) {
-                                        foreach ($all_prospect as $row) { ?>
+                                        foreach ($all_prospect as $row) {?>
                                             <tr>
                                                 <td><?php echo $row['f_name']." ".$row['m_name']." ".strtoupper($row['l_name']); ?></td>
                                                 <td><?php echo $row['email']; ?></td>
@@ -151,7 +169,7 @@ $all_prospect = $db_handle->fetchAssoc($result);
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                 <td>
                                                     <!--<a title="Comment" class="btn btn-success" href="prospect_sales.php?x=<?php /*echo encrypt($row['prospect_biodata_id']); */?>&pg=<?php /*echo $currentpage; */?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>-->
-                                                    <button class="btn btn-success" data-target="#bookmark<?php echo $row['prospect_biodata_id']; ?>" data-toggle="modal" ><i class="glyphicon glyphicon-bookmark"></i></button>
+                                                    <button class="btn btn-sm btn-success" data-target="#bookmark<?php echo $row['prospect_biodata_id']; ?>" data-toggle="modal" ><i class="glyphicon glyphicon-bookmark"></i></button>
                                                     <!--Modal - confirmation boxes-->
                                                     <div id="bookmark<?php echo $row['prospect_biodata_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                         <div class="modal-dialog">
@@ -175,51 +193,52 @@ $all_prospect = $db_handle->fetchAssoc($result);
                                                                                 <div class="col-sm-4"><div class="radio"><label for="comment"><input id="comment" type="radio" name="comment" value="Did Not Take Call" id="" /> Did Not Take Call</label></div></div>
                                                                                 <div class="col-sm-4"><div class="radio"><label for="comment"><input id="comment" type="radio" name="comment" value="Unreachable Line" id="" /> Unreachable Line</label></div></div>
                                                                             </div>
+                                                                                <hr/>
+                                                                                <br/>
+                                                                                <div class="form-group row">
+                                                                                    <div class="col-sm-12">
+                                                                                        <textarea name="comment" placeholder="Other Comments (if any)" id="comment" rows="3" class="form-control"></textarea>
+                                                                                        <br>
+                                                                                    </div>
+                                                                                </div>
                                                                                 <input name="process_pending" type="submit" class="btn btn-success" value="Proceed">
                                                                             </form>
                                                                         </div>
                                                                         <div id="successfull" class="tab-pane fade">
-                                                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                                                            <p>You have <strong>successfully</strong> contacted <?php echo $row['full_name']; ?>.</p>
-                                                                            <p>Use the checkboxes below to select <?php echo $row['full_name']; ?>'s interests. </p>
-                                                                            <input name="prospect_sales_contact_id" type="hidden" value="<?php echo $row['prospect_sales_contact_id']; ?>">
-                                                                                <input name="admin_code" type="hidden" value="<?php echo $_SESSION['admin_unique_code'] ?>">
-                                                                                <input name="full_name" type="hidden" value="<?php echo $row['full_name']; ?>">
-                                                                                <input name="email" type="hidden" value="<?php echo $row['email_address']; ?>">
-                                                                                <input name="phone" type="hidden" value="<?php echo $row['phone_number']; ?>">
-                                                                            <p><strong>Training</strong></p>
-                                                                            <div class="form-group row">
-                                                                                <div class="col-sm-6"><div class="checkbox"><label for=""><input type="checkbox" name="training_online" value="Registered For Online Training" id="training" /> Add For Online Training</label></div></div>
-                                                                                <div class="col-sm-6"><div class="checkbox"><label for=""><input type="checkbox" name="training_offline" value="Registered For Offline Training" id="training" /> Add For Offline Training</label></div></div>
-                                                                            </div>
-                                                                            <hr/>
-                                                                            <p><strong>Bonus Accounts</strong></p>
-                                                                            <div class="form-group row">
-                                                                                <div class="col-sm-6"><div class="checkbox"><label for=""><input type="checkbox" name="open_acct_30" value="Sent Link To Open 30% No Deposit Bonus Account" id="open_acct"/>30% No Deposit Bonus Account</label></div></div>
-                                                                                <div class="col-sm-6"><div class="checkbox"><label for=""><input type="checkbox" name="open_acct_55" value="Sent Link To Open 55% No Deposit Bonus Account" id="open_acct"/>55% No Deposit Bonus Account</label></div></div>
-                                                                                <div class="col-sm-6"><div class="checkbox"><label for=""><input type="checkbox" name="open_acct_20" value="Sent Link To Open $20 Welcome Bonus Account" id="open_acct"/>$20 Welcome Bonus Account</label></div></div>
-                                                                                <div class="col-sm-6"><div class="checkbox"><label for=""><input type="checkbox" name="open_acct_edu" value="Sent Link To Open Educational Bonus Account" id="open_acct"/>Educational Bonus Account</label></div></div>
-                                                                            </div>
-                                                                            <hr/>
-                                                                            <p><strong>ILPR Account</strong></p>
-                                                                            <div class="form-group row">
-                                                                                <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="open_acct_ilpr" value="Sent Link To Open ILPR Account" id="open_acct" /> Open ILPR Account</label></div></div>
-                                                                            </div>
-                                                                            <hr/>
-                                                                            <br/>
-                                                                            <div class="form-group row">
-                                                                                <div class="col-sm-12">
-                                                                                    <textarea name="comment" placeholder="Other Comments (if any)" id="comment" rows="3" class="form-control"></textarea>
-                                                                                    <br>
-                                                                                    <input name="process_successfull" type="submit" class="btn btn-success" value="Proceed">
+                                                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                                                                <p>You have <strong>successfully</strong> contacted <?php echo $row['f_name']." ".$row['m_name']." ".$row['l_name']; ?>.
+                                                                                    <br/>Enrol his/her Instaforex Account into the INSTAFXNG LOYALTY PROGRAM AND REWARDS (ILPR).
+                                                                                </p>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-sm-3" for="full_name">Full Name:</label>
+                                                                                    <div class="col-sm-9 col-lg-5">
+                                                                                        <input name="full_name" type="text" class="form-control" id="full_name" value="<?php echo $row['f_name']." ".$row['m_name']." ".$row['l_name']; ?>" required>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-sm-3" for="email">Email Address:</label>
+                                                                                    <div class="col-sm-9 col-lg-5">
+                                                                                        <input name="email" type="text" class="form-control" id="email" value="<?php echo $row['email']; ?>" required>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-sm-3" for="phone">Phone Number:</label>
+                                                                                    <div class="col-sm-9 col-lg-5">
+                                                                                        <input name="phone" type="text" class="form-control" id="phone" value="<?php echo $row['phone']; ?>" required>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-sm-3" for="ifx_acct_no">Instaforex Account Number:</label>
+                                                                                    <div class="col-sm-9 col-lg-5">
+                                                                                        <input name="ifx_acct_no" type="text" class="form-control" id="ifx_acct_no" required>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <div class="col-sm-offset-3 col-sm-9"><input name="live_account_ilpr_reg" type="submit" class="btn btn-success" value="Submit" /></div>
+                                                                                </div>
                                                                             </form>
                                                                         </div>
                                                                     </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -249,12 +268,18 @@ $all_prospect = $db_handle->fetchAssoc($result);
                                     <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
                                     <h4 class="modal-title text-center">Live Account Opening Form</h4></div>
                                 <div class="modal-body">
-                                    <p class="text-success"><strong>The Account Opening Form is Loading... Kindly wait for it, fill the form and copy the details.</strong></p>
-                                    <iframe class="embed-responsive-item" id="frame" style='width: 780px;border:0;height:auto;' src="https://secure.instaforex.com/en/partner_open_account.aspx?x=BBLR&width=580&showlogo=false&color=red&host="https://instafxng.com/live_account.php" style="padding:0; margin:0" scrolling="no" onload="var th=this; setTimeout(function() {var h=null;if (!h) if (location.hash.match(/^#h(\d+)/)) h=RegExp.$1;if (h) th.style .height=parseInt(h)+170+'px';}, 10);" ></iframe>
-                                    <script> document.getElementById('frame').src += window.location; </script>
+                                    <p class="text-success text-center">
+                                        <strong>The Account Opening Form is Loading...
+                                            <br/>Kindly wait for it, fill the form and copy the details.
+                                        </strong>
+                                    </p>
+                                    <center>
+                                        <iframe class="embed-responsive-item" id="frame" style='width: 780px;border:0;height:auto;' src="https://secure.instaforex.com/en/partner_open_account.aspx?x=BBLR&width=580&showlogo=false&color=red&host="https://instafxng.com/live_account.php" style="padding:0; margin:0" scrolling="no" onload="var th=this; setTimeout(function() {var h=null;if (!h) if (location.hash.match(/^#h(\d+)/)) h=RegExp.$1;if (h) th.style .height=parseInt(h)+170+'px';}, 10);" ></iframe>
+                                        <script> document.getElementById('frame').src += window.location; </script>
+                                    </center>
                                 </div>
                                 <div class="modal-footer">
-                                    <input name="finish" type="button" class="btn btn-sm btn-success" value="Finish">
+                                    <input onclick="document.getElementById('frame').src = document.getElementById('frame').src;" name="finish" type="button" class="btn btn-sm btn-success" value="Refresh">
                                     <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>
                                 </div>
                             </div>

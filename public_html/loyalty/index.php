@@ -263,8 +263,8 @@ function check_duplicate($email_address, $phone_number)
 							<img src="images/Th11-Paper%20money.jpg" alt=" " class="img-responsive">
 						</div>
 						<div class="col-md-6 banner_bottom_left">
-							<h4>Here is one thing that has been <b>Delivering Extra Profits</b> to the accounts of over 14,000 traders</h4>
-							<p class="text-justify">What is thrilling is about the Loyalty rewards is how much you can get without doing anything extra
+							<h4 class="text-justify">Here is one thing that has been <b class="text-uppercase">Delivering Extra Profits</b> to the accounts of over 14,000 traders</h4>
+							<p class="text-justify">What is thrilling about the Loyalty rewards is how much you can get without doing anything extra
 								other than trading.</p>
 							<p class="text-justify">You do not enter for a draw or trade a particular lot size to qualify.</p>
 							<p class="text-justify"><b>Just Trade!!!</b></p>
@@ -281,13 +281,13 @@ function check_duplicate($email_address, $phone_number)
 				<div class="inner_sec_info_wthree_agile">
 					<div class="help_full">
 						<div class="col-md-6 banner_bottom_left">
-							<h4>Interested in earning more money for trading Forex? </h4>
+							<h4>Interested in earning more money from trading Forex? </h4>
 							<p class="text-justify">Then you have finally reached the right place to start your journey to making extra cash NOW...
 								Not tomorrow, Not in 12 months time!</p>
 							<p class="text-justify">You get a piece of the pie as long as you open an account with us,
-								deposit funds to your account and trade.</p>
+								deposit funds into your account and trade.</p>
 							<p class="text-justify">This is the biggest reward system for Forex traders in Nigeria and I
-								can’t wait for you to come onboard to enjoy this amazing offer!</p>
+								can’t wait for you to come on-board to enjoy this amazing offer!</p>
 							<div class="ab_button">
 								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
 							</div>
@@ -309,7 +309,7 @@ function check_duplicate($email_address, $phone_number)
 								</div>
 								<div class="col-xs-9 banner_bottom_grid_right">
 									<h4>Open An Account</h4>
-									<p>Open an Instaforex Trading Account</p>
+									<p class="text-justify">Open an Instaforex Trading Account</p>
 								</div>
 								<div class="clearfix"> </div>
 							</div>
@@ -325,7 +325,7 @@ function check_duplicate($email_address, $phone_number)
 								</div>
 								<div class="col-xs-9 banner_bottom_grid_right">
 									<h4>Deposit Funds</h4>
-									<p>Deposit funds into your Instaforex Account</p>
+									<p class="text-justify">Deposit funds into your Instaforex Account</p>
 								</div>
 								<div class="clearfix"> </div>
 							</div>
@@ -341,7 +341,7 @@ function check_duplicate($email_address, $phone_number)
 								</div>
 								<div class="col-xs-9 banner_bottom_grid_right">
 									<h4>Trade</h4>
-									<p>Carry out trades on your Instaforex Account</p>
+									<p class="text-justify">Carry out trades on your Instaforex Account</p>
 								</div>
 								<div class="clearfix"> </div>
 							</div>
@@ -355,10 +355,10 @@ function check_duplicate($email_address, $phone_number)
 						</div>
 						<div class="col-md-12 banner_bottom_left">
 							<!--<h4>Get you share of over 2.2 Million Naira</h4>-->
-							<p class="text-justify">The first round of the InstaFxNg Point Based Loyalty Program and Reward ended on the 30th of November, 2017  and 10 amazing winners got cash prizes ranging from <b>N50, 000</b> up to <b>N1 000 000</b></p>
+							<p class="text-justify">The first round of the InstaFxNg Point Based Loyalty Program and Reward ended on the 30th of November, 2017  and 10 amazing winners got cash prizes ranging from <b>N50,000</b> up to <b>N1,000,000</b></p>
 							<p class="text-justify">Can you dig that?</p>
-							<p class="text-justify">A total of <b>N4 390 000</b> was paid out to clients in rewards during the one year duration of the last round of the promo.</p>
-							<p class="text-justify">This doesn't even include <b>$18 000</b> withdrawn as loyalty points!</p>
+							<p class="text-justify">A total of <b>N4,390,000</b> was paid out to clients in rewards during the one year duration of the last round of the promo.</p>
+							<p class="text-justify">This doesn't even include <b>$18,000</b> withdrawn as loyalty points!</p>
 							<p class="text-justify">In the current round, you can be one of the clients that will be paid tens of thousands dollars during the one year duration of this round of the promo.</p>
 							<div class="ab_button">
 								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Get Your Share Now </a>
@@ -370,7 +370,7 @@ function check_duplicate($email_address, $phone_number)
 		</div>
 		<div class="banner_bottom">
 			<div class="banner_bottom_in">
-				<h3 class="tittle-w3ls we text-justify">This man won a whopping sum of 1 Million Naira...</h3>
+				<h3 class="tittle-w3ls we text-justify">This man won a whopping sum of One Million Naira...</h3>
 				<p>He started trading with InstaForex Nigeria in July 2017, just 5 months to the end of the promo!
 					And kept trading consistently till he worked his way up to the top of the rank scale and emerged the
 					winner of a whopping One Million naira.</p>
@@ -425,7 +425,7 @@ function check_duplicate($email_address, $phone_number)
 				<div class="inner_sec_info_wthree_agile">
 					<div class="help_full">
 						<div class="col-md-12 banner_bottom_left">
-							<p>Each time you make a deposit to your account or trade as usual you earn some point's
+							<p>Each time you make a deposit to your account or trade as usual, you earn some point's
 								equivalent to your deposit or trading actions.</p>
 							<p>Our proprietary rewards technology automatically calculates the
 								points you have earned and your reward account is updated accordingly.</p>
@@ -437,7 +437,7 @@ function check_duplicate($email_address, $phone_number)
 					<div class="help_full">
 						<div class="col-md-6 banner_bottom_left">
 							<h4>Monthly Prizes</h4>
-							<p class="text-justify">Five traders with the highest number of loyalty will be rewarded with $500
+							<p class="text-justify">Five traders with the highest number of loyalty points will be rewarded with $500
 								every month.</p>
 							<p class="text-justify">The prizes are as follows</p>
 							<p class="text-center">1st Prize     <b><i class="fa fa-arrow-right"></i></b>    $150</p>
