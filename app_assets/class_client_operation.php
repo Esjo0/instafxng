@@ -792,10 +792,12 @@ to track your payment.</p>
 
 <p>Pay =N= $client_naira_total into our account listed below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
     <li>Any Branch of Guaranty Trust Bank<br />
     Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    Account Number: 0174516696</li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
 </ol>
 
@@ -825,10 +827,12 @@ INVOICE;
 
 <p>Transfer =N= $client_naira_total into our account listed below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
     <li>Any Branch of Guaranty Trust Bank<br />
     Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    Account Number: 0174516696</li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION,
     Type in the location where you made the payment in the comment box, <strong>e.g. Apapa Lagos</strong>.
     If you do not fill it as stated, your order will be delayed, because it will be difficult to track
@@ -861,10 +865,12 @@ If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 
 <p>Pay =N= $client_naira_total into our account listed below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
     <li>Any Branch of Guaranty Trust Bank<br />
     Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    Account Number: 0174516696</li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
 </ol>
 
@@ -893,10 +899,12 @@ INVOICE;
 <p>Pay =N= $client_naira_total into our account listed below using the USSD transfer feature
 for your bank, find your bank USSD below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
     <li>Guaranty Trust Bank<br />
     Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    Account Number: 0174516696</li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
 </ol>
 
@@ -948,10 +956,12 @@ If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 
 <p>Pay =N= $client_naira_total into our account listed below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
     <li>Any Branch of Guaranty Trust Bank<br />
     Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    Account Number: 0174516696</li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
 </ol>
 

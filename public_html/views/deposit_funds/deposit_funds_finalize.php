@@ -5,6 +5,8 @@
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Deposit Order Summary - Accept terms and click on finalize</li>
 </ul>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account details specified on the payment invoice.</p>
+
 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI . '?p=fnz'; ?>">
     <input name="transaction_no" type="hidden" value="<?php if(isset($trans_id_encrypted)) { echo $trans_id_encrypted; } ?>">
     <div class="form-group">

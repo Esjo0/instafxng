@@ -43,10 +43,13 @@ class Education {
             <p>To complete your order, please make your payment as follows:</p>
 
             <p>Pay (N $total_payment) into our account listed below.</p>
+
+            <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
             <ol>
                 <li>Any Branch of Guaranty Trust Bank (GTB)<br />
                 Account Name: Instant Web-Net Technologies Ltd<br />
-                Account Number: 0153738149
+                Account Number: 0174516696
                 </li>
                 <li>After making the payment, visit <a href='https://instafxng.com/fxacademy'>https://instafxng.com/fxacademy</a> and click on NOTIFICATION.</li>
                 <li>Fill in the column as stated on the page.</li>
