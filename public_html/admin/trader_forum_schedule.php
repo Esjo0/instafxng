@@ -5,14 +5,7 @@ if (!$session_admin->is_logged_in()) {
 }
 $admin_code = $_SESSION['admin_unique_code'];
 if(isset($_POST['forum'])){
-
-    $s_form = "";
-    if($_POST['options'] == 1){
-        $s_form = 1;
-    }elseif ($_POST['options'] == 2){
-        $s_form = 0;
-    }
-
+    $s_form = $_POST['options'];
     $main1 = $_POST['main1'];
     $sub1 = $_POST['sub1'];
     $main2 = $_POST['main2'];
@@ -131,13 +124,13 @@ if(isset($_POST['forum'])){
                                     <legend class="col-form-label col-sm-2 pt-0">Options</legend>
                                     <div class="col-sm-10">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options" id="gridRadios1" value="1" checked>
+                                            <input class="form-check-input" type="radio" name="options" id="gridRadios1" value="block" checked>
                                             <label class="form-check-label" for="gridRadios1">
                                                 Forum Schedule
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options" id="gridRadios2" value="2">
+                                            <input class="form-check-input" type="radio" name="options" id="gridRadios2" value="none">
                                             <label class="form-check-label" for="gridRadios2">
                                                 Page PlaceHolder
                                             </label>
@@ -163,6 +156,7 @@ if(isset($_POST['forum'])){
                                     <input name="linkt" type="text" class="form-control" id="inputEmail3" placeholder="Link Text">
                                 </div>
                             </div>
+                            <p><center>Default link should be <strong>"https://instafxng.com/traders_forum.php#more"</strong> except otherwise required</center></p>
                             <div class="form-group row">
                                 <label for="inputHeading3" class="col-sm-2 col-form-label">Link</label>
                                 <div class="col-sm-10">
