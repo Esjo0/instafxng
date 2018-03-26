@@ -54,22 +54,6 @@ if(isset($_POST['live_account_ilpr_reg'])) {
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
-        <script>
-            function show_form(div)
-            {
-                var x = document.getElementById(div);
-                if (x.style.display === 'none')
-                {
-                    x.style.display = 'block';
-                    document.getElementById('trigger').innerHTML = '<i class="glyphicon glyphicon-arrow-up"></i>';
-                }
-                else
-                {
-                    x.style.display = 'none';
-                    document.getElementById('trigger').innerHTML = '<i class="glyphicon glyphicon-arrow-down"></i>';
-                }
-            }
-        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -94,54 +78,6 @@ if(isset($_POST['live_account_ilpr_reg'])) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <div id="filter_trigger" class="row"><center><button onclick="show_form('filters')" class="btn btn-sm btn-default"><i class="fa fa-caret-down"></i></button></center></div>
-                                <div style="display: none" id="filters" class="row">
-                                    <br/>
-                                    <div class="col-sm-6">
-                                        <form id="requisition_form" data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Enter a prospects name or email address">
-                                                    <span class="input-group-btn">
-                                                        <button class="btn btn-default" type="button">
-                                                            <i class="glyphicon glyphicon-search"></i>
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="col-sm-12">
-                                            <div class="col-sm-12">
-                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                                    <div class="form-group">
-                                                        <div class="input-group date">
-                                                            <span class="input-group-addon">From:</span>
-                                                            <input name="from_date" type="text" class="form-control" id="datetimepicker" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="input-group date">
-                                                            <span class="input-group-addon">To:</span>
-                                                            <input name="to_date" type="text" class="form-control" id="datetimepicker2" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input name="report" type="submit" class="btn btn-group-justified btn-success" value="Search" />
-                                                    </div>
-                                                    <script type="text/javascript">
-                                                        $(function () {
-                                                            $('#datetimepicker, #datetimepicker2').datetimepicker({
-                                                                format: 'YYYY-MM-DD'
-                                                            });
-                                                        });
-                                                    </script>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <p>List of prospects that have been added to the system.</p>
                                 <?php if(isset($all_prospect) && !empty($all_prospect)) { require 'layouts/pagination_links.php'; } ?>
                                 <?php if(isset($all_prospect) && !empty($all_prospect)) { ?>
@@ -256,36 +192,6 @@ if(isset($_POST['live_account_ilpr_reg'])) {
                         </div>
                         <?php if(isset($all_prospect) && !empty($all_prospect)) { require 'layouts/pagination_links.php'; } ?>
                     </div>
-                    <!---------------------------------------------->
-                    <a title="Open Instaforex Live Account" data-target="#confirm-add-admin" data-toggle="modal" href="javascript:void(0);" style="position:fixed; width:60px; height:60px; bottom:40px; right:40px; background-color: #50ffba; color: #ffffff; border-radius:50px; text-align:center; box-shadow: 2px 2px 3px #000000;">
-                        <b><i style="margin-top: 40%; font-size: larger" class="fa fa-plus"></i></b>
-                    </a>
-                    <!--Modal - confirmation boxes-->
-                    <div id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                    <h4 class="modal-title text-center">Live Account Opening Form</h4></div>
-                                <div class="modal-body">
-                                    <p class="text-success text-center">
-                                        <strong>The Account Opening Form is Loading...
-                                            <br/>Kindly wait for it, fill the form and copy the details.
-                                        </strong>
-                                    </p>
-                                    <center>
-                                        <iframe class="embed-responsive-item" id="frame" style='width: 780px;border:0;height:auto;' src="https://secure.instaforex.com/en/partner_open_account.aspx?x=BBLR&width=580&showlogo=false&color=red&host="https://instafxng.com/live_account.php" style="padding:0; margin:0" scrolling="no" onload="var th=this; setTimeout(function() {var h=null;if (!h) if (location.hash.match(/^#h(\d+)/)) h=RegExp.$1;if (h) th.style .height=parseInt(h)+170+'px';}, 10);" ></iframe>
-                                        <script> document.getElementById('frame').src += window.location; </script>
-                                    </center>
-                                </div>
-                                <div class="modal-footer">
-                                    <input onclick="document.getElementById('frame').src = document.getElementById('frame').src;" name="finish" type="button" class="btn btn-sm btn-success" value="Refresh">
-                                    <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!------------------------------------>
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
                     
