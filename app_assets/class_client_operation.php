@@ -169,7 +169,7 @@ class clientOperation {
      * @param $type - 1 if KYC, 2 if ILPR enrolment
      * @return bool|string
      */
-    public function new_user($account_no, $full_name, $email_address, $phone_number, $type, $my_refferer = "", $attendant = "") {
+    public function new_user($account_no, $full_name, $email_address, $phone_number, $type, $my_refferer = "", $attendant = "", $source="") {
         global $db_handle;
         global $system_object;
 
@@ -237,11 +237,18 @@ class clientOperation {
             if(empty($middle_name)) {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                $this->send_welcome_email($last_name, $email_address);
+                if(!isset($source) || $source != "lp"){
+                    //This client came in through the landing page
+                    $this->send_welcome_email($last_name, $email_address);
+                }
+
             } else {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                $this->send_welcome_email($last_name, $email_address);
+                if(!isset($source) || $source != "lp"){
+                    //This client came in through the landing page
+                    $this->send_welcome_email($last_name, $email_address);
+                }
             }
 
             if(isset($my_refferer) && !empty($my_refferer)) {
