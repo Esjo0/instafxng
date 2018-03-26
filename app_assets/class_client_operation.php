@@ -169,7 +169,7 @@ class clientOperation {
      * @param $type - 1 if KYC, 2 if ILPR enrolment
      * @return bool|string
      */
-    public function new_user($account_no, $full_name, $email_address, $phone_number, $type, $my_refferer = "", $attendant = "", $source) {
+    public function new_user($account_no, $full_name, $email_address, $phone_number, $type, $my_refferer = "", $attendant = "", $source="") {
         global $db_handle;
         global $system_object;
 
