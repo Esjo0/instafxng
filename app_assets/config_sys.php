@@ -57,5 +57,6 @@ $client_group_DEFAULT = array(
     "41" => "12 Months Active Clients",
     "42" => "3 Months Inactive Clients",
     "43" => "6 Months Inactive Clients",
-    "44" => "12 Months Inactive Clients"
+    "44" => "12 Months Inactive Clients",
+    "45" => "Non-ILPR Clients"
 );

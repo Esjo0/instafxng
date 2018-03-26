@@ -329,6 +329,7 @@ function client_group_campaign_category($status) {
         case '42': $message = "3 Months Inactive Clients"; break;
         case '43': $message = "6 Months Inactive Clients"; break;
         case '44': $message = "12 Months Inactive Clients"; break;
+        case '45': $message = "Non-ILPR Clients"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -402,6 +403,7 @@ function client_group_query($client_group, $campaign_type) {
             case '42': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE u.user_code NOT IN (SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned > DATE_SUB(NOW(), INTERVAL 3 MONTH) GROUP BY u.email) GROUP BY u.email"; break;
             case '43': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE u.user_code NOT IN (SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned > DATE_SUB(NOW(), INTERVAL 6 MONTH) GROUP BY u.email) GROUP BY u.email"; break;
             case '44': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE u.user_code NOT IN (SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned > DATE_SUB(NOW(), INTERVAL 12 MONTH) GROUP BY u.email) GROUP BY u.email"; break;
+            case '45': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_ifxaccount AS ui INNER JOIN user AS u ON ui.user_code = u.user_code WHERE (ui.type = '2') GROUP BY u.email"; break;
             default: $query = false; break;
         }
 
@@ -454,6 +456,7 @@ function client_group_query($client_group, $campaign_type) {
             case '42': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE u.user_code NOT IN (SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned > DATE_SUB(NOW(), INTERVAL 3 MONTH) GROUP BY u.email) GROUP BY u.phone"; break;
             case '43': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE u.user_code NOT IN (SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned > DATE_SUB(NOW(), INTERVAL 6 MONTH) GROUP BY u.email) GROUP BY u.phone"; break;
             case '44': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE u.user_code NOT IN (SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned > DATE_SUB(NOW(), INTERVAL 12 MONTH) GROUP BY u.email) GROUP BY u.phone"; break;
+            case '45': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_ifxaccount AS ui INNER JOIN user AS u ON ui.user_code = u.user_code WHERE (ui.type = '2') GROUP BY u.phone"; break;
             default: $query = false; break;
         }
 
