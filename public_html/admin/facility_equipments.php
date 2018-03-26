@@ -135,7 +135,6 @@ if(isset($_POST['search'])){
     <meta name="description" content="" />
     <?php require_once 'layouts/head_meta.php'; ?>
     <?php require_once 'hr_attendance_system.php'; ?>
-
     <script>
         function goBack() {
             window.history.back();
@@ -203,6 +202,7 @@ if(isset($_POST['search'])){
                     </div>
                     <hr>
                     <?php if(isset($reports) && !empty($reports)):?>
+
                         <div id="dvTable">
                             <h5>List of Equipment</h5>
                             <table  class="table table-responsive table-striped table-bordered table-hover">
@@ -369,10 +369,6 @@ if(isset($_POST['search'])){
 
 <!-- Unique Page Content Ends Here
 ================================================== -->
-
-</div>
-
-</div>
 <?php require_once 'layouts/footer.php'; ?>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
