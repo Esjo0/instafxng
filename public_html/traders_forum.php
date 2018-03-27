@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email_address = $db_handle->sanitizePost(trim($_POST['email_add']));
     $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
     $venue = $db_handle->sanitizePost(trim($_POST['venue']));
-    $date = date("Y-m-d H:i:s");
+    $date = $db_handle->sanitizePost($_POST['date']);
 
     // Perform the necessary validations and display the appropriate feedback
     if(empty($full_name) || empty($email_address) || empty($phone_number)  || empty($venue)) {
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: 10th of March, 2018<br /><br />
+            Date: datetime_to_text2($date)<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -267,7 +267,10 @@ $forum = $db_handle->fetchAssoc($result);
                                               action="<?php echo htmlentities($_SERVER['REQUEST_URI']); ?>">
                                             <h3 class="text-uppercase text-center signup-header">RESERVE A SEAT NOW</h3>
                                             <br/>
-
+                                            <input name="date"
+                                                   class="form-control"
+                                                   id="forum_title" type="hidden"
+                                                   value="<?php echo $row['s_date']; ?>" >
                                             <div class="form-group has-feedback">
                                                 <label for="name" class="control-label">Your Full Name</label>
                                                 <div class="input-group margin-bottom-sm">

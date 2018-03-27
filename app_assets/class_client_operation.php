@@ -920,7 +920,7 @@ normally within the same day. If there is any delay we will inform you.</p>
 
 <p>BANK USSD CODES - This works with phone numbers registered with your account</p>
 <ul>
-    <li>Guaranty Trust Bank (GTB): *737#</li>
+    <li>Guaranty Trust Bank (GTB): *737# </li>
     <li>Fidelity Bank: *770#</li>
     <li>First Bank: *894#</li>
     <li>Sterling Bank: *822#</li>
