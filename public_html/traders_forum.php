@@ -126,8 +126,10 @@ MAIL;
 } else {
     //
 }
+
 $s=date("m");
-$query = "SELECT * FROM forum_schedule WHERE MONTH(s_date) = $s ORDER BY id DESC LIMIT 1";
+$d=date("d");
+$query = "SELECT * FROM forum_schedule WHERE ((MONTH(s_date) = $s AND DAY(s_date) >=$d) OR MONTH(s_date) = ($s+1) OR MONTH(s_date) = $s) ORDER BY s_date DESC LIMIT 1";
 $result = $db_handle->runQuery($query);
 $forum = $db_handle->fetchAssoc($result);
 ?>
