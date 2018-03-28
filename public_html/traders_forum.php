@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
     $venue = $db_handle->sanitizePost(trim($_POST['venue']));
     $date = $db_handle->sanitizePost($_POST['date']);
-
+    $date = datetime_to_text2($date);
     // Perform the necessary validations and display the appropriate feedback
     if(empty($full_name) || empty($email_address) || empty($phone_number)  || empty($venue)) {
         $message_error = "All fields must be filled.";
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: datetime_to_text2($date)<br /><br />
+            Date: $date)<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -127,9 +127,9 @@ MAIL;
     //
 }
 
-$s=date("m");
-$d=date("d");
-$query = "SELECT * FROM forum_schedule WHERE ((MONTH(s_date) = $s AND DAY(s_date) >=$d) OR MONTH(s_date) = ($s+1) OR MONTH(s_date) = $s) ORDER BY s_date DESC LIMIT 1";
+$current_month = date("m");
+$current_day = date("d");
+$query = "SELECT * FROM forum_schedule WHERE ((MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) = $current_day) OR (MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) >= $current_day) OR MONTH(scheduled_date) = ($current_month+1)) ORDER BY scheduled_date DESC LIMIT 1";
 $result = $db_handle->runQuery($query);
 $forum = $db_handle->fetchAssoc($result);
 ?>
@@ -171,9 +171,9 @@ $forum = $db_handle->fetchAssoc($result);
                         ?>
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;"><?php echo $row['main1']; ?></h3>
-                                <?php echo $row['sub1']; ?>
-                                <p><strong><span style="color: black;"><a href="<?php echo $row['link']; ?>"><?php echo $row['linkt']; ?></a></span></strong>
+                                <h3 style="margin: 0;"><?php echo $row['forum_title']; ?></h3>
+                                <?php echo $row['forum_date_details']; ?>
+                                <p><strong><span style="color: black;"><a href="<?php echo $row['link_url']; ?>"><?php echo $row['link_text']; ?></a></span></strong>
                                 </p>
                             </div>
                             <div class="col-sm-6">
@@ -185,13 +185,13 @@ $forum = $db_handle->fetchAssoc($result);
                     <div class="section-tint super-shadow">
                         <div class="row text-center">
                             <div class="col-sm-12 text-danger">
-                                <h3><strong><?php echo $row['main2']; ?></strong></h3>
+                                <h3><strong><?php echo $row['share_thoughts_header']; ?></strong></h3>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <?php echo $row['sub2']; ?>
+                                <?php echo $row['share_thoughts_body']; ?>
                             </div>
                         </div>
 
@@ -268,9 +268,8 @@ $forum = $db_handle->fetchAssoc($result);
                                             <h3 class="text-uppercase text-center signup-header">RESERVE A SEAT NOW</h3>
                                             <br/>
                                             <input name="date"
-                                                   class="form-control"
-                                                   id="forum_title" type="hidden"
-                                                   value="<?php echo $row['s_date']; ?>" >
+                                                   class="form-control" type="hidden"
+                                                   value="<?php echo $row['scheduled_date']; ?>" >
                                             <div class="form-group has-feedback">
                                                 <label for="name" class="control-label">Your Full Name</label>
                                                 <div class="input-group margin-bottom-sm">

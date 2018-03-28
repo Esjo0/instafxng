@@ -3,10 +3,13 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+//Gets Administrator code
 $admin_code = $_SESSION['admin_unique_code'];
+
+//delete forum schedule
 if(isset($_POST['delete'])) {
-    $id = $db_handle->sanitizePost($_POST['id']);
-    $query = "DELETE FROM forum_schedule WHERE id = $id";
+    $schedule_id = $db_handle->sanitizePost($_POST['schedule_id']);
+    $query = "DELETE FROM forum_schedule WHERE schedule_id = $schedule_id";
     $result = $db_handle->runQuery($query);
     if($result) {
         $message_success = "You have successfully Deleted your Schedule";
@@ -14,23 +17,25 @@ if(isset($_POST['delete'])) {
         $message_error = "Something went wrong. Please try again.";
     }
 }
+
+//Add new forum schedule
 if(isset($_POST['forum'])){
-    $main1 = $db_handle->sanitizePost($_POST['main1']);
-    $sub1 = $db_handle->sanitizePost($_POST['sub1']);
-    $main2 = $db_handle->sanitizePost($_POST['main2']);
-    $sub2 = $db_handle->sanitizePost($_POST['sub2']);
-    $linkt = $db_handle->sanitizePost($_POST['linkt']);
-    $link = $db_handle->sanitizePost($_POST['link']);
-    $s_date = $db_handle->sanitizePost($_POST['s_date']);
+    $forum_title = $db_handle->sanitizePost($_POST['forum_title']);
+    $forum_date_details = $db_handle->sanitizePost($_POST['forum_date_details']);
+    $share_thoughts_header = $db_handle->sanitizePost($_POST['share_thoughts_header']);
+    $share_thoughts_body = $db_handle->sanitizePost($_POST['share_thoughts_body']);
+    $link_text = $db_handle->sanitizePost($_POST['link_text']);
+    $link_url = $db_handle->sanitizePost($_POST['link_url']);
+    $scheduled_date = $db_handle->sanitizePost($_POST['scheduled_date']);
     $fileName = $_FILES['Filename'];
     $target = "../images/";
     $fileTarget = $target.$fileName;
     $tempFileName = $_FILES["Filename"]["tmp_name"];
     $result = move_uploaded_file($tempFileName,$fileTarget);
-    $img_path = "images/".$fileName;
+    $image_path = "images/".$fileName;
 
-    $query = "INSERT into forum_schedule(main1,sub1,main2,sub2,linkt,link,image_path,s_date,admin,status) 
-          VALUES('$main1','$sub1','$main2','$sub2','$linkt','$link','$img_path','$s_date','$admin_code','0')";
+    $query = "INSERT into forum_schedule(forum_title,forum_date_details,share_thoughts_header,share_thoughts_body,link_text,link_url,image_path,scheduled_date,admin,status) 
+          VALUES('$forum_title','$forum_date_details','$share_thoughts_header','$share_thoughts_body','$link_text','$link_url','$image_path','$scheduled_date','$admin_code','0')";
     $result = $db_handle->runQuery($query);
     if($result) {
         $message_success = "You have successfully Submitted your report";
@@ -40,29 +45,28 @@ if(isset($_POST['forum'])){
 }
 
 if(isset($_POST['update'])){
-    $id = $db_handle->sanitizePost($_POST['id']);
-    $main1 = $db_handle->sanitizePost( $_POST['main1']);
-    $sub1 = $db_handle->sanitizePost($_POST['sub1']);
-    $main2 = $db_handle->sanitizePost($_POST['main2']);
-    $sub2 = $db_handle->sanitizePost($_POST['sub2']);
-    $linkt = $db_handle->sanitizePost($_POST['linkt']);
-    $link = $db_handle->sanitizePost($_POST['link']);
-    $s_date = $db_handle->sanitizePost($_POST['s_date']);
+    $schedule_id = $db_handle->sanitizePost($_POST['schedule_id']);
+    $forum_title = $db_handle->sanitizePost($_POST['forum_title']);
+    $forum_date_details = $db_handle->sanitizePost($_POST['forum_date_details']);
+    $share_thoughts_header = $db_handle->sanitizePost($_POST['share_thoughts_header']);
+    $share_thoughts_body = $db_handle->sanitizePost($_POST['share_thoughts_body']);
+    $link_text = $db_handle->sanitizePost($_POST['link_text']);
+    $link_url = $db_handle->sanitizePost($_POST['link_url']);
+    $scheduled_date = $db_handle->sanitizePost($_POST['scheduled_date']);
     $fileName = $_FILES['Filename'];
-    $formal_img = $db_handle->sanitizePost($_POST['formal_image']);
+    $previous_image = $db_handle->sanitizePost($_POST['previous_image']);
 
 
     $target = "../images/";
     $fileTarget = $target.$fileName;
     $tempFileName = $_FILES["Filename"]["tmp_name"];
     $result = move_uploaded_file($tempFileName,$fileTarget);
-    $img_path = "images/".$fileName;
+    $image_path = "images/".$fileName;
     if(empty($fileName)){
-$img_path = $formal_img;
+    $image_path = $previous_image;
     }
 
-    $query = "UPDATE forum_schedule SET main1 = '$main1',sub1 = '$sub1', main2 = '$main2',sub2 = '$sub2', link = '$link',linkt = '$linkt',image_path = '$img_path',s_date = '$s_date',admin = '$admin_code',status = '1' WHERE id = '$id'";
-var_dump($query);
+    $query = "UPDATE forum_schedule SET forum_title = '$forum_title',forum_date_details = '$forum_date_details', share_thoughts_header = '$share_thoughts_header',share_thoughts_body = '$share_thoughts_body', link_url = '$link_url',link_text = '$link_text',image_path = '$image_path',scheduled_date = '$scheduled_date',admin = '$admin_code',status = '1' WHERE schedule_id = '$schedule_id'";
     $result = $db_handle->runQuery($query);
     if($result) {
         $message_success = "You have successfully Updates your Schedule";
@@ -71,7 +75,7 @@ var_dump($query);
     }
 }
 
-
+//select previous forum schedules
 $query = "SELECT * FROM forum_schedule";
 $numrows = $db_handle->numRows($query);
 $rowsperpage = 10;
@@ -160,8 +164,6 @@ $updates = $db_handle->fetchAssoc($result);
                 </div>
             </div>
             <?php require_once 'layouts/feedback_message.php'; ?>
-
-
             <div class="row">
                 <div class="col-lg-12">
                     <?php require_once 'layouts/feedback_message.php'; ?>
@@ -172,26 +174,26 @@ $updates = $db_handle->fetchAssoc($result);
                             <div class="form-group row">
                                 <label for="inputHeading3" class="col-sm-2 col-form-label">Traders forum Title</label>
                                 <div class="col-sm-10">
-                                    <input name="main1" type="text" class="form-control" id="forum_title" placeholder="Heading">
+                                    <input name="forum_title" type="text" class="form-control" id="forum_title" placeholder="Enter Forum title">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputSubtile3" class="col-sm-2 col-form-label">Date and time information</label>
                                 <div class="col-sm-10">
-                                    <textarea name="sub1" class="form-control" style="height:100px" id="content"></textarea>
+                                    <textarea name="forum_date_details" class="form-control" style="height:100px" id="content"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputHeading3" class="col-sm-2 col-form-label">Seat Reservation form Link Text</label>
                                 <div class="col-sm-10">
-                                    <input name="linkt" type="text" class="form-control" id="link_text" placeholder="Link Text">
+                                    <input name="link_text" type="text" class="form-control" id="link_text" placeholder="Link Text">
                                 </div>
                             </div>
                             <p><center>Default link should be <strong>"https://instafxng.com/traders_forum.php#more"</strong> except otherwise required</center></p>
                             <div class="form-group row">
                                 <label for="inputHeading3" class="col-sm-2 col-form-label">Link</label>
                                 <div class="col-sm-10">
-                                    <input name="link" type="text" class="form-control" id="link" placeholder="Input the link url starting with http:// or https://">
+                                    <input name="link_url" type="text" class="form-control" id="link" placeholder="Input the link url starting with http:// or https://">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -207,19 +209,19 @@ $updates = $db_handle->fetchAssoc($result);
                             <div class="form-group row">
                                 <label for="inputHeading3" class="col-sm-2 col-form-label">Share thoughts Heading</label>
                                 <div class="col-sm-10">
-                                    <input name="main2" type="text" class="form-control" id="thoughts_header" placeholder="Heading">
+                                    <input name="share_thoughts_header" type="text" class="form-control" id="thoughts_header" placeholder="Heading">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputSubtile3" class="col-sm-2 col-form-label">Share thoughts Body</label>
                                 <div class="col-sm-10">
-                                    <textarea name="sub2" class="form-control" rows="3" id="content2"></textarea>
+                                    <textarea name="share_thoughts_body" class="form-control" rows="3" id="content2"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputHeading3" class="col-sm-2 col-form-label">Traders Forum Date</label>
                                 <div class="date col-sm-5">
-                                    <input name="s_date" type="text" class="form-control" id="datetimepicker"/>
+                                    <input name="scheduled_date" type="text" class="form-control" id="datetimepicker"/>
                                 </div>
                             </div>
                             <script type="text/javascript">
@@ -240,7 +242,7 @@ $updates = $db_handle->fetchAssoc($result);
                                 <div class="row">
                             <div class="col-md-12" data-target="#preview" data-toggle="modal" >
                                 <h5><strong>Click on Image For Description </strong></h5>
-                                <img src="../images/forum_schedule.png" alt="" class="img-responsive"/>
+                                <img src="../images/preview.png" alt="" class="img-responsive"/>
                             </div>
 
                                     <div class="col-md-12">
@@ -259,25 +261,25 @@ $updates = $db_handle->fetchAssoc($result);
                                         foreach ($updates as $row) {
                                             ?>
 <tr>
-                                            <td><?php echo datetime_to_text2($row['s_date']); ?></td>
+                                            <td><?php echo datetime_to_text2($row['scheduled_date']); ?></td>
                                             <td><center>
-                                                <button data-target="#update<?php echo $row['id']; ?>" data-toggle="modal" class="btn btn-success">
+                                                <button data-target="#update<?php echo $row['schedule_id']; ?>" data-toggle="modal" class="btn btn-success">
                                                     Update</button>
                                             </center></td>
                                             <td><form data-toggle="validator"
                                                       class="form-vertical" role="form"
                                                       method="post" action="">
-                                                    <input name="id"
+                                                    <input name="schedule_id"
                                                            class="form-control"
                                                            id="forum_title" type="hidden"
-                                                           value="<?php echo $row['id']; ?>" >
+                                                           value="<?php echo $row['schedule_id']; ?>" >
                                                     <button type="submit" name="delete" class="btn btn-success" >
                                                         <span class="glyphicon glyphicon-trash"></span></button>
                                                     </form>
                                             </td>
 
                                             <!--Modal - confirmation boxes-->
-                                            <div id="update<?php echo $row['id']; ?>" tabindex="-1" role="dialog"
+                                            <div id="update<?php echo $row['schedule_id']; ?>" tabindex="-1" role="dialog"
                                                  aria-hidden="true" class="modal fade ">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
@@ -287,7 +289,7 @@ $updates = $db_handle->fetchAssoc($result);
                                                                     class="close">&times;
                                                             </button>
                                                             <h4 class="modal-title">Update
-                                                                For <?php echo datetime_to_text2($row['created']); ?></h4>
+                                                                For <?php echo datetime_to_text2($row['scheduled_date']); ?></h4>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div>
@@ -300,23 +302,21 @@ $updates = $db_handle->fetchAssoc($result);
                                                                                   class="form-vertical" role="form"
                                                                                   method="post" action=""
                                                                                   enctype="multipart/form-data">
-                                                                                <input name="id"
+                                                                                <input name="schedule_id"
                                                                                        class="form-control"
-                                                                                       id="forum_title"
-                                                                                       value="<?php echo $row['id']; ?>" type="hidden">
-                                                                                <input name="formal_image"
+                                                                                       value="<?php echo $row['schedule_id']; ?>" type="hidden">
+                                                                                <input name="previous_image"
                                                                                        class="form-control"
-                                                                                       id="forum_title"
                                                                                        value="<?php echo $row['image_path']; ?>" type="hidden">
                                                                                 <div class="form-group row">
                                                                                     <label for="inputHeading3"
                                                                                            class="col-sm-2 col-form-label">Traders
                                                                                         forum Title</label>
                                                                                     <div class="col-sm-10">
-                                                                                        <input name="main1" type="text"
+                                                                                        <input name="forum_title" type="text"
                                                                                                class="form-control"
                                                                                                id="forum_title"
-                                                                                               value="<?php echo $row['main1']; ?>">
+                                                                                               value="<?php echo $row['forum_title']; ?>">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group row">
@@ -324,10 +324,10 @@ $updates = $db_handle->fetchAssoc($result);
                                                                                            class="col-sm-2 col-form-label">Date
                                                                                         and time information</label>
                                                                                     <div class="col-sm-10">
-                                                                                        <textarea name="sub1"
+                                                                                        <textarea name="forum_date_details"
                                                                                                   class="form-control"
                                                                                                   id="content"
-                                                                                                  style="height:100px"><?php echo $row['sub1']; ?></textarea>
+                                                                                                  style="height:100px"><?php echo $row['forum_date_details']; ?></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group row">
@@ -336,10 +336,10 @@ $updates = $db_handle->fetchAssoc($result);
                                                                                         Reservation form Link
                                                                                         Text</label>
                                                                                     <div class="col-sm-10">
-                                                                                        <input name="linkt" type="text"
+                                                                                        <input name="link_text" type="text"
                                                                                                class="form-control"
                                                                                                id="link_text"
-                                                                                            value="<?php echo $row['linkt']; ?>">
+                                                                                            value="<?php echo $row['link_text']; ?>">
                                                                                     </div>
                                                                                 </div>
                                                                                 <p>
@@ -351,10 +351,10 @@ $updates = $db_handle->fetchAssoc($result);
                                                                                     <label for="inputHeading3"
                                                                                            class="col-sm-2 col-form-label">Link</label>
                                                                                     <div class="col-sm-10">
-                                                                                        <input name="link" type="text"
+                                                                                        <input name="link_url" type="text"
                                                                                                class="form-control"
                                                                                                id="link"
-                                                                                            value="<?php echo $row['link']; ?>">
+                                                                                            value="<?php echo $row['link_url']; ?>">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group">
@@ -384,10 +384,10 @@ $updates = $db_handle->fetchAssoc($result);
                                                                                            class="col-sm-2 col-form-label">Share
                                                                                         thoughts Heading</label>
                                                                                     <div class="col-sm-10">
-                                                                                        <input name="main2" type="text"
+                                                                                        <input name="share_thoughts_header" type="text"
                                                                                                class="form-control"
                                                                                                id="thoughts_header"
-                                                                                               value="<?php echo $row['main2']; ?>">
+                                                                                               value="<?php echo $row['share_thoughts_header']; ?>">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group row">
@@ -395,10 +395,10 @@ $updates = $db_handle->fetchAssoc($result);
                                                                                            class="col-sm-2 col-form-label">Share
                                                                                         thoughts Body</label>
                                                                                     <div class="col-sm-10">
-                                                                                        <textarea name="sub2"
+                                                                                        <textarea name="share_thoughts_body"
                                                                                                   class="form-control"
                                                                                                   rows="3"
-                                                                                                  id="content2"><?php echo $row['sub2']; ?></textarea>
+                                                                                                  id="content2"><?php echo $row['share_thoughts_body']; ?></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group row">
@@ -406,10 +406,10 @@ $updates = $db_handle->fetchAssoc($result);
                                                                                            class="col-sm-2 col-form-label">Traders
                                                                                         Forum Date</label>
                                                                                     <div class="date col-sm-5">
-                                                                                        <input name="s_date" type="text"
+                                                                                        <input name="scheduled_date" type="text"
                                                                                                class="form-control"
                                                                                                id="datetimepicker"
-                                                                                               value="<?php echo $row['s_date']; ?>"/>
+                                                                                               value="<?php echo $row['scheduled_date']; ?>"/>
                                                                                     </div>
                                                                                 </div>
                                                                                 <script type="text/javascript">
@@ -471,13 +471,14 @@ $updates = $db_handle->fetchAssoc($result);
 
     </div>
 </div>
+<!--preview current form before upload-->
 <div id="preview" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" data-dismiss="modal" aria-hidden="true"
                         class="close">&times;</button>
-                <h4 class="modal-title">Preview</h4></div>
+                <h4 class="modal-title">Description/Preview</h4></div>
 
 <script>
     function add()
