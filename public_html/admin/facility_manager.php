@@ -46,7 +46,6 @@ if (isset($_POST['upload'])) {
     //Insert into Data base from file upload path
    $csv_file = 'C:/Users/joshu/Documents/blueworx-team/public_html/admin/facility/'.$fileName;
 
-
     if (($handle = fopen($csv_file, "r")) !== FALSE) {
         fgetcsv($handle);
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
@@ -456,4 +455,5 @@ $rep = $db_handle->fetchAssoc($result);
         <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 
     </body>
+
 </html>

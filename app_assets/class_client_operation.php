@@ -927,24 +927,23 @@ normally within the same day. If there is any delay we will inform you.</p>
 
 <p>BANK USSD CODES - This works with phone numbers registered with your account</p>
 <ul>
-    <li>Guaranty Trust Bank (GTB): *737#</li>
+    <li>Guaranty Trust Bank (GTB): *737# </li>
     <li>Fidelity Bank: *770#</li>
     <li>First Bank: *894#</li>
     <li>Sterling Bank: *822#</li>
-    <li>Skye Bank: *389#</li>
-    <li>United Bank for Africa (UBA): *389#</li>
+    <li>Skye Bank: *833#</li>
+    <li>United Bank for Africa (UBA): *919#</li>
     <li>EcoBank: *326#</li>
-    <li>Zenith Bank: *302#</li>
+    <li>Zenith Bank: *966#</li>
     <li>Stanbic Bank: *909#</li>
     <li>Access Bank Bank: *901#</li>
-    <li>Wema Bank: *322#</li>
-    <li>Diamond Bank: *302#</li>
-    <li>Diamond Yello Account: *710#</li>
-    <li>Unity Bank: *322#</li>
-    <li>Heritage Bank: *322#</li>
-    <li>KeyStone Bank: *322#</li>
-    <li>Union Bank: *389*032#</li>
-    <li>FCMB: *389#</li>
+    <li>Wema Bank: *945#</li>
+    <li>Diamond Bank: *710#</li>
+    <li>Unity Bank: *389*215#</li>
+    <li>Heritage Bank: *322*030#</li>
+    <li>KeyStone Bank: *322*082#</li>
+    <li>Union Bank: *826#</li>
+    <li>FCMB: *329#</li>
 </ul>
 
 <p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
