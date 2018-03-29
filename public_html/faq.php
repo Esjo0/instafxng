@@ -157,7 +157,7 @@ $thisPage = "Support";
                                         <div class="panel-heading"><h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse13">What is a transaction ID?</a></h5></div>
                                         <div id="collapse13" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p>It is an ID generated every time you want to fund your account. It looks like this "IFX1234567890".</p>
+                                                <p>It is an ID generated every time you want to fund your account. It looks like this "D1234567890".</p>
                                             </div>
                                         </div>
                                     </div>

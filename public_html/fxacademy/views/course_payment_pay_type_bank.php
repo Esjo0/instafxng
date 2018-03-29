@@ -6,7 +6,7 @@
 <ol>
     <li>Guaranty Trust Bank (GTB)<br />
         Account Name: Instant Web-Net Technologies Ltd<br />
-        Account Number: 0153738149</li>
+        Account Number: 0174516696</li>
     <li>Please include your Transaction ID <strong>(<?php echo $trans_id; ?>)</strong>.</li>
 </ol>
 

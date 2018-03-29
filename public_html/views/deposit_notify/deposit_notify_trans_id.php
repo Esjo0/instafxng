@@ -8,7 +8,7 @@
         <label class="control-label col-sm-2" for="transaction_ID">Transaction ID:</label>
         <div class="col-sm-10 col-lg-5">
             <input name="transaction_ID" type="text" class="form-control" id="transaction_ID">
-            <span class="help-block">It begins with IFX e.g. IFX1234567890</span>
+            <span class="help-block">It begins with D e.g. D1234567890</span>
         </div>
     </div>
     <div class="form-group">
