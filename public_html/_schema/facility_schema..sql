@@ -28,7 +28,7 @@ CREATE TABLE `facility_inventory` (
  `admin` text,
  `users` text,
  `location` int(10) DEFAULT NULL,
- `category` varchar(10) DEFAULT NULL,
+ `category` varchar(255) DEFAULT NULL,
  UNIQUE KEY `id` (`id`)
 )
 
