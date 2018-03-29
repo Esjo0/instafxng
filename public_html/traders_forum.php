@@ -8,8 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email_address = $db_handle->sanitizePost(trim($_POST['email_add']));
     $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
     $venue = $db_handle->sanitizePost(trim($_POST['venue']));
-    $date = date("Y-m-d H:i:s");
-
+    $date = $db_handle->sanitizePost($_POST['date']);
+    $date = datetime_to_text2($date);
     // Perform the necessary validations and display the appropriate feedback
     if(empty($full_name) || empty($email_address) || empty($phone_number)  || empty($venue)) {
         $message_error = "All fields must be filled.";
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: 10th of March, 2018<br /><br />
+            Date: $date)<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -127,6 +127,11 @@ MAIL;
     //
 }
 
+$current_month = date("m");
+$current_day = date("d");
+$query = "SELECT * FROM forum_schedule WHERE ((MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) = $current_day) OR (MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) >= $current_day) OR MONTH(scheduled_date) = ($current_month+1)) ORDER BY scheduled_date DESC LIMIT 1";
+$result = $db_handle->runQuery($query);
+$forum = $db_handle->fetchAssoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -158,37 +163,35 @@ MAIL;
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
+                    <?php if(isset($forum) && !empty($forum)):?>
                     <div class="super-shadow page-top-section">
+                        <?php
+                        foreach ($forum as $row)
+                        {
+                        ?>
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 style="margin: 0;">Harnessing ForexCopy for Big Profit</h3>
-                                <p style="margin-top: 0">
-                                    Join us on Saturday 10th of March,
-                                    2018 as we examine how  you can exploit the potentials of Forex copy to deliver consistent profit  to you. Time: 12 - 2pm.</p>
-                                <p><strong><span style="color: black;"><a href="traders_forum.php#more">Reserve your seat below to stand a chance to win $20.</a></span></strong></p>
+                                <h3 style="margin: 0;"><?php echo $row['forum_title']; ?></h3>
+                                <?php echo $row['forum_date_details']; ?>
+                                <p><strong><span style="color: black;"><a href="<?php echo $row['link_url']; ?>"><?php echo $row['link_text']; ?></a></span></strong>
+                                </p>
                             </div>
                             <div class="col-sm-6">
-                                <img src="images/forum-forex-copy.jpg" alt="" class="img-responsive" />
+                                <img src="<?php echo $row['image_path']; ?>" alt="" class="img-responsive"/>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="section-tint super-shadow">
                         <div class="row text-center">
                             <div class="col-sm-12 text-danger">
-                                <h3><strong>Share thoughts with other Forex Traders</strong></h3>
+                                <h3><strong><?php echo $row['share_thoughts_header']; ?></strong></h3>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <p>On the second Saturday of every month, Nigerian Forex traders gather at our
-                                    Lagos office to discuss Forex matters that will help propel their trading
-                                    success. They share their experiences, learn from other traders, meet new
-                                    people and go home with lots of exciting prizes such bonus account and Instaforex
-                                    branded materials. </p>
-                                <p>Join us on Saturday, 10th of March, 2018 for another exciting edition of
-                                    Nigerian Forex traders Forum as we discuss Harnessing ForexCopy for Big Profits.</p>
+                                <?php echo $row['share_thoughts_body']; ?>
                             </div>
                         </div>
 
@@ -197,37 +200,59 @@ MAIL;
                                 <h5>See photos from previous traders forums.</h5>
 
                                 <ul class="gallery clearfix photo_g">
-                                    <li><a href="images/traders-forum/traders-forum-1.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-1.jpg" alt=" " /></a></li>
-                                    <li><a href="images/traders-forum/traders-forum-2.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-2.jpg" alt=" " /></a></li>
-                                    <li><a href="images/traders-forum/traders-forum-3.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-3.jpg" alt=" " /></a></li>
-                                    <li><a href="images/traders-forum/traders-forum-4.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-4.jpg" alt=" " /></a></li>
-                                    <li><a href="images/traders-forum/traders-forum-5.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-5.jpg" alt=" " /></a></li>
-                                    <li><a href="images/traders-forum/traders-forum-6.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-6.jpg" alt=" " /></a></li>
-                                    <li><a href="images/traders-forum/traders-forum-7.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-7.jpg" alt=" " /></a></li>
-                                    <li><a href="images/traders-forum/traders-forum-8.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-8.jpg" alt=" " /></a></li>
-                                    <li><a href="images/traders-forum/traders-forum-9.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-9.jpg" alt=" " /></a></li>
-                                    <li><a href="images/traders-forum/traders-forum-10.jpg" rel="prettyPhoto[gallery1]" title=""><img src="images/traders-forum/thumbnails/traders-forum-10.jpg" alt=" " /></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-1.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-1.jpg"
+                                                         alt=" "/></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-2.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-2.jpg"
+                                                         alt=" "/></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-3.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-3.jpg"
+                                                         alt=" "/></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-4.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-4.jpg"
+                                                         alt=" "/></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-5.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-5.jpg"
+                                                         alt=" "/></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-6.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-6.jpg"
+                                                         alt=" "/></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-7.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-7.jpg"
+                                                         alt=" "/></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-8.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-8.jpg"
+                                                         alt=" "/></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-9.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-9.jpg"
+                                                         alt=" "/></a></li>
+                                    <li><a href="images/traders-forum/traders-forum-10.jpg" rel="prettyPhoto[gallery1]"
+                                           title=""><img src="images/traders-forum/thumbnails/traders-forum-10.jpg"
+                                                         alt=" "/></a></li>
                                 </ul>
                             </div>
                         </div>
-                        <br />
+                        <br/>
 
                         <div class="row" id="signup-section">
 
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <?php if(isset($message_success)) { ?>
-                                    <div class="alert alert-success">
-                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                        <strong>Success!</strong> <?php echo $message_success; ?>
-                                    </div>
+                                    <?php if (isset($message_success)) { ?>
+                                        <div class="alert alert-success">
+                                            <a href="#" class="close" data-dismiss="alert"
+                                               aria-label="close">&times;</a>
+                                            <strong>Success!</strong> <?php echo $message_success; ?>
+                                        </div>
                                     <?php } ?>
 
-                                    <?php if(isset($message_error)) { ?>
-                                    <div class="alert alert-danger">
-                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                        <strong>Oops!</strong> <?php echo $message_error; ?>
-                                    </div>
+                                    <?php if (isset($message_error)) { ?>
+                                        <div class="alert alert-danger">
+                                            <a href="#" class="close" data-dismiss="alert"
+                                               aria-label="close">&times;</a>
+                                            <strong>Oops!</strong> <?php echo $message_error; ?>
+                                        </div>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -236,68 +261,88 @@ MAIL;
 
                             <section id="more">
 
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <form data-toggle="validator" id="signup-form" role="form"  method="post" action="<?php echo htmlentities($_SERVER['REQUEST_URI']); ?>">
-                                        <h3 class="text-uppercase text-center signup-header">RESERVE A SEAT NOW</h3>
-                                        <br />
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <form data-toggle="validator" id="signup-form" role="form" method="post"
+                                              action="<?php echo htmlentities($_SERVER['REQUEST_URI']); ?>">
+                                            <h3 class="text-uppercase text-center signup-header">RESERVE A SEAT NOW</h3>
+                                            <br/>
+                                            <input name="date"
+                                                   class="form-control" type="hidden"
+                                                   value="<?php echo $row['scheduled_date']; ?>" >
+                                            <div class="form-group has-feedback">
+                                                <label for="name" class="control-label">Your Full Name</label>
+                                                <div class="input-group margin-bottom-sm">
+                                                    <span class="input-group-addon"><i
+                                                                class="fa fa-user fa-fw"></i></span>
+                                                    <input type="text" class="form-control" id="name" name="name"
+                                                           placeholder="Your Name" data-minlength="5" required>
+                                                </div>
+                                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                            </div>
 
-                                        <div class="form-group has-feedback">
-                                            <label for="name" class="control-label">Your Full Name</label>
-                                            <div class="input-group margin-bottom-sm">
-                                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" data-minlength="5" required>
+                                            <div class="form-group has-feedback">
+                                                <label for="email" class="control-label">Your Email Address</label>
+                                                <div class="input-group margin-bottom-sm">
+                                                    <span class="input-group-addon"><i
+                                                                class="fa fa-envelope-o fa-fw"></i></span>
+                                                    <input type="email" class="form-control" id="email" name="email_add"
+                                                           placeholder="Your Email" data-error="Invalid Email" required>
+                                                </div>
+                                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                                <div class="help-block with-errors"></div>
                                             </div>
-                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                        </div>
 
-                                        <div class="form-group has-feedback">
-                                            <label for="email" class="control-label">Your Email Address</label>
-                                            <div class="input-group margin-bottom-sm">
-                                                <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-                                                <input type="email" class="form-control" id="email" name="email_add" placeholder="Your Email" data-error="Invalid Email" required>
+                                            <div class="form-group has-feedback">
+                                                <label for="phone" class="control-label">Your Phone Number</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i
+                                                                class="fa fa-phone fa-fw"></i></span>
+                                                    <input type="text" class="form-control" id="phone" name="phone"
+                                                           placeholder="Your Phone" data-minlength="11" maxlength="11"
+                                                           required>
+                                                </div>
+                                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                                <div class="help-block">Example - 08031234567</div>
                                             </div>
-                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
 
-                                        <div class="form-group has-feedback">
-                                            <label for="phone" class="control-label">Your Phone Number</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
-                                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Your Phone" data-minlength="11" maxlength="11" required>
+                                            <div class="form-group">
+                                                <label for="venue" class="control-label">Choose your venue</label>
+                                                <div class="radio">
+                                                    <label><input id="venue" type="radio" name="venue"
+                                                                  value="Diamond Estate" checked required>Block 1A, Plot
+                                                        8, Diamond Estate, LASU/Isheri road, Isheri Olofin,
+                                                        Lagos.</label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label><input id="venue" type="radio" name="venue"
+                                                                  value="Ajah Office" required>Block A3, Suite 508/509
+                                                        Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout,
+                                                        along Lekki - Epe expressway, Lagos.</label>
+                                                </div>
+                                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                             </div>
-                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                            <div class="help-block">Example - 08031234567</div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="venue" class="control-label">Choose your venue</label>
-                                            <div class="radio">
-                                                <label><input id="venue" type="radio" name="venue" value="Diamond Estate" checked required>Block 1A, Plot 8, Diamond Estate, LASU/Isheri road, Isheri Olofin, Lagos.</label>
+                                            <div class="form-group">
+                                                <button type="submit" name="reserve_seat"
+                                                        class="btn btn-default btn-lg">Reserve Your Seat&nbsp;<i
+                                                            class="fa fa-chevron-circle-right"></i></button>
                                             </div>
-                                            <div class="radio">
-                                                <label><input id="venue" type="radio" name="venue" value="Ajah Office" required>Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</label>
-                                            </div>
-                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" name="reserve_seat" class="btn btn-default btn-lg">Reserve Your Seat&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
-                                        </div>
-                                        <small>All fields are required</small>
-                                    </form>
+                                            <small>All fields are required</small>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
 
                             </section>
 
                         </div>
-
+                        <?php
+                        }
+                        ?>
                         <div class="row text-center">
                             <h2 class="color-fancy">For further enquiries, please call 08182045184, 07081036115</h2>
                         </div>
                     </div>
-
+                    <?php endif; ?>
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
                     

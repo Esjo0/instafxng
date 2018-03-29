@@ -252,7 +252,6 @@ $rep = $db_handle->fetchAssoc($result);
                             </div>
                         </form>
                     </div>
-
                     <div class="section-tint super-shadow" style="display: none">
                         <h5>Incidence Form</h5>
                         <hr/>
@@ -274,7 +273,6 @@ $rep = $db_handle->fetchAssoc($result);
                                 <label class="control-label col-sm-4" for="location">Locations:</label>
                                 <div class="col-sm-8 col-lg-8">
                                     <div class="input-group date">
-                                        <select name="location" class="form-control" id="location">
                                             <?php
                                             $query = "SELECT * FROM facility_location";
                                             $result = $db_handle->runQuery($query);

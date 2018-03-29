@@ -18,35 +18,12 @@ $query8 = "SELECT * FROM facility_sevicing WHERE next <= '$s'";
 $serv = $db_handle->numRows($query8);
 
 if (isset($_POST['upload'])) {
-    $fileExistsFlag = 0;
+    //get file details
     $fileName = $_FILES['Filename']['name'];
-    /*
-    *	Checking whether the file already exists in the destination folder
-    */
-    $query = "SELECT label FROM facility_file WHERE label='$fileName'";
-    $result = $db_handle->runQuery($query) or die("Error : ".mysqli_error($db_handle));
-    while($row = mysqli_fetch_array($result)) {
-        if($row['filename'] == $fileName) {
-            $fileExistsFlag = 1;
-        }
-    }
-    /*
-    * If file is not present in the destination folder
-    */
-    if($fileExistsFlag == 0) {
-        $target = "facility/";
-        $fileTarget = $target.$fileName;
-        $tempFileName = $_FILES["Filename"]["tmp_name"];
-        $fileDescription = $_POST['label'];
-        $result = move_uploaded_file($tempFileName,$fileTarget);
-        /*
-        *	If file was successfully uploaded in the destination folder
-        */
-    }
+    $tempFileName = $_FILES["Filename"]["tmp_name"];
+
     //Insert into Data base from file upload path
-   $csv_file = 'C:/Users/joshu/Documents/blueworx-team/public_html/admin/facility/'.$fileName;
-
-
+    $csv_file = $tempFileName;
     if (($handle = fopen($csv_file, "r")) !== FALSE) {
         fgetcsv($handle);
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
@@ -58,16 +35,28 @@ if (isset($_POST['upload'])) {
             $col1 = $col[0];
             $col2 = $col[1];
             $col3 = $col[2];
+            $col4 = $col[3];
+            $col5 = $col[4];
+            //generate inventory id
+            insert_invent_id:
+            $invent_id = rand_string(5);
+            if ($db_handle->numRows("SELECT invent_id FROM facility_inventory WHERE invent_id = '$invent_id'") > 0) {
+                goto insert_invent_id;
+            };
+
+            $invent_id = "IWNT" . $invent_id;
 
 // SQL Query to insert data into DataBase
-            $query = "INSERT INTO facility_file(file_id,name,path) VALUES('".$col1."','".$col2."','".$col3."')";
+            $query = "INSERT INTO facility_inventory(invent_id,name,cost,date,location,category) VALUES('" . $invent_id . "','" . $col1 . "','" . $col2 . "','" . $col3 . "','" . $col4 . "','" . $col5 . "')";
             $result = $db_handle->runQuery($query);
+            if ($result) {
+                $message_success = "You have successfully added new equipments to the inventory";
+            } else {
+                $message_error = "Something went wrong. Please try again.";
+            }
         }
         fclose($handle);
     }
-
-    $message_success = "File data successfully imported to database!!";
-
 }
 
 $all_admin_member = $admin_object->get_all_admin_member();
@@ -424,11 +413,11 @@ $rep = $db_handle->fetchAssoc($result);
                                 </form>
                             </div>
 
-                            <div style="display: none" class="section-tint super-shadow">
+                            <div  class="section-tint super-shadow">
                                 <h5>Upload Excel Into Inventory</h5>
                                 <hr/>
 
-                                <form data-toggle="validator" class="form-vertical" role="form" method="post" action="" enctype="multipart/form-data">
+                                <form data-toggle="validator" class="form-vertical dropzone" role="form" method="post" action="" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="exampleInputFile">Select File</label>
                                         <input name="Filename" type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
@@ -436,7 +425,7 @@ $rep = $db_handle->fetchAssoc($result);
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" name="upload"  class="btn btn-success"><i class="fa fa-send fa-fw"></i>Upload</button>
+                                       <center><button type="submit" name="upload"  class="btn btn-success"><i class="fa fa-upload fa-fw"></i>Insert Into Inventory</button></center>
                                     </div>
                                 </form>
                             </div>
@@ -456,4 +445,5 @@ $rep = $db_handle->fetchAssoc($result);
         <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 
     </body>
+
 </html>

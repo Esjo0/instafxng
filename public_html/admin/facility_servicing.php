@@ -248,8 +248,6 @@ $reps = $db_handle->fetchAssoc($result);
                                                             </div>
                                                         </div>
                                                         <form>
-
-
                                                             <script type="text/javascript">
                                                                 $(function () {
                                                                     $('#datetimepicker, #datetimepicker2').datetimepicker({
