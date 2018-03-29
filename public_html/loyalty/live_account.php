@@ -666,6 +666,7 @@ function check_duplicate($email_address, $phone_number)
 		<script src="js/jquery.quicksand.js" type="text/javascript"></script>
 		<script src="js/script.js" type="text/javascript"></script>
 		<script src="js/jquery.prettyPhoto.js" type="text/javascript"></script>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
 		<?php if(isset($message_success) || isset($message_error)): ?>
 			<script>
 				document.getElementById('gt').click();
