@@ -17,17 +17,18 @@ CREATE TABLE `facility_file` (
 )
 
 
+
 CREATE TABLE `facility_inventory` (
  `id` int(100) NOT NULL AUTO_INCREMENT,
- `invent_id` varchar(100) CHARACTER SET utf8 NOT NULL,
- `name` varchar(100) NOT NULL,
- `cost` int(100) NOT NULL,
- `date` date NOT NULL,
- `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
- `admin` text CHARACTER SET utf8 NOT NULL,
- `users` text CHARACTER SET utf8,
- `location` varchar(10) CHARACTER SET utf8 DEFAULT NULL,
- `category` varchar(255) CHARACTER SET utf8 NOT NULL,
+ `invent_id` varchar(100) DEFAULT NULL,
+ `name` varchar(100) DEFAULT NULL,
+ `cost` int(100) DEFAULT NULL,
+ `date` date DEFAULT NULL,
+ `created` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+ `admin` text,
+ `users` text,
+ `location` int(10) DEFAULT NULL,
+ `category` varchar(10) DEFAULT NULL,
  UNIQUE KEY `id` (`id`)
 )
 
