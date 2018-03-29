@@ -1,6 +1,6 @@
 <?php
 require_once '../init/initialize_client.php';
-
+session_start();
 if (isset($_POST['submit2']) || isset($_POST['submit']))
 {
 	foreach ($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
@@ -106,7 +106,17 @@ if (isset($_POST['submit2']) || isset($_POST['submit']))
 MAIL;
 			$system_object->send_email($subject, $message, $email, $full_name);
 			$message_success = "Welcome to Instaforex Nigeria.";
-			redirect_to("https://instafxng.com/live_account.php?id=lp");
+
+
+			$_SESSION['f_name'] = $first_name;
+			$_SESSION['l_name'] = $last_name;
+			$_SESSION['m_name'] = $middle_name;
+			$_SESSION['email'] = $email_address;
+			$_SESSION['phone'] = $phone_number;
+			$_SESSION['source'] = 'lp';
+
+			redirect_to("live_account.php");
+
 		}
 		if(!$result)
 		{
