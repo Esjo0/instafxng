@@ -17,7 +17,7 @@ CREATE TABLE `facility_file` (
 )
 
 
-
+DROP TABLE IF EXISTS facility_inventory
 CREATE TABLE `facility_inventory` (
  `id` int(100) NOT NULL AUTO_INCREMENT,
  `invent_id` varchar(100) DEFAULT NULL,
