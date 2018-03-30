@@ -62,6 +62,11 @@ if (isset($_POST['submit2']) || isset($_POST['submit']))
             <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
             <p>At InstaFxNg, we consider it a privilege to serve and provide you with excellent and unparalleled service at all times.</p>
             <p>Our job is to take care of everything else while you focus on trading and making money. </p>
+            <p>We have been around for over 7 years providing Forex services to thousands of Nigerian traders, 
+            ensuring that their deposit and withdrawal transactions are promptly responded to and that every 
+            challenge is totally resolved.</p>
+            <p>InstaForex Nigeria is built upon seven strong foundational values; Integrity, Commitment, Speed, 
+            Focus, Empathy, Reliability, and Innovation.</p>
             <p>From making deposit into your account (locally and easily) to instant stress free withdrawals (to your bank account) to unmatched customer support, we have you covered. </p>
             <p>We are dedicated to working effectively to ensure swift service delivery to you consistently.</p>
             <p>To start your journey to earning more money in our Loyalty Rewards Program, kindly click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open an InstaForex account immediately.</p>
