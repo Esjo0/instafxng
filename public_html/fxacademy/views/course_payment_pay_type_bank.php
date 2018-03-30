@@ -7,6 +7,30 @@
     <li>Guaranty Trust Bank (GTB)<br />
         Account Name: Instant Web-Net Technologies Ltd<br />
         Account Number: 0174516696</li>
+
+    <?php
+        switch($pay_type) {
+            case '2':
+                $msg = "<li>Please include your Transaction ID <strong>(" . $trans_id . ") ONLY </strong>in the space for remarks.</li>";
+                echo $msg;
+                break;
+            case '4':
+                $msg = "<li>Please include your Transaction ID <strong>(" . $trans_id . ")</strong> before making the transfer.</li>";
+                echo $msg;
+                break;
+            case '5':
+                $msg = "<li>Please include your Transaction ID <strong>(" . $trans_id . ") ONLY </strong>in the space for remarks.</li>";
+                echo $msg;
+                break;
+            case '6':
+                $msg = "<li>Please include your Transaction ID <strong>(" . $trans_id . ")</strong> on the teller.</li>";
+                echo $msg;
+                break;
+            default:
+                $msg = "<li>Please include your Transaction ID <strong>(" . $trans_id . ")</strong>.</li>";
+                echo $msg;
+        }
+    ?>
     <li>Please include your Transaction ID <strong>(<?php echo $trans_id; ?>)</strong>.</li>
 </ol>
 
@@ -21,7 +45,7 @@
 <p>NOTE:</p>
 <ul>
     <li>Third party payments are not allowed.</li>
-    <li>Your account can only be funded after you have completed payment notification
+    <li>Your only be given access to the course you paid for after you have completed payment notification
         as advised above.</li>
 </ul>
 
@@ -29,24 +53,23 @@
 
 <p>BANK USSD CODES - This works with phone numbers registered with your account.</p>
 <ul>
-    <li>Guaranty Trust Bank (GTB): *737#</li>
+    <li>Guaranty Trust Bank (GTB): *737# </li>
     <li>Fidelity Bank: *770#</li>
     <li>First Bank: *894#</li>
     <li>Sterling Bank: *822#</li>
-    <li>Skye Bank: *389#</li>
-    <li>United Bank for Africa (UBA): *389#</li>
+    <li>Skye Bank: *833#</li>
+    <li>United Bank for Africa (UBA): *919#</li>
     <li>EcoBank: *326#</li>
-    <li>Zenith Bank: *302#</li>
+    <li>Zenith Bank: *966#</li>
     <li>Stanbic Bank: *909#</li>
     <li>Access Bank Bank: *901#</li>
-    <li>Wema Bank: *322#</li>
-    <li>Diamond Bank: *302#</li>
-    <li>Diamond Yello Account: *710#</li>
-    <li>Unity Bank: *322#</li>
-    <li>Heritage Bank: *322#</li>
-    <li>KeyStone Bank: *322#</li>
-    <li>Union Bank: *389*032#</li>
-    <li>FCMB: *389#</li>
+    <li>Wema Bank: *945#</li>
+    <li>Diamond Bank: *710#</li>
+    <li>Unity Bank: *389*215#</li>
+    <li>Heritage Bank: *322*030#</li>
+    <li>KeyStone Bank: *322*082#</li>
+    <li>Union Bank: *826#</li>
+    <li>FCMB: *329#</li>
 </ul>
 
 <?php } ?>
