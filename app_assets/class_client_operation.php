@@ -205,8 +205,75 @@ class clientOperation {
             $query = "SELECT ui.ifx_acct_no FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE u.email = '$email_address'";
             $result = $db_handle->runQuery($query);
 
-            if($db_handle->numOfRows($result) == 0) {
-                $this->send_welcome_email($last_name, $email_address);
+            //TODO: Come back later to understand this....
+            if($db_handle->numOfRows($result) == 0)
+            {
+                if(empty($source) || $source != "lp")
+                {
+                    $this->send_welcome_email($last_name, $email_address);
+                }
+                else
+                {
+                    $subject = $last_name.', Your Welcome Bonus Is Here!';
+                    $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>It's official! Welcome to the money making gang! lol</p>
+                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You have made a fantastic decision $last_name!</p>
+                                <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
+                                <p>This is what’s happening right now…</p>                                
+                                <p>Your Welcome bonus is here!</p>
+                                <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
+                                <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
+                                <p>Let me quickly explain how to get the bonus...</p>
+                                <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
+                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
+                                <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
+                                <p>Super amazing, right? </p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Mercy,</p>
+                                <p>Client Relationship Manager</p>
+                                <p>InstaFxNg Team,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+                    $system_object->send_email($subject, $message_final, $email_address, $last_name);
+                }
             }
             
             if($this->ifx_account_is_duplicate($account_no)) {
@@ -237,17 +304,141 @@ class clientOperation {
             if(empty($middle_name)) {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                if(!isset($source) || $source != "lp"){
-                    //This client came in through the landing page
+                if(empty($source) || $source != "lp")
+                {
                     $this->send_welcome_email($last_name, $email_address);
+                }
+                else
+                {
+                    $subject = $last_name.', Your Welcome Bonus Is Here!';
+                    $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>It's official! Welcome to the money making gang! lol</p>
+                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You have made a fantastic decision $last_name!</p>
+                                <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
+                                <p>This is what’s happening right now…</p>                                
+                                <p>Your Welcome bonus is here!</p>
+                                <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
+                                <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
+                                <p>Let me quickly explain how to get the bonus...</p>
+                                <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
+                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
+                                <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
+                                <p>Super amazing, right? </p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Mercy,</p>
+                                <p>Client Relationship Manager</p>
+                                <p>InstaFxNg Team,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+                    $system_object->send_email($subject, $message_final, $email_address, $last_name);
                 }
 
             } else {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                if(!isset($source) || $source != "lp"){
+                if(empty($source) || $source != "lp"){
                     //This client came in through the landing page
                     $this->send_welcome_email($last_name, $email_address);
+                }
+                else
+                {
+                    $subject = $last_name.', Your Welcome Bonus Is Here!';
+                    $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>It's official! Welcome to the money making gang! lol</p>
+                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You have made a fantastic decision $last_name!</p>
+                                <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
+                                <p>This is what’s happening right now…</p>                                
+                                <p>Your Welcome bonus is here!</p>
+                                <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
+                                <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
+                                <p>Let me quickly explain how to get the bonus...</p>
+                                <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
+                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
+                                <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
+                                <p>Super amazing, right? </p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Mercy,</p>
+                                <p>Client Relationship Manager</p>
+                                <p>InstaFxNg Team,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+                    $system_object->send_email($subject, $message_final, $email_address, $last_name);
                 }
             }
 

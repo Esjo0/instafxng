@@ -1,6 +1,6 @@
 <?php
 require_once '../init/initialize_client.php';
-
+session_start();
 if (isset($_POST['submit2']) || isset($_POST['submit']))
 {
 	foreach ($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
@@ -62,6 +62,11 @@ if (isset($_POST['submit2']) || isset($_POST['submit']))
             <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
             <p>At InstaFxNg, we consider it a privilege to serve and provide you with excellent and unparalleled service at all times.</p>
             <p>Our job is to take care of everything else while you focus on trading and making money. </p>
+            <p>We have been around for over 7 years providing Forex services to thousands of Nigerian traders, 
+            ensuring that their deposit and withdrawal transactions are promptly responded to and that every 
+            challenge is totally resolved.</p>
+            <p>InstaForex Nigeria is built upon seven strong foundational values; Integrity, Commitment, Speed, 
+            Focus, Empathy, Reliability, and Innovation.</p>
             <p>From making deposit into your account (locally and easily) to instant stress free withdrawals (to your bank account) to unmatched customer support, we have you covered. </p>
             <p>We are dedicated to working effectively to ensure swift service delivery to you consistently.</p>
             <p>To start your journey to earning more money in our Loyalty Rewards Program, kindly click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open an InstaForex account immediately.</p>
@@ -106,7 +111,17 @@ if (isset($_POST['submit2']) || isset($_POST['submit']))
 MAIL;
 			$system_object->send_email($subject, $message, $email, $full_name);
 			$message_success = "Welcome to Instaforex Nigeria.";
-			redirect_to("https://instafxng.com/live_account.php?id=lp");
+
+
+			$_SESSION['f_name'] = $first_name;
+			$_SESSION['l_name'] = $last_name;
+			$_SESSION['m_name'] = $middle_name;
+			$_SESSION['email'] = $email_address;
+			$_SESSION['phone'] = $phone_number;
+			$_SESSION['source'] = 'lp';
+
+			redirect_to("live_account.php");
+
 		}
 		if(!$result)
 		{

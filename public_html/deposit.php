@@ -209,7 +209,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
 
         $origin_of_deposit = '1'; // Originates online
         $stamp_duty = CBN_STAMP_DUTY;
-        $trans_id = "IFX" . time();
+        $trans_id = "D" . time();
         $trans_id_encrypted = encrypt($trans_id);
         $service_charge = $ifx_naira_amount * DSERVCHARGE;
         $vat = $service_charge * DVAT;

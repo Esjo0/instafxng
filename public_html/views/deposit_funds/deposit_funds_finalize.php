@@ -92,6 +92,12 @@
         </div>
     </div>
     <div class="form-group">
+        <label class="control-label col-sm-3" for="terms_notice"></label>
+        <div class="col-sm-9 col-lg-5">
+            <input type="checkbox" name="terms_notice" value="1" required> <span style="color: red">I will make sure to confirm and make payment into the exact account details specified on my payment invoice.</span>
+        </div>
+    </div>
+    <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9"><input name="deposit_funds_finalize" type="submit" class="btn btn-success" value="Finalize" /> <a href="deposit_funds.php" class="btn btn-danger">Cancel</a></div>
     </div>
 </form>
