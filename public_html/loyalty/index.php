@@ -109,9 +109,8 @@ if (isset($_POST['submit2']) || isset($_POST['submit']))
     </div>
 </div>
 MAIL;
-			$system_object->send_email($subject, $message, $email, $full_name);
+			$system_object->send_email($subject, $message, $email_address, $first_name);
 			$message_success = "Welcome to Instaforex Nigeria.";
-
 
 			$_SESSION['f_name'] = $first_name;
 			$_SESSION['l_name'] = $last_name;
