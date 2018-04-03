@@ -39,7 +39,7 @@ if(isset($_POST['search']))
                                     <img src="images/Easter/Untitled.png" alt="" class="img-responsive" />
                                 </center>
 
-                                <h3 class="text-center"><?php strtoupper('InstaFxNg’s Celebrate a Milestone Promo'); ?></h3>
+                                <h3 class="text-center">INSTAFXNG'S CELEBRATE A MILESTONE PROMO</h3>
                                 <p class="text-justify">To celebrate the completion of the first quarter, we’re rewarding 3 clients with an All-Expense Paid Buffet at Four Points by Sheraton Hotel.</p>
                                 <p class="text-justify">It’s More than a Buffet, It’s an Experience!</p>
                                 <p class="text-justify">Enjoy an Exclusive All-Expense-Paid Buffet Treat at Four Points by Sheraton Hotel in the Celebrate a Milestone promo.</p>
