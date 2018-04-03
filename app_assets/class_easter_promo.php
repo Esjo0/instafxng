@@ -3,13 +3,26 @@
 class Easter_Promo
 {
     const entry_cost = 50; //$50  per entry
-    const deadline = '2018-04-01 00:00:00'; //Promo closes
+    const deadline = '2018-04-06 11:59:00'; //Promo closes
     public function new_entry($transaction_id, $acc_no, $points)
     {
         global $db_handle;
         if($this->confirm_deadline(date('Y-m-d h:i:s'), self::deadline)) { return false; }
 
-        $query = "UPDATE easter_promo_2018 (transaction_id, ifx_acc_no, points) VALUES('$transaction_id', '$acc_no', '$points') ";
+        $query = "INSERT IGNORE INTO easter_promo_participants (acc_no) VALUES ('$acc_no')";
+        $db_handle->runQuery($query);
+
+        $query = "INSERT INTO easter_promo_entries (transaction_id, points, acc_no) VALUES ('$transaction_id', '$points', '$acc_no')";
+        $db_handle->runQuery($query);
+
+        return $db_handle->affectedRows() > 0 ? true : false;
+
+    }
+
+    public function update_entry($transaction_id)
+    {
+        global $db_handle;
+        $query = "UPDATE easter_promo_entries SET completed = now() WHERE transaction_id = '$transaction_id' ";
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
 
@@ -21,52 +34,102 @@ class Easter_Promo
         else { return false; }
     }
 
+    //TODO Revisit this logic
     public function get_all_entries($from_date, $to_date)
     {
         global $db_handle;
-        $query = "SELECT * FROM easter_promo_2018 
-                  WHERE (STR_TO_DATE(created, '%Y-%m-%d') 
-                  BETWEEN '$from_date' AND '$to_date')
-                  AND completed IS NOT NULL   ";
+        $participants_entries = array();
+        $count = 0;
+        $query = "SELECT * FROM easter_promo_participants  ";
         $result = $db_handle->runQuery($query);
-        return $db_handle->fetchAssoc($result);
+        $participants = $db_handle->fetchAssoc($result);
+        foreach ($participants as $row)
+        {
+            $query = "SELECT SUM(points) AS points FROM easter_promo_entries WHERE ((STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND completed IS NOT NULL) AND acc_no = '".$row['acc_no']."' ";
+            $result = $db_handle->runQuery($query);
+            $points = $db_handle->fetchAssoc($result)[0]['points'];
+            $participants_entries[$count] = array('participant'=>$row['acc_no'], 'points'=>$points);
+            $count++;
+        }
+        return $participants_entries;
     }
 
     public function get_top_entries($from_date, $to_date, $number_value)
     {
         global $db_handle;
-
-        ////Get unique participants
-        $participants = array();
-        $participants_count = 0;
-        $p_query = "SELECT ifx_acc_no FROM easter_promo_2018 WHERE ((STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND completed IS NOT NULL ";
-        $participant_query = $db_handle->fetchAssoc($db_handle->runQuery($p_query));
-        foreach ($participant_query as $row)
-        {
-            if(!array_search($row['ifx_acc_no'], $participants))
-            {
-                $participants[$participants_count] = $row['ifx_acc_no'];
-                $participants_count++;
-            }
-        }
-
-
-        $query = "SELECT * FROM easter_promo_2018 
-                  WHERE ((STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND completed IS NOT NULL )
-                  ORDER BY points DESC LIMIT $number_value 
-                  GROUP BY ifx_acc_no ";
+        $counter = 0;
+        $participants_entries = array();
+        $top_entries = array();
+        $count = 0;
+        $query = "SELECT * FROM easter_promo_participants  ";
         $result = $db_handle->runQuery($query);
-        return $db_handle->fetchAssoc($result);
+        $participants = $db_handle->fetchAssoc($result);
+        foreach ($participants as $row)
+        {
+            $query = "SELECT SUM(points) AS points FROM easter_promo_entries WHERE ((STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND completed IS NOT NULL) AND acc_no = '".$row['acc_no']."' ";
+            $result = $db_handle->runQuery($query);
+            $points = $db_handle->fetchAssoc($result)[0]['points'];
+            $participants_entries[$count] = array('participant'=>$row['acc_no'], 'points'=>$points);
+            $count++;
+        }
+        $entries = $participants_entries;
+        while($counter < $number_value)
+        {
+            $top_entries[$counter]['participant'] = $entries[$counter]['participant'];
+            $top_entries[$counter]['points'] = $entries[$counter]['points'];
+            $counter++;
+        }
+        return $top_entries;
     }
 
     public function get_winner($from_date, $to_date)
     {
         global $db_handle;
-        $query = "SELECT * FROM easter_promo_2018 
-                  WHERE ((STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND completed IS NOT NULL )
-                  ORDER BY points DESC LIMIT 1  ";
+        $participants_entries = array();
+        $count = 0;
+        $query = "SELECT * FROM easter_promo_participants ";
         $result = $db_handle->runQuery($query);
-        return $db_handle->fetchAssoc($result);
+        $participants = $db_handle->fetchAssoc($result);
+        foreach ($participants as $row)
+        {
+            $query = "SELECT SUM(points) AS points FROM easter_promo_entries WHERE ((STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND completed IS NOT NULL) AND acc_no = '".$row['acc_no']."' ";
+            $result = $db_handle->runQuery($query);
+            $points = $db_handle->fetchAssoc($result)[0]['points'];
+            $participants_entries[$count] = array('participant'=>$row['acc_no'], 'points'=>$points);
+            $count++;
+        }
+        return $this->array_sort_by_column($participants_entries, 'points')[0];
+    }
+
+    public function get_points_per_acc($acc_no)
+    {
+        $from_date = date('Y-m-d');
+        $to_date = date('Y-m-d');
+        global $db_handle;
+        $query = "SELECT *  FROM easter_promo_entries WHERE ((STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND completed IS NOT NULL) AND acc_no = '$acc_no' ";
+        $result = $db_handle->runQuery($query);
+        $entries = $db_handle->numOfRows($result);
+
+        $query = "SELECT SUM(points) AS points FROM easter_promo_entries WHERE ((STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND completed IS NOT NULL) AND acc_no = '$acc_no' ";
+        $result = $db_handle->runQuery($query);
+        $points = $db_handle->fetchAssoc($result)[0]['points'];
+        $participants_entries = array('entries'=>$entries, 'points'=>$points);
+
+
+        return $participants_entries;
+    }
+
+    public function array_sort_by_column($array)
+    {
+        return array_multisort(array_map(function($element) { return $element[2]['points']; }, $array), SORT_DESC, $array);
+        //return $array;
+    }
+
+    public function get_client_by_name($ifx_acct)
+    {
+        global $db_handle;
+        $query = "SELECT first_name, middle_name, last_name FROM user, user_ifxaccount WHERE user_ifxaccount.ifx_acct_no = '$ifx_acct' AND user.user_code = user_ifxaccount.user_code ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
     }
 }
 
