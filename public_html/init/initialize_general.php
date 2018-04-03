@@ -32,6 +32,8 @@ require_once(LIB_PATH.DS."class_quiz.php");
 require_once(LIB_PATH.DS."session_quiz_participant.php");
 require_once(LIB_PATH.DS."class_loyalty_point.php");
 require_once(LIB_PATH.DS."class_push_notification.php");
+//Easter Promo Controller File
+require_once(LIB_PATH.DS."class_easter_promo.php");
 
 /*
  * TRACK CLIENTS THAT PARTNERS REFER

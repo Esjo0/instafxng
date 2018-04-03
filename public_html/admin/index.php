@@ -44,6 +44,7 @@ $total_expired_point_dollar_amount = $total_expired_point * DOLLAR_PER_POINT;
 
 $failed_sms_code = $system_object->get_failed_sms_code();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>

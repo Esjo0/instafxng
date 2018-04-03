@@ -454,7 +454,6 @@ function modes_of_array($arr)
     return $modes;
 }
 
-
 function getCurrentURL()
 {
     $currentURL = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
@@ -468,6 +467,7 @@ function getCurrentURL()
     $currentURL .= $_SERVER["REQUEST_URI"];
     return $currentURL;
 }
+
 function endsWith($haystack, $needle) {
     // search forward starting from end minus needle length characters
     return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
@@ -528,6 +528,18 @@ function get_all_mail_templates()
         $count++;
     }
     return $templates;
+}
+
+function searchForId($id, $array, $key_identifier)
+{
+    foreach ($array as $key => $val)
+    {
+        if ($val[$key_identifier] === $id)
+        {
+            return $key;
+        }
+    }
+    return null;
 }
 
 
