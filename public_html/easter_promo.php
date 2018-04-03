@@ -93,7 +93,7 @@ if(isset($_POST['search']))
                                                     <td>Day 1 -> <?php echo date_to_text('04-04-2018')?></td>
                                                     <td>
                                                         <?php
-                                                        $winner = $obj_easter_promo->get_winner('2018-04-03', '2018-04-03');
+                                                        $winner = $obj_easter_promo->get_winner('2018-04-04', '2018-04-04');
                                                         if(isset($winner['participant']) && !empty($winner['participant']) && $winner['participant']!= 0)
                                                         {
                                                             echo $obj_easter_promo->get_client_by_name($winner['participant'])['first_name'];
