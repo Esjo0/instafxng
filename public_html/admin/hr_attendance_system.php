@@ -36,17 +36,7 @@ function GetFirstThree($ip)
     $ip = substr($ip, 0, strlen($ip));
     return $ip;
 }
-function searchForId($id, $array, $key_identifier)
-{
-    foreach ($array as $key => $val)
-    {
-        if ($val[$key_identifier] === $id)
-        {
-            return $key;
-        }
-    }
-    return null;
-}
+
 
 $ip_address = GetFirstThree($db_handle->sanitizePost($_POST['lan_ip']));
 $today = $db_handle->sanitizePost(date("d-m-Y"));

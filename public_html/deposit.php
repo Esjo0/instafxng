@@ -240,10 +240,18 @@ if(isset($_POST['deposit_funds_finalize'])) {
     $client_operation = new clientOperation();
     $transaction = $client_operation->get_deposit_by_id_mini($trans_id);
 
-    if($transaction) {
+    if($transaction)
+    {
         extract($transaction);
+        ///Add entry for easter promo
+        if($client_dollar >= Easter_Promo::entry_cost)
+        {
+            $points = floor($client_dollar/Easter_Promo::entry_cost);
+            $obj_easter_promo->new_entry($client_trans_id, $client_account, $points);
+        }
         $page_requested = 'deposit_funds_pay_type_php';
         $trans_id_encrypted = encrypt($client_trans_id);
+
     } else {
         $message_error = "Something went wrong, please try again.";
         $page_requested = "";

@@ -1,139 +1,6 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Promotion";
-
-$page_requested = "";
-
-// This section processes - views/val_offer_info.php
-if(isset($_POST['val_offer_info'])) {
-    $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
-
-    $client_operation = new clientOperation($account_no);
-    $user_ifx_details = $client_operation->get_client_data();
-
-    if($user_ifx_details) {
-        extract($user_ifx_details); // turn table columns selected into variables
-
-        $page_requested = 'val_offer_upload_php';
-
-    } else {
-        $message_error = "Your account details could not be found, please contact support";
-    }
-}
-
-if(isset($_POST['val_offer_upload'])) {
-    $page_requested = 'val_offer_upload_php';
-
-    foreach($_POST as $key => $value) {
-        $_POST[$key] = $db_handle->sanitizePost(trim($value));
-    }
-
-    extract($_POST);
-
-    $client_operation = new clientOperation($account_no);
-    $user_ifx_details = $client_operation->get_client_data();
-    extract($user_ifx_details);
-
-    if($_FILES["pictures"]["error"] == UPLOAD_ERR_OK) {
-        if(isset($_FILES["pictures"]["name"])) {
-            $tmp_name = $_FILES["pictures"]["tmp_name"];
-            $name = strtolower($_FILES["pictures"]["name"]);
-
-            // Get file extension of original uploaded file and create a new file name
-            $extension = explode(".", $name);
-
-            new_name:
-            $name_string = rand_string(25);
-            $newfilename = $name_string . '.' . end($extension);
-            $picture = strtolower($newfilename);
-
-            if(file_exists("images/val-pics/$picture")) {
-                goto new_name;
-            }
-
-            move_uploaded_file($tmp_name, "images/val-pics/$picture");
-        }
-    }
-
-    $query = "INSERT INTO user_val_2017 (user_code, val_pics) VALUES
-                ('$client_user_code', '$picture')";
-    $db_handle->runQuery($query);
-
-    $client_id = $db_handle->insertedId();
-
-    if(!empty($client_id)) {
-
-        $val_link = "https://instafxng.com/my_val/id/" . $client_id . "/";
-        $subject = "Instafxng Who's Your Valentine Contest";
-        $body =
-<<<MAIL
-<div style="background-color: #F3F1F2">
-    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
-        <img src="https://instafxng.com/images/ifxlogo.png" />
-        <hr />
-        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $client_full_name,</p>
-
-            <p>Congratulations, your Valentine page has been generated. You now have a chance to be one
-            of our winners that would be rewarded with $20 Valentine gift.<br /></p>
-
-            <p>See your picture page by following the link below, visit the link, click the share button
-             to share with your friends on Facebook, your friends will click to visit the picture page
-             and like your pictures, the more likes you get the better your chances.<br /></p>
-
-            <p>Your Link: $val_link</p><br />
-
-            <p>Happy Valentine's Day.</p>
-
-            <br /><br />
-            <p>Best Regards,</p>
-            <p>Instafxng Support,<br />
-                www.instafxng.com</p>
-            <br /><br />
-        </div>
-        <hr />
-        <div style="background-color: #EBDEE9;">
-            <div style="font-size: 11px !important; padding: 15px;">
-                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
-                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-                </p>
-                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
-                <p><strong>Office Number:</strong> 08028281192</p>
-                <br />
-            </div>
-            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                    official Nigerian Representative of Instaforex, operator and administrator
-                    of the website www.instafxng.com</p>
-                <p>To ensure you continue to receive special offers and updates from us,
-                    please add support@instafxng.com to your address book.</p>
-            </div>
-        </div>
-    </div>
-</div>
-MAIL;
-        $system_object->send_email($subject, $body, $client_email, $client_full_name);
-
-        $page_requested = 'val_offer_complete_php';
-    } else {
-        $message_error = "An error occurred, please try again.";
-    }
-
-
-}
-
-switch($page_requested) {
-    case '': $easter_promo_info = true; break;
-    case 'easter_promo_info': $easter_promo_info = true; break;
-    case 'easter_promo_winners': $easter_promo_winners = true; break;
-    default: $easter_promo_info = true;
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -176,12 +43,87 @@ switch($page_requested) {
                         <div class="col-sm-12">
                             <div class="section-tint super-shadow">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <?php
-                                    if($easter_promo_info) { include_once 'views/easter_promo/easter_promo_info.php'; }
-                                    if($easter_promo_winners) { include_once 'views/easter_promo/easter_promo_winners.php'; }
-                                ?>
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <table class="table table-responsive table-striped table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th colspan="3" class="text-center">Today's Race as at <?php echo date('h:i:s A')?>, <?php echo date('d M Y')?></th>
+                                            </tr>
+                                            <tr>
+                                                <th>Position</th>
+                                                <th>Participants Name</th>
+                                                <th>Promo Points</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th>1</th>
+                                                <td>Nkiru Blessing</td>
+                                                <th>68</th>
+                                            </tr>
+                                            <tr>
+                                                <th>2</th>
+                                                <td>Nkiru Blessing</td>
+                                                <th>68</th>
+                                            </tr>
+                                            <tr>
+                                                <th>3</th>
+                                                <td>Nkiru Blessing</td>
+                                                <th>68</th>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <table class="table table-responsive table-striped table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th colspan="2" class="text-center">Guaranteed Winners</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Participants Name</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Day 1 -> <?php echo date_to_text('29-03-2018')?></td>
+                                                <td>Nkiru Blessing</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Day 2 -> <?php echo date_to_text('30-03-2018')?></td>
+                                                <td>Nkiru Blessing</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Day 3 -> <?php echo date_to_text('31-03-2018')?></td>
+                                                <td>Nkiru Blessing</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <a class="btn-group-justified btn btn-success btn-lg" href="deposit.php"><b>Join The Race Now!!!</b></a>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <p><b>TERMS & CONDITIONS</b></p>
+                                        <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   Only ILPR clients are eligible to participate.</p>
+                                        <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   Participants are required to fund multiples units of $50 and above.
+                                            <br/>$50 = 1 Unit as regards this promo.</p>
+                                        <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   Any deposit transaction above $50 will be split into $50 portions
+                                            to generate equivalent unit amount. <br/> E.g. If you fund $1000 once in a day, it will be divide by $50 and that means you have funded
+                                            50 dollars 20 times that day.</p>
+                                        <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   Multiple transactions of $50 at different intervals within the same
+                                            day still counts every participant.</p>
+                                        <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   The trader with the highest number of multiple $50 transactions in
+                                            a day is the winner for that particular day.</p>
+                                        <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   All daily winners automatically qualifies for the prize.</p>
+                                        <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   Winners will be contacted to redeem their prizes within – and -. (Please state date for redemption)</p>
+                                        <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   The prize is an Exclusive All-Expense-Paid Buffet Treat at Four Points by Sheraton Hotel.<br/>
+                                            No cash equivalent will be issued out to winner in place of the stated prize.</p>
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
                     </div>
 
