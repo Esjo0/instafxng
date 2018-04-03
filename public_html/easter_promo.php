@@ -164,7 +164,6 @@ if(isset($_POST['search']))
                                         <a class="btn-group-justified btn btn-success btn-lg" href="deposit.php"><b>Join The Race Now!!!</b></a>
                                     </div>
                                     <div class="col-sm-12">
-                                        <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   </p>
                                         <p><b>TERMS & CONDITIONS</b></p>
                                         <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   Only ILPR clients are eligible to participate.</p>
                                         <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   The minimum deposit that qualifies you for the promo is $50.</p>
