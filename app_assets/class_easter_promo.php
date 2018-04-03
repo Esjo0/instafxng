@@ -69,10 +69,12 @@ class Easter_Promo
             $query = "SELECT SUM(points) AS points FROM easter_promo_entries WHERE ((STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND completed IS NOT NULL) AND acc_no = '".$row['acc_no']."' ";
             $result = $db_handle->runQuery($query);
             $points = $db_handle->fetchAssoc($result)[0]['points'];
-            $participants_entries[$count] = array('participant'=>$row['acc_no'], 'points'=>$points);
+            $participants_entries[$count] = array('participant'=>$row['acc_no'], 'points'=>(int)$points);
             $count++;
         }
-        $entries = $participants_entries;
+
+        $entries = $this->sort_by_points($participants_entries);
+
         while($counter < $number_value)
         {
             $top_entries[$counter]['participant'] = $entries[$counter]['participant'];
@@ -98,7 +100,7 @@ class Easter_Promo
             $participants_entries[$count] = array('participant'=>$row['acc_no'], 'points'=>$points);
             $count++;
         }
-        return $this->array_sort_by_column($participants_entries, 'points')[0];
+        return $this->sort_by_points($participants_entries)[0];
     }
 
     public function get_points_per_acc($acc_no)
@@ -114,15 +116,22 @@ class Easter_Promo
         $result = $db_handle->runQuery($query);
         $points = $db_handle->fetchAssoc($result)[0]['points'];
         $participants_entries = array('entries'=>$entries, 'points'=>$points);
-
-
         return $participants_entries;
     }
 
-    public function array_sort_by_column($array)
+
+
+    public function sort_by_points($users)
     {
-        return array_multisort(array_map(function($element) { return $element[2]['points']; }, $array), SORT_DESC, $array);
-        //return $array;
+        $names = array();
+
+        foreach ($users as $user)
+        {
+            $names[] = $user['points'];
+        }
+
+        array_multisort($names, SORT_DESC, $users);
+        return $users;
     }
 
     public function get_client_by_name($ifx_acct)
