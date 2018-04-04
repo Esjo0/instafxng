@@ -63,22 +63,21 @@ function Push_Notifications()
     };
     this.show_alert = function(title, created, author, message, source_url,notification_id)
     {
-        document.getElementById('list_expand').innerHTML = "";
-        //console.log(title+created+author+message+notification_id);
 
+        document.getElementById('list_expand').innerHTML = "";
         var modal = '<div id="modal_show" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">'+
-                        '<div class="modal-dialog">'+
-                            '<div class="modal-content">'+
-                                '<div class="modal-header">'+
-                                    '<button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>'+
-                                    '<h4 class="modal-title">Notification Details</h4>'+
-                               '</div>'+
-                                '<div class="modal-body">' +
+            '<div class="modal-dialog">'+
+            '<div class="modal-content">'+
+            '<div class="modal-header">'+
+            '<button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>'+
+            '<h4 class="modal-title">Notification Details</h4>'+
+            '</div>'+
+            '<div class="modal-body">' +
             '<b>Title</b>: '+title+'<br/>'+'<b>Created: </b> '+created+'<br/>'+'<b>Author: </b> '+author+'<br/>'+ '<b>Message: </b>'+message+ '<br/><a href="'+source_url+'" target="_blank">'+'Click Here'+'</a>'+
             '</div>'+
-                                '<div class="modal-footer">'+
-                                    '<button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>'+
-                                '</div></div></div></div>';
+            '<div class="modal-footer">'+
+            '<button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>'+
+            '</div></div></div></div>';
         document.getElementById('list_expand').innerHTML = modal;
         $(document).ready(function()
         {

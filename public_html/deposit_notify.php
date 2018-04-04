@@ -43,12 +43,7 @@ if (isset($_POST['deposit_notify_detail_form'])) {
     if($notification) {
         $_transaction_details = $client_operation->get_deposit_transaction($trans_id);
         $title = "New Deposit Notification";
-        $message = "Transaction ID: $trans_id <br/>
-                    Client Name: ".$_transaction_details['full_name']." <br/>
-                    Pay Date: $pay_date <br/>
-                    Amount : N $naira_amount <br/>
-                    Teller No : $teller_no <br/>
-                    Client's Comment: $comment <br/>";
+        $message = "Transaction ID: $trans_id <br/>Client Name: ".$_transaction_details['full_name']." <br/>Pay Date: $pay_date <br/>Amount : N $naira_amount <br/>Teller No : $teller_no <br/>Client's Comment: $comment <br/>";
         $recipients = $obj_push_notification->get_recipients_by_access(31);
         $author = $_transaction_details['full_name'];
         $source_url = "https://instafxng.com/admin/deposit_notified.php";
