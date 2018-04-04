@@ -64,6 +64,8 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(15, $my_pages_sidebar)) { ?><li><a href="client_doc_verify.php" title="Verify Documents">Verify Documents</a></li><?php } ?>
                         <?php if (in_array(202, $my_pages_sidebar)) { ?><li><a href="client_failed_sms_code.php" title="Failed SMS Code">Failed SMS Code</a></li><?php } ?>
                         <?php if (in_array(16, $my_pages_sidebar)) { ?><li><a href="client_bank_verify.php" title="Moderate Bank Account">Moderate Bank Account</a></li><?php } ?>
+                        <?php if (in_array(248, $my_pages_sidebar)) { ?><li><a href="operations_log.php" title="Operations Log">Operations Log</a></li><?php } ?>
+                        <?php if (in_array(249, $my_pages_sidebar)) { ?><li><a href="operations_log_report.php" title="Operations Log Report">Operations Log Report</a></li><?php } ?>
                     </ul>
                 </li>
 
