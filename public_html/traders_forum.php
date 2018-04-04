@@ -5,6 +5,7 @@ $thisPage = "Education";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $full_name = $db_handle->sanitizePost(trim($_POST['name']));
+    $title= $db_handle->sanitizePost($_POST['forum_title']);
     $email_address = $db_handle->sanitizePost(trim($_POST['email_add']));
     $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
     $venue = $db_handle->sanitizePost(trim($_POST['venue']));
@@ -65,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $subject = "Instafxng Forex Traders Forum";
+
         $body =
 <<<MAIL
 <div style="background-color: #F3F1F2">
@@ -72,11 +74,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $full_name,</p>
-
+            <p>Dear $first_name,</p>
+            
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
-            <p>At the Forum this month, we will discuss Harnessing ForexCopy for Big Profit.</p>
+            <p>At the Forum this month, we will discuss $title.</p>
 
             <p>You will also have the opportunity of meeting other Forex traders and you
             could be one of two lucky winners to win $20 trading bonus. Isn’t that cool?</p>
@@ -84,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
 
             <p>Your Venue: $chosen_venue<br /><br />
-            Date: $date)<br /><br />
+            Date: $date<br /><br />
             Time: 12 - 2pm</p>
 
             <br /><br />
@@ -119,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 MAIL;
-
         $system_object->send_email($subject, $body, $email_address, $full_name);
         $message_success = "Your Seat Reservation Request Has Been Submitted.";
     }
@@ -270,6 +271,9 @@ $forum = $db_handle->fetchAssoc($result);
                                             <input name="date"
                                                    class="form-control" type="hidden"
                                                    value="<?php echo $row['scheduled_date']; ?>" >
+                                            <input name="forum_title"
+                                                   class="form-control" type="hidden"
+                                                   value="<?php echo $row['forum_title']; ?>" >
                                             <div class="form-group has-feedback">
                                                 <label for="name" class="control-label">Your Full Name</label>
                                                 <div class="input-group margin-bottom-sm">
