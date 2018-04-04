@@ -21,7 +21,14 @@ $notifications = $obj_push_notification->get_notifications();
         {
             ?>
             <div class="alert <?php if($row['status'] == "0"){echo 'alert-success';}else{echo 'alert-info';}?>">
-                <button style="display: none" id="X_<?php echo $row['notification_id'] ?>" onclick="var title = '<?php echo $row['title'] ?>';var created = '<?php echo datetime_to_text($row['created']) ?>';var author = '<?php echo $row['author'] ?>';var message = '<?php echo $row['message'] ?>';var source_url = '<?php echo $row['source_url'] ?>';var notification_id = '<?php echo $row['notification_id'] ?>'; push_notifications.show_alert(title,created,author,message,source_url,notification_id);">
+                <button style="display: none" id="X_<?php echo $row['notification_id'] ?>"
+                        onclick="var title = '<?php echo $row['title'] ?>';
+                            var created = '<?php echo datetime_to_text($row['created']) ?>';
+                            var author = '<?php echo $row['author'] ?>';
+                            var message = '<?php echo $row['message'] ?>';
+                            var source_url = '<?php echo $row['source_url'] ?>';
+                            var notification_id = '<?php echo $row['notification_id'] ?>';
+                            push_notifications.show_alert(title,created,author,message,source_url,notification_id);"></button>
                 <button type="button" onclick="document.getElementById('X_<?php echo $row['notification_id'] ?>').click();" class="btn btn-xs"><i class="glyphicon glyphicon-expand"></i></button>
 
                 <a href="javascript:void(0);" onclick="push_notifications.dismiss_notification('<?php echo $row['notification_id']; ?>')" class="close"  aria-label="close">&times;</a>
