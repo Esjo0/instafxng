@@ -310,7 +310,7 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="238" id="" <?php if (in_array(238, $my_pages)) { echo 'checked="checked"'; } ?>/> Category 4 Students</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="73" id="" <?php if (in_array(73, $my_pages)) { echo 'checked="checked"'; } ?>/> Training Campaign</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="74" id="" <?php if (in_array(74, $my_pages)) { echo 'checked="checked"'; } ?>/> Forum Registration</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="74" id="" <?php if (in_array(247, $my_pages)) { echo 'checked="checked"'; } ?>/> Schedule Traders Forum</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="247" id="" <?php if (in_array(247, $my_pages)) { echo 'checked="checked"'; } ?>/> Schedule Traders Forum</label></div></div>
                                     </div>
                                     <hr/>
 
