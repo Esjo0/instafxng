@@ -137,7 +137,7 @@ class Easter_Promo
     public function get_client_by_name($ifx_acct)
     {
         global $db_handle;
-        $query = "SELECT first_name, middle_name, last_name FROM user, user_ifxaccount WHERE user_ifxaccount.ifx_acct_no = '$ifx_acct' AND user.user_code = user_ifxaccount.user_code ";
+        $query = "SELECT first_name, middle_name, last_name, email, phone FROM user, user_ifxaccount WHERE user_ifxaccount.ifx_acct_no = '$ifx_acct' AND user.user_code = user_ifxaccount.user_code ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
     }
 }
