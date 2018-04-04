@@ -3,7 +3,7 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-
+$top_entries = $obj_easter_promo->get_top_entries(date('Y-m-d'), date('Y-m-d'), 10);
 
 ?>
 <!DOCTYPE html>
@@ -67,35 +67,93 @@ if (!$session_admin->is_logged_in()) {
                             <div class="col-sm-12">
                                 <table class="table table-responsive  table-striped table-bordered table-hover">
                                     <thead>
-                                    <tr>
-                                        <th>Full Name</th>
-                                        <th>Email</th>
-                                        <th>Account Number</th>
-                                        <th>Phone Number</th>
-                                        <th>Promo Points</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Full Name</th>
+                                            <th>Email</th>
+                                            <th>Account Number</th>
+                                            <th>Phone Number</th>
+                                            <th>Entries</th>
+                                            <th>Promo Points</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <?php if(isset($all_participants) && !empty($all_participants)) {
-                                        foreach ($all_participants as $row) { ?>
-                                            <tr>
-                                                <td><?php echo $row['participant_full_name']?></td>
-                                                <td><?php echo $row['participant_email']?></td>
-                                                <td><?php echo $row['total_time']?> second(s)</td>
-                                                <td><?php echo $row['average_time']?> second(s)</td>
-                                                <td><?php echo $row['total_score']?>%</td>
-                                            </tr>
-                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <tr>
+                                        <td>Day 1 -> <?php echo date_to_text('04-04-2018')?></td>
+                                        <td>
+                                            <?php
+                                            $winner = $obj_easter_promo->get_winner('2018-04-04', '2018-04-04');
+                                            if(isset($winner['participant']) && !empty($winner['participant']) && !empty($winner['points']))
+                                            {
+                                                echo $obj_easter_promo->get_client_by_name($winner['participant'])['first_name']." ".
+                                                    $obj_easter_promo->get_client_by_name($winner['participant'])['middle_name'].' '.
+                                                    $obj_easter_promo->get_client_by_name($winner['participant'])['last_name'];
+                                            }
+                                            else
+                                            {
+                                                echo "<center>---</center>";
+                                            }
+
+                                            ?>
+                                        </td>
+                                        <td><?php echo $obj_easter_promo->get_client_by_name($winner['participant'])['email']; ?></td>
+                                        <td><?php echo $winner['participant']; ?></td>
+                                        <td><?php echo $obj_easter_promo->get_client_by_name($winner['participant'])['phone']; ?></td>
+                                        <td><?php echo $obj_easter_promo->get_points_per_acc($winner['participant'])['entries']; ?></td>
+                                        <td><?php echo $obj_easter_promo->get_points_per_acc($winner['participant'])['points']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Day 2 -> <?php echo date_to_text('05-04-2018')?></td>
+                                        <td>
+                                            <?php
+                                            $winner = $obj_easter_promo->get_winner('2018-04-05', '2018-04-05');
+                                            if(isset($winner['participant']) && !empty($winner['participant']) && !empty($winner['points']))
+                                            {
+                                                echo $obj_easter_promo->get_client_by_name($winner['participant'])['first_name']." ".
+                                                    $obj_easter_promo->get_client_by_name($winner['participant'])['middle_name'].' '.
+                                                    $obj_easter_promo->get_client_by_name($winner['participant'])['last_name'];
+                                            }
+                                            else
+                                            {
+                                                echo "<center>---</center>";
+                                            }
+
+                                            ?>
+                                        </td>
+                                        <td><?php echo $obj_easter_promo->get_client_by_name($winner['participant'])['email']; ?></td>
+                                        <td><?php echo $winner['participant']; ?></td>
+                                        <td><?php echo $obj_easter_promo->get_client_by_name($winner['participant'])['phone']; ?></td>
+                                        <td><?php echo $obj_easter_promo->get_points_per_acc($winner['participant'])['entries']; ?></td>
+                                        <td><?php echo $obj_easter_promo->get_points_per_acc($winner['participant'])['points']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Day 3 -> <?php echo date_to_text('06-04-2018')?></td>
+                                        <td>
+                                            <?php
+                                            $winner = $obj_easter_promo->get_winner('2018-04-06', '2018-04-06');
+                                            if(isset($winner['participant']) && !empty($winner['participant']) && !empty($winner['points']))
+                                            {
+                                                echo $obj_easter_promo->get_client_by_name($winner['participant'])['first_name']." ".
+                                                    $obj_easter_promo->get_client_by_name($winner['participant'])['middle_name'].' '.
+                                                    $obj_easter_promo->get_client_by_name($winner['participant'])['last_name'];
+                                            }
+                                            else
+                                            {
+                                                echo "<center>---</center>";
+                                            }
+
+                                            ?>
+                                        </td>
+                                        <td><?php echo $obj_easter_promo->get_client_by_name($winner['participant'])['email']; ?></td>
+                                        <td><?php echo $winner['participant']; ?></td>
+                                        <td><?php echo $obj_easter_promo->get_client_by_name($winner['participant'])['phone']; ?></td>
+                                        <td><?php echo $obj_easter_promo->get_points_per_acc($winner['participant'])['entries']; ?></td>
+                                        <td><?php echo $obj_easter_promo->get_points_per_acc($winner['participant'])['points']; ?></td>
+                                    </tr>
                                     </tbody>
                                 </table>
-                                <?php if(isset($all_participants) && !empty($all_participants)) { ?>
-                                    <div class="tool-footer text-right">
-                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
-                                    </div>
-                                <?php } ?>
                             </div>
                         </div>
-                        <?php if(isset($all_participants) && !empty($all_participants)) { require_once 'layouts/pagination_links.php'; } ?>
                     </div>
 
                     <!-- Unique Page Content Starts Here
@@ -114,6 +172,7 @@ if (!$session_admin->is_logged_in()) {
                                 <table class="table table-responsive  table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
+                                        <th></th>
                                         <th>Full Name</th>
                                         <th>Email</th>
                                         <th>Account Number</th>
@@ -122,16 +181,24 @@ if (!$session_admin->is_logged_in()) {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php if(isset($top_participants) && !empty($top_participants)) {
-                                        foreach ($top_participants as $row) { ?>
-                                            <tr>
-                                                <td><?php echo $row['participant_full_name']?></td>
-                                                <td><?php echo $row['participant_email']?></td>
-                                                <td><?php echo $row['total_time']?> second(s)</td>
-                                                <td><?php echo $row['average_time']?> second(s)</td>
-                                                <td><?php echo $row['total_score']?>%</td>
-                                            </tr>
-                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <?php
+                                    $count = 1;
+                                    foreach ($top_entries as $row){ extract($row); ?>
+                                        <tr>
+                                            <td><?php echo $count; ?></td>
+                                            <td>
+                                                <?php
+                                                echo $obj_easter_promo->get_client_by_name($participant)['first_name']." ".
+                                                    $obj_easter_promo->get_client_by_name($participant)['middle_name'].' '.
+                                                    $obj_easter_promo->get_client_by_name($participant)['last_name'];
+                                                ?>
+                                            </td>
+                                            <td><?php echo $obj_easter_promo->get_client_by_name($participant)['email']; ?></td>
+                                            <td><?php echo $participant; ?></td>
+                                            <td><?php echo $obj_easter_promo->get_client_by_name($participant)['phone']; ?></td>
+                                            <td><?php echo number_format($points); ?></td>
+                                        </tr>
+                                        <?php $count++; } ?>
                                     </tbody>
                                 </table>
                                 <?php /*if(isset($top_participants) && !empty($top_participants)) { */?><!--

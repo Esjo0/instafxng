@@ -61,7 +61,7 @@ if(isset($_POST['search']))
                                     <tr>
                                         <th>Position</th>
                                         <th>Participants Name</th>
-                                        <th>Promo Points</th>
+                                        <!--<th>Promo Points</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -71,7 +71,7 @@ if(isset($_POST['search']))
                                         <tr>
                                             <th><?php echo $count; ?></th>
                                             <td><?php echo $obj_easter_promo->get_client_by_name($participant)['first_name']; ?></td>
-                                            <th><?php echo number_format($points); ?></th>
+                                            <!--<th><?php /*//echo number_format($points); */?></th>-->
                                         </tr>
                                         <?php $count++; } ?>
                                     </tbody>
