@@ -39,20 +39,19 @@ $thisPage = "Promotion";
 
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <div class="col-sm-12"><h5>Instafxng Easter Promo</h5></div>
+                            <div class="col-sm-12"><h5>INSTAFXNG'S CELEBRATE A MILESTONE PROMO</h5></div>
                         </div>
                         <div class="row">
                             <div class="col-sm-4">
-                                <a href="https://instafxng.com/easter_promo.php" title="click for full details" target="_blank">
-                                    <img src="images/instafxng-valentine-2.png" alt="" class="img-responsive" />
+                                <a href="https://instafxng.com/q2_promo.php" title="click for full details" target="_blank">
+                                    <img src="images/Q2_Promo/Instafxng_Q2_Promo.png" alt="" class="img-responsive" />
                                 </a>
                             </div>
                             <div class="col-sm-8">
-                                <p>Happy Easter Holidays</p>
-                                <p>Join the Instafxng Easter Promo.
+                                <p>Join Instafxng to celebrate a milestone.
                                     You stand a chance to emerge one of 3 winners that will win an all-expense paid buffet at the prestigious Four Points By Sheraton.
                                     This means that 3 lucky winners are getting this amazing experience.</p>
-                                <a class="btn btn-success" href="https://instafxng.com/easter_promo.php" title="click for full details" target="_blank">More Details</a>
+                                <a class="btn btn-success" href="https://instafxng.com/q2_promo.php" title="click for full details" target="_blank">More Details</a>
                             </div>
                         </div>
                     </div>
