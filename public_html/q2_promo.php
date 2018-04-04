@@ -139,9 +139,9 @@ if(isset($_POST['search']))
                                 <p><b>TERMS & CONDITIONS</b></p>
                                 <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   Only ILPR clients are eligible to participate.</p>
                                 <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   The minimum deposit that qualifies you for the promo is $50.</p>
-                                <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   You can choose to fund multiple units of $50 in a day or a lump sum E.g.
-                                    If you intend to fund $1000 in a day, you can either fund $50 twenty times in a day or you could deposit the lump sum of $1000 at once.
-                                    We will split your deposit transaction into $50 portions to generate the equivalent unit amount.</p>
+                                <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   Make a deposit of a lump sum and it will be automatically split into multiples of $50 portions to generate the equivalent unit amount.
+                                    E.g. If you intend to deposit the sum of $1000 into your InstaForex account, you don’t have to deposit $50 twenty times.
+                                    Just make a deposit of $1000 and our system will automatically calculate your frequency.</p>
                                 <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   The trader with the highest number of multiple $50 transactions in
                                     a day is the winner for that particular day.</p>
                                 <p class="text-justify"><i class="glyphicon glyphicon-check"></i>   All daily winners automatically qualify for the prize.</p>
