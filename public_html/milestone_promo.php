@@ -15,7 +15,7 @@ if(isset($_POST['search']))
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Second Quarter Celebration Promo</title>
+    <title>Instaforex Nigeria | Milestone Celebration Promo</title>
     <meta name="title" content=" " />
     <meta name="keywords" content=" ">
     <meta name="description" content=" ">
@@ -36,12 +36,12 @@ if(isset($_POST['search']))
                 <div class="col-sm-12">
                     <div class="section-tint super-shadow">
                         <center>
-                            <img src="images/Q2_Promo/Instafxng_Q2_Promo.png" alt="" class="img-responsive" />
+                            <img src="images/Q2_Promo/Instafxng_Milestone_Celebration.jpg" alt="" class="img-responsive" />
                         </center>
 
                         <h3 class="text-center">INSTAFXNG'S CELEBRATE A MILESTONE PROMO</h3>
                         <p class="text-justify">To celebrate the completion of the first quarter, we’re rewarding 3 clients with an All-Expense Paid Buffet at Four Points by Sheraton Hotel.</p>
-                        <p class="text-justify">It’s More than a Buffet, It’s an Experience!</p>
+                        <p class="text-justify">It's More than a Buffet, It’s an Experience!</p>
                         <p class="text-justify">Enjoy an Exclusive All-Expense-Paid Buffet Treat at Four Points by Sheraton Hotel in the Celebrate a Milestone promo.</p>
                         <p class="text-justify">The promo runs for 3 days only. It starts on Wednesday, 4th of April and ends on Friday 6th of April, 2018.</p>
                     </div>

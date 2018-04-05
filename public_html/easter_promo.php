@@ -1,3 +1,3 @@
 <?php
-header('Location: q2_promo.php');
+header('Location: milestone_promo.php');
 exit;
