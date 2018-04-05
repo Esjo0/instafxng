@@ -43,8 +43,8 @@ $thisPage = "Promotion";
                         </div>
                         <div class="row">
                             <div class="col-sm-4">
-                                <a href="https://instafxng.com/q2_promo.php" title="click for full details" target="_blank">
-                                    <img src="images/Q2_Promo/Instafxng_Q2_Promo.png" alt="" class="img-responsive" />
+                                <a href="https://instafxng.com/milestone_promo.php" title="click for full details" target="_blank">
+                                    <img src="images/Q2_Promo/Instafxng_Milestone_Celebration_lead.jpg" alt="" class="img-responsive" />
                                 </a>
                             </div>
                             <div class="col-sm-8">
