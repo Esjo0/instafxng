@@ -75,16 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Dear $first_name,</p>
-            
+
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
-
             <p>At the Forum this month, we will discuss $title.</p>
-
             <p>You will also have the opportunity of meeting other Forex traders and you
             could be one of two lucky winners to win $20 trading bonus. Isn’t that cool?</p>
-
             <p>Please mark your calendar for this date; we will also remind you via sms.</p>
-
             <p>Your Venue: $chosen_venue<br /><br />
             Date: $date<br /><br />
             Time: 12 - 2pm</p>
