@@ -11,62 +11,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $venue = $db_handle->sanitizePost(trim($_POST['venue']));
     $date = $db_handle->sanitizePost($_POST['date']);
     $date = datetime_to_text2($date);
+
     // Perform the necessary validations and display the appropriate feedback
-    if(empty($full_name) || empty($email_address) || empty($phone_number)  || empty($venue)) {
-        $message_error = "All fields must be filled.";
-    } elseif (!check_email($email_address)) {
-        $message_error = "Invalid Email Supplied, Try Again.";
-    } elseif (duplicate_forum_registration($email_address)) {
-        $message_error = "This email is already in our record.";
-    } elseif (check_number($phone_number) != 5) {
-        $message_error = "The supplied phone number is invalid.";
-    } else {
+    if(empty($full_name) || empty($email_address) || empty($phone_number)  || empty($venue)) {$message_error = "All fields must be filled.";}
+    if(!check_email($email_address)){      $message_error = "Invalid Email Supplied, Try Again.";  }
+    if(duplicate_forum_registration($email_address)) {  $message_error = "This email is already in our record."; }
+    if(check_number($phone_number) != 5) { $message_error = "The supplied phone number is invalid."; }
 
-        $query = "SELECT email FROM forum_participant WHERE email = '$email_address' LIMIT 1";
-        $result = $db_handle->runQuery($query);
+    $query = "SELECT email FROM forum_participant WHERE email = '$email_address' LIMIT 1";
+    $result = $db_handle->runQuery($query);
 
-        if($venue == 'Diamond Estate') { $cvenue = '1'; } else { $cvenue = '2'; }
-
-        if($db_handle->numOfRows($result) > 0) {
-            $query = "UPDATE forum_participant SET venue = '$cvenue', forum_activate = '1' WHERE email = '$email_address' LIMIT 1";
-            $db_handle->runQuery($query);
-
-        } else {
-
-            $full_name = ucwords(strtolower(trim($full_name)));
-            $full_name = explode(" ", $full_name);
-
-            if(count($full_name) == 3) {
-                $last_name = $full_name[0];
-                if(strlen($full_name[2]) < 3) {
-                    $middle_name = $full_name[2];
-                    $first_name = $full_name[1];
-                } else {
-                    $middle_name = $full_name[1];
-                    $first_name = $full_name[2];
-                }
-            } else {
-                $last_name = $full_name[0];
-                $middle_name = "";
-                $first_name = $full_name[1];
-            }
-
-            $query = "INSERT INTO forum_participant (first_name, middle_name, last_name, email, phone, venue, forum_activate)
-                VALUES ('$first_name', '$middle_name', '$last_name', '$email_address', '$phone_number', '$cvenue', '1')";
-
-            $db_handle->runQuery($query);
-
+    if($venue == 'Diamond Estate') { $cvenue = '1'; } else { $cvenue = '2'; }
+    $full_name = ucwords(strtolower(trim($full_name)));
+    $full_name = explode(" ", $full_name);
+    if(count($full_name) == 3)
+    {
+        $last_name = $full_name[0];
+        if(strlen($full_name[2]) < 3)
+        {
+            $middle_name = $full_name[2];
+            $first_name = $full_name[1];
         }
-
-        // Autoresponse email to client
-        if ($venue == "Diamond Estate") {
+        else
+        {
+            $middle_name = $full_name[1];
+            $first_name = $full_name[2];
+        }
+    }
+    else
+    {
+        $last_name = $full_name[0];
+        $middle_name = "";
+        $first_name = $full_name[1];
+    }
+    if($db_handle->numOfRows($result) > 0)
+    {
+        $query = "UPDATE forum_participant SET venue = '$cvenue', forum_activate = '1' WHERE email = '$email_address' LIMIT 1";
+        $db_handle->runQuery($query);
+    }
+    else
+    {
+        $query = "INSERT INTO forum_participant (first_name, middle_name, last_name, email, phone, venue, forum_activate)
+                VALUES ('$first_name', '$middle_name', '$last_name', '$email_address', '$phone_number', '$cvenue', '1')";
+        $db_handle->runQuery($query);
+    }
+    // Autoresponse email to client
+    if ($venue == "Diamond Estate") {
             $chosen_venue = "Block 1A, Plot 8, Diamond Estate, LASU/Isheri road, Isheri Olofin, Lagos.";
         } else if ($venue == "Ajah Office") {
             $chosen_venue = "Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.";
         }
-
-        $subject = "Instafxng Forex Traders Forum";
-
+    $subject = "Instafxng Forex Traders Forum";
         $body =
             <<<MAIL
 <div style="background-color: #F3F1F2">
@@ -123,7 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 MAIL;
         $system_object->send_email($subject, $body, $email_address, $full_name);
         $message_success = "Your Seat Reservation Request Has Been Submitted.";
-    }
 } else {
     //
 }
