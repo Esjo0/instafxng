@@ -73,10 +73,12 @@ if(isset($_POST['deposit_funds_pcode'])) {
         extract($user_ifx_details);
     
         if($client_operation->authenticate_user_password($password_submitted, $client_pass_salt, $client_password)) {
-            switch($ifx_acc_type) {
-                case '1': $page_requested = 'deposit_funds_qty_ilpr_php'; break; // ILPR Account
-                case '2': $page_requested = 'deposit_funds_qty_nonilpr_php'; break; // Non-ILPR Account
-            }
+//            switch($ifx_acc_type) {
+//                case '1': $page_requested = 'deposit_funds_qty_ilpr_php'; break; // ILPR Account
+//                case '2': $page_requested = 'deposit_funds_qty_nonilpr_php'; break; // Non-ILPR Account
+//            }
+
+            $page_requested = 'deposit_funds_notice_php';
         } else {
             $page_requested = 'deposit_funds_pcode_php';
             $message_error = "You have entered an incorrect pass code";
@@ -85,6 +87,24 @@ if(isset($_POST['deposit_funds_pcode'])) {
     } else {
         $message_error = "Something went wrong, please try again.";
     }    
+}
+
+// This section processes - views/deposit_funds_notice.php
+if(isset($_POST['deposit_funds_notice'])) {
+    $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
+
+    $client_operation = new clientOperation($account_no);
+    $user_ifx_details = $client_operation->get_client_data();
+
+    if($user_ifx_details) {
+        extract($user_ifx_details);
+        switch($ifx_acc_type) {
+            case '1': $page_requested = 'deposit_funds_qty_ilpr_php'; break; // ILPR Account
+            case '2': $page_requested = 'deposit_funds_qty_nonilpr_php'; break; // Non-ILPR Account
+        }
+    } else {
+        $message_error = "Something went wrong, please try again.";
+    }
 }
 
 // This section processes - views/deposit_funds_kyc.php
@@ -288,6 +308,7 @@ if(isset($_POST['deposit_funds_pay_type'])) {
 switch($page_requested) {
     case '': $deposit_funds_ifx_acct_php = true; break;
     case 'deposit_funds_pcode_php': $deposit_funds_pcode_php = true; break;
+    case 'deposit_funds_notice_php': $deposit_funds_notice_php = true; break;
     case 'deposit_funds_pcode_new_php': $deposit_funds_pcode_new_php = true; break;
     case 'deposit_funds_kyc_php': $deposit_funds_kyc_php = true; break;
     case 'deposit_funds_qty_ilpr_php': $deposit_funds_qty_ilpr_php = true; break;
@@ -352,6 +373,7 @@ switch($page_requested) {
                                 <?php 
                                     if($deposit_funds_ifx_acct_php) { include_once 'views/deposit_funds/deposit_funds_ifx_acct.php'; }
                                     if($deposit_funds_pcode_php) { include_once 'views/deposit_funds/deposit_funds_pcode.php'; }
+                                    if($deposit_funds_notice_php) { include_once 'views/deposit_funds/deposit_funds_notice.php'; }
                                     if($deposit_funds_pcode_new_php) { include_once 'views/deposit_funds/deposit_funds_pcode_new.php'; }
                                     if($deposit_funds_kyc_php) { include_once 'views/deposit_funds/deposit_funds_kyc.php'; }
                                     if($deposit_funds_qty_ilpr_php) { include_once 'views/deposit_funds/deposit_funds_qty_ilpr.php'; }
