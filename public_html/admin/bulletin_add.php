@@ -14,6 +14,7 @@ $all_admin_member = $admin_object->get_all_admin_member();
 if (isset($_POST['process'])) {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
     //$content = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['content'])));
+    $content = str_replace('â€™', "'", $_POST['content']);
     $bulletin_no = $db_handle->sanitizePost(trim($_POST['bulletin_no']));
     $bulletin_status = $db_handle->sanitizePost(trim($_POST['bulletin_status']));
 
