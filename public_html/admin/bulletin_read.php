@@ -25,14 +25,14 @@ if(!$selected_bulletin)
 
 if (isset($_POST['post_comment']))
 {
-    /*$comment = $db_handle->sanitizePost($_POST['comment']);*/
+    $comment = htmlspecialchars_decode(stripslashes(trim($_POST['comment'])));
     $bulletin_id = $db_handle->sanitizePost($_POST['bulletin_id']);
 
     $db_handle->runQuery("INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')");
     if($db_handle->affectedRows() > 0)
     {
         //$content = 'Author: '.$admin_object->get_admin_name_by_code($admin_code) ."";
-        $content .= 'Message: '.$comment;
+        $content = 'Message: '.$comment;
         $title = "New Bulletin Comment";
         $message = "Bulletin Title: ".$selected_bulletin['title']." <br/> ".$content;
         $recipients = implode(",", $allowed_admin);
@@ -45,10 +45,6 @@ if (isset($_POST['post_comment']))
             $destination_details = $admin_object->get_admin_detail_by_code($row);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $comment = htmlentities($comment);
-            $comment = stripslashes($comment);
-            $message1 = str_replace('â€™', "'", $comment);
-            $message1 = htmlspecialchars_decode(stripslashes(trim($message1)));
             $subject = 'New Bulletin Comment - '.$selected_bulletin['title'];
             $title = $selected_bulletin['title'];
             $created = date('d-m-y h:i:s a');
@@ -61,7 +57,7 @@ if (isset($_POST['post_comment']))
                                 <p>Dear $admin_name,</p>
                                 <p>$author left a new comment.</p>
                                 <p><b>BULLETIN TITLE: </b>$title</p>
-                                <p><b>COMMENT: </b><br/>$message1</p>
+                                <p><b>COMMENT: </b><br/>$comment</p>
                                 <p><b>DATE AND TIME: </b>$created</p>                                
                                 <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />
@@ -98,14 +94,7 @@ if (isset($_POST['post_comment']))
 MAIL;
             $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
         }
-
-
-
-
-
         $message_success = "You have successfully added a new comment.";
-
-
     }
     else
     {

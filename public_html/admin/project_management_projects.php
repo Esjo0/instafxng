@@ -11,9 +11,7 @@ $all_admin_member = $admin_object->get_all_admin_member();
 if(isset($_POST['new_project']))
 {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
-    $description = nl2br($db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description']))));
-    $description = str_replace("\r\n", "<br/>", $description);
-    $description = htmlspecialchars_decode(stripslashes(trim($description)));
+    $description = htmlspecialchars_decode(stripslashes(trim($_POST['description'])));
     $deadline = $db_handle->sanitizePost(trim($_POST['deadline']));
     $allowed_admin = $_POST["allowed_admin"];
 
@@ -40,7 +38,7 @@ if(isset($_POST['edit_project']))
 
     $project_code = $db_handle->sanitizePost(trim($_POST['project_code']));
     $title = $db_handle->sanitizePost(trim($_POST['title']));
-    $description = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['description'])));
+    $description = htmlspecialchars_decode(stripslashes(trim($_POST['description'])));
     $deadline = $db_handle->sanitizePost(trim($_POST['deadline']));
     $allowed_admin = $_POST["allowed_admin"];
 
@@ -56,11 +54,8 @@ if(isset($_POST['edit_project']))
 if(isset($_POST['new_comment']))
 {
     $project_code = $db_handle->sanitizePost(trim($_POST['project_code']));
-    $comment = $db_handle->sanitizePost(trim($_POST['comment']));
-
-    //$query = "UPDATE project_management_projects SET last_comment = '$comment' WHERE project_code = '$project_code' LIMIT 1";
-    $query = "INSERT INTO project_management_project_comments (comment, author_code, project_code) VALUES ('$comment', '$admin_code', '$project_code')";
-    $new_comment = $db_handle->runQuery($query);
+    $comment = htmlspecialchars_decode(stripslashes(trim($_POST['comment'])));
+    $new_comment = $obj_project_management->create_new_comment($project_code, $comment, $admin_code);
     if ($new_comment)
     {
         $message_success = "You have successfully added a new comment.";
@@ -71,14 +66,9 @@ if(isset($_POST['new_comment']))
     }
 }
 
-
-
 $query = "SELECT * FROM project_management_projects WHERE status = '1' ORDER BY created DESC  ";
-
 $numrows = $db_handle->numRows($query);
-
 $rowsperpage = 20;
-
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
 if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
