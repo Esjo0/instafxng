@@ -4,73 +4,79 @@ $thisPage = "Education";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $full_name = $db_handle->sanitizePost(trim($_POST['name']));
-    $title= $db_handle->sanitizePost($_POST['forum_title']);
-    $email_address = $db_handle->sanitizePost(trim($_POST['email_add']));
-    $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
-    $venue = $db_handle->sanitizePost(trim($_POST['venue']));
-    $date = $db_handle->sanitizePost($_POST['date']);
-    $date = datetime_to_text2($date);
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+        $responseData = json_decode($verifyResponse);
 
-    // Perform the necessary validations and display the appropriate feedback
-    if(empty($full_name) || empty($email_address) || empty($phone_number)  || empty($venue)) {$message_error = "All fields must be filled.";}
-    if(!check_email($email_address)){      $message_error = "Invalid Email Supplied, Try Again.";  }
-    if(duplicate_forum_registration($email_address)) {  $message_error = "This email is already in our record."; }
-    if(check_number($phone_number) != 5) { $message_error = "The supplied phone number is invalid."; }
+        if ($responseData->success) {
+            $full_name = $db_handle->sanitizePost(trim($_POST['name']));
+            $title= $db_handle->sanitizePost($_POST['forum_title']);
+            $email_address = $db_handle->sanitizePost(trim($_POST['email_add']));
+            $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
+            $venue = $db_handle->sanitizePost(trim($_POST['venue']));
+            $date = $db_handle->sanitizePost($_POST['date']);
+            $date = datetime_to_text2($date);
 
-    $query = "SELECT email FROM forum_participant WHERE email = '$email_address' LIMIT 1";
-    $result = $db_handle->runQuery($query);
+            // Perform the necessary validations and display the appropriate feedback
+            if(empty($full_name) || empty($email_address) || empty($phone_number)  || empty($venue)) {$message_error = "All fields must be filled.";}
+            if(!check_email($email_address)){      $message_error = "Invalid Email Supplied, Try Again.";  }
+            if(duplicate_forum_registration($email_address)) {  $message_error = "This email is already in our record."; }
+            if(check_number($phone_number) != 5) { $message_error = "The supplied phone number is invalid."; }
 
-    if($venue == 'Diamond Estate') { $cvenue = '1'; } else { $cvenue = '2'; }
-    $full_name = ucwords(strtolower(trim($full_name)));
-    $full_name = explode(" ", $full_name);
-    if(count($full_name) == 3)
-    {
-        $last_name = $full_name[0];
-        if(strlen($full_name[2]) < 3)
-        {
-            $middle_name = $full_name[2];
-            $first_name = $full_name[1];
-        }
-        else
-        {
-            $middle_name = $full_name[1];
-            $first_name = $full_name[2];
-        }
-    }
-    else
-    {
-        $last_name = $full_name[0];
-        $middle_name = "";
-        $first_name = $full_name[1];
-    }
-    if($db_handle->numOfRows($result) > 0)
-    {
-        $query = "UPDATE forum_participant SET venue = '$cvenue', forum_activate = '1' WHERE email = '$email_address' LIMIT 1";
-        $db_handle->runQuery($query);
-    }
-    else
-    {
-        $query = "INSERT INTO forum_participant (first_name, middle_name, last_name, email, phone, venue, forum_activate)
+            $query = "SELECT email FROM forum_participant WHERE email = '$email_address' LIMIT 1";
+            $result = $db_handle->runQuery($query);
+
+            if($venue == 'Diamond Estate') { $cvenue = '1'; } else { $cvenue = '2'; }
+            $full_name = ucwords(strtolower(trim($full_name)));
+            $full_name = explode(" ", $full_name);
+            if(count($full_name) == 3)
+            {
+                $last_name = $full_name[0];
+                if(strlen($full_name[2]) < 3)
+                {
+                    $middle_name = $full_name[2];
+                    $first_name = $full_name[1];
+                }
+                else
+                {
+                    $middle_name = $full_name[1];
+                    $first_name = $full_name[2];
+                }
+            }
+            else
+            {
+                $last_name = $full_name[0];
+                $middle_name = "";
+                $first_name = $full_name[1];
+            }
+            if($db_handle->numOfRows($result) > 0)
+            {
+                $query = "UPDATE forum_participant SET venue = '$cvenue', forum_activate = '1' WHERE email = '$email_address' LIMIT 1";
+                $db_handle->runQuery($query);
+            }
+            else
+            {
+                $query = "INSERT INTO forum_participant (first_name, middle_name, last_name, email, phone, venue, forum_activate)
                 VALUES ('$first_name', '$middle_name', '$last_name', '$email_address', '$phone_number', '$cvenue', '1')";
-        $db_handle->runQuery($query);
-    }
-    // Autoresponse email to client
-    if ($venue == "Diamond Estate") {
-            $chosen_venue = "Block 1A, Plot 8, Diamond Estate, LASU/Isheri road, Isheri Olofin, Lagos.";
-        } else if ($venue == "Ajah Office") {
-            $chosen_venue = "Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.";
-        }
-    $subject = "Instafxng Forex Traders Forum";
-        $body =
-            <<<MAIL
-<div style="background-color: #F3F1F2">
+                $db_handle->runQuery($query);
+            }
+            // Autoresponse email to client
+            if ($venue == "Diamond Estate") {
+                $chosen_venue = "Block 1A, Plot 8, Diamond Estate, LASU/Isheri road, Isheri Olofin, Lagos.";
+            } else if ($venue == "Ajah Office") {
+                $chosen_venue = "Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.";
+            }
+            $subject = "Instafxng Forex Traders Forum";
+            $body =
+<<<MAIL
+    <div style="background-color: #F3F1F2">
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Dear $first_name,</p>
-            
+
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
             <p>At the Forum this month, we will discuss $title.</p>
@@ -116,8 +122,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 MAIL;
-        $system_object->send_email($subject, $body, $email_address, $full_name);
-        $message_success = "Your Seat Reservation Request Has Been Submitted.";
+            $system_object->send_email($subject, $body, $email_address, $full_name);
+            $message_success = "Your Seat Reservation Request Has Been Submitted.";
+        }
+    } else {
+        $message_error = "Kindly take the robot test.";
+    }
 } else {
     //
 }
@@ -127,6 +137,7 @@ $current_day = date("d");
 $query = "SELECT * FROM forum_schedule WHERE ((MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) = $current_day) OR (MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) >= $current_day) OR MONTH(scheduled_date) = ($current_month+1)) ORDER BY scheduled_date DESC LIMIT 1";
 $result = $db_handle->runQuery($query);
 $forum = $db_handle->fetchAssoc($result);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -320,6 +331,7 @@ $forum = $db_handle->fetchAssoc($result);
                                             </div>
                                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                         </div>
+                                        <div class="form-group"><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>
                                         <div class="form-group">
                                             <button type="submit" name="reserve_seat"
                                                     class="btn btn-default btn-lg">Reserve Your Seat&nbsp;<i
@@ -370,6 +382,7 @@ $forum = $db_handle->fetchAssoc($result);
         });
     });
 </script>
-<script src="js/jquery.prettyPhoto.js"></script>
+    <script src="js/jquery.prettyPhoto.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </body>
 </html>
