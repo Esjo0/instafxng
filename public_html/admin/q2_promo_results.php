@@ -3,7 +3,7 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-$top_entries = $obj_easter_promo->get_top_entries(date('Y-m-d'), date('Y-m-d'), 10);
+
 
 ?>
 <!DOCTYPE html>
@@ -158,12 +158,12 @@ $top_entries = $obj_easter_promo->get_top_entries(date('Y-m-d'), date('Y-m-d'), 
 
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    <div class="row">
+                    <div style="display: none" class="row">
                         <div class="col-sm-12 text-danger">
                             <h4><strong>TOP 20 ENTRIES AS AT <?php echo date_to_text(date('d-m-Y')).'   '.date('h:m A');?></strong></h4>
                         </div>
                     </div>
-                    <div class="section-tint super-shadow">
+                    <div style="display: none" class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>

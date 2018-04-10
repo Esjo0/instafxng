@@ -305,10 +305,6 @@ MAIL;
             $destination_details = $admin_object->get_admin_detail_by_code($recipients[$i]);
             $admin_name = $destination_details['first_name'];
             $admin_email = $destination_details['email'];
-            $message = htmlentities($message);
-            $message = stripslashes($message);
-            $message = str_replace('â€™', "'", $message);
-            $message = htmlspecialchars_decode(stripslashes(trim($message)));
             $subject = 'New Project Message - '.$title;
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -367,6 +363,74 @@ MAIL;
             if($row['full_name'] == $full_name){$admin_code = $row['admin_code'];}
         }
         return $admin_code;
+    }
+
+    public function create_new_comment($project_code, $comment, $admin_code)
+    {
+        global $db_handle;
+        $admin_object = new AdminUser();
+        $system_object = new InstafxngSystem();
+        $query = "INSERT INTO project_management_project_comments (comment, author_code, project_code) VALUES ('$comment', '$admin_code', '$project_code')";
+        if($db_handle->runQuery($query))
+        {
+            $supervisor = $admin_object->get_admin_name_by_code($admin_code);
+            $project_details = $this->get_project_details_for_push_notification($project_code);
+            extract($project_details);
+            $all_allowed_admin = explode("," ,$project_details['recipients']);
+            for ($i = 0; $i < count($all_allowed_admin); $i++)
+            {
+                $destination_details = $admin_object->get_admin_detail_by_code($all_allowed_admin[$i]);
+                $admin_name = $destination_details['first_name'];
+                $admin_email = $destination_details['email'];
+                $subject = 'New Project Announcement - '.$project_title;
+                $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>Dear $admin_name,</p>
+                                <p>$supervisor made a new announcement.</p>
+                                <p><b>PROJECT TITLE: </b>$project_title</p>
+                                <p><b>PROJECT ANNOUNCEMENT: </b><br/>$comment</p>
+                               
+                                <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Instafxng Support,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+                $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
+            }
+        }
+        return $db_handle->affectedRows() > 0 ? true : false;
     }
 
 }
