@@ -13,8 +13,8 @@ $all_admin_member = $admin_object->get_all_admin_member();
 
 if (isset($_POST['process'])) {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
-    //$content = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['content'])));
-    $content = str_replace('â€™', "'", $_POST['content']);
+    $content = htmlspecialchars_decode(stripslashes(trim($_POST['content'])));
+    $content = str_replace('â€™', "'", $content);
     $bulletin_no = $db_handle->sanitizePost(trim($_POST['bulletin_no']));
     $bulletin_status = $db_handle->sanitizePost(trim($_POST['bulletin_status']));
 
@@ -35,21 +35,15 @@ if (isset($_POST['process'])) {
             if($bulletin_status == '1')
             {
                 $title1 = "New Bulletin Added";
-                $message = "Bulletin Title: $title <br/>  $content ";
+                $message = "Bulletin Title: $title<br/>$content";
                 $recipients = $all_allowed_admin;
                 $author = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
                 if(isset($bulletin_no) && !empty($bulletin_no))
                 {
                     $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".encrypt($bulletin_no);
                 }
-                else
-                {
-                    $query = "SELECT admin_bulletin_id FROM admin_bulletin WHERE title = '$title', content = '$content' ";
-                    $bulletin_no = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
-                    $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".encrypt($bulletin_no);
-                }
+                else{$source_url = "https://instafxng.com/admin/bulletin_centre.php";}
                 $notify_support = $obj_push_notification->add_new_notification($title1, $message, $recipients, $author, $source_url);
-
                 foreach ($allowed_admin as $row)
                 {
                     $author = $_SESSION['admin_first_name']." ".$_SESSION['admin_last_name'];
@@ -57,10 +51,6 @@ if (isset($_POST['process'])) {
                     $admin_name = $destination_details['first_name'];
                     $admin_email = $destination_details['email'];
                     $admin_email = $destination_details['email'];
-                    $message = htmlentities($content);
-                    $message = stripslashes($message);
-                    $message = str_replace('â€™', "'", $message);
-                    $message = htmlspecialchars_decode(stripslashes(trim($message)));
                     $subject = 'New Bulletin - '.$title;
                     $created = date('d-m-y h:i:s a');
                     $message_final = <<<MAIL
@@ -72,9 +62,9 @@ if (isset($_POST['process'])) {
                                 <p>Dear $admin_name,</p>
                                 <p>$author created a new bulletin.</p>
                                 <p><b>BULLETIN TITLE: </b>$title</p>
-                                <p><b>MESSAGE: </b><br/>$message</p>
+                                <p><b>MESSAGE: </b><br/>$content</p>
                                 <p><b>DATE AND TIME: </b>$created</p>                                
-                                <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
+                                <p><a href="$source_url">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />
                                 <p>Best Regards,</p>
                                 <p>Instafxng Support,<br />
@@ -112,11 +102,7 @@ MAIL;
             }
             $message_success = "You have successfully saved the bulletin";
         }
-        else
-            {
-            $message_error = "Looks like something went wrong or you didn't make any change.";
-        }
-
+        else {  $message_error = "Looks like something went wrong or you didn't make any change.";  }
     }
 }
 

@@ -109,7 +109,7 @@ if ($deposit_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POS
         case 'Pend Deposit': $status = '6'; break;
     }
     $client_operation->deposit_transaction_completion($transaction_id, $transaction_reference, $status, $remarks, $_SESSION['admin_unique_code']);
-    $obj_easter_promo->update_entry($transaction_id);
+
     
     if(!empty($points_claimed_id)) {
         switch ($_POST['process']) {

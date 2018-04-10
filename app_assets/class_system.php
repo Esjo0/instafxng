@@ -139,6 +139,18 @@ class InstafxngSystem {
         return $selected_data[0];
     }
 
+    // Calculate commission report details
+    public function get_comission_report_details($from_date, $to_date) {
+        global $db_handle;
+
+        $query = "SELECT COUNT(DISTINCT ifx_acct_no) AS accounts, SUM(volume) AS volume, SUM(commission) AS commission, date_earned
+                FROM trading_commission WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY date_earned";
+        $result = $db_handle->runQuery($query);
+        $selected_data = $db_handle->fetchAssoc($result);
+
+        return $selected_data;
+    }
+
     // Calculate VAT charge report
     public function get_vat_charge_report($from_date, $to_date, $vat_type) {
         global $db_handle;
