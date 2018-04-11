@@ -1057,7 +1057,7 @@ INVOICE;
                 $mail_body = <<<INVOICE
 <p>To complete your order, please make your payment as follows:</p>
 
-<p>When making your payment at the bank, fill in the transfer memo as <br />
+<p>When making your payment through the banking application, fill in the transfer memo/ description/ narration as <br />
 ($client_trans_id - $client_full_name - $client_account) <br />
 If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 
@@ -1066,7 +1066,7 @@ If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
 <ol>
-    <li>Any Branch of Guaranty Trust Bank<br />
+    <li>Bank Name:  Guaranty Trust Bank<br />
     Account Name:   Instant Web-Net Technologies Ltd<br />
     Account Number: 0174516696</li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
@@ -1078,7 +1078,7 @@ normally within the same day. If there is any delay we will inform you.</p>
 <p>NOTE:</p>
 <ul>
     <li>Third party payments are not allowed.</li>
-    <li>Depositor Name / Transfer Memo must be written as<br />
+    <li>Depositor Name / Transfer Memo / Description / Narration must be written as<br />
     ($client_trans_id - $client_full_name - $client_account)</li>
     <li>Your account can only be funded after you have completed payment notification
     as advised in (2) above.</li>
