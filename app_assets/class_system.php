@@ -35,6 +35,9 @@ class InstafxngSystem {
         $mail->clearAddresses();
         $mail->addAddress("$sendto_email", "$sendto_name");
 
+        //Set BCC address
+        $mail->addBCC("mailbox@instafxng.com", "Instafxng");
+
         $mail->Subject = $subject;
         $mail->Body = $message;
 

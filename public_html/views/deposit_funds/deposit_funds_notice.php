@@ -13,6 +13,8 @@ $user_code_encrypted = encrypt($client_user_code);
     <li>All invoice generated is valid for 24 hours.</li>
     <li>Failure to pay into the account number specified in the invoice may lead to a delay in your funding.</li>
     <li>Delay may take up to 6 months or more.</li>
+    <li>We do not accept third party transfers. Failure to heed to this will delay your funding for up to
+    6 months.</li>
 </ol>
 
 <hr />

@@ -993,10 +993,12 @@ to track your payment.</p>
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
 <ol>
-    <li>Any Branch of Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0174516696</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
@@ -1005,7 +1007,7 @@ normally within the same day. If there is any delay we will inform you.</p>
 <p>NOTE:</p>
 <ul>
     <li>Third party payments are not allowed.</li>
-    <li>REAMRK section must be written as<br />
+    <li>REMARK section must be written as<br />
     ($client_trans_id - $client_account)</li>
     <li>Your account can only be funded after you have completed payment notification
     as advised in (2) above.</li>
@@ -1028,13 +1030,15 @@ INVOICE;
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
 <ol>
-    <li>Any Branch of Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0174516696</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION,
     Type in the location where you made the payment in the comment box, <strong>e.g. Apapa Lagos</strong>.
     If you do not fill it as stated, your order will be delayed, because it will be difficult to track
     your payment.</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
@@ -1066,10 +1070,12 @@ If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
 <ol>
-    <li>Bank Name:  Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0174516696</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
@@ -1100,10 +1106,12 @@ for your bank, find your bank USSD below.</p>
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
 <ol>
-    <li>Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0174516696</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
@@ -1156,10 +1164,12 @@ If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
 <ol>
-    <li>Any Branch of Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0174516696</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
