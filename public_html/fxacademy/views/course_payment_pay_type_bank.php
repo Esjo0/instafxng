@@ -31,7 +31,6 @@
                 echo $msg;
         }
     ?>
-    <li>Please include your Transaction ID <strong>(<?php echo $trans_id; ?>)</strong>.</li>
 </ol>
 
 <p>Your transaction ID for this order is <strong>(<?php echo $trans_id; ?>)</strong>.

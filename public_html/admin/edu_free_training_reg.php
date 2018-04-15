@@ -154,7 +154,7 @@ if (isset($_POST['submit'])) {
 </table>
 <!--  end footer  --></div>
 MAIL;
-            $from_name = "Bunmi - InstaFxNg";
+            $from_name = "Mercy - InstaFxNg";
             $system_object->send_email($subject, $body, $email_address, $first_name, $from_name);
 
 
