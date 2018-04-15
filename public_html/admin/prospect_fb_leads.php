@@ -65,8 +65,6 @@ if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
                                         <th>Full Name</th>
                                         <th>Email Address</th>
                                         <th>Phone Number</th>
-                                        <th>Created</th>
-                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
