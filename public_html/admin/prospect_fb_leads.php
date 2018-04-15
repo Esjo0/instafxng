@@ -2,6 +2,10 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
+if(isset($_POST['file_upload']))
+{
+    $csv_file = $_FILES[""][""];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +18,13 @@ if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script>
+            function show_name() {
+                document.getElementById('file_show_name').value = document.getElementById('file_select').files.item(0).name;
+                document.getElementById('file_upload').disabled = false;
+            }
+
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -40,15 +51,19 @@ if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                             </div>
                             <div class="col-sm-12">
-                                <div class="col-sm-12 well" style="display: inline-flex">
+                                <div class="col-sm-12 well">
+                                    <p>Click the button below to select a file for upload</p>
                                     <div id="search" class="col-sm-8 form-group input-group">
-                                        <input placeholder="Enter a project title here..." type="text" class="form-control"/>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                            <label class="btn btn-default" for="file_select">Select File</label>
+                                            <input onchange="show_name()" name="file" style="display: none" id="file_select" class="btn btn-default" type='file' accept="file/csv" />
+                                        </span>
+                                        <input placeholder="Selected filename..." id="file_show_name" name="file_show_name" type="text" class="form-control" disabled/>
+                                        <span class="input-group-btn">
+                                           <button id="file_upload" name="file_upload" type="submit" class="btn btn-success" disabled>Upload File</button>
                                         </span>
                                     </div>
-                                    <div id="add_new_contact" class="col-sm-4 form-group input-group" >
-                                    </div>
+                                    <div class="col-sm-4"></div>
                                 </div>
                             </div>
                             <div class="col-sm-12">
