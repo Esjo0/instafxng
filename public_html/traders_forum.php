@@ -134,7 +134,7 @@ MAIL;
 
 $current_month = date("m");
 $current_day = date("d");
-$query = "SELECT * FROM forum_schedule WHERE ((MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) = $current_day) OR (MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) >= $current_day) OR MONTH(scheduled_date) = ($current_month+1)) ORDER BY scheduled_date DESC LIMIT 1";
+$query = "SELECT * FROM forum_schedule WHERE ((MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) = $current_day) OR (MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) >= $current_day) OR MONTH(scheduled_date) = ($current_month+1) OR MONTH(scheduled_date) = ($current_month)) ORDER BY scheduled_date DESC LIMIT 1";
 $result = $db_handle->runQuery($query);
 $forum = $db_handle->fetchAssoc($result);
 
