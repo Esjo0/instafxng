@@ -4,7 +4,26 @@ if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
 if(isset($_POST['file_upload']))
 {
-    $csv_file = $_FILES[""][""];
+    var_dump($_POST);
+    var_dump($_FILES["file"]["name"]);
+
+
+    /*if(isset($_FILES["img"]["name"]) && !empty($_FILES["img"]["name"]))
+    {
+        $target_dir = "../images/employee_records/";
+        $temp = explode(".", $_FILES["img"]["name"]);
+        $newfilename = round(time()) . '.' . end($temp);
+        $target_file = $target_dir.$newfilename;
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+        $check = getimagesize($_FILES["img"]["tmp_name"]);
+        if($check) {$uploadOk = 1;}
+        else {$uploadOk = 0;}
+        if (file_exists($target_file)){$uploadOk = 0;}
+        if ($_FILES["fileToUpload"]["size"] > 500000) {$uploadOk = 0;}
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {$uploadOk = 0;}
+        move_uploaded_file($_FILES["img"]["tmp_name"], $target_file);
+    }*/
 }
 ?>
 <!DOCTYPE html>
@@ -53,16 +72,33 @@ if(isset($_POST['file_upload']))
                             <div class="col-sm-12">
                                 <div class="col-sm-12 well">
                                     <p>Click the button below to select a file for upload</p>
-                                    <div id="search" class="col-sm-8 form-group input-group">
-                                        <span class="input-group-btn">
-                                            <label class="btn btn-default" for="file_select">Select File</label>
-                                            <input onchange="show_name()" name="file" style="display: none" id="file_select" class="btn btn-default" type='file' accept="file/csv" />
-                                        </span>
-                                        <input placeholder="Selected filename..." id="file_show_name" name="file_show_name" type="text" class="form-control" disabled/>
-                                        <span class="input-group-btn">
-                                           <button id="file_upload" name="file_upload" type="submit" class="btn btn-success" disabled>Upload File</button>
-                                        </span>
-                                    </div>
+                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                        <div id="search" class="col-sm-8 form-group input-group">
+                                            <span class="input-group-btn">
+                                                <label class="btn btn-default" for="file_select">Select File</label>
+                                                <input onchange="show_name()" name="csv_file" style="display: none" id="file_select" class="btn btn-default" type='file' />
+                                            </span>
+                                            <input placeholder="Selected filename..." id="file_show_name" name="file_show_name" type="text" class="form-control" disabled/>
+                                            <span class="input-group-btn">
+                                               <button id="file_upload" data-target="#upload_confirm" data-toggle="modal"  type="button" class="btn btn-success" disabled>Upload File</button>
+                                            </span>
+                                        </div>
+                                        <!-- Modal - confirmation boxes -->
+                                        <div id="upload_confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                                        <h4 class="modal-title">Upload Confirmation</h4></div>
+                                                    <div class="modal-body">Are you sure the contents of the selected file should be uploaded?</div>
+                                                    <div class="modal-footer">
+                                                        <input name="file_upload" type="submit" class="btn btn-success" value="Approve !">
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal" title="Close">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                     <div class="col-sm-4"></div>
                                 </div>
                             </div>
