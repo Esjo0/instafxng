@@ -6,6 +6,7 @@ $interest_yes = "i_have_traded_forex_before.";
 $interest_no = "i_have_not_traded_forex_before";
 if(isset($_POST['sign_up']))
 {
+    var_dump($_POST);
     $name = $db_handle->sanitizePost(trim($_POST['name']));
     $email = $db_handle->sanitizePost(trim($_POST['email']));
     $phone = $db_handle->sanitizePost(trim($_POST['phone']));
@@ -26,12 +27,13 @@ if(isset($_POST['sign_up']))
             $training = $obj_loyalty_training->add_training($first_name, $last_name, $email, $phone);
             if($training)
             {
+                var_dump($training);
                 $_SESSION['f_name'] = $first_name;
                 $_SESSION['l_name'] = $last_name;
                 $_SESSION['m_name'] = $middle_name;
                 $_SESSION['email'] = $email;
                 $_SESSION['phone'] = $phone;
-                redirect_to("https://instafxng.com/forex-income/");
+                //redirect_to("https://instafxng.com/forex-income/");
             }
         }
     }
@@ -46,13 +48,14 @@ if(isset($_POST['sign_up']))
             $loyalty = $obj_loyalty_training->add_loyalty($first_name, $last_name, $email, $phone);
             if($loyalty)
             {
+                var_dump($training);
                 $_SESSION['f_name'] = $first_name;
                 $_SESSION['l_name'] = $last_name;
                 $_SESSION['m_name'] = $middle_name;
                 $_SESSION['email'] = $email;
                 $_SESSION['phone'] = $phone;
                 $_SESSION['source'] = 'lp';
-                redirect_to("https://instafxng.com/loyalty/");
+                //redirect_to("https://instafxng.com/loyalty/");
             }
         }
     }

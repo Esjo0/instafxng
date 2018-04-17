@@ -1,0 +1,36 @@
+Name: 
+Ip Address: 172.17.26.241
+Date: 17-04-2018
+Time: 11:34:30 AM
+Url: https://localhost/instafxngwebsite_master/public_html/loyalty_training/sign_up.php
+
+Name: 
+Ip Address: 172.17.26.241
+Date: 17-04-2018
+Time: 11:37:25 AM
+Url: https://localhost/instafxngwebsite_master/public_html/loyalty_training/sign_up.php
+
+Name: 
+Ip Address: 172.17.26.241
+Date: 17-04-2018
+Time: 11:41:19 AM
+Url: https://localhost/instafxngwebsite_master/public_html/loyalty_training/sign_up.php
+
+Name: 
+Ip Address: 172.17.26.241
+Date: 17-04-2018
+Time: 11:43:47 AM
+Url: https://localhost/instafxngwebsite_master/public_html/loyalty_training/sign_up.php
+
+Name: 
+Ip Address: 172.17.26.241
+Date: 17-04-2018
+Time: 11:45:31 AM
+Url: https://localhost/instafxngwebsite_master/public_html/loyalty_training/sign_up.php
+
+Name: 
+Ip Address: 172.17.26.241
+Date: 17-04-2018
+Time: 01:26:28 PM
+Url: https://localhost/instafxngwebsite_master/public_html/loyalty_training/sign_up.php
+

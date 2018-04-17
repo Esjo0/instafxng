@@ -45,8 +45,8 @@ class Loyalty_Training
             <p>Very shortly you're going to receive a call welcoming you on board from our ever 
             cheerful customer service representatives who will assist you in opening an InstaForex 
             account so you can get started immediately.</p>
-            <p>Don’t forget to click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open your InstaForex account. You can also click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account so you can get started immediately.</p>
-            <p>I’m so glad you are here and I can’t wait for you to start earning from your trades and in the InstaFxNg Loyalty Points and Reward Program.</p>
+            <p>Don't forget to click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open your InstaForex account. You can also click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account so you can get started immediately.</p>
+            <p>I'm so glad you are here and I can't wait for you to start earning from your trades and in the InstaFxNg Loyalty Points and Reward Program.</p>
             <br/><br/>
             <p>Best Regards,</p>
             <p>Mercy,</p>
@@ -88,9 +88,12 @@ MAIL;
             $db_handle->runQuery($query);
             // create profile for this client
             $client_operation = new clientOperation();
-            $log_new_client = $client_operation->new_user_ordinary($client_full_name, $email_address, $phone_number, $assigned_account_officer);
-            //...//
+            $client_operation->new_user_ordinary($first_name." ".$last_name, $email_address, $phone_number, $assigned_account_officer);
+
+            return true;
         }
+        else
+        {return false;}
     }
 
     public function is_duplicate_loyalty($email_address, $phone_number)
@@ -104,7 +107,7 @@ MAIL;
     {
         global $db_handle;
         global $system_object;
-        $query = "INSERT INTO prospect_ilpr_biodata (f_name, l_name, m_name, email, phone) VALUE ('$first_name', '$last_name', '$middle_name', '$email_address', '$phone_number')";
+        $query = "INSERT INTO prospect_ilpr_biodata (f_name, l_name, email, phone) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number')";
         $result = $db_handle->runQuery($query);
         if($result)
         {
@@ -135,8 +138,8 @@ MAIL;
             <p>Very shortly you're going to receive a call welcoming you on board from our ever 
             cheerful customer service representatives who will assist you in opening an InstaForex 
             account so you can get started immediately.</p>
-            <p>Don’t forget to click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open your InstaForex account. You can also click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account so you can get started immediately.</p>
-            <p>I’m so glad you are here and I can’t wait for you to start earning from your trades and in the InstaFxNg Loyalty Points and Reward Program.</p>
+            <p>Don't forget to click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open your InstaForex account. You can also click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account so you can get started immediately.</p>
+            <p>I'm so glad you are here and I can't wait for you to start earning from your trades and in the InstaFxNg Loyalty Points and Reward Program.</p>
             <br/><br/>
             <p>Best Regards,</p>
             <p>Mercy,</p>
@@ -172,7 +175,10 @@ MAIL;
 </div>
 MAIL;
             $system_object->send_email($subject, $message, $email_address, $first_name);
+            return true;
         }
+        else
+        {return false;}
     }
 
 }

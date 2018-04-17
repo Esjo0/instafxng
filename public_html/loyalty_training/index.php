@@ -1,12 +1,66 @@
 <?php
-require_once '../init/initialize_client.php';
 session_start();
+require_once("../init/initialize_general.php");
+$interest_yes = "i_have_traded_forex_before.";
+$interest_no = "i_have_not_traded_forex_before";
+if(isset($_POST['sign_up']))
+{
+	$name = $db_handle->sanitizePost(trim($_POST['name']));
+	$email = $db_handle->sanitizePost(trim($_POST['email']));
+	$phone = $db_handle->sanitizePost(trim($_POST['phone']));
+	$interest = $db_handle->sanitizePost(trim($_POST['interest']));
+	if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+	{
+		$message_error = "You entered an invalid email address, please try again.";
+	}
+	extract(split_name($name));
+	if($interest == $interest_no)
+	{
+		if($obj_loyalty_training->is_duplicate_training($email, $phone))
+		{
+			$message_error = "Sorry, you have previously registered for the FxAcademy Online Training.";
+		}
+		else
+		{
+			$training = $obj_loyalty_training->add_training($first_name, $last_name, $email, $phone);
+			if($training)
+			{
+				$_SESSION['f_name'] = $first_name;
+				$_SESSION['l_name'] = $last_name;
+				$_SESSION['m_name'] = $middle_name;
+				$_SESSION['email'] = $email;
+				$_SESSION['phone'] = $phone;
+				redirect_to("../forex-income/");
+			}
+		}
+	}
+	if($interest == $interest_yes)
+	{
+		if($obj_loyalty_training->is_duplicate_loyalty($email, $phone))
+		{
+			$message_error = "Sorry, you have previously enrolled into the InstaFxNg Loyalty Promotions And Rewards";
+		}
+		else
+		{
+			$loyalty = $obj_loyalty_training->add_loyalty($first_name, $last_name, $email, $phone);
+			if($loyalty)
+			{
+				$_SESSION['f_name'] = $first_name;
+				$_SESSION['l_name'] = $last_name;
+				$_SESSION['m_name'] = $middle_name;
+				$_SESSION['email'] = $email;
+				$_SESSION['phone'] = $phone;
+				$_SESSION['source'] = 'lp';
+				redirect_to("live_account.php");
+			}
+		}
+	}
+}
 ?>
-
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Instafxng Loyalty Promotions And Rewards</title>
+		<title>Welcome | Instafxng</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="keywords" content=""/>
@@ -45,7 +99,7 @@ session_start();
 					<div id="navbar" class="navbar-collapse collapse">
 						<div class="nav_right_top">
 							<ul class="nav navbar-nav navbar-right">
-								<li><a class="request" href="live_account.php">Get Started</a></li>
+								<li><a id="gt" class="request" href="#" data-toggle="modal" data-target="#myModal" role="button">Get Started</a></li>
 							</ul>
 						</div>
 					</div>
@@ -60,8 +114,7 @@ session_start();
 			<ol class="carousel-indicators">
 				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 				<li data-target="#myCarousel" data-slide-to="1" class=""></li>
-				<!--<li data-target="#myCarousel" data-slide-to="2" class=""></li>
-				<li data-target="#myCarousel" data-slide-to="3" class=""></li>-->
+
 			</ol>
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
@@ -96,7 +149,7 @@ session_start();
 					</div>
 					<div class="modal-body">
 						<div style="padding: 10px">
-							<h2>Get Started Now</h2>
+							<h2>Fill the form below to begin making money.</h2>
 							<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
 								<?php if(isset($message_success)): ?>
 									<div class="alert alert-success">
@@ -109,27 +162,43 @@ session_start();
 										<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 										<strong>Oops!</strong> <?php echo $message_error; ?>
 									</div>
-
 									<?php endif;?>
 								<div class="form-group">
 									<div class="col-sm-12">
-										<input name="full_name" placeholder="Full Name" type="text" class="form-control" maxlength="120" required>
+										<input name="name" placeholder="Full Name" type="text" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-sm-12"><input name="email_address" placeholder="Email Address" type="email"  class="form-control" maxlength="50" required></div>
+									<div class="col-sm-12"><input name="email" placeholder="Email Address" type="email"  class="form-control" maxlength="50" required></div>
 								</div>
 								<div class="form-group">
-									<div class="col-sm-12"><input name="phone_number" placeholder="080********" type="text" class="form-control" maxlength="11" required></div>
+									<div class="col-sm-12"><input name="phone" placeholder="080********" type="text" class="form-control" maxlength="11" required></div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="checkbox">
+											<label for="">
+												<input type="radio" name="interest" value="<?php echo $interest_no;?>" id=""/> I have not traded Forex
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="checkbox">
+											<label for="">
+												<input type="radio" name="interest" value="<?php echo $interest_yes;?>" id=""/> I have traded Forex
+											</label>
+										</div>
+									</div>
 								</div>
 								<div class="col-sm-12">
 									<span style="color: #ffffff">*All fields are required</span>
 								</div>
 								<div class="form-group">
 									<div class="col-sm-12">
-										<input name="submit2" type="submit" class="btn btn-success btn-lg btn-group-justified"  value="Get Me Started Now!"/>
+										<input name="sign_up" type="submit" class="btn btn-success btn-lg btn-group-justified"  value="Get Me Started Now!"/>
 									</div>
-
 								</div>
 							</form>
 						</div>
@@ -137,6 +206,11 @@ session_start();
 				</div>
 			</div>
 		</div>
+
+
+
+
+
 		<div class="banner_bottom">
 			<div class="container">
 				<!--<h3 class="tittle-w3ls">About Us</h3>-->
@@ -155,7 +229,7 @@ session_start();
 							<p class="text-justify"><b>No funny Policies!</b></p>
 							<p class="text-justify">The more you trade, the more points you earn, the more points you earn, the more money you make!</p>
 							<div class="ab_button">
-								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -172,11 +246,38 @@ session_start();
 							<p class="text-justify">This is the biggest reward system for Forex traders in Nigeria and I
 								can’t wait for you to come on-board to enjoy this amazing offer!</p>
 							<div class="ab_button">
-								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
 							</div>
 						</div>
 						<div class="col-md-6 banner_bottom_grid help">
 							<img src="images/Forex-Money.jpg" alt=" " class="img-responsive">
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="inner_sec_info_wthree_agile">
+					<div class="help_full">
+						<div class="col-md-6 banner_bottom_grid help">
+							<img src="images/forex_learning.jpg" alt=" " class="img-responsive">
+						</div>
+						<div class="col-md-6 banner_bottom_left">
+							<h4>New to Forex trading?</h4>
+							<p class="text-justify">If yes, you've got nothing to worry about! We've got you!</p>
+							<p class="text-justify">The first step to making steady profits from Forex trading is getting adequate training on how to trade Forex successfully!</p>
+							<p class="text-justify">It is the key to financial stability through Forex because it helps you gain the understanding of the basics and variables of the market.</p>
+							<p class="text-justify">There is a free online training created just for you. It's simple, free and fun.</p>
+							<p class="text-justify">
+								<a href="https://instafxng.com/fxacademy/"><b>You are definitely going to enjoy this training.
+								Don’t wait a minute more as we can only take 50 people at a time!
+									45 people have joined already.
+								</b></a>
+							</p>
+							<p style="display: none" class="text-justify">Who goes into a business without knowing the basics?
+								Not You!
+								He who fails to get adequate knowledge plans to become poor!</p>
+							<div class="ab_button">
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" role="button">Start Now </a>
+							</div>
 						</div>
 						<div class="clearfix"></div>
 					</div>
@@ -244,7 +345,7 @@ session_start();
 							<p class="text-justify">This doesn't even include <b>$18,000</b> withdrawn as loyalty points!</p>
 							<p class="text-justify">In the current round, you can be one of the clients that will be paid tens of thousands dollars during the one year duration of this round of the promo.</p>
 							<div class="ab_button">
-								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button">Get Your Share Now </a>
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Get Your Share Now </a>
 							</div>
 						</div>
 					</div>
@@ -258,6 +359,7 @@ session_start();
 					And kept trading consistently till he worked his way up to the top of the rank scale and emerged the
 					winner of a whopping One Million naira.</p>
 				<p>It’s neither too late nor too early for you to emerge the star winner by the end of the 2018 round.</p>
+				<p><a href="https://instafxng.com/forex-income/">New to Forex? Click here now to learn how to trade Forex successfully.</a></p>
 				<img src="images/FXDINNER-232.jpg" class="img-responsive" alt="">
 			</div>
 		</div>
@@ -290,7 +392,7 @@ session_start();
 									as long as you have earned the minimum 100 reward points.</p>
 							<p class="text-justify">3. Points can only be redeemed when depositing funds.</p>
 							<div class="ab_button">
-								<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="live_account.php" role="button"> Get Your Points Now </a>
+								<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="#" role="button"> Get Your Points Now </a>
 							</div>
 						</div>
 
@@ -329,7 +431,7 @@ session_start();
 							<p class="text-center">4th Prize     <b><i class="fa fa-arrow-right"></i></b>    $80</p>
 							<p class="text-center">5th Prize     <b><i class="fa fa-arrow-right"></i></b>    $50</p>
 							<div class="ab_button">
-								<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button"> Grab The 1st Prize Now</a>
+								<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button"> Grab The 1st Prize Now</a>
 							</div>
 						</div>
 
@@ -360,7 +462,7 @@ session_start();
 								<p class="text-center">6th - 10th Prize    <b><i class="fa fa-arrow-right"></i></b> N50,000 each</p>
 							<p class="text-justify">Prizes will be presented to winners during our end of the year dinner in December.</p>
 							<div class="ab_button">
-								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button"> Grab The 1st Prize Now</a>
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button"> Grab The 1st Prize Now</a>
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -389,7 +491,7 @@ session_start();
 						</div>
 						<div class="clearfix"></div>
 						<div class="ab_button">
-							<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button"> Get Started Now </a>
+							<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button"> Get Started Now </a>
 						</div>
 					</div>
 				</div>

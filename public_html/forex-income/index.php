@@ -1,6 +1,6 @@
 <?php
 require_once '../init/initialize_client.php';
-
+require_once '../init/initialize_general.php';
 //Log user in
 $client_email = $db_handle->sanitizePost($_SESSION['email']);
 $user_code = $client_operation->get_user_by_email($client_email);
