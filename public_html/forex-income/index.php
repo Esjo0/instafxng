@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../init/initialize_client.php';
 require_once '../init/initialize_general.php';
 //Log user in

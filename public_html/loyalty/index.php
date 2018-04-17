@@ -31,6 +31,7 @@ if(isset($_POST['sign_up']))
 				$_SESSION['email'] = $email;
 				$_SESSION['phone'] = $phone;
 				redirect_to("../forex-income/");
+				exit();
 			}
 		}
 	}
@@ -52,6 +53,7 @@ if(isset($_POST['sign_up']))
 				$_SESSION['phone'] = $phone;
 				$_SESSION['source'] = 'lp';
 				redirect_to("live_account.php");
+				exit();
 			}
 		}
 	}

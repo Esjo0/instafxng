@@ -1,6 +1,6 @@
 <?php
+session_start();
 require_once '../init/initialize_client.php';
-var_dump($_SESSION);
 extract($_SESSION);
 $open_account = true;
 // TODO: What next after account opening... Fix that.

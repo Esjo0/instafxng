@@ -38,24 +38,24 @@ if(isset($_POST['file_upload']))
             extract($csv_content[$count]);
             if($choice == $choice_yes)
             {
-                if(!is_duplicate_loyalty($email, $phone))
+                if(!$obj_loyalty_training->is_duplicate_loyalty($email, $phone))
                 {
                     $leads_count = count($new_leads);
                     $new_leads[$leads_count]["name"] = $full_name;
                     $new_leads[$leads_count]["email"] = $email;
                     $new_leads[$leads_count]["phone"] = $phone;
-                    add_loyalty($full_name, $email, $phone);
+                    $obj_loyalty_training->add_loyalty($full_name, $email, $phone);
                 }
             }
             else
             {
-                if(!is_duplicate_training($email, $phone))
+                if(!$obj_loyalty_training->is_duplicate_training($email, $phone))
                 {
                     $leads_count = count($new_leads);
                     $new_leads[$leads_count]["name"] = $full_name;
                     $new_leads[$leads_count]["email"] = $email;
                     $new_leads[$leads_count]["phone"] = $phone;
-                    add_training($full_name, $email, $phone);
+                    $obj_loyalty_training->add_training($full_name, $email, $phone);
                 }
             }
         }
@@ -88,7 +88,6 @@ if(isset($_POST['file_upload']))
                 document.getElementById('file_show_name').value = document.getElementById('file_select').files.item(0).name;
                 document.getElementById('file_upload').disabled = false;
             }
-
         </script>
     </head>
     <body>

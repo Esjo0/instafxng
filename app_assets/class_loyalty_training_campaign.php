@@ -18,7 +18,7 @@ class Loyalty_Training
         $inserted_id = $db_handle->insertedId();
         if ($result)
         {
-            $text_message = "This is the sms";
+            $text_message = "Thank you for your interest in making more money from Forex trading. Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. You are just one click away!";
             $system_object->send_sms($phone_number, $text_message);
 
             $subject = "Welcome to InstaFxNg $first_name";
@@ -28,25 +28,27 @@ class Loyalty_Training
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $first_name,</p>
+            <p>Hello $first_name,</p>
             <p>Welcome on board!</p>
             <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
             <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
-            <p>At InstaFxNg, we consider it a privilege to serve and provide you with excellent and unparalleled service at all times.</p>
+            <p>To start your journey to earning more money from Forex trading, you need to gain adequate knowledge of the Forex market.</p>
            
-            <p>We have been around for over 7 years providing Forex services to thousands of Nigerian traders, 
-            ensuring that their deposit and withdrawal transactions are promptly responded to and that every 
-            challenge is totally resolved.</p>
-            <p>InstaForex Nigeria is built upon seven strong foundational values; Integrity, Commitment, Speed, 
-            Focus, Empathy, Reliability, and Innovation.</p>
-            <p>From making deposit into your account (locally and easily) to instant stress free withdrawals (to your bank account) to unmatched customer support, we have you covered. </p>
-            <p>We are dedicated to working effectively to ensure swift service delivery to you consistently.</p>
-            <p>To start your journey to earning more money in our Loyalty Rewards Program, kindly click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open an InstaForex account immediately.</p>
-            <p>Very shortly you're going to receive a call welcoming you on board from our ever 
-            cheerful customer service representatives who will assist you in opening an InstaForex 
-            account so you can get started immediately.</p>
-            <p>Don't forget to click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open your InstaForex account. You can also click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account so you can get started immediately.</p>
-            <p>I'm so glad you are here and I can't wait for you to start earning from your trades and in the InstaFxNg Loyalty Points and Reward Program.</p>
+            <p>We have a Free online training that you can take advantage of to learn more about how to trade Forex profitably.</p>
+            <p>The training is simple and easy to follow and you can take it from your house, office or even on your bed.</p>
+            
+            <p>Within the next hour, you will be placing informed trades and increase your chances of taking your slice of the 5.3 Billion Dollars from the Forex market.</p>
+            <p>Guess what! It is free (at least for now).</p>
+            <p><a href="https://instafxng.com/fxacademy/">Click Here to Start the Training Now.</a></p>
+            <p>$first_name, we are taking in just 50 people at this time, for the brand new Forex Money Maker course.</p>
+            <p>35 spots have been taken already and we have 15 left. 
+            The slots are filling up very fast. 
+            <a href="https://instafxng.com/fxacademy/">Go here now to start the free training.</a></p>
+            <p>Please don’t miss this. Go ahead and login to the training immediately to secure your spot.</p>
+            <p>This will be your best shot at generating a healthy side income from forex trading. Go ahead and make the move now.</p>
+            <p>Start the Forex Money Maker Course now so you can launch your Forex trading entry with a big bang.</p>
+            <p>See you on the other side. Secure your spot now. Only 15 spots are up for grabs. Don’t wait till it will be too late.</p>
+            <p><a href="https://instafxng.com/fxacademy/">Here is the link to the online training again.</a></p>
             <br/><br/>
             <p>Best Regards,</p>
             <p>Mercy,</p>
@@ -111,7 +113,7 @@ MAIL;
         $result = $db_handle->runQuery($query);
         if($result)
         {
-            $text_message = "This is the sms";
+            $text_message = "Thank you for your interest in making more money from Forex trading. Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. You are just one click away!";
             $system_object->send_sms($phone_number, $text_message);
 
             $subject = "Welcome to InstaFxNg $first_name";
