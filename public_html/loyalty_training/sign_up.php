@@ -125,7 +125,7 @@ if(isset($_POST['sign_up']))
                         </center>
                         <?php require_once '../layouts/feedback_message.php'; ?>
                         <h6 class="text-center text-danger">Sign Up To Begin</h6>
-                        <p class="text-justify">Fill the form below to begin your journey to making consistent income.</p>
+                        <p class="text-justify">       Fill the form below to begin your journey to making consistent income.</p>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="col-sm-2"></div>
@@ -145,12 +145,20 @@ if(isset($_POST['sign_up']))
                                     <div class="form-group">
                                         <label><input name="interest" type="radio" class="radio" id="yes">I have traded Forex</label>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12"><div class="checkbox"><label for=""><input type="radio" name="" value="<?php echo $interest_no;?>" id=""/> I have not traded Forex</label></div></div>
+                                        <div class="col-sm-12"><div class="checkbox"><label for=""><input type="radio" name="" value="<?php echo $interest_yes;?>" id=""/> I have traded Forex</label></div></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" name="sign_up" class="btn btn-group-justified btn-success">Proceed!</button>
+                                    </div>
+
                                 </div>
                                 <div class="col-sm-2"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer"><button type="submit" name="sign_up" class="btn btn-success">Proceed!</button></div>
                 </div>
             </div>
         </div>
