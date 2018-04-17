@@ -1,139 +1,6 @@
 <?php
 require_once '../init/initialize_client.php';
 session_start();
-if (isset($_POST['submit2']) || isset($_POST['submit']))
-{
-	foreach ($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
-	extract($_POST);
-	if (empty($full_name) || empty($email_address) || empty($phone_number))
-	{
-		$message_error = "All fields must be filled, please try again";
-	}
-	elseif (!check_email($email_address))
-	{
-		$message_error = "You have supplied an invalid email address, please try again.";
-	}
-	elseif (check_number($phone_number) != 5)
-	{
-		$message_error = "You have supplied an invalid phone number, please try again.";
-	}
-	elseif (check_duplicate($email_address, $phone_number))
-	{
-		$message_error = "Duplicate Registration. <br/> Please use another phone number or email address.";
-	}
-	else
-	{
-		$client_full_name = $full_name;
-		$full_name = str_replace(".", "", $full_name);
-		$full_name = ucwords(strtolower(trim($full_name)));
-		$full_name = explode(" ", $full_name);
-		if (count($full_name) == 3)
-		{
-			$last_name = trim($full_name[0]);
-			if (strlen($full_name[2]) < 3) { $middle_name = trim($full_name[2]); $first_name = trim($full_name[1]);}
-			else { $middle_name = trim($full_name[1]); $first_name = trim($full_name[2]); }
-		}
-		else
-		{
-			$last_name = trim($full_name[0]);
-			$middle_name = "";
-			$first_name = trim($full_name[1]);
-		}
-		if (empty($first_name))
-		{
-			$first_name = $last_name;
-			$last_name = "";
-		}
-		$query = "INSERT INTO prospect_ilpr_biodata (f_name, l_name, m_name, email, phone) VALUE ('$first_name', '$last_name', '$middle_name', '$email_address', '$phone_number')";
-		$result = $db_handle->runQuery($query);
-		$inserted_id = $db_handle->insertedId();
-		if($result)
-		{
-			$subject = "Welcome to InstaFxNg $first_name";
-			$message = <<<MAIL
-    <div style="background-color: #F3F1F2">
-    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
-        <img src="https://instafxng.com/images/ifxlogo.png" />
-        <hr />
-        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $first_name,</p>
-            <p>Welcome on board!</p>
-            <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
-            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
-            <p>At InstaFxNg, we consider it a privilege to serve and provide you with excellent and unparalleled service at all times.</p>
-           
-            <p>We have been around for over 7 years providing Forex services to thousands of Nigerian traders, 
-            ensuring that their deposit and withdrawal transactions are promptly responded to and that every 
-            challenge is totally resolved.</p>
-            <p>InstaForex Nigeria is built upon seven strong foundational values; Integrity, Commitment, Speed, 
-            Focus, Empathy, Reliability, and Innovation.</p>
-            <p>From making deposit into your account (locally and easily) to instant stress free withdrawals (to your bank account) to unmatched customer support, we have you covered. </p>
-            <p>We are dedicated to working effectively to ensure swift service delivery to you consistently.</p>
-            <p>To start your journey to earning more money in our Loyalty Rewards Program, kindly click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open an InstaForex account immediately.</p>
-            <p>Very shortly you're going to receive a call welcoming you on board from our ever 
-            cheerful customer service representatives who will assist you in opening an InstaForex 
-            account so you can get started immediately.</p>
-            <p>Don’t forget to click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open your InstaForex account. You can also click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account so you can get started immediately.</p>
-            <p>I’m so glad you are here and I can’t wait for you to start earning from your trades and in the InstaFxNg Loyalty Points and Reward Program.</p>
-            <br/><br/>
-            <p>Best Regards,</p>
-            <p>Mercy,</p>
-            <p>Client Relations Manager,</p>
-            <p>InstaForex Nigeria</p>
-            <p>www.instafxng.com</p>
-            <br /><br />
-        </div>
-        <hr />
-        <div style="background-color: #EBDEE9;">
-            <div style="font-size: 11px !important; padding: 15px;">
-                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
-                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-                </p>
-                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
-                <p><strong>Office Number:</strong> 08028281192</p>
-                <br />
-            </div>
-            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                    official Nigerian Representative of Instaforex, operator and administrator
-                    of the website www.instafxng.com</p>
-                <p>To ensure you continue to receive special offers and updates from us,
-                    please add support@instafxng.com to your address book.</p>
-            </div>
-        </div>
-    </div>
-</div>
-MAIL;
-			$system_object->send_email($subject, $message, $email_address, $first_name);
-			$message_success = "Welcome to InstaFxNg $first_name";
-
-			$_SESSION['f_name'] = $first_name;
-			$_SESSION['l_name'] = $last_name;
-			$_SESSION['m_name'] = $middle_name;
-			$_SESSION['email'] = $email_address;
-			$_SESSION['phone'] = $phone_number;
-			$_SESSION['source'] = 'lp';
-
-			redirect_to("live_account.php");
-
-		}
-		if(!$result)
-		{
-			$message_error = "Looks like something went wrong or you didn't make any change.";
-		}
-	}
-}
-function check_duplicate($email_address, $phone_number)
-{
-	global $db_handle;
-	$query = "SELECT * FROM prospect_ilpr_biodata WHERE phone = '$phone_number' OR email = '$email_address' ";
-	return $db_handle->numRows($query) ? true : false;
-}
 ?>
 
 <!DOCTYPE html>
@@ -178,7 +45,7 @@ function check_duplicate($email_address, $phone_number)
 					<div id="navbar" class="navbar-collapse collapse">
 						<div class="nav_right_top">
 							<ul class="nav navbar-nav navbar-right">
-								<li><a id="gt" class="request" href="#" data-toggle="modal" data-target="#myModal">Get Started</a></li>
+								<li><a class="request" href="live_account.php">Get Started</a></li>
 							</ul>
 						</div>
 					</div>
@@ -288,7 +155,7 @@ function check_duplicate($email_address, $phone_number)
 							<p class="text-justify"><b>No funny Policies!</b></p>
 							<p class="text-justify">The more you trade, the more points you earn, the more points you earn, the more money you make!</p>
 							<div class="ab_button">
-								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -305,7 +172,7 @@ function check_duplicate($email_address, $phone_number)
 							<p class="text-justify">This is the biggest reward system for Forex traders in Nigeria and I
 								can’t wait for you to come on-board to enjoy this amazing offer!</p>
 							<div class="ab_button">
-								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
 							</div>
 						</div>
 						<div class="col-md-6 banner_bottom_grid help">
@@ -377,7 +244,7 @@ function check_duplicate($email_address, $phone_number)
 							<p class="text-justify">This doesn't even include <b>$18,000</b> withdrawn as loyalty points!</p>
 							<p class="text-justify">In the current round, you can be one of the clients that will be paid tens of thousands dollars during the one year duration of this round of the promo.</p>
 							<div class="ab_button">
-								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Get Your Share Now </a>
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button">Get Your Share Now </a>
 							</div>
 						</div>
 					</div>
@@ -423,7 +290,7 @@ function check_duplicate($email_address, $phone_number)
 									as long as you have earned the minimum 100 reward points.</p>
 							<p class="text-justify">3. Points can only be redeemed when depositing funds.</p>
 							<div class="ab_button">
-								<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="#" role="button"> Get Your Points Now </a>
+								<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="live_account.php" role="button"> Get Your Points Now </a>
 							</div>
 						</div>
 
@@ -462,7 +329,7 @@ function check_duplicate($email_address, $phone_number)
 							<p class="text-center">4th Prize     <b><i class="fa fa-arrow-right"></i></b>    $80</p>
 							<p class="text-center">5th Prize     <b><i class="fa fa-arrow-right"></i></b>    $50</p>
 							<div class="ab_button">
-								<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button"> Grab The 1st Prize Now</a>
+								<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button"> Grab The 1st Prize Now</a>
 							</div>
 						</div>
 
@@ -493,7 +360,7 @@ function check_duplicate($email_address, $phone_number)
 								<p class="text-center">6th - 10th Prize    <b><i class="fa fa-arrow-right"></i></b> N50,000 each</p>
 							<p class="text-justify">Prizes will be presented to winners during our end of the year dinner in December.</p>
 							<div class="ab_button">
-								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button"> Grab The 1st Prize Now</a>
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button"> Grab The 1st Prize Now</a>
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -522,14 +389,14 @@ function check_duplicate($email_address, $phone_number)
 						</div>
 						<div class="clearfix"></div>
 						<div class="ab_button">
-							<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button"> Get Started Now </a>
+							<a class="btn btn-group-justified btn-primary btn-lg hvr-underline-from-left" href="live_account.php" data-toggle="modal" data-target="#myModal" role="button"> Get Started Now </a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="footer">
-			<p class="text-center">&copy 2018 Instafxng.com. All rights reserved.</p>
+			<p class="text-center"><i class="glyphicon glyphicon-copyright-mark"></i>copy 2018 Instafxng.com. All rights reserved.</p>
 		</div>
 		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.js"></script>
