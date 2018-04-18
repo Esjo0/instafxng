@@ -51,7 +51,7 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
 
         $selected_point_frozen_trans_id = $client_operation->get_loyalty_point_frozen_transaction($user_code);
 
-        $last_trade_date = $client_operation->get_last_trade_date($user_code);
+        $last_trade_date = $client_operation->get_last_trade_detail($user_code)['date_earned'];
 
         switch($client_verification) {
             case '0': $verification_level = "Not Verified"; break;
