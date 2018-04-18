@@ -184,5 +184,20 @@ MAIL;
         {return false;}
     }
 
+    public function log_lead($email)
+    {
+        $filepath = "admin".DIRECTORY_SEPARATOR."logs".DIRECTORY_SEPARATOR."facebook_generated_leads.txt";
+        if(!file_exists($filepath)){mkdir("logs");}
+        $leads = file_get_contents($filepath);
+        $leads = explode(",",$leads);
+        if(!in_array($email, $leads))
+        {
+            $new_log = fopen($filepath, 'a');
+            $log = $email.",";
+            fwrite($new_log, $log);
+            fclose($new_log);
+        }
+    }
+
 }
 $obj_loyalty_training = new Loyalty_Training();
