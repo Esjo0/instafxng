@@ -143,7 +143,7 @@ if($get_params['x'] == 'edit') {
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="description">Description:</label>
+                                        <label class="control-label col-sm-2" for="description">Description/Email Excerpt:</label>
                                         <div class="col-sm-10"><textarea name="description" id="description" rows="3" class="form-control" required><?php if(isset($selected_article['description'])) { echo $selected_article['description']; } ?></textarea></div>
                                     </div>
                                     <div class="form-group">
