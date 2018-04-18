@@ -344,7 +344,7 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                 $project_supervisor_code = explode(',',$project_details['supervisor_code']);
                                                 foreach($project_supervisor_code as $key)
                                                 {
-                                                    echo $admin_object->get_admin_name_by_code($key);
+                                                    echo $admin_object->get_admin_name_by_code($key)."<br/>";
                                                 }?>
                                             </p>
                                             <hr/>
@@ -371,7 +371,8 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                 <button class="btn btn-success btn-sm">Report</button>
                                             </a>
                                             <?php
-                                            if($project_details['supervisor_code'] == $admin_code):?>
+                                                $project_supervisor_code = explode(',',$project_details['supervisor_code']);
+                                                if(in_array($admin_code, $project_supervisor_code)):?>
                                                 <button title="Edit Project" type="button" data-toggle="modal" data-target="#edit_project<?php echo $project_details['project_code'] ?>" class="btn btn-info btn-sm"><i class='glyphicon glyphicon-edit'></i></button>
                                                 <div id="edit_project<?php echo $project_details['project_code'] ?>" class="modal fade" role="dialog">
                                                     <div class="modal-dialog">
@@ -435,13 +436,17 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </div>
                                             <?php endif ?>
-                                            <?php if($project_details['supervisor_code'] == $admin_code):?>
+                                            <?php
+                                            $project_supervisor_code = explode(',',$project_details['supervisor_code']);
+                                            if(in_array($admin_code, $project_supervisor_code)):?>
                                                 <!--<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">-->
                                                 <input type="hidden" name="project_code" value="<?php echo $project_details['project_code'];?>" />
                                                 <button title="<?php if($project_details['status'] == '1'){echo 'Suspend Project';}else{echo 'Resume Project';}?>" name="<?php if($project_details['status'] == '1'){echo 'suspended';}else{echo 'resume';}?>" type="submit" class="btn btn-warning btn-sm" ><?php if($project_details['status'] == '1'){echo "<i class='glyphicon glyphicon-pause'></i>";}else{echo "<i class='glyphicon glyphicon-play'></i>";}?></button>
 
                                             <?php endif ?>
-                                            <?php if($project_details['supervisor_code'] == $admin_code):?>
+                                            <?php
+                                            $project_supervisor_code = explode(',',$project_details['supervisor_code']);
+                                            if(in_array($admin_code, $project_supervisor_code)):?>
                                                 <!--<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">-->
                                                 <input type="hidden" name="project_code" value="<?php echo $project_details['project_code'];?>" />
                                                 <button title="<?php if($project_details['status'] == '1' || $project_details['status'] == '0'){echo 'Project Completed';}else{echo 'Re-open Completed';}?>" name="<?php if($project_details['status'] == '1' || $project_details['status'] == '0'){echo 'completed';}else{echo 're-open';}?>" type="submit" class="btn btn-success btn-sm"><i class='glyphicon glyphicon-check'></i></button>
@@ -560,16 +565,7 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                             <tr>
                                                                 <td><?php echo $row['report_submission_date']; ?></td>
                                                                 <td>
-                                                                    <?php
-                                                                    echo $row['report_comments'];
-                                                                    /*                                                    $project_code = $row['project_code'];
-                                                                                                                        $query = "SELECT comment FROM project_management_reports WHERE project_code = '$project_code' LIMIT 1";
-                                                                                                                        $result = $db_handle->runQuery($query);
-                                                                                                                        $result = $db_handle->fetchAssoc($result);
-                                                                                                                        $result = $result[0];
-                                                                                                                        $result = $result['comment'];
-                                                                                                                        echo $result;
-                                                                                                                        */?>
+                                                                    <?php echo $row['report_comments']; ?>
                                                                 </td>
                                                                 <td><?php echo $row['report_status']; ?></td>
                                                                 <td><a href="project_management_report_view.php?x=<?php echo encrypt($row['report_code']); ?>"><button class="btn btn-success"><i class="glyphicon glyphicon-eye-open"></i></button></a></td>

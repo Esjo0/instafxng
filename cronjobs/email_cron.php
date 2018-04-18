@@ -74,6 +74,9 @@ if($db_handle->numOfRows($result) > 0) {
                 $year_rank_difference = number_format(($year_rank_highest - $year_rank), 2, ".", ",");
                 $year_rank_goal = number_format(($year_rank_difference / $days_left_this_month), 2, ".", ",");
 
+                $last_trade_volume = $client_operation->get_last_trade_detail($user_code)['volume'];
+                $last_trade_date = $client_operation->get_last_trade_detail($user_code)['date_earned'];
+
                 $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
                 $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
                 $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);
@@ -85,6 +88,8 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
                 $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
                 $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
+                $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
+                $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
 
                 $my_message_new = str_replace('[LPMP]', '', $my_message_new);
                 $my_message_new = str_replace('[LPMR]', '', $my_message_new);
@@ -97,6 +102,8 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[LPYG]', '', $my_message_new);
                 $my_message_new = str_replace('[LPYD]', '', $my_message_new);
                 $my_message_new = str_replace('[UC]', '', $my_message_new);
+                $my_message_new = str_replace('[LTD]', '', $my_message_new);
+                $my_message_new = str_replace('[LTV]', '', $my_message_new);
             }
 
             $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name, $mail_sender);

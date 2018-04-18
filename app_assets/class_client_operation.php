@@ -2606,10 +2606,10 @@ MAIL;
         return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
     }
 
-    public function get_last_trade_date($user_code) {
+    public function get_last_trade_detail($user_code) {
         global $db_handle;
 
-        $query = "SELECT td.date_earned
+        $query = "SELECT td.date_earned, td.volume
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -2617,9 +2617,9 @@ MAIL;
 
         $result =  $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
-        $last_trade_date = $fetched_data[0]['date_earned'];
+        $last_trade_detail = $fetched_data[0];
 
-        return $last_trade_date ? $last_trade_date : false;
+        return $last_trade_detail ? $last_trade_detail : false;
     }
 
 }
