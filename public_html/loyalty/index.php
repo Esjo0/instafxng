@@ -18,11 +18,6 @@ if(isset($_POST['sign_up']))
 	{
 		if($obj_loyalty_training->is_duplicate_training($email, $phone))
 		{
-			$message_error = "Sorry, you have previously registered for the FxAcademy Online Training.
-			<a href='../fxacademy/'><b>Click here to visit the FxAcademy now</b></a>";
-		}
-		else
-		{
 			$training = $obj_loyalty_training->add_training($first_name, $last_name, $email, $phone);
 			if($training)
 			{
@@ -35,14 +30,15 @@ if(isset($_POST['sign_up']))
 				exit();
 			}
 		}
+		else
+		{
+			$message_error = "Sorry, you have previously registered for the FxAcademy Online Training.
+			<a href='../fxacademy/'><b>Click here to visit the FxAcademy now</b></a>";
+		}
 	}
 	if($interest == $interest_yes)
 	{
 		if($obj_loyalty_training->is_duplicate_loyalty($email, $phone))
-		{
-			$message_error = "Sorry, you have previously enrolled into the InstaFxNg Loyalty Promotions And Rewards";
-		}
-		else
 		{
 			$loyalty = $obj_loyalty_training->add_loyalty($first_name, $last_name, $email, $phone);
 			if($loyalty)
@@ -56,6 +52,10 @@ if(isset($_POST['sign_up']))
 				redirect_to("live_account.php");
 				exit();
 			}
+		}
+		else
+		{
+			$message_error = "Sorry, you have previously enrolled into the InstaFxNg Loyalty Promotions And Rewards";
 		}
 	}
 }
