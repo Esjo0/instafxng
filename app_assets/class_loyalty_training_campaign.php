@@ -6,7 +6,9 @@ class Loyalty_Training
     {
         global $db_handle;
         $query = "SELECT * FROM free_training_campaign WHERE phone = '$phone_number' OR email = '$email_address' ";
-        return $db_handle->numRows($query) ? true : false;
+        $result = $db_handle->runQuery($query);
+        if ($db_handle->numOfRows($result) <= 0) {return true;}
+        else{return false;}
     }
 
     public function add_training($first_name, $last_name, $email_address, $phone_number)
@@ -18,8 +20,10 @@ class Loyalty_Training
         $inserted_id = $db_handle->insertedId();
         if ($result)
         {
-            $text_message = "Thank you for your interest in making more money from Forex trading. Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. You are just one click away!";
-            $system_object->send_sms($phone_number, $text_message);
+            $text_message = "Thank you for your interest in making more money from Forex trading. 
+            Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. 
+            You are just one click away!";
+            //$system_object->send_sms($phone_number, $text_message);
 
             $subject = "Welcome to InstaFxNg $first_name";
             $message = <<<MAIL
@@ -91,18 +95,17 @@ MAIL;
             // create profile for this client
             $client_operation = new clientOperation();
             $client_operation->new_user_ordinary($first_name." ".$last_name, $email_address, $phone_number, $assigned_account_officer);
-
             return true;
-        }
-        else
-        {return false;}
+        } else {return false;}
     }
 
     public function is_duplicate_loyalty($email_address, $phone_number)
     {
         global $db_handle;
         $query = "SELECT * FROM prospect_ilpr_biodata WHERE phone = '$phone_number' OR email = '$email_address' ";
-        return $db_handle->numRows($query) ? true : false;
+        $result = $db_handle->runQuery($query);
+        if ($db_handle->numOfRows($result) <= 0 ) {return true;}
+        else{return false;}
     }
 
     public function add_loyalty($first_name, $last_name, $email_address, $phone_number)
