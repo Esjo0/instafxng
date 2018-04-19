@@ -279,7 +279,7 @@ if(isset($_POST['sign_up']))
 								Not You!
 								He who fails to get adequate knowledge plans to become poor!</p>
 							<div class="ab_button">
-								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" role="button">Start Now </a>
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
 							</div>
 						</div>
 						<div class="clearfix"></div>
