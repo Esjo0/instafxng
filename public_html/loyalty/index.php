@@ -19,8 +19,6 @@ if(isset($_POST['sign_up']))
 		if($obj_loyalty_training->is_duplicate_training($email, $phone))
 		{
 			$training = $obj_loyalty_training->add_training($first_name, $last_name, $email, $phone);
-			if($training)
-			{
 				$_SESSION['f_name'] = $first_name;
 				$_SESSION['l_name'] = $last_name;
 				$_SESSION['m_name'] = $middle_name;
@@ -28,7 +26,6 @@ if(isset($_POST['sign_up']))
 				$_SESSION['phone'] = $phone;
 				redirect_to("../forex-income/");
 				exit();
-			}
 		}
 		else
 		{
@@ -41,9 +38,7 @@ if(isset($_POST['sign_up']))
 		if($obj_loyalty_training->is_duplicate_loyalty($email, $phone))
 		{
 			$loyalty = $obj_loyalty_training->add_loyalty($first_name, $last_name, $email, $phone);
-			if($loyalty)
-			{
-				$_SESSION['f_name'] = $first_name;
+			$_SESSION['f_name'] = $first_name;
 				$_SESSION['l_name'] = $last_name;
 				$_SESSION['m_name'] = $middle_name;
 				$_SESSION['email'] = $email;
@@ -51,7 +46,6 @@ if(isset($_POST['sign_up']))
 				$_SESSION['source'] = 'lp';
 				redirect_to("live_account.php");
 				exit();
-			}
 		}
 		else
 		{
