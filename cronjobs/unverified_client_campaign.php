@@ -295,12 +295,25 @@ $my_message_4 =
 </div>
 MAIL;
 
-// Mail 1 : This mail is to be sent exactly 14 days
+$date_start = "2014-01-01";
+$date_end = "2017-12-31";
 $today = date('Y-m-d');
 
-$query = "SELECT u.first_name, u.email
-          FROM user AS u
-          WHERE (u.password IS NULL OR u.password = '') AND (DATEDIFF('$today', STR_TO_DATE(u.created, '%Y-%m-%d')) = 14) AND u.campaign_subscribe = '1' ORDER BY u.created ASC";
+$day1 = "2018-04-19";
+$day2 = "2018-05-03";
+$day3 = "2018-05-17";
+$day4 = "2018-05-31";
+
+if($today == $day1) { $my_subject = $my_subject_1; $my_message = $my_message_1; }
+if($today == $day2) { $my_subject = $my_subject_2; $my_message = $my_message_2; }
+if($today == $day3) { $my_subject = $my_subject_3; $my_message = $my_message_3; }
+if($today == $day4) { $my_subject = $my_subject_4; $my_message = $my_message_4; }
+
+$query = "SELECT u.first_name, u.email FROM user AS u
+          WHERE (u.password IS NULL OR u.password = '')
+          AND (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$date_start' AND '$date_end')
+          AND u.campaign_subscribe = '1'
+          ORDER BY u.created ASC";
 
 $result = $db_handle->runQuery($query);
 $fetched_data = $db_handle->fetchAssoc($result);
@@ -308,81 +321,6 @@ $fetched_data = $db_handle->fetchAssoc($result);
 foreach ($fetched_data as $row) {
     $client_name = ucwords(strtolower(trim($row['first_name'])));
     $client_email = strtolower(trim($row['email']));
-
-    $my_subject = $my_subject_1;
-    $my_message = $my_message_1;
-
-    // Replace [NAME] with clients full name
-    $my_message_new = str_replace('[NAME]', $client_name, $my_message);
-    $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
-
-    $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name);
-}
-
-// Mail 2 : This mail is to be sent exactly 28 days
-$today = date('Y-m-d');
-
-$query = "SELECT u.first_name, u.email
-          FROM user AS u
-          WHERE (u.password IS NULL OR u.password = '') AND (DATEDIFF('$today', STR_TO_DATE(u.created, '%Y-%m-%d')) = 28) AND u.campaign_subscribe = '1' ORDER BY u.created ASC";
-
-$result = $db_handle->runQuery($query);
-$fetched_data = $db_handle->fetchAssoc($result);
-
-foreach ($fetched_data as $row) {
-    $client_name = ucwords(strtolower(trim($row['first_name'])));
-    $client_email = strtolower(trim($row['email']));
-
-    $my_subject = $my_subject_2;
-    $my_message = $my_message_2;
-
-    // Replace [NAME] with clients full name
-    $my_message_new = str_replace('[NAME]', $client_name, $my_message);
-    $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
-
-    $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name);
-}
-
-// Mail 3 : This mail is to be sent exactly 14 days
-$today = date('Y-m-d');
-
-$query = "SELECT u.first_name, u.email
-          FROM user AS u
-          WHERE (u.password IS NULL OR u.password = '') AND (DATEDIFF('$today', STR_TO_DATE(u.created, '%Y-%m-%d')) = 42) AND u.campaign_subscribe = '1' ORDER BY u.created ASC";
-
-$result = $db_handle->runQuery($query);
-$fetched_data = $db_handle->fetchAssoc($result);
-
-foreach ($fetched_data as $row) {
-    $client_name = ucwords(strtolower(trim($row['first_name'])));
-    $client_email = strtolower(trim($row['email']));
-
-    $my_subject = $my_subject_3;
-    $my_message = $my_message_3;
-
-    // Replace [NAME] with clients full name
-    $my_message_new = str_replace('[NAME]', $client_name, $my_message);
-    $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
-
-    $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name);
-}
-
-// Mail 4 : This mail is to be sent exactly 14 days
-$today = date('Y-m-d');
-
-$query = "SELECT u.first_name, u.email
-          FROM user AS u
-          WHERE (u.password IS NULL OR u.password = '') AND (DATEDIFF('$today', STR_TO_DATE(u.created, '%Y-%m-%d')) = 56) AND u.campaign_subscribe = '1' ORDER BY u.created ASC";
-
-$result = $db_handle->runQuery($query);
-$fetched_data = $db_handle->fetchAssoc($result);
-
-foreach ($fetched_data as $row) {
-    $client_name = ucwords(strtolower(trim($row['first_name'])));
-    $client_email = strtolower(trim($row['email']));
-
-    $my_subject = $my_subject_4;
-    $my_message = $my_message_4;
 
     // Replace [NAME] with clients full name
     $my_message_new = str_replace('[NAME]', $client_name, $my_message);
