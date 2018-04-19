@@ -4,15 +4,9 @@ if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
 if(isset($_POST['file_upload']))
 {
-    if(!isset($_FILES["csv_file"]["name"]) || empty($_FILES["csv_file"]["name"]))
-    {
-        $message_error = "Please select a file for upload.";
-    }
+    if(!isset($_FILES["csv_file"]["name"]) || empty($_FILES["csv_file"]["name"])) {   $message_error = "Please select a file for upload.";}
     $imageFileType = pathinfo($_FILES["csv_file"]["name"],PATHINFO_EXTENSION);
-    if($imageFileType != "csv")
-    {
-        $message_error = "Please select a CSV file for upload.";
-    }
+    if($imageFileType != "csv"){$message_error = "Please select a CSV file for upload.";}
     $target_dir = "../images/";
     $temp = explode(".", $_FILES["csv_file"]["name"]);
     $newfilename = round(time()) . '.' . end($temp);
@@ -27,35 +21,37 @@ if(isset($_POST['file_upload']))
     $choice_yes = "i_have_traded_forex_before.";
     foreach ($file_contents as $row)
     {
-        if($row != "")
+        if(!empty($row))
         {
             $row_contents = explode(",", $row);
             $count = count($csv_content);
-            $csv_content[$count]["full_name"] = trim($row_contents[13]);
-            $csv_content[$count]["email"] = strtolower(trim($row_contents[12]));
-            $csv_content[$count]["phone"] = strtolower(trim(str_replace('p:', '', $row_contents[14]))) ;
-            $csv_content[$count]["choice"] = $row_contents[11];
-            extract($csv_content[$count]);
-            if($choice == $choice_yes)
+            $_full_name = trim($row_contents[13]);
+            $_email = strtolower(trim($row_contents[12]));
+            $_phone = strtolower(trim(str_replace('p:', '', $row_contents[14]))) ;
+            $_choice = $row_contents[11];
+            if($_choice == $choice_yes)
             {
-                if(!$obj_loyalty_training->is_duplicate_loyalty($email, $phone))
+                if($obj_loyalty_training->is_duplicate_loyalty($_email, $_phone))
                 {
+                    var_dump($obj_loyalty_training->is_duplicate_loyalty($_email, $_phone));
                     $leads_count = count($new_leads);
-                    $new_leads[$leads_count]["name"] = $full_name;
-                    $new_leads[$leads_count]["email"] = $email;
-                    $new_leads[$leads_count]["phone"] = $phone;
-                    $obj_loyalty_training->add_loyalty($full_name, $email, $phone);
+                    $new_leads[$leads_count]["name"] = $_full_name;
+                    $new_leads[$leads_count]["email"] = $_email;
+                    $new_leads[$leads_count]["phone"] = $_phone;
+                    $new_leads[$leads_count]["choice"] = "Experienced";
+                    $obj_loyalty_training->add_loyalty($_full_name, $_email, $_phone);
                 }
             }
             else
             {
-                if(!$obj_loyalty_training->is_duplicate_training($email, $phone))
+                if($obj_loyalty_training->is_duplicate_training($_email, $_phone))
                 {
                     $leads_count = count($new_leads);
-                    $new_leads[$leads_count]["name"] = $full_name;
-                    $new_leads[$leads_count]["email"] = $email;
-                    $new_leads[$leads_count]["phone"] = $phone;
-                    $obj_loyalty_training->add_training($full_name, $email, $phone);
+                    $new_leads[$leads_count]["name"] = $_full_name;
+                    $new_leads[$leads_count]["email"] = $_email;
+                    $new_leads[$leads_count]["phone"] = $_phone;
+                    $new_leads[$leads_count]["choice"] = "Not Experienced";
+                    $obj_loyalty_training->add_training($_full_name, $_email, $_phone);
                 }
             }
         }
@@ -68,7 +64,7 @@ if(isset($_POST['file_upload']))
     }
     else
     {
-        $message_error = "THe upload failed, please try again.";
+        $message_error = "The upload failed, please try again.";
     }
 }
 ?>
@@ -161,6 +157,7 @@ if(isset($_POST['file_upload']))
                                         <th>Full Name</th>
                                         <th>Email Address</th>
                                         <th>Phone Number</th>
+                                        <th>Trading Experience</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -170,6 +167,7 @@ if(isset($_POST['file_upload']))
                                                 <td><?php echo $row['name']; ?></td>
                                                 <td><?php echo $row['email']; ?></td>
                                                 <td><?php echo $row['phone']; ?></td>
+                                                <td><?php echo $row['choice']; ?></td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>

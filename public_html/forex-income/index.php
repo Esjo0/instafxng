@@ -2,11 +2,9 @@
 session_start();
 require_once '../init/initialize_client.php';
 require_once '../init/initialize_general.php';
-//Log user in
-$client_email = $db_handle->sanitizePost($_SESSION['email']);
-$user_code = $client_operation->get_user_by_email($client_email);
-
-if(empty($user_code) || !isset($user_code)) { redirect_to("register.php?id=$client_email"); }
+$client_operation = new clientOperation();
+$user_code = $client_operation->get_user_by_email($_SESSION['email']);
+if(empty($user_code) || !isset($user_code)) { redirect_to("../fxacademy/register.php?id=".$_SESSION['email']);}
 
 $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
 

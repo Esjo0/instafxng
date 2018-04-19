@@ -18,7 +18,8 @@ if(isset($_POST['sign_up']))
 	{
 		if($obj_loyalty_training->is_duplicate_training($email, $phone))
 		{
-			$message_error = "Sorry, you have previously registered for the FxAcademy Online Training.";
+			$message_error = "Sorry, you have previously registered for the FxAcademy Online Training.
+			<a href='../fxacademy/'><b>Click here to visit the FxAcademy now</b></a>";
 		}
 		else
 		{
