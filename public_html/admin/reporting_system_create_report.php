@@ -4,6 +4,13 @@ if (!$session_admin->is_logged_in())
 {
     redirect_to("login.php");
 }
+
+if(isset($_POST['process']))
+{
+    $from_date = $db_handle->sanitizePost(trim($_POST['from_date']));
+    $to_date = $db_handle->sanitizePost(trim($_POST['to_date']));
+    $date_collection = date_range($to_date, $from_date, 'Y-m-d');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +110,7 @@ if (!$session_admin->is_logged_in())
                                             <div class="col-sm-2"></div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div style="display: none" class="form-group">
                                         <div class="col-sm-12">
                                             <textarea placeholder="Enter your report here..." name="content" id="content" rows="5" class="form-control" required></textarea>
                                         </div>

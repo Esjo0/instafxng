@@ -561,17 +561,18 @@ function searchForId($id, $array, $key_identifier)
  * @param string date of output format
  * @return array
  */
-function date_range($first, $last, $step = '+1 day', $output_format = 'd/m/Y' )
+function date_range($from, $to, $format = 'd/m/Y' )
 {
-    $dates = array();
-    $current = strtotime($first);
-    $last = strtotime($last);
-    while( $current <= $last )
+    $day = 86400;
+    $startTime = strtotime($from);
+    $endTime = strtotime($to);
+    $numDays = round(($startTime - $endTime) / $day) + 1;
+    $days = array();
+    for ($i = 0; $i < $numDays; $i++)
     {
-        $dates[] = date($output_format, $current);
-        $current = strtotime($step, $current);
+        $days[] = date($format, ($startTime + ($i * $day)));
     }
-    return $dates;
+    return $days;
 }
 
 
