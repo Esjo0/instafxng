@@ -33,7 +33,6 @@ if(isset($_POST['file_upload']))
             {
                 if($obj_loyalty_training->is_duplicate_loyalty($_email, $_phone))
                 {
-                    var_dump($obj_loyalty_training->is_duplicate_loyalty($_email, $_phone));
                     $leads_count = count($new_leads);
                     $new_leads[$leads_count]["name"] = $_full_name;
                     $new_leads[$leads_count]["email"] = $_email;
