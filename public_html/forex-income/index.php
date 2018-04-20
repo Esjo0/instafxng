@@ -112,31 +112,7 @@ if($user_ifx_details) {
 <!-- //Slider -->
 <!-- welcome -->
 <div class="welcome" id="about">
-    <div class="container">
 
-        <div class="welcome-grids">
-            <div class="col-md-6 welcome-w3right">
-                <img src="images/ab1.jpg" class="img-responsive" alt=""/>
-            </div>
-            <div class="col-md-6 welcome-w3left">
-                <h3>Need Some Extra Cash?</h3>
-                <!--<h4>Sit at the comfort of your home or office and make over $20 day!</h4>-->
-                <!--<p class="text-justify">Could you use an extra $20 every day? $100 every week? Or even $400 every month?</p>-->
-                <p class="text-justify">Are you used to spending hours, surfing the Internet, looking for a particular
-                    business
-                    which you can do alongside your business or 9-5 job?</p>
-                <p class="text-justify">If so, you are one of the many people who would benefit from Forex Trading.</p>
-                <p class="text-justify">A hassle-free, business that you can profit from every single day without
-                    working
-                    your fingers off for it! You read that right buddy!</p>
-                <div class="readmore-w3-about">
-                    <a class="readmore" href="https://instafxng.com/fxacademy/" data-toggle="modal" data-target="#myModal">Get Started Now</a>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
-</div>
 <!-- //welcome -->
 <!--/services-->
 <div class="services" id="services">
