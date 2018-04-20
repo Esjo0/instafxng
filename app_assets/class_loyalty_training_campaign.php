@@ -23,7 +23,7 @@ class Loyalty_Training
             $text_message = "Thank you for your interest in making more money from Forex trading. 
             Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. 
             You are just one click away!";
-            //$system_object->send_sms($phone_number, $text_message);
+            $system_object->send_sms($phone_number, $text_message);
 
             $subject = "Welcome to InstaFxNg $first_name";
             $message = <<<MAIL

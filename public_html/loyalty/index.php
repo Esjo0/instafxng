@@ -56,6 +56,10 @@ if(isset($_POST['sign_up']))
 			$message_error = "Kindly take the robot test.";
 		}
 	}
+	else
+	{
+		$message_error = "Kindly take the robot test.";
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -193,7 +197,9 @@ if(isset($_POST['sign_up']))
 										</div>
 									</div>
 								</div>
-								<div class="form-group"><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>
+								<div class="form-group">
+									<center><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></center>
+								</div>
 								<div class="col-sm-12">
 									<span style="color: #ffffff">*All fields are required</span>
 								</div>
@@ -544,10 +550,11 @@ if(isset($_POST['sign_up']))
 		<script src="js/jquery.quicksand.js" type="text/javascript"></script>
 		<script src="js/script.js" type="text/javascript"></script>
 		<script src="js/jquery.prettyPhoto.js" type="text/javascript"></script>
-		<?php if(isset($message_success) || isset($message_error)): ?>
+		<?php if(isset($message_success) || isset($message_error) || isset($_POST['sign_up']) || isset($_POST['g-recaptcha-response'])): ?>
 			<script>
 				document.getElementById('gt').click();
 			</script>
 		<?php endif; ?>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
 	</body>
 </html>
