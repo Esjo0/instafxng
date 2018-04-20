@@ -5,51 +5,55 @@ $interest_yes = "i_have_traded_forex_before.";
 $interest_no = "i_have_not_traded_forex_before";
 if(isset($_POST['sign_up']))
 {
-	$name = $db_handle->sanitizePost(trim($_POST['name']));
-	$email = $db_handle->sanitizePost(trim($_POST['email']));
-	$phone = $db_handle->sanitizePost(trim($_POST['phone']));
-	$interest = $db_handle->sanitizePost(trim($_POST['interest']));
-	if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+	if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response']))
 	{
-		$message_error = "You entered an invalid email address, please try again.";
-	}
-	extract(split_name($name));
-	if($interest == $interest_no)
-	{
-		if($obj_loyalty_training->is_duplicate_training($email, $phone))
+		$secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+		$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+		$responseData = json_decode($verifyResponse);
+		if ($responseData->success)
 		{
-			$training = $obj_loyalty_training->add_training($first_name, $last_name, $email, $phone);
-				$_SESSION['f_name'] = $first_name;
-				$_SESSION['l_name'] = $last_name;
-				$_SESSION['m_name'] = $middle_name;
-				$_SESSION['email'] = $email;
-				$_SESSION['phone'] = $phone;
-				redirect_to("../forex-income/");
-				exit();
+			$name = $db_handle->sanitizePost(trim($_POST['name']));
+			$email = $db_handle->sanitizePost(trim($_POST['email']));
+			$phone = $db_handle->sanitizePost(trim($_POST['phone']));
+			$interest = $db_handle->sanitizePost(trim($_POST['interest']));
+			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				$message_error = "You entered an invalid email address, please try again.";
+			}
+			extract(split_name($name));
+			if ($interest == $interest_no) {
+				if ($obj_loyalty_training->is_duplicate_training($email, $phone)) {
+					$training = $obj_loyalty_training->add_training($first_name, $last_name, $email, $phone);
+					$_SESSION['f_name'] = $first_name;
+					$_SESSION['l_name'] = $last_name;
+					$_SESSION['m_name'] = $middle_name;
+					$_SESSION['email'] = $email;
+					$_SESSION['phone'] = $phone;
+					redirect_to("../forex-income/");
+					exit();
+				} else {
+					$message_error = "Sorry, you have previously registered for the FxAcademy Online Training.
+					<a href='../fxacademy/'><b>Click here to visit the FxAcademy now</b></a>";
+				}
+			}
+			if ($interest == $interest_yes) {
+				if ($obj_loyalty_training->is_duplicate_loyalty($email, $phone)) {
+					$loyalty = $obj_loyalty_training->add_loyalty($first_name, $last_name, $email, $phone);
+					$_SESSION['f_name'] = $first_name;
+					$_SESSION['l_name'] = $last_name;
+					$_SESSION['m_name'] = $middle_name;
+					$_SESSION['email'] = $email;
+					$_SESSION['phone'] = $phone;
+					$_SESSION['source'] = 'lp';
+					redirect_to("live_account.php");
+					exit();
+				} else {
+					$message_error = "Sorry, you have previously enrolled into the InstaFxNg Loyalty Promotions And Rewards";
+				}
+			}
 		}
 		else
 		{
-			$message_error = "Sorry, you have previously registered for the FxAcademy Online Training.
-			<a href='../fxacademy/'><b>Click here to visit the FxAcademy now</b></a>";
-		}
-	}
-	if($interest == $interest_yes)
-	{
-		if($obj_loyalty_training->is_duplicate_loyalty($email, $phone))
-		{
-			$loyalty = $obj_loyalty_training->add_loyalty($first_name, $last_name, $email, $phone);
-			$_SESSION['f_name'] = $first_name;
-				$_SESSION['l_name'] = $last_name;
-				$_SESSION['m_name'] = $middle_name;
-				$_SESSION['email'] = $email;
-				$_SESSION['phone'] = $phone;
-				$_SESSION['source'] = 'lp';
-				redirect_to("live_account.php");
-				exit();
-		}
-		else
-		{
-			$message_error = "Sorry, you have previously enrolled into the InstaFxNg Loyalty Promotions And Rewards";
+			$message_error = "Kindly take the robot test.";
 		}
 	}
 }
@@ -189,6 +193,7 @@ if(isset($_POST['sign_up']))
 										</div>
 									</div>
 								</div>
+								<div class="form-group"><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>
 								<div class="col-sm-12">
 									<span style="color: #ffffff">*All fields are required</span>
 								</div>
