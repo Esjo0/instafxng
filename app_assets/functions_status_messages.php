@@ -1,4 +1,16 @@
 <?php
+/*
+* Table: operations_log
+* Column: status
+*/
+function status_operations($status) {
+    switch ($status) {
+        case '0': $message = "Opened"; break;
+        case '1': $message = "Closed"; break;
+        default: $message = "Status Unknown"; break;
+    }
+    return $message;
+}
 
 /*
  * Table: career_jobs

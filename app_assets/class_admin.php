@@ -2,6 +2,70 @@
 
 class AdminUser {
 
+    //get transaction issues details
+    public function get_transaction_issue( $transaction_id ) {
+        global $db_handle;
+        $query = "SELECT * FROM operations_log WHERE transaction_id = '$transaction_id'";
+        $result = $db_handle->runQuery($query);
+        $fetch_data = $db_handle->fetchAssoc($result);
+
+        return $fetch_data ? $fetch_data : false;
+    }
+
+
+    //get operations log comment details
+    public function get_comment_details( $transaction_id ) {
+        global $db_handle;
+        $query = "SELECT * FROM operations_log_comments WHERE transaction_id = '$transaction_id' ORDER BY created DESC";
+        $result = $db_handle->runQuery($query);
+        $fetch_data = $db_handle->fetchAssoc($result);
+
+        return $fetch_data ? $fetch_data : false;
+    }
+
+    //add new operation issue comment
+    public function add_operations_comment($transaction_id,$comment,$admin_code) {
+        global $db_handle;
+
+        $query = "INSERT INTO operations_log_comments(transaction_id, comment, admin_code) VALUES ('$transaction_id','$comment','$admin_code')";
+        return $db_handle->runQuery($query) ? true : false;
+    }
+
+
+    //add new operation issue to the record
+    public function add_issues($transaction_id,$details,$admin_code) {
+        global $db_handle;
+
+        $query = "INSERT INTO operations_log (transaction_id, details, admin, status) VALUES ('$transaction_id','$details','$admin_code','0')";
+        var_dump($query);
+        return $db_handle->runQuery($query) ? true : false;
+    }
+
+    //get transaction details by transaction id in admin operations log page
+    public function get_transaction_details($transaction_id)
+    {
+        global $db_handle;
+        $check = substr($transaction_id, 0, 3);
+        if($check  == WIT){
+            $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.status, ui.ifx_acct_no, uw.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+              FROM user_withdrawal AS uw
+              INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE uw.trans_id = '$transaction_id'";
+        }else{
+            $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.status, ui.ifx_acct_no, ud.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+              FROM user_deposit AS ud
+              INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE ud.trans_id = '$transaction_id'";
+        }
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+
+    }
+
     public function authenticate($username = "", $password = "") {
         global $db_handle;
         $username = $db_handle->sanitizePost($username);
