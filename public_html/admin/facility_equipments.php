@@ -12,6 +12,41 @@ $stats = $stats[0];
 $total = $stats['total_cost'];
 $all_admin_member = $admin_object->get_all_admin_member();
 
+if (isset($_POST['edit']))
+{
+    $invent_id = $db_handle->sanitizePost($_POST['invent_id']);
+    $location = $db_handle->sanitizePost($_POST['location']);
+    $cart = $db_handle->sanitizePost($_POST['cart']);
+    $iname = $db_handle->sanitizePost($_POST['name']);
+    $cost = $db_handle->sanitizePost(trim($_POST['cost']));
+    $idate = $db_handle->sanitizePost($_POST['date']);
+    $allowed_admin = ($_POST['allowed_admin[]']);
+    for ($i = 0; $i < count($allowed_admin); $i++)
+    {
+        $all_allowed_admin = $all_allowed_admin . "," . $allowed_admin[$i];
+    }
+
+    $all_allowed_admin = substr_replace($all_allowed_admin, "", 0, 1);
+$query = "UPDATE facility_inventory SET admin = '$all_allowed_admin', location = '$location', name = '$iname', cost = '$cost', date = '$idate', category = '$cart'  WHERE invent_id = '$invent_id' ";
+$result2 = $db_handle->runQuery($query);
+if($result2) {
+        $message_success = "Update successful.";
+    } else {
+        $message_error = "Something went wrong. Please try again.";
+    }
+
+}
+
+if(isset($_POST['delete'])) {
+    $invent_id = $db_handle->sanitizePost($_POST['invent_id']);
+    $query = "DELETE FROM facility_inventory WHERE invent_id = '$invent_id' ";
+    $result2 = $db_handle->runQuery($query);
+    if ($result2) {
+        $message_success = "You have successfully removed this equipment";
+    } else {
+        $message_error = "Something went wrong. Please try again.";
+    }
+}
 if(isset($_POST['assign'])){
     $invent_id = $db_handle->sanitizePost($_POST['invent_id']);
     $allowed_admin = ($_POST['allowed_admin']);
@@ -201,7 +236,7 @@ if(isset($_POST['search'])){
 
                     </div>
                     <hr>
-                    <?php if(isset($reports) && !empty($reports)):?>
+                    <?php if(isset($reports) && !empty($reports)){?>
 
                         <div id="dvTable">
                             <h5>List of Equipment</h5>
@@ -214,6 +249,7 @@ if(isset($_POST['search'])){
                                     <th>Purchase Cost</th>
                                     <th>Category</th>
                                     <th>Current Location</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -231,6 +267,138 @@ if(isset($_POST['search'])){
                                         <td><div class="form-group">
                                                 <button type="button" data-target="#complete<?php echo $row['inventoryid'];?>" data-toggle="modal" class="btn btn-success"><i class="fa fa-history fa-fw"></i></button>
                                                 <button type="button" data-target="#assign<?php echo $row['inventoryid'];?>" data-toggle="modal" class="btn btn-success">Assign</button>
+                                                <button type="button" data-target="#delete<?php echo $row['inventoryid'];?>" data-toggle="modal" class="btn btn-danger"><i class="fa fa-trash" ></i></button>
+                                                <button type="button" data-target="#edit<?php echo $row['inventoryid'];?>" data-toggle="modal" class="btn btn-success"><i class="fa fa-edit" ></i></button>
+                                            </div>
+                                            <!--Modal - edit confirmation boxes-->
+                                            <div id="edit<?php echo $row['inventoryid'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                    class="close">&times;</button>
+                                                            <h4 class="modal-title">Edit Inventory details</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                                <input type="hidden" value="<?php echo $row['inventoryid'] ;?>" name="invent_id"/>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-3" for="inventoryid">Name/Description:</label>
+                                                                    <div class="col-sm-12 col-lg-8">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                                                            <input name="name" type="text" id="" value="<?php echo $row['name']; ?>" class="form-control" required/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-3" for="inventoryid">Cost:</label>
+                                                                    <div class="col-sm-12 col-lg-8">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">₦</span>
+                                                                            <input name="cost" type="number" id="" value="<?php echo $row['cost']; ?>" class="form-control" required/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-3" for="from_date">Purchase Date:</label>
+                                                                    <div class="col-sm-9 col-lg-5">
+                                                                        <div class="input-group date">
+                                                                            <input name="date" type="text" class="form-control" id="datetimepicker" value="<?php echo datetime_to_text2($row['date']); ?>">
+                                                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <script type="text/javascript">
+                                                                        $(function () {
+                                                                            $('#datetimepicker').datetimepicker({
+                                                                                format: 'YYYY-MM-DD'
+                                                                            });
+                                                                        });
+                                                                    </script>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-3" for="from_date">Category:</label>
+                                                                    <div class="col-sm-12 col-lg-8">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
+                                                                            <select  type="text" name="cart" class="form-control " id="location" >
+                                                                                <?php
+                                                                                $query = "SELECT * FROM facility_category ";
+                                                                                $result = $db_handle->runQuery($query);
+                                                                                $result = $db_handle->fetchAssoc($result);
+                                                                                foreach ($result as $row_cart)
+                                                                                {
+                                                                                    extract($row_cart)
+                                                                                    ?>
+                                                                                    <option value="<?php echo $name;?>"><?php echo $name;?></option>
+                                                                                <?php } ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-3" for="from_date">Location:</label>
+                                                                    <div class="col-sm-12 col-lg-8">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="fa fa-map-marker "></i></span>
+                                                                            <select  type="text" name="location" class="form-control " id="location" >
+                                                                                <?php
+                                                                                $query = "SELECT * FROM facility_location";
+                                                                                $result = $db_handle->runQuery($query);
+                                                                                $result = $db_handle->fetchAssoc($result);
+                                                                                foreach ($result as $row_loc)
+                                                                                {
+                                                                                    extract($row_loc)
+                                                                                    ?>
+                                                                                    <option value="<?php echo $location_id;?>"><?php echo $location;?></option>
+                                                                                <?php } ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-2" for="allowed_admin">Administrator In Charge:</label>
+                                                                    <div class="col-sm-10">
+                                                                        <?php foreach($all_admin_member AS $key) { ?>
+                                                                            <div class="col-sm-5"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
+                                                                        <?php } ?>
+                                                                    </div>
+                                                                </div>
+
+                                                        </div>
+
+                                                            <div class="modal-footer">
+                                                                <input name="edit" type="submit" class="btn btn-success" value="Add Changes">
+                                                        </form>
+                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <!--Modal - delete confirmation boxes-->
+                                            <div id="delete<?php echo $row['inventoryid'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                    class="close">&times;</button>
+                                                            <h4 class="modal-title">Delete Equipment from the Inventory</h4></div>
+                                                        <div class="modal-body">Are you sure you want to delete this Equipment</div>
+                                                        <form role="form" action="" method="post">
+                                                            <input type="hidden" value="<?php echo $row['inventoryid'] ;?>" name="invent_id"/>
+
+                                                        <div class="modal-footer">
+                                                            <input name="delete" type="submit" class="btn btn-success" value="Delete">
+                                                        </form>
+                                                            <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <!--Modal - confirmation boxes-->
                                             <div id="complete<?php echo $row['inventoryid'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -353,13 +521,20 @@ if(isset($_POST['search'])){
                             </table>
                         </div>
 
-                    <?php endif; ?>
-                </div>
+                    <?php }
+                    else
+                    { echo "<em>No results to display...</em>"; } ?>
 
+                </div>
+                <?php if(isset($reports) && !empty($reports)) { ?>
+                    <div class="tool-footer text-right">
+                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                    </div>
+                <?php } ?>
 
             </div>
 
-
+            <?php if(isset($reports) && !empty($reports)) { require_once 'layouts/pagination_links.php'; } ?>
 
         </div>
 

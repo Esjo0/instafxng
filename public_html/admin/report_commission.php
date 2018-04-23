@@ -44,13 +44,13 @@ else
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
         <!-- JQuery -->
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <!-- Bootstrap tooltips -->
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
-        <!-- Bootstrap core JavaScript -->
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <!-- MDB core JavaScript -->
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/js/mdb.min.js"></script>
+<!--        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+<!--        <!-- Bootstrap tooltips -->-->
+<!--        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>-->
+<!--        <!-- Bootstrap core JavaScript -->-->
+<!--        <!--/<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>-->-->
+<!--        <!-- MDB core JavaScript -->-->
+       <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/js/mdb.min.js"></script>
         <script>
             function show_form(div)
             {
@@ -103,33 +103,15 @@ else
                                             <div class="col-sm-3">
                                                 <div class="input-group date">
                                                     <input  name="from_date" type="text" class="form-control" id="datetimepicker" required>
-                                                    <script type="text/javascript">
-                                                        $(function () {
-                                                            $('#datetimepicker').datetimepicker({
-                                                                format: 'YYYY-MM-DD'
-                                                            });
-                                                        });
-                                                    </script>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="input-group date">
                                                     <input  name="to_date" type="text" class="form-control" id="datetimepicker2" required>
-                                                    <script type="text/javascript">
-                                                        $(function () {
-                                                            $('#datetimepicker2').datetimepicker({
-                                                                format: 'YYYY-MM-DD'
-                                                            });
-                                                        });
-                                                    </script>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-2">
-                                                <input name="commission_report" type="submit" class="btn btn-success" value="Calculate" />
-                                            </div>
-                                            <div class="col-sm-2"></div>
                                             <script type="text/javascript">
                                                 $(function () {
                                                     $('#datetimepicker, #datetimepicker2').datetimepicker({
@@ -137,6 +119,11 @@ else
                                                     });
                                                 });
                                             </script>
+                                            <div class="col-sm-2">
+                                                <input name="commission_report" type="submit" class="btn btn-success" value="Calculate" />
+                                            </div>
+                                            <div class="col-sm-2"></div>
+
                                         </div>
 
                                     </form>
