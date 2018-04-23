@@ -104,7 +104,7 @@ $projects = $db_handle->fetchAssoc($result);
         <script type="text/javascript">
             tinyMCE.init({
                 selector: "textarea#description",
-                height: 500,
+                height: 250,
                 theme: "modern",
                 relative_urls: false,
                 remove_script_host: false,
@@ -161,12 +161,12 @@ $projects = $db_handle->fetchAssoc($result);
                                     </div>
                                     <div id="add_new_contact" class="col-sm-4 form-group input-group" >
                                         <span class="text-center input-group-btn">
-                                            <button class="btn btn-default" data-toggle="modal" data-target="#add_project" type="button"><i class="glyphicon glyphicon-plus-sign"></i>Add New Project</button>
+                                            <button class="btn btn-default" data-toggle="modal" data-target="#add_project" type="button"><i class="glyphicon glyphicon-plus-sign"></i> New Campaign</button>
                                         </span>
                                     </div>
                                     <!-- Modal-- Add New Project -->
                                     <div id="add_project" class="modal fade" role="dialog">
-                                        <div class="modal-dialog">
+                                        <div class="modal-dialog modal-lg">
                                             <!-- Modal content-->
                                             <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                 <div class="modal-content">
@@ -178,16 +178,16 @@ $projects = $db_handle->fetchAssoc($result);
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <p><strong>Campaign Title</strong></p>
-                                                                <input type="text" name="title" class="form-control" placeholder="Project Title" required/>
+                                                                <input type="text" name="title" class="form-control" placeholder="Campaign Title" required/>
                                                                 <hr/>
                                                                 <p><strong>Campaign Description</strong></p>
-                                                                <textarea id="description" name="description" placeholder="Project Description" class="form-control" rows="9" required></textarea>
+                                                                <textarea id="description" name="description" placeholder="Campaign Description" class="form-control" rows="9" required></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <input name="new_project" type="submit" class="btn btn-success" value="Proceed"/>
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                        <input name="new_project" type="submit" class="btn btn-sm btn-success" value="Proceed"/>
+                                                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </form>
