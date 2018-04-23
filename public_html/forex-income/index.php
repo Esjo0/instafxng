@@ -111,7 +111,7 @@ if($user_ifx_details) {
 </div>
 <!-- //Slider -->
 <!-- welcome -->
-<div class="welcome" id="about">
+<!--<div class="welcome" id="about">
     <div class="container">
 
         <div class="welcome-grids">
@@ -121,7 +121,7 @@ if($user_ifx_details) {
             <div class="col-md-6 welcome-w3left">
                 <h3>Need Some Extra Cash?</h3>
                 <!--<h4>Sit at the comfort of your home or office and make over $20 day!</h4>-->
-                <!--<p class="text-justify">Could you use an extra $20 every day? $100 every week? Or even $400 every month?</p>-->
+                <!--<p class="text-justify">Could you use an extra $20 every day? $100 every week? Or even $400 every month?</p>
                 <p class="text-justify">Are you used to spending hours, surfing the Internet, looking for a particular
                     business
                     which you can do alongside your business or 9-5 job?</p>
@@ -136,7 +136,7 @@ if($user_ifx_details) {
             <div class="clearfix"></div>
         </div>
     </div>
-</div>
+</div>-->
 <!-- //welcome -->
 <!--/services-->
 <div class="services" id="services">

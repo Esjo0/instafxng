@@ -13,6 +13,7 @@
     This makes your account free from Brokerage surcharge or loss of interest rate when you leave your open orders on till the next day.</p>
 <p class="text-justify"><i class="glyphicon glyphicon-check"></i> Click on 'Open Account' to open a new live trading account with Instaforex.</p>
 <p class="text-justify"> Your account will be opened and the details of your newly opened account will be sent to your registered phone number and email address.</p>
+<p class="text-center text-center"><b> Please wait... </b></p>
 <iframe class="embed-responsive-item" id="frame" style='width: 780px;border:0;height:auto;' src="https://secure.instaforex.com/en/partner_open_account.aspx?x=BBLR&width=580&showlogo=false&color=red&host="https://instafxng.com/live_account.php" style="padding:0; margin:0" scrolling="no" onload="var th=this; setTimeout(function() {var h=null;if (!h) if (location.hash.match(/^#h(\d+)/)) h=RegExp.$1;if (h) th.style .height=parseInt(h)+170+'px';}, 10);" ></iframe>
 <script> document.getElementById('frame').src += window.location; </script>
 <p class="text-justify"><b>STEP 2: </b>Enrol into the <b>INSTAFXNG LOYALTY PROGRAM AND REWARDS</b></p>

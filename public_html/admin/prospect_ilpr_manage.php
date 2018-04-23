@@ -18,30 +18,6 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $all_prospect = $db_handle->fetchAssoc($result);
 
-// This section processes - views/live_account_ilpr_reg.php
-if(isset($_POST['live_account_ilpr_reg'])) {
-    $page_requested = "live_account_ilpr_reg_php";
-    $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
-    $full_name = $db_handle->sanitizePost($_POST['full_name']);
-    $email_address = $db_handle->sanitizePost($_POST['email']);
-    $phone_number = $db_handle->sanitizePost($_POST['phone']);
-    if(empty($full_name) || empty($email_address) || empty($phone_number) || empty($account_no)) {
-        $message_error = "All fields must be filled.";
-    } elseif (!check_email($email_address)) {
-        $message_error = "You have provided an invalid email addresss. Please try again.";
-    } else {
-
-        $client_operation = new clientOperation();
-        $log_new_ifxaccount = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2, $my_refferer);
-
-        if($log_new_ifxaccount) {
-            $message_success = "Live Account Opening Completed";
-        } else {
-            $message_error = "Something went wrong, the operation could not be completed. Please try again.";
-        }
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,7 +73,7 @@ if(isset($_POST['live_account_ilpr_reg'])) {
                                     </thead>
                                     <tbody>
                                     <?php if(isset($all_prospect) && !empty($all_prospect)) {
-                                        foreach ($all_prospect as $row) {?>
+                                        foreach ($all_prospect as $row) { ?>
                                             <tr>
                                                 <td><?php echo $row['f_name']." ".$row['m_name']." ".strtoupper($row['l_name']); ?></td>
                                                 <td><?php echo $row['email']; ?></td>
