@@ -47,12 +47,12 @@
                                 <hr/>
                                 <span><?php $transaction_issue = $admin_object->get_transaction_issue($trans_id);
                                     if($transaction_issue == false){ ?>
-                                        <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle" style="color:red;" aria-hidden="true"> </i>
+                                        <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle btn btn-default" style="color:red;" aria-hidden="true"> </i>
                                         Add to Operations Log<?php
                                     }else{
                                         foreach ($transaction_issue as $row_issue){
                                             if($row_issue['status'] == '1'){ ?>
-                                                <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle" style="color:red;" aria-hidden="true"> </i>
+                                                <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle btn btn-default" style="color:red;" aria-hidden="true"> </i>
                                                 Add to Operations Log<?php
                                             }}}?> </span>
                                 <!--Modal-- to add new operations log-->
@@ -96,8 +96,21 @@
                                             $message_error = "Something went wrong. Please try again.";
                                         }
 
-                                    }else{
-                                        $message_error = "This issue has been raised earlier!!!";
+                                    }elseif($numrows == 1){
+                                        $details = $db_handle->sanitizePost(trim($_POST['details']));
+                                        $query = "SELECT details FROM operations_log WHERE transaction_id = $trans_id LIMIT 1";
+                                        $result = $db_handle->runQuery($query);
+                                        $old_details = $db_handle->fetchAssoc($result);
+                                        foreach ($old_details AS $rowd){$old_details = $rowd['details'];}
+                                        $date = date("D M d, Y G:i");
+                                        $new_details = $old_details."</br><hr/></br>Re-Opened On".$date."<br/><strong> >> </strong>".$details;
+                                        $query = "UPDATE operations_log SET status = '0', details = '$new_details' WHERE transaction_id = '$trans_id'";
+                                        $result = $db_handle->runQuery($query);
+                                        if($result == true){
+                                            $message_success = "You have reopened this issue";
+                                        } else {
+                                            $message_error = "Something went wrong. Please try again.";
+                                        }
                                     }
                                 }
                                 ?>

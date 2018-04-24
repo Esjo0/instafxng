@@ -227,20 +227,15 @@ $withdrawal_logs = $db_handle->fetchAssoc($result);
                                                             $comments_details = $admin_object->get_comment_details( $row['transaction_id'] );
                                                             if(!empty($comments_details)){
                                                                 foreach($comments_details as $row3) { ?>
-                                                                    <div style="background-color: lightgrey; margin: 15px; border: 1px solid #5f5f5f;">
-
-                                                                        <div  style="color: #0e90d2"><i><?php
-                                                                                $admin_code = $row3['admin_code'];
-                                                                                $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
-                                                                                $admin_name = $destination_details['first_name'];
-                                                                                $admin_lname = $destination_details['last_name'];
-                                                                                echo $admin_name . " " . $admin_lname;?></i></div><br/>
-                                                                        <div class="row">
-                                                                            <div class="col-sm-2"></div>
-                                                                            <div class="col-sm-8"><?php echo $row3['comment']; ?></div>
-                                                                            <div class="col-sm-2"></div>
-                                                                        </div>
-                                                                        <span class="time-right" style="color: #ff0f1d"><strong>TIME : </strong><?php echo datetime_to_text($row3['created']); ?></span>
+                                                                    <div class="transaction-remarks">
+                                                                                        <span id="trans_remark_author"><?php
+                                                                                            $admin_code = $row3['admin_code'];
+                                                                                            $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
+                                                                                            $admin_name = $destination_details['first_name'];
+                                                                                            $admin_lname = $destination_details['last_name'];
+                                                                                            echo $admin_name . " " . $admin_lname;?></span>
+                                                                        <span id="trans_remark"><?php echo $row3['comment']; ?></span>
+                                                                        <span id="trans_remark_date"><?php echo datetime_to_text($row3['created']); ?></span>
                                                                     </div>
                                                                 <?php }} else{ ?> <img class="img-responsive" src="../images/No-Comments.png" /> <?php } ?>
                                                         </div>

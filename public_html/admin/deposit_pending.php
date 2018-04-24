@@ -112,7 +112,7 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                                             <?php $transaction_issue = $admin_object->get_transaction_issue($row['trans_id']);
                                             foreach($transaction_issue as $row2) {
                                                 if($row2['status'] == '0'){?>
-                                                    <i type="button" data-target="#details<?php echo $row['trans_id']; ?>" data-toggle="modal" class="fa fa-exclamation-triangle" style="color:red;" aria-hidden="true"></i>
+                                                    <i type="button" data-target="#details<?php echo $row['trans_id']; ?>" data-toggle="modal" class="fa fa-exclamation-triangle btn btn-default" style="color:red;" aria-hidden="true"></i>
                                                     <!--Modal - Operations log details-->
                                                     <div id="details<?php echo $row['trans_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                         <div class="modal-dialog modal-lg" style="color: #000;font-weight: normal;">
@@ -159,20 +159,15 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                                                                                 $comments_details = $admin_object->get_comment_details( $row['trans_id'] );
                                                                                 if(!empty($comments_details)){
                                                                                     foreach($comments_details as $row3) { ?>
-                                                                                        <div style="background-color: #f5f5f5; margin: 15px; border: 1px solid #b4b4b4;">
-
-                                                                                            <div  style="color: #0074ba"><i><?php
-                                                                                                    $admin_code = $row3['admin_code'];
-                                                                                                    $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
-                                                                                                    $admin_name = $destination_details['first_name'];
-                                                                                                    $admin_lname = $destination_details['last_name'];
-                                                                                                    echo $admin_name . " " . $admin_lname;?></i></div><br/>
-                                                                                            <div class="row">
-                                                                                                <div class="col-sm-2"></div>
-                                                                                                <div class="col-sm-8"><?php echo $row3['comment']; ?></div>
-                                                                                                <div class="col-sm-2"></div>
-                                                                                            </div>
-                                                                                            <span class="time-right" style="color: #a9484c"><?php echo datetime_to_text($row3['created']); ?></span>
+                                                                                        <div class="transaction-remarks">
+                                                                                        <span id="trans_remark_author"><?php
+                                                                                            $admin_code = $row3['admin_code'];
+                                                                                            $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
+                                                                                            $admin_name = $destination_details['first_name'];
+                                                                                            $admin_lname = $destination_details['last_name'];
+                                                                                            echo $admin_name . " " . $admin_lname;?></span>
+                                                                                            <span id="trans_remark"><?php echo $row3['comment']; ?></span>
+                                                                                            <span id="trans_remark_date"><?php echo datetime_to_text($row3['created']); ?></span>
                                                                                         </div>
                                                                                     <?php }} else{ ?> <img class="img-responsive" src="../images/No-Comments.png" /> <?php } ?>
                                                                             </div>
