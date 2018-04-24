@@ -28,17 +28,10 @@ if(!empty($comments_details)){
         $comment = $row3['comment'];
         $time = datetime_to_text($row3['created']);
 
-        echo "<div style=\"background-color: lightgrey; margin: 15px; border: 1px solid #5f5f5f;\">
-
-            <div  style=\"color: #0e90d2\"><i>
-                    
-                     $name  </i></div><br/>
-            <div class=\"row\">
-                <div class=\"col-sm-2\"></div>
-                <div class=\"col-sm-8\"> $comment </div>
-                <div class=\"col-sm-2\"></div>
-            </div>
-            <span class=\"time-right\" style=\"color: #ff0f1d\"><strong>TIME : </strong> $time </span>
+        echo "<div class=\"transaction-remarks\">
+            <span id=\"trans_remark_author\"> $name  </span>
+            <span id=\"trans_remark\">$comment</span>
+            <span id=\"trans_remark_date\"> $time </span>
         </div>";
     }} else{ echo "<img class=\"img-responsive\" src=\"../images/No-Comments.png\" /> "; }
 

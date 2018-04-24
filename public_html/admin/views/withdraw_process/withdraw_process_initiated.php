@@ -48,9 +48,14 @@
                                 <hr/>
                                 <span><?php $transaction_issue = $admin_object->get_transaction_issue($trans_id);
                                     if($transaction_issue == false){ ?>
-                                        <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle" style="color:red;" aria-hidden="true"> </i>
-                                        Add to Operations Log<?php
-                                    }?> </span>
+                                    <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle" style="color:red;" aria-hidden="true"> </i>
+                                            Add to Operations Log<?php
+                                    }else{
+                                    foreach ($transaction_issue as $row_issue){
+                                        if($row_issue['status'] == '1'){ ?>
+                                            <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle" style="color:red;" aria-hidden="true"> </i>
+                                            Add to Operations Log<?php
+                                        }}}?> </span>
                                 <!--Modal-- to add new operations log-->
                                 <div id="add<?php echo $trans_id; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                     <div class="modal-dialog">
@@ -92,8 +97,20 @@
                                             $message_error = "Something went wrong. Please try again.";
                                         }
 
-                                    }else{
-                                        $message_error = "This issue has been raised earlier!!";
+                                    }elseif($numrows == 1){
+                                        $details = $db_handle->sanitizePost(trim($_POST['details']));
+                                        $query = "SELECT details FROM operations_log WHERE transaction_id = $trans_id LIMIT 1";
+                                        $result = $db_handle->runQuery($query);
+                                        $old_details = $db_handle->fetchAssoc($result);
+                                        $date = date("D M d, Y G:i");
+                                        $new_details = $old_details."</br>Re-Opened On".$date."<br/>".$details;
+                                        $query = "UPDATE operations_log SET status = '0', details = '$new_details' WHERE transaction_id = '$trans_id'";
+                                        $result = $db_handle->runQuery($query);
+                                        if($result == true){
+                                            $message_success = "You have reopened this issue";
+                                        } else {
+                                            $message_error = "Something went wrong. Please try again.";
+                                        }
                                     }
                                 }
                                 ?>
@@ -236,6 +253,55 @@
                 </div>
             <?php } ?>
         </div>
+
+
+            <?php $transaction_issue = $admin_object->get_transaction_issue($trans_id);
+            foreach($transaction_issue as $row2) {
+            if($row2['status'] == '0'){?>
+                <h5>OPERATIONS LOG COMMENTS</h5>
+            <div class="row" style="margin: 15px;">
+                <div class="col-sm-4"><strong>Issue Status</strong></div>
+                <div class="col-sm-8"> <?php echo status_operations($row2['status']); ?><?php if($row2['status'] == 1){ echo " on ".date_to_text($row2['date_closed']);}?></div>
+            </div>
+
+            <div class="row" style="margin: 15px;">
+                <div class="col-sm-4"><strong>Issue Discription</strong></div>
+                <div class="col-sm-8"> <?php echo $row2['details'];?></div>
+            </div>
+                <div id="results" style="height: 150px; overflow: auto;">
+            <?php
+            $comments_details = $admin_object->get_comment_details( $trans_id );
+            if(!empty($comments_details)){
+                foreach($comments_details as $row3) { ?>
+                    <div style="background-color: #f5f5f5; margin: 15px; border: 1px solid #b4b4b4;">
+
+                        <div  style="color: #0074ba"><i><?php
+                                $admin_code = $row3['admin_code'];
+                                $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
+                                $admin_name = $destination_details['first_name'];
+                                $admin_lname = $destination_details['last_name'];
+                                echo $admin_name . " " . $admin_lname;?></i></div><br/>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8"><?php echo $row3['comment']; ?></div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <span class="time-right" style="color: #a9484c"><?php echo datetime_to_text($row3['created']); ?></span>
+                    </div>
+                <?php }} else{ ?> <img class="img-responsive" src="../images/No-Comments.png" /> <?php } ?>
+        </div>
+        <form id="myForm" method="post" data-toggle="validator" class="form-vertical" role="form" enctype="multipart/form-data">
+            <input id="admin" name="admin" type="hidden" value="<?php echo $admin_code;?>" required>
+            <input id="trans_id" name="trans_id" type="hidden" value="<?php echo $trans_id; ?>" required>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <textarea id="comment" name="comment" class="form-control" rows="2" placeholder="Enter Detailed Description of Clients issue" required></textarea>
+                </div>
+            </div>
+            <input type="button" name="addcomment"  class="btn btn-warning" onclick="SubmitFormData();" value="Add New Comment"></input>
+        </form>
+        <?php }}?>
+    </div>
     </div>
 
 </div>

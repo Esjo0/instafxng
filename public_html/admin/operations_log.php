@@ -57,8 +57,20 @@ if (isset($_POST['add'])){
             $message_error = "Something went wrong. Please try again.";
         }
 
-    }else{
-        $message_error = "This issue has been raised earlier!!";
+    }elseif($numrows == 1){
+        $details = $db_handle->sanitizePost(trim($_POST['details']));
+        $query = "SELECT details FROM operations_log WHERE transaction_id = '$transaction_id' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $old_details = $db_handle->fetchAssoc($result);
+        $date = date("D M d, Y G:i");
+        $new_details = $old_details['details']."</br>Re-Opened On".$date."<br/>".$details;
+        $query = "UPDATE operations_log SET status = '0', details = '$new_details' WHERE transaction_id = '$transaction_id'";
+        $result = $db_handle->runQuery($query);
+        if($result == true){
+            $message_success = "You have reopened this issue";
+        } else {
+            $message_error = "Something went wrong. Please try again.";
+        }
     }
 }
 

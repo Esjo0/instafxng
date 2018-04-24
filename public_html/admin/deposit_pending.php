@@ -159,9 +159,9 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                                                                                 $comments_details = $admin_object->get_comment_details( $row['trans_id'] );
                                                                                 if(!empty($comments_details)){
                                                                                     foreach($comments_details as $row3) { ?>
-                                                                                        <div style="background-color: lightgrey; margin: 15px; border: 1px solid #5f5f5f;">
+                                                                                        <div style="background-color: #f5f5f5; margin: 15px; border: 1px solid #b4b4b4;">
 
-                                                                                            <div  style="color: #0e90d2"><i><?php
+                                                                                            <div  style="color: #0074ba"><i><?php
                                                                                                     $admin_code = $row3['admin_code'];
                                                                                                     $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
                                                                                                     $admin_name = $destination_details['first_name'];
@@ -172,7 +172,7 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                                                                                                 <div class="col-sm-8"><?php echo $row3['comment']; ?></div>
                                                                                                 <div class="col-sm-2"></div>
                                                                                             </div>
-                                                                                            <span class="time-right" style="color: #ff0f1d"><strong>TIME : </strong><?php echo datetime_to_text($row3['created']); ?></span>
+                                                                                            <span class="time-right" style="color: #a9484c"><?php echo datetime_to_text($row3['created']); ?></span>
                                                                                         </div>
                                                                                     <?php }} else{ ?> <img class="img-responsive" src="../images/No-Comments.png" /> <?php } ?>
                                                                             </div>
@@ -188,8 +188,8 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <input name="resolved" type="submit" class="btn btn-success" value="Close Issue">
-                                                                    <input id="submitt" name="addcomment"  class="btn btn-warning" onclick="SubmitFormData();" value="Add New Comment">
+
+                                                                    <input type="button" name="addcomment"  class="btn btn-warning" onclick="SubmitFormData();" value="Add New Comment">
                                                                     </form>
                                                                     <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                                 </div>

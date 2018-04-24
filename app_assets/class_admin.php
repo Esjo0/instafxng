@@ -37,7 +37,6 @@ class AdminUser {
         global $db_handle;
 
         $query = "INSERT INTO operations_log (transaction_id, details, admin, status) VALUES ('$transaction_id','$details','$admin_code','0')";
-        var_dump($query);
         return $db_handle->runQuery($query) ? true : false;
     }
 
