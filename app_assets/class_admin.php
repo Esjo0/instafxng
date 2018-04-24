@@ -476,7 +476,7 @@ MAIL;
                     }else{
                         $_image = "https://instafxng.com/images/placeholder2.jpg";
                     }
-                    $_url = "news1/id/".$row['article_id']."/u/".$row['url']."/";
+                    $_url = "https://instafxng.com/news1/id/".$row['article_id']."/u/".$row['url']."/";
                     $content.=  <<<MAIL
         
         <tr>
