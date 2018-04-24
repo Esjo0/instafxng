@@ -179,15 +179,6 @@ if($get_params['x'] == 'edit') {
                                         <label class="control-label col-sm-2" for="content_tags">Tags:</label>
                                         <div class="col-sm-10"><input type="text" name="content_tags" class="form-control" id="content_tags" value="<?php if(isset($selected_article['keyword'])) { echo $selected_article['keyword']; } ?>" required/></div>
                                     </div>
-                                    <!--<div style="display: none" class="form-group">
-                                        <label class="control-label col-sm-2" for="display_picture">Display Image:</label>
-                                        <div class="col-sm-10">
-                                            <input type="file" name="display_picture" class="file file-loading" data-allowed-file-extensions='["jpg", "gif", "png"]'>
-                                            <?php /*if(isset($selected_article['display_image'])) { */?>
-                                                <img class="img-responsive" width="120px" height="120px" src="https://instafxng.com/images/blog/<?php /*echo $selected_article['display_image']; */?>" />
-                                            <?php /*} */?>
-                                        </div>
-                                    </div>-->
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="display_picture">Display Image:</label>
                                         <div class="col-sm-10">
