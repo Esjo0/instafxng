@@ -28,6 +28,14 @@ class Reporting_System
         return $db_handle->fetchAssoc($result)[0];
     }
 
+    public function get_created_targets($admin_code)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM rms_targets WHERE admin_code = $admin_code ";
+        $result = $db_handle->runQuery($query);
+        return $db_handle->fetchAssoc($result)[0];
+    }
+
 }
 
-$obj_reporting_system = new Reporting_System();
+$obj_rms = new Reporting_System();
