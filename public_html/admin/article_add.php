@@ -99,6 +99,35 @@ if($get_params['x'] == 'edit') {
 
             });
         </script>
+        <script>
+            function ValidateExtension()
+            {
+                var allowedFiles = [".png", ".jpg"];
+                var fileUpload = document.getElementById("blah");
+                //var lblError = document.getElementById("lblError");
+                var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+                if (!regex.test(fileUpload.value.toLowerCase()))
+                {
+                    window.alert("Please upload files having extensions: <b>" + allowedFiles.join(', ') + "</b> only.");
+                    return false;
+                }
+                //lblError.innerHTML = "";
+                return true;
+            }
+            function readURL(input)
+            {
+                //ValidateExtension();
+                if (input.files && input.files[0])
+                {
+                    var reader = new FileReader();
+                    reader.onload = function (e)
+                    {
+                        $('#blah').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -150,15 +179,34 @@ if($get_params['x'] == 'edit') {
                                         <label class="control-label col-sm-2" for="content_tags">Tags:</label>
                                         <div class="col-sm-10"><input type="text" name="content_tags" class="form-control" id="content_tags" value="<?php if(isset($selected_article['keyword'])) { echo $selected_article['keyword']; } ?>" required/></div>
                                     </div>
-                                    <div class="form-group">
+                                    <!--<div style="display: none" class="form-group">
                                         <label class="control-label col-sm-2" for="display_picture">Display Image:</label>
                                         <div class="col-sm-10">
                                             <input type="file" name="display_picture" class="file file-loading" data-allowed-file-extensions='["jpg", "gif", "png"]'>
-                                            <?php if(isset($selected_article['display_image'])) { ?>
-                                                <img class="img-responsive" width="120px" height="120px" src="https://instafxng.com/images/blog/<?php echo $selected_article['display_image']; ?>" />
-                                            <?php } ?>
+                                            <?php /*if(isset($selected_article['display_image'])) { */?>
+                                                <img class="img-responsive" width="120px" height="120px" src="https://instafxng.com/images/blog/<?php /*echo $selected_article['display_image']; */?>" />
+                                            <?php /*} */?>
+                                        </div>
+                                    </div>-->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="display_picture">Display Image:</label>
+                                        <div class="col-sm-10">
+                                            <center>
+                                            <img width="200px" height="150px" class="img-thumbnail" id="blah" src="<?php if(isset($selected_article['display_image']) && !empty($selected_article['display_image'])) {echo "https://instafxng.com/images/blog/".$selected_article['display_image'];} else{ echo '../images/placeholder.jpg';} ?>" alt="your image" />
+                                            <br/>
+                                            <input name="display_picture" style="display: none" id="img" class="btn btn-default" type='file' onchange="readURL(this);"  accept="['jpg', 'gif', 'png']" />
+                                            <label class="btn btn-sm btn-default" for="img">Select Image</label>
+                                            </center>
                                         </div>
                                     </div>
+
+
+
+
+
+
+
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="content">News Content:</label>
                                         <div class="col-sm-10"><textarea name="content" id="content" rows="3" class="form-control" required><?php if(isset($selected_article['content'])) { echo $selected_article['content']; } ?></textarea></div>
