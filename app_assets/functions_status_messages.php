@@ -479,7 +479,7 @@ function client_group_query($client_group, $campaign_type) {
     return $query;
 }
 
-function getcategorydescription($string, $substring) {
+/*function getcategorydescription($string, $substring) {
     $pos = strpos($string, $substring);
     if ($pos === false)
         return $string;
@@ -493,7 +493,7 @@ function getcategoryvalue($string, $substring) {
         return $string;
     else
         return(substr($string, 0, $pos));
-}
+}*/
 
 function status_fc_type($status) {
     switch ($status) {
