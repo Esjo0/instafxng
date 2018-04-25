@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Make all settings constants - available all through the system
  */
@@ -12,6 +11,8 @@ foreach ($settings as $row => $value) {
 
 $nigeria_states = array('FCT - Abuja','');
 unset($query);
+
+
 
 $client_group_DEFAULT = array(
     "1" => "All Clients",
@@ -58,6 +59,64 @@ $client_group_DEFAULT = array(
     "42" => "3 Months Inactive Clients",
     "43" => "6 Months Inactive Clients",
     "44" => "12 Months Inactive Clients",
-    "45" => "Non-ILPR Clients",
-    "46" => "Article Readers (Visitors)"
+    "45" => "Non-ILPR Clients*Clients",
+    "46" => "Article Readers (Visitors)",
+    "47" => "Last Months New Clients with Accounts",
+    "48" => "Last Months New Clients without Accounts and have no Training",
+    "49" => "Last Months New Clients without Accounts and have Training",
+    "50" => "Last Months New Trainee Still in course 2 in current month",
+    "51" => "Last Months New Clients not yet funded above $50"
 );
+$client_group_DESC = array(
+    "1" => "*Consist of all clients that have at anytime come into our system.",
+    "2" => "*All clients that were been added to our system in the last month.",
+    "3" => "*All clients intrested in training and are currently undergoing training",
+    "4" => "*Clients who have submitted only their emails and phone number.",
+    "5" => "*Clients who have completed all document verification.",
+    "6" => "*Clients who have registered under our loyality program",
+    "7" => "*Clients who havn't taken any action on our system",
+    "8" => "*Consist of all the clients who have attened any of our end of the year dinner",
+    "9" => "*All clients with address in Lagos state",
+    "10" => "*All clients undergoing Forex training on our system",
+    "11" => "*Online training students Taking their offline training at the Lekki office ",
+    "12" => "*Online training students Taking their offline training at the Diamond Estate Office",
+    "13" => "*All participants of the past monthly traders forum",
+    "14" => "*Customer Service week 2017",
+    "15" => "*Customer Service week 2017",
+    "16" => "*Customer Service week 2017",
+    "17" => "*Customer Service week 2017",
+    "18" => "*Customer Service week 2017",
+    "19" => "*Customer Service week 2017",
+    "20" => "*All clients who funded in the last month.",
+    "21" => "*Clients who attended pencil unbroken",
+    "22" => "*User details used for in house test run ",
+    "23" => "*Consist of the first 20 clients in the loyality program for the running year",
+    "24" => "*List of those who have submitted job application.",
+    "25" => "Top Traders*Active clients withing the space of two weeks",
+    "26" => "*Prospective clients from Pencil Unbroken event.",
+    "27" => "*Prospective clients who have claimed InstaForex Russia 500 USDollar No deposit bonus.",
+    "28" => "*Consist of those who have registered for online training but havnt started",
+    "29" => "*Clients who had at one pointor the other won out of the monthly ILPR $500 Bonus within Dec'16 to Oct'17",
+    "30" => "*Clients who have earned trading commissions from with Dec'16 to Oct'17",
+    "31" => "*Clients who have started the training and are done with the Forex Money maker course",
+    "32" => "*All guest at 2017 end of the year Dinner",
+    "33" => "*Client that come to our office premises to fund their instaforex account",
+    "34" => "*List of clients who dnt recieve SMS sent from our system",
+    "35" => "*Forex Profit Academy clients who havn't started the training at all but have singned in with their emails",
+    "36" => "*Forex Profit Academy clients who havn't progress past the Lesson 1-4 of the Forex money Maker course",
+    "37" => "*Forex Profit Academy clients who are at Lesson 5 of the Forex money maker course",
+    "38" => "*Forex Profit Academy clients who have PAID for the Forex Profit Optimizer course",
+    "39" => "*Consist of clients who have funded and traded the required Volume in the last Three Months.",
+    "40" => "*Consist of clients who have funded and traded the required Volume in the last Six Months.",
+    "41" => "*Consist of clients who have funded and traded the required Volume in the last Twelve Months.",
+    "42" => "*Consist of clients who have NOT funded and traded the required Volume in the last Three Months.",
+    "43" => "*Consist of clients who have NOT funded and traded the required Volume in the last Six Months.",
+    "44" => "*Consist of clients who have NOT funded and traded the required Volume in the last Twelve Months.",
+    "45" => "*Clients Not registered under our Loyality promo",
+    "46" => "*Any one who comments on the article section",
+    "47" => "*All clients who came into the system last month and have opened Instaforex accounts",
+    "48" => "*All clients who came into the system last month who have NOT opened Instaforex accounts and have not gone through our training ",
+    "49" => "*All clients who came into the system last month, have opened Instaforex accounts and have undergone online training",
+    "50" => "*All clients who came into the system last month undergone training and are in course two",
+    "51" => "*All New clients who havn't funded up to $50"
+    );
