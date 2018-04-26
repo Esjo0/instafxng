@@ -309,6 +309,8 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(214, $my_pages_sidebar)) { ?><li><a href="customer_care_log_add.php">Add New Log</a></li><?php } ?>
                         <?php if (in_array(215, $my_pages_sidebar)) { ?><li><a href="customer_care_admin_log_manage.php">Manage Logs</a></li><?php } ?>
                         <?php if (in_array(216, $my_pages_sidebar)) { ?><li><a href="customer_care_all_log_manage.php">Manage All Logs</a></li><?php } ?>
+                        <?php if (in_array(249, $my_pages_sidebar)) { ?><li><a href="operations_log.php">Operations Issue Log</a></li><?php } ?>
+                        <?php if (in_array(250, $my_pages_sidebar)) { ?><li><a href="operations_log_archive.php">Closed Operations Issues</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
