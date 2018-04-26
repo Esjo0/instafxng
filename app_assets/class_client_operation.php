@@ -1891,11 +1891,14 @@ MAIL;
         }
     }
 
+    // Check if account is flagged and  details
     public function account_flagged($user_code) {
         global $db_handle;
 
         $query = "SELECT * FROM user_account_flag WHERE user_code = '$user_code' AND status = '1'";
-        return $db_handle->numRows($query) ? true : false;
+        $result = $db_handle->runQuery($query);
+        $fetch_flag = $db_handle->fetchAssoc($result);
+        return $fetch_flag  ? $fetch_flag  : false;
     }
 
     // This is for a single client

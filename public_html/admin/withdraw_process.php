@@ -168,6 +168,7 @@ if(empty($trans_detail)) {
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script src="operations_comment.js"></script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>

@@ -17,7 +17,7 @@
                         <?php } else { ?>
                             <img src="../images/placeholder.jpg" alt="" class="img-responsive">
                         <?php } ?>
-                        
+
                         <?php if($client_operation->account_flagged($trans_detail['user_code'])) { ?>
                             <p><img class="center-block" src="../images/red-flag.png" alt="" title="This client has an account flagged."></p>
                         <?php } ?>
@@ -29,8 +29,8 @@
                                 <span><?php echo $trans_detail['phone']; ?></span>
                                 <span><?php echo $trans_detail['email']; ?></span>
                                 <hr/>
-<!--                                <span class="text-danger"><strong>Recent Transactions</strong></span>-->
-<!--                                <span>## coming soon ##</span>-->
+                                <!--                                <span class="text-danger"><strong>Recent Transactions</strong></span>-->
+                                <!--                                <span>## coming soon ##</span>-->
                                 <span class="text-danger"><strong>IFX Accounts</strong></span>
                                 <span>
                                     <?php
@@ -44,6 +44,76 @@
                                     }
                                     ?>
                                 </span>
+                                <hr/>
+                                <span><?php $transaction_issue = $admin_object->get_transaction_issue($trans_id);
+                                    if($transaction_issue == false){ ?>
+                                        <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle btn btn-default" style="color:red;" aria-hidden="true"> </i>
+                                        Add to Operations Log<?php
+                                    }else{
+                                        foreach ($transaction_issue as $row_issue){
+                                            if($row_issue['status'] == '1'){ ?>
+                                                <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle btn btn-default" style="color:red;" aria-hidden="true"> </i>
+                                                Add to Operations Log<?php
+                                            }}}?> </span>
+                                <!--Modal-- to add new operations log-->
+                                <div id="add<?php echo $trans_id; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                        class="close">&times;</button>
+                                                <h4 class="modal-title">Add New Record</h4></div>
+                                            <div class="modal-body">
+                                                <form data-toggle="validator" class="form-vertical" role="form" method="post" action="" enctype="multipart/form-data">
+                                                    <input name="transaction_id" class="form-control" type="hidden" value="<?php echo $trans_id ?>"  required>
+                                                    <div class="form-group row">
+                                                        <label for="inputSubtile3" class="col-sm-2 col-form-label">Description</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea name="details" class="form-control" rows="3" placeholder="Enter Detailed Description of Clients issue" required></textarea>
+                                                        </div>
+                                                    </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input name="add" type="submit" class="btn btn-success" value="Add To Records">
+                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                                if (isset($_POST['add'])){
+                                    $transaction_id = $db_handle->sanitizePost(trim($_POST['transaction_id']));
+                                    $query = "SELECT transaction_id FROM operations_log WHERE transaction_id = '$trans_id'";
+                                    $numrows = $db_handle->numRows($query);
+                                    if($numrows == 0){
+                                        $details = $db_handle->sanitizePost(trim($_POST['details']));
+                                        $add = $admin_object->add_issues($trans_id,$details,$admin_code);
+                                        if($add = true) {
+                                            $message_success = "You have successfully added a new record";
+                                        } else {
+                                            $message_error = "Something went wrong. Please try again.";
+                                        }
+
+                                    }elseif($numrows == 1){
+                                        $details = $db_handle->sanitizePost(trim($_POST['details']));
+                                        $query = "SELECT details FROM operations_log WHERE transaction_id = $trans_id LIMIT 1";
+                                        $result = $db_handle->runQuery($query);
+                                        $old_details = $db_handle->fetchAssoc($result);
+                                        foreach ($old_details AS $rowd){$old_details = $rowd['details'];}
+                                        $date = date("D M d, Y G:i");
+                                        $new_details = $old_details."</br><hr/></br>Re-Opened On".$date."<br/><strong> >> </strong>".$details;
+                                        $query = "UPDATE operations_log SET status = '0', details = '$new_details' WHERE transaction_id = '$trans_id'";
+                                        $result = $db_handle->runQuery($query);
+                                        if($result == true){
+                                            $message_success = "You have reopened this issue";
+                                        } else {
+                                            $message_error = "Something went wrong. Please try again.";
+                                        }
+                                    }
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -57,11 +127,78 @@
             <div class="trans_item_content">
                 <div class="row">
                     <div class="col-sm-12 ">
-                        <span id="transaction_identity"><?php echo $trans_id; ?></span>
+                        <span><?php $transaction_issue = $admin_object->get_transaction_issue($trans_id);
+                            if($transaction_issue == false){ ?>
+                                <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle" style="color:red;" aria-hidden="true"> </i>
+                                Add to Operations Log<?php
+                            }else{
+                                foreach ($transaction_issue as $row_issue){
+                                    if($row_issue['status'] == '1'){ ?>
+                                        <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle" style="color:red;" aria-hidden="true"> </i>
+                                        Add to Operations Log<?php
+                                    }}}?> </span>
+                        <!--Modal-- to add new operations log-->
+                        <div id="add<?php echo $trans_id; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                class="close">&times;</button>
+                                        <h4 class="modal-title">Add New Record</h4></div>
+                                    <div class="modal-body">
+                                        <form data-toggle="validator" class="form-vertical" role="form" method="post" action="" enctype="multipart/form-data">
+                                            <input name="transaction_id" class="form-control" type="hidden" value="<?php echo $trans_id ?>"  required>
+                                            <div class="form-group row">
+                                                <label for="inputSubtile3" class="col-sm-2 col-form-label">Description</label>
+                                                <div class="col-sm-10">
+                                                    <textarea name="details" class="form-control" rows="3" placeholder="Enter Detailed Description of Clients issue" required></textarea>
+                                                </div>
+                                            </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input name="add" type="submit" class="btn btn-success" value="Add To Records">
+                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                        if (isset($_POST['add'])){
+                            $transaction_id = $db_handle->sanitizePost(trim($_POST['transaction_id']));
+                            $query = "SELECT transaction_id FROM operations_log WHERE transaction_id = '$trans_id'";
+                            $numrows = $db_handle->numRows($query);
+                            if($numrows == 0){
+                                $details = $db_handle->sanitizePost(trim($_POST['details']));
+                                $add = $admin_object->add_issues($trans_id,$details,$admin_code);
+                                if($add = true) {
+                                    $message_success = "You have successfully added a new record";
+                                } else {
+                                    $message_error = "Something went wrong. Please try again.";
+                                }
+
+                            }elseif($numrows == 1){
+                                $details = $db_handle->sanitizePost(trim($_POST['details']));
+                                $query = "SELECT details FROM operations_log WHERE transaction_id = $trans_id LIMIT 1";
+                                $result = $db_handle->runQuery($query);
+                                $old_details = $db_handle->fetchAssoc($result);
+                                $date = date("D M d, Y G:i");
+                                $new_details = $old_details."</br>Re-Opened On".$date."<br/>".$details;
+                                $query = "UPDATE operations_log SET status = '0', details = '$new_details' WHERE transaction_id = '$trans_id'";
+                                $result = $db_handle->runQuery($query);
+                                if($result == true){
+                                    $message_success = "You have reopened this issue";
+                                } else {
+                                    $message_error = "Something went wrong. Please try again.";
+                                }
+                            }
+                        }
+                        ?>
                         <span><strong>Order:</strong> &dollar; <?php echo $trans_detail['dollar_ordered']; ?> - &#8358; <?php echo number_format($trans_detail['naira_total_payable'], 2, ".", ","); ?></span>
                         <span><strong>Date: </strong><?php echo datetime_to_text($trans_detail['deposit_created']); ?></span>
                         <span><strong>Account:</strong> <?php echo $trans_detail['ifx_acct_no']; ?></span>
-                        
+
                     </div>
                 </div>
             </div>
@@ -97,13 +234,13 @@
             </div>
 
 
-             <!--Modal - confirmation boxes--> 
+            <!--Modal - confirmation boxes-->
             <div id="save-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
-                                class="close">&times;</button>
+                                    class="close">&times;</button>
                             <h4 class="modal-title">Save Comment</h4></div>
                         <div class="modal-body">Do you want to save the information?</div>
                         <div class="modal-footer">
@@ -121,28 +258,75 @@
         <h5>Admin Remarks</h5>
         <div style="max-height: 550px; overflow: scroll;">
             <?php
-                if(isset($trans_remark) && !empty($trans_remark)) {
-                    foreach ($trans_remark as $row) {
-            ?>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="transaction-remarks">
-                    <span id="trans_remark_author"><?php echo $row['admin_full_name']; ?></span>
-                    <span id="trans_remark"><?php echo $row['comment']; ?></span>
-                    <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+            if(isset($trans_remark) && !empty($trans_remark)) {
+                foreach ($trans_remark as $row) {
+                    ?>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="transaction-remarks">
+                                <span id="trans_remark_author"><?php echo $row['admin_full_name']; ?></span>
+                                <span id="trans_remark"><?php echo $row['comment']; ?></span>
+                                <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+                            </div>
+                        </div>
+                    </div>
+                <?php } } else { ?>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="transaction-remarks">
+                            <span class="text-danger"><em>There is no remark to display.</em></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <?php } } else { ?>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="transaction-remarks">
-                        <span class="text-danger"><em>There is no remark to display.</em></span>
-                    </div>
-                </div>
-            </div>
             <?php } ?>
+
         </div>
+        <?php $transaction_issue = $admin_object->get_transaction_issue($trans_id);
+        foreach($transaction_issue as $row2) {
+            if($row2['status'] == '0'){?>
+                <h5>OPERATIONS LOG COMMENTS</h5>
+                <div class="row" style="margin: 15px;">
+                    <div class="col-sm-4"><strong>Issue Status</strong></div>
+                    <div class="col-sm-8"> <?php echo status_operations($row2['status']); ?><?php if($row2['status'] == 1){ echo " on ".date_to_text($row2['date_closed']);}?></div>
+                </div>
+
+                <div class="row" style="margin: 15px;">
+                    <div class="col-sm-4"><strong>Issue Discription</strong></div>
+                    <div class="col-sm-8"> <?php echo $row2['details'];?></div>
+                </div>
+                <div id="results" style="height: 150px; overflow: auto;">
+                    <?php
+                    $comments_details = $admin_object->get_comment_details( $trans_id );
+                    if(!empty($comments_details)){
+                        foreach($comments_details as $row3) { ?>
+                            <div style="background-color: #f5f5f5; margin: 15px; border: 1px solid #b4b4b4;">
+
+                                <div  style="color: #0074ba"><i><?php
+                                        $admin_code = $row3['admin_code'];
+                                        $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
+                                        $admin_name = $destination_details['first_name'];
+                                        $admin_lname = $destination_details['last_name'];
+                                        echo $admin_name . " " . $admin_lname;?></i></div><br/>
+                                <div class="row">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-8"><?php echo $row3['comment']; ?></div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                                <span class="time-right" style="color: #a9484c"><?php echo datetime_to_text($row3['created']); ?></span>
+                            </div>
+                        <?php }} else{ ?> <img class="img-responsive" src="../images/No-Comments.png" /> <?php } ?>
+                </div>
+                <form id="myForm" method="post" data-toggle="validator" class="form-vertical" role="form" enctype="multipart/form-data">
+                    <input id="admin" name="admin" type="hidden" value="<?php echo $admin_code;?>" required>
+                    <input id="trans_id" name="trans_id" type="hidden" value="<?php echo $trans_id; ?>" required>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <textarea id="comment" name="comment" class="form-control" rows="2" placeholder="Enter Detailed Description of Clients issue" required></textarea>
+                        </div>
+                    </div>
+                    <input type="button" name="addcomment"  class="btn btn-warning" onclick="SubmitFormData();" value="Add New Comment"></input>
+                </form>
+            <?php }}?>
     </div>
 
 </div>
