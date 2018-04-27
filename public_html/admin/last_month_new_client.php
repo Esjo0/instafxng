@@ -1,29 +1,32 @@
 <?php
-require_once("../../init/initialize_admin.php");
+require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
 $from_date = date('Y-m-d', strtotime('first day of last month'));
 $to_date = date('Y-m-d', strtotime('last day of last month'));
-
-if(isset($_POST['search'])) {
+include "last.php";
+if(isset($_POST['search']) || isset($script_filter)) {
     $search_text = $_POST['search_text'];
+    if(isset($script_filter)){$filter = $script_filter;}
     $filter = $_POST['filter'];
-            if($filter == '1'){ $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone FROM user AS u WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') ORDER BY u.created DESC ";}
-            if($filter == '2'){$query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) GROUP BY user.phone";}
-            if($filter == '3'){$query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND NOT(free_training_campaign.email = user.email) GROUP BY user.phone";}
-            if($filter == '4'){$query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND (free_training_campaign.email = user.email) GROUP BY user.phone";}
-            if($filter == '5'){$query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,user_edu_deposits WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_edu_deposits.user_code) AND (MONTH(user_edu_deposits.created) = $current_month) GROUP BY user.phone";}
-            if($filter == '6'){$query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone FROM user,user_deposit,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) AND (user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id) AND (user_deposit.real_dollar_equivalent > 50) GROUP BY user.phone";}
+    var_dump($filter);
+    if(isset($filter) || isset($search_text)){
+            if($filter == 1){ $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone FROM user AS u WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') ORDER BY u.created DESC ";}
+            if($filter == 2){$query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') GROUP BY user.phone";}
+            if($filter == 3){$query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND NOT(free_training_campaign.email = user.email) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') GROUP BY user.phone";}
+            if($filter == 4){$query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND (free_training_campaign.email = user.email) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') GROUP BY user.phone";}
+            if($filter == 5){$query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,user_edu_deposits WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_edu_deposits.user_code) AND (MONTH(user_edu_deposits.created) = $current_month) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') GROUP BY user.phone";}
+            if($filter == 6){$query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone FROM user,user_deposit,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) AND (user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id) AND (user_deposit.real_dollar_equivalent > 50) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') GROUP BY user.phone";}
 
 } else {
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+    $query = "SELECT user.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
         FROM user AS u
         WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY u.created DESC ";
+    }
 }
-var_dump($query);
-$_SESSION['query'] = $query;
+if(isset($query)){$_SESSION['query'] = $query;}
 $query = $_SESSION['query'];
 var_dump($query);
 $numrows = $db_handle->numRows($query);
@@ -53,7 +56,7 @@ $client_insight = $db_handle->fetchAssoc($result);
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="myForm">
 <head>
     <base target="_self">
     <meta charset="UTF-8">
@@ -62,16 +65,16 @@ $client_insight = $db_handle->fetchAssoc($result);
     <meta name="title" content="Instaforex Nigeria | Client Profile Insight" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
-    <?php require_once '../layouts/head_meta.php'; ?>
+    <?php require_once 'layouts/head_meta.php'; ?>
 </head>
 <body>
-<?php require_once '../layouts/header.php'; ?>
+<?php require_once 'layouts/header.php'; ?>
 <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
 <div id="main-body" class="container-fluid">
     <div class="row no-gutter">
         <!-- Main Body - Side Bar  -->
         <div id="main-body-side-bar" class="col-md-4 col-lg-3 left-nav">
-            <?php require_once '../layouts/sidebar.php'; ?>
+            <?php require_once 'layouts/sidebar.php'; ?>
         </div>
 
         <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
@@ -81,8 +84,9 @@ $client_insight = $db_handle->fetchAssoc($result);
             ================================================== -->
             <div class="search-section">
                 <div class="row">
+                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                     <div class="col-md-4">
-                        <select name="filter" class="form-control" id="filter" placeholder="Filter by">
+                        <select name="filter" class="form-control" id="filter" placeholder="Filter by" id="filter" onchange="myFunction()">
                             <option value="1" >Last Months New Clients with Accounts</option>
                             <option value="2" >Last Months New Clients without Accounts and have no Training</option>
                             <option value="3" >Last Months New Clients without Accounts and have Training</option>
@@ -91,16 +95,15 @@ $client_insight = $db_handle->fetchAssoc($result);
                         </select>
                     </div>
                     <div class="col-md-8">
-                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                             <div class="input-group">
                                 <input type="hidden" name="search_param" value="all" id="search_param">
-                                <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
+                                <input type="text" class="form-control" name="search_text" placeholder="Search term...">
                                     <span class="input-group-btn">
                                         <button name="search" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                                     </span>
                             </div>
-                        </form>
                     </div>
+                    </form>
                 </div>
             </div>
 
@@ -113,15 +116,15 @@ $client_insight = $db_handle->fetchAssoc($result);
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
-                        <?php require_once '../layouts/feedback_message.php'; ?>
+                        <?php require_once 'layouts/feedback_message.php'; ?>
 
-                        <p>Details of unique clients that joined the system last month.</p>
+                        <p id="display">Details of unique clients that joined the system last month.</p>
 
                         <?php if(isset($numrows)) { ?>
                             <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                         <?php } ?>
 
-                        <?php if(isset($client_insight) && !empty($client_insight)) { require '../layouts/pagination_links.php'; } ?>
+                        <?php if(isset($client_insight) && !empty($client_insight)) { require 'layouts/pagination_links.php'; } ?>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
@@ -157,7 +160,7 @@ $client_insight = $db_handle->fetchAssoc($result);
                             </div>
                         <?php } ?>
 
-                        <?php if(isset($client_insight) && !empty($client_insight)) { require '../layouts/pagination_links.php'; } ?>
+                        <?php if(isset($client_insight) && !empty($client_insight)) { require 'layouts/pagination_links.php'; } ?>
 
                     </div>
                 </div>
@@ -171,6 +174,28 @@ $client_insight = $db_handle->fetchAssoc($result);
 
     </div>
 </div>
-<?php require_once '../layouts/footer.php'; ?>
+<script>
+    function myFunction() {
+        var x = document.getElementById("filter").value;
+        var text = "";
+        if(x == 1){ text = "Details of unique clients that joined the system last month New Clients with Accounts.";}
+        if(x == 2){ text = "Details of unique clients that joined the system last month New Clients without Accounts and have no Training.";}
+        if(x == 3){ text = "Details of unique clients that joined the system last month New Clients without Accounts and have Training.";}
+        if(x == 4){ text = "Details of unique clients that joined the system last month New Clients Still in course 2 in current month.";}
+        if(x == 5){ text = "Details of unique clients that joined the system last month New Clients not yet funded above $50.";}
+
+        $.post("last.php", { filter: x, text:text },
+            function(data) {
+                $('#results').html(data);
+            });
+
+
+            document.getElementById("display").innerHTML = "<?php if(isset($text)){echo $text;}?>";
+    }
+</script>
+<script>
+    document.getElementById("display").innerHTML = "<?php if(isset($text)){echo $text;}?>";
+    </script>
+<?php require_once 'layouts/footer.php'; ?>
 </body>
 </html>
