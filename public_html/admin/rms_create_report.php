@@ -7,9 +7,11 @@ if (!$session_admin->is_logged_in())
 
 if(isset($_POST['process']))
 {
-    $from_date = $db_handle->sanitizePost(trim($_POST['from_date']));
-    $to_date = $db_handle->sanitizePost(trim($_POST['to_date']));
-    $date_collection = date_range($to_date, $from_date, 'Y-m-d');
+    $window_period = $db_handle->sanitizePost(trim($_POST['from_date']))."*".$db_handle->sanitizePost(trim($_POST['to_date']));
+    $report = $db_handle->sanitizePost(trim($_POST['content']));
+    $target_id = $db_handle->sanitizePost(trim($_POST['target_id']));
+    $new_report = $obj_rms->set_report($window_period, $_SESSION['admin_unique_code'], $report, $target_id);
+    $new_report ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
 ?>
 <!DOCTYPE html>
@@ -55,29 +57,51 @@ if(isset($_POST['process']))
                 <div id="main-body-side-bar" class="col-md-4 col-lg-3 left-nav">
                 <?php require_once 'layouts/sidebar.php'; ?>
                 </div>
-                
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
                 <div id="main-body-content-area" class="col-md-8 col-lg-9">
-                    
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>REPORTING SYSTEM SETTINGS</strong></h4>
+                            <h4><strong>CREATE REPORT</strong></h4>
                         </div>
                     </div>
-                    
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <a class="btn btn-default" title="Previous Reports"><i class="fa fa-arrow-circle-left"></i> Previous Reports</a>
-                                <a class="btn btn-default pull-right" title="Target Report">ADD TARGET REPORT  <i class="fa fa-plus-circle"></i> </a>
+                                <a href="rms_reports.php" class="btn btn-default" title="Previous Reports"><i class="fa fa-arrow-circle-left"></i> Previous Reports</a>
                                 <p>Select a date range below and create a report. </p>
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                    <input type="hidden" name="MAX_FILE_SIZE" value="500000" />
-                                    <input type="hidden" name="POST_MAX_SIZE" value="500000" />
+                                    <?php if(isset($_GET['t_id'])){ ?>
+                                        <input name="target_id" type="hidden" value="<?php echo $_GET['t_id']?>">
+                                    <?php } ?>
+                                    <?php if(isset($_GET['t_id']) && !empty(isset($_GET['t_id']))):
+                                        $target_details = $obj_rms->get_target_by_id($_GET['t_id']);
+                                        $target_details = explode('*', $target_details['window_period']);
+                                        ?>
+                                        <input name="from_date" type="hidden" value="<?php echo $target_details[0]?>">
+                                        <input name="to_date" type="hidden" value="<?php echo date('Y-m-d')?>">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <div class="col-sm-2"></div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group date">
+                                                        <input disabled placeholder="Date Range(From)" value="<?php echo $target_details[0] ?>"  type="text" class="form-control" id="datetimepicker" required>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group date">
+                                                        <input disabled value="<?php echo date('Y-m-d'); ?>" type="text" class="form-control" id="datetimepicker2" required>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2"></div>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+                                    <?php if(!isset($_GET['t_id'])):?>
                                     <div class="form-group">
                                         <div class="col-sm-12">
                                             <div class="col-sm-2"></div>
@@ -110,7 +134,8 @@ if(isset($_POST['process']))
                                             <div class="col-sm-2"></div>
                                         </div>
                                     </div>
-                                    <div style="display: none" class="form-group">
+                                    <?php endif; ?>
+                                    <div class="form-group">
                                         <div class="col-sm-12">
                                             <textarea placeholder="Enter your report here..." name="content" id="content" rows="5" class="form-control" required></textarea>
                                         </div>
@@ -138,7 +163,6 @@ if(isset($_POST['process']))
                                         </div>
                                     </div>
                                 </form>
-
                             </div>
                         </div>
                     </div>
