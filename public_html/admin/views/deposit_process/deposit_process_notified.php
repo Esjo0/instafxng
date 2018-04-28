@@ -104,12 +104,12 @@ if(!empty($trans_detail['points_claimed_id'])) {
 
                                     }elseif($numrows == 1){
                                         $details = $db_handle->sanitizePost(trim($_POST['details']));
-                                        $query = "SELECT details FROM operations_log WHERE transaction_id = $trans_id LIMIT 1";
+                                        $query = "SELECT details FROM operations_log WHERE transaction_id = '$trans_id' LIMIT 1";
                                         $result = $db_handle->runQuery($query);
                                         $old_details = $db_handle->fetchAssoc($result);
                                         foreach ($old_details AS $rowd){$old_details = $rowd['details'];}
                                         $date = date("D M d, Y G:i");
-                                        $new_details = $old_details."</br><hr/></br>Re-Opened On".$date."<br/><strong> >> </strong>".$details;
+                                        $new_details = $old_details."</br><hr/></br>Re-Opened On ".$date."<br/><strong> >> </strong>".$details;
                                         $query = "UPDATE operations_log SET status = '0', details = '$new_details' WHERE transaction_id = '$trans_id'";
                                         $result = $db_handle->runQuery($query);
                                         if($result == true){
@@ -345,20 +345,15 @@ if(!empty($trans_detail['points_claimed_id'])) {
                     $comments_details = $admin_object->get_comment_details( $trans_id );
                     if(!empty($comments_details)){
                         foreach($comments_details as $row3) { ?>
-                            <div style="background-color: #f5f5f5; margin: 15px; border: 1px solid #b4b4b4;">
-
-                                <div  style="color: #0074ba"><i><?php
-                                        $admin_code = $row3['admin_code'];
-                                        $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
-                                        $admin_name = $destination_details['first_name'];
-                                        $admin_lname = $destination_details['last_name'];
-                                        echo $admin_name . " " . $admin_lname;?></i></div><br/>
-                                <div class="row">
-                                    <div class="col-sm-2"></div>
-                                    <div class="col-sm-8"><?php echo $row3['comment']; ?></div>
-                                    <div class="col-sm-2"></div>
-                                </div>
-                                <span class="time-right" style="color: #a9484c"><?php echo datetime_to_text($row3['created']); ?></span>
+                            <div class="transaction-remarks">
+                                                                                        <span id="trans_remark_author"><?php
+                                                                                            $admin_code = $row3['admin_code'];
+                                                                                            $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
+                                                                                            $admin_name = $destination_details['first_name'];
+                                                                                            $admin_lname = $destination_details['last_name'];
+                                                                                            echo $admin_name . " " . $admin_lname;?></span>
+                                <span id="trans_remark"><?php echo $row3['comment']; ?></span>
+                                <span id="trans_remark_date"><?php echo datetime_to_text($row3['created']); ?></span>
                             </div>
                         <?php }} else{ ?> <img class="img-responsive" src="../images/No-Comments.png" /> <?php } ?>
                 </div>
