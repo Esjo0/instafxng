@@ -61,15 +61,11 @@ $report_details = $obj_rms->get_report_by_id($_GET['r_id']);
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <a href="<?php echo $_SERVER['HTTP_REFERER']; ?>" class="btn btn-default" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a>
-
                                 <p><b>Author: </b><?php echo $admin_object->get_admin_name_by_code($report_details['admin_code']); ?></p>
-
                                 <p><b>Created: </b><?php echo datetime_to_text($report_details['created']); ?></p>
-
                                 <p><b>Period: </b><?php $window_period = explode('*', $report_details['window_period']); ?>
                                     <?php echo $window_period[0]; ?>  <i class='glyphicon glyphicon-arrow-right'></i>  <?php echo $window_period[1]; ?>
                                 </p>
-
                                 <p><b>Reviewed: </b>
                                     <?php
                                     $reviewed = explode(',', $report_details['created']);
@@ -79,9 +75,16 @@ $report_details = $obj_rms->get_report_by_id($_GET['r_id']);
                                     }
                                     ?>
                                 </p>
-
-                                <p><b>Attached Files: </b><em>none</em></p>
-
+                                <p><b>Attached Files: </b>
+                                    <span>
+                                        <?php
+                                        $attachments = $obj_rms->get_report_attachements($report_details['report_id']);
+                                        if(isset($attachments) && !empty($attachments)):
+                                        foreach ($attachments as $row) {?>
+                                            <a href="<?php echo $row['url']; ?>" download="<?php echo $row['name']; ?>"><?php echo $row['name']; ?></a><br/>
+                                        <?php } endif; ?>
+                                    </span>
+                                </p>
                                 <p><b>Report: </b><?php echo $report_details['report'];?></p>
                             </div>
                         </div>

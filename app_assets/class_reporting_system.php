@@ -77,7 +77,17 @@ class Reporting_System
             $query = "INSERT INTO rms_reports (window_period, admin_code, report) VALUES ('$window_period', '$admin_code', '$report')";
         }
         $db_handle->runQuery($query);
-        return $db_handle->affectedRows() > 0 ? true : false;
+        $response = array();
+        if($db_handle->affectedRows() > 0)
+        {
+            $response['status'] = true;
+            $response['report_id'] = $db_handle->insertedId();
+        }
+        else{
+            $response['status'] = false;
+            $response['report_id'] = null;
+        }
+        return  $response;
     }
 
     public function get_report_comment($report_id)
@@ -166,6 +176,23 @@ class Reporting_System
     {
         empty($report_id) ? $x = "Routine Report" : $x = "Target Report";
         return $x;
+    }
+
+    public function get_report_attachements($report_id)
+    {
+        $path = "report_attachments".DIRECTORY_SEPARATOR.$report_id;
+        $files = scandir($path);
+        $attachments = array();
+        foreach ($files as $row)
+        {
+            if (strlen($row) > 2)
+            {
+                $file_name = $row;
+                $file_url = 'report_attachments'.DIRECTORY_SEPARATOR.$report_id.DIRECTORY_SEPARATOR.$row;
+                $attachments[] = array('name' => $file_name, 'url' => $file_url);
+            }
+        }
+        return $attachments;
     }
 }
 

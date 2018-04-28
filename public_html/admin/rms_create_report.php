@@ -11,7 +11,19 @@ if(isset($_POST['process']))
     $report = $db_handle->sanitizePost(trim($_POST['content']));
     $target_id = $db_handle->sanitizePost(trim($_POST['target_id']));
     $new_report = $obj_rms->set_report($window_period, $_SESSION['admin_unique_code'], $report, $target_id);
-    $new_report ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
+    if(count($_FILES['attachments']['name']))
+    {
+        foreach ($_FILES['attachments']['name'] as $key => $value)
+        {
+            $tmp_name = $_FILES['attachments']["tmp_name"][$key];
+            $name = strtolower($_FILES['attachments']["name"][$key]);
+            $dirname = "report_attachments".DIRECTORY_SEPARATOR.$new_report['report_id'];
+            if(!is_file("report_attachments")){mkdir("report_attachments");}
+            if(!is_file($dirname)){mkdir($dirname);}
+            move_uploaded_file($tmp_name, $dirname.DIRECTORY_SEPARATOR.$name);
+        }
+    }
+    $new_report['status'] ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
 ?>
 <!DOCTYPE html>
@@ -44,8 +56,36 @@ if(isset($_POST['process']))
                 toolbar2: "| print preview media | forecolor backcolor emoticons",
                 image_advtab: true,
                 external_filemanager_path: "../filemanager/",
-                filemanager_title: "Instafxng Filemanager",
+                filemanager_title: "Instafxng Filemanager"
             });
+        </script>
+        <script>
+            function formatFileSize(bytes)
+            {
+                if(bytes == 0) return '0 Bytes';
+                var k = 1000,
+                    dm = 1,
+                    sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                    i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            }
+            function add_file_to_table(file_input, file_table)
+            {
+                var file_selector = document.getElementById(file_input);
+                var file_list = document.getElementById(file_table);
+                var i, j;
+                for (i = 0; i < file_selector.files.length; ++i)
+                {
+                    j = file_selector.files[i].name;
+                    var row = file_list.insertRow(0);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    cell1.innerHTML = i + 1;
+                    cell2.innerHTML = file_selector.files[i].name;
+                    cell3.innerHTML = formatFileSize(file_selector.files[i].size);
+                }
+            }
         </script>
     </head>
     <body>
@@ -142,9 +182,26 @@ if(isset($_POST['process']))
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-12">
+                                            <table>
+                                                <thead>
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <input name="attachments[]" onchange="add_file_to_table(this.id, 'file_table')" style="display:none" id="file_input" type="file" multiple>
+                                                        <label for="file_input" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-file"></i> Add Attachment</label>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="file_table">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
                                             <button type="button" data-target="#add-report-confirm" data-toggle="modal" class="btn btn-success"><i class="fa fa-send fa-fw"></i> Submit</button>
                                         </div>
                                     </div>
+
                                     <!-- Modal - confirmation boxes -->
                                     <div id="add-report-confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                         <div class="modal-dialog">
