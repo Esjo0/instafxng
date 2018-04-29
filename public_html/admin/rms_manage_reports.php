@@ -84,7 +84,7 @@ $pending_reports = $obj_rms->get_pending_reports($_SESSION['admin_unique_code'])
                                             <?php $window_period = explode('*', $row['window_period']); ?>
                                             <b><?php echo $window_period[0]; ?>  <i class='glyphicon glyphicon-arrow-right'></i>  <?php echo $window_period[1]; ?></b>
                                         </td>
-                                        <td><?php echo $obj_rms->get_report_type($row['report_id']);?></td>
+                                        <td><?php echo $obj_rms->get_report_type($row['target_id']);?></td>
                                         <td><?php echo datetime_to_text($row['created'])?></td>
                                         <td><center><a class="btn btn_sm btn-info" href="rms_read_report.php?r_id=<?php echo $row['report_id']?>">Read</a></center></td>
                                     </tr>

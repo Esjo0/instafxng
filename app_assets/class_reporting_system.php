@@ -172,13 +172,13 @@ class Reporting_System
 
     }
 
-    public function get_report_type($report_id)
+    public function get_report_type($target_id)
     {
-        empty($report_id) ? $x = "Routine Report" : $x = "Target Report";
+        is_null($target_id) || empty($target_id) ? $x = "Routine Report" : $x = "Target Report";
         return $x;
     }
 
-    public function get_report_attachements($report_id)
+    public function get_report_attachments($report_id)
     {
         $path = "report_attachments".DIRECTORY_SEPARATOR.$report_id;
         $files = scandir($path);
@@ -193,6 +193,53 @@ class Reporting_System
             }
         }
         return $attachments;
+    }
+
+    public function flag($report_id, $admin_code, $action = 0)
+    {
+        //Actions: 0 - update
+        //Actions: 1 - get status
+        global $db_handle;
+        if($action === 0)
+        {
+            $query = "SELECT reviewed FROM rms_reports WHERE report_id = $report_id";
+            $result = $db_handle->runQuery($query);
+            $result = $db_handle->fetchAssoc($result)[0]['reviewed'];
+            $result = explode(',', $result);
+            if(in_array($admin_code, $result))
+            {
+                $key = array_search($admin_code, $result);
+                unset($result[$key]);
+                $update = implode(',', $result);
+                $query = "UPDATE rms_reports SET reviewed = '$update' WHERE report_id = $report_id";
+            }
+            else
+            {
+                $update = implode(',', $result).",".$admin_code;
+                $query = "UPDATE rms_reports SET reviewed = '$update' WHERE report_id = $report_id";
+            }
+            return $db_handle->runQuery($query);
+        }
+        if($action === 1)
+        {
+            $query = "SELECT reviewed FROM rms_reports WHERE report_id = $report_id";
+            $result = $db_handle->runQuery($query);
+            $result = $db_handle->fetchAssoc($result)[0]['reviewed'];
+            $result = explode(',', $result);
+            $feedback = array();
+            if(in_array($admin_code, $result))
+            {
+                $feedback['title'] = "Read Later";
+                $feedback['text'] = '<i class="glyphicon glyphicon-check"></i> Read Later';
+            }
+            else
+            {
+                $feedback['title'] = "Mark As Read";
+                $feedback['text'] = '<i class="glyphicon glyphicon-check"></i> Read';
+            }
+            return $feedback;
+        }
+
     }
 }
 

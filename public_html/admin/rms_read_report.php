@@ -3,6 +3,12 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()){    redirect_to("login.php");}
 if(!isset($_GET['r_id']) || empty($_GET['r_id'])) {redirect_to($_SERVER['HTTP_REFERER']);}
 $report_details = $obj_rms->get_report_by_id($_GET['r_id']);
+if(isset($_POST['flag']))
+{
+    $flag = $obj_rms->flag($_POST['report_id'], $_SESSION['admin_unique_code']);
+    $flag ? $message_success = "Operation successful." : $message_error = "Operation failed.";
+}
+$flag_status = $obj_rms->flag($_POST['report_id'], $_SESSION['admin_unique_code'], 1);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +66,12 @@ $report_details = $obj_rms->get_report_by_id($_GET['r_id']);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <a href="<?php echo $_SERVER['HTTP_REFERER']; ?>" class="btn btn-default" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a>
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <a href="<?php echo $_SERVER['HTTP_REFERER']; ?>" class="btn btn-sm btn-default pull-left" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a>
+                                    <input value="<?php echo $report_details['report_id']; ?>" name="report_id" type="hidden"/>
+                                    <button name="flag" type="submit" class="btn btn-sm btn-success pull-right" title="<?php echo $flag_status['title'] ?>"><?php echo $flag_status['text'] ?></button>
+                                </form>
+                                <br/><br/>
                                 <p><b>Author: </b><?php echo $admin_object->get_admin_name_by_code($report_details['admin_code']); ?></p>
                                 <p><b>Created: </b><?php echo datetime_to_text($report_details['created']); ?></p>
                                 <p><b>Period: </b><?php $window_period = explode('*', $report_details['window_period']); ?>
@@ -78,7 +89,7 @@ $report_details = $obj_rms->get_report_by_id($_GET['r_id']);
                                 <p><b>Attached Files: </b>
                                     <span>
                                         <?php
-                                        $attachments = $obj_rms->get_report_attachements($report_details['report_id']);
+                                        $attachments = $obj_rms->get_report_attachments($report_details['report_id']);
                                         if(isset($attachments) && !empty($attachments)):
                                         foreach ($attachments as $row) {?>
                                             <a href="<?php echo $row['url']; ?>" download="<?php echo $row['name']; ?>"><?php echo $row['name']; ?></a><br/>
