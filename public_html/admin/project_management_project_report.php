@@ -165,9 +165,7 @@ $project_reports = $db_handle->fetchAssoc($result);
                 toolbar2: "| print preview media | forecolor backcolor emoticons",
                 image_advtab: true,
                 external_filemanager_path: "../filemanager/",
-                filemanager_title: "Instafxng Filemanager",
-//                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
-
+                filemanager_title: "Instafxng Filemanager"
             });
         </script>
     </head>

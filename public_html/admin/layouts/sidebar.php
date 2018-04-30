@@ -136,7 +136,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(211, $my_pages_sidebar)) { ?><li><a href="independence_quiz_results.php" title="Independence Quiz Results">2017 Independence Quiz Results</a></li><?php } ?>
                         <?php if (in_array(211, $my_pages_sidebar)) { ?><li><a href="q2_promo_results.php" title="Q2 Promo Results">2018 Q2 Promo Results</a></li><?php } ?>
                         <?php if (in_array(228, $my_pages_sidebar)) { ?><li><a href="dinner_2017_new_reg.php" title="New Dinner 2017 Reg">New Dinner 2017 Reg</a></li><?php } ?>
-                        <?php if (in_array(229, $my_pages_sidebar)) { ?><li><a href="dinner_2017_all_reg.php?p=all" title="All Dinner 2017 Reg">All Dinner 2017 Reg</a></li><?php } ?>
+                        <?php if (in_array(229, $my_pages_sidebar)) { ?><li><a href="dinner_2017_all_reg.php" title="All Dinner 2017 Reg">All Dinner 2017 Reg</a></li><?php } ?>
                         <?php if (in_array(230, $my_pages_sidebar)) { ?><li><a href="dinner_2017_signin.php" title="Dinner Sign In">Dinner Sign In</a></li><?php } ?>
                     </ul>
                 </li>
@@ -338,6 +338,10 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> HR Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(231, $my_pages_sidebar)) { ?><li><a href="hr_attendance_system_logs.php" title="Attendance Logs">Attendance Logs</a></li><?php } ?>
+                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_settings.php" title="Staff Reports Settings">Staff Reports Settings</a></li><?php //} ?>
+                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_manage_targets.php" title="Manage Staff Targets">Manage Staff Targets</a></li><?php //} ?>
+                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_reports.php" title="Reports">Reports</a></li><?php //} ?>
+                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_manage_reports.php" title="Manage Staff Reports">Manage Staff Reports</a></li><?php //} ?>
                     </ul>
                 </li>
                 <li class="dropdown">
