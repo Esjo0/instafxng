@@ -122,11 +122,11 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
     </div>
 </div>
 
-<!--<div class="row ">-->
-<!--    <div class="col-sm-6 col-md-12">-->
-<!--        <div class="nav-display super-shadow">-->
-<!--            <header><i class="fa fa-bars fa-fw"></i> Economic Event Timer</header>-->
-<!--            <article class="text-center"><!-- InstaForex--><iframe src="https://informers.instaforex.com/event_countdown_timer/run/w=280&count=5&mode=horizontal_500_3000&bg=ffffff_e5e5e5_8_666_0_0_3_1_000000&bgl=ff0000_910000_ffffff_h&bgv=ff0000_910000_ffffff_h_666_3_8&tt=000000_h&ch=undefined&pg=0&cht=ff0000_910000&high=0&lh=&i=1&x=BBLR&type=0" frameborder="0" width="288" height="269" scrolling="no" id="iframesp" title="MT5 - Universal Forex (Forex) portal for traders"></iframe><noframes><a href="https://www.instaforex.com/">Forex Portal</a></noframes><!-- InstaForex--></article>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="row ">
+    <div class="col-sm-6 col-md-12">
+        <div class="nav-display super-shadow">
+            <header><i class="fa fa-bars fa-fw"></i> Economic Event Timer</header>
+            <article class="text-center"><!-- InstaForex--><iframe src="https://informers.instaforex.com/event_countdown_timer/run/w=280&count=5&mode=horizontal_500_3000&bg=ffffff_e5e5e5_8_666_0_0_3_1_000000&bgl=ff0000_910000_ffffff_h&bgv=ff0000_910000_ffffff_h_666_3_8&tt=000000_h&ch=undefined&pg=0&cht=ff0000_910000&high=0&lh=&i=1&x=BBLR&type=0" frameborder="0" width="288" height="269" scrolling="no" id="iframesp" title="MT5 - Universal Forex (Forex) portal for traders"></iframe><noframes><a href="https://www.instaforex.com/">Forex Portal</a></noframes><!-- InstaForex--></article>
+        </div>
+    </div>
+</div>

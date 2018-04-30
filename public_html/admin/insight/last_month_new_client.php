@@ -1,24 +1,90 @@
 <?php
-require_once("../../init/initialize_admin.php");
+require_once("..\..\init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-
 $from_date = date('Y-m-d', strtotime('first day of last month'));
 $to_date = date('Y-m-d', strtotime('last day of last month'));
 
-if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
+
+//nbnm,./.lkjh
+if(isset($_POST['search']))
+{
     $search_text = $_POST['search_text'];
+    $filter = $_POST['filter'];
+    if(isset($filter) || isset($search_text))
+    {
+        switch ($filter)
+        {
+            case 1:
+                $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone 
+                          FROM user AS u 
+                          WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') 
+                          BETWEEN '$from_date' AND '$to_date') AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') 
+                          ORDER BY u.created DESC ";
+                $dispaly_msg = "Details of unique clients that joined the system last month.";
+                break;
+            case 2:
+                $query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone 
+                          FROM user,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') 
+                          BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') 
+                          GROUP BY user.phone";
+                $dispaly_msg = "Details of unique clients that joined the system last month New Clients with Accounts.";
+                break;
+            case 3:
+                $query = "SELECT user.user_code, user.first_name, user.email, user.phone 
+                          FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') 
+                          BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND NOT(free_training_campaign.email = user.email) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') GROUP BY user.phone";
+                $dispaly_msg = "Details of unique clients that joined the system last month New Clients without Accounts and NO training.";
+                break;
+            case 4:
+                $query = "SELECT user.user_code, user.first_name, user.email, user.phone 
+                FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') 
+                BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND (free_training_campaign.email = user.email) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') 
+                GROUP BY user.phone";
+                $dispaly_msg = "Details of unique clients that joined the system last month New Clients without Accounts and have Training.";
+                break;
+            case 5:
+                $query = "SELECT user.user_code, user.first_name, user.email, user.phone 
+                          FROM user,user_ifxaccount,user_edu_deposits 
+                          WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') 
+                          BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_edu_deposits.user_code) AND (MONTH(user_edu_deposits.created) = $current_month) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') 
+                          GROUP BY user.phone";
+                $dispaly_msg = "Details of unique clients that joined the system last month New Clients Still Forex Optimizer course in this current month.";
+                break;
+            case 6:
+                $query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone
+                          FROM user,user_deposit,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') 
+                          BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) AND (user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id) AND (user_deposit.real_dollar_equivalent < 50) AND (user.email LIKE '%$search_text%' OR user.first_name LIKE '%$search_text%' OR user.middle_name LIKE '%$search_text%' OR user.last_name LIKE '%$search_text%' OR user.phone LIKE '%$search_text%' OR user.created LIKE '$search_text%') 
+                          GROUP BY user.phone";
+                $dispaly_msg = "Details of unique clients that joined the system last month New Clients not yet funded above $50.";
+                break;
 
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
-        FROM user AS u
-        WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') ORDER BY u.created DESC ";
+            default:
+                $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone 
+                          FROM user AS u 
+                          WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') 
+                          BETWEEN '$from_date' AND '$to_date') AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') 
+                          ORDER BY u.created DESC ";
+                $dispaly_msg = "Details of unique clients that joined the system last month.";
+                break;
+        }
 
-} else {
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+
+        }
+    else{
+    $query = "SELECT user.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
         FROM user AS u
         WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY u.created DESC ";
+        $dispaly_msg = "Details of unique clients that joined the system last month New Clients.";
+    }
 }
+
+if(isset($query))
+{
+    $_SESSION['query'] = $query;
+}
+$query = $_SESSION['query'];
 
 $numrows = $db_handle->numRows($query);
 
@@ -47,7 +113,7 @@ $client_insight = $db_handle->fetchAssoc($result);
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="myForm">
 <head>
     <base target="_self">
     <meta charset="UTF-8">
@@ -73,22 +139,6 @@ $client_insight = $db_handle->fetchAssoc($result);
 
             <!-- Unique Page Content Starts Here
             ================================================== -->
-            <div class="search-section">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                            <div class="input-group">
-                                <input type="hidden" name="search_param" value="all" id="search_param">
-                                <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                                    </span>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-sm-12 text-danger">
                     <h4><strong>CLIENT PROFILE INSIGHT</strong></h4>
@@ -99,14 +149,38 @@ $client_insight = $db_handle->fetchAssoc($result);
                 <div class="row">
                     <div class="col-sm-12">
                         <?php require_once '../layouts/feedback_message.php'; ?>
-
-                        <p>Details of unique clients that joined the system last month.</p>
+                        <div class="search-section">
+                            <div class="row">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <div class="col-sm-4">
+                                        <select name="filter" class="form-control" id="filter" onchange="myFunction()">
+                                            <option <?php if($filter == 1){echo "selected";} ?> value="1">Last Months New Clients</option>
+                                            <option <?php if($filter == 2){echo "selected";} ?> value="2">Last Months New Clients with Accounts</option>
+                                            <option <?php if($filter == 3){echo "selected";} ?> value="3">Last Months New Clients without Accounts and have no Training</option>
+                                            <option <?php if($filter == 4){echo "selected";} ?> value="4">Last Months New Clients without Accounts and have Training</option>
+                                            <option <?php if($filter == 5){echo "selected";} ?> value="5">Last Months New Trainee Still in course 2 in current month</option>
+                                            <option <?php if($filter == 6){echo "selected";} ?> value="6">Last Months New Clients not yet funded above $50</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <input type="hidden" name="search_param" value="all" id="search_param">
+                                            <input type="text" class="form-control" name="search_text" placeholder="Search term...">
+                                            <span class="input-group-btn">
+                                        <button id="search" name="search" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                    </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <p><?php echo $dispaly_msg; ?></p>
 
                         <?php if(isset($numrows)) { ?>
                             <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                         <?php } ?>
 
-                        <?php if(isset($client_insight) && !empty($client_insight)) { require '../layouts/pagination_links.php'; } ?>
+                        <?php if(isset($client_insight) && !empty($client_insight)) { require 'layouts/pagination_links.php'; } ?>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
@@ -127,8 +201,8 @@ $client_insight = $db_handle->fetchAssoc($result);
                                         <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['phone']; ?></td>
                                         <td nowrap="nowrap">
-                                            <a title="View" class="btn btn-success" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'insight/last_month_new_client'; ?>&c=<?php echo encrypt('LAST MONTH NEW CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
-                                            <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                            <a title="View" class="btn btn-success" href="../client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'insight/last_month_new_client'; ?>&c=<?php echo encrypt('LAST MONTH NEW CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                            <a target="_blank" title="View" class="btn btn-info" href="../client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                         </td>
                                     </tr>
                                 <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -142,7 +216,7 @@ $client_insight = $db_handle->fetchAssoc($result);
                             </div>
                         <?php } ?>
 
-                        <?php if(isset($client_insight) && !empty($client_insight)) { require '../layouts/pagination_links.php'; } ?>
+                        <?php if(isset($client_insight) && !empty($client_insight)) { require 'layouts/pagination_links.php'; } ?>
 
                     </div>
                 </div>
@@ -156,6 +230,12 @@ $client_insight = $db_handle->fetchAssoc($result);
 
     </div>
 </div>
+<script>
+    function myFunction() {
+        document.getElementById('search').click();
+    }
+</script>
+
 <?php require_once '../layouts/footer.php'; ?>
 </body>
 </html>
