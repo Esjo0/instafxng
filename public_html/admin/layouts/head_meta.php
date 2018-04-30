@@ -1,4 +1,4 @@
-<!--    <base href="https://instafxng.com/admin/" />-->
+    <base href="https://instafxng.com/admin/" />
         <meta http-equiv="Content-Language" content="en" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="author" content="Instant Web-Net Technologies Limited" />

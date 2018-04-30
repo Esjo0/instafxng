@@ -1,5 +1,5 @@
 <?php
-require_once("..\..\init/initialize_admin.php");
+require_once("../../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
