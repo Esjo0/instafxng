@@ -93,13 +93,15 @@ if(!empty($campaign_id)) {
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="client_group">Client Group:</label>
-                                        <div class="col-sm-10 col-lg-5">
+                                        <div class="col-sm-12">
                                             
-                                            <?php foreach($client_group_DEFAULT as $key => $value) { ?>
-                                            <div class="radio">
-                                                <label><input type="radio" name="client_group" value="<?php echo $key; ?>" <?php if($key == '1') { echo "checked"; } ?> required><?php echo $value; ?></label>
+                                            <?php foreach($client_group_DEFAULT as $key =>$value ) {
+                                                ?>
+                                            <div class=" radio col-sm-6">
+                                                <label title="<?php echo $client_group_DESC[$key]; ?>" ><input type="radio" name="client_group" value="<?php echo $key; ?>" <?php if($key == '1') { echo "checked"; } ?>  required><?php echo $value; ?></label>
                                             </div>
                                             <?php } ?>
+
                                             
                                         </div>
                                     </div>

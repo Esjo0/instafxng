@@ -1891,11 +1891,14 @@ MAIL;
         }
     }
 
+    // Check if account is flagged and  details
     public function account_flagged($user_code) {
         global $db_handle;
 
         $query = "SELECT * FROM user_account_flag WHERE user_code = '$user_code' AND status = '1'";
-        return $db_handle->numRows($query) ? true : false;
+        $result = $db_handle->runQuery($query);
+        $fetch_flag = $db_handle->fetchAssoc($result);
+        return $fetch_flag  ? $fetch_flag  : false;
     }
 
     // This is for a single client
@@ -2606,10 +2609,10 @@ MAIL;
         return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
     }
 
-    public function get_last_trade_date($user_code) {
+    public function get_last_trade_detail($user_code) {
         global $db_handle;
 
-        $query = "SELECT td.date_earned
+        $query = "SELECT td.date_earned, td.volume
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -2617,9 +2620,9 @@ MAIL;
 
         $result =  $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
-        $last_trade_date = $fetched_data[0]['date_earned'];
+        $last_trade_detail = $fetched_data[0];
 
-        return $last_trade_date ? $last_trade_date : false;
+        return $last_trade_detail ? $last_trade_detail : false;
     }
 
 }

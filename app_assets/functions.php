@@ -568,12 +568,35 @@ function date_range($from, $to, $format = 'd/m/Y' )
     $endTime = strtotime($to);
     $numDays = round(($startTime - $endTime) / $day) + 1;
     $days = array();
-    for ($i = 0; $i < $numDays; $i++)
-    {
+    for ($i = 0; $i < $numDays; $i++) {
         $days[] = date($format, ($startTime + ($i * $day)));
     }
     return $days;
 }
 
-
-
+function split_name($full_name)
+{
+    $_name = array();
+    $full_name = str_replace(".", "", $full_name);
+    $full_name = ucwords(strtolower(trim($full_name)));
+    $full_name = explode(" ", $full_name);
+    if (count($full_name) == 3) {
+        $_name['last_name'] = trim($full_name[0]);
+        if (strlen($full_name[2]) < 3) {
+            $_name['middle_name'] = trim($full_name[2]);
+            $_name['first_name'] = trim($full_name[1]);
+        } else {
+            $_name['middle_name'] = trim($full_name[1]);
+            $_name['first_name'] = trim($full_name[2]);
+        }
+    } else {
+        $_name['last_name'] = trim($full_name[0]);
+        $_name['middle_name'] = "";
+        $_name['first_name'] = trim($full_name[1]);
+    }
+    if (empty($_name['first_name'])) {
+        $_name['first_name'] = $_name['last_name'];
+        $_name['last_name'] = "";
+    }
+    return $_name;
+}

@@ -184,6 +184,7 @@ if(empty($trans_detail)) {
                 xmlhttp.send();
             }
         </script>
+        <script src="operations_comment.js"></script>
         <script src="tinymce/tinymce.min.js"></script>
         <script type="text/javascript">
             tinyMCE.init({

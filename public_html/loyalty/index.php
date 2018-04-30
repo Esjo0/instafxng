@@ -1,145 +1,71 @@
 <?php
-require_once '../init/initialize_client.php';
 session_start();
-if (isset($_POST['submit2']) || isset($_POST['submit']))
+require_once("../init/initialize_general.php");
+$interest_yes = "i_have_traded_forex_before.";
+$interest_no = "i_have_not_traded_forex_before";
+if(isset($_POST['sign_up']))
 {
-	foreach ($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
-	extract($_POST);
-	if (empty($full_name) || empty($email_address) || empty($phone_number))
+	if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response']))
 	{
-		$message_error = "All fields must be filled, please try again";
-	}
-	elseif (!check_email($email_address))
-	{
-		$message_error = "You have supplied an invalid email address, please try again.";
-	}
-	elseif (check_number($phone_number) != 5)
-	{
-		$message_error = "You have supplied an invalid phone number, please try again.";
-	}
-	elseif (check_duplicate($email_address, $phone_number))
-	{
-		$message_error = "Duplicate Registration. <br/> Please use another phone number or email address.";
-	}
-	else
-	{
-		$client_full_name = $full_name;
-		$full_name = str_replace(".", "", $full_name);
-		$full_name = ucwords(strtolower(trim($full_name)));
-		$full_name = explode(" ", $full_name);
-		if (count($full_name) == 3)
+		$secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+		$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+		$responseData = json_decode($verifyResponse);
+		if ($responseData->success)
 		{
-			$last_name = trim($full_name[0]);
-			if (strlen($full_name[2]) < 3) { $middle_name = trim($full_name[2]); $first_name = trim($full_name[1]);}
-			else { $middle_name = trim($full_name[1]); $first_name = trim($full_name[2]); }
+			$name = $db_handle->sanitizePost(trim($_POST['name']));
+			$email = $db_handle->sanitizePost(trim($_POST['email']));
+			$phone = $db_handle->sanitizePost(trim($_POST['phone']));
+			$interest = $db_handle->sanitizePost(trim($_POST['interest']));
+			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				$message_error = "You entered an invalid email address, please try again.";
+			}
+			extract(split_name($name));
+			if ($interest == $interest_no) {
+				if ($obj_loyalty_training->is_duplicate_training($email, $phone)) {
+					$training = $obj_loyalty_training->add_training($first_name, $last_name, $email, $phone);
+					$_SESSION['f_name'] = $first_name;
+					$_SESSION['l_name'] = $last_name;
+					$_SESSION['m_name'] = $middle_name;
+					$_SESSION['email'] = $email;
+					$_SESSION['phone'] = $phone;
+					redirect_to("../forex-income/");
+					exit();
+				} else {
+					$message_error = "Sorry, you have previously registered for the FxAcademy Online Training.
+					<a href='../fxacademy/'><b>Click here to visit the FxAcademy now</b></a>";
+				}
+			}
+			if ($interest == $interest_yes) {
+				if ($obj_loyalty_training->is_duplicate_loyalty($email, $phone)) {
+					$loyalty = $obj_loyalty_training->add_loyalty($first_name, $last_name, $email, $phone);
+					$_SESSION['f_name'] = $first_name;
+					$_SESSION['l_name'] = $last_name;
+					$_SESSION['m_name'] = $middle_name;
+					$_SESSION['email'] = $email;
+					$_SESSION['phone'] = $phone;
+					$_SESSION['source'] = 'lp';
+					redirect_to("live_account.php");
+					exit();
+				} else {
+					$message_error = "Sorry, you have previously enrolled into the InstaFxNg Loyalty Promotions And Rewards";
+				}
+			}
 		}
 		else
 		{
-			$last_name = trim($full_name[0]);
-			$middle_name = "";
-			$first_name = trim($full_name[1]);
-		}
-		if (empty($first_name))
-		{
-			$first_name = $last_name;
-			$last_name = "";
-		}
-		$query = "INSERT INTO prospect_ilpr_biodata (f_name, l_name, m_name, email, phone) VALUE ('$first_name', '$last_name', '$middle_name', '$email_address', '$phone_number')";
-		$result = $db_handle->runQuery($query);
-		$inserted_id = $db_handle->insertedId();
-		if($result)
-		{
-			$subject = "Welcome to InstaFxNg $first_name";
-			$message = <<<MAIL
-    <div style="background-color: #F3F1F2">
-    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
-        <img src="https://instafxng.com/images/ifxlogo.png" />
-        <hr />
-        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $first_name,</p>
-            <p>Welcome on board!</p>
-            <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
-            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
-            <p>At InstaFxNg, we consider it a privilege to serve and provide you with excellent and unparalleled service at all times.</p>
-           
-            <p>We have been around for over 7 years providing Forex services to thousands of Nigerian traders, 
-            ensuring that their deposit and withdrawal transactions are promptly responded to and that every 
-            challenge is totally resolved.</p>
-            <p>InstaForex Nigeria is built upon seven strong foundational values; Integrity, Commitment, Speed, 
-            Focus, Empathy, Reliability, and Innovation.</p>
-            <p>From making deposit into your account (locally and easily) to instant stress free withdrawals (to your bank account) to unmatched customer support, we have you covered. </p>
-            <p>We are dedicated to working effectively to ensure swift service delivery to you consistently.</p>
-            <p>To start your journey to earning more money in our Loyalty Rewards Program, kindly click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open an InstaForex account immediately.</p>
-            <p>Very shortly you're going to receive a call welcoming you on board from our ever 
-            cheerful customer service representatives who will assist you in opening an InstaForex 
-            account so you can get started immediately.</p>
-            <p>Don’t forget to click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open your InstaForex account. You can also click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account so you can get started immediately.</p>
-            <p>I’m so glad you are here and I can’t wait for you to start earning from your trades and in the InstaFxNg Loyalty Points and Reward Program.</p>
-            <br/><br/>
-            <p>Best Regards,</p>
-            <p>Mercy,</p>
-            <p>Client Relations Manager,</p>
-            <p>InstaForex Nigeria</p>
-            <p>www.instafxng.com</p>
-            <br /><br />
-        </div>
-        <hr />
-        <div style="background-color: #EBDEE9;">
-            <div style="font-size: 11px !important; padding: 15px;">
-                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
-                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-                </p>
-                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
-                <p><strong>Office Number:</strong> 08028281192</p>
-                <br />
-            </div>
-            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                    official Nigerian Representative of Instaforex, operator and administrator
-                    of the website www.instafxng.com</p>
-                <p>To ensure you continue to receive special offers and updates from us,
-                    please add support@instafxng.com to your address book.</p>
-            </div>
-        </div>
-    </div>
-</div>
-MAIL;
-			$system_object->send_email($subject, $message, $email_address, $first_name);
-			$message_success = "Welcome to InstaFxNg $first_name";
-
-			$_SESSION['f_name'] = $first_name;
-			$_SESSION['l_name'] = $last_name;
-			$_SESSION['m_name'] = $middle_name;
-			$_SESSION['email'] = $email_address;
-			$_SESSION['phone'] = $phone_number;
-			$_SESSION['source'] = 'lp';
-
-			redirect_to("live_account.php");
-
-		}
-		if(!$result)
-		{
-			$message_error = "Looks like something went wrong or you didn't make any change.";
+			$message_error = "Kindly take the robot test.";
 		}
 	}
-}
-function check_duplicate($email_address, $phone_number)
-{
-	global $db_handle;
-	$query = "SELECT * FROM prospect_ilpr_biodata WHERE phone = '$phone_number' OR email = '$email_address' ";
-	return $db_handle->numRows($query) ? true : false;
+	else
+	{
+		$message_error = "Kindly take the robot test.";
+	}
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Instafxng Loyalty Promotions And Rewards</title>
+		<title>Welcome | Instafxng</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="keywords" content=""/>
@@ -178,7 +104,7 @@ function check_duplicate($email_address, $phone_number)
 					<div id="navbar" class="navbar-collapse collapse">
 						<div class="nav_right_top">
 							<ul class="nav navbar-nav navbar-right">
-								<li><a id="gt" class="request" href="#" data-toggle="modal" data-target="#myModal">Get Started</a></li>
+								<li><a id="gt" class="request" href="#" data-toggle="modal" data-target="#myModal" role="button">Get Started</a></li>
 							</ul>
 						</div>
 					</div>
@@ -193,8 +119,7 @@ function check_duplicate($email_address, $phone_number)
 			<ol class="carousel-indicators">
 				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 				<li data-target="#myCarousel" data-slide-to="1" class=""></li>
-				<!--<li data-target="#myCarousel" data-slide-to="2" class=""></li>
-				<li data-target="#myCarousel" data-slide-to="3" class=""></li>-->
+
 			</ol>
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
@@ -229,7 +154,7 @@ function check_duplicate($email_address, $phone_number)
 					</div>
 					<div class="modal-body">
 						<div style="padding: 10px">
-							<h2>Get Started Now</h2>
+							<h2>Fill the form below to begin making money.</h2>
 							<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
 								<?php if(isset($message_success)): ?>
 									<div class="alert alert-success">
@@ -242,27 +167,46 @@ function check_duplicate($email_address, $phone_number)
 										<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 										<strong>Oops!</strong> <?php echo $message_error; ?>
 									</div>
-
 									<?php endif;?>
 								<div class="form-group">
 									<div class="col-sm-12">
-										<input name="full_name" placeholder="Full Name" type="text" class="form-control" maxlength="120" required>
+										<input name="name" placeholder="Full Name" type="text" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-sm-12"><input name="email_address" placeholder="Email Address" type="email"  class="form-control" maxlength="50" required></div>
+									<div class="col-sm-12"><input name="email" placeholder="Email Address" type="email"  class="form-control" maxlength="50" required></div>
 								</div>
 								<div class="form-group">
-									<div class="col-sm-12"><input name="phone_number" placeholder="080********" type="text" class="form-control" maxlength="11" required></div>
+									<div class="col-sm-12"><input name="phone" placeholder="080********" type="text" class="form-control" maxlength="11" required></div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="checkbox">
+											<label for="">
+												<input type="radio" name="interest" value="<?php echo $interest_no;?>" id=""/> I have not traded Forex
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="checkbox">
+											<label for="">
+												<input type="radio" name="interest" value="<?php echo $interest_yes;?>" id=""/> I have traded Forex
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<center><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></center>
 								</div>
 								<div class="col-sm-12">
 									<span style="color: #ffffff">*All fields are required</span>
 								</div>
 								<div class="form-group">
 									<div class="col-sm-12">
-										<input name="submit2" type="submit" class="btn btn-success btn-lg btn-group-justified"  value="Get Me Started Now!"/>
+										<input name="sign_up" type="submit" class="btn btn-success btn-lg btn-group-justified"  value="Get Me Started Now!"/>
 									</div>
-
 								</div>
 							</form>
 						</div>
@@ -270,6 +214,11 @@ function check_duplicate($email_address, $phone_number)
 				</div>
 			</div>
 		</div>
+
+
+
+
+
 		<div class="banner_bottom">
 			<div class="container">
 				<!--<h3 class="tittle-w3ls">About Us</h3>-->
@@ -310,6 +259,33 @@ function check_duplicate($email_address, $phone_number)
 						</div>
 						<div class="col-md-6 banner_bottom_grid help">
 							<img src="images/Forex-Money.jpg" alt=" " class="img-responsive">
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="inner_sec_info_wthree_agile">
+					<div class="help_full">
+						<div class="col-md-6 banner_bottom_grid help">
+							<img src="images/forex_learning.jpg" alt=" " class="img-responsive">
+						</div>
+						<div class="col-md-6 banner_bottom_left">
+							<h4>New to Forex trading?</h4>
+							<p class="text-justify">If yes, you've got nothing to worry about! We've got you!</p>
+							<p class="text-justify">The first step to making steady profits from Forex trading is getting adequate training on how to trade Forex successfully!</p>
+							<p class="text-justify">It is the key to financial stability through Forex because it helps you gain the understanding of the basics and variables of the market.</p>
+							<p class="text-justify">There is a free online training created just for you. It's simple, free and fun.</p>
+							<p class="text-justify">
+								<a href="https://instafxng.com/fxacademy/"><b>You are definitely going to enjoy this training.
+								Don’t wait a minute more as we can only take 50 people at a time!
+									45 people have joined already.
+								</b></a>
+							</p>
+							<p style="display: none" class="text-justify">Who goes into a business without knowing the basics?
+								Not You!
+								He who fails to get adequate knowledge plans to become poor!</p>
+							<div class="ab_button">
+								<a class="btn btn-primary btn-lg hvr-underline-from-left" href="#" data-toggle="modal" data-target="#myModal" role="button">Start Now </a>
+							</div>
 						</div>
 						<div class="clearfix"></div>
 					</div>
@@ -391,6 +367,7 @@ function check_duplicate($email_address, $phone_number)
 					And kept trading consistently till he worked his way up to the top of the rank scale and emerged the
 					winner of a whopping One Million naira.</p>
 				<p>It’s neither too late nor too early for you to emerge the star winner by the end of the 2018 round.</p>
+				<p><a href="https://instafxng.com/forex-income/">New to Forex? Click here now to learn how to trade Forex successfully.</a></p>
 				<img src="images/FXDINNER-232.jpg" class="img-responsive" alt="">
 			</div>
 		</div>
@@ -529,7 +506,7 @@ function check_duplicate($email_address, $phone_number)
 			</div>
 		</div>
 		<div class="footer">
-			<p class="text-center">&copy 2018 Instafxng.com. All rights reserved.</p>
+			<p class="text-center"><i class="glyphicon glyphicon-copyright-mark"></i>copy 2018 Instafxng.com. All rights reserved.</p>
 		</div>
 		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.js"></script>
@@ -573,10 +550,11 @@ function check_duplicate($email_address, $phone_number)
 		<script src="js/jquery.quicksand.js" type="text/javascript"></script>
 		<script src="js/script.js" type="text/javascript"></script>
 		<script src="js/jquery.prettyPhoto.js" type="text/javascript"></script>
-		<?php if(isset($message_success) || isset($message_error)): ?>
+		<?php if(isset($message_success) || isset($message_error) || isset($_POST['sign_up']) || isset($_POST['g-recaptcha-response'])): ?>
 			<script>
 				document.getElementById('gt').click();
 			</script>
 		<?php endif; ?>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
 	</body>
 </html>

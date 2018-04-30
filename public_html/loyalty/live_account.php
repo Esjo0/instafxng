@@ -1,126 +1,12 @@
 <?php
+session_start();
 require_once '../init/initialize_client.php';
-
-if (isset($_POST['submit2']) || isset($_POST['submit']))
-{
-	foreach ($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
-	extract($_POST);
-	if (empty($full_name) || empty($email_address) || empty($phone_number))
-	{
-		$message_error = "All fields must be filled, please try again";
-	}
-	elseif (!check_email($email_address))
-	{
-		$message_error = "You have supplied an invalid email address, please try again.";
-	}
-	elseif (check_number($phone_number) != 5)
-	{
-		$message_error = "You have supplied an invalid phone number, please try again.";
-	}
-	elseif (check_duplicate($email_address, $phone_number))
-	{
-		$message_error = "Duplicate Registration. <br/> Please use another phone number or email address.";
-	}
-	else
-	{
-		$client_full_name = $full_name;
-		$full_name = str_replace(".", "", $full_name);
-		$full_name = ucwords(strtolower(trim($full_name)));
-		$full_name = explode(" ", $full_name);
-		if (count($full_name) == 3)
-		{
-			$last_name = trim($full_name[0]);
-			if (strlen($full_name[2]) < 3) { $middle_name = trim($full_name[2]); $first_name = trim($full_name[1]);}
-			else { $middle_name = trim($full_name[1]); $first_name = trim($full_name[2]); }
-		}
-		else
-		{
-			$last_name = trim($full_name[0]);
-			$middle_name = "";
-			$first_name = trim($full_name[1]);
-		}
-		if (empty($first_name))
-		{
-			$first_name = $last_name;
-			$last_name = "";
-		}
-		$query = "INSERT INTO prospect_ilpr_biodata (f_name, l_name, m_name, email, phone) VALUE ('$first_name', '$last_name', '$middle_name', '$email_address', '$phone_number')";
-		$result = $db_handle->runQuery($query);
-		$inserted_id = $db_handle->insertedId();
-		if($result)
-		{
-			$subject = "Welcome to InstaFxNg $first_name";
-			$message = <<<MAIL
-    <div style="background-color: #F3F1F2">
-    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
-        <img src="https://instafxng.com/images/ifxlogo.png" />
-        <hr />
-        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $first_name,</p>
-            <p>Welcome on board!</p>
-            <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
-            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
-            <p>At InstaFxNg, we consider it a privilege to serve and provide you with excellent and unparalleled service at all times.</p>
-            <p>Our job is to take care of everything else while you focus on trading and making money. </p>
-            <p>From making deposit into your account (locally and easily) to instant stress free withdrawals (to your bank account) to unmatched customer support, we have you covered. </p>
-            <p>We are dedicated to working effectively to ensure swift service delivery to you consistently.</p>
-            <p>To start your journey to earning more money in our Loyalty Rewards Program, kindly click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open an InstaForex account immediately.</p>
-            <p>Very shortly you're going to receive a call welcoming you on board from our ever cheerful customer service representatives who will assist you in opening an InstaForex account so you can get started immediately.</p>
-            <p>Subsequently you will receive Emails.</p>
-            <p>These emails will continue to educate you on how to trade, grow your Profits, take advantage of bonuses and earn more loyalty points. (I promise not to disturb you with my mails).</p>
-            <p>Don’t forget to click <a href="https://instafxng.com/live_account.php?id=lp">here</a> to open your InstaForex account. You can also click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account so you can get started immediately.</p>
-            <p>I’m so glad you are here and I can’t wait for you to start earning from your trades and in the InstaFxNg Loyalty Points and Reward Program.</p>
-            <br/><br/>
-            <p>Best Regards,</p>
-            <p>Mercy,</p>
-            <p>Client Relations Manager,</p>
-            <p>InstaForex Nigeria</p>
-            <p>www.instafxng.com</p>
-            <br /><br />
-        </div>
-        <hr />
-        <div style="background-color: #EBDEE9;">
-            <div style="font-size: 11px !important; padding: 15px;">
-                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
-                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-                </p>
-                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
-                <p><strong>Office Number:</strong> 08028281192</p>
-                <br />
-            </div>
-            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                    official Nigerian Representative of Instaforex, operator and administrator
-                    of the website www.instafxng.com</p>
-                <p>To ensure you continue to receive special offers and updates from us,
-                    please add support@instafxng.com to your address book.</p>
-            </div>
-        </div>
-    </div>
-</div>
-MAIL;
-			$system_object->send_email($subject, $message, $email, $full_name);
-			$message_success = "Welcome to Instaforex Nigeria.";
-			redirect_to("https://instafxng.com/live_account.php?id=lp");
-		}
-		if(!$result)
-		{
-			$message_error = "Looks like something went wrong or you didn't make any change.";
-		}
-	}
-}
 extract($_SESSION);
 $open_account = true;
 // TODO: What next after account opening... Fix that.
 // This section processes - views/live_account_ilpr_reg.php
 if(isset($_POST['live_account_ilpr_reg'])) {
 	//$page_requested = "live_account_ilpr_reg_php";
-
 	$secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
 	$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
 	$responseData = json_decode($verifyResponse);
@@ -154,15 +40,7 @@ if(isset($_POST['live_account_ilpr_reg'])) {
 		}
 	}
 }
-
-function check_duplicate($email_address, $phone_number)
-{
-	global $db_handle;
-	$query = "SELECT * FROM prospect_ilpr_biodata WHERE phone = '$phone_number' OR email = '$email_address' ";
-	return $db_handle->numRows($query) ? true : false;
-}
 ?>
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -183,7 +61,6 @@ function check_duplicate($email_address, $phone_number)
 		<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,600,600i,700" rel="stylesheet">
 	</head>
 	<body>
-	<!--style="position: fixed; width: 100vw; background-color: #ffffff;"-->
 		<div class="top_header" id="home">
 			<!-- Fixed navbar    navbar-fixed-top-->
 			<nav class="navbar navbar-default ">
@@ -213,21 +90,21 @@ function check_duplicate($email_address, $phone_number)
 										<span class="caret"></span></a>
 									<ul class="dropdown-menu">
 										<li><a href="https://instaforex.com/about_us.php?x=BBLR" title="Instaforex" target="_blank">Instaforex</a></li>
-										<li><a href="view_news.php" title="Instaforex Nigeria News Centre">Company News</a></li>
-										<li><a href="photo_gallery.php" title="Photo Gallery">Photo Gallery</a></li>
-										<li><a href="video_gallery.php" title="Video Gallery">Video Gallery</a></li>
+										<li><a href="https://instafxng.com/view_news.php" title="Instaforex Nigeria News Centre">Company News</a></li>
+										<li><a href="https://instafxng.com/photo_gallery.php" title="Photo Gallery">Photo Gallery</a></li>
+										<li><a href="https://instafxng.com/video_gallery.php" title="Video Gallery">Video Gallery</a></li>
 									</ul>
 								</li>
 								<li class="dropdown <?php if ($thisPage == "Traders") { echo " active"; } ?>">
 									<a class="request dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-line-chart fa-fw"></i> Traders
 										<span class="caret"></span></a>
 									<ul class="dropdown-menu">
-										<li><a href="deposit_funds.php" title="Deposit Funds">Deposit Funds</a></li>
-										<li><a href="withdraw_funds.php" title="Withdraw Funds">Withdraw Funds</a></li>
-										<li><a href="deposit_notify.php" title="Payment Notification">Payment Notification</a></li>
-										<li><a href="forex_bonus.php" title="30% Bonus On Deposit">30% Bonus On Deposit</a></li>
-										<li><a href="view_signal.php" title="Free Forex Signals">Forex Signals</a></li>
-										<li><a href="instaforex_tv.php" title="Instaforex TV">Instaforex TV</a></li>
+										<li><a href="https://instafxng.com/deposit_funds.php" title="Deposit Funds">Deposit Funds</a></li>
+										<li><a href="https://instafxng.com/withdraw_funds.php" title="Withdraw Funds">Withdraw Funds</a></li>
+										<li><a href="https://instafxng.com/deposit_notify.php" title="Payment Notification">Payment Notification</a></li>
+										<li><a href="https://instafxng.com/forex_bonus.php" title="30% Bonus On Deposit">30% Bonus On Deposit</a></li>
+										<li><a href="https://instafxng.com/view_signal.php" title="Free Forex Signals">Forex Signals</a></li>
+										<li><a href="https://instafxng.com/instaforex_tv.php" title="Instaforex TV">Instaforex TV</a></li>
 										<li><a href="https://www.instaforex.com/55bonus.php?x=BBLR" title="55% Deposit Bonus" target="_blank">55% Deposit Bonus</a></li>
 										<li><a href="https://www.instaforex.com/nodeposit_bonus.php?x=BBLR" title="No Deposit Bonus" target="_blank">No Deposit Bonus</a></li>
 										<li><a href="https://instaforex.com/trading_conditions.php?x=BBLR" title="Instaforex Trading Conditions" target="_blank">Trading Conditions</a></li>
@@ -240,13 +117,8 @@ function check_duplicate($email_address, $phone_number)
 									<a class="request dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-book fa-fw"></i> Education
 										<span class="caret"></span></a>
 									<ul class="dropdown-menu">
-										<li><a href="forex_profit_academy.php" title="Forex Profit Academy">Forex Profit Academy</a></li>
-										<li><a href="traders_forum.php" title="Forex Traders Forum">Traders Forum</a></li>
-										<!--<li><a href="beginner_traders_course.php" title="Beginner Trader Course">Beginner Trader Course</a></li>
-                                        <li><a href="advanced_traders_course.php" title="Advance Trader Course">Advance Trader Course</a></li>
-                                        <li><a href="course.php" title="Forex Freedom Course">Forex Freedom Course</a></li>
-                                        <li><a href="private_course.php" title="Forex Private Course">Forex Private Course</a></li>
-                                        <li><a href="investor_course.php" title="Investor Course">Investor Course</a></li>-->
+										<li><a href="https://instafxng.com/forex_profit_academy.php" title="Forex Profit Academy">Forex Profit Academy</a></li>
+										<li><a href="https://instafxng.com/traders_forum.php" title="Forex Traders Forum">Traders Forum</a></li>
 									</ul>
 								</li>
 								<li class="<?php if ($thisPage == "Promotion") { echo " active"; } ?>"><a class="request" href="promo.php" title="Instaforex Promotions"><i class="fa fa-bookmark fa-fw"></i> Promo</a></li>
@@ -261,9 +133,9 @@ function check_duplicate($email_address, $phone_number)
 									<a class="request dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-phone fa-fw"></i> Support
 										<span class="caret"></span></a>
 									<ul class="dropdown-menu">
-										<li><a href="contact_info.php" title="Contact">Contact Info</a></li>
-										<li><a href="faq.php" title="Frequently Asked Questions">FAQ</a></li>
-										<li><a href="careers.php" title="Careers" target="_blank">Careers</a></li>
+										<li><a href="https://instafxng.com/contact_info.php" title="Contact">Contact Info</a></li>
+										<li><a href="https://instafxng.com/faq.php" title="Frequently Asked Questions">FAQ</a></li>
+										<li><a href="https://instafxng.com/careers.php" title="Careers" target="_blank">Careers</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -350,10 +222,10 @@ function check_duplicate($email_address, $phone_number)
 							<div class="col-sm-6 col-md-12">
 								<div class="list-group" style="margin-bottom: 5px !important;">
 									<a class="list-group-item" href="live_account.php" title="Open a live Instaforex trading account"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Open Live Account</strong></a>
-									<a class="list-group-item" href="deposit_funds.php" title="Deposit money into your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Fund Account - &#8358;<?php if(defined('IPLRFUNDRATE')) { echo IPLRFUNDRATE; } ?>  / &dollar;1</strong></a>
-									<a class="list-group-item" href="withdraw_funds.php" title="Withdraw from your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Withdraw - &#8358;<?php if(defined('WITHDRATE')) { echo WITHDRATE; } ?> / &dollar;1</strong></a>
-									<a class="list-group-item" href="deposit_notify.php" title="Payment Notification"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Payment Notification</strong></a>
-									<a class="list-group-item" href="verify_account.php" title="Verification"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Verification</strong></a>
+									<a class="list-group-item" href="https://instafxng.com/deposit_funds.php" title="Deposit money into your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Fund Account - &#8358;<?php if(defined('IPLRFUNDRATE')) { echo IPLRFUNDRATE; } ?>  / &dollar;1</strong></a>
+									<a class="list-group-item" href="https://instafxng.com/withdraw_funds.php" title="Withdraw from your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Withdraw - &#8358;<?php if(defined('WITHDRATE')) { echo WITHDRATE; } ?> / &dollar;1</strong></a>
+									<a class="list-group-item" href="https://instafxng.com/deposit_notify.php" title="Payment Notification"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Payment Notification</strong></a>
+									<a class="list-group-item" href="https://instafxng.com/verify_account.php" title="Verification"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Verification</strong></a>
 								</div>
 							</div>
 						</div>
@@ -374,7 +246,7 @@ function check_duplicate($email_address, $phone_number)
 										<!-- livezilla.net PLACE SOMEWHERE IN BODY -->
 
 										<p><i class="fa fa-phone-square fa-fw"></i> +234 802 828 1192</p>
-										<a class="btn btn-default" href="contact_info.php" title="Our full contact details">Contact Details</a>
+										<a class="btn btn-default" href="https://instafxng.com/contact_info.php" title="Our full contact details">Contact Details</a>
 									</article>
 								</div>
 							</div>
@@ -417,7 +289,7 @@ function check_duplicate($email_address, $phone_number)
 									<?php } } else { echo "<em>No news to display</em>"; } ?>
 									<article>
 										<div class="text-center">
-											<a class="btn btn-default" href="blog.php" title="Click to visit our blog">More Blog Post</a>
+											<a class="btn btn-default" href="https://instafxng.com/blog.php" title="Click to visit our blog">More Blog Post</a>
 										</div>
 									</article>
 								</div>
@@ -451,7 +323,7 @@ function check_duplicate($email_address, $phone_number)
 											</tbody>
 										</table>
 										<hr>
-										<small>Your use of the signals means you have read and accepted our <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>. Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">signal guide</a> to learn how to use the signals.</small>
+										<small>Your use of the signals means you have read and accepted our <a href="https://instafxng.com/signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>. Download the <a href="https://instafxng.com/downloads/signalguide.pdf" target="_blank" title="Download signal guide">signal guide</a> to learn how to use the signals.</small>
 									</article>
 								</div>
 							</div>
@@ -520,15 +392,15 @@ function check_duplicate($email_address, $phone_number)
 											<header><i class="fa fa-sitemap fa-fw icon-tune"></i> <strong>Instaforex Traders</strong></header>
 											<article>
 												<ul>
-													<li><a href="events_calendar.php" title="Events Calendar">Events Calendar</a></li>
-													<li><a href="forex_news.php" title="Forex News">Forex News</a></li>
-													<li><a href="market_analysis.php" title="Market Analysis">Market Analysis</a></li>
-													<li><a href="instaforex_tv.php" title="InstaForex TV">InstaForex TV</a></li>
+													<li><a href="https://instafxng.com/events_calendar.php" title="Events Calendar">Events Calendar</a></li>
+													<li><a href="https://instafxng.com/forex_news.php" title="Forex News">Forex News</a></li>
+													<li><a href="https://instafxng.com/market_analysis.php" title="Market Analysis">Market Analysis</a></li>
+													<li><a href="https://instafxng.com/instaforex_tv.php" title="InstaForex TV">InstaForex TV</a></li>
 													<li><a href="https://instaforex.com/pamm_system.php?x=BBLR" target="_blank" title="PAMM System">PAMM System</a></li>
 													<li><a href="https://instaforex.com/forex_options.php?x=BBLR" target="_blank" title="Forex Options">Forex Options</a></li>
 													<li><a href="https://instaforex.com/forexcopy_system.php?x=BBLR" target="_blank" title="ForexCopy System">ForexCopy System</a></li>
 													<li><a href="https://instaforex.com/downloads.php?x=BBLR" target="_blank" title="Download Trading Terminal">Download Trading Terminal</a></li>
-													<li><a href="eaindicator_install.php" title="EA - Indicator Installation">EA - Indicator Installation</a></li>
+													<li><a href="https://instafxng.com/eaindicator_install.php" title="EA - Indicator Installation">EA - Indicator Installation</a></li>
 												</ul>
 											</article>
 										</div>
@@ -537,12 +409,7 @@ function check_duplicate($email_address, $phone_number)
 											<header><i class="fa fa-sitemap fa-fw icon-tune"></i> <strong>Forex Education</strong></header>
 											<article>
 												<ul>
-													<li><a href="forex_profit_academy.php" title="Forex Profit Academy">Forex Profit Academy</a></li>
-													<!--<li><a href="beginner_traders_course.php" title="Beginner Trader Course">Beginner Trader Course</a></li>
-                                                    <li><a href="advanced_traders_course.php" title="Advance Trader Course">Advance Trader Course</a></li>
-                                                    <li><a href="course.php" title="Forex Freedom Course">Forex Freedom Course</a></li>
-                                                    <li><a href="private_course.php" title="Forex Private Course">Forex Private Course</a></li>
-                                                    <li><a href="investor_course.php" title="Investor Course">Investor Course</a></li>-->
+													<li><a href="https://instafxng.com/forex_profit_academy.php" title="Forex Profit Academy">Forex Profit Academy</a></li>
 												</ul>
 											</article>
 											<header><i class="fa fa-sitemap fa-fw icon-tune"></i> <strong>Sponsored</strong></header>
@@ -558,15 +425,15 @@ function check_duplicate($email_address, $phone_number)
 											<article>
 												<ul>
 													<!--<li><a href="monthly_cash_back.php" title="Monthly Cash Back">$50 Monthly Cash Back</a></li>-->
-													<li><a href="loyalty.php" title="Point Based Loyalty Reward">Point Based Loyalty Reward</a></li>
-													<li><a href="egg_hunt.php" title="Easter Egg Hunt">Easter Egg Hunt</a></li>
-													<li><a href="forex_bonanza.php" title="Instafxng December Bonanza">Instafxng December Bonanza</a></li>
-													<li><a href="forex_hyundai_sonata.php" title="InstaForex Hyundai Sonata Promotion">Hyundai Sonata Promotion</a></li>
-													<li><a href="forex_bmw_contest.php" title="BMW X6 from Instaforex">BMW X6 Promotion</a></li>
-													<li><a href="forex_100bonus.php" title="100% LFC Partnership Bonus">100% LFC Bonus</a></li>
-													<li><a href="spring_in_liverpool.php" title="Spring in Liverpool by Instaforex">Spring in Liverpool</a></li>
-													<li><a href="hyundai_accent.php" title="InstaForex Hyundai Accent Promotion">Hyundai Accent Promotion</a></li>
-													<li><a href="kia_picanto.php" title="InstaForex Kia Picanto">KIA Picanto Promotion</a></li>
+													<li><a href="https://instafxng.com/loyalty.php" title="Point Based Loyalty Reward">Point Based Loyalty Reward</a></li>
+													<li><a href="https://instafxng.com/egg_hunt.php" title="Easter Egg Hunt">Easter Egg Hunt</a></li>
+													<li><a href="https://instafxng.com/forex_bonanza.php" title="Instafxng December Bonanza">Instafxng December Bonanza</a></li>
+													<li><a href="https://instafxng.com/forex_hyundai_sonata.php" title="InstaForex Hyundai Sonata Promotion">Hyundai Sonata Promotion</a></li>
+													<li><a href="https://instafxng.com/forex_bmw_contest.php" title="BMW X6 from Instaforex">BMW X6 Promotion</a></li>
+													<li><a href="https://instafxng.com/forex_100bonus.php" title="100% LFC Partnership Bonus">100% LFC Bonus</a></li>
+													<li><a href="https://instafxng.com/spring_in_liverpool.php" title="Spring in Liverpool by Instaforex">Spring in Liverpool</a></li>
+													<li><a href="https://instafxng.com/hyundai_accent.php" title="InstaForex Hyundai Accent Promotion">Hyundai Accent Promotion</a></li>
+													<li><a href="https://instafxng.com/kia_picanto.php" title="InstaForex Kia Picanto">KIA Picanto Promotion</a></li>
 												</ul>
 												<br />
 												<span style="font-size: 12px; font-weight: bold">Visit <a href="https://instaforex.com" target="_blank" title="Instaforex">InstaForex.com</a> for more about Instaforex</span>
