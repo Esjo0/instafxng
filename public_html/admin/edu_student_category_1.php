@@ -14,7 +14,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
-            ORDER BY u.academy_signup DESC ";
+            ORDER BY u.academy_signup DESC, u.last_name ASC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
             u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
@@ -23,7 +23,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL
-            ORDER BY u.academy_signup DESC ";
+            ORDER BY u.academy_signup DESC, u.last_name ASC ";
 }
 
 $numrows = $db_handle->numRows($query);
@@ -109,7 +109,7 @@ $education_students = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
 
-                                <p>List of students that have registered but not taken any course.</p>
+                                <p>List of students that actually logged in to the FX Academy portal and are yet to take any course.</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
@@ -126,14 +126,14 @@ $education_students = $db_handle->fetchAssoc($result);
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
-                                            <td><?php echo date_to_text($row['academy_signup']); ?></td>
+                                            <td><?php echo datetime_to_text($row['academy_signup']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
                                                 <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_1'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 1'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
-                                    <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
 

@@ -1,7 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Account";
-
+$source = $_GET['id'];
 $page_requested = "";
 
 // This section processes - views/live_account_info.php
@@ -36,7 +36,7 @@ if(isset($_POST['live_account_ilpr_reg'])) {
     } else {
 
         $client_operation = new clientOperation();
-        $log_new_ifxaccount = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2, $my_refferer);
+        $log_new_ifxaccount = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2);
 
         if($log_new_ifxaccount) {
             $page_requested = "live_account_completed_php";

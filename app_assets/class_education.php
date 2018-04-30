@@ -3,13 +3,106 @@
 class Education {
 
     // Log course deposit attempt
-    public function log_course_deposit($user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit) {
+    public function log_course_deposit($user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email) {
         global $db_handle;
+        global $system_object;
 
         $query = "INSERT INTO user_edu_deposits (user_code, trans_id, course_id, amount, stamp_duty,
             gateway_charge, pay_method, deposit_origin) VALUES ('$user_code', '$trans_id', $course_id, $course_cost, $stamp_duty, $card_processing, '$pay_type', '$origin_of_deposit')";
 
         $db_handle->runQuery($query);
+
+        $total_payment = $course_cost + $stamp_duty + $card_processing;
+        $total_payment = number_format($total_payment, 2, ".", ",");
+
+        // Send order invoice to client email address
+        $subject = "Forex Profit Optimizer Course Order Invoice - " . $trans_id;
+        $body =
+<<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Dear $client_name,</p>
+
+            <p>NOTE: This is a CONFIDENTIAL Document. Information herein should
+            never be shared with anyone.</p>
+
+            <p>THIS INVOICE IS VALID ONLY FOR 24 HOURS. IF PAYMENT IS NOT MADE BY THEN,
+            YOU MUST SUBMIT ANOTHER ORDER.</p>
+
+            <p>====================</p>
+
+            <p>Your Transaction ID for the Forex Profit Optimizer Course is [$trans_id]</p>
+
+            <p>The details of your order are as follows:</p>
+
+            <p>Payment for Forex Profit Optimizer Course: (N $total_payment)</p>
+
+            <p>To complete your order, please make your payment as follows:</p>
+
+            <p>Pay (N $total_payment) into our account listed below.</p>
+
+            <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
+            <ol>
+                <li>Any Branch of Guaranty Trust Bank (GTB)<br />
+                Account Name: Instant Web-Net Technologies Ltd<br />
+                Account Number: 0174516696
+                </li>
+                <li>After making the payment, visit <a href='https://instafxng.com/fxacademy'>https://instafxng.com/fxacademy</a> and click on NOTIFICATION.</li>
+                <li>Fill in the column as stated on the page.</li>
+            </ol>
+
+            <p>Upon receipt of payment, you will be granted access to the Forex Profit Optimizer Course</p>
+
+            <p>NOTE:</p>
+            <ul>
+                <li>Third party payments are not allowed.</li>
+                <li>When making payment through internet banking platform, fill in your transaction ID $trans_id
+                in the REMARK column.</li>
+                <li>You will only be given access to the Forex Profit Optimizer course after you have completed
+                <a href='https://instafxng.com/fxacademy'>payment notification</a> as advised in (2) above.</li>
+            </ul>
+
+
+            <br /><br />
+            <p>Best Regards,</p>
+            <p>Instafxng Support,<br />
+                www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+        $system_object->send_email($subject, $body, $client_email, $client_name);
+
+
     }
 
     // Confirm if client has paid for a particular course
@@ -575,7 +668,7 @@ MAIL;
     public function mail_academy_login_details($client_first_name, $client_email) {
         global $system_object;
 
-        $subject = "$client_first_name, I've got something for you. Get in now!";
+        $subject = "$client_first_name, your Journey to Consistent Income Starts Here";
         $message =
 <<<MAIL
 <div style="background-color: #F3F1F2">
@@ -583,23 +676,21 @@ MAIL;
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Hello&nbsp;$client_first_name,</p>
-            <p>My name is Bunmi from InstaForex Nigeria. Does the name ring a bell?</p>
-            <p>You registered to take our Free online Forex training course sometimes ago and I&rsquo;m super glad to inform you that you can now take the training wherever you are!</p>
-            <p>You wanted a very simple, easy to follow training that you can take from your house, office or even on your bed. Now you can even take the course from your phone.</p>
-            <p>Within the next hour, you will be placing informed trades and increase your chances of taking your slice of the 5.3 Billion Dollars from the Forex market.</p>
-            <p>Guess what! It is free (at least for now).</p>
-            <p><strong><a href="http://bit.ly/2ffEeKl" target="_blank">Click Here to Start the Training Now.</a></strong></p>
-            <p>$client_first_name, we are taking in just 100 people at this time, for this brand new Forex Money Maker Course and I really want you to be one of them. The slots are filling up very fast.</p>
-            <p>Please don&rsquo;t miss this. Go ahead and login to the training immediately to secure your spot. Don&rsquo;t worry you can take a break and continue later, so long as you have started and your spot is secured.</p>
-            <p><strong><a href="http://bit.ly/2ffEeKl" target="_blank">Click Here to Start the Training Now.</a></strong></p>
-            <p>This will be your best shot at generating a healthy side income from forex trading. Go ahead and make the move now.</p>
-            <p>Click <a href="http://bit.ly/2ffEeKl">here</a> to start the Forex Money Maker Course now so you can launch your Forex trading entry with a big bang.</p>
-            <p>See you on the other side. Secure your spot now. The 100 spots are filling up really fast. Don&rsquo;t wait till it will be too late.</p>
+            <p>Hello $client_first_name,</p>
+            <p>A very warm welcome to you. The first step on the journey to making consistent income from Forex trading is getting adequate knowledge and I’m glad yours has begun.</p>
+            <p>Tighten your seat belt as this is going to be an amazing journey and I can only giggle right now as I know that when you are done, you will be armed with enough knowledge to conquer the world, in this case, take all that you deserve from life instead of just settling with what life has to offer. </p>
+            <li>
+                <ul>Be sure to give this training your 100% attention and thoroughly go through each lesson without forgetting to attempt all the test exercises.</ul>
+                <ul>Don’t hesitate to use any of the message box to ask a question when you need more clarity on something or you have a hard time understanding a particular lesson and you will be swiftly responded to.</ul>
+                <ul>Rest assured that I am fully committed to holding your hands even as I guide you through all the lessons of this course.</ul>
+            </li>
+            <p>$client_first_name, brace up for you are about to start one heck of an amazing journey that leads you to getting all that you deserve from life.</p>
+            <p>It’s a Big Welcome once again from me to you and I look forward to seeing you on the other side.</p>
             <p><a href="http://bit.ly/2ffEeKl" target="_blank">Here is the link to the online training again.</a></p>
             <p>&nbsp;</p>
             <p>Best Regards,&nbsp;</p>
-            <p>Bunmi,</p>
+            <p>Your friend,</p>
+            <p>Mercy,</p>
             <p>Clients Relations Manager<br />Instafxng&nbsp;</p>
             <p>&nbsp;</p>
 
@@ -716,6 +807,7 @@ MAIL;
             if($deposit_status == '3') {
                 $query = "INSERT INTO user_edu_fee_payment (reference, admin_code, user_code, course_id) VALUES ('$transaction_no', '$admin_code', '$user_no', $course_no)";
                 $db_handle->runQuery($query);
+                $this->set_access_confirmation_mail($user_no);
             }
 
             return true;
@@ -727,7 +819,7 @@ MAIL;
     public function submit_payment_notification($transaction_no, $pay_date, $naira_amount, $admin_comment = false, $admin_code = false) {
         global $db_handle;
 
-        $query = "UPDATE user_edu_deposits SET status = '2', pay_date = '$pay_date', amount_paid = '$naira_amount' WHERE trans_id = '$transaction_no' LIMIT 1";
+        $query = "UPDATE user_edu_deposits SET status = '2', pay_date = '$pay_date', amount_paid = $naira_amount WHERE trans_id = '$transaction_no' LIMIT 1";
         $db_handle->runQuery($query);
 
         if($db_handle->affectedRows() > 0) {
@@ -762,7 +854,7 @@ MAIL;
     public function get_client_detail_by_code($unique_code) {
         global $db_handle;
 
-        $query = "SELECT CONCAT(first_name, SPACE(1), last_name) AS full_name FROM user WHERE user_code = '$unique_code' LIMIT 1";
+        $query = "SELECT CONCAT(first_name, SPACE(1), last_name) AS full_name, * FROM user WHERE user_code = '$unique_code' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $fetched_data = $fetched_data[0];
@@ -890,6 +982,67 @@ MAIL;
         $fetched_data = $db_handle->fetchAssoc($result);
 
         return $fetched_data ? $fetched_data : false;
+    }
+
+    //Send access confirmation mail to client
+    public function set_access_confirmation_mail($user_code)
+    {
+        global $system_object;
+        global $db_handle;
+        $query = "SELECT email, first_name FROM user WHERE user_code = '$user_code' ";
+        $result = $db_handle->runQuery($query);
+        $result = $db_handle->fetchAssoc($result);
+        $client_email = $result[0]['email'];
+        $client_first_name = $result[0]['first_name'];
+        $subject = "Access to the Forex Profit Optimizer Course";
+        $message =
+            <<<MAIL
+                    <div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello $client_first_name,</p>
+
+            <p>Your payment for the Forex Profit Optimizer course has been completed and you have been granted access to continue the course.</p>
+            <p>Kindly <a href="https://instafxng.com/fxacademy/">click here</a> to start the Forex profit optimizer course.</p>
+             <p>Feel free to send us a message if you need any clarification or assistance with any of the lesson.</p>
+             <p>We're always on hand to guide you through.</p>
+             <p>Have a wonderful time in class!</p>
+
+            <br /><br />
+            <p>Best Regards,<br/>Curry</p>
+            <p>Instafxng FX Academy,<br />
+                www.instafxng.com/fxacademy</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+        $system_object->send_email($subject, $message, $client_email, $client_first_name);
     }
 }
 

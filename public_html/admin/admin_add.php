@@ -11,7 +11,11 @@ if (isset($_POST['process'])) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
 
-    extract($_POST);
+//    extract($_POST);
+
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $email = $_POST['email'];
     
     if(empty($firstname) || empty($lastname) || empty($email)) {
         $message_error = "All fields are compulsory, please try again.";
@@ -109,13 +113,12 @@ if (isset($_POST['process'])) {
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                        class="close">&times;</button>
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
                                                     <h4 class="modal-title">Add Admin</h4></div>
                                                 <div class="modal-body">Are you sure you want to add a new admin profile? This action cannot be reversed.</div>
                                                 <div class="modal-footer">
                                                     <input name="process" type="submit" class="btn btn-success" value="Proceed">
-                                                    <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                    <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                 </div>
                                             </div>
                                         </div>

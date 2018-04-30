@@ -11,18 +11,19 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
             u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
-            FROM user AS u
+            FROM free_training_campaign AS ftc
+            INNER JOIN user AS u ON ftc.email = u.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE u.academy_signup IS NOT NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
+            WHERE (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
             ORDER BY u.academy_signup DESC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
             u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
-            FROM user AS u
+            FROM free_training_campaign AS ftc
+            INNER JOIN user AS u ON ftc.email = u.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE u.academy_signup IS NOT NULL
             ORDER BY u.academy_signup DESC ";
 }
 

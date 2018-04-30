@@ -7,17 +7,21 @@ class Customer_Care
         global $db_handle;
         $query = "INSERT IGNORE INTO prospect_biodata (admin_code, first_name, last_name, other_names, email_address, phone_number, prospect_source) VALUES ('$admin_code', '$first_name', '$last_name', '$other_name','$email','$phone', '$prospect_source')";
         $db_handle->runQuery($query);
-        $query = "SELECT @prospect_id:= prospect_biodata_id FROM prospect_biodata WHERE email_address = '$email'";
+        $query = "SELECT @prospect_id:= prospect_biodata_id FROM prospect_biodata WHERE email_address = '$email' ";
         $db_handle->runQuery($query);
-        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type, prospect_source) VALUES('$con_desc', '$admin_code', @prospect_id, '2', '$prospect_source') ");
+        $query = "INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type, prospect_source) VALUES('$con_desc', '$admin_code', @prospect_id, '2', '$prospect_source') ";
+        $db_handle->runQuery($query);
+
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
     public function add_new_client_log($admin_code, $acc_no, $con_desc)
     {
         global $db_handle;
-        $db_handle->runQuery("SELECT @u_code:= user_code FROM user_ifxaccount WHERE user_ifxaccount.ifx_acct_no = '$acc_no'");
-        $db_handle->runQuery("INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type, ifx_acct_no) VALUES('$con_desc', '$admin_code', @u_code, '1', '$acc_no')");
+        $query = "SELECT @u_code:= user_code FROM user_ifxaccount WHERE user_ifxaccount.ifx_acct_no = '$acc_no' ";
+        $db_handle->runQuery($query);
+        $query = "INSERT INTO customer_care_log (con_desc, admin_code, tag, log_type, ifx_acc_no) VALUES('$con_desc', '$admin_code', @u_code, '1', '$acc_no')";
+        $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
@@ -59,7 +63,7 @@ class Customer_Care
     public function get_all_conversations($tag)
     {
         global $db_handle;
-        $query = "SELECT log_id, con_desc, status, created FROM customer_care_log WHERE tag = '$tag' ";
+        $query = "SELECT log_id, con_desc, status, created, updated FROM customer_care_log WHERE tag = '$tag' ";
         $result = $db_handle->runQuery($query);
         $customer_details = $db_handle->fetchAssoc($result);
         return $customer_details;
@@ -75,7 +79,7 @@ class Customer_Care
     public function log_treated($log_id)
     {
         global $db_handle;
-        $query = "UPDATE customer_care_log SET status = '2' WHERE log_id = '$log_id'";
+        $query = "UPDATE customer_care_log SET status = '2', updated = now() WHERE log_id = '$log_id'";
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
     }

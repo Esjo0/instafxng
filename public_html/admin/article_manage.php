@@ -95,7 +95,11 @@ $all_news_items = $db_handle->fetchAssoc($result);
                                             <td><?php echo status_article($row['status']); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a title="Edit" class="btn btn-info" href="article_add.php?x=edit&id=<?php echo encrypt($row['article_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
+                                                <center>
+                                                    <a title="Edit" class="btn btn-sm btn-info" href="article_add.php?x=edit&id=<?php echo encrypt($row['article_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
+                                                <br/><br/>
+                                                    <a title="Preview" class="btn btn-sm btn-success" target="_blank" href="../news1.php?id=<?php echo $row['article_id']; ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
+                                                </center>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

@@ -87,7 +87,7 @@ $completed_deposit_requests = $db_handle->fetchAssoc($result);
                                         <tr>
                                             <td><?php echo $admin_object->get_admin_name_by_code($row['admin_code']);?></td>
                                             <td><?php echo date_to_text($row['date']) ?></td>
-                                            <td><?php echo date('h:i A', mktime($row['time'])); ?></td>
+                                            <td><?php echo $row['time']; ?></td>
                                             <td><?php echo $row['location']; ?></td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

@@ -33,7 +33,7 @@
     <div class="form-group">
         <label class="control-label col-sm-3" for="pay_method">Payment Method:</label>
         <div class="col-sm-9 col-lg-5">
-            <select name="pay_method" class="form-control" id="pay_method" disabled required>
+            <select name="pay_method" class="form-control" id="pay_method" required>
                 <option value="">---Select Type---</option>
                 <option value="2" <?php if(isset($client_pay_method) && $client_pay_method == '2') { echo "selected='selected'"; } ?>>Internet Transfer</option>
                 <option value="3" <?php if(isset($client_pay_method) && $client_pay_method == '3') { echo "selected='selected'"; } ?>>ATM Transfer</option>
@@ -41,7 +41,7 @@
                 <option value="5" <?php if(isset($client_pay_method) && $client_pay_method == '5') { echo "selected='selected'"; } ?>>Mobile Money Transfer</option>
                 <option value="6" <?php if(isset($client_pay_method) && $client_pay_method == '6') { echo "selected='selected'"; } ?>>Cash Deposit</option>
                 <option value="9" <?php if(isset($client_pay_method) && $client_pay_method == '9') { echo "selected='selected'"; } ?>>USSD Transfer</option>
-                <option value="8" <?php if(isset($client_pay_method) && $client_pay_method == '8') { echo "selected='selected'"; } ?>>- Not Listed -</option>
+<!--                <option value="8" --><?php //if(isset($client_pay_method) && $client_pay_method == '8') { echo "selected='selected'"; } ?><!-->- Not Listed -</option>-->
             </select>
         </div>
     </div>

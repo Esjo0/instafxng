@@ -29,3 +29,6 @@ require_once(LIB_PATH.DS."class_questions.php");
 require_once(LIB_PATH.DS."config_sys.php");
 require_once(LIB_PATH.DS."class_reminders.php");
 require_once(LIB_PATH.DS."class_customer_care_log.php");
+require_once(LIB_PATH.DS."class_push_notification.php");
+//Easter Promo Controller File
+require_once(LIB_PATH.DS."class_easter_promo.php");

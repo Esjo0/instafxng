@@ -42,14 +42,13 @@ if (isset($_POST['process_customer']))
     {
         $message_error = "All fields are compulsory, please try again.";
     }
-    elseif (!check_email($email))
+    elseif(!check_email($email))
     {
         $message_error = "You have provided an invalid email address. Please try again.";
     }
     else
         {
         $new_log = $obj_customer_care_log->add_new_customer_log($_SESSION['admin_unique_code'], $first_name, $last_name, $email, $phone, $con_desc, $prospect_source, $other_name);
-        //($_SESSION['admin_unique_code'], $first_name, $other_name, $last_name, $email_address, $phone_no, $con_desc, $prospect_source);
             if($new_log)
             {
                 $message_success = "You have successfully created a new log.";
@@ -62,9 +61,7 @@ if (isset($_POST['process_customer']))
 }
 
 $all_prospect_source = $admin_object->get_all_prospect_source();
-if(empty($all_prospect_source)) {
-    $message_error = "You cannot add a prospect until you have added at least one prospect source <a href='prospect_source.php'>here</a>.";
-}
+if(empty($all_prospect_source)) {    $message_error = "You cannot add a prospect until you have added at least one prospect source <a href='prospect_source.php'>here</a>.";}
 
 ?>
 <!DOCTYPE html>
@@ -96,7 +93,7 @@ if(empty($all_prospect_source)) {
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>ADD NEW CUSTOMER CARE LOG</strong></h4>
+                            <h4><strong>ADD NEW LOG</strong></h4>
                         </div>
                     </div>
                     

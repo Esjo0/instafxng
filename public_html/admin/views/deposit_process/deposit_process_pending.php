@@ -17,7 +17,7 @@
                         <?php } else { ?>
                             <img src="../images/placeholder.jpg" alt="" class="img-responsive">
                         <?php } ?>
-                        
+
                         <?php if($client_operation->account_flagged($trans_detail['user_code'])) { ?>
                             <p><img class="center-block" src="../images/red-flag.png" alt="" title="This client has an account flagged."></p>
                         <?php } ?>
@@ -29,8 +29,8 @@
                                 <span><?php echo $trans_detail['phone']; ?></span>
                                 <span><?php echo $trans_detail['email']; ?></span>
                                 <hr/>
-<!--                                <span class="text-danger"><strong>Recent Transactions</strong></span>-->
-<!--                                <span>## coming soon ##</span>-->
+                                <!--                                <span class="text-danger"><strong>Recent Transactions</strong></span>-->
+                                <!--                                <span>## coming soon ##</span>-->
                                 <span class="text-danger"><strong>IFX Accounts</strong></span>
                                 <span>
                                     <?php
@@ -61,7 +61,7 @@
                         <span><strong>Order:</strong> &dollar; <?php echo $trans_detail['dollar_ordered']; ?> - &#8358; <?php echo number_format($trans_detail['naira_total_payable'], 2, ".", ","); ?></span>
                         <span><strong>Date: </strong><?php echo datetime_to_text($trans_detail['deposit_created']); ?></span>
                         <span><strong>Account:</strong> <?php echo $trans_detail['ifx_acct_no']; ?></span>
-                        
+
                     </div>
                 </div>
             </div>
@@ -97,13 +97,13 @@
             </div>
 
 
-             <!--Modal - confirmation boxes--> 
+            <!--Modal - confirmation boxes-->
             <div id="save-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
-                                class="close">&times;</button>
+                                    class="close">&times;</button>
                             <h4 class="modal-title">Save Comment</h4></div>
                         <div class="modal-body">Do you want to save the information?</div>
                         <div class="modal-footer">
@@ -121,27 +121,28 @@
         <h5>Admin Remarks</h5>
         <div style="max-height: 550px; overflow: scroll;">
             <?php
-                if(isset($trans_remark) && !empty($trans_remark)) {
-                    foreach ($trans_remark as $row) {
-            ?>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="transaction-remarks">
-                    <span id="trans_remark_author"><?php echo $row['admin_full_name']; ?></span>
-                    <span id="trans_remark"><?php echo $row['comment']; ?></span>
-                    <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+            if(isset($trans_remark) && !empty($trans_remark)) {
+                foreach ($trans_remark as $row) {
+                    ?>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="transaction-remarks">
+                                <span id="trans_remark_author"><?php echo $row['admin_full_name']; ?></span>
+                                <span id="trans_remark"><?php echo $row['comment']; ?></span>
+                                <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+                            </div>
+                        </div>
+                    </div>
+                <?php } } else { ?>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="transaction-remarks">
+                            <span class="text-danger"><em>There is no remark to display.</em></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <?php } } else { ?>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="transaction-remarks">
-                        <span class="text-danger"><em>There is no remark to display.</em></span>
-                    </div>
-                </div>
-            </div>
             <?php } ?>
+
         </div>
     </div>
 

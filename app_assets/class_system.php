@@ -3,7 +3,7 @@
 class InstafxngSystem {
     
     // function to send SMTP emails
-    public function send_email($subject, $message, $sendto_email, $sendto_name, $from_name, $attachment = '') {
+    public function send_email($subject, $message, $sendto_email, $sendto_name, $from_name = '', $attachment = '') {
         
         //PHPMailer Object
         $mail = new PHPMailer;
@@ -34,6 +34,9 @@ class InstafxngSystem {
         //To address and name
         $mail->clearAddresses();
         $mail->addAddress("$sendto_email", "$sendto_name");
+
+        //Set BCC address
+        $mail->addBCC("mailbox@instafxng.com", "Instafxng");
 
         $mail->Subject = $subject;
         $mail->Body = $message;
@@ -79,19 +82,43 @@ class InstafxngSystem {
 
 
     // Calculate saldo report
-    public function get_saldo_report($from_date, $to_date) {
+    public function get_saldo_report($from_date, $to_date, $category) {
         global $db_handle;
 
-        $query = "SELECT (SUM(exchange_rate) / COUNT(trans_id)) AS avg_deposit_rate, SUM(real_naira_confirmed) AS sum_total, SUM(real_dollar_equivalent) AS sum_dol_total FROM user_deposit WHERE status = '8' AND (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
+        if($category == 'all') {
+            $query = "SELECT (SUM(ud.exchange_rate) / COUNT(ud.trans_id)) AS avg_deposit_rate,
+                  SUM(ud.real_naira_confirmed) AS sum_total, SUM(ud.real_dollar_equivalent) AS sum_dol_total
+                  FROM user_deposit AS ud WHERE ud.status = '8' AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
+        } else {
+            $query = "SELECT (SUM(ud.exchange_rate) / COUNT(ud.trans_id)) AS avg_deposit_rate,
+                  SUM(ud.real_naira_confirmed) AS sum_total, SUM(ud.real_dollar_equivalent) AS sum_dol_total
+                  FROM user_deposit AS ud
+                  INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+                  WHERE ud.status = '8' AND ui.type = '$category' AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
+        }
+
         $result = $db_handle->runQuery($query);
         $selected_data = $db_handle->fetchAssoc($result);
+
         $total_deposit = $selected_data[0]['sum_total'];
         $total_deposit_dollar = $selected_data[0]['sum_dol_total'];
         $deposit_avg = $selected_data[0]['avg_deposit_rate'];
 
-        $query = "SELECT (SUM(exchange_rate) / COUNT(trans_id)) AS avg_withdrawal_rate, SUM(naira_total_withdrawable) AS sum_total, SUM(dollar_withdraw) AS sum_dol_total FROM user_withdrawal WHERE status = '10' AND (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
+        if($category == 'all') {
+            $query = "SELECT (SUM(uw.exchange_rate) / COUNT(uw.trans_id)) AS avg_withdrawal_rate,
+                  SUM(uw.naira_total_withdrawable) AS sum_total, SUM(uw.dollar_withdraw) AS sum_dol_total
+                  FROM user_withdrawal AS uw WHERE uw.status = '10' AND (STR_TO_DATE(uw.updated, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
+        } else {
+            $query = "SELECT (SUM(uw.exchange_rate) / COUNT(uw.trans_id)) AS avg_withdrawal_rate,
+                  SUM(uw.naira_total_withdrawable) AS sum_total, SUM(uw.dollar_withdraw) AS sum_dol_total
+                  FROM user_withdrawal AS uw
+                  INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+                  WHERE uw.status = '10' AND ui.type = '$category' AND (STR_TO_DATE(uw.updated, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
+        }
+
         $result = $db_handle->runQuery($query);
         $selected_data = $db_handle->fetchAssoc($result);
+
         $total_withdrawal = $selected_data[0]['sum_total'];
         $total_withdrawal_dollar = $selected_data[0]['sum_dol_total'];
         $withdrawal_avg = $selected_data[0]['avg_withdrawal_rate'];
@@ -99,7 +126,7 @@ class InstafxngSystem {
         $saldo_calculated = $total_deposit - $total_withdrawal;
         $saldo_calculated_dollar = $total_deposit_dollar - $total_withdrawal_dollar;
 
-        $saldo = array("deposit_avg" => $deposit_avg, "withdrawal_avg" => $withdrawal_avg,  "saldo" => $saldo_calculated, "saldo_dollar" => $saldo_calculated_dollar, "deposit" => $total_deposit, "deposit_dollar" => $total_deposit_dollar, "withdrawal" => $total_withdrawal, "withdrawal_dollar" => $total_withdrawal_dollar);
+        $saldo = array("category" => $category, "deposit_avg" => $deposit_avg, "withdrawal_avg" => $withdrawal_avg,  "saldo" => $saldo_calculated, "saldo_dollar" => $saldo_calculated_dollar, "deposit" => $total_deposit, "deposit_dollar" => $total_deposit_dollar, "withdrawal" => $total_withdrawal, "withdrawal_dollar" => $total_withdrawal_dollar);
         return $saldo;
     }
 
@@ -113,6 +140,18 @@ class InstafxngSystem {
         $selected_data = $db_handle->fetchAssoc($result);
 
         return $selected_data[0];
+    }
+
+    // Calculate commission report details
+    public function get_comission_report_details($from_date, $to_date) {
+        global $db_handle;
+
+        $query = "SELECT COUNT(DISTINCT ifx_acct_no) AS accounts, SUM(volume) AS volume, SUM(commission) AS commission, date_earned
+                FROM trading_commission WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY date_earned";
+        $result = $db_handle->runQuery($query);
+        $selected_data = $db_handle->fetchAssoc($result);
+
+        return $selected_data;
     }
 
     // Calculate VAT charge report
@@ -848,6 +887,12 @@ class InstafxngSystem {
         $active_accounts = $db_handle->numRows($query);
         return $active_accounts ? $active_accounts : false;
 
+    }
+
+    public function get_total_accounts() {
+        global $db_handle;
+        $query = "SELECT ifx_acct_no FROM user_ifxaccount";
+        return $db_handle->numRows($query);
     }
 
     public function get_total_clients() {

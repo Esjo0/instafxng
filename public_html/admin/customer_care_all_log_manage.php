@@ -56,12 +56,20 @@ if(isset($_POST['filter_report']))
     }
     if((isset($p_s) && !empty($p_s)))
     {
-        for ($i = 0; $i < count($p_s); $i++){$totpageids = $totpageids . "," . "'" .$p_s[$i]."'";} $p_s_selected = substr_replace($totpageids, "", 0, 1);
+        for ($i = 0; $i < count($p_s); $i++)
+        {
+            $totpageids = $totpageids . "," . "'" .$p_s[$i]."'";
+        }
+        $p_s_selected = substr_replace($totpageids, "", 0, 1);
         $query = $query." AND prospect_source IN ($p_s_selected)";
     }
     if((isset($personnel) && !empty($personnel)))
     {
-        for ($i = 0; $i < count($personnel); $i++){$totpageid = $totpageid. "," . "'".$personnel[$i]."'";} $p_selected = substr_replace($totpageid, "", 0, 1);
+        for ($i = 0; $i < count($personnel); $i++)
+        {
+            $totpageid = $totpageid. "," . "'".$personnel[$i]."'";
+        }
+        $p_selected = substr_replace($totpageid, "", 0, 1);
         $query = $query." AND admin_code IN ($p_selected)";
     }
 }
@@ -89,9 +97,7 @@ $admin_all_logs = $db_handle->fetchAssoc($result);
 
 
 $all_prospect_source = $admin_object->get_all_prospect_source();
-if(empty($all_prospect_source)) {
-    $message_error = "You cannot add a prospect until you have added at least one prospect source <a href='prospect_source.php'>here</a>.";
-}
+if(empty($all_prospect_source)) {    $message_error = "You cannot add a prospect until you have added at least one prospect source <a href='prospect_source.php'>here</a>.";}
 
 $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin ORDER BY admin_id DESC "));
 
@@ -186,8 +192,8 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                             <input type="checkbox" name="client" value="2" id="" /> Client</label>
                                     </div>
                                 </div>
-
-                                <hr/>
+                            </div>
+                            <div class="form-group row">
                                 <div class="col-sm-6">
                                     <div class="checkbox">
                                         <label for="">
@@ -201,8 +207,8 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                             <input type="checkbox" name="log_status_unresolved" value="1" id="" /> Unresolved</label>
                                     </div>
                                 </div>
-
-                                <hr/>
+                            </div>
+                            <div class="form-group row">
                                 <?php foreach($all_prospect_source as $key => $value) { ?>
                                 <div class="col-sm-6">
                                     <div class="checkbox">
@@ -212,7 +218,8 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                 </div>
                                 <?php } ?>
 
-                                <hr/>
+                            </div>
+                            <div class="form-group row">
                                 <?php foreach($personnel as $key => $value) { ?>
                                     <div class="col-sm-6">
                                         <div class="checkbox">
@@ -237,6 +244,12 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                 </form>
 
                 <hr>
+
+                <!--<div class="row">
+                    <div class="col-sm-12">
+                        <p>All interaction logs that have been added on this platform, can be viewed below.</p>
+                    </div>
+                </div>-->
 
                 <div class="row">
                     <div class="col-sm-12">
@@ -264,7 +277,7 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                             echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
                                             echo "<strong>Phone : </strong>".$client_details['phone']."<br/>";
                                             echo "<strong>Email : </strong>".$client_details['email']."<br/>";
-                                            echo "<strong>Account Number : </strong>".$row['ifx_acct_no']."<br/>";
+                                            echo "<strong>Account Number : </strong>".$row['ifx_acc_no']."<br/>";
                                         }
                                         elseif ($row['log_type'] == '2')
                                         {
@@ -281,7 +294,7 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                         <button class="btn btn-info" data-target="#conversations<?php echo $row['log_id']?>" data-toggle="modal"><i class="glyphicon glyphicon-info-sign"></i></button>
                                         <!--Modal - confirmation boxes-->
                                         <div id="conversations<?php echo $row['log_id']?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
@@ -305,7 +318,7 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                                                 echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
                                                                 echo "<strong>Phone : </strong>".$client_details['phone_number']."<br/>";
                                                                 echo "<strong>Email : </strong>".$client_details['email_address']."<br/>";
-                                                                echo "<strong>Account Number : </strong>".$row['ifx_acct_no']."<br/>";
+                                                                echo "<strong>Account Number : </strong>".$row['ifx_acc_no']."<br/>";
                                                             }
                                                             elseif ($row['log_type'] == '2')
                                                             {
@@ -330,24 +343,22 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                                                         {
                                                                             echo 'PENDING';
                                                                         }
-                                                                        elseif($row1['status'] == '2')
-                                                                        {
-                                                                            echo 'TREATED';
-                                                                        }
-                                                                        ?>
+                                                                        if($row1['status'] == '2')
+                                                                            :?>
+                                                                            TREATED <br/> <?php echo datetime_to_text($row1['updated']);?>
+                                                                        <?php endif; ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php echo $row1['created'] ?>
+                                                                        <?php echo datetime_to_text($row1['created']); ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php if($row1['status'] == '1'):?>
+                                                                        <?php
+                                                                        if($row1['status'] == '1'):?>
                                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                             <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
-                                                                            <button name="process_treated" type="submit" class="btn btn-success">
-                                                                                <i class="glyphicon glyphicon-check"></i>
-                                                                            </button>
+                                                                            <button name="process_treated" type="submit" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i></button>
                                                                         </form>
-                                                                    <?php endif; ?>
+                                                                            <?php endif;?>
                                                                     </td>
                                                                 </tr>
                                                             <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -355,17 +366,20 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                                         </table>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger btn-sm">Close!</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                <?php if($row1['status'] == '1'):?>
+                                <?php if($row['status'] == '2'):?>
+                                    TREATED <br/> <?php echo datetime_to_text2($row['updated']);
+                                endif;
+                                if($row['status'] == '1'):?>
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                             <input type="hidden" name="log_id" value="<?php echo $row['log_id']?>">
-                                            <button name="process_treated" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
+                                            <button name="process_treated" type="submit" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i></button>
                                         </form>
                                     <?php endif; ?>
                                     </td>

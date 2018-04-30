@@ -18,25 +18,31 @@ if(isset($get_params['trans_id']) && !empty($_REQUEST)) {
     $result = $db_handle->runQuery($query);
     $selected_deposit = $db_handle->fetchAssoc($result);
     extract($selected_deposit[0]);
+
+    // Get the details of this client
+    $client_details = $education_object->get_client_detail_by_code($user_code);
+    $client_first_name = $client_details['first_name'];
+    $client_email = $client_details['email'];
     
     // Extract GTPay gateway response
     extract($_REQUEST);
 
     if($gtpay_tranx_status_code == '00') {
+        $page_requested = "course_payment_completed_php";
 
         if($db_handle->numOfRows($result) > 0) {
             // Update the transaction
             $client_naira_notified = $gtpay_tranx_amt;
 
             if($status == '1') {
-                $query = "UPDATE user_edu_deposits SET status = '2' WHERE trans_id = '$trans_id' LIMIT 1";
+                $query = "UPDATE user_edu_deposits SET status = '2', pay_date = NOW(), amount_paid = $client_naira_notified WHERE trans_id = '$trans_id' LIMIT 1";
 
                 $db_handle->runQuery($query);
 
                 $formated_client_naira_notified = number_format($client_naira_notified, 2);
 
                 // Send a success email to the client
-                $subject = "Your Payment Was Approved";
+                $subject = "Your Forex Profit Optimizer Payment Was Approved";
                 $body =
 <<<MAIL
 <div style="background-color: #F3F1F2">
@@ -44,18 +50,15 @@ if(isset($get_params['trans_id']) && !empty($_REQUEST)) {
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $first_name,</p>
+            <p>Dear $client_first_name,</p>
 
             <p>Your payment has been approved and your payment notification has been submitted
-            successfully, Your InstaForex account will be funded shortly.<br /></p>
+            successfully, Your Forex Profit Optimizer Course will be activated shortly.<br /></p>
 
             <p>Amount: N $formated_client_naira_notified</p>
             <p>Transaction ID: $trans_id</p>
 
-            <p>Funding will be completed within 5 minutes to 2 hours on work days. Fundings
-            normally are done same day. If there is any delay we will inform you.</p>
-
-            <p>If you have any questions, please contact our support desk at https://instafxng.com/contact_info.php
+            <p>If you have any questions, please contact our support desk at <a href='https://instafxng.com/contact_info.php'>https://instafxng.com/contact_info.php</a>
             And please mention your transaction ID: $trans_id when you call.</p>
 
             <p>Thank you for using our services.</p>
@@ -92,24 +95,24 @@ if(isset($get_params['trans_id']) && !empty($_REQUEST)) {
     </div>
 </div>
 MAIL;
-//                $system_object->send_email($subject, $body, $email, $first_name);
+                $system_object->send_email($subject, $body, $client_email, $client_first_name);
             }
 
         } else {
-            header("Location: deposit.php");
+            redirect_to("https://instafxng.com/fxacademy");
         }
     } else {
+        $page_requested = "course_payment_failed_php";
+
         // This is a failed transaction
-        $page_requested = "deposit_funds_failed_php";
-        
         // Update the transaction
-        $query = "UPDATE user_deposit SET client_naira_notified = '$client_naira_notified', client_pay_date = NOW(), client_pay_method = '1', client_notified_date = NOW(), status = '9', client_comment = '$gtpay_tranx_status_msg' WHERE trans_id = '$trans_id' LIMIT 1";
+        $query = "UPDATE user_edu_deposits SET status = '5' WHERE trans_id = '$trans_id' LIMIT 1";
         $db_handle->runQuery($query);
 
         $client_naira_notified_formated = number_format($client_naira_notified, 2);
 
         // Send a failure email to the client
-        $subject = "Your Payment Was Not Successful";
+        $subject = "Your Forex Optimizer Course Payment Was Not Successful";
         $body =
 <<<MAIL
 <div style="background-color: #F3F1F2">
@@ -117,7 +120,7 @@ MAIL;
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $first_name,</p>
+            <p>Dear $client_first_name,</p>
 
             <p>Your payment was not successful, see details below.</p>
 
@@ -162,10 +165,10 @@ MAIL;
     </div>
 </div>
 MAIL;
-//        $system_object->send_email($subject, $body, $email, $first_name);
+        $system_object->send_email($subject, $body, $client_email, $client_first_name);
     }
 } else {
-    redirect_to("course_payment.php");
+    redirect_to("https://instafxng.com/fxacademy");
 }
 
 switch($page_requested) {

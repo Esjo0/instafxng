@@ -130,7 +130,7 @@ $thisPage = "Support";
                                         <div class="panel-heading"><h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse10">What is the Minimum deposit Amount?</a></h5></div>
                                         <div id="collapse10" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p>Minimum deposit is $10</p>
+                                                <p>Minimum deposit is $5</p>
                                             </div>
                                         </div>
                                     </div>
@@ -139,16 +139,16 @@ $thisPage = "Support";
                                         <div class="panel-heading"><h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse11">What is the Minimum withdrawal Amount?</a></h5></div>
                                         <div id="collapse11" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p>Minimum withdrawal is $20</p>
+                                                <p>Minimum withdrawal is $10</p>
                                             </div>
                                         </div>
                                     </div>
                                     
                                     <div class="panel panel-default">
-                                        <div class="panel-heading"><h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse12">Do you offer training Courses?</a></h5></div>
+                                        <div class="panel-heading"><h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse12">I would like to learn how to trade Forex profitably, how do I start?</a></h5></div>
                                         <div id="collapse12" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p>Yes we offer three (3) different courses and the 3 of them are free</p>
+                                                <p>We currently have a free training you can take advantage of. Visit <a href="https://instafxng.com/fxacademy/">www.instafxng.com/fxacademy/</a> to start.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -157,7 +157,7 @@ $thisPage = "Support";
                                         <div class="panel-heading"><h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse13">What is a transaction ID?</a></h5></div>
                                         <div id="collapse13" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p>It is an ID generated every time you want to fund your account. It looks like this "IFX1234567890".</p>
+                                                <p>It is an ID generated every time you want to fund your account. It looks like this "D1234567890".</p>
                                             </div>
                                         </div>
                                     </div>

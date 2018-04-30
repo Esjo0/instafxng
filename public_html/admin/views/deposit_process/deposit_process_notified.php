@@ -8,7 +8,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
 <p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
 <p>Make Modification to this order below.</p>
 <p>Fill the actual amount paid for the order as confirmed with the bank, add your remark, then process this transaction. Please note that
-you must enter a remark for this transaction.</p>
+    you must enter a remark for this transaction.</p>
 <div class="row">
     <div class="col-sm-6">
         <div class="trans_item">
@@ -50,6 +50,76 @@ you must enter a remark for this transaction.</p>
                                     }
                                     ?>
                                 </span>
+                                <hr/>
+                                <span><?php $transaction_issue = $admin_object->get_transaction_issue($trans_id);
+                                    if($transaction_issue == false){ ?>
+                                        <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle btn btn-default" style="color:red;" aria-hidden="true"> </i>
+                                        Add to Operations Log<?php
+                                    }else{
+                                        foreach ($transaction_issue as $row_issue){
+                                            if($row_issue['status'] == '1'){ ?>
+                                                <i title="Add this transaction to the Operations log" type="button" data-target="#add<?php echo $trans_id; ?>" data-toggle="modal" class="fa fa-plus-circle btn btn-default" style="color:red;" aria-hidden="true"> </i>
+                                                Add to Operations Log<?php
+                                            }}}?> </span>
+                                <!--Modal-- to add new operations log-->
+                                <div id="add<?php echo $trans_id; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                        class="close">&times;</button>
+                                                <h4 class="modal-title">Add New Record</h4></div>
+                                            <div class="modal-body">
+                                                <form data-toggle="validator" class="form-vertical" role="form" method="post" action="" enctype="multipart/form-data">
+                                                    <input name="transaction_id" class="form-control" type="hidden" value="<?php echo $trans_id ?>"  required>
+                                                    <div class="form-group row">
+                                                        <label for="inputSubtile3" class="col-sm-2 col-form-label">Description</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea name="details" class="form-control" rows="3" placeholder="Enter Detailed Description of Clients issue" required></textarea>
+                                                        </div>
+                                                    </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input name="add" type="submit" class="btn btn-success" value="Add To Records">
+                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                                if (isset($_POST['add'])){
+                                    $transaction_id = $db_handle->sanitizePost(trim($_POST['transaction_id']));
+                                    $query = "SELECT transaction_id FROM operations_log WHERE transaction_id = '$trans_id'";
+                                    $numrows = $db_handle->numRows($query);
+                                    if($numrows == 0){
+                                        $details = $db_handle->sanitizePost(trim($_POST['details']));
+                                        $add = $admin_object->add_issues($trans_id,$details,$admin_code);
+                                        if($add = true) {
+                                            $message_success = "You have successfully added a new record";
+                                        } else {
+                                            $message_error = "Something went wrong. Please try again.";
+                                        }
+
+                                    }elseif($numrows == 1){
+                                        $details = $db_handle->sanitizePost(trim($_POST['details']));
+                                        $query = "SELECT details FROM operations_log WHERE transaction_id = '$trans_id' LIMIT 1";
+                                        $result = $db_handle->runQuery($query);
+                                        $old_details = $db_handle->fetchAssoc($result);
+                                        foreach ($old_details AS $rowd){$old_details = $rowd['details'];}
+                                        $date = date("D M d, Y G:i");
+                                        $new_details = $old_details."</br><hr/></br>Re-Opened On ".$date."<br/><strong> >> </strong>".$details;
+                                        $query = "UPDATE operations_log SET status = '0', details = '$new_details' WHERE transaction_id = '$trans_id'";
+                                        $result = $db_handle->runQuery($query);
+                                        if($result == true){
+                                            $message_success = "You have reopened this issue";
+                                        } else {
+                                            $message_error = "Something went wrong. Please try again.";
+                                        }
+                                    }
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -91,54 +161,54 @@ you must enter a remark for this transaction.</p>
                 <div class="transaction-remarks">
                     <span id="trans_remark_author">Client Comment:</span>
                     <span class="text-danger"><em><?php if(isset($trans_detail['client_comment'])) { echo $trans_detail['client_comment']; } else { echo "-----"; } ?></em></span>
-                    
-                    <?php 
-                        // allow admin to reply to client comment 
-                        if(isset($trans_detail['client_comment']) && strlen(trim($trans_detail['client_comment'])) > 10) {
-                            if($trans_detail['client_comment_response'] == '1') { // Comment has been replied by an Admin
-                    ?>
-                    <hr />
-                    <p style="text-align: right"><em>Comment Replied</em></p>
-                    
-                    <?php } else { ?>
 
-                        <p style="text-align: right">
-                            <button type="button" data-target="#reply-client-comment" data-toggle="modal" class="btn btn-default">Reply Comment</button>
-                        </p>
-                        
-                        <!-- Modal - confirmation boxes -->
-                        <div id="reply-client-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" data-dismiss="modal" aria-hidden="true"
-                                            class="close">&times;</button>
-                                        <h4 class="modal-title">Reply Client Comment on Transaction</h4>
-                                    </div>
-                                    
-                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
-                                        <input type="hidden" name="client_name" value="<?php echo $trans_detail['full_name']; ?>" />
-                                        <input type="hidden" name="client_email" value="<?php echo $trans_detail['email']; ?>" />
-                                        <input type="hidden" name="trans_id" value="<?php echo $trans_id; ?>" />
-                                        <div class="modal-body">
-                                            <p>Type your reply in the space below. Use [NAME] wherever you want the client name inserted.</p>
-                                            <label class="control-label" for="content">Message:</label>
-                                            <div class="form-group">
-                                                <div class="col-sm-12"><textarea name="content" id="content" rows="3" class="form-control"></textarea></div>
+                    <?php
+                    // allow admin to reply to client comment
+                    if(isset($trans_detail['client_comment']) && strlen(trim($trans_detail['client_comment'])) > 10) {
+                        if($trans_detail['client_comment_response'] == '1') { // Comment has been replied by an Admin
+                            ?>
+                            <hr />
+                            <p style="text-align: right"><em>Comment Replied</em></p>
+
+                        <?php } else { ?>
+
+                            <p style="text-align: right">
+                                <button type="button" data-target="#reply-client-comment" data-toggle="modal" class="btn btn-default">Reply Comment</button>
+                            </p>
+
+                            <!-- Modal - confirmation boxes -->
+                            <div id="reply-client-comment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                    class="close">&times;</button>
+                                            <h4 class="modal-title">Reply Client Comment on Transaction</h4>
+                                        </div>
+
+                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
+                                            <input type="hidden" name="client_name" value="<?php echo $trans_detail['full_name']; ?>" />
+                                            <input type="hidden" name="client_email" value="<?php echo $trans_detail['email']; ?>" />
+                                            <input type="hidden" name="trans_id" value="<?php echo $trans_id; ?>" />
+                                            <div class="modal-body">
+                                                <p>Type your reply in the space below. Use [NAME] wherever you want the client name inserted.</p>
+                                                <label class="control-label" for="content">Message:</label>
+                                                <div class="form-group">
+                                                    <div class="col-sm-12"><textarea name="content" id="content" rows="3" class="form-control"></textarea></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input name="reply-deposit-comment" type="submit" class="btn btn-success" value="Send" />
-                                            <button type="submit" name="decline" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
-                                        </div>
-                                    </form>
-                                    
+                                            <div class="modal-footer">
+                                                <input name="reply-deposit-comment" type="submit" class="btn btn-success" value="Send" />
+                                                <button type="submit" name="decline" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    <?php } } ?>
-                    
+                        <?php } } ?>
+
                 </div>
             </div>
         </div>
@@ -146,7 +216,7 @@ you must enter a remark for this transaction.</p>
         <form  data-toggle="validator" role="form" method="post" action="">
             <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
             <?php if(!empty($trans_detail['points_claimed_id'])) { ?>
-            <input type="hidden" name="points_claimed_id" value="<?php echo $trans_detail['points_claimed_id']; ?>" />
+                <input type="hidden" name="points_claimed_id" value="<?php echo $trans_detail['points_claimed_id']; ?>" />
             <?php } ?>
 
             <?php if(isset($point_dollar_amount)) { ?>
@@ -180,13 +250,13 @@ you must enter a remark for this transaction.</p>
             </div>
 
 
-             <!--Modal - confirmation boxes--> 
+            <!--Modal - confirmation boxes-->
             <div id="confirm-deposit-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
-                                class="close">&times;</button>
+                                    class="close">&times;</button>
                             <h4 class="modal-title">Approve Deposit</h4></div>
                         <div class="modal-body">Are you sure you want to CONFIRM this deposit? This action cannot be reversed.</div>
                         <div class="modal-footer">
@@ -202,7 +272,7 @@ you must enter a remark for this transaction.</p>
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
-                                class="close">&times;</button>
+                                    class="close">&times;</button>
                             <h4 class="modal-title">Decline Deposit</h4></div>
                         <div class="modal-body">Are you sure you want to DECLINE this deposit? This action cannot be reversed.</div>
                         <div class="modal-footer">
@@ -218,7 +288,7 @@ you must enter a remark for this transaction.</p>
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" aria-hidden="true"
-                                class="close">&times;</button>
+                                    class="close">&times;</button>
                             <h4 class="modal-title">Pend Deposit</h4></div>
                         <div class="modal-body">Are you sure you want to PEND this deposit? This action cannot be reversed.</div>
                         <div class="modal-footer">
@@ -257,6 +327,47 @@ you must enter a remark for this transaction.</p>
                 </div>
             <?php } ?>
         </div>
+        <?php $transaction_issue = $admin_object->get_transaction_issue($trans_id);
+        foreach($transaction_issue as $row2) {
+            if($row2['status'] == '0'){?>
+                <h5>OPERATIONS LOG COMMENTS</h5>
+                <div class="row" style="margin: 15px;">
+                    <div class="col-sm-4"><strong>Issue Status</strong></div>
+                    <div class="col-sm-8"> <?php echo status_operations($row2['status']); ?><?php if($row2['status'] == 1){ echo " on ".date_to_text($row2['date_closed']);}?></div>
+                </div>
+
+                <div class="row" style="margin: 15px;">
+                    <div class="col-sm-4"><strong>Issue Discription</strong></div>
+                    <div class="col-sm-8"> <?php echo $row2['details'];?></div>
+                </div>
+                <div id="results" style="height: 150px; overflow: auto;">
+                    <?php
+                    $comments_details = $admin_object->get_comment_details( $trans_id );
+                    if(!empty($comments_details)){
+                        foreach($comments_details as $row3) { ?>
+                            <div class="transaction-remarks">
+                                                                                        <span id="trans_remark_author"><?php
+                                                                                            $admin_code = $row3['admin_code'];
+                                                                                            $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
+                                                                                            $admin_name = $destination_details['first_name'];
+                                                                                            $admin_lname = $destination_details['last_name'];
+                                                                                            echo $admin_name . " " . $admin_lname;?></span>
+                                <span id="trans_remark"><?php echo $row3['comment']; ?></span>
+                                <span id="trans_remark_date"><?php echo datetime_to_text($row3['created']); ?></span>
+                            </div>
+                        <?php }} else{ ?> <img class="img-responsive" src="../images/No-Comments.png" /> <?php } ?>
+                </div>
+                <form id="myForm" method="post" data-toggle="validator" class="form-vertical" role="form" enctype="multipart/form-data">
+                    <input id="admin" name="admin" type="hidden" value="<?php echo $admin_code;?>" required>
+                    <input id="trans_id" name="trans_id" type="hidden" value="<?php echo $trans_id; ?>" required>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <textarea id="comment" name="comment" class="form-control" rows="2" placeholder="Enter Detailed Description of Clients issue" required></textarea>
+                        </div>
+                    </div>
+                    <input type="button" name="addcomment"  class="btn btn-warning" onclick="SubmitFormData();" value="Add New Comment"></input>
+                </form>
+            <?php }}?>
     </div>
 
 </div>

@@ -18,6 +18,7 @@ require_once(LIB_PATH.DS."functions.php");
 
 // Load core objects
 require_once(LIB_PATH.DS."session_careers.php");
+require_once(LIB_PATH.DS."session_client.php");
 require_once(LIB_PATH.DS."class_database.php");
 require_once(LIB_PATH.DS."class_system.php");
 
@@ -30,6 +31,9 @@ require_once(LIB_PATH.DS."class_project_management.php");
 require_once(LIB_PATH.DS."class_quiz.php");
 require_once(LIB_PATH.DS."session_quiz_participant.php");
 require_once(LIB_PATH.DS."class_loyalty_point.php");
+require_once(LIB_PATH.DS."class_push_notification.php");
+//Loyalty/Training Campaign Controller
+require_once(LIB_PATH.DS."class_loyalty_training_campaign.php");
 
 /*
  * TRACK CLIENTS THAT PARTNERS REFER

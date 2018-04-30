@@ -13,7 +13,8 @@ $all_admin_member = $admin_object->get_all_admin_member();
 
 if (isset($_POST['process'])) {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
-    $content = $db_handle->sanitizePost(trim(str_replace('â€™', "'", $_POST['content'])));
+    $content = htmlspecialchars_decode(stripslashes(trim($_POST['content'])));
+    $content = str_replace('â€™', "'", $content);
     $bulletin_no = $db_handle->sanitizePost(trim($_POST['bulletin_no']));
     $bulletin_status = $db_handle->sanitizePost(trim($_POST['bulletin_status']));
 
@@ -31,19 +32,77 @@ if (isset($_POST['process'])) {
 
         if($new_bulletin)
         {
-            $message_main = '<p style="font-size: small">Bulletin Title: '.$title."<br/>";
-            $message_main .= 'Author : '.$admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']) ."<br/>";
-            $message_main .= 'Visit the <a href="bulletin_centre.php">Bulletin Centre</a> to read more.</p>';
-            $recipients = $all_allowed_admin;
-            $type = '3';
-            $obj_push_notification->add_new_notification($message_main, $recipients, $type);
+            if($bulletin_status == '1')
+            {
+                $title1 = "New Bulletin Added";
+                $message = "Bulletin Title: $title<br/>$content";
+                $recipients = $all_allowed_admin;
+                $author = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
+                if(isset($bulletin_no) && !empty($bulletin_no))
+                {
+                    $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".encrypt($bulletin_no);
+                }
+                else{$source_url = "https://instafxng.com/admin/bulletin_centre.php";}
+                $notify_support = $obj_push_notification->add_new_notification($title1, $message, $recipients, $author, $source_url);
+                foreach ($allowed_admin as $row)
+                {
+                    $author = $_SESSION['admin_first_name']." ".$_SESSION['admin_last_name'];
+                    $destination_details = $admin_object->get_admin_detail_by_code($row);
+                    $admin_name = $destination_details['first_name'];
+                    $admin_email = $destination_details['email'];
+                    $admin_email = $destination_details['email'];
+                    $subject = 'New Bulletin - '.$title;
+                    $created = date('d-m-y h:i:s a');
+                    $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>Dear $admin_name,</p>
+                                <p>$author created a new bulletin.</p>
+                                <p><b>BULLETIN TITLE: </b>$title</p>
+                                <p><b>MESSAGE: </b><br/>$content</p>
+                                <p><b>DATE AND TIME: </b>$created</p>                                
+                                <p><a href="$source_url">Login to your Admin Cabinet for for more information.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Instafxng Support,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+                    $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
+                }
+            }
             $message_success = "You have successfully saved the bulletin";
         }
-        else
-            {
-            $message_error = "Looks like something went wrong or you didn't make any change.";
-        }
-
+        else {  $message_error = "Looks like something went wrong or you didn't make any change.";  }
     }
 }
 
@@ -153,7 +212,16 @@ if($get_params['x'] == 'edit') {
                                         <label class="control-label col-sm-2" for="allowed_admin">Allowed Admin:</label>
                                         <div class="col-sm-10">
                                             <?php foreach($all_admin_member AS $key) { ?>
-                                                <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } ?>/> <?php echo $key['full_name']; ?></label></div></div>
+                                                <div class="col-sm-4">
+                                                    <div class="checkbox">
+                                                        <label for="">
+                                                            <input type="checkbox" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>" <?php if (in_array($key['admin_code'], $allowed_admin)) { echo 'checked="checked"'; } if($key['full_name'] == 'Toye Oyeleke'){ echo'checked="checked" disabled';} ?>/> <?php echo $key['full_name']; ?>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <?php if($key['full_name'] == 'Toye Oyeleke'){?>
+                                                <input type="hidden" name="allowed_admin[]" value="<?php echo $key['admin_code']; ?>"/>
+                                                <?php } ?>
                                             <?php } ?>
                                         </div>
                                     </div>

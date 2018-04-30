@@ -35,3 +35,15 @@ require_once(LIB_PATH.DS."class_customer_care_log.php");
 require_once(LIB_PATH.DS."class_push_notification.php");
 require_once(LIB_PATH.DS."class_loyalty_point.php");
 require_once(LIB_PATH.DS."class_support_emails.php");
+require_once(LIB_PATH.DS."class_accounting_system.php");
+require_once(LIB_PATH.DS."class_facility.php");
+require_once(LIB_PATH.DS."class_reporting_system.php");
+require_once(LIB_PATH.DS."class_access_controller.php");
+//Loyalty/Training Campaign Controller
+require_once(LIB_PATH.DS."class_loyalty_training_campaign.php");
+//Easter Promo Controller File
+require_once(LIB_PATH.DS."class_easter_promo.php");
+
+if(!endsWith(getCurrentURL(), "push_notification_server.php")){add_activity_log();}
+$obj_access_control->validate_access();
+

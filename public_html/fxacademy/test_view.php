@@ -4,7 +4,7 @@ $thisPage = "";
 
 if (!$session_client->is_logged_in())
 {
-    //redirect_to("login.php");
+    redirect_to("login.php");
 }
 
 $get_params = allowed_get_params(['lid', 'cid']);
@@ -53,8 +53,8 @@ else
         <meta name="description" content="">
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
-        <link href="layouts/ratings_styles/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
-        <script src="layouts/ratings_styles/js/star-rating.js" type="text/javascript"></script>
+<!--        <link href="layouts/ratings_styles/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />-->
+<!--        <script src="layouts/ratings_styles/js/star-rating.js" type="text/javascript"></script>-->
         <?php require_once 'layouts/head_meta.php'; ?>
     </head>
     <body>
@@ -112,32 +112,33 @@ else
                                     <?php $count++; } } ?>
                                     <div class="form-group">
                                         <div class="col-sm-12">
-                                            <button type="button" data-target="#lesson-assessment" data-toggle="modal" class="btn btn-success btn-lg">Submit Assessment</button>
+                                            <input name="process_test" type="submit" class="btn btn-success" value="Proceed">
+<!--                                            <button type="button" data-target="#lesson-assessment" data-toggle="modal" class="btn btn-success btn-lg">Submit Assessment</button>-->
                                         </div>
                                     </div>
 
                                     <!--Modal - confirmation boxes-->
-                                    <div id="lesson-assessment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                            class="close">&times;</button>
-                                                    <h4 class="modal-title">Lesson Assessment</h4></div>
-                                                <div class="modal-body">
-                                                    <!--Are you sure you want to submit the assessment for this lesson?-->
-                                                    <label for="input-1" class="control-label">Rate this lesson: </label>
-                                                    <input id="input-1" name="rating" class="rating rating-loading" data-min="0" data-max="5" data-step="1" required>
-                                                    <label for="comments" class="control-label">Comments (If Any):</label>
-                                                    <textarea rows="5" id="comments" name="comments" class="form-control"></textarea>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <input name="process_test" type="submit" class="btn btn-success" value="Proceed">
-                                                    <button type="submit" name="close" data-dismiss="modal" class="btn btn-danger">Close!</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div id="lesson-assessment" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">-->
+<!--                                        <div class="modal-dialog">-->
+<!--                                            <div class="modal-content">-->
+<!--                                                <div class="modal-header">-->
+<!--                                                    <button type="button" data-dismiss="modal" aria-hidden="true"-->
+<!--                                                            class="close">&times;</button>-->
+<!--                                                    <h4 class="modal-title">Lesson Assessment</h4></div>-->
+<!--                                                <div class="modal-body">-->
+<!--                                                    Are you sure you want to submit the assessment for this lesson?-->
+<!--                                                    <label for="input-1" class="control-label">Rate this lesson: </label>-->
+<!--                                                    <input id="input-1" name="rating" class="rating rating-loading" data-min="0" data-max="5" data-step="1" required>-->
+<!--                                                    <label for="comments" class="control-label">Comments (If Any):</label>-->
+<!--                                                    <textarea rows="5" id="comments" name="comments" class="form-control"></textarea>-->
+<!--                                                </div>-->
+<!--                                                <div class="modal-footer">-->
+<!--                                                    <input name="process_test" type="submit" class="btn btn-success" value="Proceed">-->
+<!--                                                    <button type="submit" name="close" data-dismiss="modal" class="btn btn-danger">Close!</button>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                 </form>
                                 <hr />
                             </div>

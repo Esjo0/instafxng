@@ -8,19 +8,12 @@ $additional_msg = $get_params['x'];
 if($additional_msg == 'msg')
 {
     $special_msg = <<<msg
-        <p>Funding your InstaForex Account is Fast and Easy!</p>
-
-        <p>You stand to enjoy amazing benefits whenever you make a deposit into your
-        InstaForex account and trade with it. A lot of successful traders are making
-        consistent income trading Forex. You can be one too.</p>
-
-        <p>When you fund your account, you will be funded at a deeply discounted rate.</p>
-
-        <p>That's not all!</p>
-
-        <p>Funding and trading your InstaForex account also makes you stand a chance to be
-        amongst 10 traders who will win Cash Prizes for trading actively in the ongoing
-        InstaFxNg Loyalty Points Promo.</p>
+        <p>To get more, you need to do more!</p>
+        <p>Funding your Instaforex account and trading actively increases your loyalty points
+        and qualifies you for the monthly reward of $500.</p>
+        <p>To be one of the 5 traders to get $500 in March, you need to start earning points
+        early!</p>
+        <p>Let's Get you Started</p>
         <br />
 msg;
 }
@@ -80,10 +73,12 @@ if(isset($_POST['deposit_funds_pcode'])) {
         extract($user_ifx_details);
     
         if($client_operation->authenticate_user_password($password_submitted, $client_pass_salt, $client_password)) {
-            switch($ifx_acc_type) {
-                case '1': $page_requested = 'deposit_funds_qty_ilpr_php'; break; // ILPR Account
-                case '2': $page_requested = 'deposit_funds_qty_nonilpr_php'; break; // Non-ILPR Account
-            }
+//            switch($ifx_acc_type) {
+//                case '1': $page_requested = 'deposit_funds_qty_ilpr_php'; break; // ILPR Account
+//                case '2': $page_requested = 'deposit_funds_qty_nonilpr_php'; break; // Non-ILPR Account
+//            }
+
+            $page_requested = 'deposit_funds_notice_php';
         } else {
             $page_requested = 'deposit_funds_pcode_php';
             $message_error = "You have entered an incorrect pass code";
@@ -92,6 +87,24 @@ if(isset($_POST['deposit_funds_pcode'])) {
     } else {
         $message_error = "Something went wrong, please try again.";
     }    
+}
+
+// This section processes - views/deposit_funds_notice.php
+if(isset($_POST['deposit_funds_notice'])) {
+    $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
+
+    $client_operation = new clientOperation($account_no);
+    $user_ifx_details = $client_operation->get_client_data();
+
+    if($user_ifx_details) {
+        extract($user_ifx_details);
+        switch($ifx_acc_type) {
+            case '1': $page_requested = 'deposit_funds_qty_ilpr_php'; break; // ILPR Account
+            case '2': $page_requested = 'deposit_funds_qty_nonilpr_php'; break; // Non-ILPR Account
+        }
+    } else {
+        $message_error = "Something went wrong, please try again.";
+    }
 }
 
 // This section processes - views/deposit_funds_kyc.php
@@ -172,9 +185,10 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
     if($client_verification == '1') {
         // confirm total funding orders today, if > 2000, disallow this order
         if($client_operation->deposit_limit_exceeded($client_user_code, $ifx_dollar_amount)) {
-            $message_error = "The requested amount will make your total funding order today exceed the allowed daily limit of $" . LEVEL_ONE_MAX_PER_DEPOSIT;
-            $message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.<br />";
+            $message_error = "You are unable to complete this process now because you have not verified your account. Please <a href='verify_account.php'>click here to verify you account.</a> ";
             $message_error .= "<br />Your address, valid ID, Passport Photograph and your Signature is required for verification.";
+            //$message_error .= "The requested amount will make your total funding order today exceed the allowed daily limit of $" . LEVEL_ONE_MAX_PER_DEPOSIT;
+            //$message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.<br />";
         } else {
             $max_per_deposit = LEVEL_ONE_MAX_PER_DEPOSIT;
             if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit) {
@@ -216,7 +230,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
 
         $origin_of_deposit = '1'; // Originates online
         $stamp_duty = CBN_STAMP_DUTY;
-        $trans_id = "IFX" . time();
+        $trans_id = "D" . time();
         $trans_id_encrypted = encrypt($trans_id);
         $service_charge = $ifx_naira_amount * DSERVCHARGE;
         $vat = $service_charge * DVAT;
@@ -247,10 +261,12 @@ if(isset($_POST['deposit_funds_finalize'])) {
     $client_operation = new clientOperation();
     $transaction = $client_operation->get_deposit_by_id_mini($trans_id);
 
-    if($transaction) {
+    if($transaction)
+    {
         extract($transaction);
         $page_requested = 'deposit_funds_pay_type_php';
         $trans_id_encrypted = encrypt($client_trans_id);
+
     } else {
         $message_error = "Something went wrong, please try again.";
         $page_requested = "";
@@ -287,6 +303,7 @@ if(isset($_POST['deposit_funds_pay_type'])) {
 switch($page_requested) {
     case '': $deposit_funds_ifx_acct_php = true; break;
     case 'deposit_funds_pcode_php': $deposit_funds_pcode_php = true; break;
+    case 'deposit_funds_notice_php': $deposit_funds_notice_php = true; break;
     case 'deposit_funds_pcode_new_php': $deposit_funds_pcode_new_php = true; break;
     case 'deposit_funds_kyc_php': $deposit_funds_kyc_php = true; break;
     case 'deposit_funds_qty_ilpr_php': $deposit_funds_qty_ilpr_php = true; break;
@@ -351,6 +368,7 @@ switch($page_requested) {
                                 <?php 
                                     if($deposit_funds_ifx_acct_php) { include_once 'views/deposit_funds/deposit_funds_ifx_acct.php'; }
                                     if($deposit_funds_pcode_php) { include_once 'views/deposit_funds/deposit_funds_pcode.php'; }
+                                    if($deposit_funds_notice_php) { include_once 'views/deposit_funds/deposit_funds_notice.php'; }
                                     if($deposit_funds_pcode_new_php) { include_once 'views/deposit_funds/deposit_funds_pcode_new.php'; }
                                     if($deposit_funds_kyc_php) { include_once 'views/deposit_funds/deposit_funds_kyc.php'; }
                                     if($deposit_funds_qty_ilpr_php) { include_once 'views/deposit_funds/deposit_funds_qty_ilpr.php'; }

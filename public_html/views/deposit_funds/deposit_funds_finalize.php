@@ -5,6 +5,8 @@
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Deposit Order Summary - Accept terms and click on finalize</li>
 </ul>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account details specified on the payment invoice.</p>
+
 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI . '?p=fnz'; ?>">
     <input name="transaction_no" type="hidden" value="<?php if(isset($trans_id_encrypted)) { echo $trans_id_encrypted; } ?>">
     <div class="form-group">
@@ -87,6 +89,12 @@
         <label class="control-label col-sm-3" for="terms"></label>
         <div class="col-sm-9 col-lg-5">
             <input type="checkbox" name="terms" value="1" required> I accept the <a href="terms.php" target="_blank" >terms and conditions</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="terms_notice"></label>
+        <div class="col-sm-9 col-lg-5">
+            <input type="checkbox" name="terms_notice" value="1" required> <span style="color: red">I will make sure to confirm and make payment into the exact account details specified on my payment invoice.</span>
         </div>
     </div>
     <div class="form-group">

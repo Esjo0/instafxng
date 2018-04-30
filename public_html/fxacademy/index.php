@@ -2,6 +2,25 @@
 require_once '../init/initialize_client.php';
 $thisPage = "";
 
+$email = $_SESSION['client_email'];
+$query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
+          u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+          FROM user_edu_exercise_log AS ueel
+          INNER JOIN user AS u ON ueel.user_code = u.user_code
+          INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+          INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+          LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
+          WHERE ueel.lesson_id > 4 AND uefp.user_code IS NULL AND (u.email = '$email') LIMIT 1";
+
+$result = $db_handle->runQuery($query);
+if($db_handle->numOfRows($result) > 0) {
+
+    if(!isset($_SESSION['category3']) && $_SESSION['category3'] != "True") {
+        $_SESSION['category3'] = "True";
+        redirect_to("https://instafxng.com/fxacademy/course_view.php?id=gqiWbQaGlXLxpjk1xBeGsg==");
+    }
+}
+
 if (!$session_client->is_logged_in()) {
 
     // Check whether this client is following link in an email to get to course messages

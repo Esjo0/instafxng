@@ -3,6 +3,7 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$mail_templates = get_all_mail_templates();
 
 $get_params = allowed_get_params(['x', 'id']);
 $campaign_email_id_encrypted = $get_params['id'];
@@ -100,6 +101,29 @@ if($get_params['x'] == 'duplicate') {
 //                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
 
             });
+
+            function add_template(template_name)
+            {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function()
+                {
+                    if (this.readyState == 4 && this.status == 200)
+                    {
+                        tinymce.get("content").execCommand('mceSetContent', false, this.responseText);
+                    }
+                };
+                xhttp.open("GET", "../mail_templates/"+template_name, true);
+                xhttp.send();
+                return;
+            }
+            function show_form(div, trigger)
+            {
+                var x = document.getElementById(div);
+                if (x.style.display === 'none') {x.style.display = 'block';
+                    document.getElementById(trigger).innerHTML = 'Placeholder List <i class="fa fa-caret-up"></i>';}
+                else {x.style.display = 'none';
+                    document.getElementById(trigger).innerHTML = 'Placeholder List <i class="fa fa-caret-down"></i>';}
+            }
         </script>
     </head>
     <body>
@@ -130,8 +154,8 @@ if($get_params['x'] == 'duplicate') {
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <p><a href="campaign_email_view.php" class="btn btn-default" title="Manage Email Campaigns"><i class="fa fa-arrow-circle-left"></i> Manage Email Campaigns</a></p>
                                 <p>Create a campaign email below, you can save or send test. Note: When sending to all clients, level 1, 2, 3, unverified clients, Lagos clients,
-                                    use placeholders for personalisation.</p>
-                                <ul>
+                                    use placeholders for personalisation. <button onclick="show_form('p_list', this.id)" id="p_trigger" title="Click here to see full list of place holders." class="btn btn-xs btn-default">Placeholder List <i class="fa fa-caret-down"></i></button></p>
+                                <ul id="p_list" style="display: none;">
                                     <li>[NAME] - Client First Name</li>
                                     <li>[LPMP] - Loyalty Point Month Position</li>
                                     <li>[LPMR] - Loyalty Point Month Rank Value</li>
@@ -144,6 +168,8 @@ if($get_params['x'] == 'duplicate') {
                                     <li>[LPYG] - Loyalty Point Year Goal (Lots to Trade to Meet Highest)</li>
                                     <li>[LPYD] - Loyalty Point Year Difference (Compared to Highest)</li>
                                     <li>[UC] - User Code (Unique to every client)</li>
+                                    <li>[LTD] - Last Trade Date</li>
+                                    <li>[LTV] - Last Trade Volume</li>
                                 </ul>
                                 
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
@@ -175,6 +201,20 @@ if($get_params['x'] == 'duplicate') {
                                                 <option value="<?php echo $row['campaign_category_id']; ?>" <?php if(isset($selected_campaign_email['campaign_category_id']) && $row['campaign_category_id'] == $selected_campaign_email['campaign_category_id']) { echo "selected='selected'"; } ?>><?php echo $row['title']; ?></option>
                                                 <?php } } ?>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="subject">Mail Templates:</label>
+                                        <div class="col-sm-10">
+                                            <?php if(isset($mail_templates) && !empty($mail_templates)){ ?>
+                                                <?php foreach ($mail_templates as $row){ ?>
+                                                <div class="col-sm-3">
+                                                    <a onclick="add_template('<?php echo $row['html']?>')" href="javascript:void(0);">
+                                                        <img class="img-thumbnail img-responsive" src="../mail_templates/<?php echo $row['image']?>"/>
+                                                    </a>
+                                                </div>
+                                                <?php } ?>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                     <div class="form-group">

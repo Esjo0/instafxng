@@ -454,7 +454,6 @@ function modes_of_array($arr)
     return $modes;
 }
 
-
 function getCurrentURL()
 {
     $currentURL = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
@@ -469,4 +468,135 @@ function getCurrentURL()
     return $currentURL;
 }
 
+function endsWith($haystack, $needle) {
+    // search forward starting from end minus needle length characters
+    return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
+}
 
+function add_activity_log()
+{
+    global $admin_object;
+    $admin_code = $_SESSION['admin_unique_code'];
+    $name = $admin_object->get_admin_name_by_code($admin_code);
+    $ip = gethostbyname(gethostname());
+    $date = date('d-m-Y');
+    $time = date('h:i:s A');
+    $url = getCurrentURL();
+    $filepath = "logs".DIRECTORY_SEPARATOR.$admin_code.".txt";
+    if(!file_exists($filepath)){mkdir("logs");}
+    $new_log = fopen($filepath, 'a');
+    $log = "Name: ".$name."\n"
+        ."Ip Address: ".$ip."\n"
+        ."Date: ".$date."\n"
+        ."Time: ".$time."\n"
+        ."Url: ".$url."\n\n";
+    fwrite($new_log, $log);
+    fclose($new_log);
+}
+
+function get_all_mail_templates()
+{
+    $path = '../mail_templates';
+    $files = scandir($path);
+    $count = 0;
+    $count_image = 0;
+    $count_html = 0;
+    $templates = array();
+    $images = array();
+    $htmls = array();
+    foreach ($files as $row)
+    {
+        $row = (string)$row;
+        if(strlen($row) > 2 && (endsWith($row, 'JPG') || endsWith($row, 'jpg') || endsWith($row, 'PNG') || endsWith($row, 'png')))
+        {
+            $images[$count_image] = $row;
+            $count_image++;
+        }
+    }
+    foreach ($files as $row)
+    {
+        $row = (string)$row;
+        if(strlen($row) > 2 && (endsWith($row, 'HTML') || endsWith($row, 'html')))
+        {
+            $htmls[$count_html] = $row;
+            $count_html++;
+        }
+    }
+    for($i=0; $i<count($htmls); $i++)
+    {
+        $templates[$count] = array('image'=>$images[$i], 'html'=>$htmls[$i]);
+        $count++;
+    }
+    return $templates;
+}
+
+function searchForId($id, $array, $key_identifier)
+{
+    foreach ($array as $key => $val)
+    {
+        if ($val[$key_identifier] === $id)
+        {
+            return $key;
+        }
+    }
+    return null;
+}
+
+/**
+ * Creating date collection between two dates
+ *
+ * <code>
+ * <?php
+ * # Example 1
+ * date_range("2014-01-01", "2014-01-20", "+1 day", "m/d/Y");
+ *
+ * # Example 2. you can use even time
+ * date_range("01:00:00", "23:00:00", "+1 hour", "H:i:s");
+ * </code>
+ *
+ * @author Audu Emmanuel <Emmanuel.Audu.Developer@gmail.com>
+ * @param string since any date, time or datetime format
+ * @param string until any date, time or datetime format
+ * @param string step
+ * @param string date of output format
+ * @return array
+ */
+function date_range($from, $to, $format = 'd/m/Y' )
+{
+    $day = 86400;
+    $startTime = strtotime($from);
+    $endTime = strtotime($to);
+    $numDays = round(($startTime - $endTime) / $day) + 1;
+    $days = array();
+    for ($i = 0; $i < $numDays; $i++) {
+        $days[] = date($format, ($startTime + ($i * $day)));
+    }
+    return $days;
+}
+
+function split_name($full_name)
+{
+    $_name = array();
+    $full_name = str_replace(".", "", $full_name);
+    $full_name = ucwords(strtolower(trim($full_name)));
+    $full_name = explode(" ", $full_name);
+    if (count($full_name) == 3) {
+        $_name['last_name'] = trim($full_name[0]);
+        if (strlen($full_name[2]) < 3) {
+            $_name['middle_name'] = trim($full_name[2]);
+            $_name['first_name'] = trim($full_name[1]);
+        } else {
+            $_name['middle_name'] = trim($full_name[1]);
+            $_name['first_name'] = trim($full_name[2]);
+        }
+    } else {
+        $_name['last_name'] = trim($full_name[0]);
+        $_name['middle_name'] = "";
+        $_name['first_name'] = trim($full_name[1]);
+    }
+    if (empty($_name['first_name'])) {
+        $_name['first_name'] = $_name['last_name'];
+        $_name['last_name'] = "";
+    }
+    return $_name;
+}

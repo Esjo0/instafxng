@@ -11,7 +11,7 @@
                                 <br /><strong>Support Email:</strong> support@instafxng.com<br /><strong>Phone:</strong> 08028281192, 08182045184, 08084603182</p>
 
                                 <p><strong><span class="text-danger">Lekki Office Address</span></strong><br />Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.
-                                <br /><strong>Phone:</strong> 07081036115, 08083956750</p>
+                                <br /><strong>Phone:</strong> 08139250268, 08083956750</p>
                             </article>
                         </div>
                         
@@ -46,12 +46,12 @@
                             <header><i class="fa fa-sitemap fa-fw icon-tune"></i> <strong>Forex Education</strong></header>
                             <article>
                                 <ul>
-                                    <li><a href="free_seminar.php" title="Free Forex Seminars">Free Seminar</a></li>
-                                    <li><a href="beginner_traders_course.php" title="Beginner Trader Course">Beginner Trader Course</a></li>
+                                    <li><a href="forex_profit_academy.php" title="Forex Profit Academy">Forex Profit Academy</a></li>
+                                    <!--<li><a href="beginner_traders_course.php" title="Beginner Trader Course">Beginner Trader Course</a></li>
                                     <li><a href="advanced_traders_course.php" title="Advance Trader Course">Advance Trader Course</a></li>
                                     <li><a href="course.php" title="Forex Freedom Course">Forex Freedom Course</a></li>
                                     <li><a href="private_course.php" title="Forex Private Course">Forex Private Course</a></li>
-                                    <li><a href="investor_course.php" title="Investor Course">Investor Course</a></li>
+                                    <li><a href="investor_course.php" title="Investor Course">Investor Course</a></li>-->
                                 </ul>
                             </article>
                             <header><i class="fa fa-sitemap fa-fw icon-tune"></i> <strong>Sponsored</strong></header>

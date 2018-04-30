@@ -109,6 +109,7 @@ if ($deposit_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POS
         case 'Pend Deposit': $status = '6'; break;
     }
     $client_operation->deposit_transaction_completion($transaction_id, $transaction_reference, $status, $remarks, $_SESSION['admin_unique_code']);
+
     
     if(!empty($points_claimed_id)) {
         switch ($_POST['process']) {
@@ -183,6 +184,7 @@ if(empty($trans_detail)) {
                 xmlhttp.send();
             }
         </script>
+        <script src="operations_comment.js"></script>
         <script src="tinymce/tinymce.min.js"></script>
         <script type="text/javascript">
             tinyMCE.init({

@@ -51,6 +51,8 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
 
         $selected_point_frozen_trans_id = $client_operation->get_loyalty_point_frozen_transaction($user_code);
 
+        $last_trade_date = $client_operation->get_last_trade_detail($user_code)['date_earned'];
+
         switch($client_verification) {
             case '0': $verification_level = "Not Verified"; break;
             case '1': $verification_level = "Level 1 Verified"; break;
@@ -131,7 +133,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                         <span class="span-title">Opening Date</span>
                                         <p><em><?php echo datetime_to_text2($created); ?></em></p>
                                         <span class="span-title">Client Address</span>
-                                        <p><em><?php echo $client_address['address']; ?></em></p>
+                                        <p><em><?php echo $client_address['address'] . ' ' . $client_address['address2'] . ' ' . $client_address['city'] . ' ' . $client_address['state']; ?></em></p>
                                         <span class="span-title">Client SMS Code</span>
                                         <p>Code: <?php echo $client_phone_code['phone_code']; ?> &nbsp;&nbsp; Status: <?php echo phone_code_status($client_phone_code['phone_status']); ?></p>
                                         <span class="span-title">Verification Status</span>
@@ -264,7 +266,8 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                                         
                                                     </tbody>
                                                 </table>
-                                                
+
+                                                <p><strong>Last Trading Date: </strong> <?php if($last_trade_date) { echo datetime_to_text2($last_trade_date); } else { echo 'Nil'; } ?></p>
                                             </div>
                                         </div>
                                     </div>

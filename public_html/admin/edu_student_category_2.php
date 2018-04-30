@@ -14,8 +14,17 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id != 5 AND uefp.user_code IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
-          GROUP BY ueel.user_code ";
+          WHERE ueel.lesson_id IN (1, 2, 3, 4) AND uefp.user_code IS NULL AND u.user_code NOT IN
+          (
+          SELECT u.user_code
+          FROM user_edu_exercise_log AS ueel
+          INNER JOIN user AS u ON ueel.user_code = u.user_code
+          INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+          INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+          LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
+          WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL
+          ) AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
+          GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
           u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
@@ -34,7 +43,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
           WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL
           )
-          GROUP BY ueel.user_code ";
+          GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC ";
 }
 
 $numrows = $db_handle->numRows($query);
@@ -137,14 +146,14 @@ $education_students = $db_handle->fetchAssoc($result);
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
-                                            <td><?php echo date_to_text($row['academy_signup']); ?></td>
+                                            <td><?php echo datetime_to_text($row['academy_signup']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
                                                 <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_2'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 2'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
-                                    <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
 

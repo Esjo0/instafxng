@@ -204,6 +204,8 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="20" id="" <?php if (in_array(20, $my_pages)) { echo 'checked="checked"'; } ?>/> Unverified Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="21" id="" <?php if (in_array(21, $my_pages)) { echo 'checked="checked"'; } ?>/> View ILPR Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="22" id="" <?php if (in_array(22, $my_pages)) { echo 'checked="checked"'; } ?>/> View Non-ILPR Clients</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="244" id="" <?php if (in_array(244, $my_pages)) { echo 'checked="checked"'; } ?>/> Active Clients</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="245" id="" <?php if (in_array(245, $my_pages)) { echo 'checked="checked"'; } ?>/> Inactive Clients</label></div></div>
                                     </div>
                                     <hr/>
 
@@ -262,6 +264,7 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
 
                                     <p><strong>Project Management</strong></p>
                                     <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="209" id="" <?php if (in_array(209, $my_pages)) { echo 'checked="checked"'; } ?>/> All Projects</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="203" id="" <?php if (in_array(203, $my_pages)) { echo 'checked="checked"'; } ?>/> Projects</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="204" id="" <?php if (in_array(204, $my_pages)) { echo 'checked="checked"'; } ?>/> Project Reports</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="205" id="" <?php if (in_array(205, $my_pages)) { echo 'checked="checked"'; } ?>/> Confirmation Requests</label></div></div>
@@ -305,6 +308,7 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="238" id="" <?php if (in_array(238, $my_pages)) { echo 'checked="checked"'; } ?>/> Category 4 Students</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="73" id="" <?php if (in_array(73, $my_pages)) { echo 'checked="checked"'; } ?>/> Training Campaign</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="74" id="" <?php if (in_array(74, $my_pages)) { echo 'checked="checked"'; } ?>/> Forum Registration</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="247" id="" <?php if (in_array(247, $my_pages)) { echo 'checked="checked"'; } ?>/> Traders Forum Schedule</label></div></div>
                                     </div>
                                     <hr/>
 
@@ -332,9 +336,11 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     </div>
                                     <hr/>
                                     
-                                    <p><strong>System Messages</strong></p>
+                                    <p><strong>System</strong></p>
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="79" id="" <?php if (in_array(79, $my_pages)) { echo 'checked="checked"'; } ?>/> System Messages</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="239" id="" <?php if (in_array(239, $my_pages)) { echo 'checked="checked"'; } ?>/> System Activity Logs</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="243" id="" <?php if (in_array(243, $my_pages)) { echo 'checked="checked"'; } ?>/> Front-End Advert Section</label></div></div>
                                     </div>
                                     <hr/>
                                     
@@ -394,6 +400,8 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="110" id="" <?php if (in_array(110, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Prospect Source</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="111" id="" <?php if (in_array(111, $my_pages)) { echo 'checked="checked"'; } ?>/> Add New Prospect</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="112" id="" <?php if (in_array(112, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Prospects</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="246" id="" <?php if (in_array(246, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage ILPR Prospects</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="248" id="" <?php if (in_array(248, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage FB Leads</label></div></div>
                                     </div>
                                     <hr/>
 
@@ -409,6 +417,9 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="214" id="" <?php if (in_array(214, $my_pages)) { echo 'checked="checked"'; } ?>/> Add New Log</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="215" id="" <?php if (in_array(215, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Logs</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="216" id="" <?php if (in_array(216, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage All Logs</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="249" id="" <?php if (in_array(249, $my_pages)) { echo 'checked="checked"'; } ?>/> Operations Issue Log</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="250" id="" <?php if (in_array(250, $my_pages)) { echo 'checked="checked"'; } ?>/> Closed Operations Issues</label></div></div>
+
                                     </div>
                                     <hr/>
 
@@ -435,6 +446,14 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     <p><strong>HR Management</strong></p>
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="231" id="" <?php if (in_array(231, $my_pages)) { echo 'checked="checked"'; } ?>/> Attendance Logs</label></div></div>
+                                    </div>
+                                    <hr/>
+
+                                    <p><strong>Facility Management</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="240" id="" <?php if (in_array(240, $my_pages)) { echo 'checked="checked"'; } ?>/> Inventory</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="241" id="" <?php if (in_array(241, $my_pages)) { echo 'checked="checked"'; } ?>/> Facility Admin</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="242" id="" <?php if (in_array(242, $my_pages)) { echo 'checked="checked"'; } ?>/> Facility User</label></div></div>
                                     </div>
                                     <hr/>
 

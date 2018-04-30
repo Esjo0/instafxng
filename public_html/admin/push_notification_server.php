@@ -1,118 +1,84 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in())
-{
-    redirect_to("login.php");
-}
 $admin_code = $_SESSION['admin_unique_code'];
 $type = $_POST['type'];
-if ($type == '0')
+if ($type === '00')
 {
-    $notification_id = $_POST['notification_id'];
+    $dismiss_notification = $obj_push_notification->dismiss_all_notifications($admin_code);
+}
+if ($type === '0')
+{
+    $notification_id = $_POST['id'];
     $dismiss_notification = $obj_push_notification->dismiss_notification($admin_code, $notification_id);
 }
-$notifications = $obj_push_notification->get_notifications();
-foreach ($notifications as $row)
+if ($type == '1')
 {
-    if($row['notification_type'] == '1'):
+$notifications = $obj_push_notification->get_notifications();
+    foreach ($notifications as $row)
+    {
         $recipients = explode("," ,$row['recipients']);
-        if (in_array($admin_code, $recipients, true)):
+        if (in_array($admin_code, $recipients, true))
+        {
             ?>
-            <!--<li style="word-break:break-all;">
-                <p style="font-size: 15px" class="text-center"><b>NEW PROJECT MESSAGE</b></p>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="transaction-remarks">
-                            <?php /*echo $row['message']; */?>
-                            <span style="font-size: small" id="trans_remark_date"><?php /*echo datetime_to_text($row['created']); */?></span>
-                            <center><button type="button" onclick="dismiss_notification('<?php /*echo $row['notification_id']; */?>')" class="btn btn-sm btn-default">Dismiss</button></center>
+            <div class="alert <?php if($row['status'] == "0"){echo 'alert-success';}else{echo 'alert-info';}?>">
+                <button style="display: none" id="X_<?php echo $row['notification_id'] ?>"
+                        onclick="var title = '<?php echo $row['title'] ?>';
+                            var created = '<?php echo datetime_to_text($row['created']) ?>';
+                            var author = '<?php echo $row['author'] ?>';
+                            var message = '<?php echo $row['message'] ?>';
+                            var source_url = '<?php echo $row['source_url'] ?>';
+                            var notification_id = '<?php echo $row['notification_id'] ?>';
+                            push_notifications.show_alert(title,created,author,message,source_url,notification_id);"></button>
+                <button type="button" onclick="document.getElementById('X_<?php echo $row['notification_id'] ?>').click();" class="btn btn-xs"><i class="glyphicon glyphicon-expand"></i></button>
+
+                <a href="javascript:void(0);" onclick="push_notifications.dismiss_notification('<?php echo $row['notification_id']; ?>')" class="close"  aria-label="close">&times;</a>
+                <hr/>
+                <strong><?php echo $row['title'] ?></strong>
+                <p style="font-size: x-small !important;" class="text-sm-left text-muted"><?php echo datetime_to_text($row['created']) ?></p>
+            </div>
+            <?php if($row['status'] == "0"){ $update = $obj_push_notification->update_notification_as_old($row['notification_id']); } ?>
+            <?php
+        }
+    }
+}
+
+if ($type == '2')
+{
+    $notifications = $obj_push_notification->get_notifications();
+    foreach ($notifications as $row)
+    {
+        $recipients = explode("," ,$row['recipients']);
+        if (in_array($admin_code, $recipients, true))
+        {
+            ?>
+            <!--Modal - confirmation boxes-->
+            <div id="view_<?php echo $row['notification_id'] ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-8">
+                                        <h4 class="modal-title"><?php echo $row['title'] ?></h4>
+                                    <p style="font-size: small !important;" class="text-sm-left text-muted"><?php echo datetime_to_text2($row['created']) ?></p></div>
+                                    <div class="col-sm-4">
+                                        <a href="<?php echo $row['source_url'] ?>" title="View Source"  class="btn btn-sm btn-default"><i class="glyphicon glyphicon-home"></i></a>
+                                        <button data-dismiss="modal" aria-hidden="true" title="Dismiss Notification" onclick="push_notifications.dismiss_notification('<?php echo $row['notification_id'] ?>');" type="button"  class="btn btn-sm btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
+                                        <button title="Close" onClick="window.close();" type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <p><b>Message Title: </b> <?php echo $row['title'] ?></p>
+                            <p><b>Author: </b> <?php echo $row['author'] ?></p>
+                            <p class="text-justify"><?php echo $row['message'] ?></p>
                         </div>
                     </div>
                 </div>
-            </li>-->
-            <li style="word-break:break-all;" class="well">
-                <h4 style="font-size: small !important;" class="card-title">NEW PROJECT MESSAGE</h4>
-                <h6 class="card-subtitle mb-2 text-muted"><?php echo datetime_to_text($row['created']); ?></h6>
-                <p style="font-size: small" class="card-text"><?php echo $row['message']; ?><br/>
-                    <a href="javascript:void(0);" onclick="dismiss_notification('<?php echo $row['notification_id']; ?>')" class="btn btn-sm btn-default">Dismiss</a></p>
-            </li>
-        <?php endif;
-    endif;
-
-    if($row['notification_type'] == '2'):
-        $recipients = explode("," ,$row['recipients']);
-        if (in_array($admin_code, $recipients, true)):
-            ?>
-            <!--<li style="word-break:break-all;">
-                <p style="font-size: 15px" class="text-center"><b>NEW BULLETIN MESSAGE</b></p>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="transaction-remarks">
-                            <?php /*echo $row['message']; */?>
-                            <span style="font-size: small" id="trans_remark_date"><?php /*echo datetime_to_text($row['created']); */?></span>
-                            <center><button type="button" onclick="dismiss_notification('<?php /*echo $row['notification_id']; */?>')" class="btn btn-sm btn-default">Dismiss</button></center>
-                        </div>
-                    </div>
-                </div>
-            </li>-->
-            <li style="word-break:break-all;" class="well">
-                <h4 style="font-size: small !important;" class="card-title">NEW BULLETIN MESSAGE</h4>
-                <h6 class="card-subtitle mb-2 text-muted"><?php echo datetime_to_text($row['created']); ?></h6>
-                <p style="font-size: small" class="card-text"><?php echo $row['message']; ?><br/>
-                    <a href="javascript:void(0);" onclick="dismiss_notification('<?php echo $row['notification_id']; ?>')" class="btn btn-sm btn-default">Dismiss</a></p>
-            </li>
-        <?php endif;
-    endif;
-
-    if($row['notification_type'] == '3'):
-        $recipients = explode("," ,$row['recipients']);
-        if (in_array($admin_code, $recipients, true)):
-            ?>
-            <!--<li style="word-break:break-all;">
-                <p style="font-size: 15px" class="text-center"><b>NEW BULLETIN</b></p>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="transaction-remarks">
-                            <?php /*echo $row['message']; */?>
-                            <span style="font-size: small" id="trans_remark_date"><?php /*echo datetime_to_text($row['created']); */?></span>
-                            <center><button type="button" onclick="dismiss_notification('<?php /*echo $row['notification_id']; */?>')" class="btn btn-sm btn-default">Dismiss</button></center>
-                        </div>
-                    </div>
-                </div>
-            </li>-->
-            <li style="word-break:break-all;" class="well">
-                <h4 style="font-size: small !important;" class="card-title">NEW BULLETIN</h4>
-                <h6 class="card-subtitle mb-2 text-muted"><?php echo datetime_to_text($row['created']); ?></h6>
-                <p style="font-size: small" class="card-text"><?php echo $row['message']; ?><br/>
-                    <a href="javascript:void(0);" onclick="dismiss_notification('<?php echo $row['notification_id']; ?>')" class="btn btn-sm btn-default">Dismiss</a></p>
-            </li>
-        <?php endif;
-    endif;
-    if($row['notification_type'] == '4'):
-        $recipients = explode("," ,$row['recipients']);
-        if (in_array($admin_code, $recipients, true)):
-            ?>
-            <li style="word-break:break-all;" class="well">
-                <h4 style="font-size: small !important;" class="card-title">NEW REQUISITION ORDER</h4>
-                <h6 class="card-subtitle mb-2 text-muted"><?php echo datetime_to_text($row['created']); ?></h6>
-                <p style="font-size: small" class="card-text"><?php echo $row['message']; ?><br/>
-                <a href="javascript:void(0);" onclick="dismiss_notification('<?php echo $row['notification_id']; ?>')" class="btn btn-sm btn-default">Dismiss</a></p>
-            </li>
-            <!--<li style="word-break:break-all;">
-                <p style="font-size: 15px" class="text-center"><b>NEW REQUISITION ORDER</b></p>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="transaction-remarks">
-                            <?php /*echo $row['message']; */?>
-                            <span style="font-size: small" id="trans_remark_date"><?php /*echo datetime_to_text($row['created']); */?></span>
-                            <center><button type="button" onclick="dismiss_notification('<?php /*echo $row['notification_id']; */?>')" class="btn btn-sm btn-default">Dismiss</button></center>
-                        </div>
-                    </div>
-                </div>
-            </li>-->
-        <?php endif;
-    endif;
-    ?>
-
-<?php } ?>
-
+            </div>
+            <?php
+        }
+    }
+}
+?>

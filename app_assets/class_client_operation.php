@@ -169,9 +169,28 @@ class clientOperation {
      * @param $type - 1 if KYC, 2 if ILPR enrolment
      * @return bool|string
      */
-    public function new_user($account_no, $full_name, $email_address, $phone_number, $type, $my_refferer = "", $attendant = "") {
+    public function new_user($account_no, $full_name, $email_address, $phone_number, $type, $my_refferer = "", $attendant = "", $source="") {
         global $db_handle;
         global $system_object;
+
+        $full_name = preg_replace("/[^A-Za-z0-9 ]/", '', $full_name);
+        $full_name = ucwords(strtolower(trim($full_name)));
+        $full_name = explode(" ", $full_name);
+
+        if(count($full_name) == 3) {
+            $last_name = $full_name[0];
+            if(strlen($full_name[2]) < 3) {
+                $middle_name = $full_name[2];
+                $first_name = $full_name[1];
+            } else {
+                $middle_name = $full_name[1];
+                $first_name = $full_name[2];
+            }
+        } else {
+            $last_name = $full_name[0];
+            $middle_name = "";
+            $first_name = $full_name[1];
+        }
         
         // Check whether the email is existing
         $query = "SELECT user_code FROM user WHERE email = '$email_address' LIMIT 1";
@@ -180,6 +199,82 @@ class clientOperation {
         if($db_handle->numOfRows($result) > 0) {
             $fetched_data = $db_handle->fetchAssoc($result);
             $user_code = $fetched_data[0]['user_code'];
+
+            // We want to send welcome email to someone who has a profile but no account,
+            // since we are logging his first account, he should get a welcome email
+            $query = "SELECT ui.ifx_acct_no FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE u.email = '$email_address'";
+            $result = $db_handle->runQuery($query);
+
+            //TODO: Come back later to understand this....
+            if($db_handle->numOfRows($result) == 0)
+            {
+                if(empty($source) || $source != "lp")
+                {
+                    $this->send_welcome_email($last_name, $email_address);
+                }
+                else
+                {
+                    $subject = $last_name.', Your Welcome Bonus Is Here!';
+                    $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>It's official! Welcome to the money making gang! lol</p>
+                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You have made a fantastic decision $last_name!</p>
+                                <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
+                                <p>This is what’s happening right now…</p>                                
+                                <p>Your Welcome bonus is here!</p>
+                                <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
+                                <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
+                                <p>Let me quickly explain how to get the bonus...</p>
+                                <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
+                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
+                                <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
+                                <p>Super amazing, right? </p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Mercy,</p>
+                                <p>Client Relationship Manager</p>
+                                <p>InstaFxNg Team,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+                    $system_object->send_email($subject, $message_final, $email_address, $last_name);
+                }
+            }
             
             if($this->ifx_account_is_duplicate($account_no)) {
                 return false;
@@ -202,25 +297,6 @@ class clientOperation {
             
             $pass_salt = hash("SHA256", "$user_code");
 
-            $full_name = preg_replace("/[^A-Za-z0-9 ]/", '', $full_name);
-            $full_name = ucwords(strtolower(trim($full_name)));
-            $full_name = explode(" ", $full_name);
-
-            if(count($full_name) == 3) {
-                $last_name = $full_name[0];
-                if(strlen($full_name[2]) < 3) {
-                    $middle_name = $full_name[2];
-                    $first_name = $full_name[1];
-                } else {
-                    $middle_name = $full_name[1];
-                    $first_name = $full_name[2];
-                }
-            } else {
-                $last_name = $full_name[0];
-                $middle_name = "";
-                $first_name = $full_name[1];
-            }
-
             if(empty($attendant)) {
                 $attendant = $system_object->next_account_officer();
             }
@@ -228,11 +304,142 @@ class clientOperation {
             if(empty($middle_name)) {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                $this->send_welcome_email($last_name, $email_address);
+                if(empty($source) || $source != "lp")
+                {
+                    $this->send_welcome_email($last_name, $email_address);
+                }
+                else
+                {
+                    $subject = $last_name.', Your Welcome Bonus Is Here!';
+                    $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>It's official! Welcome to the money making gang! lol</p>
+                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You have made a fantastic decision $last_name!</p>
+                                <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
+                                <p>This is what’s happening right now…</p>                                
+                                <p>Your Welcome bonus is here!</p>
+                                <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
+                                <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
+                                <p>Let me quickly explain how to get the bonus...</p>
+                                <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
+                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
+                                <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
+                                <p>Super amazing, right? </p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Mercy,</p>
+                                <p>Client Relationship Manager</p>
+                                <p>InstaFxNg Team,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+                    $system_object->send_email($subject, $message_final, $email_address, $last_name);
+                }
+
             } else {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                $this->send_welcome_email($last_name, $email_address);
+                if(empty($source) || $source != "lp"){
+                    //This client came in through the landing page
+                    $this->send_welcome_email($last_name, $email_address);
+                }
+                else
+                {
+                    $subject = $last_name.', Your Welcome Bonus Is Here!';
+                    $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>It's official! Welcome to the money making gang! lol</p>
+                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You have made a fantastic decision $last_name!</p>
+                                <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
+                                <p>This is what’s happening right now…</p>                                
+                                <p>Your Welcome bonus is here!</p>
+                                <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
+                                <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
+                                <p>Let me quickly explain how to get the bonus...</p>
+                                <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
+                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
+                                <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
+                                <p>Super amazing, right? </p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Mercy,</p>
+                                <p>Client Relationship Manager</p>
+                                <p>InstaFxNg Team,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+                    $system_object->send_email($subject, $message_final, $email_address, $last_name);
+                }
             }
 
             if(isset($my_refferer) && !empty($my_refferer)) {
@@ -305,11 +512,11 @@ class clientOperation {
             if(empty($middle_name)) {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                $this->send_welcome_email($last_name, $email_address);
+
             } else {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                $this->send_welcome_email($last_name, $email_address);
+
             }
 
             // Create a record for the user on the loyalty log table
@@ -637,13 +844,13 @@ MAIL;
         return $deposit_details ? $deposit_details : false;
     }
 
-    public function user_payment_notification($trans_id, $pay_date, $teller_no, $naira_amount, $comment = "") {
+    public function user_payment_notification($trans_id, $pay_method, $pay_date, $teller_no, $naira_amount, $comment = "") {
         global $db_handle;
 
         $transaction_detail = $this->get_deposit_transaction($trans_id);
 
         if($transaction_detail['status'] == 1) {
-            $query = "UPDATE user_deposit SET status = '2', client_pay_date = '$pay_date',
+            $query = "UPDATE user_deposit SET status = '2', client_pay_date = '$pay_date', client_pay_method = '$pay_method',
             client_reference = '$teller_no', client_naira_notified = '$naira_amount', client_comment = '$comment',
             client_notified_date = NOW() WHERE trans_id = '$trans_id' LIMIT 1";
 
@@ -783,11 +990,15 @@ to track your payment.</p>
 
 <p>Pay =N= $client_naira_total into our account listed below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
-    <li>Any Branch of Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
@@ -796,7 +1007,7 @@ normally within the same day. If there is any delay we will inform you.</p>
 <p>NOTE:</p>
 <ul>
     <li>Third party payments are not allowed.</li>
-    <li>REAMRK section must be written as<br />
+    <li>REMARK section must be written as<br />
     ($client_trans_id - $client_account)</li>
     <li>Your account can only be funded after you have completed payment notification
     as advised in (2) above.</li>
@@ -816,14 +1027,18 @@ INVOICE;
 
 <p>Transfer =N= $client_naira_total into our account listed below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
-    <li>Any Branch of Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION,
     Type in the location where you made the payment in the comment box, <strong>e.g. Apapa Lagos</strong>.
     If you do not fill it as stated, your order will be delayed, because it will be difficult to track
     your payment.</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
@@ -846,17 +1061,21 @@ INVOICE;
                 $mail_body = <<<INVOICE
 <p>To complete your order, please make your payment as follows:</p>
 
-<p>When making your payment at the bank, fill in the transfer memo as <br />
+<p>When making your payment through the banking application, fill in the transfer memo/ description/ narration as <br />
 ($client_trans_id - $client_full_name - $client_account) <br />
 If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 
 <p>Pay =N= $client_naira_total into our account listed below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
-    <li>Any Branch of Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
@@ -865,7 +1084,7 @@ normally within the same day. If there is any delay we will inform you.</p>
 <p>NOTE:</p>
 <ul>
     <li>Third party payments are not allowed.</li>
-    <li>Depositor Name / Transfer Memo must be written as<br />
+    <li>Depositor Name / Transfer Memo / Description / Narration must be written as<br />
     ($client_trans_id - $client_full_name - $client_account)</li>
     <li>Your account can only be funded after you have completed payment notification
     as advised in (2) above.</li>
@@ -884,11 +1103,15 @@ INVOICE;
 <p>Pay =N= $client_naira_total into our account listed below using the USSD transfer feature
 for your bank, find your bank USSD below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
-    <li>Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
@@ -903,24 +1126,23 @@ normally within the same day. If there is any delay we will inform you.</p>
 
 <p>BANK USSD CODES - This works with phone numbers registered with your account</p>
 <ul>
-    <li>Guaranty Trust Bank (GTB): *737#</li>
+    <li>Guaranty Trust Bank (GTB): *737# </li>
     <li>Fidelity Bank: *770#</li>
     <li>First Bank: *894#</li>
     <li>Sterling Bank: *822#</li>
-    <li>Skye Bank: *389#</li>
-    <li>United Bank for Africa (UBA): *389#</li>
+    <li>Skye Bank: *833#</li>
+    <li>United Bank for Africa (UBA): *919#</li>
     <li>EcoBank: *326#</li>
-    <li>Zenith Bank: *302#</li>
+    <li>Zenith Bank: *966#</li>
     <li>Stanbic Bank: *909#</li>
     <li>Access Bank Bank: *901#</li>
-    <li>Wema Bank: *322#</li>
-    <li>Diamond Bank: *302#</li>
-    <li>Diamond Yello Account: *710#</li>
-    <li>Unity Bank: *322#</li>
-    <li>Heritage Bank: *322#</li>
-    <li>KeyStone Bank: *322#</li>
-    <li>Union Bank: *389*032#</li>
-    <li>FCMB: *389#</li>
+    <li>Wema Bank: *945#</li>
+    <li>Diamond Bank: *710#</li>
+    <li>Unity Bank: *389*215#</li>
+    <li>Heritage Bank: *322*030#</li>
+    <li>KeyStone Bank: *322*082#</li>
+    <li>Union Bank: *826#</li>
+    <li>FCMB: *329#</li>
 </ul>
 
 <p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
@@ -939,11 +1161,15 @@ If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 
 <p>Pay =N= $client_naira_total into our account listed below.</p>
 
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
 <ol>
-    <li>Any Branch of Guaranty Trust Bank<br />
-    Account Name:   Instant Web-Net Technologies Ltd<br />
-    Account Number: 0153738149</li>
+    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
     <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
+    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
+    the invoice.</li>
 </ol>
 
 <p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
@@ -1665,11 +1891,14 @@ MAIL;
         }
     }
 
+    // Check if account is flagged and  details
     public function account_flagged($user_code) {
         global $db_handle;
 
         $query = "SELECT * FROM user_account_flag WHERE user_code = '$user_code' AND status = '1'";
-        return $db_handle->numRows($query) ? true : false;
+        $result = $db_handle->runQuery($query);
+        $fetch_flag = $db_handle->fetchAssoc($result);
+        return $fetch_flag  ? $fetch_flag  : false;
     }
 
     // This is for a single client
@@ -2250,9 +2479,8 @@ MAIL;
 
 
             <br /><br />
-            <p>Best Regards,</p>
-            <p>Your friend,<br />
-            Bunmi,<br />
+            <p>Best Regards,<br />
+            Mercy,<br />
             Client relations manager<br /></p>
             <p>www.instafxng.com</p>
             <br /><br />
@@ -2381,5 +2609,20 @@ MAIL;
         return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
     }
 
+    public function get_last_trade_detail($user_code) {
+        global $db_handle;
+
+        $query = "SELECT td.date_earned, td.volume
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE u.user_code = '$user_code' ORDER BY td.date_earned DESC LIMIT 1";
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $last_trade_detail = $fetched_data[0];
+
+        return $last_trade_detail ? $last_trade_detail : false;
+    }
 
 }

@@ -1,0 +1,123 @@
+body{height:100%;background:transparent radial-gradient(#fff 20%,#ddd) repeat scroll 0% 0%}
+html{height:100%;}
+
+input[type=text],input[type=number],input[type=time],input[type=password],select,textarea,.input-like,.lzm-combobox{
+    background:#fff !important;
+}
+
+#headline {
+    position: absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:115px;
+    border-bottom:0;
+}
+
+#headline-logo {
+    height:115px;
+    margin-top: 30px;
+}
+
+#login-container {
+    position: absolute;
+    background: url('../img/login_bg.png') no-repeat top;
+    width:360px;
+    height:410px;
+    left:200px;
+    top:200px;
+    max-width:100%;
+    border-bottom:1px solid #dedede;
+	z-index:2;
+}
+
+#login-headline {
+    position: absolute;
+    top:130px;
+    left:0;
+    right:0;
+    height:16px;
+    width:100%;
+    font-size:14px;
+    text-align:center;
+    font-weight:bold;
+}
+
+#login-headline-text {
+    color: #808080;
+    padding-left: 10px;
+}
+
+#login-form {
+    position: absolute;
+    top:148px;
+    width: 100%;
+    padding:15px 25px;
+    box-sizing:border-box;
+}
+
+#login_btn {
+    position: absolute;
+    top: 219px;
+    right: 27px;
+    min-width:60px;
+    text-align: center;
+}
+
+#orientation_btn {
+    position: absolute;
+    top: 215px;
+    left: 24px;
+}
+
+#configure_btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#user_status{
+    padding: 2px 4px 0 4px;
+}
+
+#user_status-outer {
+    position: absolute;
+    top: 215px;
+}
+
+#user_status-inner-text {
+    padding-left: 14px;
+    text-align: center;
+    font-family:tzu2;
+}
+
+#login-checkbox-div {
+    position: absolute;
+    left: 25px;
+    top: 135px;
+}
+
+#server_profile_selection, #user_status{
+    height:28px;
+}
+
+#profile-selection-div {
+    position: absolute;
+    top: 165px;
+    left: 25px;
+    right: 25px;
+}
+
+#login-copyright-link {
+    position: absolute;
+    text-align:center;
+    width: 100%;
+    font-size:12px;
+    opacity:0.8;
+}
+
+#server_profile_selection-outer{
+    position:absolute;
+    left:0;
+    right:50px;
+}
