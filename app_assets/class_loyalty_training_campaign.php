@@ -202,5 +202,11 @@ MAIL;
         }
     }
 
+    public function get_lead_type($interest)
+    {
+        $interest == 1 ? $x = "ILPR" : $x = "FxAcademy";
+        return $x;
+    }
+
 }
 $obj_loyalty_training = new Loyalty_Training();

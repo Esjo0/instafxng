@@ -172,8 +172,9 @@ class Access_Controller
                 $admin_privilege = explode(',', $user_privilege['allowed_pages']);
                 if(!in_array($key, $admin_privilege))
                 {
-                    //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_list.php');
+                    //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_denied.php');
                     redirect_to('https://instafxng.com/admin/access_denied.php');
+                    exit();
                 }
             }
         }

@@ -6,20 +6,14 @@ if (!$session_admin->is_logged_in()) {
 extract($_GET);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    
     if(empty($content) || empty($subject) || empty($name) || empty($email)) {
         $message_error = "All fields must be filled, please try again";
     } else {
-
-
         $name = ucwords(strtolower(trim($name)));
-
         // Replace [NAME] with clients full name
         $my_content_new = str_replace('[NAME]', $name, $content);
         $my_subject_new = str_replace('[NAME]', $name, $subject);
-
         $sent_email = $system_object->send_email($my_subject_new, $my_content_new, $email, $name, $sender);
-
         if($sent_email) {
             $message_success = "You have successfully sent the email.";
         } else {
