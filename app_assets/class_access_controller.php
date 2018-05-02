@@ -174,6 +174,7 @@ class Access_Controller
                 {
                     //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_list.php');
                     redirect_to('https://instafxng.com/admin/access_denied.php');
+                    exit();
                 }
             }
         }
