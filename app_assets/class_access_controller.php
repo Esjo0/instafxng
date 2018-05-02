@@ -161,7 +161,10 @@ class Access_Controller
     public function validate_access()
     {
         global $admin_object;
-        $this_page = basename($_SERVER['PHP_SELF']);
+        $currentFile = $_SERVER["PHP_SELF"];
+        $parts = explode('/', $currentFile);
+        $this_page = $parts[count($parts) - 1];
+        //$this_page = basename($_SERVER['PHP_SELF']);
         $all_pages = $this->get_all_pages();
         foreach ($all_pages as $key => $value)
         {
