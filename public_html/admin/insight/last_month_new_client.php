@@ -106,10 +106,9 @@ $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
 $offset = ($currentpage - 1) * $rowsperpage;
-$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $client_insight = $db_handle->fetchAssoc($result);
-
 
 ?>
 <!DOCTYPE html>
