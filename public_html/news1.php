@@ -203,7 +203,7 @@ function print_reply($replies)
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <base target="_self">
+<!--        <base target="">-->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Instaforex Nigeria | <?php if(isset($title)) { echo stripslashes($title); } ?></title>
