@@ -141,7 +141,8 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                                                     </thead>
                                                                     <tbody>
                                                                     <?php foreach ($recipient_list as $key) {
-                                                                        $key = explode('*', $key)
+                                                                        $key = decrypt($key);
+                                                                        $key = explode('*', $key);
                                                                         ?>
                                                                         <tr>
                                                                             <td><?php echo $key[0]; ?></td>
