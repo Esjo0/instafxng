@@ -1,6 +1,6 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in()) {    redirect_to("login.php");}
+if (!$session_admin->is_logged_in()){redirect_to("login.php");}
 $query = "SELECT * FROM campaign_leads ORDER BY created DESC ";
 $rowsperpage = 20;
 $totalpages = ceil($numrows / $rowsperpage);

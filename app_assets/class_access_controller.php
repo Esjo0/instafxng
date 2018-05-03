@@ -172,7 +172,7 @@ class Access_Controller
             if (in_array($this_page, $_pages))
             {
                 //$user_privilege = $_SESSION['user_privilege'];
-                $admin_privilege = explode(',', $_SESSION['user_privilege']);
+                $admin_privilege = explode(',', $_SESSION['user_privilege']['allowed_pages']);
                 if(!in_array($key, $admin_privilege))
                 {
                     //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_denied.php');
