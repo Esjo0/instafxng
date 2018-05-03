@@ -171,8 +171,8 @@ class Access_Controller
             $_pages = explode('||', $value);
             if (in_array($this_page, $_pages))
             {
-                $user_privilege = $admin_object->get_privileges($_SESSION['admin_unique_code']);
-                $admin_privilege = explode(',', $user_privilege['allowed_pages']);
+                //$user_privilege = $_SESSION['user_privilege'];
+                $admin_privilege = explode(',', $_SESSION['user_privilege']);
                 if(!in_array($key, $admin_privilege))
                 {
                     //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_list.php');
