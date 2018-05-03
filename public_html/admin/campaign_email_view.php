@@ -112,6 +112,7 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
 
                                                         <li role="presentation"><a role="menuitem" tabindex="-1" title="Send Test" href="campaign_email_broadcast.php?x=test&id=<?php echo encrypt($row['campaign_id']); ?>"><i class="fa fa-paper-plane fa-fw"></i> Send Test</a></li>
                                                         <li role="presentation"><a role="menuitem" tabindex="-1" title="Duplicate Campaign" href="campaign_email.php?x=duplicate&id=<?php echo encrypt($row['campaign_id']); ?>"><i class="fa fa-save fa-fw"></i> Duplicate</a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="View Recipients" href="javascript:void(0);" data-toggle="modal" data-target="#recipients_<?php echo $row['campaign_id']; ?>"><i class="fa fa-check fa-fw"></i> View Recipients</a></li>
 
                                                         <?php if($row['campaign_status'] == '2' && $row['campaign_send_status'] == '2') { ?>
                                                             <li role="presentation"><a role="menuitem" tabindex="-1" title="Broadcast" href="campaign_email_broadcast.php?x=send&id=<?php echo encrypt($row['campaign_id']); ?>"><i class="fa fa-bullhorn fa-fw"></i> Broadcast</a></li>
@@ -119,6 +120,44 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                                     </ul>
                                                 </div>
 
+                                                <div id="recipients_<?php echo $row['campaign_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                                                <h4 class="modal-title">Campaign Email Recipients</h4></div>
+                                                            <div class="modal-body">
+                                                                <?php
+                                                                $recipient_list = file_get_contents("../../cronjobs/campaign_mails".DIRECTORY_SEPARATOR.$row['campaign_id'].".txt");
+                                                                $recipient_list = explode("\n", $recipient_list);
+                                                                ?>
+                                                                <table class="table table-responsive table-striped table-bordered table-hover">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Name</th>
+                                                                            <th>Email</th>
+                                                                            <th>Time Sent</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <?php foreach ($recipient_list as $key) {
+                                                                        $key = explode('*', $key)
+                                                                        ?>
+                                                                        <tr>
+                                                                            <td><?php echo $key[0]; ?></td>
+                                                                            <td><?php echo $key[1]; ?></td>
+                                                                            <td><?php echo $key[2]; ?></td>
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" name="decline" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div id="delete-campaign-confirm<?php echo $row['campaign_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">

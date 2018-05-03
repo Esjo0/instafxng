@@ -600,3 +600,15 @@ function split_name($full_name)
     }
     return $_name;
 }
+
+function campaign_recipients_log($name, $email, $campaign_id)
+{
+    $date = date('d-m-Y');
+    $time = date('h:i:s A');
+    $filepath = "campaign_mails".DIRECTORY_SEPARATOR.$campaign_id.".txt";
+    if(!file_exists($filepath)){mkdir("campaign_mails");}
+    $new_log = fopen($filepath, 'a');
+    $log = $name."*".$email."*".$date." ".$time."\n";
+    fwrite($new_log, $log);
+    fclose($new_log);
+}
