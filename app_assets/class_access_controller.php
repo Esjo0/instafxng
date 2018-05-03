@@ -161,15 +161,18 @@ class Access_Controller
     public function validate_access()
     {
         global $admin_object;
-        $this_page = basename($_SERVER['PHP_SELF']);
+        $currentFile = $_SERVER["PHP_SELF"];
+        $parts = explode('/', $currentFile);
+        $this_page = $parts[count($parts) - 1];
+        //$this_page = basename($_SERVER['PHP_SELF']);
         $all_pages = $this->get_all_pages();
         foreach ($all_pages as $key => $value)
         {
             $_pages = explode('||', $value);
             if (in_array($this_page, $_pages))
             {
-                $user_privilege = $admin_object->get_privileges($_SESSION['admin_unique_code']);
-                $admin_privilege = explode(',', $user_privilege['allowed_pages']);
+                //$user_privilege = $_SESSION['user_privilege'];
+                $admin_privilege = explode(',', $_SESSION['user_privilege']);
                 if(!in_array($key, $admin_privilege))
                 {
                     //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_denied.php');

@@ -1,4 +1,4 @@
-<!--        <base href="https://instafxng.com/admin/" />-->
+    <base href="https://instafxng.com/admin/" />
         <meta http-equiv="Content-Language" content="en" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="author" content="Instant Web-Net Technologies Limited" />
@@ -26,7 +26,7 @@
                 $(document).ready(function()
                 {
                         push_notifications.count_notifications();
-                        setInterval(function(){push_notifications.load_last_notification();}, 5000);//TODO: Fix this back to 5000
+                        setInterval(function(){push_notifications.load_last_notification();}, 300000);//TODO: Fix this back to 5000
                         push_notifications.count_notifications();
                 });
         </script>

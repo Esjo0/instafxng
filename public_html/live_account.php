@@ -41,7 +41,7 @@ if(isset($_POST['live_account_ilpr_reg'])) {
         if($log_new_ifxaccount) {
             $page_requested = "live_account_completed_php";
         } else {
-            $message_error = "Something went wrong, the operation could not be completed. Please try again.";
+            $message_error = "Something went wrong, please contact support to enrol for ILPR.";
         }
     }
 }

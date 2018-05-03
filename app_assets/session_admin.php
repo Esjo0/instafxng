@@ -27,6 +27,7 @@ class SessionAdmin {
     }
     
     public function login($user) {
+        global $admin_object;
         // database should find user based on admin_code/password
         if($user) {
             $this->admin_unique_code = $_SESSION['admin_unique_code'] = $user['admin_code'];
@@ -36,6 +37,7 @@ class SessionAdmin {
             $_SESSION['admin_last_login'] = $user['last_login'];
             $_SESSION['admin_email'] = $user['email'];
             $_SESSION['user_time'] = time();
+            $_SESSION['user_privilege'] = $admin_object->get_privileges($_SESSION['admin_unique_code']);;
             $this->logged_in = true;
         }
     }
@@ -48,6 +50,7 @@ class SessionAdmin {
         unset($_SESSION['admin_last_login']);
         unset($_SESSION['admin_email']);
         unset($_SESSION['user_time']);
+        unset($_SESSION['user_privilege']);
         unset($this->admin_unique_code);
         session_unset();
         session_destroy();
