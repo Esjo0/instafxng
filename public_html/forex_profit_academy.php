@@ -31,7 +31,7 @@ $thisPage = "Education";
                                 <h1 class="text-center">Welcome to the  Forex Profit Academy</h1>
                                 <p>Forex education is the first step to making steady income trading Forex... <!--<a href="/fxacademy/" title="Click here to enrol" class="btn btn-sm btn-success btn-rounded">Join the Forex Profit Academy</a>--></p>
                                 <div class="text-center" style="margin-bottom: 10px;">
-                                    <a href="/fxacademy/" title="Click here to enrol" class="btn btn-success btn-sm btn-rounded">Join the Forex Profit Academy</a>
+                                    <a href="/fxacademy/" target="_blank" title="Click here to enrol" class="btn btn-success btn-sm btn-rounded">Join the Forex Profit Academy</a>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -56,7 +56,7 @@ $thisPage = "Education";
                                 <p>Be sure to give all the lessons in the academy your 100% attention and thoroughly go through each lesson without forgetting to attempt all the test exercises which you must complete to proceed to the next lesson. </p>
                             </div>
                         </div>
-                        <div class="text-center" style="margin-bottom: 10px;"><a href="/fxacademy/" title="Click here to enrol" class="btn btn-success btn-lg">Join the Forex Profit Academy</a></div>
+                        <div class="text-center" style="margin-bottom: 10px;"><a href="/fxacademy/" target="_blank" title="Click here to enrol" class="btn btn-success btn-lg">Join the Forex Profit Academy</a></div>
                     </div>
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
