@@ -37,7 +37,7 @@ class SessionAdmin {
             $_SESSION['admin_last_login'] = $user['last_login'];
             $_SESSION['admin_email'] = $user['email'];
             $_SESSION['user_time'] = time();
-            $_SESSION['user_privilege'] = $admin_object->get_privileges($_SESSION['admin_unique_code']);;
+            $_SESSION['user_privilege'] = $admin_object->get_privileges($_SESSION['admin_unique_code']);
             $this->logged_in = true;
         }
     }
