@@ -128,7 +128,7 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                                                 <h4 class="modal-title">Campaign Email Recipients</h4></div>
                                                             <div class="modal-body">
                                                                 <?php
-                                                                $recipient_list = file_get_contents("../../cronjobs/campaign_mails".DIRECTORY_SEPARATOR.$row['campaign_id'].".txt");
+                                                                $recipient_list = file_get_contents("../../cronjobs/campaign_mails/".$row['campaign_id'].".txt");
                                                                 $recipient_list = explode("\n", $recipient_list);
                                                                 ?>
                                                                 <table class="table table-responsive table-striped table-bordered table-hover">
@@ -140,14 +140,17 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    <?php foreach ($recipient_list as $key) {
-                                                                        $key = decrypt($key);
-                                                                        $key = explode('*', $key);
+                                                                    <?php foreach ($recipient_list as $key)
+                                                                    {
+                                                                        $key = explode('/***/', $key);
+                                                                        $name = decrypt_ssl($key[0]);
+                                                                        $email = decrypt_ssl($key[1]);
+                                                                        $date_time = decrypt_ssl($key[2]);
                                                                         ?>
                                                                         <tr>
-                                                                            <td><?php echo $key[0]; ?></td>
-                                                                            <td><?php echo $key[1]; ?></td>
-                                                                            <td><?php echo $key[2]; ?></td>
+                                                                            <td><?php echo $name; ?></td>
+                                                                            <td><?php echo $email; ?></td>
+                                                                            <td><?php echo $date_time; ?></td>
                                                                         </tr>
                                                                     <?php } ?>
                                                                     </tbody>

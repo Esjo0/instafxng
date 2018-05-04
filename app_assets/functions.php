@@ -608,8 +608,7 @@ function campaign_recipients_log($name, $email, $campaign_id)
     $filepath = "campaign_mails".DIRECTORY_SEPARATOR.$campaign_id.".txt";
     if(!file_exists($filepath)){mkdir("campaign_mails");}
     $new_log = fopen($filepath, 'a');
-    $log = $name."*".$email."*".$date." ".$time;
-    $log = encrypt($log);
+    $log = encrypt_ssl($name)."/***/".encrypt_ssl($email)."/***/".encrypt_ssl($date." ".$time);
     $log = $log."\n";
     fwrite($new_log, $log);
     fclose($new_log);
