@@ -1,14 +1,9 @@
 <?php
 // Prepare admin full name
-if(isset($_SESSION['admin_first_name']) && isset($_SESSION['admin_last_name'])) {
-    $admin_full_name = $_SESSION['admin_first_name'] . " " . $_SESSION['admin_last_name'];
-} else {
-    $admin_full_name = "";
-}
-
-$my_pages_sidebar = $admin_object->get_privileges($_SESSION['admin_unique_code']);
-$my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
-
+if(isset($_SESSION['admin_first_name']) && isset($_SESSION['admin_last_name']))
+{    $admin_full_name = $_SESSION['admin_first_name'] . " " . $_SESSION['admin_last_name'];}
+else {    $admin_full_name = "";}
+$my_pages_sidebar = $_SESSION['user_privilege'];
 ?>
 
 <div class="col-md-12">
