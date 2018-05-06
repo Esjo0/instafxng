@@ -160,7 +160,7 @@ class AdminUser {
         
         if($db_handle->numOfRows($result) > 0) {
             $fetched_data = $db_handle->fetchAssoc($result);
-            return $fetched_data[0];
+            return explode(',', $fetched_data[0]['allowed_pages']);
         } else {
             return false;
         }

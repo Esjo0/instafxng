@@ -61,7 +61,6 @@ if(!$admin_detail) {
 
 
 $my_pages = $admin_object->get_privileges($admin_code);
-$my_pages = explode(",", $my_pages['allowed_pages']);
 
 ?>
 <!DOCTYPE html>

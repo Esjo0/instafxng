@@ -6,10 +6,7 @@ if (!$session_admin->is_logged_in()) {
 $from_date = date('Y-m-d', strtotime('first day of last month'));
 $to_date = date('Y-m-d', strtotime('last day of last month'));
 $current_month = date('n');
-$query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone 
-                          FROM user AS u 
-                          WHERE STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'  
-                          ORDER BY u.created DESC";
+$query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone FROM user AS u WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY u.created DESC";
 $dispaly_msg = "Details of unique clients that joined the system last month.";
 
 if(isset($_POST['search']))
@@ -33,55 +30,50 @@ if(isset($_POST['selector']))
     switch ($filter)
     {
         case 1:
-            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone 
-                          FROM user AS u 
-                          WHERE STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'  
-                          ORDER BY u.created DESC ";
+            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone FROM user AS u WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY u.created DESC ";
             $dispaly_msg = "Details of unique clients that joined the system last month.";
             break;
         case 2:
-            $query = "SELECT user.user_code, user.first_name, user.email, user.phone 
+            $query = "SELECT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone 
                           FROM user,user_ifxaccount 
-                          WHERE STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
+                          WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
                           AND user_ifxaccount.user_code = user.user_code
                           AND user_ifxaccount.type = '1'
                           GROUP BY user.email ";
             $dispaly_msg = "Details of unique clients that joined the system last month New Clients with Accounts.";
             break;
         case 3:
-            $query = "SELECT user.user_code, user.first_name, user.email, user.phone 
+            $query = "SELECT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone 
                       FROM user, user_ifxaccount, free_training_campaign 
-                      WHERE STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
-                      AND NOT(user.user_code = user_ifxaccount.user_code) 
-                      AND NOT(free_training_campaign.email = user.email) 
-                      GROUP BY user.email";
+                      WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
+                      AND user.user_code <> user_ifxaccount.user_code 
+                      AND free_training_campaign.email <> user.email GROUP BY user.email";
             $dispaly_msg = "Details of unique clients that joined the system last month New Clients with NO Accounts and NO training.";
             break;
         case 4:
-            $query = "SELECT user.user_code, user.first_name, user.email, user.phone 
+            $query = "SELECT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone 
                 FROM user, user_ifxaccount, free_training_campaign 
-                WHERE STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
-                AND NOT(user.user_code = user_ifxaccount.user_code) 
-                AND (free_training_campaign.email = user.email)  
-                GROUP BY user.email";
+                WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
+                AND user.user_code <> user_ifxaccount.user_code 
+                AND free_training_campaign.email = user.email GROUP BY user.email";
             $dispaly_msg = "Details of unique clients that joined the system last month New Clients without Accounts and have Training.";
             break;
         case 5:
-            $query = "SELECT user.user_code, user.first_name, user.email, user.phone 
-                      FROM user,user_ifxaccount,user_edu_deposits 
-                      WHERE STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
-                      AND (user.user_code = user_edu_deposits.user_code) 
-                      AND (MONTH(user_edu_deposits.created) = $current_month)  
+            $query = "SELECT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone 
+                      FROM user, user_ifxaccount, user_edu_deposits 
+                      WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
+                      AND user.user_code = user_edu_deposits.user_code 
+                      AND MONTH(user_edu_deposits.created) = $current_month  
                       GROUP BY user.email";
             $dispaly_msg = "Details of unique clients that joined the system last month New Clients Still Forex Optimizer course in this current month.";
             break;
         case 6:
-            $query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone
+            $query = "SELECT DISTINCT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone
                       FROM user,user_deposit,user_ifxaccount 
-                      WHERE STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' 
-                      AND (user.user_code = user_ifxaccount.user_code) 
-                      AND (user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id) 
-                      AND (user_deposit.real_dollar_equivalent < 50)  
+                      WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
+                      AND user.user_code = user_ifxaccount.user_code 
+                      AND user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id 
+                      AND user_deposit.real_dollar_equivalent < 50.00  
                       GROUP BY user.email ";
             $dispaly_msg = "Details of unique clients that joined the system last month New Clients not yet funded above $50.";
             break;
@@ -194,8 +186,8 @@ $clients = $db_handle->fetchAssoc($result);
                                                 <td><?php echo $row['email']; ?></td>
                                                 <td><?php echo $row['phone']; ?></td>
                                                 <td nowrap="nowrap">
-                                                    <a title="View" class="btn btn-success" href="../client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'insight/last_month_new_client'; ?>&c=<?php echo encrypt('LAST MONTH NEW CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
-                                                    <a target="_blank" title="View" class="btn btn-info" href="../client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a title="View" class="btn btn-success" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'insight/last_month_new_client'; ?>&c=<?php echo encrypt('LAST MONTH NEW CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                 </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
