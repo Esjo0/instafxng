@@ -208,5 +208,17 @@ MAIL;
         return $x;
     }
 
+    public function lead_interest($interest)
+    {
+        switch ($interest)
+        {
+            case "1" : $x = "FxAcademy"; break;
+            case "2" : $x = "ILPR"; break;
+            default: $x = "Unknown"; break;
+        }
+        return $x;
+    }
+
+
 }
 $obj_loyalty_training = new Loyalty_Training();
