@@ -11,7 +11,7 @@ if($additional_msg == 'msg')
         <p>To get more, you need to do more!</p>
         <p>Funding your Instaforex account and trading actively increases your loyalty points
         and qualifies you for the monthly reward of $500.</p>
-        <p>To be one of the 5 traders to get $500 in March, you need to start earning points
+        <p>To be one of the 5 traders to get $500 in May, you need to start earning points
         early!</p>
         <p>Let's Get you Started</p>
         <br />

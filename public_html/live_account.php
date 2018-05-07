@@ -32,7 +32,7 @@ if(isset($_POST['live_account_ilpr_reg'])) {
     } elseif(empty($full_name) || empty($email_address) || empty($phone_number) || empty($account_no)) {
         $message_error = "All fields must be filled.";
     } elseif (!check_email($email_address)) {
-        $message_error = "You have provided an invalid email addresss. Please try again.";
+        $message_error = "You have provided an invalid email address. Please try again.";
     } else {
 
         $client_operation = new clientOperation();

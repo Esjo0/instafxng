@@ -7,7 +7,7 @@ $from_date = date('Y-m-d', strtotime('first day of last month'));
 $to_date = date('Y-m-d', strtotime('last day of last month'));
 $current_month = date('n');
 $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone FROM user AS u WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY u.created DESC";
-$dispaly_msg = "Details of unique clients that joined the system last month.";
+$display_msg = "Details of unique clients that joined the system last month.";
 
 if(isset($_POST['search']))
 {
@@ -21,7 +21,7 @@ if(isset($_POST['search']))
               OR u.phone LIKE '%$search_text%' 
               OR u.created LIKE '$search_text%' 
               ORDER BY u.created DESC ";
-    $dispaly_msg = "Search result for '$search_text' ";
+    $display_msg = "Search result for '$search_text' ";
 }
 
 if(isset($_POST['selector']))
@@ -31,58 +31,67 @@ if(isset($_POST['selector']))
     {
         case 1:
             $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone FROM user AS u WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ORDER BY u.created DESC ";
-            $dispaly_msg = "Details of unique clients that joined the system last month.";
+            $display_msg = "Details of unique clients that joined the system last month.";
             break;
         case 2:
-            $query = "SELECT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone 
-                          FROM user,user_ifxaccount 
-                          WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
-                          AND user_ifxaccount.user_code = user.user_code
-                          AND user_ifxaccount.type = '1'
-                          GROUP BY user.email ";
-            $dispaly_msg = "Details of unique clients that joined the system last month New Clients with Accounts.";
+            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+                FROM user AS u
+                INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                AND ui.user_code = u.user_code
+                AND ui.type = '1'
+                GROUP BY u.email ";
+            $display_msg = "Details of unique clients that joined the system last month New Clients with Accounts.";
             break;
         case 3:
-            $query = "SELECT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone 
-                      FROM user, user_ifxaccount, free_training_campaign 
-                      WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
-                      AND user.user_code <> user_ifxaccount.user_code 
-                      AND free_training_campaign.email <> user.email GROUP BY user.email";
-            $dispaly_msg = "Details of unique clients that joined the system last month New Clients with NO Accounts and NO training.";
+            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+                FROM user AS u
+                LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                LEFT JOIN free_training_campaign AS ftc ON u.email = ftc.email
+                WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                AND ui.user_code IS NULL
+                AND ftc.email IS NULL GROUP BY u.email";
+            $display_msg = "Details of unique clients that joined the system last month New Clients with NO Accounts and NO training.";
             break;
         case 4:
-            $query = "SELECT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone 
-                FROM user, user_ifxaccount, free_training_campaign 
-                WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
-                AND user.user_code <> user_ifxaccount.user_code 
-                AND free_training_campaign.email = user.email GROUP BY user.email";
-            $dispaly_msg = "Details of unique clients that joined the system last month New Clients without Accounts and have Training.";
+            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+                FROM user AS u
+                LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                LEFT JOIN free_training_campaign AS ftc ON u.email = ftc.email
+                WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                AND ui.user_code IS NULL
+                AND ftc.email IS NOT NULL GROUP BY u.email";
+            $display_msg = "Details of unique clients that joined the system last month New Clients without Accounts and have Training.";
             break;
         case 5:
-            $query = "SELECT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone 
-                      FROM user, user_ifxaccount, user_edu_deposits 
-                      WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
-                      AND user.user_code = user_edu_deposits.user_code 
-                      AND MONTH(user_edu_deposits.created) = $current_month  
-                      GROUP BY user.email";
-            $dispaly_msg = "Details of unique clients that joined the system last month New Clients Still Forex Optimizer course in this current month.";
+            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+                FROM user AS u
+                LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                LEFT JOIN user_edu_deposits AS ued ON u.user_code = ued.user_code
+                WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                AND ued.user_code IS NOT NULL
+                AND MONTH(ued.created) = $current_month
+                GROUP BY u.email";
+            $display_msg = "Details of unique clients that joined the system last month New Clients Still Forex Optimizer course in this current month.";
             break;
         case 6:
-            $query = "SELECT DISTINCT user.user_code, CONCAT(user.last_name, SPACE(1), user.first_name) AS full_name, user.email, user.phone
-                      FROM user,user_deposit,user_ifxaccount 
-                      WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
-                      AND user.user_code = user_ifxaccount.user_code 
-                      AND user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id 
-                      AND user_deposit.real_dollar_equivalent < 50.00  
-                      GROUP BY user.email ";
-            $dispaly_msg = "Details of unique clients that joined the system last month New Clients not yet funded above $50.";
+            $query = "SELECT DISTINCT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+                FROM user AS u
+                LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+                WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                AND u.user_code = ui.user_code
+                AND ui.ifxaccount_id = ud.ifxaccount_id
+                AND ud.real_dollar_equivalent < 50.00
+                GROUP BY u.email ";
+            $display_msg = "Details of unique clients that joined the system last month New Clients not yet funded above $50.";
             break;
         default:
             $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone 
-                      FROM user AS u 
-                      WHERE STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'  
-                      ORDER BY u.created DESC ";
-            $dispaly_msg = "Details of unique clients that joined the system last month.";
+                FROM user AS u
+                WHERE STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
+                ORDER BY u.created DESC ";
+            $display_msg = "Details of unique clients that joined the system last month.";
             break;
     }
 }
@@ -162,7 +171,7 @@ $clients = $db_handle->fetchAssoc($result);
                                         </form>
                                     </div>
                                 </div>
-                                <p><?php echo $dispaly_msg; ?></p>
+                                <p><?php echo $display_msg; ?></p>
                                 <?php if(isset($numrows)) { ?>
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
