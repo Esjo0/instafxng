@@ -105,8 +105,9 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[LTD]', '', $my_message_new);
                 $my_message_new = str_replace('[LTV]', '', $my_message_new);
             }
+            $x = $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name, $mail_sender);
+            if($x){campaign_recipients_log($client_name, $client_email, $campaign_id); }
 
-            $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name, $mail_sender);
         }
 
         // if the current offset plus limit is equal or greater than total recipient

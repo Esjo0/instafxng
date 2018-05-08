@@ -346,8 +346,7 @@ function client_group_campaign_category($status) {
         case '47': $message = "Last Months New Clients with Accounts"; break;
         case '48': $message = "Last Months New Clients without Accounts and have no Training"; break;
         case '49': $message = "Last Months New Clients without Accounts and have Training"; break;
-        case '50': $message = "Last Months New Trainee Still in course 2 in current month"; break;
-        case '51': $message = "Last Months New Clients not yet funded above $50"; break;
+        case '50': $message = "Last Months New Clients not yet funded above $50"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -362,7 +361,7 @@ function client_group_query($client_group, $campaign_type) {
     $to_date = date('Y-m-d', strtotime('last day of last month'));
 
     $current_day = date('d');
-    $current_month = date('m');
+    $current_month = date('n');
 
     if($current_day <= 15) {
         // Date will be from 16 - last day of last month
@@ -378,14 +377,14 @@ function client_group_query($client_group, $campaign_type) {
         // This is an email campaign
 
         switch ($client_group) {
-            case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1' ORDER BY created ASC"; break;
-            case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1' ORDER BY created ASC"; break;
-            case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign ORDER BY created ASC"; break;
-            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
-            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
-            case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
-            case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 2 MONTH) AND u.campaign_subscribe = '1' ORDER BY u.created ASC"; break;
-            case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2' ORDER BY created ASC"; break;
+            case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1'"; break;
+            case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1'"; break;
+            case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign"; break;
+            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1'"; break;
+            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1'"; break;
+            case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1'"; break;
+            case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 2 MONTH) AND u.campaign_subscribe = '1'"; break;
+            case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2'"; break;
             case '9': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u INNER JOIN user_meta AS um ON u.user_code = um.user_code LEFT JOIN state AS s ON um.state_id = s.state_id WHERE u.campaign_subscribe = '1' AND um.address LIKE '%Lagos%'"; break;
             case '10': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '3'"; break;
             case '11': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '2'"; break;
@@ -424,11 +423,10 @@ function client_group_query($client_group, $campaign_type) {
             case '44': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE u.user_code NOT IN (SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned > DATE_SUB(NOW(), INTERVAL 12 MONTH) GROUP BY u.email) GROUP BY u.email"; break;
             case '45': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_ifxaccount AS ui INNER JOIN user AS u ON ui.user_code = u.user_code WHERE (ui.type = '2') GROUP BY u.email"; break;
             case '46': $query = "SELECT full_name AS first_name, email FROM article_visitors "; break;
-            case '47': $query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) GROUP BY user.phone"; break;
-            case '48': $query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND NOT(free_training_campaign.email = user.email) GROUP BY user.email"; break;
-            case '49': $query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND (free_training_campaign.email = user.email) GROUP BY user.email"; break;
-            case '50': $query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,user_edu_deposits WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_edu_deposits.user_code) AND (MONTH(user_edu_deposits.created) = $current_month) GROUP BY user.email"; break;
-            case '51': $query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone FROM user,user_deposit,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) AND (user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id) AND (user_deposit.real_dollar_equivalent < 50) GROUP BY user.email"; break;
+            case '47': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND ui.user_code = u.user_code AND ui.type = '1' AND u.campaign_subscribe = '1' GROUP BY u.email "; break;
+            case '48': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code LEFT JOIN free_training_campaign AS ftc ON u.email = ftc.email WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND ui.user_code IS NULL AND ftc.email IS NULL AND u.campaign_subscribe = '1' GROUP BY u.email "; break;
+            case '49': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code LEFT JOIN free_training_campaign AS ftc ON u.email = ftc.email WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND ui.user_code IS NULL AND ftc.email IS NOT NULL AND u.campaign_subscribe = '1' GROUP BY u.email "; break;
+            case '50': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND u.user_code = ui.user_code AND ui.ifxaccount_id = ud.ifxaccount_id AND ud.real_dollar_equivalent < 50.00 AND u.campaign_subscribe = '1' GROUP BY u.email "; break;
             default: $query = false; break;
         }
 
@@ -437,13 +435,13 @@ function client_group_query($client_group, $campaign_type) {
         // Reformat queries and group by phone to avoid repetition of phone numbers
 
         switch ($client_group) {
-            case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1' GROUP BY phone ORDER BY created ASC"; break;
-            case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1' GROUP BY phone ORDER BY created ASC"; break;
-            case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign GROUP BY phone ORDER BY created ASC"; break;
-            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1' GROUP BY u.phone ORDER BY u.created ASC"; break;
-            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1' GROUP BY u.phone ORDER BY u.created ASC"; break;
-            case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1' GROUP BY u.phone ORDER BY u.created ASC"; break;
-            case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 2 MONTH) AND u.campaign_subscribe = '1' GROUP BY u.phone ORDER BY u.created ASC"; break;
+            case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1' GROUP BY phone"; break;
+            case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1' GROUP BY phone"; break;
+            case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign GROUP BY phone"; break;
+            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1' GROUP BY u.phone"; break;
+            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1' GROUP BY u.phone"; break;
+            case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1' GROUP BY u.phone"; break;
+            case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 2 MONTH) AND u.campaign_subscribe = '1' GROUP BY u.phone"; break;
             case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2' GROUP BY phone ORDER BY created ASC"; break;
             case '9': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u INNER JOIN user_meta AS um ON u.user_code = um.user_code LEFT JOIN state AS s ON um.state_id = s.state_id WHERE u.campaign_subscribe = '1' AND um.address LIKE '%Lagos%' GROUP BY u.phone"; break;
             case '10': $query = "SELECT first_name, email, phone FROM free_training_campaign WHERE training_centre = '3' GROUP BY phone"; break;
@@ -483,11 +481,10 @@ function client_group_query($client_group, $campaign_type) {
             case '44': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE u.user_code NOT IN (SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned > DATE_SUB(NOW(), INTERVAL 12 MONTH) GROUP BY u.email) GROUP BY u.phone"; break;
             case '45': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_ifxaccount AS ui INNER JOIN user AS u ON ui.user_code = u.user_code WHERE (ui.type = '2') GROUP BY u.phone"; break;
             case '46': $query = "SELECT full_name AS first_name, email FROM article_visitors "; break;
-            case '47': $query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) GROUP BY user.phone"; break;
-            case '48': $query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND NOT(free_training_campaign.email = user.email) GROUP BY user.phone"; break;
-            case '49': $query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,free_training_campaign WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND NOT(user.user_code = user_ifxaccount.user_code) AND (free_training_campaign.email = user.email) GROUP BY user.phone"; break;
-            case '50': $query = "SELECT user.user_code, user.first_name, user.email, user.phone FROM user,user_ifxaccount,user_edu_deposits WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_edu_deposits.user_code) AND (MONTH(user_edu_deposits.created) = $current_month) GROUP BY user.phone"; break;
-            case '51': $query = "SELECT DISTINCT user.user_code, user.first_name, user.email, user.phone FROM user,user_deposit,user_ifxaccount WHERE (STR_TO_DATE(user.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND user.campaign_subscribe = '1' AND (user.user_code = user_ifxaccount.user_code) AND (user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id) AND (user_deposit.real_dollar_equivalent < 50) GROUP BY user.phone"; break;
+            case '47': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND ui.user_code = u.user_code AND ui.type = '1' AND u.campaign_subscribe = '1' GROUP BY u.phone "; break;
+            case '48': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code LEFT JOIN free_training_campaign AS ftc ON u.email = ftc.email WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND ui.user_code IS NULL AND ftc.email IS NULL AND u.campaign_subscribe = '1' GROUP BY u.phone "; break;
+            case '49': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code LEFT JOIN free_training_campaign AS ftc ON u.email = ftc.email WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND ui.user_code IS NULL AND ftc.email IS NOT NULL AND u.campaign_subscribe = '1' GROUP BY u.phone "; break;
+            case '50': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND u.user_code = ui.user_code AND ui.ifxaccount_id = ud.ifxaccount_id AND ud.real_dollar_equivalent < 50.00 AND u.campaign_subscribe = '1' GROUP BY u.phone "; break;
             default: $query = false; break;
         }
 
@@ -495,22 +492,6 @@ function client_group_query($client_group, $campaign_type) {
 
     return $query;
 }
-
-/*function getcategorydescription($string, $substring) {
-    $pos = strpos($string, $substring);
-    if ($pos === false)
-        return $string;
-    else
-        return(substr($string, $pos+strlen($substring)));
-}
-
-function getcategoryvalue($string, $substring) {
-    $pos = strpos($string, $substring);
-    if ($pos === false)
-        return $string;
-    else
-        return(substr($string, 0, $pos));
-}*/
 
 function status_fc_type($status) {
     switch ($status) {
