@@ -4,63 +4,103 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$query = "SELECT * FROM signal_intraday WHERE status = 1";
+$triggered = $db_handle->numRows($query);
 
-// Update signal
-if (isset($_POST['process'])) {
-    
-    foreach($_POST as $key => $value) {
-        $_POST[$key] = $db_handle->sanitizePost(trim($value));
-    }
+$query = "SELECT views FROM signal_views WHERE id = 'page_views' ";
+$result = $db_handle->runQuery($query);
+$views = $db_handle->fetchAssoc($result);
+foreach($views AS $view){extract($view);}
 
-    extract($_POST);
-
-    if($db_handle->numRows("SELECT * FROM signal_daily WHERE signal_date LIKE '$signal_date'") > 0)
-    {
-        $message_error = "You have already uploaded forex signal for the selected date, please choose another date.";
+$admin_code = $_SESSION['admin_unique_code'];
+if(isset($_POST['create'])){
+   $pair = $db_handle->sanitizePost($_POST['pair']);
+   $query = "INSERT INTO signal_symbol(symbol) VALUE('$pair')";
+   $result2 =$db_handle->runQuery($query);
+    if($result2) {
+        $message_success = "You have successfully created a new Currency Symbol";
     } else {
-        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, signal_date) VALUES
-            (1, 'BUY', '$eur_usd_buy_price', '$eur_usd_buy_tp', '$eur_usd_buy_sl', '$signal_date'),
-            (1, 'SELL', '$eur_usd_sell_price', '$eur_usd_sell_tp', '$eur_usd_sell_sl', '$signal_date'),
-            (2, 'BUY', '$gbp_usd_buy_price', '$gbp_usd_buy_tp', '$gbp_usd_buy_sl', '$signal_date'),
-            (2, 'SELL', '$gbp_usd_sell_price', '$gbp_usd_sell_tp', '$gbp_usd_sell_sl', '$signal_date'),
-            (3, 'BUY', '$usd_cad_buy_price', '$usd_cad_buy_tp', '$usd_cad_buy_sl', '$signal_date'),
-            (3, 'SELL', '$usd_cad_sell_price', '$usd_cad_sell_tp', '$usd_cad_sell_sl', '$signal_date')";
-        $result = $db_handle->runQuery($query);
-        $result ? $message_success = "Your changes have been saved." : $message_error = "No Changes Made";
+        $message_error = "Something went wrong. Please try again.";
     }
 }
 
-
-
-// Get signal details
-$signals = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM signal_daily INNER JOIN signal_symbol ON signal_symbol.signal_symbol_id = signal_daily.symbol_id"));
-
-//TODO: refactor this foreach later, it should not be hard coded like this
-foreach($signals as $row) {
-    if(in_array("EURUSD", $row) && in_array("BUY", $row)) {
-        $eur_usd_buy_price = $row['price']; $eur_usd_buy_tp = $row['take_profit']; $eur_usd_buy_sl = $row['stop_loss'];
-    }
-    
-    if(in_array("EURUSD", $row) && in_array("SELL", $row)) {
-        $eur_usd_sell_price = $row['price']; $eur_usd_sell_tp = $row['take_profit']; $eur_usd_sell_sl = $row['stop_loss'];
-    }
-    
-    if(in_array("GBPUSD", $row) && in_array("BUY", $row)) {
-        $gbp_usd_buy_price = $row['price']; $gbp_usd_buy_tp = $row['take_profit']; $gbp_usd_buy_sl = $row['stop_loss'];
-    }
-    
-    if(in_array("GBPUSD", $row) && in_array("SELL", $row)) {
-        $gbp_usd_sell_price = $row['price']; $gbp_usd_sell_tp = $row['take_profit']; $gbp_usd_sell_sl = $row['stop_loss'];
-    }
-    
-    if(in_array("USDCAD", $row) && in_array("BUY", $row)) {
-        $usd_cad_buy_price = $row['price']; $usd_cad_buy_tp = $row['take_profit']; $usd_cad_buy_sl = $row['stop_loss'];
-    }
-    
-    if(in_array("USDCAD", $row) && in_array("SELL", $row)) {
-        $usd_cad_sell_price = $row['price']; $usd_cad_sell_tp = $row['take_profit']; $usd_cad_sell_sl = $row['stop_loss'];
+if(isset($_POST['trigger'])){
+    $id = $db_handle->sanitizePost($_POST['id']);
+    $query = "UPDATE signal_intraday SET status = '1' WHERE id = '$id'";
+    $result =$db_handle->runQuery($query);
+    if($result) {
+        $message_success = "Signal Triggered Successfully created for ".datetime_to_text($signal_time);
+    } else {
+        $message_error = "Something went wrong. Please try again.";
     }
 }
+
+if(isset($_POST['signal'])){
+    $symbol = $db_handle->sanitizePost($_POST['symbol']);
+    $buy_price = $db_handle->sanitizePost($_POST['buy_price']);
+    $buy_price_tp = $db_handle->sanitizePost($_POST['buy_price_tp']);
+    $buy_price_sl = $db_handle->sanitizePost($_POST['buy_price_sl']);
+    $sell_price = $db_handle->sanitizePost($_POST['sell_price']);
+    $sell_price_tp = $db_handle->sanitizePost($_POST['sell_price_tp']);
+    $sell_price_sl = $db_handle->sanitizePost($_POST['sell_price_sl']);
+    $signal_time = $db_handle->sanitizePost($_POST['signal_time']);
+    $comment = $db_handle->sanitizePost($_POST['comment']);
+    $query ="INSERT INTO signal_intraday(currency_pair, buy_price, buy_price_tp, buy_price_sl, sell_price, sell_price_tp, sell_price_sl, signal_time, comment, admin, status)
+              VALUE('$symbol','$buy_price', '$buy_price_tp', '$buy_price_sl', '$sell_price', '$sell_price_tp', '$sell_price_sl', '$signal_time', '$comment', '$admin_code', '0')";
+    $result =$db_handle->runQuery($query);
+    if($result) {
+        $message_success = "Signal Successfully created for ".datetime_to_text($signal_time);
+    } else {
+        $message_error = "Something went wrong. Please try again.";
+    }
+
+}
+
+if(isset($_POST['update'])){
+    $id = $db_handle->sanitizePost($_POST['id']);
+    $symbol = $db_handle->sanitizePost($_POST['symbol']);
+    $buy_price = $db_handle->sanitizePost($_POST['buy_price']);
+    $buy_price_tp = $db_handle->sanitizePost($_POST['buy_price_tp']);
+    $buy_price_sl = $db_handle->sanitizePost($_POST['buy_price_sl']);
+    $sell_price = $db_handle->sanitizePost($_POST['sell_price']);
+    $sell_price_tp = $db_handle->sanitizePost($_POST['sell_price_tp']);
+    $sell_price_sl = $db_handle->sanitizePost($_POST['sell_price_sl']);
+    $signal_time = $db_handle->sanitizePost($_POST['signal_time']);
+    $comment = $db_handle->sanitizePost($_POST['comment']);
+    $status = $db_handle->sanitizePost($_POST['status']);
+    $query = "UPDATE signal_intraday SET currency_pair = '$symbol',buy_price = '$buy_price', buy_price_tp = '$buy_price_tp',buy_price_sl = '$buy_price_sl',sell_price = '$sell_price', sell_price_tp = '$sell_price_tp',sell_price_sl = '$sell_price_sl', signal_time = '$signal_time',comment = '$comment',admin = '$admin_code',status = '$status' WHERE id = '$id'";
+    $result =$db_handle->runQuery($query);
+    if($result) {
+        $message_success = "Signal Updated Successfully created for ".datetime_to_text($signal_time);
+    } else {
+        $message_error = "Something went wrong. Please try again.";
+    }
+
+}
+
+$query = "SELECT * FROM signal_intraday ";
+$numrows = $db_handle->numRows($query);
+
+$rowsperpage = 10;
+
+$totalpages = ceil($numrows / $rowsperpage);
+// get the current page or set a default
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
+    $currentpage = (int) $_GET['pg'];
+} else {
+    $currentpage = 1;
+}
+if ($currentpage > $totalpages) { $currentpage = $totalpages; }
+if ($currentpage < 1) { $currentpage = 1; }
+
+$prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
+$prespagehigh = $currentpage * $rowsperpage;
+if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
+
+$offset = ($currentpage - 1) * $rowsperpage;
+$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$result = $db_handle->runQuery($query);
+$all_signals = $db_handle->fetchAssoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -73,7 +113,6 @@ foreach($signals as $row) {
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
-
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -104,22 +143,21 @@ foreach($signals as $row) {
                                 <p>Modify the form below to update the daily signal. Choose the date you are posting the signal for.</p>
                                 <br />
                                 <div class="col-md-12 order-md-1">
-                                    <form class="needs-validation" novalidate>
+                                    <form class="needs-validation" role="form" method="post" action="">
                                         <div class="form-group">
                                             <label class="control-label col-sm-3" for="location">Currency Pair </label>
                                             <div class="col-sm-9 col-lg-5">
                                                 <div class="input-group date">
-                                                    <select name="location" class="form-control" id="location">
-                                                        <option value="" selected>All Offices</option>
+                                                    <select name="symbol" class="form-control" id="location">
                                                         <?php
-                                                        $query = "SELECT * FROM accounting_system_office_locations ";
+                                                        $query = "SELECT * FROM signal_symbol ";
                                                         $result = $db_handle->runQuery($query);
                                                         $result = $db_handle->fetchAssoc($result);
                                                         foreach ($result as $row)
                                                         {
                                                             extract($row)
                                                             ?>
-                                                            <option value="<?php echo $location_id;?>"><?php echo $location;?></option>
+                                                            <option value="<?php echo $symbol;?>"><?php echo $symbol;?></option>
                                                         <?php } ?>
                                                     </select>
                                                     <span class="input-group-addon"><span class="fa fa-gg"></span></span>
@@ -133,9 +171,9 @@ foreach($signals as $row) {
                                             <div class="col-sm-12">
                                                 <div class="row">
                                                     <label class="control-label col-sm-3" for="">BUY PRICE </label>
-                                                    <div class="col-sm-3"><input name="eur_usd_buy_price" type="text" value="<?php if(isset($eur_usd_buy_price)) { echo $eur_usd_buy_price; } ?>" class="form-control" placeholder="Price"  required/></div>
-                                                    <div class="col-sm-3"><input name="eur_usd_buy_tp" type="text" value="<?php if(isset($eur_usd_buy_tp)) { echo $eur_usd_buy_tp; } ?>" class="form-control" placeholder="TP" required/></div>
-                                                    <div class="col-sm-3"><input name="eur_usd_buy_sl" type="text" value="<?php if(isset($eur_usd_buy_sl)) { echo $eur_usd_buy_sl; } ?>" class="form-control" placeholder="SL" required/></div>
+                                                    <div class="col-sm-3"><input name="buy_price" type="text" class="form-control" placeholder="Price"  required/></div>
+                                                    <div class="col-sm-3"><input name="buy_price_tp" type="text" class="form-control" placeholder="TP" required/></div>
+                                                    <div class="col-sm-3"><input name="buy_price_sl" type="text" class="form-control" placeholder="SL" required/></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,9 +183,9 @@ foreach($signals as $row) {
                                             <div class="col-sm-12">
                                                 <div class="row">
                                                     <label class="control-label col-sm-3" for="">SELL PRICE </label>
-                                                    <div class="col-sm-3"><input name="eur_usd_sell_price" type="text" value="<?php if(isset($eur_usd_sell_price)) { echo $eur_usd_sell_price; } ?>" class="form-control" placeholder="Price"  required/></div>
-                                                    <div class="col-sm-3"><input name="eur_usd_sell_tp" type="text" value="<?php if(isset($eur_usd_sell_tp)) { echo $eur_usd_sell_tp; } ?>" class="form-control" placeholder="TP" required/></div>
-                                                    <div class="col-sm-3"><input name="eur_usd_sell_sl" type="text" value="<?php if(isset($eur_usd_sell_sl)) { echo $eur_usd_sell_sl; } ?>" class="form-control" placeholder="SL" required/></div>
+                                                    <div class="col-sm-3"><input name="sell_price" type="text" value="<?php if(isset($eur_usd_sell_price)) { echo $eur_usd_sell_price; } ?>" class="form-control" placeholder="Price"  required/></div>
+                                                    <div class="col-sm-3"><input name="sell_price_tp" type="text" value="<?php if(isset($eur_usd_sell_tp)) { echo $eur_usd_sell_tp; } ?>" class="form-control" placeholder="TP" required/></div>
+                                                    <div class="col-sm-3"><input name="sell_price_sl" type="text" value="<?php if(isset($eur_usd_sell_sl)) { echo $eur_usd_sell_sl; } ?>" class="form-control" placeholder="SL" required/></div>
                                                 </div>
                                                 <hr/><br/>
                                             </div>
@@ -157,14 +195,14 @@ foreach($signals as $row) {
                                             <label class="control-label col-sm-3" for="pay_date">Signal Date/Hour:</label>
                                             <div class="col-sm-9 col-lg-5">
                                                 <div class='input-group date' id='datetimepicker'>
-                                                    <input name="signal_date" type="text" class="form-control" id='datetimepicker2' required>
+                                                    <input name="signal_time" type="text" class="form-control" id='datetimepicker2' required>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                 </div>
                                             </div>
                                             <script type="text/javascript">
                                                 $(function () {
                                                     $('#datetimepicker2').datetimepicker({
-                                                        format: 'YYYY-MM-DD / h:m:s'
+                                                        format: 'YYYY-MM-DD h:m:s'
                                                     });
                                                 });
                                             </script>
@@ -172,12 +210,12 @@ foreach($signals as $row) {
 
                                         <div class="form-group">
                                             <center><label class="col-sm-12" for="exampleFormControlTextarea1">Comment</label></center>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                         </div>
 
                                         <br>
                                         <hr class="mb-4">
-                                        <center><button class="btn btn-success btn-sm bottom" type="submit"> Upload Signals</button><center>
+                                        <center><button name="signal" class="btn btn-success btn-sm bottom" type="submit"> Upload Signals</button><center>
                                     </form>
                                 </div>
                             </div>
@@ -187,30 +225,139 @@ foreach($signals as $row) {
                     <div class="col-md-4">
                         <div class="col-md-12 order-md-2 mb-4 section-tint super-shadow">
                             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-muted">All signals</span>
-                                <span class="badge badge-secondary badge-pill">3</span>
+                                <span class="text-muted">Todays signals</span>
+                                <span class="badge badge-secondary badge-pill"><?php echo $numrows?></span>
+                                <span class="pull-right"><button type="button" title="View all signals" class="btn btn-success right"><i class="fa fa-history fa-fw"></i></button></span>
                             </h4>
                             <ul class="list-group mb-3">
-                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                <?php foreach ($all_signals as $row) {?>
+                                <li class="list-group-item d-flex justify-content-between lh-condensed" data-toggle="modal" data-target="#editsignal<?php echo $row['id']?>">
                                     <div>
-                                        <h6 class="my-0">Product name</h6>
-                                        <small class="text-muted">Brief description</small>
+                                        <h6 class="my-0"><?php echo datetime_to_text($row['signal_time']); ?></h6>
+                                        <small class="text-muted"><?php echo $row['currency_pair']?></small>
                                     </div>
-                                    <span class="text-muted">$12</span>
+                                    <span class="text-muted">
+                                        BUY PRICE: <?php echo $row['buy_price'];?> <br> SELL PRICE: <?php echo $row['sell_price'];?> <button class="btn btn-default"><i class="fa fa-eye fa-fw"></i> <?php echo $row['views']?></button></span>
+                                    </li>
+                                    <div class="modal fade" id="editsignal<?php echo $row['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">This Trade is to trigger By <?php echo datetime_to_text($row['signal_time']);?> </h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <center><?php if($row['status'] == 0){?><form method="post" action=""><input name="id" type="hidden" value="<?php echo $row['id'];?>"><button name="trigger" type="submit" class="btn btn-success">Trigger</button></form><?php }?></center>
+
+                                                    <form  role="form" method="post" action="">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-3" for="location">Currency Pair </label>
+                                                                <div class="col-sm-9 col-lg-5">
+                                                                    <div class="input-group date">
+                                                                        <select name="symbol" class="form-control" id="location">
+                                                                            <?php
+                                                                            $query = "SELECT * FROM signal_symbol ";
+                                                                            $result = $db_handle->runQuery($query);
+                                                                            $result = $db_handle->fetchAssoc($result);
+                                                                            foreach ($result as $row2)
+                                                                            {
+                                                                                extract($row2)
+                                                                                ?>
+                                                                                <option value="<?php echo $symbol;?>"><?php echo $symbol;?></option>
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                        <span class="input-group-addon"><span class="fa fa-gg"></span></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <br/>
+                                                            <hr/>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <div class="row">
+                                                                        <label class="control-label col-sm-3" for="">BUY PRICE </label>
+                                                                        <div class="col-sm-3"><input name="buy_price" type="text" class="form-control" value="<?php echo $row['buy_price'];?>"  required/></div>
+                                                                        <div class="col-sm-3"><input name="buy_price_tp" type="text" class="form-control" value=" <?php echo $row['buy_price_tp'];?>" required/></div>
+                                                                        <div class="col-sm-3"><input name="buy_price_sl" type="text" class="form-control" value=" <?php echo $row['buy_price_sl'];?>" required/></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br/>
+                                                            <div class="form-group">
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="row">
+                                                                        <label class="control-label col-sm-3" for="">SELL PRICE </label>
+                                                                        <div class="col-sm-3"><input name="sell_price" type="text" value="<?php echo $row['sell_price'];?>" class="form-control"   required/></div>
+                                                                        <div class="col-sm-3"><input name="sell_price_tp" type="text" value="<?php echo $row['sell_price_tp'];?>" class="form-control"  required/></div>
+                                                                        <div class="col-sm-3"><input name="sell_price_sl" type="text" value="<?php echo $row['sell_price_sl'];?>" class="form-control"  required/></div>
+                                                                    </div>
+                                                                    <hr/><br/>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-3" for="pay_date">Signal Date/Hour:</label>
+                                                                <div class="col-sm-9 col-lg-5">
+                                                                    <div class='input-group date' id='datetimepicker'>
+                                                                        <input name="signal_time" type="text" class="form-control" id='datetimepicker3' value="<?php echo $row['signal_time'];?>" required>
+                                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                    </div>
+                                                                </div>
+                                                                <script type="text/javascript">
+                                                                    $(function () {
+                                                                        $('#datetimepicker3').datetimepicker({
+                                                                            format: 'YYYY-MM-DD h:m:s'
+                                                                        });
+                                                                    });
+                                                                </script>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <center><label class="col-sm-12" for="exampleFormControlTextarea1">Comment</label></center>
+                                                                <input name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3" value="<?php echo $row['comment'];?>"/>
+                                                            </div>
+                                                            <input name="id" type="hidden" class="form-control" value="<?php echo $row['id'];?>" required>
+                                                            <input name="status" type="hidden" class="form-control" value="<?php echo $row['status'];?>" required>
+                                                            <br>
+                                                            <hr class="mb-4">
+                                                            <center><button name="update" class="btn btn-success btn-sm bottom" type="submit">Submit Changes</button><center>
+                                                        </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php } ?>
+                                <?php require 'layouts/pagination_links.php'; ?>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Total Signals</span>
+                                    <strong><?php echo $numrows;?></strong>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <span>Total (USD)</span>
-                                    <strong>$20</strong>
+                                    <span>Total Triggered Signals</span>
+                                    <strong><?php echo $triggered;?></strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Total Overall Signals Views</span>
+                                    <strong><i class="fa fa-eye fa-fw"></i><?php echo $views;?></strong>
                                 </li>
                             </ul>
 
-                            <form>
+                            <form role="form" method="post" action="">
                                 <center>
                                 <p>Create Currency Pair</p>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Enter Currency Pair Symbol">
+                                    <input name="pair" type="text" class="form-control" placeholder="Enter Currency Pair Symbol" required>
                                 </div>
-                                    <button type="submit" class="btn btn-secondary"><strong>Redeem</strong></button>
+                                    <button name="create" type="submit" class="btn btn-secondary"><strong>Create</strong></button>
                                 </center>
                             </form>
                     </div>

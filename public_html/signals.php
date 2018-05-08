@@ -1,6 +1,37 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Signals";
+
+$id = $db_handle->sanitizePost(trim($_POST['id']));
+$query = "UPDATE signal_intraday SET views = views + 1 WHERE id = '$id'";
+
+$result =$db_handle->runQuery($query);
+$query = "UPDATE signal_views SET views = views + 1 WHERE id = 'page_views' ";
+$result = $db_handle->runQuery($query);
+
+$query = "SELECT * FROM signal_intraday ";
+$numrows = $db_handle->numRows($query);
+
+$rowsperpage = 10;
+
+$totalpages = ceil($numrows / $rowsperpage);
+// get the current page or set a default
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
+   $currentpage = (int) $_GET['pg'];
+} else {
+   $currentpage = 1;
+}
+if ($currentpage > $totalpages) { $currentpage = $totalpages; }
+if ($currentpage < 1) { $currentpage = 1; }
+
+$prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
+$prespagehigh = $currentpage * $rowsperpage;
+if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
+
+$offset = ($currentpage - 1) * $rowsperpage;
+$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$result = $db_handle->runQuery($query);
+$all_signals = $db_handle->fetchAssoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,9 +51,18 @@ $thisPage = "Signals";
         <meta property="og:image" content="images/instaforex-100bonus.jpg" />
         <meta property="og:url" content="https://instafxng.com/" />
         <meta property="og:type" content="website" />
+        <style type="text/css">
+            .sig {
+                background-image: url('images/signals.jpg');
+            }
+            .trig{
+                background-image: url('images/cross.jpg');
+            }
+        </style>
+
 
     </head>
-    <body>
+    <body id="results">
         <?php require_once 'layouts/header.php'; ?>
         <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
         <div id="main-body" class="container-fluid">
@@ -34,63 +74,145 @@ $thisPage = "Signals";
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div  class="item super-shadow page-top-section">
-                        <?php  echo htmlspecialchars_decode(stripslashes(trim(file_get_contents("views/general_pages/advert_div.html"))));  ?>
+                        <div class="row">
+                                <div class="col-sm-12 sig" style="height: 200px;" >
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <h5>InstaFxNg Signals</h5>
+                                        </div>
+                                    <div class="col-sm-6">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button style="height: 200px; width: 150px;"; type="button" class="btn btn-default btn-lg trig ">Signal Strength <br> <h5>100%</h5></button>
+                                    </div>
+                                    </div>
+                                </div>
+                        </div>
                     </div>
                     <div class="section-tint super-shadow">
                         <h2 class="text-center">Intra-Day Signals For <?php echo date("F j, Y, g:i a")?></h2>
-                        <div class=" section-tint super-shadow">
 
+                        <?php foreach ($all_signals as $row) {?>
+                            <script>
+                                function SubmitFormData<?php echo $row['id']?>() {
+                                    var id = <?php echo $row['id']?>;
+                                    $.post("signals.php", { id: id });
+                                }
+                            </script>
+                            <form method="post" id="myForm<?php echo $row['id']?>" role="form" enctype="multipart/form-data">
+                                <input id="id" name="id" type="hidden" value="<?php echo $row['id']?>">
+                        <div class=" section-tint super-shadow" style="padding: unset;<?php if($row['status'] == 1){ echo "background-color: #5ec149;";} ?>" data-toggle="modal" data-target="#viewsignal<?php echo $row['id']?>" onclick="SubmitFormData<?php echo $row['id']?>();" type="submit">
                             <br>
                             <div class="row">
-                                <div class="col-sm-12">
-
-                                    <span id="trans_remark_author">  </span>
-                                    <span id="trans_remark">
-<!--                                        <table class="table table-hover">-->
-<!--  <thead>-->
-<!--    <tr>-->
-<!--      <th scope="col">#</th>-->
-<!--      <th scope="col">First</th>-->
-<!--      <th scope="col">Last</th>-->
-<!--      <th scope="col">Handle</th>-->
-<!--    </tr>-->
-<!--  </thead>-->
-<!--  <tbody>-->
-<!--    <tr>-->
-<!--      <th scope="row">BUY PRICE</th>-->
-<!--      <td>Mark</td>-->
-<!--      <td>Otto</td>-->
-<!--      <td>@mdo</td>-->
-<!--    </tr>-->
-<!--  <tr>-->
-<!--      <th scope="row">SELL PRICE</th>-->
-<!--      <td>Mark</td>-->
-<!--      <td>Otto</td>-->
-<!--      <td>@mdo</td>-->
-<!--    </tr>-->
-<!--  </tbody>-->
-<!--</table>-->
-                                    </span>
-                                    <span id="trans_remark_date"> <?php echo date("F j, Y, g:i a")?> </span>
-                                    <button type="button" class="btn btn-outline-primary">Primary</button>
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-sm-3 center">
+                                            <center><span id="trans_remark_author"><h5><?php echo $row['currency_pair']?></h5></span></center>
+                                        </div>
+                                        <div class="col-sm-5"></div>
+                                        <div class="col-sm-4 right" style="align-content: right;">
+                                            <span  id="trans_remark_date"><strong>Trigger Time:</strong> <?php echo datetime_to_text($row['signal_time'])?> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="col-lg-12">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-3">
+                                        <center><button type="button" class="btn btn-primary btn-sm bottom">BUY PRICE <?php echo $row['buy_price']?></button></center>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-3">
+                                        <center><button type="button" class="btn btn-danger btn-sm bottom">SELL PRICE <?php echo $row['sell_price']?></button><center>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                                <br>
                                     <marquee behavior="scroll" direction="left" scrollamount="5" class="col-lg-12">
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                    </marquee>
-                                </div>
+                                        <?php echo $row['comment'];?>
+                                    </marquee></span>
                             </div>
                             <br>
                         </div>
-                        <div class="text-center section-tint super-shadow">
-
-                            <br>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                </div>
-                                <div class="col-sm-6">
+                            </form>
+                            <!-- Modal -->
+                            <div class="modal fade" id="viewsignal<?php echo $row['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">This Trade is to trigger By <?php echo datetime_to_text($row['signal_time'])?> </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <button type="button" class="btn btn-primary btn-sm bottom">BUY PRICE <?php echo $row['buy_price']?></button>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <table class="table table-hover table-responsive table-striped">
+                                                        <thead class="thead-light">
+                                                            <th>Take Profit</th>
+                                                            <th>Stop Loss</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td><?php echo $row['buy_price_tp']?></td>
+                                                            <td><?php echo $row['buy_price_sl']?></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <button type="button" class="btn btn-danger btn-sm bottom">SELL PRICE <?php echo $row['sell_price']?></button>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <table class="table table-hover table-responsive table-striped">
+                                                        <thead class="thead-light">
+                                                        <th>Take Profit</th>
+                                                        <th>Stop Loss</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td><?php echo $row['sell_price_tp']?></td>
+                                                            <td><?php echo $row['sell_price_sl']?></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <li class="media" style="font-size:small;">
+                                                    <div class="media-body">
+                                                        <div class="well">
+                                                            <center>
+                                                            <p class="media-comment left">
+                                                                <?php echo $row['comment'];?>
+                                                            </p>
+                                                            <h5>
+                                                                Kingsley Ifoga
+                                                            </h5>
+                                                            <ul class="media-date text-uppercase reviews list-inline right">
+                                                                <small class="text-muted"><?php echo datetime_to_text($row['signal_time']); ?></small>
+                                                            </ul>
+                                                                <div class="sharethis-inline-share-buttons"></div>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <br>
-                        </div>
+                        <?php } ?>
+                        <?php require 'layouts/pagination_links.php'; ?>
                     </div>
                     
 
