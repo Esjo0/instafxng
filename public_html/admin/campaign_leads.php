@@ -4,7 +4,7 @@ if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
 if(isset($_POST['file_upload']))
 {
-    if(!isset($_FILES["csv_file"]["name"]) || empty($_FILES["csv_file"]["name"])) {   $message_error = "Please select a file for upload.";}
+    if(!isset($_FILES["csv_file"]["name"]) || empty($_FILES["csv_file"]["name"])) {$message_error = "Please select a file for upload.";}
     $imageFileType = pathinfo($_FILES["csv_file"]["name"],PATHINFO_EXTENSION);
     if($imageFileType != "csv"){$message_error = "Please select a CSV file for upload.";}
     $target_dir = "../images/";
@@ -25,7 +25,7 @@ if(isset($_POST['file_upload']))
         {
             $row_contents = explode(",", $row);
             $count = count($csv_content);
-            $_full_name = trim($row_contents[13]);
+            $_full_name = split_name(trim($row_contents[13]));
             $_email = strtolower(trim($row_contents[12]));
             $_phone = strtolower(trim(str_replace('p:', '', $row_contents[14]))) ;
             $_choice = $row_contents[11];
@@ -33,38 +33,22 @@ if(isset($_POST['file_upload']))
             {
                 if($obj_loyalty_training->is_duplicate_loyalty($_email, $_phone))
                 {
-                    $leads_count = count($new_leads);
-                    $new_leads[$leads_count]["name"] = $_full_name;
-                    $new_leads[$leads_count]["email"] = $_email;
-                    $new_leads[$leads_count]["phone"] = $_phone;
-                    $new_leads[$leads_count]["choice"] = "Experienced";
-                    $obj_loyalty_training->add_loyalty($_full_name, $_email, $_phone);
+                    $obj_loyalty_training->add_loyalty($_full_name['first_name'], $_full_name['last_name'], $_email, $_phone, 2);
                 }
             }
             else
             {
                 if($obj_loyalty_training->is_duplicate_training($_email, $_phone))
                 {
-                    $leads_count = count($new_leads);
-                    $new_leads[$leads_count]["name"] = $_full_name;
-                    $new_leads[$leads_count]["email"] = $_email;
-                    $new_leads[$leads_count]["phone"] = $_phone;
-                    $new_leads[$leads_count]["choice"] = "Not Experienced";
-                    $obj_loyalty_training->add_training($_full_name, $_email, $_phone);
+                    $obj_loyalty_training->add_training($_full_name['first_name'], $_full_name['last_name'], $_email, $_phone, 2);
                 }
             }
         }
     }
     //Delete the uploaded file
     $delete_file = unlink($target_file);
-    if($delete_file)
-    {
-        $message_success = "Upload Successfull.";
-    }
-    else
-    {
-        $message_error = "The upload failed, please try again.";
-    }
+    if($delete_file) {$message_success = "Upload Successfull.";}
+    else{ $message_error = "The upload failed, please try again.";}
 }
 
 $query = "SELECT *, user.user_code, campaign_leads.phone FROM campaign_leads, user WHERE campaign_leads.email = user.email ORDER BY campaign_leads.created DESC";
@@ -187,6 +171,7 @@ $client_operation = new clientOperation();
                                             $c_count = count($client_deposits);
                                             $e_count = count($education_history);
                                             $total_point = $client_operation->get_loyalty_point_earned($row['user_code']);
+                                            $last_trade_date = $client_operation->get_last_trade_detail($row['user_code'])['date_earned'];
                                             ?>
                                             <tr>
                                                 <td>
@@ -210,18 +195,30 @@ $client_operation = new clientOperation();
                                                 </td>
                                                 <td>
                                                     <span><b>Instaforex Account: </b><br/>
-                                                        First Fund Amount -> <?php echo $client_deposits[0]['dollar_ordered'];?><br/>
-                                                        First Fund Date -> <?php echo $client_deposits[0]['created'];?><br/>
-                                                        Last Fund Date -> <?php echo $client_deposits[$c_count - 1]['created'];?><br/>
-                                                        First Trade Date -> <br/>
-                                                        Last Trade Date -> <br/>
+                                                        First Fund Amount -> $<?php echo number_format($client_deposits[0]['dollar_ordered'], 2, '.', ',');?><br/>
+                                                        First Fund Date -> <?php echo date_to_text($client_deposits[0]['created']);?><br/>
+                                                        Last Fund Date -> <?php echo date_to_text($client_deposits[$c_count - 1]['created']);?><br/>
+                                                        <!--First Trade Date -> <br/>-->
+                                                        Last Trade Date -> <?php echo date_to_text($last_trade_date); ?><br/>
                                                         Account Numbers -> <br/>
                                                         <?php
                                                         if(isset($client_ilpr_account) && !empty($client_ilpr_account)) {foreach ($client_ilpr_account as $key){echo $key['ifx_acct_no']." (ILPR), ";}}
                                                         if(isset($client_non_ilpr_account) && !empty($client_non_ilpr_account)){foreach ($client_non_ilpr_account as $key){echo $key['ifx_acct_no']." (None-ILPR), ";}}
                                                         ?>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <!--<input data-toggle="toggle" type="checkbox">
+                                                    <br/>-->
+                                                    <a title="View" class="btn btn-sm btn-success" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'campaign_leads'; ?>&c=<?php echo encrypt('NEW CAMPAIGN LEADS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                                    <br/><br/>
+                                                    <a target="_blank" title="View" class="btn btn-sm btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <br/><br/>
+                                                    <a title="View" class="btn btn-sm btn-info" href="edu_free_training_view.php?x=<?php echo encrypt($row['lead_id']); ?>&pg=<?php echo $currentpage; ?>&selector=1"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
+                                                    <br/><br/>
+                                                    <a class="btn btn-sm btn-info" title="Send Email" href="campaign_email_single.php?name=<?php $name = $row['f_name']." ".$row['m_name']." ".$row['l_name']; echo  encrypt_ssl($name).'&email='.encrypt_ssl($row['email']);?>" ><i class="glyphicon glyphicon-envelope"></i></a>
+                                                    <br/><br/>
+                                                    <a class="btn btn-sm btn-info" title="Send SMS" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='2' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
@@ -238,11 +235,8 @@ $client_operation = new clientOperation();
                     </div>
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
-                    
                 </div>
-                
             </div>
-        </div>
         <?php require_once 'layouts/footer.php'; ?>
     </body>
 </html>

@@ -3,7 +3,13 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-extract($_GET);
+//extract($_GET);
+$params = array();
+foreach($_GET as $key => $value) {
+    $params[$key] = decrypt_ssl(str_replace(" ", "+", $value));
+}
+extract($params);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
     if(empty($content) || empty($subject) || empty($name) || empty($email)) {

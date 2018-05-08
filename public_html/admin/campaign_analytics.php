@@ -1,83 +1,13 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in()) {
-    redirect_to("login.php");
-}
+if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
-$query = "SELECT * FROM free_training_campaign";
-$result = $db_handle->numRows($query);
-$total_client = $result;
+if(isset($_POST['from_date']) && !empty($_POST['from_date'])){ $from = $_POST['from_date'];  }else{ $from = date('Y-m')."-1";}
+if(isset($_POST['to_date']) && !empty($_POST['to_date'])){ $to = $_POST['to_date'];  }else{ $to = date('Y-m-d');}
 
-$total_active_training_clients = $system_object->get_total_active_training_clients();
-
-$query = "SELECT * FROM free_training_campaign WHERE training_interest = '2'";
-$result = $db_handle->numRows($query);
-$interested = $result;
-
-$query = "SELECT * FROM free_training_campaign WHERE training_interest = '1'";
-$result = $db_handle->numRows($query);
-$not_interested = $result;
-
-$query = "SELECT * FROM free_training_campaign WHERE training_centre = '1'";
-$result = $db_handle->numRows($query);
-$diamond_office = $result;
-
-$query = "SELECT * FROM free_training_campaign WHERE training_centre = '2'";
-$result = $db_handle->numRows($query);
-$lekki_office = $result;
-
-$query = "SELECT * FROM free_training_campaign WHERE training_centre = '3'";
-$result = $db_handle->numRows($query);
-$online_office = $result;
-
-$query = "SELECT *
-        FROM user_deposit AS ud
-        INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
-        WHERE ud.status = '8' GROUP BY u.email";
-$result = $db_handle->numRows($query);
-$funding_count = $result;
-
-$query = "SELECT *
-        FROM user_ifxaccount AS ui
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email";
-$result = $db_handle->numRows($query);
-$ifx_account_count = $result;
-
-$query = "SELECT SUM(summ) AS total_sum
-        FROM (SELECT SUM(ud.real_dollar_equivalent) AS summ
-        FROM user_deposit AS ud
-        INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
-        WHERE ud.status = '8' GROUP BY u.email) src";
-$result = $db_handle->runQuery($query);
-$funding_sum = $db_handle->fetchAssoc($result);
-$funding_sum = $funding_sum[0]['total_sum'];
-
-$from_date = date('Y-m-d', strtotime('first day of this month'));
-$to_date = date('Y-m-d', strtotime('last day of this month'));
-$query = "SELECT SUM(summ) AS total_sum
-        FROM (SELECT SUM(ud.real_dollar_equivalent) AS summ
-        FROM user_deposit AS ud
-        INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
-        WHERE ud.status = '8' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.email) src";
-$result = $db_handle->runQuery($query);
-$funding_sum_this_month = $db_handle->fetchAssoc($result);
-$funding_sum_this_month = $funding_sum_this_month[0]['total_sum'];
-
-
-// table table
-// Query for select date selection since the training campaign started till date
-$campaign_start_date = "2016-09-21";
-$date_today = date("Y-m-d");
-$query = "SELECT date_of_day FROM log_of_dates WHERE date_of_day BETWEEN '$campaign_start_date' AND '$date_today' ORDER BY date_of_day DESC ";
-
-$numrows = $db_handle->numRows($query);
+$_dates = date_range($from, $to, 'Y-m-d');
+krsort($_dates);
+$numrows = count($_dates);
 
 $rowsperpage = 20;
 
@@ -94,12 +24,10 @@ if ($currentpage < 1) { $currentpage = 1; }
 $prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
 $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
-
 $offset = ($currentpage - 1) * $rowsperpage;
-$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
-$result = $db_handle->runQuery($query);
-$log_of_dates = $db_handle->fetchAssoc($result);
 
+$log_of_dates = paginate_array($offset, $_dates, $rowsperpage);
+krsort($log_of_dates);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,6 +40,22 @@ $log_of_dates = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script>
+            function show_form(div)
+            {
+                var x = document.getElementById(div);
+                if (x.style.display === 'none')
+                {
+                    x.style.display = 'block';
+                    document.getElementById('trigger').innerHTML = '<i class="glyphicon glyphicon-arrow-up"></i>';
+                }
+                else
+                {
+                    x.style.display = 'none';
+                    document.getElementById('trigger').innerHTML = '<i class="glyphicon glyphicon-arrow-down"></i>';
+                }
+            }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -137,95 +81,97 @@ $log_of_dates = $db_handle->fetchAssoc($result);
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
+                                <p>Leads overview, from <?php echo date_to_text($from)?> to <?php echo date_to_text($to)?>. <button title="Apply Filter" id="trigger" onclick="show_form('filter')" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-arrow-down"></i></button></p>
+                                <div style="display: none;" id="filter">
+                                    <p>Fetch campaign reports within a date range using the form below.</p>
+                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="from_date">From:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <div class="input-group date">
+                                                <input name="from_date" type="text" class="form-control" id="datetimepicker" required>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="to_date">To:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <div class="input-group date">
+                                                <input name="to_date" type="text" class="form-control" id="datetimepicker2" required>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-3 col-sm-9"><input name="report" type="submit" class="btn btn-success" value="Search" /></div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $('#datetimepicker, #datetimepicker2').datetimepicker({
+                                                format: 'YYYY-MM-DD'
+                                            });
+                                        });
+                                    </script>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <table class="table table-responsive table-striped table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td><b>Days</b></td><td><?php echo $numrows?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Leads Count</b></td><td><?php echo $obj_loyalty_training->sum_leads_generated($from, $to, 1); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Conversions</b></td><td><?php echo $obj_loyalty_training->sum_leads_with_accounts($from, $to, 1);?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Leads Funded</b></td><td><?php echo $obj_loyalty_training->sum_leads_funded($from, $to, 1);?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Training Leads (Forex Money Maker Course)</b></td><td><?php echo $obj_loyalty_training->sum_training_leads($from, $to, 1, 1);?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Training Leads (Forex Optimizer Course)</b></td><td><?php echo $obj_loyalty_training->sum_training_leads($from, $to, 2, 1);?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Active Traders (PRESENT MONTH)</b></td><td><?php echo $obj_loyalty_training->sum_active_leads($from, $to, 1); ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <p class="text-danger"><strong>Table Header Description</strong></p>
-                                <ul>
-                                    <li><strong>Leads Date:</strong> Date of New leads registered daily.</li>
-                                    <li><strong>Leads Count:</strong> Sum of leads registered daily.</li>
-                                    <li><strong>Accounts Opened:</strong> Sum of new accounts opened for leads
-                                        on 'Leads Date' - may include accounts opened for leads that registered in a time past.</li>
-                                    <li><strong>Dollar Funded:</strong> Total dollar funded by leads on 'Leads Date' - may
-                                        include funding by leads that registered in a time past.</li>
-                                </ul>
-
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Leads Date</th>
+                                        <th>Date</th>
                                         <th>Leads Count</th>
-                                        <th>Accounts Opened</th>
-                                        <th>Dollar Funded</th>
-                                        <th>Trans ID</th>
+                                        <th>Conversions</th>
+                                        <th>Leads Funded</th>
+                                        <th>Training Leads (Forex Money Maker Course)</th>
+                                        <th>Training Leads (Forex Optimizer Course)</th>
+                                        <th>Active Trader (PRESENT MONTH)</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php if(isset($log_of_dates) && !empty($log_of_dates)) { foreach ($log_of_dates as $row) { ?>
                                         <tr>
-                                            <td><?php echo date_to_text($row['date_of_day']); ?></td>
-                                            <td><?php
-                                                $date_opened = $row['date_of_day'];
-                                                $query = "SELECT COUNT(ftc.free_training_campaign_id) AS total_opened
-                                                      FROM free_training_campaign AS ftc
-                                                      WHERE STR_TO_DATE(ftc.created, '%Y-%m-%d') = '$date_opened'";
-                                                $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery($query));
-                                                $total_opened = $fetched_data[0]['total_opened'];
-                                                echo number_format($total_opened);
-                                                ?>
-                                            </td>
-                                            <td><?php
-
-                                                $date_opened = $row['date_of_day'];
-                                                $query = "SELECT COUNT(ifx_acct_no) AS total_account
-                                                    FROM user_ifxaccount AS ui
-                                                    INNER JOIN user AS u ON ui.user_code = u.user_code
-                                                    INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
-                                                    WHERE STR_TO_DATE(ui.created, '%Y-%m-%d') = '$date_opened'";
-                                                $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery($query));
-                                                $ifx_account_count = $fetched_data[0]['total_account'];
-                                                echo $ifx_account_count;
-
-                                                ?>
-                                            </td>
-                                            <td>&dollar;
-                                                <?php
-
-                                                $date_opened = $row['date_of_day'];
-                                                $query = "SELECT SUM(summ) AS total_sum
-                                                    FROM (SELECT SUM(ud.real_dollar_equivalent) AS summ
-                                                    FROM user_deposit AS ud
-                                                    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-                                                    INNER JOIN user AS u ON ui.user_code = u.user_code
-                                                    INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
-                                                    WHERE ud.status = '8' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') = '$date_opened') GROUP BY u.email) src";
-                                                $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery($query));
-                                                $total_sum = $fetched_data[0]['total_sum'];
-                                                echo number_format($total_sum, 2, ".", ",");
-
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <?php
-
-                                                $date_opened = $row['date_of_day'];
-                                                $query = "SELECT ud.trans_id
-                                                    FROM user_deposit AS ud
-                                                    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-                                                    INNER JOIN user AS u ON ui.user_code = u.user_code
-                                                    INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
-                                                    WHERE ud.status = '8' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') = '$date_opened')";
-                                                $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery($query));
-
-                                                foreach ($fetched_data as $row) {
-
-                                                    foreach ($row as $value) {
-                                                ?>
-                                                <a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($value); ?>"><?php echo $value; ?></a>,&nbsp;
-                                                <?php } } ?>
-                                            </td>
+                                            <td><?php echo date_to_text($row); ?></td>
+                                            <td><?php echo $obj_loyalty_training->sum_leads_generated($row, $row, 1); ?></td>
+                                            <td><?php echo $obj_loyalty_training->sum_leads_with_accounts($row, $row, 1); ?></td>
+                                            <td><?php echo $obj_loyalty_training->sum_leads_funded($row, $row, 1); ?></td>
+                                            <td><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 1, 1); ?></td>
+                                            <td><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 2, 1); ?></td>
+                                            <td><?php echo $obj_loyalty_training->sum_active_leads($row, $row, 1); ?></td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
@@ -239,7 +185,7 @@ $log_of_dates = $db_handle->fetchAssoc($result);
 
                             </div>
                         </div>
-                        <?php if(isset($log_of_dates) && !empty($log_of_dates)) { require_once '../layouts/pagination_links.php'; } ?>
+                        <?php if(isset($log_of_dates) && !empty($log_of_dates)) { require_once 'layouts/pagination_links.php'; } ?>
 
                     </div>
 
@@ -250,6 +196,6 @@ $log_of_dates = $db_handle->fetchAssoc($result);
                 
             </div>
         </div>
-        <?php require_once '../layouts/footer.php'; ?>
+        <?php require_once 'layouts/footer.php'; ?>
     </body>
 </html>
