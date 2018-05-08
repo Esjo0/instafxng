@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
@@ -378,11 +377,4 @@ $all_signals = $db_handle->fetchAssoc($result);
         <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
     </body>
 </html>
-=======
-/**
- * Created by PhpStorm.
- * User: user
- * Date: 30/04/2018
- * Time: 12:02 PM
- */
->>>>>>> db1ff9fa6cfaf16fd37d9ee18b5d28bbd1d0fe01
+
