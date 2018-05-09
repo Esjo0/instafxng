@@ -277,7 +277,7 @@ MAIL;
             }
             
             if($this->ifx_account_is_duplicate($account_no)) {
-                //return false; //TODO: Send a proper message stating that this ifxaccount already exist in the database
+                return false; //TODO: Send a proper message stating that this ifxaccount already exist in the database
             } else {
                 if(isset($my_refferer) && !empty($my_refferer)) {
                     $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no, partner_code) VALUES ('$user_code', '$account_no', '$my_refferer')";
