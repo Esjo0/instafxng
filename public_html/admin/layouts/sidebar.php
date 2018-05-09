@@ -250,8 +250,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> Campaign Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <?php// if (in_array(80, $my_pages_sidebar)) { ?><li><a href="campaign_leads.php">Campaign Leads</a></li><?php// } ?>
-                        <?php// if (in_array(81, $my_pages_sidebar)) { ?><li><a href="campaign_analytics.php">Campaign Analytics</a></li><?php// } ?>
+                        <?php if (in_array(255, $my_pages_sidebar)) { ?><li><a href="campaign_leads.php">Campaign Leads</a></li><?php } ?>
+                        <?php if (in_array(256, $my_pages_sidebar)) { ?><li><a href="campaign_analytics.php">Campaign Analytics</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
