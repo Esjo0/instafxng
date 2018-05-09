@@ -174,7 +174,7 @@ class Access_Controller
                 $user_privilege = $_SESSION['user_privilege'];
                 if(!in_array($key, $user_privilege))
                 {
-                    //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_list.php');
+                    //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_denied.php');
                     redirect_to('https://instafxng.com/admin/access_denied.php');
                     exit();
                 }

@@ -5,11 +5,8 @@ if (!$session_admin->is_logged_in()) {
 }
 
 // get the current page or set a default
-if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
-    $currentpage = (int) $_GET['pg'];
-} else {
-    $currentpage = 1;
-}
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {$currentpage = (int) $_GET['pg'];}
+else{ $currentpage = 1;}
 
 if (isset($_POST['process_send_email'])) {
     foreach ($_POST as $key => $value) {
@@ -39,8 +36,14 @@ if (isset($_POST['process'])) {
         $client_user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $client_user_code);
     }
 
-    $update_registration = $system_object->update_free_training_registration($selected_id, $training_email, $training_phone, $training_first_name, $training_last_name, $comment, $_SESSION['admin_unique_code'], $state, $add_ifx_account, $client_user_code);
-
+    if(isset($_GET['selector']) && $_GET['selector'] == '1')
+    {
+        $update_registration = $obj_loyalty_training->update_lead_registration($selected_id, $training_email, $training_phone, $training_first_name, $training_last_name, $comment, $_SESSION['admin_unique_code'], $state, $add_ifx_account, $client_user_code);
+    }
+    else
+    {
+        $update_registration = $system_object->update_free_training_registration($selected_id, $training_email, $training_phone, $training_first_name, $training_last_name, $comment, $_SESSION['admin_unique_code'], $state, $add_ifx_account, $client_user_code);
+    }
     if($update_registration) {
         $message_success = "You have successfully updated the registration";
     } else {
@@ -52,7 +55,18 @@ $get_params = allowed_get_params(['x']);
 $selected_id_encrypted = $get_params['x'];
 $selected_id = decrypt(str_replace(" ", "+", $selected_id_encrypted));
 $selected_id = preg_replace("/[^A-Za-z0-9 ]/", '', $selected_id);
-$selected_detail = $system_object->get_free_training_reg_by_id($selected_id);
+
+if(isset($_GET['selector']) && $_GET['selector'] == '1')
+{
+    $selected_detail = $obj_loyalty_training->get_lead_reg_by_id($selected_id);
+}
+else
+{
+    $selected_detail = $system_object->get_free_training_reg_by_id($selected_id);
+}
+
+
+
 $selected_detail = $selected_detail[0];
 
 $selected_comment = $system_object->get_free_training_registration_comment($selected_id);
@@ -112,8 +126,11 @@ if(!empty($selected_detail['user_code'])) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p><a href='<?php echo "edu_free_training.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Education - Free Training"><i class="fa fa-arrow-circle-left"></i> Education - Free Training</a></p>
-                                
+                                <?php if(isset($_GET['selector']) && $_GET['selector'] == '1'){ ?>
+                                    <p><a href='<?php echo "campaign_leads.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Campaign Leads"><i class="fa fa-arrow-circle-left"></i> Campaign Leads</a></p>
+                                <?php}else{ ?>
+                                    <p><a href='<?php echo "edu_free_training.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Education - Free Training"><i class="fa fa-arrow-circle-left"></i> Education - Free Training</a></p>
+                                <?php } ?>
                                 <p>View Free Training Registration Details</p>
                                 
                                 <div class="row">

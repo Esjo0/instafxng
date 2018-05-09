@@ -1,14 +1,6 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in())
-{
-    redirect_to("login.php");
-}
-
-$get_params = allowed_get_params(['x', 'id']);
-$campaign_sms_id_encrypted = $get_params['id'];
-$campaign_sms_id = decrypt(str_replace(" ", "+", $campaign_sms_id_encrypted));
-$campaign_sms_id = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_sms_id);
+if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send']))
 {
@@ -96,7 +88,7 @@ if(!$all_campaign_category) {
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="phone_num">Phone Number:</label>
                                         <div class="col-sm-10">
-                                            <textarea  name="phone_num" id="phone_num" rows="1" class="form-control" placeholder="Phone Number(s)" required></textarea>
+                                            <textarea  name="phone_num" id="phone_num" rows="1" class="form-control" placeholder="Phone Number(s)" required><?php if(isset($_GET['lead_phone'])) { echo decrypt_ssl(str_replace(" ", "+", $_GET['lead_phone']));} ?></textarea>
                                             <small>Multiple phone numbers should be comma(,) seperated.</small>
                                         </div>
                                     </div>
