@@ -126,11 +126,13 @@ if(!empty($selected_detail['user_code'])) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <?php if(isset($_GET['selector']) && $_GET['selector'] == '1'){ ?>
+                                <?php if(isset($_GET['selector']) && $_GET['selector'] == '1'): ?>
                                     <p><a href='<?php echo "campaign_leads.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Campaign Leads"><i class="fa fa-arrow-circle-left"></i> Campaign Leads</a></p>
-                                <?php}else{ ?>
+                                <?php endif; ?>
+
+                                <?php if(!isset($_GET['selector']) && $_GET['selector'] != '1'): ?>
                                     <p><a href='<?php echo "edu_free_training.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Education - Free Training"><i class="fa fa-arrow-circle-left"></i> Education - Free Training</a></p>
-                                <?php } ?>
+                                <?php endif;?>
                                 <p>View Free Training Registration Details</p>
                                 
                                 <div class="row">
