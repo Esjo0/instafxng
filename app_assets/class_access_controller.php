@@ -110,6 +110,8 @@ define("PAGE_CODE", json_encode(array(
     89 => "campaign_email_view.php||",
     90 => "campaign_sms_view.php||",
     91 => "campaign_sales.php||",
+    255 => "campaign_leads.php||",
+    256 => "campaign_analytics.php||",
     92 => "career_new_job.php||",
     93 => "career_all_job.php||",
     94 => "career_all_applications.php||",
@@ -174,7 +176,7 @@ class Access_Controller
                 $user_privilege = $_SESSION['user_privilege'];
                 if(!in_array($key, $user_privilege))
                 {
-                    //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_list.php');
+                    //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_denied.php');
                     redirect_to('https://instafxng.com/admin/access_denied.php');
                     exit();
                 }

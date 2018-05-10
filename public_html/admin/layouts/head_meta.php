@@ -26,7 +26,7 @@
                 $(document).ready(function()
                 {
                         push_notifications.count_notifications();
-                        setInterval(function(){push_notifications.load_last_notification();}, 5000);//TODO: Fix this back to 5000
+                        setInterval(function(){push_notifications.load_last_notification();}, 30000);//TODO: Fix this back to 5000
                         push_notifications.count_notifications();
                 });
         </script>

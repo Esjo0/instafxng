@@ -5,17 +5,17 @@ class Loyalty_Training
     public function is_duplicate_training($email_address, $phone_number)
     {
         global $db_handle;
-        $query = "SELECT * FROM free_training_campaign WHERE phone = '$phone_number' OR email = '$email_address' ";
+        $query = "SELECT * FROM campaign_leads WHERE phone = '$phone_number' OR email = '$email_address' ";
         $result = $db_handle->runQuery($query);
         if ($db_handle->numOfRows($result) <= 0) {return true;}
         else{return false;}
     }
 
-    public function add_training($first_name, $last_name, $email_address, $phone_number)
+    public function add_training($first_name, $last_name, $email_address, $phone_number, $source, $state_id = '')
     {
         global $db_handle;
         global $system_object;
-        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, campaign_period) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '2')";
+        $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '$source')";
         $result = $db_handle->runQuery($query);
         $inserted_id = $db_handle->insertedId();
         if ($result)
@@ -90,8 +90,8 @@ MAIL;
             $system_object->send_email($subject, $message, $email_address, $first_name);
 
             $assigned_account_officer = $system_object->next_account_officer();
-            $query = "UPDATE free_training_campaign SET attendant = $assigned_account_officer WHERE free_training_campaign_id = $inserted_id LIMIT 1";
-            $db_handle->runQuery($query);
+            //$query = "UPDATE free_training_campaign SET attendant = $assigned_account_officer WHERE free_training_campaign_id = $inserted_id LIMIT 1";
+            //$db_handle->runQuery($query);
             // create profile for this client
             $client_operation = new clientOperation();
             $client_operation->new_user_ordinary($first_name." ".$last_name, $email_address, $phone_number, $assigned_account_officer);
@@ -102,17 +102,17 @@ MAIL;
     public function is_duplicate_loyalty($email_address, $phone_number)
     {
         global $db_handle;
-        $query = "SELECT * FROM prospect_ilpr_biodata WHERE phone = '$phone_number' OR email = '$email_address' ";
+        $query = "SELECT * FROM camapign_leads WHERE phone = '$phone_number' OR email = '$email_address' ";
         $result = $db_handle->runQuery($query);
         if ($db_handle->numOfRows($result) <= 0 ) {return true;}
         else{return false;}
     }
 
-    public function add_loyalty($first_name, $last_name, $email_address, $phone_number)
+    public function add_loyalty($first_name, $last_name, $email_address, $phone_number, $source, $state_id = '')
     {
         global $db_handle;
         global $system_object;
-        $query = "INSERT INTO prospect_ilpr_biodata (f_name, l_name, email, phone) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number')";
+        $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '$source')";
         $result = $db_handle->runQuery($query);
         if($result)
         {
@@ -187,19 +187,151 @@ MAIL;
         {return false;}
     }
 
-    public function log_lead($email)
+    public function get_lead_type($interest)
     {
-        $filepath = "admin".DIRECTORY_SEPARATOR."logs".DIRECTORY_SEPARATOR."facebook_generated_leads.txt";
-        if(!file_exists($filepath)){mkdir("logs");}
-        $leads = file_get_contents($filepath);
-        $leads = explode(",",$leads);
-        if(!in_array($email, $leads))
+        $interest == 1 ? $x = "ILPR" : $x = "FxAcademy";
+        return $x;
+    }
+
+    public function lead_interest($interest)
+    {
+        switch ($interest)
         {
-            $new_log = fopen($filepath, 'a');
-            $log = $email.",";
-            fwrite($new_log, $log);
-            fclose($new_log);
+            case "1" : $x = "FxAcademy"; break;
+            case "2" : $x = "ILPR"; break;
+            default: $x = "Unknown"; break;
         }
+        return $x;
+    }
+
+    public function get_lead_reg_by_id($selected_id) {
+        global $db_handle;
+
+        $query = "SELECT cl.lead_id, CONCAT(cl.l_name, SPACE(1), cl.f_name) AS full_name, cl.email, cl.phone, cl.created, u.user_code, cl.l_name as last_name, cl.f_name as first_name 
+                FROM campaign_leads AS cl
+                LEFT JOIN user AS u ON u.email = cl.email
+                WHERE lead_id = $selected_id LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
+    public function update_lead_registration($selected_id, $training_email, $training_phone, $training_first_name, $training_last_name, $comment, $admin_unique_code, $state = '', $add_ifx_account = '', $client_user_code = '') {
+        global $db_handle;
+
+        if(!empty($state)) {
+            $query = "UPDATE campaign_leads SET state_id = '$state' WHERE lead_id = $selected_id";
+            $db_handle->runQuery($query);
+        }
+
+        if(!empty($comment)) {
+            $query = "INSERT INTO campaign_lead_comments (lead_id, admin_code, comment) VALUES ($selected_id, '$admin_unique_code', '$comment')";
+            $db_handle->runQuery($query);
+        }
+
+        if(!empty($client_user_code)) {
+            if(!empty($add_ifx_account)) {
+                $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$client_user_code', '$add_ifx_account')";
+                $db_handle->runQuery($query);
+                $ifxaccount_id = $db_handle->insertedId();
+
+                $query = "INSERT INTO user_ilpr_enrolment (ifxaccount_id) VALUES ($ifxaccount_id)";
+                $db_handle->runQuery($query);
+            }
+        } else {
+            if(!empty($add_ifx_account)) {
+                usercode:
+                $user_code = rand_string(11);
+                if($db_handle->numRows("SELECT user_code FROM user WHERE user_code = '$user_code'") > 0) { goto usercode; };
+
+                $pass_salt = hash("SHA256", "$user_code");
+
+                $query = "INSERT INTO user (user_code, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', '$training_email', '$pass_salt', '$training_first_name', '$training_last_name', '$training_phone')";
+                $db_handle->runQuery($query);
+
+                $client_operation = new clientOperation();
+                $client_operation->send_welcome_email($training_last_name, $training_email);
+
+                $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$user_code', '$add_ifx_account')";
+                $db_handle->runQuery($query);
+                $ifxaccount_id = $db_handle->insertedId();
+
+                $query = "INSERT INTO user_ilpr_enrolment (ifxaccount_id) VALUES ($ifxaccount_id)";
+                $db_handle->runQuery($query);
+
+            }
+        }
+
+        return true;
+    }
+
+    public function sum_leads_generated($from, $to, $x)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM campaign_leads WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from' AND '$to') ";
+        if($x == 1) {$result = $db_handle->numRows($query);}
+        else if($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
+        return $result;
+    }
+
+    public function sum_leads_with_accounts($from, $to, $x)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM campaign_leads, user, user_ifxaccount 
+                  WHERE campaign_leads.email = user.email 
+                  AND user.user_code = user_ifxaccount.user_code 
+                  AND (STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') ";
+        if($x == 1) {$result = $db_handle->numRows($query);}
+        else if($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
+        return $result;
+    }
+
+    public function sum_leads_funded($from, $to, $x)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM campaign_leads, user, user_ifxaccount, user_deposit 
+                  WHERE campaign_leads.email = user.email 
+                  AND user.user_code = user_ifxaccount.user_code
+                  AND user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id
+                  AND (STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') ";
+        if($x == 1) {$result = $db_handle->numRows($query);}
+        else if($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
+        return $result;
+    }
+
+    public function sum_training_leads($from, $to, $course, $x)
+    {
+        global $db_handle;
+        switch ($course)
+        {
+            case "1" : $operator = "="; break;
+            case "2" : $operator = "<>"; break;
+            default: $operator = "="; break;
+        }
+
+        $query = "SELECT * FROM campaign_leads, user, user_edu_deposits 
+                  WHERE campaign_leads.email = user.email 
+                  AND user.user_code $operator user_edu_deposits.user_code
+                  AND (STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') ";
+        if($x == 1) {$result = $db_handle->numRows($query);}
+        elseif($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
+        return $result;
+    }
+
+    public function sum_active_leads($from, $to, $x)
+    {
+        $from_month = explode('-', $from)[1];
+        $to_month = explode('-', $to)[1];
+        global $db_handle;
+        $query = "SELECT * FROM campaign_leads, user, user_ifxaccounts, trading_commission 
+                  WHERE campaign_leads.email = user.email 
+                  AND user.user_code = user_ifxaccounts.user_code
+                  AND ((user_ifxaccounts.user_code = trading_commission.ifx_acct_no) AND  created MONTH(trading_commission.date_earned, '%Y-%m-%d') BETWEEN '$from_month' AND '$to_month'
+                  AND (STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') ";
+        if($x == 1) {$result = $db_handle->numRows($query);}
+        elseif($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
+        return $result;
     }
 
 }

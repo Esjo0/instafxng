@@ -5,6 +5,8 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+//NOTE: the fifth lesson of course 1 has an id of 4
+
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
@@ -14,7 +16,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id > 4 AND uefp.user_code IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
+          WHERE ueel.lesson_id = 4 AND uefp.user_code IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
           GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
@@ -24,7 +26,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id > 4 AND uefp.user_code IS NULL
+          WHERE ueel.lesson_id = 4 AND uefp.user_code IS NULL
           GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC ";
 }
 
