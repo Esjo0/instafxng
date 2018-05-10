@@ -86,28 +86,66 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
         <div class="nav-display super-shadow">
             <header><i class="fa fa-bars fa-fw"></i> Daily Forex Signal</header>
             <article>
-                <small><em><strong>Date:</strong> <?php echo datetime_to_text2($date_today); ?></em></small>
-                <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Symbol</th>
-                            <th>Order</th>
-                            <th>Price</th>
-                            <th>TP</th>
-                            <th>SL</th>
+                <script>
+                    signal.getSignals('sig');
+                    $(document).ready(function() {setInterval(function(){signal.getSignals('sig');}, 10000000000000);});
+                </script>
+                <small>
+                    <em><strong>Date:</strong></em>
+                    <em id="table_date">
+                        <script>
+                            $(document).ready(function() {setInterval(function(){signal.get_date('table_date');}, 10000);});
+                        </script>
+                    </em>
+                    <em class="pull-right" id="table_time">
+                        <script>
+                            $(document).ready(function() {setInterval(function(){signal.get_time('table_time');}, 1000);});
+                        </script>
+                    </em>
+                </small>
+                <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-hover">
+                    <thead><tr><th></th><th></th><th></th><th></th><th></th></tr></thead>
+                    <tbody id="sig">
+                        <tr class="table-success">
+                            <td colspan="2"><b>EUR/USD</b></td>
+                            <td>BUY</td>
+                            <td><b class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b></td>
+                            <td>4:33 PM</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-
-                        if(isset($featured_signal)) { foreach($featured_signal as $row) {
-                        ?>
-                        <tr><td><?php echo $row['symbol']; ?></td><td><?php echo $row['order_type']; ?></td><td><?php echo $row['price']; ?></td><td><?php echo $row['take_profit']; ?></td><td><?php echo $row['stop_loss']; ?></td></tr>
-                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                        <tr class="table-success">
+                            <td colspan="2"><b>EUR/USD</b></td>
+                            <td>BUY</td>
+                            <td><b class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b></td>
+                            <td>4:33 PM</td>
+                        </tr>
+                        <tr class="table-warning">
+                            <td colspan="2"><b>EUR/USD</b></td>
+                            <td>BUY</td>
+                            <td><b class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b></td>
+                            <td>4:33 PM</td>
+                        </tr>
+                        <tr class="table-danger">
+                            <td colspan="2"><b>EUR/USD</b></td>
+                            <td>BUY</td>
+                            <td><b class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b></td>
+                            <td>4:33 PM</td>
+                        </tr>
                     </tbody>
+                    <!--<tbody>
+                        <?php
+/*
+                        if(isset($featured_signal)) { foreach($featured_signal as $row) {
+                        */?>
+                        <tr><td><?php /*echo $row['symbol']; */?></td><td><?php /*echo $row['order_type']; */?></td><td><?php /*echo $row['price']; */?></td><td><?php /*echo $row['take_profit']; */?></td><td><?php /*echo $row['stop_loss']; */?></td></tr>
+                        <?php /*} } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } */?>
+                    </tbody>-->
                 </table>
                 <hr>
-                <small>Your use of the signals means you have read and accepted our <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>. Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">signal guide</a> to learn how to use the signals.</small>
+                <small>Your use of the signals means you have read and accepted our
+                    <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
+                    Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
+                        signal guide</a> to learn how to use the signals.
+                </small>
             </article>
         </div>
     </div>
