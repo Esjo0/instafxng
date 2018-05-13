@@ -14,35 +14,21 @@ if(isset($_POST['file_upload']))
     move_uploaded_file($_FILES["csv_file"]["tmp_name"], $target_file);
     $file_contents = file_get_contents($target_file);
     $file_contents = explode("\n", $file_contents);
-    //Delete the file header
-    unset($file_contents[0]);
+
     $csv_content = array();
-    $new_leads = array();
-    $choice_yes = "i_have_traded_forex_before.";
     foreach ($file_contents as $row)
     {
         if(!empty($row))
         {
             $row_contents = explode(",", $row);
-            $count = count($csv_content);
-            $_full_name = split_name(trim($row_contents[13]));
-            $_email = strtolower(trim($row_contents[12]));
-            $_phone = strtolower(trim(str_replace('p:', '', $row_contents[14]))) ;
-            $_choice = $row_contents[11];
-            if($_choice == $choice_yes)
-            {
-                if($obj_loyalty_training->is_duplicate_loyalty($_email, $_phone))
-                {
-                    $obj_loyalty_training->add_loyalty($_full_name['first_name'], $_full_name['last_name'], $_email, $_phone, 2);
-                }
-            }
-            else
-            {
-                if($obj_loyalty_training->is_duplicate_training($_email, $_phone))
-                {
-                    $obj_loyalty_training->add_training($_full_name['first_name'], $_full_name['last_name'], $_email, $_phone, 2);
-                }
-            }
+            //$count = count($csv_content);
+            $_full_name = split_name(trim($row_contents[3]));
+            $_email = strtolower(trim($row_contents[2]));
+            $_phone = strtolower(trim(str_replace('p:', '', $row_contents[4]))) ;
+            $_interest = $row_contents[1];
+            $created = str_replace('T', ' ', $row_contents[0]);
+            $created = str_replace('+01:00', '', $created);
+            $obj_loyalty_training->add_lead($_full_name['first_name'], $_full_name['last_name'], $_email, $_phone, $_interest, 2, $created);
         }
     }
     //Delete the uploaded file
@@ -51,7 +37,47 @@ if(isset($_POST['file_upload']))
     else{ $message_error = "The upload failed, please try again.";}
 }
 
-$query = "SELECT *, user.user_code, campaign_leads.phone FROM campaign_leads, user WHERE campaign_leads.email = user.email ORDER BY campaign_leads.created DESC";
+if(isset($_POST['cat']) && !empty($_POST['cat'])){ $_SESSION['cat'] = $_POST['cat'];}
+
+if(empty($_SESSION['cat'])){$_SESSION['cat'] = '0';}
+
+$cat = $_SESSION['cat'];
+
+switch ($cat)
+{
+    case '1':
+        $query = "SELECT *, user.user_code, campaign_leads.phone 
+FROM campaign_leads, user 
+WHERE campaign_leads.email = user.email 
+ORDER BY campaign_leads.created DESC";
+        $msg = "all leads.";
+        break;
+    case '2':
+        $query = "SELECT *, user.user_code, campaign_leads.phone 
+FROM campaign_leads, user 
+WHERE campaign_leads.email = user.email
+ AND campaign_leads.interset = '1'
+ORDER BY campaign_leads.created DESC";
+        $msg = "all Training leads";
+        break;
+    case '3':
+        $query = "SELECT *, user.user_code, campaign_leads.phone 
+FROM campaign_leads, user 
+WHERE campaign_leads.email = user.email
+ AND campaign_leads.interset = '2'
+ORDER BY campaign_leads.created DESC";
+        $msg = "all ILPR leads";
+        break;
+    default:
+        $query = "SELECT *, user.user_code, campaign_leads.phone 
+FROM campaign_leads, user 
+WHERE campaign_leads.email = user.email 
+ORDER BY campaign_leads.created DESC";
+        $msg = "All leads.";
+        break;
+}
+
+//$query = "SELECT *, user.user_code, campaign_leads.phone FROM campaign_leads, user WHERE campaign_leads.email = user.email ORDER BY campaign_leads.created DESC";
 $numrows = $db_handle->numRows($query);
 $rowsperpage = 20;
 $totalpages = ceil($numrows / $rowsperpage);
@@ -96,7 +122,6 @@ $client_operation = new clientOperation();
                 <div id="main-body-side-bar" class="col-md-4 col-lg-3 left-nav">
                 <?php require_once 'layouts/sidebar.php'; ?>
                 </div>
-                
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
                 <div id="main-body-content-area" class="col-md-8 col-lg-9">
                     <!-- Unique Page Content Starts Here
@@ -109,49 +134,43 @@ $client_operation = new clientOperation();
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="col-sm-12">
-                                    <?php require_once 'layouts/feedback_message.php'; ?>
-                                    </div>
-                                <div class="col-sm-12 well">
-                                    <p>Click the button below to select a file for upload</p>
-                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" enctype="multipart/form-data" action="">
-                                        <div id="search" class="col-sm-8 form-group input-group">
-                                            <span class="input-group-btn">
-                                                <label class="btn btn-default" for="file_select">Select File</label>
-                                                <!--<input  name="csv_file" style="display: none" id="file_select" class="btn btn-default" type='file' />-->
-                                            </span>
-                                            <input onchange="show_name()" name="csv_file" style="display: none" id="file_select" class="form-control" type='file' accept=".csv" />
-                                            <input placeholder="Selected filename..." id="file_show_name" name="file_show_name"  type="text" class="form-control" disabled/>
-                                            <span class="input-group-btn">
-                                               <button id="file_upload" data-target="#upload_confirm" data-toggle="modal"  type="button" class="btn btn-success" disabled>Upload File</button>
-                                            </span>
-                                        </div>
-                                        <!-- Modal - confirmation boxes -->
-                                        <div id="upload_confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
-                                                        <h4 class="modal-title">Upload Confirmation</h4></div>
-                                                    <div class="modal-body">Are you sure the contents of the selected file should be uploaded?</div>
-                                                    <div class="modal-footer">
-                                                        <input name="file_upload" type="submit" class="btn btn-success" value="Approve !">
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal" title="Close">Close</button>
-                                                    </div>
-                                                </div>
+                                <?php require_once 'layouts/feedback_message.php'; ?>
+                                    <button id="file_upload" data-target="#upload_confirm" data-toggle="modal"  type="button" class="btn btn-sm btn-success">Upload File</button>
+                            </div>
+                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" enctype="multipart/form-data" action="">
+                                <!-- Modal - confirmation boxes -->
+                                <div id="upload_confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                                <h4 class="modal-title">Upload Leads</h4></div>
+                                            <div class="modal-body">
+                                                <p>Click the button below to select a file for upload</p>
+                                                <span class="input-group-btn"><label class="btn btn-default" for="file_select">Select File</label>
+                                                                <!--<input  name="csv_file" style="display: none" id="file_select" class="btn btn-default" type='file' />--></span>
+                                                <input onchange="show_name()" name="csv_file" style="display: none" id="file_select" class="form-control" type='file' accept=".csv" />
+                                                <input placeholder="Selected filename..." id="file_show_name" name="file_show_name"  type="text" class="form-control" disabled/>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input name="file_upload" type="submit" class="btn btn-sm btn-success" value="Upload !">
+                                                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" title="Close">Close</button>
                                             </div>
                                         </div>
-                                    </form>
-                                    <div class="col-sm-4"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <p>Below is the list of new campaign leads.</p>
-                                <?php if(isset($new_leads) && !empty($new_leads)) { ?>
-                                    <div class="tool-footer text-right">
-                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                     </div>
-                                <?php } ?>
+                                </div>
+                            </form>
+
+                            <div class="col-sm-12">
+                                <p>Below is the list of <?php echo $msg; ?>.</p>
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <center><div class="input-group-sm">
+                                    <button class="btn btn-sm <?php if($_SESSION['cat'] == '1'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="1">All Leads</button>
+                                    <button class="btn btn-sm <?php if($_SESSION['cat'] == '2'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="2">All Training Leads</button>
+                                    <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All ILPR Leads</button>
+                                    </div></center>
+                                    <br/><br/>
+                                </form>
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -183,10 +202,10 @@ $client_operation = new clientOperation();
                                                 <td>
                                                     <?php if($row['interest'] == '1'): ?>
                                                     <span><b>FxAcademy:</b><br/>
-                                                            First Login Date -> <?php echo datetime_to_text($education_history[0]['lesson_log_date']);?><br/>
-                                                            Last Course -> <?php echo $education_history[$e_count - 1]['course_title'];?><br/>
+                                                            First Login Date -> <?php if(!empty($education_history[0]['lesson_log_date'])){ echo datetime_to_text($education_history[0]['lesson_log_date']);}?><br/>
+                                                            Last Course -> <?php if(!empty($education_history[$e_count - 1]['course_title'])){ echo $education_history[$e_count - 1]['course_title'];}?><br/>
                                                             Last Lesson -> <?php echo $education_history[$e_count - 1]['lesson_title'];?><br/>
-                                                            Last Seen -> <?php echo datetime_to_text($education_history[$e_count - 1]['lesson_log_date']);?>
+                                                            Last Seen -> <?php if(!empty($education_history[$e_count - 1]['lesson_log_date'])){ echo datetime_to_text($education_history[$e_count - 1]['lesson_log_date']);}?>
                                                     </span>
                                                     <?php endif; ?>
                                                     <?php if($row['interest'] == '2'): ?>
@@ -195,15 +214,15 @@ $client_operation = new clientOperation();
                                                 </td>
                                                 <td>
                                                     <span><b>Instaforex Account: </b><br/>
-                                                        First Fund Amount -> $<?php echo number_format($client_deposits[0]['dollar_ordered'], 2, '.', ',');?><br/>
-                                                        First Fund Date -> <?php echo date_to_text($client_deposits[0]['created']);?><br/>
-                                                        Last Fund Date -> <?php echo date_to_text($client_deposits[$c_count - 1]['created']);?><br/>
+                                                        First Fund Amount -> $<?php echo number_format($client_deposits[0]['dollar_ordered'], 2, '.', ','); ?><br/>
+                                                        First Fund Date -> <?php if(!empty($client_deposits[0]['created'])){echo date_to_text($client_deposits[0]['created']);}?><br/>
+                                                        Last Fund Date -> <?php if(!empty($client_deposits[$c_count - 1]['created'])){echo date_to_text($client_deposits[$c_count - 1]['created']);} ?><br/>
                                                         <!--First Trade Date -> <br/>-->
-                                                        Last Trade Date -> <?php echo date_to_text($last_trade_date); ?><br/>
+                                                        Last Trade Date -> <?php if(!empty($last_trade_date)){ echo date_to_text($last_trade_date); }?><br/>
                                                         Account Numbers -> <br/>
                                                         <?php
-                                                        if(isset($client_ilpr_account) && !empty($client_ilpr_account)) {foreach ($client_ilpr_account as $key){echo $key['ifx_acct_no']." (ILPR), ";}}
-                                                        if(isset($client_non_ilpr_account) && !empty($client_non_ilpr_account)){foreach ($client_non_ilpr_account as $key){echo $key['ifx_acct_no']." (None-ILPR), ";}}
+                                                        if(isset($client_ilpr_account) && !empty($client_ilpr_account)) {foreach ($client_ilpr_account as $key){echo $key['ifx_acct_no']."(ILPR), ";}}
+                                                        if(isset($client_non_ilpr_account) && !empty($client_non_ilpr_account)){foreach ($client_non_ilpr_account as $key){echo $key['ifx_acct_no']."(None-ILPR), ";}}
                                                         ?>
                                                 </td>
                                                 <td>
@@ -225,13 +244,14 @@ $client_operation = new clientOperation();
                                 </table>
                                 <?php if(isset($new_leads) && !empty($new_leads)) { ?>
                                     <div class="tool-footer text-right">
-                                        <p class="pull-left">Showing <?php echo 1 . " to " . count($new_leads) . " of " . count($new_leads); ?> entries</p>
+                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                     </div>
+                                    <?php if(isset($new_leads) && !empty($new_leads)) { include 'layouts/pagination_links.php'; } ?>
                                 <?php } ?>
                             </div>
                         </div>
                     </div>
-                        <?php if(isset($all_prospect) && !empty($all_prospect)) { require 'layouts/pagination_links.php'; } ?>
+
                     </div>
                     <!-- Unique Page Content Ends Here
                     ================================================== -->

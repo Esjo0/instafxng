@@ -68,8 +68,15 @@ else
 
 
 $selected_detail = $selected_detail[0];
+if(isset($_GET['selector']) && $_GET['selector'] == '1')
+{
+    $selected_comment = $obj_loyalty_training->get_lead_registration_comment($selected_id);
+}
+else
+{
+    $selected_comment = $system_object->get_free_training_registration_comment($selected_id);
+}
 
-$selected_comment = $system_object->get_free_training_registration_comment($selected_id);
 $all_states = $system_object->get_all_states();
 
 $course_started = "No";
@@ -126,11 +133,13 @@ if(!empty($selected_detail['user_code'])) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <?php if(isset($_GET['selector']) && $_GET['selector'] == '1'){ ?>
+                                <?php if(isset($_GET['selector']) && $_GET['selector'] == '1'): ?>
                                     <p><a href='<?php echo "campaign_leads.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Campaign Leads"><i class="fa fa-arrow-circle-left"></i> Campaign Leads</a></p>
-                                <?php}else{ ?>
+                                <?php endif;
+                                if(!isset($_GET['selector']) && $_GET['selector'] != '1'):
+                                ?>
                                     <p><a href='<?php echo "edu_free_training.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Education - Free Training"><i class="fa fa-arrow-circle-left"></i> Education - Free Training</a></p>
-                                <?php } ?>
+                                <?php endif; ?>
                                 <p>View Free Training Registration Details</p>
                                 
                                 <div class="row">
@@ -150,7 +159,12 @@ if(!empty($selected_detail['user_code'])) {
                                         </table>
 
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                            <input type="hidden" name="selected_id" value="<?php if(isset($selected_detail['free_training_campaign_id'])) { echo $selected_detail['free_training_campaign_id']; } ?>" />
+                                            <?php if(isset($_GET['selector']) && $_GET['selector'] == '1') :?>
+                                            <input type="hidden" name="selected_id" value="<?php if(isset($selected_detail['lead_id'])) { echo $selected_detail['lead_id']; } ?>" />
+                                            <?php endif; ?>
+                                            <?php if(!isset($_GET['selector']) || $_GET['selector'] != '1'):?>
+                                                <input type="hidden" name="selected_id" value="<?php if(isset($selected_detail['free_training_campaign_id'])) { echo $selected_detail['free_training_campaign_id']; } ?>" />
+                                            <?php endif; ?>
                                             <input type="hidden" name="training_email" value="<?php if(isset($selected_detail['email'])) { echo $selected_detail['email']; } ?>" />
                                             <input type="hidden" name="training_phone" value="<?php if(isset($selected_detail['phone'])) { echo $selected_detail['phone']; } ?>" />
                                             <input type="hidden" name="training_first_name" value="<?php if(isset($selected_detail['first_name'])) { echo $selected_detail['first_name']; } ?>" />
