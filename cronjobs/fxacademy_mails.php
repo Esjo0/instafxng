@@ -206,3 +206,4 @@ $query_1d = student_auto_mail_query(1, $interval_4);
 $get_mail_1d = student_auto_mail_template($my_message_1d);
 $send_message_1d = student_auto_mail_send($query_1d, $my_subject_1d, $get_mail_1d);
 
+include "public_html\admin\schedule.txt";
