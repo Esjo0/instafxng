@@ -139,8 +139,8 @@ function Signal()
         {
             var row = table.insertRow(0);
             row.classList += this.get_Context(signal_array[x]['trigger_time']);
-            row.setAttribute('data-target', '#confirm-add-admin');
-            row.setAttribute('data-toggle', 'modal');;
+            row.setAttribute('data-target', '#signal_display');
+            row.setAttribute('data-toggle', 'modal');
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);

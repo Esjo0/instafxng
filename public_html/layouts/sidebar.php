@@ -84,36 +84,7 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
 <div class="row ">
     <div class="col-sm-6 col-md-12">
         <div class="nav-display super-shadow">
-            <header><i class="fa fa-bars fa-fw"></i> Daily Forex Signal</header>
-            <article>
-                <script>
-                    signal.getSignals('sig');
-                    $(document).ready(function() {setInterval(function(){signal.getSignals('sig');}, 10000000000000);});
-                </script>
-                <small>
-                    <em><strong>Date:</strong></em>
-                    <em id="table_date">
-                        <script>
-                            $(document).ready(function() {setInterval(function(){signal.get_date('table_date');}, 10000);});
-                        </script>
-                    </em>
-                    <em class="pull-right" id="table_time">
-                        <script>
-                            $(document).ready(function() {setInterval(function(){signal.get_time('table_time');}, 1000);});
-                        </script>
-                    </em>
-                </small>
-                <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-hover">
-                    <thead><tr><th></th><th></th><th></th><th></th><th></th></tr></thead>
-                    <tbody id="sig"></tbody>
-                </table>
-                <hr>
-                <small>Your use of the signals means you have read and accepted our
-                    <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
-                    Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
-                        signal guide</a> to learn how to use the signals.
-                </small>
-            </article>
+           <?php include "signals.php"; ?>
         </div>
     </div>
 </div>
