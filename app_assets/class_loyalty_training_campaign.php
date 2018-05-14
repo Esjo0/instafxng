@@ -115,7 +115,7 @@ MAIL;
         switch ($interest)
         {
             case '1':
-                $text_message = "Thank you for your interest in making more money from Forex trading. Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. You are just one click away!";
+                $text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
                 $subject = "Welcome to InstaFxNg $first_name";
                 $message = <<<MAIL
     <div style="background-color: #F3F1F2">
@@ -180,7 +180,7 @@ MAIL;
 MAIL;
                 break;
             case '2':
-                $text_message = "Thank you for your interest in making more money from Forex trading. Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. You are just one click away!";
+                $text_message = "Welcome to the Money Makers Club, Thank you for choosing us to ensure your journey to wealth is smooth and rewarding. Please click bit.ly/2jCUdko to proceed to the next step and begin to make more money right away.";
                 $subject = "Welcome to InstaFxNg $first_name";
                 $message = <<<MAIL
     <div style="background-color: #F3F1F2">
@@ -244,7 +244,7 @@ MAIL;
 MAIL;
                 break;
             default:
-                $text_message = "Thank you for your interest in making more money from Forex trading. Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. You are just one click away!";
+                $text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
                 $subject = "Welcome to InstaFxNg $first_name";
                 $message = <<<MAIL
     <div style="background-color: #F3F1F2">
