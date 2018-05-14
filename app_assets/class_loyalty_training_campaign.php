@@ -20,8 +20,7 @@ class Loyalty_Training
         $inserted_id = $db_handle->insertedId();
         if ($result)
         {
-            $text_message = "Thank you for your interest in making more money from Forex trading. 
-            Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. You are just one click away!";
+            $text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
             $system_object->send_sms($phone_number, $text_message);
 
             $subject = "Welcome to InstaFxNg $first_name";
@@ -328,7 +327,7 @@ MAIL;
         $result = $db_handle->runQuery($query);
         if($result)
         {
-            $text_message = "Thank you for your interest in making more money from Forex trading. Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. You are just one click away!";
+            $text_message = "Welcome to the Money Makers Club, Thank you for choosing us to ensure your journey to wealth is smooth and rewarding. Please click bit.ly/2jCUdko to proceed to the next step and begin to make more money right away.";
             $system_object->send_sms($phone_number, $text_message);
 
             $subject = "Welcome to InstaFxNg $first_name";
