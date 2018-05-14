@@ -22,14 +22,14 @@ if(isset($_POST['live_account_ilpr_reg'])) {
     $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
     $responseData = json_decode($verifyResponse);
     
-    $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
-    $full_name = $db_handle->sanitizePost($_POST['full_name']);
-    $email_address = $db_handle->sanitizePost($_POST['email']);
-    $phone_number = $db_handle->sanitizePost($_POST['phone']);
+    $account_no = $db_handle->sanitizePost(trim($_POST['ifx_acct_no']));
+    $full_name = $db_handle->sanitizePost(trim($_POST['full_name']));
+    $email_address = $db_handle->sanitizePost(trim($_POST['email']));
+    $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
 
-//    if(!$responseData->success) {
-//        $message_error = "You did not pass the robot verification, please try again.";
-//    } else
+    if(!$responseData->success) {
+        $message_error = "You did not pass the robot verification, please try again.";
+    } else
         if(empty($full_name) || empty($email_address) || empty($phone_number) || empty($account_no)) {
         $message_error = "All fields must be filled.";
     } elseif (!check_email($email_address)) {

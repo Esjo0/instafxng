@@ -97,6 +97,19 @@ if($get_params['x'] == 'edit') {
                                 <p>Moderate the client account displayed below. Choose the Account Type.</p>
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                     <input type="hidden" name="account_id" value="<?php if(isset($ifx_acc_id)) { echo $ifx_acc_id; } ?>" />
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for=""></label>
+                                        <div class="col-sm-10 col-lg-6">
+                                            <p>
+                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($client_user_code); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+
+                                                <?php if($client_operation->account_flagged($client_user_code)) { ?>
+                                                    <img class="center-block" src="../images/red-flag.png" alt="" title="This client has an account flagged.">
+                                                <?php } ?>
+                                            </p>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="client_name">Client Name:</label>
                                         <div class="col-sm-10 col-lg-6">

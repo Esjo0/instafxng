@@ -9,8 +9,8 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
     <div class="col-sm-6 col-md-12">
         <div class="list-group" style="margin-bottom: 5px !important;">
             <a class="list-group-item" href="live_account.php" title="Open a live Instaforex trading account"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Open Live Account</strong></a>
-            <a class="list-group-item" href="deposit_funds.php" title="Deposit money into your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Fund Account - &#8358;<?php if(defined('IPLRFUNDRATE')) { echo IPLRFUNDRATE; } ?>  / &dollar;1</strong></a>
-            <a class="list-group-item" href="withdraw_funds.php" title="Withdraw from your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Withdraw - &#8358;<?php if(defined('WITHDRATE')) { echo WITHDRATE; } ?> / &dollar;1</strong></a>
+            <a class="list-group-item" href="deposit_funds.php" title="Deposit money into your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Fund Account - &#8358;<?php if(defined('IPLRFUNDRATE')) { echo IPLRFUNDRATE; } ?> </strong></a>
+            <a class="list-group-item" href="withdraw_funds.php" title="Withdraw from your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Withdraw - &#8358;<?php if(defined('WITHDRATE')) { echo WITHDRATE; } ?> </strong></a>
             <a class="list-group-item" href="deposit_notify.php" title="Payment Notification"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Payment Notification</strong></a>
             <a class="list-group-item" href="verify_account.php" title="Verification"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Verification</strong></a>
         </div>

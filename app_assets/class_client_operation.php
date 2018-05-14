@@ -604,7 +604,7 @@ MAIL;
 
         $query = "SELECT ub.bank_acct_name, ub.bank_acct_no, ub.is_active, ub.status,
                 ub.created, b.bank_name, u.phone, GROUP_CONCAT(DISTINCT ui.ifx_acct_no) AS ifx_accounts,
-                CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+                CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code
                 FROM user_bank AS ub
                 INNER JOIN bank AS b ON ub.bank_id = b.bank_id
                 INNER JOIN user AS u ON ub.user_code = u.user_code
@@ -661,7 +661,7 @@ MAIL;
         $query = "SELECT uc.user_credential_id, uc.idcard, uc.passport, uc.signature, uc.doc_status,
                 CONCAT(um.address, SPACE(1), um.city, SPACE(1), s.state) AS full_address, um.user_meta_id,
                 GROUP_CONCAT(DISTINCT ui.ifx_acct_no) AS ifx_accounts,
-                u.phone, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+                u.phone, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code
                 FROM user_credential AS uc
                 LEFT JOIN user_meta AS um ON uc.user_code = um.user_code
                 INNER JOIN state AS s ON um.state_id = s.state_id
