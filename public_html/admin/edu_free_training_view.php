@@ -135,22 +135,15 @@ if(!empty($selected_detail['user_code'])) {
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <?php if(isset($_GET['selector']) && $_GET['selector'] == '1'): ?>
                                     <p><a href='<?php echo "campaign_leads.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Campaign Leads"><i class="fa fa-arrow-circle-left"></i> Campaign Leads</a></p>
-                                <?php endif;
-                                if(!isset($_GET['selector']) && $_GET['selector'] != '1'):
-                                ?>
-                                    <p><a href='<?php echo "edu_free_training.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Education - Free Training"><i class="fa fa-arrow-circle-left"></i> Education - Free Training</a></p>
                                 <?php endif; ?>
+                                <?php if(!isset($_GET['selector']) && $_GET['selector'] != '1'): ?>
+                                    <p><a href='<?php echo "edu_free_training.php?pg={$currentpage}"; ?>'  class="btn btn-default" title="Education - Free Training"><i class="fa fa-arrow-circle-left"></i> Education - Free Training</a></p>
+                                <?php endif;?>
                                 <p>View Free Training Registration Details</p>
-                                
                                 <div class="row">
                                     <div class="col-lg-7">
-
                                         <table class="table table-responsive table-striped table-bordered table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2" class="text-center">Online Training Stats</th>
-                                                </tr>
-                                            </thead>
+                                            <thead><tr><th colspan="2" class="text-center">Online Training Stats</th></tr></thead>
                                             <tbody>
                                                 <tr><td>Started?</td><td><?php echo $course_started; ?></td></tr>
                                                 <tr><td>Current Course</td><td><?php echo $current_course; ?></td></tr>
