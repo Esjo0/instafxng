@@ -20,9 +20,7 @@ class Loyalty_Training
         $inserted_id = $db_handle->insertedId();
         if ($result)
         {
-            $text_message = "Thank you for your interest in making more money from Forex trading. 
-            Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. 
-            You are just one click away!";
+            $text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
             $system_object->send_sms($phone_number, $text_message);
 
             $subject = "Welcome to InstaFxNg $first_name";
@@ -108,6 +106,219 @@ MAIL;
         else{return false;}
     }
 
+    public function add_lead($first_name, $last_name, $email_address, $phone_number, $source, $interest, $created, $state_id = '')
+    {
+        global $db_handle;
+        global $system_object;
+        $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source, interest, created) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '$source', '$interest', '$created')";
+        $result = $db_handle->runQuery($query);
+        switch ($interest)
+        {
+            case '1':
+                $text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
+                $subject = "Welcome to InstaFxNg $first_name";
+                $message = <<<MAIL
+    <div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello $first_name,</p>
+            <p>Welcome on board!</p>
+            <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
+            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
+            <p>To start your journey to earning more money from Forex trading, you need to gain adequate knowledge of the Forex market.</p>
+           
+            <p>We have a Free online training that you can take advantage of to learn more about how to trade Forex profitably.</p>
+            <p>The training is simple and easy to follow and you can take it from your house, office or even on your bed.</p>
+            
+            <p>Within the next hour, you will be placing informed trades and increase your chances of taking your slice of the 5.3 Billion Dollars from the Forex market.</p>
+            <p>Guess what! It is free (at least for now).</p>
+            <p><a href="https://instafxng.com/fxacademy/">Click Here to Start the Training Now.</a></p>
+            <p>$first_name, we are taking in just 50 people at this time, for the brand new Forex Money Maker course.</p>
+            <p>35 spots have been taken already and we have 15 left. 
+            The slots are filling up very fast. 
+            <a href="https://instafxng.com/fxacademy/">Go here now to start the free training.</a></p>
+            <p>Please don’t miss this. Go ahead and login to the training immediately to secure your spot.</p>
+            <p>This will be your best shot at generating a healthy side income from forex trading. Go ahead and make the move now.</p>
+            <p>Start the Forex Money Maker Course now so you can launch your Forex trading entry with a big bang.</p>
+            <p>See you on the other side. Secure your spot now. Only 15 spots are up for grabs. Don’t wait till it will be too late.</p>
+            <p><a href="https://instafxng.com/fxacademy/">Here is the link to the online training again.</a></p>
+            <br/><br/>
+            <p>Best Regards,</p>
+            <p>Mercy,</p>
+            <p>Client Relations Manager,</p>
+            <p>InstaForex Nigeria</p>
+            <p>www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+                break;
+            case '2':
+                $text_message = "Welcome to the Money Makers Club, Thank you for choosing us to ensure your journey to wealth is smooth and rewarding. Please click bit.ly/2jCUdko to proceed to the next step and begin to make more money right away.";
+                $subject = "Welcome to InstaFxNg $first_name";
+                $message = <<<MAIL
+    <div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Dear $first_name,</p>
+            <p>Welcome on board!</p>
+            <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
+            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
+            <p>At InstaFxNg, we consider it a privilege to serve and provide you with excellent and unparalleled service at all times.</p>
+            <p>We have been around for over 7 years providing excellent forex services to thousands of Nigerian traders, we are reliable and your funds are safe in our hands.</p>
+            <p><strong>Hey! What’s Special? Why InstaFxNg? Here’s why….</strong></p>
+            <p>At InstaFxNg here are some benefits you won’t find elsewhere;</p>
+            <ul>
+                <li><b>Instant funding of account: </b>No holding back! No Long Procedures! You can make instant withdrawals directly into your local bank account. We will process all transactions you initiate on our platform immediately. </li>
+                <li><b>130% Welcome Bonus: </b>Do you know that for your first Deposit of either $50, $100 or $150 you will get a whopping 130% bonus? Oh yes you can! So what are you waiting for? </li>
+                <li><b>InstaFxNg Loyalty Program: </b>Yes! You will get rewarded for trading! We constantly plan rewards for our consistent traders to ensure that you have an exciting experience! So while you are trading you will earn points which can be redeemed, 5 leading traders will be rewarded monthly and N2,250,000 is up for grabs yearly! You can be the next lucky winner if you start now! </li>
+                <li><b>Excellent Customer Service: </b>In addition, there is an extra topping on the cake! Our customer service executives will handle all other matters relating to your account while you trade. We will also follow through to ensure that all inquiries or queries are resolved promptly. </li>
+            </ul>
+            <p><b>Are you ready to begin your journey with us?</b></p>
+            <p>To start your journey to earning more money in our Loyalty Rewards Program, 
+            kindly <a href="https://instafxng.com/loyalty/live_account.php">click here to open an InstaForex 
+            account</a> immediately if you haven’t done that already.</p>
+            <p><center><b>Open My InstaForex Account</b></center></p>
+            <p>I’m so glad you are here and I can’t wait for you to start earning in the <a href="https://instafxng.com/loyalty.php">InstaFxNg Loyalty Points and Reward Program</a></p>
+            <br/><br/>
+            <p>Best Regards,</p>
+            <p>Mercy,</p>
+            <p>Client Relations Manager,</p>
+            <p>InstaForex Nigeria</p>
+            <p>www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+                break;
+            default:
+                $text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
+                $subject = "Welcome to InstaFxNg $first_name";
+                $message = <<<MAIL
+    <div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello $first_name,</p>
+            <p>Welcome on board!</p>
+            <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
+            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
+            <p>To start your journey to earning more money from Forex trading, you need to gain adequate knowledge of the Forex market.</p>
+           
+            <p>We have a Free online training that you can take advantage of to learn more about how to trade Forex profitably.</p>
+            <p>The training is simple and easy to follow and you can take it from your house, office or even on your bed.</p>
+            
+            <p>Within the next hour, you will be placing informed trades and increase your chances of taking your slice of the 5.3 Billion Dollars from the Forex market.</p>
+            <p>Guess what! It is free (at least for now).</p>
+            <p><a href="https://instafxng.com/fxacademy/">Click Here to Start the Training Now.</a></p>
+            <p>$first_name, we are taking in just 50 people at this time, for the brand new Forex Money Maker course.</p>
+            <p>35 spots have been taken already and we have 15 left. 
+            The slots are filling up very fast. 
+            <a href="https://instafxng.com/fxacademy/">Go here now to start the free training.</a></p>
+            <p>Please don’t miss this. Go ahead and login to the training immediately to secure your spot.</p>
+            <p>This will be your best shot at generating a healthy side income from forex trading. Go ahead and make the move now.</p>
+            <p>Start the Forex Money Maker Course now so you can launch your Forex trading entry with a big bang.</p>
+            <p>See you on the other side. Secure your spot now. Only 15 spots are up for grabs. Don’t wait till it will be too late.</p>
+            <p><a href="https://instafxng.com/fxacademy/">Here is the link to the online training again.</a></p>
+            <br/><br/>
+            <p>Best Regards,</p>
+            <p>Mercy,</p>
+            <p>Client Relations Manager,</p>
+            <p>InstaForex Nigeria</p>
+            <p>www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+                break;
+        }
+        if($result) {
+            $system_object->send_sms($phone_number, $text_message);
+            $system_object->send_email($subject, $message, $email_address, $first_name);
+            $assigned_account_officer = $system_object->next_account_officer();
+            $client_operation = new clientOperation();
+            $client_operation->new_user_ordinary($first_name." ".$last_name, $email_address, $phone_number, $assigned_account_officer);
+            return true;}
+        else{return false;}
+    }
+
     public function add_loyalty($first_name, $last_name, $email_address, $phone_number, $source, $state_id = '')
     {
         global $db_handle;
@@ -116,7 +327,7 @@ MAIL;
         $result = $db_handle->runQuery($query);
         if($result)
         {
-            $text_message = "Thank you for your interest in making more money from Forex trading. Kindly click here http://bit.ly/2DK2L0l to proceed to the next step. You are just one click away!";
+            $text_message = "Welcome to the Money Makers Club, Thank you for choosing us to ensure your journey to wealth is smooth and rewarding. Please click bit.ly/2jCUdko to proceed to the next step and begin to make more money right away.";
             $system_object->send_sms($phone_number, $text_message);
 
             $subject = "Welcome to InstaFxNg $first_name";
@@ -275,63 +486,102 @@ MAIL;
         return $result;
     }
 
+    //Done
     public function sum_leads_with_accounts($from, $to, $x)
     {
         global $db_handle;
-        $query = "SELECT * FROM campaign_leads, user, user_ifxaccount 
-                  WHERE campaign_leads.email = user.email 
-                  AND user.user_code = user_ifxaccount.user_code 
-                  AND (STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') ";
+        $query = "SELECT CL.f_name, CL.email, CL.phone, CL.l_name, U.user_code, UI.ifx_acct_no, UI.type
+                  FROM campaign_leads AS CL 
+                  LEFT JOIN user AS U ON U.email = CL.email
+                  LEFT JOIN user_ifxaccount AS UI ON UI.user_code = U.user_code
+                  WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
+                  AND ((U.user_code IS NOT NULL) OR (UI.ifx_acct_no IS NOT NULL))
+                  AND  UI.type = '2'
+                  GROUP BY CL.email ";
         if($x == 1) {$result = $db_handle->numRows($query);}
         else if($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
         return $result;
     }
 
+    //Done
     public function sum_leads_funded($from, $to, $x)
     {
         global $db_handle;
-        $query = "SELECT * FROM campaign_leads, user, user_ifxaccount, user_deposit 
-                  WHERE campaign_leads.email = user.email 
-                  AND user.user_code = user_ifxaccount.user_code
-                  AND user_ifxaccount.ifxaccount_id = user_deposit.ifxaccount_id
-                  AND (STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') ";
+        $query = "SELECT CL.f_name, CL.phone, CL.email, CL.l_name, UI.ifx_acct_no, SUM(UD.real_dollar_equivalent) AS dollar_amount 
+FROM campaign_leads AS CL 
+LEFT JOIN user AS U ON U.email = CL.email 
+LEFT JOIN user_ifxaccount AS UI ON UI.user_code = U.user_code 
+LEFT JOIN user_deposit AS UD ON UD.ifxaccount_id = UI.ifxaccount_id 
+WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
+AND ((U.user_code IS NOT NULL) OR (UI.ifx_acct_no IS NOT NULL)) 
+AND UI.type = '2' 
+AND UD.real_dollar_equivalent IS NOT NULL 
+GROUP BY CL.email ";
         if($x == 1) {$result = $db_handle->numRows($query);}
         else if($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
         return $result;
     }
 
+    //Done
     public function sum_training_leads($from, $to, $course, $x)
     {
         global $db_handle;
         switch ($course)
         {
-            case "1" : $operator = "="; break;
-            case "2" : $operator = "<>"; break;
-            default: $operator = "="; break;
+            //FxAcademy - Forex Optimizer Course
+            case "1" :
+                $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, UED.trans_id 
+FROM campaign_leads AS CL
+LEFT JOIN user AS U ON CL.email = U.email
+RIGHT JOIN user_edu_deposits AS UED ON UED.user_code = U.user_code
+WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
+AND U.user_code IN (SELECT user_edu_deposits.user_code FROM user_edu_deposits)";
+                break;
+            //FxAcademy - Forex Money Maker Course
+            case "2" :
+                $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email
+FROM campaign_leads AS CL
+LEFT JOIN user AS U ON CL.email = U.email
+WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
+AND U.user_code NOT IN (SELECT user_edu_deposits.user_code FROM user_edu_deposits)";
+                break;
+            default: $query = ""; break;
         }
-
-        $query = "SELECT * FROM campaign_leads, user, user_edu_deposits 
-                  WHERE campaign_leads.email = user.email 
-                  AND user.user_code $operator user_edu_deposits.user_code
-                  AND (STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') ";
         if($x == 1) {$result = $db_handle->numRows($query);}
         elseif($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
         return $result;
     }
 
+    //Done
     public function sum_active_leads($from, $to, $x)
     {
         $from_month = explode('-', $from)[1];
         $to_month = explode('-', $to)[1];
         global $db_handle;
-        $query = "SELECT * FROM campaign_leads, user, user_ifxaccounts, trading_commission 
-                  WHERE campaign_leads.email = user.email 
-                  AND user.user_code = user_ifxaccounts.user_code
-                  AND ((user_ifxaccounts.user_code = trading_commission.ifx_acct_no) AND  created MONTH(trading_commission.date_earned, '%Y-%m-%d') BETWEEN '$from_month' AND '$to_month'
-                  AND (STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') ";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, TC.date_earned AS last_trade_date
+FROM campaign_leads AS CL
+LEFT JOIN user AS U ON CL.email = U.email
+LEFT JOIN user_ifxaccount AS UI ON U.user_code = UI.user_code
+RIGHT JOIN trading_commission AS TC ON UI.ifx_acct_no = TC.ifx_acct_no
+WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
+AND (MONTH(TC.date_earned) BETWEEN $from_month AND $to_month)
+GROUP BY CL.email
+ORDER BY TC.date_earned DESC";
         if($x == 1) {$result = $db_handle->numRows($query);}
         elseif($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
         return $result;
+    }
+
+    public function get_lead_registration_comment($selected_id) {
+        global $db_handle;
+        $query = "SELECT fctcc.comment, fctcc.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_name
+                  FROM campaign_lead_comments AS fctcc
+                  INNER JOIN admin AS a ON fctcc.admin_code = a.admin_code
+                  WHERE fctcc.lead_id = $selected_id ORDER BY fctcc.created DESC";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
     }
 
 }
