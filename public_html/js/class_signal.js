@@ -29,7 +29,7 @@ function Signal()
     };
 
     this.getSignals = function (id){
-        var query = "SELECT symbol, order_type, price, take_profit, stop_loss, trigger_date, trend, trigger_time, signal_daily.created, CONCAT(trigger_date, SPACE(1), trigger_time) as triger FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id ORDER BY triger ASC ";
+        var query = "SELECT signal_id, symbol, order_type, price, take_profit, stop_loss, trigger_date, trend, trigger_time, signal_daily.created, CONCAT(trigger_date, SPACE(1), trigger_time) as triger FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id ORDER BY triger ASC ";
         var type = "1";
         this.ajax_request(id,query, type);
     };
@@ -135,6 +135,7 @@ function Signal()
         var table = document.getElementById(id);
         table.innerHTML = '';
         var signal_array = JSON.parse(json);
+        localStorage.setItem("signal_array", JSON.stringify(json));
         for(var x in signal_array)
         {
             var row = table.insertRow(0);
@@ -152,6 +153,12 @@ function Signal()
             cell4.innerHTML = this.get_Trend(signal_array[x]['trend']);
             cell5.innerHTML = this.formatTime(signal_array[x]['trigger_time']);
         }
+
+    };
+
+    this.DisplaySignal = function (id){
+        var signal_array = localStorage.getItem('signal_array');
+        signal_array = JSON.parse(signal_array);
 
     };
 }
