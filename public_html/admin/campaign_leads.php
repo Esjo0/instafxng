@@ -39,7 +39,7 @@ if(isset($_POST['file_upload']))
 
 if(isset($_POST['cat']) && !empty($_POST['cat'])){ $_SESSION['cat'] = $_POST['cat'];}
 
-if(empty($_SESSION['cat'])){$_SESSION['cat'] = '0';}
+if(empty($_SESSION['cat'])){$_SESSION['cat'] = '1';}
 
 $cat = $_SESSION['cat'];
 
@@ -56,7 +56,7 @@ ORDER BY campaign_leads.created DESC";
         $query = "SELECT *, user.user_code, campaign_leads.phone 
 FROM campaign_leads, user 
 WHERE campaign_leads.email = user.email
- AND campaign_leads.interset = '1'
+ AND campaign_leads.interest = '1'
 ORDER BY campaign_leads.created DESC";
         $msg = "all Training leads";
         break;
@@ -64,7 +64,7 @@ ORDER BY campaign_leads.created DESC";
         $query = "SELECT *, user.user_code, campaign_leads.phone 
 FROM campaign_leads, user 
 WHERE campaign_leads.email = user.email
- AND campaign_leads.interset = '2'
+ AND campaign_leads.interest = '2'
 ORDER BY campaign_leads.created DESC";
         $msg = "all ILPR leads";
         break;
