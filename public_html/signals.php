@@ -49,20 +49,18 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-2">
-                            <h4 style="color: green"><b><i class="glyphicon glyphicon-arrow-up"></i></b></h4>
+                            <h4 style="color: green!important;"><b><i class="glyphicon glyphicon-arrow-up"></i></b></h4>
                         </div>
                         <div class="col-sm-5">
-                            <h4 style="color: black"><b>SELL ORDER</b></h4>
+                            <h4 style="color: black!important;"><b>SELL ORDER</b></h4>
                         </div>
                         <div class="col-sm-5">
-                            <h4 style="color: black"><b>PRICE: 123.09</b></h4>
+                            <h4 style="color: black!important;"><b>PRICE: 123.09</b></h4>
                         </div>
                     </div>
-
                     <div class="col-sm-12">
                         <div class="col-sm-12">
                             <table class="table table-bordered table-responsive">
-                                <thead><tr><th></th><th></th></tr></thead>
                                 <tbody>
                                     <tr><td><b>TAKE PROFIT</b></td><td>0.67</td></tr>
                                     <tr><td><b>STOP LOSS</b></td><td>0.67</td></tr>
@@ -70,6 +68,20 @@
                                     <tr><td><b>KEYNOTE</b></td><td>This course is designed to take a beginner by the hand, step by step to become a professional and profitable trader.</td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <button class="btn btn-sm btn-default">
+                                    <i style="font-size: x-large" class="fa fa-thumbs-up"></i>
+                                </button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-sm btn-default">
+                                    <i style="font-size: x-large" class="fa fa-thumbs-down"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
