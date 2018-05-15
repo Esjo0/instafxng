@@ -180,7 +180,7 @@ MAIL;
 MAIL;
                 break;
             case '2':
-                $text_message = "Welcome to the Money Makers Club, Thank you for choosing us to ensure your journey to wealth is smooth and rewarding. Please click bit.ly/2jCUdko to proceed to the next step and begin to make more money right away.";
+                $text_message = "Welcome to the Money Makers Club, Thank you for choosing us to ensure your journey to wealth is smooth and rewarding. Please click bit.ly/2mpqehQ to open an account or click bit.ly/2BjGSYF to fund your account right away.";
                 $subject = "Welcome to InstaFxNg $first_name";
                 $message = <<<MAIL
     <div style="background-color: #F3F1F2">
@@ -514,8 +514,9 @@ LEFT JOIN user_ifxaccount AS UI ON UI.user_code = U.user_code
 LEFT JOIN user_deposit AS UD ON UD.ifxaccount_id = UI.ifxaccount_id 
 WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
 AND ((U.user_code IS NOT NULL) OR (UI.ifx_acct_no IS NOT NULL)) 
-AND UI.type = '2' 
 AND UD.real_dollar_equivalent IS NOT NULL 
+AND (STR_TO_DATE(UD.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
+AND UD.status = '8' 
 GROUP BY CL.email ";
         if($x == 1) {$result = $db_handle->numRows($query);}
         else if($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
@@ -535,7 +536,7 @@ FROM campaign_leads AS CL
 LEFT JOIN user AS U ON CL.email = U.email
 RIGHT JOIN user_edu_deposits AS UED ON UED.user_code = U.user_code
 WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
-AND U.user_code IN (SELECT user_edu_deposits.user_code FROM user_edu_deposits)";
+AND U.user_code IN (SELECT user_edu_deposits.user_code FROM user_edu_deposits) GROUP BY CL.email";
                 break;
             //FxAcademy - Forex Money Maker Course
             case "2" :
@@ -562,11 +563,9 @@ AND U.user_code NOT IN (SELECT user_edu_deposits.user_code FROM user_edu_deposit
 FROM campaign_leads AS CL
 LEFT JOIN user AS U ON CL.email = U.email
 LEFT JOIN user_ifxaccount AS UI ON U.user_code = UI.user_code
-RIGHT JOIN trading_commission AS TC ON UI.ifx_acct_no = TC.ifx_acct_no
-WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
-AND (MONTH(TC.date_earned) BETWEEN $from_month AND $to_month)
-GROUP BY CL.email
-ORDER BY TC.date_earned DESC";
+LEFT JOIN trading_commission AS TC ON UI.ifx_acct_no = TC.ifx_acct_no
+WHERE (MONTH(TC.date_earned) BETWEEN 01 AND 12)
+GROUP BY CL.email";
         if($x == 1) {$result = $db_handle->numRows($query);}
         elseif($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
         return $result;

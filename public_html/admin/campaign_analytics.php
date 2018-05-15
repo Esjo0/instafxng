@@ -547,7 +547,7 @@ $client_operation = new clientOperation();
                                                                                             <td><?php echo $key['f_name']." ".strtoupper($key['l_name']);?></td>
                                                                                             <td><?php echo $key['phone'];?></td>
                                                                                             <td><?php echo $key['email'];?></td>
-                                                                                            <td><?php echo $key['dollar_amount'];?></td>
+                                                                                            <td><?php echo '$'.$key['dollar_amount'];?></td>
                                                                                         </tr>
                                                                                     <?php }
                                                                                 }
@@ -566,7 +566,7 @@ $client_operation = new clientOperation();
                                                 </div>
                                             </td>
                                             <td title="Total number of people that were added to the pool that are currently taking the Forex Money Maker Course.">
-                                                <a href="javascript:void(0);" data-target="#fmmc_<?php echo $row?>" data-toggle="modal"><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 1, 1); ?></a>
+                                                <a href="javascript:void(0);" data-target="#fmmc_<?php echo $row?>" data-toggle="modal"><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 2, 1); ?></a>
                                                 <div id="fmmc_<?php echo $row?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
@@ -578,7 +578,7 @@ $client_operation = new clientOperation();
                                                                     <div class="row">
                                                                         <div class="col-sm-12">
                                                                             <table class="table table-responsive table-striped table-bordered table-hover">
-                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Total Amount</th></tr></thead>
+                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th></tr></thead>
                                                                                 <tbody>
                                                                                 <?php $leads_generated = $obj_loyalty_training->sum_training_leads($row, $row, 2, 2);
                                                                                 if(isset($leads_generated) && !empty($leads_generated))
@@ -609,7 +609,7 @@ $client_operation = new clientOperation();
                                                 </div>
                                             </td>
                                             <td title="Total number of people that were added to the pool that are currently taking the Forex Optimizer Course.">
-                                                <a href="javascript:void(0);" data-target="#foc_<?php echo $row?>" data-toggle="modal"><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 2, 1); ?></a>
+                                                <a href="javascript:void(0);" data-target="#foc_<?php echo $row?>" data-toggle="modal"><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 1, 1); ?></a>
                                                 <div id="foc_<?php echo $row?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
