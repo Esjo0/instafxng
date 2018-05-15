@@ -563,11 +563,9 @@ AND U.user_code NOT IN (SELECT user_edu_deposits.user_code FROM user_edu_deposit
 FROM campaign_leads AS CL
 LEFT JOIN user AS U ON CL.email = U.email
 LEFT JOIN user_ifxaccount AS UI ON U.user_code = UI.user_code
-RIGHT JOIN trading_commission AS TC ON UI.ifx_acct_no = TC.ifx_acct_no
-WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
-AND (MONTH(TC.date_earned) BETWEEN $from_month AND $to_month)
-GROUP BY CL.email
-ORDER BY TC.date_earned DESC";
+LEFT JOIN trading_commission AS TC ON UI.ifx_acct_no = TC.ifx_acct_no
+WHERE (MONTH(TC.date_earned) BETWEEN 01 AND 12)
+GROUP BY CL.email";
         if($x == 1) {$result = $db_handle->numRows($query);}
         elseif($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
         return $result;
