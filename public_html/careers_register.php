@@ -224,6 +224,7 @@ $all_states = $system_object->get_all_states();
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-3" for="recaptcha">&nbsp;</label>
+                                    <center style="color: #0d95e8"><strong> Help <i class="fa fa-exclamation"></i></strong> Us Fight Spam.</center>
                                     <div class="col-sm-9 col-lg-5 g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div>
                                 </div>
                                 <div class="form-group">
