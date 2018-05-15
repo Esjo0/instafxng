@@ -515,6 +515,8 @@ LEFT JOIN user_deposit AS UD ON UD.ifxaccount_id = UI.ifxaccount_id
 WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
 AND ((U.user_code IS NOT NULL) OR (UI.ifx_acct_no IS NOT NULL)) 
 AND UD.real_dollar_equivalent IS NOT NULL 
+AND (STR_TO_DATE(UD.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
+AND UD.status = '8' 
 GROUP BY CL.email ";
         if($x == 1) {$result = $db_handle->numRows($query);}
         else if($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
