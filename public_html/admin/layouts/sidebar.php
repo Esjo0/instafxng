@@ -338,10 +338,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> HR Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(231, $my_pages_sidebar)) { ?><li><a href="hr_attendance_system_logs.php" title="Attendance Logs">Attendance Logs</a></li><?php } ?>
-                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_settings.php" title="Staff Reports Settings">Staff Reports Settings</a></li><?php //} ?>
-                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_manage_targets.php" title="Manage Staff Targets">Manage Staff Targets</a></li><?php //} ?>
-                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_reports.php" title="Reports">Reports</a></li><?php //} ?>
-                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_manage_reports.php" title="Manage Staff Reports">Manage Staff Reports</a></li><?php //} ?>
+                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms.php" title="Reports Management">Reports Management</a></li><?php //} ?>
                     </ul>
                 </li>
                 <li class="dropdown">

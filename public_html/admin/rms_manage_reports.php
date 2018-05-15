@@ -1,14 +1,7 @@
 <?php
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()){    redirect_to("login.php");}
-if(isset($_POST['post_comment']))
-{
-    $comment = $db_handle->sanitizePost(trim($_POST['comment']));
-    $report_id = $db_handle->sanitizePost(trim($_POST['report_id']));
-    $new_comment = $obj_rms->set_report_comment($report_id, $comment, $_SESSION['admin_unique_code']);
-    $new_comment ? $message_success = "New comment added" : $message_error = "Operation failed";
-}
-$pending_reports = $obj_rms->get_pending_reports($_SESSION['admin_unique_code'])
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
