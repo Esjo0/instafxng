@@ -4,6 +4,28 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+function get_personnel()
+{
+    global $db_handle;
+    $query = "SELECT AP.admin_code, AP.allowed_pages, CONCAT(A.first_name, SPACE(1), A.last_name) AS full_name 
+FROM admin_privilege AS AP, admin AS A 
+WHERE A.admin_code = AP.admin_code ";
+    $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
+    $personnel = array();
+    foreach ($result as $key)
+    {
+        $count = count($personnel);
+        extract($key);
+        $allowed_pages = explode(',', $allowed_pages);
+        if(in_array('214', $allowed_pages))
+        {
+            $personnel[$count]['admin_code'] = $admin_code;
+            $personnel[$count]['full_name'] = $full_name;
+        }
+    }
+    return $personnel;
+}
+
 if(isset($_POST['process_delete']))
 {
     if($obj_customer_care_log->log_delete($_POST['log_id']))
@@ -94,12 +116,11 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $admin_all_logs = $db_handle->fetchAssoc($result);
 
-
-
 $all_prospect_source = $admin_object->get_all_prospect_source();
 if(empty($all_prospect_source)) {    $message_error = "You cannot add a prospect until you have added at least one prospect source <a href='prospect_source.php'>here</a>.";}
 
-$personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin ORDER BY admin_id DESC "));
+//$personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin ORDER BY admin_id DESC "));
+$admins = get_personnel();
 
 ?>
 <!DOCTYPE html>
@@ -155,7 +176,7 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
 
 
             <div class="section-tint super-shadow">
-                <p>Filter the interaction logs using the form below. <button id="trigger" onclick="show_form('filter')" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-arrow-down"></i></button></p>
+                <p>Filter the interaction logs using the form below. <button id="trigger" onclick="show_form('filter')" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-arrow-down"></i></button></p>
                 <form style="display: none" id="filter" data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                     <div class="form-group">
                         <label class="control-label col-sm-3" for="from_date">From:</label>
@@ -178,61 +199,84 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                     <div class="form-group">
                         <label class="control-label col-sm-3" for="location">Other Options:</label>
                         <div class="col-sm-9 col-lg-5">
-                            <div class="form-group row">
-                                <div class="col-sm-6">
-                                    <div class="checkbox">
-                                        <label for="">
-                                            <input type="checkbox" name="prospect" value="1" id="" /> Prospect</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="checkbox">
-                                        <label for="">
-                                            <input type="checkbox" name="client" value="2" id="" /> Client</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-6">
-                                    <div class="checkbox">
-                                        <label for="">
-                                            <input type="checkbox" name="log_status_resolved" value="2" id="" /> Resolved</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="checkbox">
-                                        <label for="">
-                                            <input type="checkbox" name="log_status_unresolved" value="1" id="" /> Unresolved</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <?php foreach($all_prospect_source as $key => $value) { ?>
-                                <div class="col-sm-6">
-                                    <div class="checkbox">
-                                        <label for="">
-                                            <input type="checkbox" name="p_s[]" value="<?php echo $value['prospect_source_id']; ?>"/> Prospect Source(<?php echo $value['source_name']; ?>)</label>
-                                    </div>
-                                </div>
-                                <?php } ?>
-
-                            </div>
-                            <div class="form-group row">
-                                <?php foreach($personnel as $key => $value) { ?>
-                                    <div class="col-sm-6">
-                                        <div class="checkbox">
-                                            <label for="">
-                                                <input type="checkbox" name="personnel[]" value="<?php echo $value['admin_code']; ?>"/> Personnel(<?php echo $value['last_name'] . ' ' . $value['middle_name'] . ' ' . $value['first_name']; ?>)</label>
-                                        </div>
-                                    </div>
-                                <?php } ?>
-                            </div>
+                            <table class="table table-bordered table-responsive">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <b>Type</b>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label for="prospect">
+                                                    <input type="checkbox" name="prospect" value="1" id="prospect" /> Prospect
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label for="client">
+                                                    <input type="checkbox" name="client" value="2" id="client" /> Client
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Status</b>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label for="resolved">
+                                                    <input type="checkbox" name="log_status_resolved" value="2" id="resolved" /> Resolved
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label for="Unresolved">
+                                                    <input type="checkbox" name="log_status_unresolved" value="1" id="Unresolved" /> Unresolved
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Source</b>
+                                        </td>
+                                        <td colspan="2">
+                                            <?php foreach($all_prospect_source as $key => $value) { ?>
+                                                <div class="col-sm-12">
+                                                    <div class="checkbox">
+                                                        <label for="">
+                                                            <input type="checkbox" name="p_s[]" value="<?php echo $value['prospect_source_id']; ?>"/><?php echo $value['source_name']; ?>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Personnel</b>
+                                        </td>
+                                        <td colspan="2">
+                                            <?php foreach($admins as $key => $value) { ?>
+                                                <div class="col-sm-12">
+                                                    <div class="checkbox">
+                                                        <label for="">
+                                                            <input type="checkbox" name="personnel[]" value="<?php echo $value['admin_code']; ?>"/> <?php echo $value['full_name']; ?>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9"><input name="filter_report" type="submit" class="btn btn-success" value="Search" /></div>
+                        <div class="col-sm-offset-3 col-sm-9"><input name="filter_report" type="submit" class="btn btn-sm btn-success" value="Search" /></div>
                     </div>
                     <script type="text/javascript">
                         $(function () {
@@ -243,55 +287,43 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                     </script>
                 </form>
 
-                <hr>
-
-                <!--<div class="row">
-                    <div class="col-sm-12">
-                        <p>All interaction logs that have been added on this platform, can be viewed below.</p>
-                    </div>
-                </div>-->
-
                 <div class="row">
                     <div class="col-sm-12">
-                        <table class="table table-responsive table-striped table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>Client/Customer's Details</th>
-                                <th>Last Conversation Description</th>
-                                <th>All Conversations</th>
-                                <th>Mark As Treated</th>
-                            </tr>
-                            </thead>
-                            <tbody>
                             <?php if(isset($admin_all_logs) && !empty($admin_all_logs)) { foreach ($admin_all_logs as $row){?>
-
-                                <tr>
-                                    <td colspan="4">Personnel: <?php echo $admin_object->get_admin_name_by_code($row['admin_code']); ?></td>
-                                </tr>
+                                <table class="table table-responsive table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Client/Customer's Details</th>
+                                        <th>Last Conversation Description</th>
+                                        <th>All Conversations</th>
+                                        <th>Mark As Treated</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
                                 <tr>
                                     <td>
                                         <?php if($row['log_type'] == '1')
                                         {
                                             $client_details = $obj_customer_care_log->client_details($row['tag']);
                                             $client_details = $client_details[0];
-                                            echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
-                                            echo "<strong>Phone : </strong>".$client_details['phone']."<br/>";
-                                            echo "<strong>Email : </strong>".$client_details['email']."<br/>";
-                                            echo "<strong>Account Number : </strong>".$row['ifx_acc_no']."<br/>";
+                                            echo "Full Name: ".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
+                                            echo "Phone: ".$client_details['phone']."<br/>";
+                                            echo "Email: ".$client_details['email']."<br/>";
+                                            echo "Account Number: ".$row['ifx_acc_no']."<br/>";
                                         }
                                         elseif ($row['log_type'] == '2')
                                         {
                                             $customer_details = $obj_customer_care_log->customer_details($row['tag']);
                                             $customer_details = $customer_details[0];
-                                            echo "<strong>Full Name: </strong>".$customer_details['first_name']." ".$customer_details['other_name']." ".$customer_details['last_name']."<br/>";
-                                            echo "<strong>Phone : </strong>".$customer_details['phone_number']."<br/>";
-                                            echo "<strong>Email : </strong>".$customer_details['email_address']."<br/>";
+                                            echo "Full Name: ".$customer_details['first_name']." ".$customer_details['other_name']." ".$customer_details['last_name']."<br/>";
+                                            echo "Phone: ".$customer_details['phone_number']."<br/>";
+                                            echo "Email: ".$customer_details['email_address']."<br/>";
                                         }
                                         ?>
                                     </td>
                                     <td><?php echo $row['con_desc'] ?></td>
                                     <td>
-                                        <button class="btn btn-info" data-target="#conversations<?php echo $row['log_id']?>" data-toggle="modal"><i class="glyphicon glyphicon-info-sign"></i></button>
+                                        <button class="btn btn-xs btn-info" data-target="#conversations<?php echo $row['log_id']?>" data-toggle="modal"><i class="glyphicon glyphicon-info-sign"></i></button>
                                         <!--Modal - confirmation boxes-->
                                         <div id="conversations<?php echo $row['log_id']?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                             <div class="modal-dialog modal-lg">
@@ -315,18 +347,18 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                                             {
                                                                 $client_details = $obj_customer_care_log->client_details($row['tag']);
                                                                 $client_details = $client_details[0];
-                                                                echo "<strong>Full Name: </strong>".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
-                                                                echo "<strong>Phone : </strong>".$client_details['phone_number']."<br/>";
-                                                                echo "<strong>Email : </strong>".$client_details['email_address']."<br/>";
-                                                                echo "<strong>Account Number : </strong>".$row['ifx_acc_no']."<br/>";
+                                                                echo "Full Name: ".$client_details['first_name']." ".$client_details['middle_name']." ".$client_details['last_name']."<br/>";
+                                                                echo "Phone: ".$client_details['phone']."<br/>";
+                                                                echo "Email: ".$client_details['email']."<br/>";
+                                                                echo "Account Number: ".$row['ifx_acc_no']."<br/>";
                                                             }
                                                             elseif ($row['log_type'] == '2')
                                                             {
                                                                 $customer_details = $obj_customer_care_log->customer_details($row['tag']);
                                                                 $customer_details = $customer_details[0];
-                                                                echo "<strong>Full Name: </strong>".$customer_details['first_name']." ".$customer_details['other_name']." ".$customer_details['last_name']."<br/>";
-                                                                echo "<strong>Phone : </strong>".$customer_details['phone_number']."<br/>";
-                                                                echo "<strong>Email : </strong>".$customer_details['email_address']."<br/>";
+                                                                echo "Full Name: ".$customer_details['first_name']." ".$customer_details['other_name']." ".$customer_details['last_name']."<br/>";
+                                                                echo "Phone: ".$customer_details['phone_number']."<br/>";
+                                                                echo "Email: ".$customer_details['email_address']."<br/>";
                                                             }
                                                             ?>
                                                             <?php
@@ -356,7 +388,7 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                                                         if($row1['status'] == '1'):?>
                                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                                             <input type="hidden" name="log_id" value="<?php echo $row1['log_id']?>">
-                                                                            <button name="process_treated" type="submit" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i></button>
+                                                                            <button name="process_treated" type="submit" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-check"></i></button>
                                                                         </form>
                                                                             <?php endif;?>
                                                                     </td>
@@ -366,7 +398,7 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                                         </table>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger btn-sm">Close!</button>
+                                                        <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger btn-xs">Close!</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -379,15 +411,19 @@ $personnel = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM admin OR
                                 if($row['status'] == '1'):?>
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                             <input type="hidden" name="log_id" value="<?php echo $row['log_id']?>">
-                                            <button name="process_treated" type="submit" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i></button>
+                                            <button name="process_treated" type="submit" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-check"></i></button>
                                         </form>
                                     <?php endif; ?>
                                     </td>
                                 </tr>
-
-                            <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                <tr>
+                                    <td style="font-size: smaller!important;" colspan="4" class="text-muted">Personnel: <?php echo $admin_object->get_admin_name_by_code($row['admin_code']); ?></td>
+                                </tr>
                             </tbody>
                         </table>
+                            <?php } } else { echo "<table class=\"table table-responsive table-striped table-bordered table-hover\">
+                                    <thead><tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr></thead></table>"; } ?>
+
 
                         <?php if(isset($admin_all_logs) && !empty($admin_all_logs)) { ?>
                             <div class="tool-footer text-right">
