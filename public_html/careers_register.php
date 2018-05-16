@@ -221,12 +221,12 @@ $all_states = $system_object->get_all_states();
                                         </select>
                                     </div>
                                 </div>
-
+                                <p class="text-muted" ><strong> Help <i class="fa fa-exclamation"></i></strong> Us Fight Spam.</p>
                                 <div class="form-group">
                                     <label class="control-label col-sm-3" for="recaptcha">&nbsp;</label>
                                     <div class="col-sm-9 col-lg-5 g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div>
                                 </div>
-                                <center class="text-muted" ><strong> Help <i class="fa fa-exclamation"></i></strong> Us Fight Spam.</center>
+
                                 <div class="form-group">
                                     <div class="col-sm-offset-3 col-sm-9"><input name="careers_register" type="submit" class="btn btn-success" value="Submit" /></div>
                                 </div>
