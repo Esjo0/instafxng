@@ -626,4 +626,3 @@ function paginate_array($offset, $array, $benchmark)
     }
     return $result;
 }
-
