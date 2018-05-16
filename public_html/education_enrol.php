@@ -97,6 +97,7 @@ if(isset($_GET['s']) && $_GET['s'] == 1) {
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10"><input name="submit" type="submit" class="btn btn-success" value="Enrol Now" /></div>
                                     </div>
+                                    <center class="text-muted"><strong> Help <i class="fa fa-exclamation"></i></strong> Us Fight Spam.</center>
                                 </form>
                             </div>
                         </div>

@@ -335,11 +335,13 @@ $forum = $db_handle->fetchAssoc($result);
                                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                         </div>
                                         <div class="form-group"><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>
-                                        <div class="form-group">
+                                        <center class="text-muted" ><strong> Help <i class="fa fa-exclamation"></i></strong> Us Fight Spam.
+                                            <div class="form-group">
                                             <button type="submit" name="reserve_seat"
                                                     class="btn btn-default btn-lg">Reserve Your Seat&nbsp;<i
                                                         class="fa fa-chevron-circle-right"></i></button>
                                         </div>
+                                        </center>
                                         <small>All fields are required</small>
                                     </form>
                                 </div>
