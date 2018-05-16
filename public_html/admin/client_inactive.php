@@ -57,6 +57,26 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 }
 $numrows = $db_handle->numRows($query);
 
+$query = "
+SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
+u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+FROM user AS u
+INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+WHERE u.user_code NOT IN (
+  SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
+  u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+  FROM trading_commission AS td
+  INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+  INNER JOIN user AS u ON ui.user_code = u.user_code
+  INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+  INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+  WHERE date_earned > DATE_SUB(NOW(), INTERVAL {$period} MONTH)
+  GROUP BY u.email
+  ) GROUP BY u.email ORDER BY u.created DESC
+
+";
+
 // For search, make rows per page equal total rows found, meaning, no pagination
 // for search results
 if (isset($_POST['search_text'])) {

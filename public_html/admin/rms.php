@@ -1,6 +1,7 @@
 <?php
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()){    redirect_to("login.php");}
+
 if(isset($_POST['post_comment']))
 {
     $comment = $db_handle->sanitizePost(trim($_POST['comment']));
@@ -8,8 +9,30 @@ if(isset($_POST['post_comment']))
     $new_comment = $obj_rms->set_report_comment($report_id, $comment, $_SESSION['admin_unique_code']);
     $new_comment ? $message_success = "New comment added" : $message_error = "Operation failed";
 }
-$pending_reports = $obj_rms->get_past_reports($_SESSION['admin_unique_code']);
 $targets = $obj_rms->get_reportees_targets($_SESSION['admin_unique_code']);
+
+if(isset($_POST['selection'])) {$_SESSION['selection'] = $_POST['selection'];}
+if(empty($_SESSION['selection'])){$_SESSION['selection'] = 'p_r_php';}
+if(isset($_POST['extra']) && !empty($_POST['extra'])){redirect_to('rms.php'.$_POST['extra']);}
+$selection = $_SESSION['selection'];
+
+
+if(isset($_POST["process"]))
+{
+    $result = $obj_rms->set_reviewers($_POST['admin_code'], implode(',', $_POST['reviewers']));
+    if($result){$message_success = "Operation Successful.";}
+    else{$message_error = "Sorry the operation failed. Please try again.";}
+}
+
+if(isset($_POST['process_target']))
+{
+    $title = $db_handle->sanitizePost(trim($_POST['title']));
+    $description = $db_handle->sanitizePost(trim($_POST['description']));
+    $window_period = $db_handle->sanitizePost(trim($_POST['from_date']))." * ".$db_handle->sanitizePost(trim($_POST['to_date']));
+    $reportees = implode(',', $_POST['reportees']);
+    $new_target = $obj_rms->set_target($title, $description, $window_period, $_SESSION['admin_unique_code'], $reportees);
+    $new_target ? $message_success = "New target created." : $message_error = "Opertion Failed. Please try again.";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,9 +72,70 @@ $targets = $obj_rms->get_reportees_targets($_SESSION['admin_unique_code']);
         <link href="//jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="../css/hunterPopup.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script>function resizeIframe(obj){obj.style.height = obj.contentWindow.document.body.scrollHeight+'px';}</script>
+        <script type="text/javascript">
+            tinyMCE.init({
+                selector: "textarea#content",
+                height: 500,
+                theme: "modern",
+                relative_urls: false,
+                remove_script_host: false,
+                convert_urls: true,
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "template paste textcolor colorpicker textpattern "
+                ],
+                toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                toolbar2: "| print preview media | forecolor backcolor emoticons",
+                image_advtab: true,
+                external_filemanager_path: "../filemanager/",
+                filemanager_title: "Instafxng Filemanager"
+            });
+        </script>
         <script>
-            function resizeIframe(obj) {
-                obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+            function formatFileSize(bytes)
+            {
+                if(bytes == 0) return '0 Bytes';
+                var k = 1000,
+                    dm = 1,
+                    sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                    i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            }
+            function add_file_to_table(file_input, file_table)
+            {
+                var file_selector = document.getElementById(file_input);
+                var file_list = document.getElementById(file_table);
+                var i, j;
+                for (i = 0; i < file_selector.files.length; ++i)
+                {
+                    j = file_selector.files[i].name;
+                    var row = file_list.insertRow(0);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    cell1.innerHTML = i + 1;
+                    cell2.innerHTML = file_selector.files[i].name;
+                    cell3.innerHTML = formatFileSize(file_selector.files[i].size);
+                }
+            }
+        </script>
+        <script>
+            function show_form(div)
+            {
+                var x = document.getElementById(div);
+                if (x.style.display === 'none')
+                {
+                    x.style.display = 'block';
+                    document.getElementById('trigger').innerHTML = '<i class="glyphicon glyphicon-arrow-up"></i>';
+                }
+                else
+                {
+                    x.style.display = 'none';
+                    document.getElementById('trigger').innerHTML = '<i class="glyphicon glyphicon-arrow-down"></i>';
+                }
             }
         </script>
     </head>
@@ -88,15 +172,22 @@ $targets = $obj_rms->get_reportees_targets($_SESSION['admin_unique_code']);
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href="rms_settings.php">
+                                        <a onclick="document.getElementById('p_r_php').click();" href="javascript:void(0);">
                                             <div class="panel-footer">
                                                 <span class="pull-left">Manage Personal Reports</span>
                                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                                 <div class="clearfix"></div>
                                             </div>
                                         </a>
+                                        <div style="display: none;">
+                                            <form role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                                <button name="selection" id="p_r_php" value="p_r_php" type="submit"></button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
+                                <?php var_dump(explode(',',$_SESSION['user_privilege'])); ?>
+                                <?php if(in_array(254, explode(',',$_SESSION['user_privilege']))): ?>
                                 <div class="col-sm-3">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
@@ -109,15 +200,22 @@ $targets = $obj_rms->get_reportees_targets($_SESSION['admin_unique_code']);
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href="rms_settings.php">
+                                        <a onclick="document.getElementById('s_r_php').click();" href="javascript:void(0);">
                                             <div class="panel-footer">
                                                 <span class="pull-left">Manage Staff Reports</span>
                                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                                 <div class="clearfix"></div>
                                             </div>
                                         </a>
+                                        <div style="display: none;">
+                                            <form role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                                <button name="selection" id="s_r_php" value="s_r_php" type="submit"></button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
+                                <?php endif; ?>
+                                <?php if(in_array(252, explode(',',$_SESSION['user_privilege']))): ?>
                                 <div class="col-sm-3">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
@@ -130,15 +228,22 @@ $targets = $obj_rms->get_reportees_targets($_SESSION['admin_unique_code']);
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href="rms_settings.php">
+                                        <a onclick="document.getElementById('s_t_php').click();" href="javascript:void(0);">
                                             <div class="panel-footer">
                                                 <span class="pull-left">Manage Staff Targets</span>
                                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                                 <div class="clearfix"></div>
                                             </div>
                                         </a>
+                                        <div style="display: none;">
+                                            <form role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                                <button name="selection" id="s_t_php" value="s_t_php" type="submit"></button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
+                                <?php endif; ?>
+                                <?php if(in_array(251, explode(',',$_SESSION['user_privilege']))): ?>
                                 <div class="col-sm-3">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
@@ -151,15 +256,21 @@ $targets = $obj_rms->get_reportees_targets($_SESSION['admin_unique_code']);
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href="rms_settings.php">
+                                        <a onclick="document.getElementById('s_php').click();" href="javascript:void(0);">
                                             <div class="panel-footer">
                                                 <span class="pull-left">Manage Report Settings</span>
                                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                                 <div class="clearfix"></div>
                                             </div>
                                         </a>
+                                        <div style="display: none;">
+                                            <form role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                                <button name="selection" id="s_php" value="s_php" type="submit"></button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
+                                <?php endif; ?>
                         </div></div>
                     </div>
                     <div class="section-tint super-shadow">
@@ -167,11 +278,11 @@ $targets = $obj_rms->get_reportees_targets($_SESSION['admin_unique_code']);
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <?php
-                                $p_r_php = true;
-                                if($p_r_php) { include_once 'views/rms/personal_reports.php'; }
-                                if($s_r_php) { include_once 'views/rms/staff_reports.php'; }
-                                if($s_t_php) { include_once 'views/rms/staff_targets.php'; }
-                                if($r_s_php) { include_once ''; }
+                                if($selection == 'p_r_php') {include_once 'views/rms/personal_reports.php';}
+                                if($selection == 's_r_php') {include_once 'views/rms/staff_reports.php';}
+                                if($selection == 's_t_php') {include_once 'views/rms/staff_targets.php';}
+                                if($selection == 's_php') {include_once 'views/rms/settings.php';}
+                                if($selection == 'n_r_php') {include_once 'views/rms/new_report.php';}
                                 ?>
                             </div>
                         </div>

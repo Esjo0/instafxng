@@ -67,6 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else if ($venue == "Ajah Office") {
                 $chosen_venue = "Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.";
             }
+
+            $salute_name = !empty($first_name) ? $first_name : $last_name;
+
             $subject = "Instafxng Forex Traders Forum";
             $body =
 <<<MAIL
@@ -75,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $first_name,</p>
+            <p>Dear $salute_name,</p>
 
             <p>Thank you for reserving a seat at the next Forex Traders Forum.</p>
 
@@ -134,7 +137,7 @@ MAIL;
 
 $current_month = date("m");
 $current_day = date("d");
-$query = "SELECT * FROM forum_schedule WHERE ((MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) = $current_day) OR (MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) >= $current_day) OR MONTH(scheduled_date) = ($current_month+1) OR MONTH(scheduled_date) = ($current_month)) ORDER BY scheduled_date DESC LIMIT 1";
+$query = "SELECT * FROM forum_schedule WHERE ((MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) = $current_day) OR (MONTH(scheduled_date) = $current_month AND DAY(scheduled_date) >= $current_day) OR MONTH(scheduled_date) = ($current_month+1) OR MONTH(scheduled_date) = ($current_month) OR MONTH(scheduled_date) = ($current_month-1)) ORDER BY scheduled_date DESC LIMIT 1";
 $result = $db_handle->runQuery($query);
 $forum = $db_handle->fetchAssoc($result);
 

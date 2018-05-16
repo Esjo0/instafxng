@@ -233,11 +233,11 @@ class clientOperation {
                                 <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
                                 <p>Isn’t this amazing? You bet!</p>
                                 <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
-                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
                                 <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
                                 <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
                                 <p>Super amazing, right? </p>
-                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
                                 <br /><br />
                                 <p>Best Regards,</p>
                                 <p>Mercy,</p>
@@ -277,7 +277,7 @@ MAIL;
             }
             
             if($this->ifx_account_is_duplicate($account_no)) {
-                return false;
+                return false; //TODO: Send a proper message stating that this ifxaccount already exist in the database
             } else {
                 if(isset($my_refferer) && !empty($my_refferer)) {
                     $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no, partner_code) VALUES ('$user_code', '$account_no', '$my_refferer')";
@@ -329,11 +329,11 @@ MAIL;
                                 <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
                                 <p>Isn’t this amazing? You bet!</p>
                                 <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
-                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
                                 <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
                                 <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
                                 <p>Super amazing, right? </p>
-                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
                                 <br /><br />
                                 <p>Best Regards,</p>
                                 <p>Mercy,</p>
@@ -399,11 +399,11 @@ MAIL;
                                 <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
                                 <p>Isn’t this amazing? You bet!</p>
                                 <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
-                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
                                 <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
                                 <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
                                 <p>Super amazing, right? </p>
-                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Bunmi,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
                                 <br /><br />
                                 <p>Best Regards,</p>
                                 <p>Mercy,</p>
@@ -604,7 +604,7 @@ MAIL;
 
         $query = "SELECT ub.bank_acct_name, ub.bank_acct_no, ub.is_active, ub.status,
                 ub.created, b.bank_name, u.phone, GROUP_CONCAT(DISTINCT ui.ifx_acct_no) AS ifx_accounts,
-                CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+                CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code
                 FROM user_bank AS ub
                 INNER JOIN bank AS b ON ub.bank_id = b.bank_id
                 INNER JOIN user AS u ON ub.user_code = u.user_code
@@ -661,7 +661,7 @@ MAIL;
         $query = "SELECT uc.user_credential_id, uc.idcard, uc.passport, uc.signature, uc.doc_status,
                 CONCAT(um.address, SPACE(1), um.city, SPACE(1), s.state) AS full_address, um.user_meta_id,
                 GROUP_CONCAT(DISTINCT ui.ifx_acct_no) AS ifx_accounts,
-                u.phone, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+                u.phone, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code
                 FROM user_credential AS uc
                 LEFT JOIN user_meta AS um ON uc.user_code = um.user_code
                 INNER JOIN state AS s ON um.state_id = s.state_id

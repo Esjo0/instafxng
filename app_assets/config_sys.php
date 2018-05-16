@@ -64,8 +64,7 @@ $client_group_DEFAULT = array(
     "47" => "Last Months New Clients with Accounts",
     "48" => "Last Months New Clients without Accounts and have no Training",
     "49" => "Last Months New Clients without Accounts and have Training",
-    "50" => "Last Months New Trainee Still in course 2 in current month",
-    "51" => "Last Months New Clients not yet funded above $50"
+    "50" => "Last Months New Clients not yet funded above $50"
 );
 $client_group_DESC = array(
     "1" => "*Consist of all clients that have at anytime come into our system.",
@@ -117,6 +116,5 @@ $client_group_DESC = array(
     "47" => "*All clients who came into the system last month and have opened Instaforex accounts",
     "48" => "*All clients who came into the system last month who have NOT opened Instaforex accounts and have not gone through our training ",
     "49" => "*All clients who came into the system last month, have opened Instaforex accounts and have undergone online training",
-    "50" => "*All clients who came into the system last month undergone training and are in course two",
-    "51" => "*All New clients who havn't funded up to $50"
+    "50" => "*All New clients who havn't funded up to $50"
     );

@@ -566,7 +566,7 @@ function date_range($from, $to, $format = 'd/m/Y' )
     $day = 86400;
     $startTime = strtotime($from);
     $endTime = strtotime($to);
-    $numDays = round(($startTime - $endTime) / $day) + 1;
+    $numDays = round(($endTime - $startTime) / $day) + 1;
     $days = array();
     for ($i = 0; $i < $numDays; $i++) {
         $days[] = date($format, ($startTime + ($i * $day)));
@@ -600,3 +600,30 @@ function split_name($full_name)
     }
     return $_name;
 }
+
+function campaign_recipients_log($name, $email, $campaign_id)
+{
+    $date = date('d-m-Y');
+    $time = date('h:i:s A');
+    $filepath = "campaign_mails".DIRECTORY_SEPARATOR.$campaign_id.".txt";
+    if(!file_exists($filepath)){mkdir("campaign_mails");}
+    $new_log = fopen($filepath, 'a');
+    $log = encrypt_ssl($name)."/***/".encrypt_ssl($email)."/***/".encrypt_ssl($date." ".$time);
+    $log = $log."\n";
+    fwrite($new_log, $log);
+    fclose($new_log);
+}
+
+function paginate_array($offset, $array, $benchmark)
+{
+    $count = 0;
+    $result = array();
+    for ($i = $offset; $i < count($array); $i++)
+    {
+        $result[] = $array[$i];
+        $count++;
+        if($count == $benchmark) { break; }
+    }
+    return $result;
+}
+
