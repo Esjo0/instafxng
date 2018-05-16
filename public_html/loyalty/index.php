@@ -197,11 +197,11 @@ if(isset($_POST['sign_up']))
 										</div>
 									</div>
 								</div>
-                                <center style="color: #0d95e8"><strong> Help <i class="fa fa-exclamation"></i></strong> Us Fight Spam.</center>
 								<div class="form-group">
 									<center><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></center>
 								</div>
-								<div class="col-sm-12">
+                                <center class="text-muted"><strong> Help <i class="fa fa-exclamation"></i></strong> Us Fight Spam.</center>
+                                <div class="col-sm-12">
 									<span style="color: #ffffff">*All fields are required</span>
 								</div>
 								<div class="form-group">
