@@ -253,9 +253,25 @@ $logs = $db_handle->fetchAssoc($result);
                                                                             </div>
 
                                                                             <div class="row" style="margin: 15px;">
+                                                                                <div class="col-sm-4"><strong>Created By</strong></div>
+                                                                                <div class="col-sm-8"> <?php
+                                                                                    $admin_code = $row['admin'];
+                                                                                    $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
+                                                                                    $admin_name = $destination_details['first_name'];
+                                                                                    $admin_lname = $destination_details['last_name'];
+                                                                                    echo $admin_name . " " . $admin_lname;?></div>
+                                                                            </div>
+
+                                                                            <div class="row" style="margin: 15px;">
+                                                                                <div class="col-sm-4"><strong>Date Created</strong></div>
+                                                                                <div class="col-sm-8"><?php echo datetime_to_text($row['date']); ?></div>
+                                                                            </div>
+
+                                                                            <div class="row" style="margin: 15px;">
                                                                                 <div class="col-sm-4"><strong>Issue Discription</strong></div>
                                                                                 <div class="col-sm-8"> <?php echo $row['details'];?></div>
                                                                             </div>
+
                                                                         </div>
                                                                         <div class="col-sm-6">
                                                                             <center><p class="btn btn-default"><strong>COMMENTS</strong></p></center>
@@ -297,7 +313,7 @@ $logs = $db_handle->fetchAssoc($result);
                                                         </div>
                                                     </div>
                                                     </td>
-                                                    <td><?php echo datetime_to_text2($row['date']); ?></td>
+                                                    <td><?php echo datetime_to_text($row['date']); ?></td>
                                                 </tr>
                                             <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                             </tbody>
