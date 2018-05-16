@@ -564,7 +564,7 @@ FROM campaign_leads AS CL
 LEFT JOIN user AS U ON CL.email = U.email
 LEFT JOIN user_ifxaccount AS UI ON U.user_code = UI.user_code
 LEFT JOIN trading_commission AS TC ON UI.ifx_acct_no = TC.ifx_acct_no
-WHERE (MONTH(TC.date_earned) BETWEEN 01 AND 12)
+WHERE (MONTH(TC.date_earned) BETWEEN $from_month AND $to_month)
 GROUP BY CL.email";
         if($x == 1) {$result = $db_handle->numRows($query);}
         elseif($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
