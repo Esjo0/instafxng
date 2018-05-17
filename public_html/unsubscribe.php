@@ -97,6 +97,7 @@ Instafxng Webmaster";
                                         <label class="control-label col-sm-2" for="comment">Comment:</label>
                                         <div class="col-sm-10 col-lg-7"><textarea name="comment" class="form-control" rows="5" id="comment" required></textarea></div>
                                     </div>
+                                    <p class="text-muted"><strong> Help <i class="fa fa-exclamation"></i></strong> Us Fight Spam.</p>
                                     <div class="form-group"><div class="col-sm-offset-2 col-sm-10 g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10"><input name="submit" type="submit" class="btn btn-success" value="Unsubscribe" /></div>

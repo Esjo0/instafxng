@@ -92,6 +92,18 @@ if($get_params['x'] == 'edit') {
                                     <input type="hidden" name="credential_id" value="<?php echo encrypt($selected_user_docs['user_credential_id']); ?>" />
                                     <input type="hidden" name="meta_id" value="<?php echo encrypt($selected_user_docs['user_meta_id']); ?>" />
                                     <div class="form-group">
+                                        <label class="control-label col-sm-2" for=""></label>
+                                        <div class="col-sm-10 col-lg-6">
+                                            <p>
+                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($selected_user_docs['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+
+                                            <?php if($client_operation->account_flagged($selected_user_docs['user_code'])) { ?>
+                                                <img class="center-block" src="../images/red-flag.png" alt="" title="This client has an account flagged.">
+                                            <?php } ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="control-label col-sm-2" for="client_name">Client Name:</label>
                                         <div class="col-sm-10 col-lg-6">
                                             <input type="text" name="client_name" class="form-control" id="client_name" value="<?php if(isset($selected_user_docs['full_name'])) { echo $selected_user_docs['full_name']; } ?>" disabled/>

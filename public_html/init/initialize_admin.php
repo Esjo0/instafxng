@@ -1,7 +1,7 @@
 <?php
 // Development settings
 defined('DS') ? NULL : define('DS', DIRECTORY_SEPARATOR);
-defined('SITE_ROOT') ? NULL : define('SITE_ROOT', 'C:'.DS.'wamp64'.DS.'www'.DS.'instafxngwebsite_master');
+defined('SITE_ROOT') ? NULL : define('SITE_ROOT', 'C:'.DS.'wamp64'.DS.'www'.DS.'instafxngwebsite');
 defined('LIB_PATH') ? NULL : define('LIB_PATH', SITE_ROOT.DS.'app_assets');
 
 //// Production settings
@@ -37,9 +37,13 @@ require_once(LIB_PATH.DS."class_loyalty_point.php");
 require_once(LIB_PATH.DS."class_support_emails.php");
 require_once(LIB_PATH.DS."class_accounting_system.php");
 require_once(LIB_PATH.DS."class_facility.php");
+require_once(LIB_PATH.DS."class_reporting_system.php");
+require_once(LIB_PATH.DS."class_access_controller.php");
 //Loyalty/Training Campaign Controller
 require_once(LIB_PATH.DS."class_loyalty_training_campaign.php");
-//Loyalty/Training Campaign Controller
+//Easter Promo Controller File
 require_once(LIB_PATH.DS."class_easter_promo.php");
 
 if(!endsWith(getCurrentURL(), "push_notification_server.php")){add_activity_log();}
+$obj_access_control->validate_access();
+

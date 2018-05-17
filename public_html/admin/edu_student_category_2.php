@@ -14,7 +14,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id IN (1, 2, 3, 4) AND uefp.user_code IS NULL AND u.user_code NOT IN
+          WHERE ueel.lesson_id IN (1, 2, 3, 5) AND uefp.user_code IS NULL AND u.user_code NOT IN
           (
           SELECT u.user_code
           FROM user_edu_exercise_log AS ueel
@@ -22,7 +22,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL
+          WHERE ueel.lesson_id = 4 AND uefp.user_code IS NULL
           ) AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
           GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC ";
 } else {
@@ -33,7 +33,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id IN (1, 2, 3, 4) AND uefp.user_code IS NULL AND u.user_code NOT IN
+          WHERE ueel.lesson_id IN (1, 2, 3, 5) AND uefp.user_code IS NULL AND u.user_code NOT IN
           (
           SELECT u.user_code
           FROM user_edu_exercise_log AS ueel
@@ -41,7 +41,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-          WHERE ueel.lesson_id = 5 AND uefp.user_code IS NULL
+          WHERE ueel.lesson_id = 4 AND uefp.user_code IS NULL
           )
           GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC ";
 }

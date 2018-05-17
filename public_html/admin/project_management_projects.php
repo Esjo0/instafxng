@@ -166,7 +166,7 @@ $projects = $db_handle->fetchAssoc($result);
                                     </div>
                                     <!-- Modal-- Add New Project -->
                                     <div id="add_project" class="modal fade" role="dialog">
-                                        <div class="modal-dialog">
+                                        <div class="modal-dialog modal-lg">
                                             <!-- Modal content-->
                                             <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                 <div class="modal-content">
