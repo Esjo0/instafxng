@@ -30,7 +30,7 @@ $admin_members = $admin_object->get_all_admin_member();
                                         <?php } ?>
                                     </div><br/><br/>
                                     <div class="col-sm-12">
-                                        <button name="process" type="submit" class="btn btn-sm btn-success btn-group-justified">Update</button>
+                                        <button name="process_settings" type="submit" class="btn btn-sm btn-success btn-group-justified">Update</button>
                                     </div>
                                 </form>
                             </div>
