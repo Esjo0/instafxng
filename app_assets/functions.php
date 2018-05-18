@@ -108,7 +108,15 @@ function date_to_text($datetime="") {
   return strftime("%b %d, %Y", $unixdatetime);
 }
 
+function datetime_to_textday($datetime="") {
+    $timestamp = strtotime($datetime);
+    return date("D", $timestamp);
+}
 
+function datetime_to_texthour($datetime="") {
+    $timestamp = strtotime($datetime);
+    return date("G", $timestamp);
+}
 // calculate time since an action occured
 function time_since($since) {
     $since = time() - strtotime($since);
