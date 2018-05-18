@@ -98,7 +98,7 @@ ksort($_past_reports);
 <table class="table table-responsive table-striped table-bordered table-hover">
     <thead><tr><th>Report</th><th>Created</th></tr></thead>
     <tbody>
-    <?php if(isset($_past_reports) && !empty($_past_reports)) { foreach ($_past_reports as $row) { ?>
+    <?php if(isset($_past_reports) && !empty($_past_reports)) {  foreach ($_past_reports as $row) {?>
         <tr>
             <td>
                 <a href="javascript:void(0);" data-target="#details_<?php echo $row['report_id']?>" data-toggle="modal"><b><?php $window_period = explode('*', $row['window_period']); echo date_to_text($window_period[0])."     <i class='glyphicon glyphicon-arrow-right'></i>     ".date_to_text($window_period[1]) ?></b></a>
@@ -108,7 +108,7 @@ ksort($_past_reports);
                             <form data-toggle="validator" role="form" method="post" action="">
                                 <div class="modal-header">
                                     <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                    <h4 class="modal-title"><?php echo $row['title']?></h4>
+                                    <h4 class="modal-title">Report Deatils</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">

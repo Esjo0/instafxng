@@ -16,8 +16,28 @@ if(empty($_SESSION['selection'])){$_SESSION['selection'] = 'p_r_php';}
 if(isset($_POST['extra']) && !empty($_POST['extra'])){redirect_to('rms.php'.$_POST['extra']);}
 $selection = $_SESSION['selection'];
 
+if(isset($_POST['process_report']))
+{
+    $window_period = $db_handle->sanitizePost(trim($_POST['from_date']))."*".$db_handle->sanitizePost(trim($_POST['to_date']));
+    $report = htmlspecialchars_decode(stripslashes(trim($_POST['report'])));
+    $target_id = $db_handle->sanitizePost(trim($_POST['target_id']));
+    $new_report = $obj_rms->set_report($window_period, $_SESSION['admin_unique_code'], $report, $target_id);
+    if(count($_FILES['attachments']['name']))
+    {
+        foreach ($_FILES['attachments']['name'] as $key => $value)
+        {
+            $tmp_name = $_FILES['attachments']["tmp_name"][$key];
+            $name = strtolower($_FILES['attachments']["name"][$key]);
+            $dirname = "report_attachments".DIRECTORY_SEPARATOR.$new_report['report_id'];
+            if(!is_file("report_attachments")){mkdir("report_attachments");}
+            if(!is_file($dirname)){mkdir($dirname);}
+            move_uploaded_file($tmp_name, $dirname.DIRECTORY_SEPARATOR.$name);
+        }
+    }
+    $new_report['status'] ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
+}
 
-if(isset($_POST["process"]))
+if(isset($_POST["process_settings"]))
 {
     $result = $obj_rms->set_reviewers($_POST['admin_code'], implode(',', $_POST['reviewers']));
     if($result){$message_success = "Operation Successful.";}
@@ -45,10 +65,9 @@ if(isset($_POST['process_target']))
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
-        <script src="tinymce/tinymce.min.js"></script>
         <script type="text/javascript">
             tinyMCE.init({
-                selector: "textarea#content",
+                selector: "textarea#report",
                 height: 500,
                 theme: "modern",
                 relative_urls: false,
@@ -73,9 +92,10 @@ if(isset($_POST['process_target']))
         <link rel="stylesheet" type="text/css" href="../css/hunterPopup.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script>function resizeIframe(obj){obj.style.height = obj.contentWindow.document.body.scrollHeight+'px';}</script>
+        <script src="tinymce/tinymce.min.js"></script>
         <script type="text/javascript">
             tinyMCE.init({
-                selector: "textarea#content",
+                selector: "textarea#report",
                 height: 500,
                 theme: "modern",
                 relative_urls: false,
@@ -85,16 +105,16 @@ if(isset($_POST['process_target']))
                     "advlist autolink lists link image charmap print preview hr anchor pagebreak",
                     "searchreplace wordcount visualblocks visualchars code fullscreen",
                     "insertdatetime media nonbreaking save table contextmenu directionality",
-                    "template paste textcolor colorpicker textpattern "
+                    "emoticons template paste textcolor colorpicker textpattern responsivefilemanager"
                 ],
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-                toolbar2: "| print preview media | forecolor backcolor emoticons",
+                toolbar2: "| responsivefilemanager print preview media | forecolor backcolor emoticons",
                 image_advtab: true,
                 external_filemanager_path: "../filemanager/",
-                filemanager_title: "Instafxng Filemanager"
+                filemanager_title: "Instafxng Filemanager",
+//                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
+
             });
-        </script>
-        <script>
             function formatFileSize(bytes)
             {
                 if(bytes == 0) return '0 Bytes';
@@ -121,8 +141,6 @@ if(isset($_POST['process_target']))
                     cell3.innerHTML = formatFileSize(file_selector.files[i].size);
                 }
             }
-        </script>
-        <script>
             function show_form(div)
             {
                 var x = document.getElementById(div);
@@ -186,8 +204,7 @@ if(isset($_POST['process_target']))
                                         </div>
                                     </div>
                                 </div>
-                                <?php var_dump(explode(',',$_SESSION['user_privilege'])); ?>
-                                <?php if(in_array(254, explode(',',$_SESSION['user_privilege']))): ?>
+                                <?php if(in_array(254, $_SESSION['user_privilege'])): ?>
                                 <div class="col-sm-3">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
@@ -215,7 +232,7 @@ if(isset($_POST['process_target']))
                                     </div>
                                 </div>
                                 <?php endif; ?>
-                                <?php if(in_array(252, explode(',',$_SESSION['user_privilege']))): ?>
+                                <?php if(in_array(252, $_SESSION['user_privilege'])): ?>
                                 <div class="col-sm-3">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
@@ -243,7 +260,7 @@ if(isset($_POST['process_target']))
                                     </div>
                                 </div>
                                 <?php endif; ?>
-                                <?php if(in_array(251, explode(',',$_SESSION['user_privilege']))): ?>
+                                <?php if(in_array(251, $_SESSION['user_privilege'])): ?>
                                 <div class="col-sm-3">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
