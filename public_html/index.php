@@ -20,7 +20,8 @@ $thisPage = "Home";
         <meta property="og:image" content="images/instaforex-100bonus.jpg" />
         <meta property="og:url" content="https://instafxng.com/" />
         <meta property="og:type" content="website" />
-
+        <script src="https://www.wpiece.com/js/webcomponents.min.js"></script>
+        <link  rel="import" href="http://www.wpiece.com/p/10_26" />
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -100,6 +101,10 @@ $thisPage = "Home";
                 
             </div>
         </div>
+        <floating-banner  where="bottom right" animation="rollIn">
+            <img class="img-responsive" src="https://instafxng.com/imgsource/ramadan.jpg" style="width:140px; border-radius: 50%">
+            <p style=" height: 160px;"></p>
+        </floating-banner>
         <?php require_once 'layouts/footer.php'; ?>
     </body>
 </html>
