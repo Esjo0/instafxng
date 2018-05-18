@@ -101,10 +101,6 @@ $thisPage = "Home";
                 
             </div>
         </div>
-        <floating-banner  where="bottom right" animation="rollIn">
-            <img class="img-responsive" src="https://instafxng.com/imgsource/ramadan.jpg" style="width:140px; border-radius: 50%">
-            <p style=" height: 160px;"></p>
-        </floating-banner>
         <?php require_once 'layouts/footer.php'; ?>
     </body>
 </html>
