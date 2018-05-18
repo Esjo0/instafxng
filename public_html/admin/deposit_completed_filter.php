@@ -65,6 +65,40 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
     $result = $db_handle->runQuery($query);
     $completed_deposit_requests_filter_export = $db_handle->fetchAssoc($result);
 
+    foreach($completed_deposit_requests_filter_export AS $count){
+        $week_day = datetime_to_textday($count['order_complete_time']);
+        var_dump($week_day);
+        var_dump($count['order_complete_time']);
+        if( ($week_day == Mon) || ($week_day == Tue) || ($week_day == Wed) || ($week_day == Thu) || ($week_day == Fri)){
+            $check_hour = datetime_to_texthour($count['order_complete_time']);
+            if($check_hour >= 9 && $check_hour <= 17){
+                $start  = date_create($count['client_notified_date']);
+                $end 	= date_create($count['order_complete_time']);
+                $diff  	= date_diff( $start, $end );
+                var_dump($diff->i);
+                $week_day_resp_time_working_hour = $week_day_resp_time_working_hour + ($diff->d * 1440) + ($diff->h * 60) + $diff->i;
+                $x = $x + 1;
+                var_dump($week_day_resp_time_working_hour);
+            }elseif ($check_hour > 17 && $check_hour < 9){
+                $start  = date_create($count['client_notified_date']);
+                $end 	= date_create($count['order_complete_time']);
+                $diff  	= date_diff( $start, $end );
+                var_dump($diff->i);
+                $week_day_resp_time_off_working_hour = $week_day_resp_time_off_working_hour + ($diff->d * 1440) + ($diff->h * 60) + $diff->i;
+                var_dump($week_day_resp_time_off_working_hour);
+                $y = $y + 1;
+            }
+        }elseif(($week_day == Sun) || ($week_day == Sat) ){
+            $start  = date_create($count['client_notified_date']);
+            $end 	= date_create($count['order_complete_time']);
+            $diff  	= date_diff( $start, $end );
+            var_dump($diff->i);
+            $week_end_resp_time = $week_end_resp_time + ($diff->d * 1440) + ($diff->h * 60) + $diff->i;
+            var_dump($week_end_resp_time);
+            $z = $z + 1;
+        }
+    }
+
     $numrows = $db_handle->numRows($query);
 
     $rowsperpage = 20;
@@ -93,6 +127,7 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
     $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
     $result = $db_handle->runQuery($query);
     $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
+
 
     $query = "SELECT SUM(ud.real_naira_confirmed) AS total_real_naira_confirmed,
               SUM(ud.real_dollar_equivalent) AS total_real_dollar_equivalent
@@ -309,7 +344,27 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                     <h5>Deposit transactions between <strong><?php echo $from_date . " and " . $to_date; ?> </strong></h5>
                                     <p><strong>Amount Paid: </strong>&#8358; <?php echo number_format($stats['total_real_naira_confirmed'], 2, ".", ","); ?></p>
                                     <p><strong>Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_real_dollar_equivalent'], 2, ".", ","); ?></p>
-
+                                    <table class="table table-responsive table-striped table-bordered table-hover">
+                                        <tr>
+                                            <th>Period
+                                            </th>
+                                            <th>
+                                                Average Response Time(Minutes)
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td>Week Day Working Hours</td>
+                                            <td><?php echo intval($week_day_resp_time_working_hour/$x)."mins";?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Week Day Off Working Hours</td>
+                                            <td><?php echo intval($week_day_resp_time_off_working_hour/$y);?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Week End</td>
+                                            <td><?php echo intval($week_end_resp_time/$z);?></td>
+                                        </tr>
+                                    </table>
                                     <div>
                                         <p>Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                     </div>
@@ -365,7 +420,28 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                         <h5>Deposit transactions between <strong><?php echo $from_date." and ".$to_date; ?> </strong></h5>
                                         <p><strong>Amount Paid: </strong>&#8358; <?php echo number_format($stats['total_real_naira_confirmed'], 2, ".", ","); ?></p>
                                         <p><strong>Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_real_dollar_equivalent'], 2, ".", ","); ?></p>
-
+                                        <table class="responsive">
+                                            <tr>
+                                                <th>
+                                                    Type
+                                                </th>
+                                                <th>
+                                                    Average Response Time(Minutes)
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td>Week Day Working Hours</td>
+                                                <td><?php echo intval($week_day_resp_time_working_hour/$x);?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Week Day Off Working Hours</td>
+                                                <td><?php echo intval($week_day_resp_time_off_working_hour/$y);?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Week End</td>
+                                                <td><?php echo intval($week_end_resp_time/$z);?></td>
+                                            </tr>
+                                        </table>
                                         <div class="tool-footer text-right">
                                             <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                         </div>

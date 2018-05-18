@@ -25,8 +25,9 @@ if(strlen($news_id) > 4) {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
-    <head>
+<html lang="en">    return date("D", $timestamp);
+
+<head>
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
