@@ -67,34 +67,26 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
 
     foreach($completed_deposit_requests_filter_export AS $count){
         $week_day = datetime_to_textday($count['order_complete_time']);
-        var_dump($week_day);
-        var_dump($count['order_complete_time']);
         if( ($week_day == Mon) || ($week_day == Tue) || ($week_day == Wed) || ($week_day == Thu) || ($week_day == Fri)){
             $check_hour = datetime_to_texthour($count['order_complete_time']);
             if($check_hour >= 9 && $check_hour <= 17){
-                $start  = date_create($count['client_notified_date']);
+                $start  = date_create($count['created']);
                 $end 	= date_create($count['order_complete_time']);
                 $diff  	= date_diff( $start, $end );
-                var_dump($diff->i);
                 $week_day_resp_time_working_hour = $week_day_resp_time_working_hour + ($diff->d * 1440) + ($diff->h * 60) + $diff->i;
                 $x = $x + 1;
-                var_dump($week_day_resp_time_working_hour);
             }elseif ($check_hour > 17 && $check_hour < 9){
-                $start  = date_create($count['client_notified_date']);
+                $start  = date_create($count['created']);
                 $end 	= date_create($count['order_complete_time']);
                 $diff  	= date_diff( $start, $end );
-                var_dump($diff->i);
                 $week_day_resp_time_off_working_hour = $week_day_resp_time_off_working_hour + ($diff->d * 1440) + ($diff->h * 60) + $diff->i;
-                var_dump($week_day_resp_time_off_working_hour);
                 $y = $y + 1;
             }
         }elseif(($week_day == Sun) || ($week_day == Sat) ){
-            $start  = date_create($count['client_notified_date']);
+            $start  = date_create($count['created']);
             $end 	= date_create($count['order_complete_time']);
             $diff  	= date_diff( $start, $end );
-            var_dump($diff->i);
             $week_end_resp_time = $week_end_resp_time + ($diff->d * 1440) + ($diff->h * 60) + $diff->i;
-            var_dump($week_end_resp_time);
             $z = $z + 1;
         }
     }
@@ -358,11 +350,11 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                         </tr>
                                         <tr>
                                             <td>Week Day Off Working Hours</td>
-                                            <td><?php echo intval($week_day_resp_time_off_working_hour/$y);?></td>
+                                            <td><?php echo intval($week_day_resp_time_off_working_hour/$y)."mins";?></td>
                                         </tr>
                                         <tr>
                                             <td>Week End</td>
-                                            <td><?php echo intval($week_end_resp_time/$z);?></td>
+                                            <td><?php echo intval($week_end_resp_time/$z)."mins";?></td>
                                         </tr>
                                     </table>
                                     <div>
