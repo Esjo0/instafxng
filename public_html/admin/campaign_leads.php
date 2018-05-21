@@ -74,7 +74,6 @@ ORDER BY campaign_leads.created DESC";
 FROM campaign_leads, user 
 WHERE campaign_leads.email = '$search'
 ORDER BY campaign_leads.created DESC";
-        var_dump($query);
         $msg = "Results For $search";
         break;
     default:
