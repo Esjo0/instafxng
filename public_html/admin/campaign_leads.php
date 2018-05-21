@@ -72,9 +72,9 @@ ORDER BY campaign_leads.created DESC";
         $search = $db_handle->sanitizePost($_POST['search']);
         $query = "SELECT *, user.user_code, campaign_leads.phone 
 FROM campaign_leads, user 
-WHERE campaign_leads.email = '$search'
+WHERE campaign_leads.email = '$search' AND campaign_leads.email = user.email
 ORDER BY campaign_leads.created DESC";
-        $msg = "Results For $search";
+        $msg = "Results For ".$search;
         break;
     default:
         $query = "SELECT *, user.user_code, campaign_leads.phone 
