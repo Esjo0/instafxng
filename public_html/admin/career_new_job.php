@@ -67,6 +67,7 @@ if($get_params['x'] == 'edit') {
                 image_advtab: true,
                 external_filemanager_path: "filemanager/",
                 filemanager_title: "Instafxng Filemanager",
+                browser_spellcheck: true,
 //                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
 
             });

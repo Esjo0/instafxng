@@ -282,6 +282,7 @@ $project_reports = $db_handle->fetchAssoc($result);
             image_advtab: true,
             external_filemanager_path: "../filemanager/",
             filemanager_title: "Instafxng Filemanager",
+            browser_spellcheck: true,
 //                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
 
         });
