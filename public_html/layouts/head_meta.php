@@ -44,3 +44,5 @@
                 <?php include 'js/class_signal.js';?>
         </script>
         <link rel="stylesheet" href="css/signal_table_context.css">
+        <link href="layouts/ratings_styles/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
+        <script src="layouts/ratings_styles/js/star-rating.js" type="text/javascript"></script>

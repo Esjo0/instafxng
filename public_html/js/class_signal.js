@@ -1,7 +1,5 @@
 function Signal()
 {
-    this.naira_sign = "&#8358;";
-
     this.time_window = 60;//60 mins
 
     this.formatDate = function (date){
@@ -29,7 +27,9 @@ function Signal()
     };
 
     this.getSignals = function (id){
-        var query = "SELECT signal_id, symbol, order_type, price, take_profit, stop_loss, trigger_date, trend, trigger_time, signal_daily.created, CONCAT(trigger_date, SPACE(1), trigger_time) as triger FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id ORDER BY triger ASC ";
+        var d = new Date();
+        var date = d.getFullYear()+'-'+(d.getMonth() + 1)+'-'+d.getDate();
+        var query = "SELECT signal_id, order_type, price, take_profit, stop_loss, CONCAT(trigger_date, SPACE(1), trigger_time) AS triger, trigger_time, trend, note, signal_symbol.symbol AS currency_pair FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id AND trigger_date = '"+date+"' ORDER BY triger ASC";
         var type = "1";
         this.ajax_request(id,query, type);
     };
@@ -37,8 +37,8 @@ function Signal()
     this.getRandomInt = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
-    this.ajax_request = function (response_div, query, type)
-    {
+
+    this.ajax_request = function (response_div, query, type) {
         var XMLHttpRequestObject = false;
 
         if (window.XMLHttpRequest)
@@ -61,7 +61,8 @@ function Signal()
                     //document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;
                     //return XMLHttpRequestObject.responseText;
                     var json = XMLHttpRequestObject.responseText;
-                    signal.showSignal(json, response_div);
+                    if(type == '1') { signal.showSignal(json, response_div);}
+                    if(type == '2') { signal.DisplaySignal(json);}
                 }
             };
 
@@ -135,31 +136,67 @@ function Signal()
         var table = document.getElementById(id);
         table.innerHTML = '';
         var signal_array = JSON.parse(json);
-        localStorage.setItem("signal_array", JSON.stringify(json));
+        //localStorage.setItem("signal_array", JSON.stringify(json));
         for(var x in signal_array)
         {
             var row = table.insertRow(0);
             row.classList += this.get_Context(signal_array[x]['trigger_time']);
-            row.setAttribute('data-target', '#signal_display');
-            row.setAttribute('data-toggle', 'modal');
+            row.setAttribute("data-toggle", 'modal');
+            row.setAttribute("id", signal_array[x]['signal_id']);
+            row.setAttribute("data-target", '#signal_display');
+            var id_ = signal_array[x]['signal_id'];
+            row.addEventListener("click", signal.getSignal(id_));
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
 
-            cell1.innerHTML = signal_array[x]['symbol'];
+            cell1.innerHTML = signal_array[x]['currency_pair'];
             cell3.innerHTML = this.get_OrderType(signal_array[x]['order_type']);
             cell4.innerHTML = this.get_Trend(signal_array[x]['trend']);
             cell5.innerHTML = this.formatTime(signal_array[x]['trigger_time']);
         }
-
     };
 
-    this.DisplaySignal = function (id){
-        var signal_array = localStorage.getItem('signal_array');
-        signal_array = JSON.parse(signal_array);
+    this.getSignal = function (id)
+    {
+        document.getElementById('preloader').style.display = 'block';
+        var query = "SELECT order_type, price, take_profit, stop_loss, CONCAT(trigger_date, SPACE(1), trigger_time) AS triger, trend, note, signal_symbol.symbol AS currency_pair FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id AND signal_id = '"+id+"'";
+        var type = "2";
+        this.ajax_request(id,query, type);
 
     };
+    this.DisplaySignal = function (json)
+    {
+        document.getElementById('preloader').style.display = 'none';
+        var table = document.getElementById('sig_content');
+        table.innerHTML = '';
+        console.log(json);
+        var signal_array = JSON.parse(json);
+        var order_type  = this.get_OrderType(signal_array[0]['order_type']);
+        var content = "<table class='table table-bordered table-responsive'>"+
+                        "<tbody>"+
+                            "<tr>"+
+                                "<td><b>ORDER</b></td><td>"+order_type+"</td>"+
+                                "<td rowspan='5'>"+
+                                        "<center><b style='color: green!important; font-size: 150px'><i class='glyphicon glyphicon-arrow-up'></i></b></center>"+
+                                    "</td>"+
+                            "</tr>"+
+                            "<tr><td><b>PRICE</b></td><td>"+signal_array[0]['order_type']+"</td></tr>"+
+                            "<tr><td><b>TAKE PROFIT</b></td><td>"+signal_array[0]['take_profit']+"</td></tr>"+
+                            "<tr><td><b>STOP LOSS</b></td><td>"+signal_array[0]['stop_loss']+"</td></tr>"+
+                            "<tr><td><b>TRIGGER DATE & TIME</b></td><td>"+signal_array[0]['triger']+"</td></tr>"+
+                            "<tr><td><b>KEYNOTE</b></td><td colspan='2'>"+signal_array[0]['note']+"</td></tr>"+
+                            "<tr><td><b>FEEDBACK</b></td>"+
+                                "<td colspan='2'>"+
+                                    "<input id='input-1' name='rating' class='rating rating-sm rating-loading rating-sm' data-min='0' data-max='5' data-step='1' required>"+
+                                    "<br/>"+
+                                    "<textarea placeholder='Comments (If Any)' rows='2' id='comments' name='comments' class='form-control'></textarea>"+
+                                "</td>"+
+                            "</tr></tbody></table>";
+        table.innerHTML = content;
+    };
+
 }
 var signal = new Signal();
