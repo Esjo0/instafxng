@@ -179,7 +179,7 @@ $client_operation = new clientOperation();
                                     <button class="btn btn-sm <?php if($_SESSION['cat'] == '2'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="2">All Training Leads</button>
                                     <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All ILPR Leads</button>
                                             <form method="post" action="campaign_leads.php" data-toggle="validator" class="form-vertical" role="form">
-                                                <input type="text" class="input" name="search">
+                                                <input type="text" class="input" name="search" placeholder="Enter email address">
                                                 <button class="btn btn-sm <?php if($_SESSION['cat'] == '4'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="4">
                                                     <i class="fa fa-search"></i>
                                                 </button>
