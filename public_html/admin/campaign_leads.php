@@ -68,6 +68,14 @@ WHERE campaign_leads.email = user.email
 ORDER BY campaign_leads.created DESC";
         $msg = "all ILPR leads";
         break;
+    case '4':
+        $search = $db_handle->sanitizePost($_POST['search']);
+        $query = "SELECT *, user.user_code, campaign_leads.phone 
+FROM campaign_leads, user 
+WHERE campaign_leads.email = '$search'
+ORDER BY campaign_leads.created DESC";
+        $msg = "Results For $search";
+        break;
     default:
         $query = "SELECT *, user.user_code, campaign_leads.phone 
 FROM campaign_leads, user 
@@ -164,11 +172,19 @@ $client_operation = new clientOperation();
                             <div class="col-sm-12">
                                 <p>Below is the list of <?php echo $msg; ?>.</p>
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                    <center><div class="input-group-sm">
+                                    <center>
+                                        <div class="input-group-sm">
                                     <button class="btn btn-sm <?php if($_SESSION['cat'] == '1'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="1">All Leads</button>
                                     <button class="btn btn-sm <?php if($_SESSION['cat'] == '2'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="2">All Training Leads</button>
                                     <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All ILPR Leads</button>
-                                    </div></center>
+                                            <form method="post" action="campaign_leads.php" data-toggle="validator" class="form-vertical" role="form">
+                                                <input type="text" class="input" name="search" placeholder="Enter email address">
+                                                <button class="btn btn-sm <?php if($_SESSION['cat'] == '4'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="4">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </form>
+                                    </div>
+                                    </center>
                                     <br/><br/>
                                 </form>
                                 <table class="table table-striped table-bordered table-hover">
