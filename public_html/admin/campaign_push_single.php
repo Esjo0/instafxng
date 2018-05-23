@@ -27,7 +27,8 @@ if(!$all_campaign_category) {
 }
 
 $token = array('fJfzNVQiDxo:APA91bHgB1NIlohlDalkIZP3QtmLTkyrFhJ27NDlYwySeQcCH9erfyvw-2w-NBrreMUpqE0G3_96nTJsPM0od7V9KQDCdJio6zjPPA81V8cXI-MNA3N38k1PsvkY69yQLcgI0oU8ebnP', 
-'dulBaifNd_g:APA91bHAdgQmvmxzlGRZhHp8HkWp588nkgjnwSXMDlKLn8pqmDKUEaA6b6ocOUBCp2LUCAfjSbJe_wB1JePXX5E5vbDZR7j_KuaFVTAR4jpnc_jjjH8SZIJgvdQl9Iyn5rN4o0RJ4cBZ'
+'dulBaifNd_g:APA91bHAdgQmvmxzlGRZhHp8HkWp588nkgjnwSXMDlKLn8pqmDKUEaA6b6ocOUBCp2LUCAfjSbJe_wB1JePXX5E5vbDZR7j_KuaFVTAR4jpnc_jjjH8SZIJgvdQl9Iyn5rN4o0RJ4cBZ',
+'eKZunIkxiss:APA91bEtIInkP8JzFa08Thq8KoGXTA927GycExp8G9rRg06XqYcTd7LRjIEX0ufRJWrIFaLbW1LPl-VGd69Ph_28f8cyg8akUhPpXNxxyROw7lPx_SxnRfCMnvxGrKKy9yWlcikZCcAu'
 );
 $message = date('d-m-Y h:i:s A');
 $new_push = $system_object->send_push($token, $message);
