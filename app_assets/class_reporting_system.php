@@ -59,6 +59,14 @@ class Reporting_System
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
+    public function update_target($target_id, $title, $description, $window_period, $admin_code, $reportees)
+    {
+        global $db_handle;
+        $query = "UPDATE rms_targets SET title = '$title', description = '$description', window_period = '$window_period', admin_code = '$admin_code', reportees = '$reportees' WHERE target_id = $target_id";
+        $db_handle->runQuery($query);
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
     public function get_past_reports($admin_code)
     {
         global $db_handle;

@@ -49,7 +49,8 @@ ksort($_past_reports);
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php if(isset($targets) && !empty($targets)) { foreach ($targets as $row) { $target_details = $obj_rms->get_target_by_id($row); ?>
+                            <?php if(isset($targets) && !empty($targets)) { foreach ($targets as $row) {
+                                $target_details = $obj_rms->get_target_by_id($row); ?>
                                 <tr>
                                     <td>
                                         <a id="a_<?php echo $row; ?>" href="javascript:void(0);"><?php echo $target_details['title'];?></a>
@@ -71,11 +72,11 @@ ksort($_past_reports);
                                     <td><?php $window_period = explode('*', $target_details['window_period']); echo date_to_text($window_period[0])."   <i class='glyphicon glyphicon-arrow-right'></i>   ".date_to_text($window_period[1]) ?></td>
                                     <td><?php echo datetime_to_text($target_details['created'])?></td>
                                     <td>
-                                        <a onclick="document.getElementById('n_r_php1').click();" href="javascript:void(0);" title="Create Report for this target." class="btn btn-sm btn-default"><i class="glyphicon glyphicon-pencil"></i></a>
+                                        <a onclick="document.getElementById('n_r_php1<?php echo $row; ?>').click();" href="javascript:void(0);" title="Create Report for this target." class="btn btn-sm btn-default"><i class="glyphicon glyphicon-pencil"></i></a>
                                         <div style="display: none;">
                                             <form action="" method="post">
                                                 <input type="text" name="extra" value="<?php echo '?t_id='.$row; ?>"/>
-                                                <button name="selection" id="n_r_php1" value="n_r_php" type="submit"></button>
+                                                <button name="selection" id="n_r_php1<?php echo $row; ?>" value="n_r_php" type="submit"></button>
                                             </form>
                                         </div>
                                     </td>
@@ -98,7 +99,7 @@ ksort($_past_reports);
 <table class="table table-responsive table-striped table-bordered table-hover">
     <thead><tr><th>Report</th><th>Created</th></tr></thead>
     <tbody>
-    <?php if(isset($_past_reports) && !empty($_past_reports)) {  foreach ($_past_reports as $row) {?>
+    <?php if(isset($_past_reports) && !empty($_past_reports)) {  foreach ($_past_reports as $row) {$created_date = $row['created']; ?>
         <tr>
             <td>
                 <a href="javascript:void(0);" data-target="#details_<?php echo $row['report_id']?>" data-toggle="modal"><b><?php $window_period = explode('*', $row['window_period']); echo date_to_text($window_period[0])."     <i class='glyphicon glyphicon-arrow-right'></i>     ".date_to_text($window_period[1]) ?></b></a>
@@ -113,13 +114,14 @@ ksort($_past_reports);
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-sm-7">
+                                            <?php $rpt_id = $row['report_id']; ?>
                                             <?php include 'views/rms/read_report.php'?>
                                         </div>
                                         <div class="col-sm-5">
                                             <p class="text-center"><b>COMMENTS</b></p>
                                             <div style="word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
                                                 <?php
-                                                $latest_comments = $obj_rms->get_report_comment($row['report_id']);
+                                                $latest_comments = $obj_rms->get_report_comment($rpt_id);
                                                 if(isset($latest_comments) && !empty($latest_comments)) {
                                                     foreach ($latest_comments as $row1) {
                                                         ?>
@@ -143,7 +145,7 @@ ksort($_past_reports);
                                                 <?php } ?>
                                             </div>
                                             <form  data-toggle="validator" role="form" method="post" action="">
-                                                <input type="hidden" class="form-control" id="report_id" name="report_id" value="<?php echo $row['report_id']; ?>">
+                                                <input type="hidden" class="form-control" id="report_id" name="report_id" value="<?php echo $rpt_id; ?>">
                                                 <div class="form-group">
                                                     <div>
                                                         <textarea placeholder="Your Remark" rows="3" name="comment" type="text" id="comment" class="form-control" required></textarea>
@@ -164,7 +166,7 @@ ksort($_past_reports);
                     </div>
                 </div>
             </td>
-            <td><?php echo datetime_to_text($row['created'])?></td>
+            <td><?php echo datetime_to_text($created_date); ?></td>
         </tr>
     <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
     </tbody>
