@@ -1,15 +1,12 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-require_once("../init/initialize_admin.php");
-require_once("../init/initialize_general.php");
+/* header("Access-Control-Allow-Origin: *"); */
 require_once('../init/initialize_client.php');
-
+define("ACCESS_TOKEN", "mWSUe7/msniZD3f8EzN1m1dyzFXQdSnraUcfox7kgp8=");
 $get_params = allowed_get_params(['type', 'access_token', 'user_token', 'user_code']);
 $request_type = $get_params['type'];
 $_u_access_token = $get_params['access_token'];
 $user_token = $get_params['user_token'];
 $user_code = $get_params['user_code'];
-
 if(validRequest($_u_access_token))
 {
     if($request_type == 1){
@@ -23,7 +20,7 @@ if(validRequest($_u_access_token))
 }
 
 function validRequest($provided_token){
-    if($provided_token === ACCESS_TOKEN){
+    if($provided_token == ACCESS_TOKEN){
         $x = true;
     }
     else{
@@ -50,4 +47,3 @@ function setUserToken($user_code, $user_token){
     return $x;
 }
 
-define("ACCESS_TOKEN", "mWSUe7/msniZD3f8EzN1m1dyzFXQdSnraUcfox7kgp8=");
