@@ -5,8 +5,8 @@ if (!$session_admin->is_logged_in()){    redirect_to("login.php");}
 if(isset($_POST['post_comment']))
 {
     $comment = $db_handle->sanitizePost(trim($_POST['comment']));
-    $report_id = $db_handle->sanitizePost(trim($_POST['report_id']));
-    $new_comment = $obj_rms->set_report_comment($report_id, $comment, $_SESSION['admin_unique_code']);
+    $r_id = $db_handle->sanitizePost(trim($_POST['r_id']));
+    $new_comment = $obj_rms->set_report_comment($r_id, $comment, $_SESSION['admin_unique_code']);
     $new_comment ? $message_success = "New comment added" : $message_error = "Operation failed";
 }
 $targets = $obj_rms->get_reportees_targets($_SESSION['admin_unique_code']);
@@ -52,6 +52,17 @@ if(isset($_POST['process_target']))
     $reportees = implode(',', $_POST['reportees']);
     $new_target = $obj_rms->set_target($title, $description, $window_period, $_SESSION['admin_unique_code'], $reportees);
     $new_target ? $message_success = "New target created." : $message_error = "Opertion Failed. Please try again.";
+}
+
+if(isset($_POST['edit_target']))
+{
+    $target_id = $db_handle->sanitizePost(trim($_POST['target_id']));
+    $title = $db_handle->sanitizePost(trim($_POST['title']));
+    $description = $db_handle->sanitizePost(trim($_POST['description']));
+    $window_period = $db_handle->sanitizePost(trim($_POST['from_date']))." * ".$db_handle->sanitizePost(trim($_POST['to_date']));
+    $reportees = implode(',', $_POST['reportees']);
+    $new_target = $obj_rms->update_target($target_id, $title, $description, $window_period, $_SESSION['admin_unique_code'], $reportees);
+    $new_target ? $message_success = "Target updated." : $message_error = "Opertion Failed. Please try again.";
 }
 ?>
 <!DOCTYPE html>

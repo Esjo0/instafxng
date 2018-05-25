@@ -1,5 +1,5 @@
 <?php
-$report_details = $obj_rms->get_report_by_id($row['report_id']);
+$report_details = $obj_rms->get_report_by_id($id['report_id']);
 if(isset($_POST['flag']))
 {
     $flag = $obj_rms->flag($_POST['report_id'], $_SESSION['admin_unique_code']);
@@ -21,20 +21,19 @@ $flag_status = $obj_rms->flag($_POST['report_id'], $_SESSION['admin_unique_code'
 <p><b>Reviewed: </b>
     <?php
     $reviewed = explode(',', $report_details['created']);
-    foreach ($reviewed as $key)
-    {
+    foreach ($reviewed as $key) {
         echo $admin_object->get_admin_name_by_code($key)."<br/>";
     }
     ?>
 </p>
 <p><b>Attached Files: </b>
     <span>
-                                        <?php
-                                        $attachments = $obj_rms->get_report_attachments($report_details['report_id']);
-                                        if(isset($attachments) && !empty($attachments)):
-                                            foreach ($attachments as $row) {?>
-                                                <a href="<?php echo $row['url']; ?>" download="<?php echo $row['name']; ?>"><?php echo $row['name']; ?></a><br/>
-                                            <?php } endif; ?>
-                                    </span>
+        <?php
+        $attachments = $obj_rms->get_report_attachments($report_details['report_id']);
+        if(isset($attachments) && !empty($attachments)):
+            foreach ($attachments as $row3) {?>
+                <a href="<?php echo $row3['url']; ?>" download="<?php echo $row3['name']; ?>"><?php echo $row3['name']; ?></a><br/>
+            <?php } endif; ?>
+    </span>
 </p>
 <p><b>Report: </b><?php echo $report_details['report'];?></p>
