@@ -914,7 +914,7 @@ MAIL;
     public function get_user_credential($user_code) {
         global $db_handle;
 
-        $query = "SELECT idcard, passport, signature, doc_status FROM user_credential WHERE user_code = '$user_code' LIMIT 1";
+        $query = "SELECT idcard, passport, signature, doc_status, updated FROM user_credential WHERE user_code = '$user_code' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
