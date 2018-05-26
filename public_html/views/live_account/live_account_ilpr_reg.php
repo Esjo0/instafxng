@@ -27,7 +27,6 @@
             <input name="ifx_acct_no" type="text" class="form-control" id="ifx_acct_no" required>
         </div>
     </div>
-    <p class="text-muted"  ><strong> Help <i class="fa fa-exclamation"></i></strong> Us Fight Spam.</p>
     <div class="form-group">
         <label class="control-label col-sm-3" for="recaptcha">&nbsp;</label>
         <div class="col-sm-9 col-lg-5 g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div>
