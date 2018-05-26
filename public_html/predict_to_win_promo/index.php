@@ -98,6 +98,18 @@
                             <br/>
                             <div class="row">
                                 <div class="col-sm-12">
+                                    <p class="text-center text-justify"><center><b>How To Win</b></center></p>
+                                    <p class="text-justify">It's #InstaFxNgPredictandWin time! </p>
+                                    <p class="text-justify">Who will win the UEFA Champions League? Predict Accurately  and Stand a chance to Win Airtime Vouchers.</p>
+                                    <p class="text-justify">Be among the 30 people to predict the score line for this march correctly and win free airtime vouchers</p>
+                                    <p class="text-justify">To Participate follow this 3 steps.</p>
+                                    <ol>
+                                        <li class="text-justify">Like this post on <a href=" http://bit.ly/2LyZrKm" target="_blank">facebook</a>, <a href="http://bit.ly/2Jat2LS" target="_blank">twitter</a> and <a href="http://bit.ly/2GV5xS8" target="_blank">instagram</a> and hit the follow button.</li>
+                                        <li class="text-justify">Repost or Share this post with the hashtag #InstaFxNgPredictandWin </li>
+                                        <li class="text-justify">Fill the form below to predict the scores. (Only one entry allowed per person)</li>
+                                    </ol>
+                                    <br/>
+                                    <br/>
                                     <div style="display: none;" id="form_preloader">
                                         <center><h4>Please Wait...</h4></center>
                                     </div>
@@ -135,13 +147,15 @@
                                             </div>
                                         </div>
 										<div class="form-group">
+                                            <div class="col-sm-12">
                                             <div class="input-group  input-group-sm">
                                                 <span class="input-group-addon">LFC</span>
                                                 <input name="lfc_p" id="lfc_p" type="text" placeholder="Liverpool's Score" class="form-control" required/>
                                             </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
-											<div class="col-sm-6">
+											<div class="col-sm-12">
                                                 <div class="input-group  input-group-sm">
                                                     <span class="input-group-addon">RMA</span>
                                                     <input name="rma_p" id="rma_p" type="text" placeholder="Real Madrid's Score" class="form-control" required/>
