@@ -1,5 +1,5 @@
 <?php
-require_once "../../init/initialize_client.php";
+require_once "../../init/initialize_general.php";
 if(!empty($_POST['type']) && !empty($_POST['query']))
 {
     if($_POST['type'] == '1') {

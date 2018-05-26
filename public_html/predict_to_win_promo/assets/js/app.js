@@ -225,8 +225,8 @@ function Sports_Prediction()
 		for(index = 0, len = predictions.length; index < len; ++index)
 		{
 			var count = this.TableRowCount('predictions');
-			var pd = predictions[index]['prediction'].split("");
-			var pd_ = "LFC "+pd[2]+" : "+pd[0]+" RMA";
+			var pd = predictions[index]['prediction'].split("*");
+			var pd_ = "LFC "+pd[1]+" : "+pd[0]+" RMA";
 			//console.log(prediction);
 			row = p_table.insertRow(count - 1);
 			//row.insertCell(0).innerHTML = count + 1;
