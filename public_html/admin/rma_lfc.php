@@ -4,7 +4,7 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT * FROM sports_leads ORDER BY created DESC";
+$query = "SELECT * FROM sports_leads ORDER BY created DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -27,7 +27,6 @@ $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $admin_members = $db_handle->fetchAssoc($result);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
