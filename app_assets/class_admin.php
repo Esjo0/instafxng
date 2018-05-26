@@ -160,7 +160,7 @@ class AdminUser {
         
         if($db_handle->numOfRows($result) > 0) {
             $fetched_data = $db_handle->fetchAssoc($result);
-            return $fetched_data[0];
+            return explode(',', $fetched_data[0]['allowed_pages']);
         } else {
             return false;
         }
@@ -773,9 +773,9 @@ MAIL;
                 }
                 $campaign_category = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM campaign_category WHERE client_group = 46 "))[0]['campaign_category_id'];
                 $campaign_email_no = "";
-                $system_object->add_new_campaign_email($campaign_email_no, $sender, $title, $campaign_category, $content, $admin_code, 3);
-                $campaign_email_id = $db_handle->fetchAssoc($db_handle->runQuery("SELECT campaign_email_id FROM campaign_email WHERE campaign_category_id = '$campaign_category' AND status = '3' ORDER BY created DESC"))[0]['campaign_email_id'];
-                $system_object->schedule_campaign($campaign_email_id, "email");
+                $system_object->add_new_campaign_email($campaign_email_no, $sender, $title, $campaign_category, $content, $admin_code, 2);
+                //$campaign_email_id = $db_handle->fetchAssoc($db_handle->runQuery("SELECT campaign_email_id FROM campaign_email WHERE campaign_category_id = '$campaign_category' AND status = '3' ORDER BY created DESC"))[0]['campaign_email_id'];
+                //$system_object->schedule_campaign($campaign_email_id, "email");
             }
             return true;
         } else {

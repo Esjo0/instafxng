@@ -9,8 +9,8 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
     <div class="col-sm-6 col-md-12">
         <div class="list-group" style="margin-bottom: 5px !important;">
             <a class="list-group-item" href="live_account.php" title="Open a live Instaforex trading account"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Open Live Account</strong></a>
-            <a class="list-group-item" href="deposit_funds.php" title="Deposit money into your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Fund Account - &#8358;<?php if(defined('IPLRFUNDRATE')) { echo IPLRFUNDRATE; } ?>  / &dollar;1</strong></a>
-            <a class="list-group-item" href="withdraw_funds.php" title="Withdraw from your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Withdraw - &#8358;<?php if(defined('WITHDRATE')) { echo WITHDRATE; } ?> / &dollar;1</strong></a>
+            <a class="list-group-item" href="deposit_funds.php" title="Deposit money into your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Fund Account - &#8358;<?php if(defined('IPLRFUNDRATE')) { echo IPLRFUNDRATE; } ?> </strong></a>
+            <a class="list-group-item" href="withdraw_funds.php" title="Withdraw from your Instaforex account"><i class="fa fa-check-square fa-fw icon-tune"></i>&nbsp;<strong>Withdraw - &#8358;<?php if(defined('WITHDRATE')) { echo WITHDRATE; } ?> </strong></a>
             <a class="list-group-item" href="deposit_notify.php" title="Payment Notification"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Payment Notification</strong></a>
             <a class="list-group-item" href="verify_account.php" title="Verification"><i class="fa fa-check-square fa-fw"></i>&nbsp;<strong>Verification</strong></a>
         </div>
@@ -122,11 +122,11 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
     </div>
 </div>
 
-<!--<div class="row ">-->
-<!--    <div class="col-sm-6 col-md-12">-->
-<!--        <div class="nav-display super-shadow">-->
-<!--            <header><i class="fa fa-bars fa-fw"></i> Economic Event Timer</header>-->
-<!--            <article class="text-center"><!-- InstaForex--><iframe src="https://informers.instaforex.com/event_countdown_timer/run/w=280&count=5&mode=horizontal_500_3000&bg=ffffff_e5e5e5_8_666_0_0_3_1_000000&bgl=ff0000_910000_ffffff_h&bgv=ff0000_910000_ffffff_h_666_3_8&tt=000000_h&ch=undefined&pg=0&cht=ff0000_910000&high=0&lh=&i=1&x=BBLR&type=0" frameborder="0" width="288" height="269" scrolling="no" id="iframesp" title="MT5 - Universal Forex (Forex) portal for traders"></iframe><noframes><a href="https://www.instaforex.com/">Forex Portal</a></noframes><!-- InstaForex--></article>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="row ">
+    <div class="col-sm-6 col-md-12">
+        <div class="nav-display super-shadow">
+            <header><i class="fa fa-bars fa-fw"></i> Economic Event Timer</header>
+            <article class="text-center"><!-- InstaForex--><iframe src="https://informers.instaforex.com/event_countdown_timer/run/w=280&count=5&mode=horizontal_500_3000&bg=ffffff_e5e5e5_8_666_0_0_3_1_000000&bgl=ff0000_910000_ffffff_h&bgv=ff0000_910000_ffffff_h_666_3_8&tt=000000_h&ch=undefined&pg=0&cht=ff0000_910000&high=0&lh=&i=1&x=BBLR&type=0" frameborder="0" width="288" height="269" scrolling="no" id="iframesp" title="MT5 - Universal Forex (Forex) portal for traders"></iframe><noframes><a href="https://www.instaforex.com/">Forex Portal</a></noframes><!-- InstaForex--></article>
+        </div>
+    </div>
+</div>

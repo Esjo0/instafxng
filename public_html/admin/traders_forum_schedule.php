@@ -27,7 +27,7 @@ if(isset($_POST['forum'])){
     $link_text = $db_handle->sanitizePost($_POST['link_text']);
     $link_url = $db_handle->sanitizePost($_POST['link_url']);
     $scheduled_date = $db_handle->sanitizePost($_POST['scheduled_date']);
-    $fileName = $_FILES['Filename'];
+    $fileName = basename($_FILES["Filename"]["name"]);
     $target = "../images/";
     $fileTarget = $target.$fileName;
     $tempFileName = $_FILES["Filename"]["tmp_name"];
@@ -53,7 +53,7 @@ if(isset($_POST['update'])){
     $link_text = $db_handle->sanitizePost($_POST['link_text']);
     $link_url = $db_handle->sanitizePost($_POST['link_url']);
     $scheduled_date = $db_handle->sanitizePost($_POST['scheduled_date']);
-    $fileName = $_FILES['Filename'];
+    $fileName = basename($_FILES["Filename"]["name"]);
     $previous_image = $db_handle->sanitizePost($_POST['previous_image']);
 
 
@@ -138,6 +138,7 @@ $updates = $db_handle->fetchAssoc($result);
             image_advtab: true,
             external_filemanager_path: "../filemanager/",
             filemanager_title: "Instafxng Filemanager",
+            browser_spellcheck: true,
 //                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
 
         });

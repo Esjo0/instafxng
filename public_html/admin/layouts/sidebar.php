@@ -1,14 +1,9 @@
 <?php
 // Prepare admin full name
-if(isset($_SESSION['admin_first_name']) && isset($_SESSION['admin_last_name'])) {
-    $admin_full_name = $_SESSION['admin_first_name'] . " " . $_SESSION['admin_last_name'];
-} else {
-    $admin_full_name = "";
-}
-
-$my_pages_sidebar = $admin_object->get_privileges($_SESSION['admin_unique_code']);
-$my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
-
+if(isset($_SESSION['admin_first_name']) && isset($_SESSION['admin_last_name']))
+{    $admin_full_name = $_SESSION['admin_first_name'] . " " . $_SESSION['admin_last_name'];}
+else {    $admin_full_name = "";}
+$my_pages_sidebar = $_SESSION['user_privilege'];
 ?>
 
 <div class="col-md-12">
@@ -138,6 +133,8 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                         <?php if (in_array(228, $my_pages_sidebar)) { ?><li><a href="dinner_2017_new_reg.php" title="New Dinner 2017 Reg">New Dinner 2017 Reg</a></li><?php } ?>
                         <?php if (in_array(229, $my_pages_sidebar)) { ?><li><a href="dinner_2017_all_reg.php" title="All Dinner 2017 Reg">All Dinner 2017 Reg</a></li><?php } ?>
                         <?php if (in_array(230, $my_pages_sidebar)) { ?><li><a href="dinner_2017_signin.php" title="Dinner Sign In">Dinner Sign In</a></li><?php } ?>
+
+                        <?php //if (in_array(230, $my_pages_sidebar)) { ?><li><a href="rma_lfc.php" title="Predictions">Predictions</a></li><?php //} ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -253,6 +250,13 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     </ul>
                 </li>
                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> Campaign Management<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(255, $my_pages_sidebar)) { ?><li><a href="campaign_leads.php">Campaign Leads</a></li><?php } ?>
+                        <?php if (in_array(256, $my_pages_sidebar)) { ?><li><a href="campaign_analytics.php">Campaign Analytics</a></li><?php } ?>
+                    </ul>
+                </li>
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-graduation-cap fa-fw"></i> Careers<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(92, $my_pages_sidebar)) { ?><li><a href="career_new_job.php">New Job</a></li><?php } ?>
@@ -338,10 +342,7 @@ $my_pages_sidebar = explode(",", $my_pages_sidebar['allowed_pages']);
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users fa-fw"></i> HR Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(231, $my_pages_sidebar)) { ?><li><a href="hr_attendance_system_logs.php" title="Attendance Logs">Attendance Logs</a></li><?php } ?>
-                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_settings.php" title="Staff Reports Settings">Staff Reports Settings</a></li><?php //} ?>
-                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_manage_targets.php" title="Manage Staff Targets">Manage Staff Targets</a></li><?php //} ?>
-                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_reports.php" title="Reports">Reports</a></li><?php //} ?>
-                        <?php// if (in_array(231, $my_pages_sidebar)) { ?><li><a href="rms_manage_reports.php" title="Manage Staff Reports">Manage Staff Reports</a></li><?php //} ?>
+                        <?php if (in_array(253, $my_pages_sidebar)) { ?><li><a href="rms.php" title="Reports Management">Reports Management</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
