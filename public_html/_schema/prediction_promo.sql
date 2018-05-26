@@ -9,7 +9,7 @@ CREATE TABLE `sports_leads` (
  PRIMARY KEY (`lead_id`),
  UNIQUE KEY `msg_id` (`lead_id`),
  UNIQUE KEY `email` (`email`,`nickname`)
-) 
+);
 
 
 CREATE TABLE `sports_leads_msgs` (
