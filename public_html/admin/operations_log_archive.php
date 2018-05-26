@@ -203,7 +203,7 @@ $withdrawal_logs = $db_handle->fetchAssoc($result);
                                                             </div>
                                                             <div class="row" style="margin: 15px;">
                                                                 <div class="col-sm-4"><strong>Amount Ordered</strong></div>
-                                                                <div class="col-sm-8">&dollar; <?php echo $row2['dollar_ordered']; ?></div>
+                                                                <div class="col-sm-8">&dollar; <?php echo $row2['dollar_ordered']; if(!empty( $row2['dollar_withdraw'])){echo  $row2['dollar_withdraw'];} ?></div>
                                                             </div>
                                                             <div class="row" style="margin: 15px;">
                                                                 <div class="col-sm-4"><strong>Transaction Status</strong></div>
@@ -213,6 +213,21 @@ $withdrawal_logs = $db_handle->fetchAssoc($result);
                                                         <div class="row" style="margin: 15px;">
                                                             <div class="col-sm-4"><strong>Issue Status</strong></div>
                                                             <div class="col-sm-8"> <?php echo status_operations($row['status']); ?><?php if($row['status'] == 1){ echo " on ".date_to_text($row['date_closed']);}?></div>
+                                                        </div>
+
+                                                        <div class="row" style="margin: 15px;">
+                                                            <div class="col-sm-4"><strong>Created By</strong></div>
+                                                            <div class="col-sm-8"> <?php
+                                                                $admin_code = $row['admin'];
+                                                                $destination_details = $obj_facility->get_admin_detail_by_code($admin_code);
+                                                                $admin_name = $destination_details['first_name'];
+                                                                $admin_lname = $destination_details['last_name'];
+                                                                echo $admin_name . " " . $admin_lname;?></div>
+                                                        </div>
+
+                                                        <div class="row" style="margin: 15px;">
+                                                            <div class="col-sm-4"><strong>Date Created</strong></div>
+                                                            <div class="col-sm-8"><?php echo datetime_to_text($row['date']); ?></div>
                                                         </div>
 
                                                         <div class="row" style="margin: 15px;">
@@ -256,7 +271,7 @@ $withdrawal_logs = $db_handle->fetchAssoc($result);
                                     $admin_name = $destination_details['first_name'];
                                     $admin_lname = $destination_details['last_name'];
                                     echo $admin_name . " " . $admin_lname;?></td>
-                                <td><?php echo datetime_to_text2($row['date']); ?></td>
+                                <td><?php echo datetime_to_text($row['date']); ?></td>
                             </tr>
                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                         </tbody>

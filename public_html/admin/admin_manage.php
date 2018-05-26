@@ -61,7 +61,6 @@ if(!$admin_detail) {
 
 
 $my_pages = $admin_object->get_privileges($admin_code);
-$my_pages = explode(",", $my_pages['allowed_pages']);
 
 ?>
 <!DOCTYPE html>
@@ -360,6 +359,13 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="91" id="" <?php if (in_array(91, $my_pages)) { echo 'checked="checked"'; } ?>/> Sales Management</label></div></div>
                                     </div>
                                     <hr/>
+
+                                    <p><strong>Campaign Management</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="255" id="" <?php if (in_array(255, $my_pages)) { echo 'checked="checked"'; } ?>/> Campaign Leads</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="256" id="" <?php if (in_array(256, $my_pages)) { echo 'checked="checked"'; } ?>/> Campaign Analytics</label></div></div>
+                                    </div>
+                                    <hr/>
                                     
                                     <p><strong>Careers</strong></p>
                                     <div class="form-group row">
@@ -446,6 +452,10 @@ $my_pages = explode(",", $my_pages['allowed_pages']);
                                     <p><strong>HR Management</strong></p>
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="231" id="" <?php if (in_array(231, $my_pages)) { echo 'checked="checked"'; } ?>/> Attendance Logs</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="251" id="" <?php if (in_array(251, $my_pages)) { echo 'checked="checked"'; } ?>/> Staff Reports Settings</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="252" id="" <?php if (in_array(252, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Staff Targets</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="253" id="" <?php if (in_array(253, $my_pages)) { echo 'checked="checked"'; } ?>/> Reports</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="254" id="" <?php if (in_array(254, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Staff Reports</label></div></div>
                                     </div>
                                     <hr/>
 

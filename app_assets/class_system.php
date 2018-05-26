@@ -1,5 +1,5 @@
 <?php
-
+use PHPMailer\PHPMailer\PHPMailer;
 class InstafxngSystem {
     
     // function to send SMTP emails
@@ -669,6 +669,19 @@ class InstafxngSystem {
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
+        return $fetched_data ? $fetched_data : false;
+    }
+
+    public function get_all_funding($user_code)
+    {
+        global $db_handle;
+        $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.status, ui.ifx_acct_no, ud.created, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+              FROM user_deposit AS ud
+              INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE ud.status <> '1' AND u.user_code = '$user_code' ORDER BY ud.created ASC ";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
         return $fetched_data ? $fetched_data : false;
     }
 

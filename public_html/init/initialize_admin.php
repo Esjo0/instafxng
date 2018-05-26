@@ -1,7 +1,7 @@
 <?php
 // Development settings
 defined('DS') ? NULL : define('DS', DIRECTORY_SEPARATOR);
-defined('SITE_ROOT') ? NULL : define('SITE_ROOT', 'C:'.DS.'wamp64'.DS.'www'.DS.'instafxngwebsite_master');
+defined('SITE_ROOT') ? NULL : define('SITE_ROOT', 'C:'.DS.'wamp64'.DS.'www'.DS.'instafxngwebsite');
 defined('LIB_PATH') ? NULL : define('LIB_PATH', SITE_ROOT.DS.'app_assets');
 
 //// Production settings
@@ -21,7 +21,7 @@ require_once(LIB_PATH.DS."session_admin.php");
 require_once(LIB_PATH.DS."class_database.php");
 
 // Load other assets
-require_once(LIB_PATH.DS."PHPMailer".DS."PHPMailerAutoload.php");
+require_once(LIB_PATH.DS."vendor".DS."autoload.php");
 require_once(LIB_PATH.DS."class_admin.php");
 require_once(LIB_PATH.DS."class_system.php");
 require_once(LIB_PATH.DS."class_client_operation.php");

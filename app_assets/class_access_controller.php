@@ -110,6 +110,8 @@ define("PAGE_CODE", json_encode(array(
     89 => "campaign_email_view.php||",
     90 => "campaign_sms_view.php||",
     91 => "campaign_sales.php||",
+    255 => "campaign_leads.php||",
+    256 => "campaign_analytics.php||",
     92 => "career_new_job.php||",
     93 => "career_all_job.php||",
     94 => "career_all_applications.php||",
@@ -161,19 +163,22 @@ class Access_Controller
     public function validate_access()
     {
         global $admin_object;
-        $this_page = basename($_SERVER['PHP_SELF']);
+        $currentFile = $_SERVER["PHP_SELF"];
+        $parts = explode('/', $currentFile);
+        $this_page = $parts[count($parts) - 1];
+        //$this_page = basename($_SERVER['PHP_SELF']);
         $all_pages = $this->get_all_pages();
         foreach ($all_pages as $key => $value)
         {
             $_pages = explode('||', $value);
             if (in_array($this_page, $_pages))
             {
-                $user_privilege = $admin_object->get_privileges($_SESSION['admin_unique_code']);
-                $admin_privilege = explode(',', $user_privilege);
-                if(!in_array($key, $admin_privilege))
+                $user_privilege = $_SESSION['user_privilege'];
+                if(!in_array($key, $user_privilege))
                 {
-                    //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_list.php');
+                    //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_denied.php');
                     redirect_to('https://instafxng.com/admin/access_denied.php');
+                    exit();
                 }
             }
         }

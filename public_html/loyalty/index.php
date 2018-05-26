@@ -22,7 +22,7 @@ if(isset($_POST['sign_up']))
 			extract(split_name($name));
 			if ($interest == $interest_no) {
 				if ($obj_loyalty_training->is_duplicate_training($email, $phone)) {
-					$training = $obj_loyalty_training->add_training($first_name, $last_name, $email, $phone);
+					$training = $obj_loyalty_training->add_training($first_name, $last_name, $email, $phone, 1);
 					$_SESSION['f_name'] = $first_name;
 					$_SESSION['l_name'] = $last_name;
 					$_SESSION['m_name'] = $middle_name;
@@ -37,7 +37,7 @@ if(isset($_POST['sign_up']))
 			}
 			if ($interest == $interest_yes) {
 				if ($obj_loyalty_training->is_duplicate_loyalty($email, $phone)) {
-					$loyalty = $obj_loyalty_training->add_loyalty($first_name, $last_name, $email, $phone);
+					$loyalty = $obj_loyalty_training->add_loyalty($first_name, $last_name, $email, $phone, 1);
 					$_SESSION['f_name'] = $first_name;
 					$_SESSION['l_name'] = $last_name;
 					$_SESSION['m_name'] = $middle_name;
@@ -200,7 +200,8 @@ if(isset($_POST['sign_up']))
 								<div class="form-group">
 									<center><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></center>
 								</div>
-								<div class="col-sm-12">
+
+                                <div class="col-sm-12">
 									<span style="color: #ffffff">*All fields are required</span>
 								</div>
 								<div class="form-group">

@@ -20,7 +20,8 @@ $thisPage = "Home";
         <meta property="og:image" content="images/instaforex-100bonus.jpg" />
         <meta property="og:url" content="https://instafxng.com/" />
         <meta property="og:type" content="website" />
-
+        <script src="https://www.wpiece.com/js/webcomponents.min.js"></script>
+        <link  rel="import" href="http://www.wpiece.com/p/10_26" />
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
