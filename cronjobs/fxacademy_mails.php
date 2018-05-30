@@ -334,7 +334,7 @@ function student_auto_mail_send($query, $my_subject_raw, $my_message_raw) {
 
 //TODO: Refactor and make it dynamic
 
-// 10 day interval
+// Clients who have paid for Foerex Optimizer Course but hav't started
 $interval_1a = 7;
 
 $query_1a = student_auto_mail_query(1, $interval_1a);
@@ -359,7 +359,7 @@ $query_1d = student_auto_mail_query(1, $interval_1d);
 $get_mail_1d = student_auto_mail_template($my_message_1d);
 $send_message_1d = student_auto_mail_send($query_1d, $my_subject_1d, $get_mail_1d);
 
-
+// Clients who are between Lesson 1-6 of the forex money maker course
 $interval_2a = 14;
 
 $query_2a = student_auto_mail_query(2, $interval_2a);
@@ -384,7 +384,7 @@ $query_2d = student_auto_mail_query(2, $interval_2d);
 $get_mail_2d = student_auto_mail_template($my_message_2d);
 $send_message_2d = student_auto_mail_send($query_2d, $my_subject_2d, $get_mail_2d);
 
-
+//Clients who have completed course two but have not Funded their accounts
 $interval_3a = 15;
 
 $query_3a = student_auto_mail_query(3, $interval_3a);
@@ -409,3 +409,30 @@ $interval_3d = 60;
 $query_3d = student_auto_mail_query(3, $interval_3d);
 $get_mail_3d = student_auto_mail_template($my_message_3d);
 $send_message_3d = student_auto_mail_send($query_3d, $my_subject_3d, $get_mail_3d);
+
+//Clients who have completed course two but have not Funded their accounts
+$interval_4a = 15;
+
+$query_4a = student_auto_mail_query(4, $interval_4a);
+$get_mail_4a = student_auto_mail_template($my_message_4a);
+$send_message_4a = student_auto_mail_send($query_4a, $my_subject_4a, $get_mail_4a);
+
+
+$interval_4b = 30;
+
+$query_4b = student_auto_mail_query(4, $interval_4b);
+$get_mail_4b = student_auto_mail_template($my_message_4b);
+$send_message_4b = student_auto_mail_send($query_4b, $my_subject_4b, $get_mail_4b);
+
+$interval_4c = 45;
+
+$query_4c = student_auto_mail_query(4, $interval_4c);
+$get_mail_4c = student_auto_mail_template($my_message_4c);
+$send_message_4c = student_auto_mail_send($query_4c, $my_subject_4c, $get_mail_44c);
+
+$interval_4d = 60;
+
+$query_4d = student_auto_mail_query(4, $interval_4d);
+$get_mail_4d = student_auto_mail_template($my_message_4d);
+$send_message_4d = student_auto_mail_send($query_4d, $my_subject_4d, $get_mail_4d);
+
