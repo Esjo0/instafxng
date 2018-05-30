@@ -113,7 +113,7 @@
                                     <div style="display: none;" id="form_preloader">
                                         <center><h4>Please Wait...</h4></center>
                                     </div>
-                                    <form id="ud_form" data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <form style="display: none" id="ud_form" data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                         <div class="form-group">
                                             <div class="col-sm-12">
                                                 <div class="input-group input-group-sm">
@@ -173,7 +173,7 @@
                                 </div>
                             </div>
                             <br/>
-                            <div id="p_list" style="height: 400px; overflow-y: scroll;" class="row">
+                            <div id="p_list" style="height: 600px; overflow-y: scroll;" class="row">
                                 <div class="col-sm-12">
                                     <script>sports_pred.GetPredictions();</script>
                                     <table class="table table-responsive">
@@ -198,7 +198,7 @@
                                 </div>
                                 <div id="msgs">
                                 </div>
-								<button id="msg_txt_trigger" onclick="sports_pred.show_chat('new_msg', 'new_msg_textbox', 'msg_container', 'msg_txt_trigger')" class="float"><i id="btn_ico" class="glyphicon glyphicon-comment my-float"></i></button>
+								<button style="display: none" id="msg_txt_trigger" onclick="sports_pred.show_chat('new_msg', 'new_msg_textbox', 'msg_container', 'msg_txt_trigger')" class="float"><i id="btn_ico" class="glyphicon glyphicon-comment my-float"></i></button>
                                 <div style="display: none;" id="new_msg" class="w3-card-4">
                                     <header class="w3-container"><h3></h3></header>
                                     <div class="w3-container">
