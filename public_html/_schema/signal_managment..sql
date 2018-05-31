@@ -1,3 +1,4 @@
+DROP TABLE `signal_daily`,`signal_symbol`
 CREATE TABLE `signal_daily` (
  `signal_id` int(11) NOT NULL AUTO_INCREMENT,
  `symbol_id` int(11) NOT NULL,
@@ -10,11 +11,12 @@ CREATE TABLE `signal_daily` (
  `trigger_time` time NOT NULL,
  `trend` enum('0','1') NOT NULL COMMENT '1-Bullish 0-Bearish',
  `note` text,
+ `views` int(11) NULL,
  PRIMARY KEY (`signal_id`)
 )
 
 CREATE TABLE `signal_symbol` (
- `symbol_id` int(11) NOT NULL,
+ `symbol_id` int(11) NOT NULL AUTO_INCREMENT,
  `symbol` varchar(40) NOT NULL,
  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`symbol_id`)
