@@ -24,10 +24,10 @@
         </tbody>
     </table>
     <hr>
-    <small style="font-size: x-small; background-color: rgba(162,162,162,0.41);">
-        <span style="color:green">GREEN</span> = Upcoming |
-        <span style="color:red">RED</span> = Expired |
-        <span style="color:yellow">YELLOW</span> = Now
+    <small>
+        <span class="text-success">GREEN</span> = Upcoming |
+        <span class="text-danger">RED</span> = Expired |
+        <span class="text-warning">YELLOW</span> = Now
     </small>
     <br>
     <small style="font-size: x-small">Your use of the signals means you have read and accepted our
