@@ -10,9 +10,11 @@ $todays_signals = $db_handle->numRows($query);
 $query = "SELECT SUM(views) AS Total FROM signal_daily WHERE trigger_date = '$today'";
 $result_view = $db_handle->runQuery($query);
 
-$admin_code = $_SESSION['admin_unique_code'];
-if(isset($_POST['create'])){
+if(isset($_POST['create_symbol'])){
    $pair = $db_handle->sanitizePost($_POST['pair']);
+   $query = "SELECT * FROM signal_symbol WHERE symbol = '$pair'";
+   $result = $db_handle->numRows($query);
+   if($result == 0){
    $query = "INSERT INTO signal_symbol (symbol) VALUE('$pair')";
    $result2 =$db_handle->runQuery($query);
     if($result2) {
@@ -20,9 +22,12 @@ if(isset($_POST['create'])){
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
+    }else{
+       $message_error = "Something went wrong. Currency Pair (".$pair.") Already exist.";
+   }
 }
 
-if(isset($_POST['signal'])){
+if(isset($_POST['new_signal'])){
 	$options = $db_handle->sanitizePost($_POST['options']);
     $symbol = $db_handle->sanitizePost($_POST['symbol']);
     $buy_price = $db_handle->sanitizePost($_POST['buy_price']);
@@ -53,7 +58,7 @@ if(isset($_POST['signal'])){
 
 }
 
-if(isset($_POST['update'])){
+if(isset($_POST['update_signal'])){
     $id = $db_handle->sanitizePost($_POST['id']);
     $symbol = $db_handle->sanitizePost($_POST['symbol']);
     $price = $db_handle->sanitizePost($_POST['price']);
@@ -75,7 +80,7 @@ if(isset($_POST['update'])){
 
 }
 
-$query = "SELECT * FROM signal_daily ORDER BY trigger_date DESC";
+$query = "SELECT * FROM signal_daily WHERE trigger_date = '$today' ORDER BY trigger_time DESC";
 $numrows = $db_handle->numRows($query);
 $rowsperpage = 5;
 $totalpages = ceil($numrows / $rowsperpage);
@@ -277,7 +282,7 @@ $all_signals = $db_handle->fetchAssoc($result);
 
                                                     <br>
                                                     <hr class="mb-4">
-                                                    <center><button name="signal" class="btn btn-success btn-sm bottom" type="submit"> Upload Signals</button><center>
+                                                    <center><button name="new_signal" class="btn btn-success btn-sm bottom" type="submit"> Upload Signals</button><center>
                                                 </form>
                                             </div>
                                         </div>
@@ -297,7 +302,18 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                 <h6 class="my-0 pull-right"><i class="fa fa-eye fa-fw"></i> <?php echo $row['views']?></h6>
                                                 <h6 class="my-0"><?php echo datetime_to_text($row['trigger_date']." ".$row['trigger_time']); ?></h6>
 
-                                                <small class="text-muted"><?php echo $row['currency_pair']?></small>
+                                                <small class="text-muted">
+                                                    <?php
+                                                    $check_id = $row['symbol_id'];
+                                                    $query = "SELECT symbol AS Currency_Pair FROM signal_symbol WHERE symbol_id = $check_id";
+                                                    $result = $db_handle->runQuery($query);
+                                                    $result = $db_handle->fetchAssoc($result);
+                                                    foreach ($result as $row4)
+                                                    {
+                                                        extract($row4);
+                                                        echo $Currency_Pair;
+                                                    } ?>
+                                                </small>
 
                                             </div>
                                             <span class="text-muted">PRICE: <?php echo $row['price'];?>
@@ -355,20 +371,28 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                                     <span class="input-group-addon"><span class="fa fa-signal"></span></span>
                                                                 </div>                                                              </div>
                                                         </div>
-
+                                                            <br>
+                                                            <hr/>
                                                         <div class="form-group row">
 
                                                                 <div class="col-sm-12">
                                                                     <div class="row">
-                                                                        <label class="control-label col-sm-3" for="">PRICE </label>
-                                                                        <div class="col-sm-3"><input name="price" type="text" value="<?php echo $row['price'];?>" class="form-control"   required/></div>
-                                                                        <div class="col-sm-3"><input name="take_profit" type="text" value="<?php echo $row['take_profit'];?>" class="form-control"  required/></div>
-                                                                        <div class="col-sm-3"><input name="stop_loss" type="text" value="<?php echo $row['stop_loss'];?>" class="form-control"  required/></div>
+
+                                                                        <div class="col-sm-4">
+                                                                            <label class="control-label" for="">PRICE</label>
+                                                                            <input name="price" type="text" value="<?php echo $row['price'];?>" class="form-control"   required/></div>
+                                                                        <div class="col-sm-4">
+                                                                            <label class="control-label" for="">Take Profit</label>
+                                                                            <input name="take_profit" type="text" value="<?php echo $row['take_profit'];?>" class="form-control"  required/></div>
+                                                                        <div class="col-sm-4">
+                                                                            <label class="control-label" for="">Stop Loss</label>
+                                                                            <input name="stop_loss" type="text" value="<?php echo $row['stop_loss'];?>" class="form-control"  required/></div>
+
                                                                     </div>
-                                                                    <br/>
                                                                 </div>
                                                             </div>
-
+                                                            <hr/>
+                                                            <br>
                                                             <div class="form-group row">
                                             <label class="control-label col-sm-3" for="pay_date">Signal Date:</label>
                                             <div class="col-sm-9 col-lg-5">
@@ -417,13 +441,15 @@ $all_signals = $db_handle->fetchAssoc($result);
 
                                                         <div class="form-group">
                                                                 <center><label class="col-sm-12" for="exampleFormControlTextarea1">Comment</label></center>
-                                                                <input name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3" value="<?php echo $row['note'];?>"/>
+                                                                <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3">
+                                                                    <?php echo $row['note'];?>
+                                                                </textarea>
                                                             </div>
                                                         <input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"/>
 
                                                         <br>
                                                             <hr class="mb-4">
-                                                            <center><button name="update" class="btn btn-success btn-sm bottom" type="submit">Submit Changes</button><center>
+                                                            <center><button name="update_signal" class="btn btn-success btn-sm bottom" type="submit">Submit Changes</button><center>
                                                         </form>
                                                 </div>
                                                 <div class="modal-footer">
@@ -456,7 +482,7 @@ $all_signals = $db_handle->fetchAssoc($result);
                                 <div class="input-group">
                                     <input name="pair" type="text" class="form-control" placeholder="Enter Currency Pair Symbol" required>
                                 </div>
-                                    <button name="create" type="submit" class="btn btn-secondary"><strong>Create</strong></button>
+                                    <button name="create_symbol" type="submit" class="btn btn-secondary"><strong>Create</strong></button>
                                 </center>
                             </form>
                     </div>

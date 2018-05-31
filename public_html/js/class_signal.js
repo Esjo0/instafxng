@@ -138,10 +138,19 @@ function Signal()
     this.showSignal = function (json, id){
         var table = document.getElementById(id);
         table.innerHTML = '';
-        var signal_array = JSON.parse(json);
         //localStorage.setItem("signal_array", JSON.stringify(json));
-        for(var x in signal_array)
+        if(json.length < 1)
         {
+            console.log(json.length);
+            table.setAttribute("align", 'center');
+            var row_ = table.insertRow(0);
+            row_.setAttribute("align", 'center');
+            row_.innerHTML = '<span class="text-center text-danger" style="font-size:15px;margin-left:60px"><i>No  signals  at  the  Moment</i></span>';
+        }
+        else {
+            var signal_array = JSON.parse(json);
+            for(var x in signal_array)
+            {
             var row = table.insertRow(0);
             row.classList += this.get_Context(signal_array[x]['trigger_time']);
             row.setAttribute("data-toggle", 'modal');
@@ -161,6 +170,7 @@ function Signal()
             cell3.innerHTML = this.get_OrderType(signal_array[x]['order_type']);
             cell4.innerHTML = this.getSmallTrend(signal_array[x]['trend']);
             cell5.innerHTML = this.formatTime(signal_array[x]['trigger_time']);
+            }
         }
     };
 

@@ -331,7 +331,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                     <p><strong>Signal Management</strong></p>
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="77" id="" <?php if (in_array(77, $my_pages)) { echo 'checked="checked"'; } ?>/> Update Daily Signal</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="78" id="" <?php if (in_array(78, $my_pages)) { echo 'checked="checked"'; } ?>/> Weekly Market Analysis</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="78" id="" <?php if (in_array(78, $my_pages)) { echo 'checked="checked"'; } ?>/> Signal Analysis</label></div></div>
                                     </div>
                                     <hr/>
                                     
