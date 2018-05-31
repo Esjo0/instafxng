@@ -24,6 +24,12 @@
         </tbody>
     </table>
     <hr>
+    <small style="font-size: x-small; background-color: rgba(162,162,162,0.41);">
+        <span style="color:green">GREEN</span> = Upcoming |
+        <span style="color:red">RED</span> = Expired |
+        <span style="color:yellow">YELLOW</span> = Now
+    </small>
+    <br>
     <small style="font-size: x-small">Your use of the signals means you have read and accepted our
         <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
         Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
