@@ -139,8 +139,73 @@ $my_message_2d =
 <p>I look forward to reading and responding to your reply.</p>
 MAIL;
 
-$my_subject_3a = "";
+$my_subject_3a = "[NAME], Take the Bull by The Horn This Week";
 $my_message_3a =
+    <<<MAIL
+<p>Dear [NAME],</p>
+<p>It’s been quite some time, how are you doing?</p>
+<p>I have been looking forward to seeing you at the training, but you haven’t showed up for a while.</p> 
+<p>Time is so limited right? Yes, I know.</p>
+<p>You have done such a great job to have come this far. You’re almost done with the course, well done! You deserve some accolades.</p>
+<p>I just want to encourage you to reach the finish line because your reward awaits you at the end of this race.</p>
+<p>Click here to go back to the training right away.</p>
+<p>A lot awaits you after this phase, just like a young chap who goes through school and is equipped with wisdom to go face the world and add value to it, after your course you would be able to trade profitably and add value to your bank account.</p> 
+<p>You can add a few zeros to your bank account and break your normal income limit this year. Get into it now!</p>
+<p>Click here to continue from where you stopped.</p>
+<p>I will be waiting with a startup bonus of 130% at the finish line, hurry now! My offer stands till the end of Month.</p>
+
+MAIL;
+
+$my_subject_3b = "Learn Key Secrets to Technical Analysis This Week";
+$my_message_3b =
+    <<<MAIL
+<p>Dear [Name]</p>
+<p>How have you been?</p>	
+<p>I would like to quickly remind you to push on with your Forex Profit Optimizer course.</p>
+<p>Technical analysis is key to every trader’s career, it allows you to analyze the market trends and choose a profitable position in the market.</p>
+<p>For every trade there is always a gaining end and you need to be able to make good analysis that would put you on the gaining side.</p>
+<p>This is the perfect time to round up your course and begin to make money from the Forex market because there are so much to take advantage of this season; from bonuses to loyalty rewards.</p>
+<p>Click here to continue from where you stopped and begin to take your own share of the $5.3 Trillion currently exchanging hands in the Forex Market</p>
+<p>I am quite confident you can hit your financial goal this year and you’re just a click away from joining the top traders cashing out this year.</p>
+<p>Click <a href="http://www.instafxng.com/fxacademy">here</a> to catch up right away.</p>
+
+MAIL;
+
+
+$my_subject_3c = "Get to the Finish line This Week and Take the Star Prize.";
+$my_message_3c =
+    <<<MAIL
+<p>Hi [Name],</p>
+<p>Trust your day has been great.</p>
+<p>Do you know that to generate wealth, you need to expand your source of income?</p>
+<p>I have been waiting to hear your success story and to join you in celebrating your first profit</p>
+<p>Here’s a quick reminder that the Forex market is full of opportunities and so much is being made daily.</p>
+<p>You don’t have to rely solely on your current source of income when you can make extra at your own convenience and on the go.</p>
+<p>By signing up for this course you have joined the league of money makers already and even committed this much by getting this far, so don’t allow time or anything else be a barrier.</p>
+<p>Complete your course today and begin to make money with the pros in the global market.</p>
+<p>After this course you would be able to analyze key market indicators and take good decisions that will yield profits and add extra zeros to your bank account.</p>
+<p>So get right to the end of it and become the master of this trade.</p>
+<p>Don’t let anything stop you because you are almost at there, click <a href="http://www.instafxng.com/fxacademy">here</a> you pick up from where you left and begin to cash out like a boss that you are.</p>
+
+MAIL;
+
+$my_subject_3d = "[NAME], Few Steps Further May Get You a Million Naira Extra and Other Freebies";
+$my_message_3d =
+    <<<MAIL
+<p>Dear [Name],</p>
+<p>How have you been?</p>
+<p>Have you heard that you could get rewarded up to N1million at the end of the year for being a Forex trader on <a href="http://www.instafxng.com/">www.InstaFxNg.com</a> and still get up to $150 monthly?</p> 
+<p>Let me give you the details in full.</p>
+<p>Upon the completion of your Forex Profit Optimizer course (that is your current course), you can claim a head start bonus with no hidden charges or stringent clause to start trading and making money out rightly.</p>
+<p>Don’t let all these goodies pass you by! Go right <a href="http://www.instafxng.com/fxacademy">here</a> to complete your course and enjoy all these offers right away.</p>
+<p>Get this sorted out quickly [NAME] and Join the Pro club and you could be the lucky winner of this year’s Grand prize.</p>
+<p>Hurry now! Click <a href="http://www.instafxng.com/fxacademy">here</a> to Finish up, start trading, claim your welcome bonus and you might just be the next person to round off the year with an extra reward of 1 million Naira.</p>
+<p>Fantastic, huh? You bet!</p>
+MAIL;
+
+
+$my_subject_4a = "";
+$my_message_4a =
     <<<MAIL
 <p>Dear [NAME]</p>
 <p>How are you doing?</p>
@@ -155,8 +220,8 @@ $my_message_3a =
 <p>You can click here to claim your bonus now. Don’t let all the money pass you by oo.</p>
 MAIL;
 
-$my_subject_3b = "[Name], You are missing out on our 130% Bonus Offer.";
-$my_message_3b =
+$my_subject_4b = "[Name], You are missing out on our 130% Bonus Offer.";
+$my_message_4b =
     <<<MAIL
 <p>Dear [Name],</p>
 <p>Got your 130% bonus yet?</p>
@@ -173,8 +238,8 @@ $my_message_3b =
 MAIL;
 
 
-$my_subject_3c = "[Name], Grab your Share of  $5.3 Trillion Today!";
-$my_message_3c =
+$my_subject_4c = "[Name], Grab your Share of  $5.3 Trillion Today!";
+$my_message_4c =
     <<<MAIL
 <p>More than $10000 profit have been made today!</p>
 <p>Hello [NAME]!</p>
@@ -190,8 +255,8 @@ $my_message_3c =
 <p>I can’t wait to see you top our loyalty chat and get rewarded, see you at the top soon.</p>
 MAIL;
 
-$my_subject_3d = "[NAME], Be The Lucky Winner of $250 This Month.";
-$my_message_3d =
+$my_subject_4d = "[NAME], Be The Lucky Winner of $250 This Month.";
+$my_message_4d =
     <<<MAIL
 <p>Dear [NAME],</p>
 <p>How are you today?</p>
@@ -292,6 +357,16 @@ function student_auto_mail_query($query_type, $day_value) {
                 GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC";
             break;
         case 3:
+        $query = "SELECT u.first_name, u.email
+                FROM user_edu_exercise_log AS ueel AND user_deposit AS ud
+                INNER JOIN user AS u ON ueel.user_code = u.user_code
+                INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+                INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+                LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
+                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) AND ueel.lesson_id = 13 AND uefp.user_code <> ud.user_code
+                GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC";
+        break;
+        case 4:
             $query = "SELECT u.first_name, u.email
                 FROM user_edu_exercise_log AS ueel AND user_deposit AS ud
                 INNER JOIN user AS u ON ueel.user_code = u.user_code
@@ -428,7 +503,7 @@ $interval_4c = 45;
 
 $query_4c = student_auto_mail_query(4, $interval_4c);
 $get_mail_4c = student_auto_mail_template($my_message_4c);
-$send_message_4c = student_auto_mail_send($query_4c, $my_subject_4c, $get_mail_44c);
+$send_message_4c = student_auto_mail_send($query_4c, $my_subject_4c, $get_mail_4c);
 
 $interval_4d = 60;
 
