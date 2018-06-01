@@ -116,5 +116,6 @@ $client_group_DESC = array(
     "47" => "*All clients who came into the system last month and have opened Instaforex accounts",
     "48" => "*All clients who came into the system last month who have NOT opened Instaforex accounts and have not gone through our training ",
     "49" => "*All clients who came into the system last month, have opened Instaforex accounts and have undergone online training",
-    "50" => "*All New clients who havn't funded up to $50"
+    "50" => "*All New clients who havn't funded up to $50",
+    "51" => "*Campaign leads who came into our system in April 2018"
     );
