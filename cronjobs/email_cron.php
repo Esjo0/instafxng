@@ -2,8 +2,10 @@
 set_include_path('/home/tboy9/public_html/init/');
 require_once 'initialize_general.php';
 
+$client_operation = new clientOperation();
+
 $days_left_this_month = date('t') - date('j');
-$limit = 200; // number of emails to send per round
+$limit = 300; // number of emails to send per round
 
 // Get Month Loyalty Ranking
 $query = "SELECT pr.user_code, pr.month_rank AS rank, u.first_name AS full_name
@@ -74,8 +76,9 @@ if($db_handle->numOfRows($result) > 0) {
                 $year_rank_difference = number_format(($year_rank_highest - $year_rank), 2, ".", ",");
                 $year_rank_goal = number_format(($year_rank_difference / $days_left_this_month), 2, ".", ",");
 
-                $last_trade_volume = $client_operation->get_last_trade_detail($user_code)['volume'];
-                $last_trade_date = $client_operation->get_last_trade_detail($user_code)['date_earned'];
+                $last_trade_detail = $client_operation->get_last_trade_detail($user_code);
+                $last_trade_volume = $last_trade_detail['volume'];
+                $last_trade_date = $last_trade_detail['date_earned'];
 
                 $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
                 $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
@@ -105,7 +108,8 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[LTD]', '', $my_message_new);
                 $my_message_new = str_replace('[LTV]', '', $my_message_new);
             }
-            $x = $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name, $mail_sender);
+
+            $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name, $mail_sender);
             campaign_recipients_log($client_name, $client_email, $campaign_id);
 
         }

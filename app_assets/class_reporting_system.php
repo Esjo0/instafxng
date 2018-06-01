@@ -59,10 +59,18 @@ class Reporting_System
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
+    public function update_target($target_id, $title, $description, $window_period, $admin_code, $reportees)
+    {
+        global $db_handle;
+        $query = "UPDATE rms_targets SET title = '$title', description = '$description', window_period = '$window_period', admin_code = '$admin_code', reportees = '$reportees' WHERE target_id = $target_id";
+        $db_handle->runQuery($query);
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
     public function get_past_reports($admin_code)
     {
         global $db_handle;
-        $query = "SELECT * FROM rms_reports WHERE admin_code = '$admin_code' ";
+        $query = "SELECT * FROM rms_reports WHERE admin_code = '$admin_code' ORDER BY created DESC";
         $result = $db_handle->runQuery($query);
         return $db_handle->fetchAssoc($result);
     }
@@ -133,6 +141,34 @@ class Reporting_System
         else{ return false;}
     }
 
+    public function get_staff_targets($admin_code)
+    {
+        global $db_handle;
+        $staffs = $this->get_reportees($admin_code);
+        $reportees_targets = array();
+        foreach($staffs as $key)
+        {
+            $targets = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM rms_targets "));
+            foreach ($targets as $row)
+            {
+                $crt = count($reportees_targets);
+                $target_reportees = explode(',', $row['reportees']);
+                if(in_array($key, $target_reportees))
+                {
+                    $reportees_targets[$row['target_id']]['target_id'] = $row['target_id'];
+                    $reportees_targets[$row['target_id']]['title'] = $row['title'];
+                    $reportees_targets[$row['target_id']]['description'] = $row['description'];
+                    $reportees_targets[$row['target_id']]['window_period'] = $row['window_period'];
+                    $reportees_targets[$row['target_id']]['reportees'] = $row['reportees'];
+                    $reportees_targets[$row['target_id']]['created'] = $row['created'];
+                    $reportees_targets[$row['target_id']]['author'] = $row['admin_code'];
+                }
+            }
+        }
+        if(isset($reportees_targets) && !empty($reportees_targets)) { return $reportees_targets; }
+        else{ return false;}
+    }
+
     public function get_target_by_id($target_id)
     {
         global $db_handle;
@@ -172,9 +208,9 @@ class Reporting_System
 
     }
 
-    public function get_report_type($target_id)
+    public function get_report_type($target_id, $report_id)
     {
-        is_null($target_id) || empty($target_id) ? $x = "Routine Report" : $x = "Target Report";
+        is_null($target_id) || empty($target_id) ? $x = "Routine Report" : $x = "<a data-target='#tdetails_".$report_id."' data-toggle='modal' href='javascript:void(0);'>Target Report</a>";
         return $x;
     }
 
@@ -239,6 +275,15 @@ class Reporting_System
             }
             return $feedback;
         }
+
+    }
+
+    public function get_target_report($admin_code, $target_id)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM rms_reports WHERE admin_code = '$admin_code' AND target_id = '$target_id' ORDER BY created DESC";
+        $result = $db_handle->runQuery($query);
+        return $db_handle->fetchAssoc($result);
 
     }
 }

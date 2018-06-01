@@ -132,13 +132,13 @@ $query = "SELECT
             project_management_reports.created AS report_submission_date,
             project_management_reports.comment AS report_comments, 
             project_management_reports.status AS report_status, 
-            project_management_reports.report_code AS report_code
-            FROM project_management_reports, project_management_projects
+            project_management_reports.report_code AS report_code,
+            CONCAT(admin.first_name, SPACE(1), admin.last_name) AS author
+            FROM project_management_reports, project_management_projects, admin
             WHERE project_management_projects.project_code = project_management_reports.project_code
             AND project_management_projects.project_code = '$project_code'
-            AND project_management_reports.author_code = '$admin_code'
+            AND admin.admin_code = project_management_reports.author_code
             ORDER BY project_management_reports.created ASC  ";
-
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -161,8 +161,6 @@ $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $project_reports = $db_handle->fetchAssoc($result);
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -282,6 +280,7 @@ $project_reports = $db_handle->fetchAssoc($result);
             image_advtab: true,
             external_filemanager_path: "../filemanager/",
             filemanager_title: "Instafxng Filemanager",
+            browser_spellcheck: true,
 //                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
 
         });
@@ -296,10 +295,8 @@ $project_reports = $db_handle->fetchAssoc($result);
                 <div id="main-body-side-bar" class="col-md-4 col-lg-3 left-nav">
                 <?php require_once 'layouts/sidebar.php'; ?>
                 </div>
-                
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
                 <div id="main-body-content-area" class="col-md-8 col-lg-9">
-                    
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div class="row">
@@ -311,23 +308,16 @@ $project_reports = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-
                                 <div class="col-sm-6">
                                     <!-- PROJECT DESCRIPTION-->
                                     <div class="col-sm-12" >
                                         <h5 class="text-center">PROJECT DETAILS</h5>
                                         <hr/>
                                         <div style="height: 600px; overflow-y: scroll;">
-                                            <p class="text-center">
-                                                <strong>Description</strong>
-                                            </p>
-                                            <p class="text-justify">
-                                                <?php echo $project_details['description'];?>
-                                            </p>
+                                            <p class="text-center"><strong>Description</strong></p>
+                                            <p class="text-justify"><?php echo $project_details['description'];?></p>
                                             <hr/>
-
-                                            <p>
-                                                <strong>Project Creation Date: </strong>
+                                            <p><strong>Project Creation Date: </strong>
                                                 <?php echo datetime_to_text2($project_details['created']);?>
                                             </p>
                                             <hr/>
@@ -553,6 +543,7 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                 <table class="table table-responsive  table-striped table-bordered table-hover">
                                                     <thead>
                                                     <tr>
+                                                        <th>Author</th>
                                                         <th>Report Submission Date</th>
                                                         <th>Report Comments</th>
                                                         <th>Report Status</th>
@@ -563,12 +554,11 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                     <?php if(isset($project_reports) && !empty($project_reports)) {
                                                         foreach ($project_reports as $row) { ?>
                                                             <tr>
-                                                                <td><?php echo $row['report_submission_date']; ?></td>
-                                                                <td>
-                                                                    <?php echo $row['report_comments']; ?>
-                                                                </td>
+                                                                <td><?php echo $row['author']; ?></td>
+                                                                <td><?php echo datetime_to_text($row['report_submission_date']); ?></td>
+                                                                <td><?php echo $row['report_comments']; ?></td>
                                                                 <td><?php echo $row['report_status']; ?></td>
-                                                                <td><a href="project_management_report_view.php?x=<?php echo encrypt($row['report_code']); ?>"><button class="btn btn-success"><i class="glyphicon glyphicon-eye-open"></i></button></a></td>
+                                                                <td><a href="project_management_report_view.php?x=<?php echo encrypt($row['report_code']); ?>"><button class="btn btn-xs btn-success"><i class="glyphicon glyphicon-arrow-right"></i></button></a></td>
                                                             </tr>
                                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                                     </tbody>

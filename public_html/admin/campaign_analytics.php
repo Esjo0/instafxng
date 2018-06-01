@@ -105,13 +105,7 @@ $client_operation = new clientOperation();
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9"><input name="report" type="submit" class="btn btn-success" value="Search" /></div>
                                     </div>
-                                    <script type="text/javascript">
-                                        $(function () {
-                                            $('#datetimepicker, #datetimepicker2').datetimepicker({
-                                                format: 'YYYY-MM-DD'
-                                            });
-                                        });
-                                    </script>
+                                    <script type="text/javascript">$(function () {$('#datetimepicker, #datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});});</script>
                                 </form>
                                 </div>
                             </div>
@@ -177,13 +171,14 @@ $client_operation = new clientOperation();
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                                <h4 class="modal-title">Conversions (<?php echo date_to_text($from); ?> -> <?php echo date_to_text($to); ?>)</h4></div>
+                                                                <h4 class="modal-title">Conversions (<?php echo date_to_text($from); ?> -> <?php echo date_to_text($to); ?>)</h4>
+                                                            </div>
                                                             <div class="modal-body">
                                                                 <div style="width: 100%; word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
                                                                     <div class="row">
                                                                         <div class="col-sm-12">
                                                                             <table class="table table-responsive table-striped table-bordered table-hover">
-                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Account Number</th></tr></thead>
+                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Joined</th><th>Account Number</th></tr></thead>
                                                                                 <tbody>
                                                                                 <?php $leads_generated = $obj_loyalty_training->sum_leads_with_accounts($from, $to, 2);
                                                                                 if(isset($leads_generated) && !empty($leads_generated))
@@ -196,6 +191,7 @@ $client_operation = new clientOperation();
                                                                                             <td><?php echo $key['f_name']." ".strtoupper($key['l_name']);?></td>
                                                                                             <td><?php echo $key['phone'];?></td>
                                                                                             <td><?php echo $key['email'];?></td>
+                                                                                            <td><?php echo $key['created'];?></td>
                                                                                             <td>
                                                                                                 <?php
                                                                                                 $client_ilpr_account = $client_operation->get_client_ilpr_accounts_by_code($key['user_code']);
@@ -226,19 +222,20 @@ $client_operation = new clientOperation();
                                         <tr>
                                             <td>
                                                 <a href="javascript:void(0);" data-target="#funded_<?php echo $from.$to;?>" data-toggle="modal"><b>Leads Funded</b><br/>
-                                                <span class="text-muted" style="font-size: smaller">Total number of people that were added to the pool that have funded.</span></a>
+                                                <span class="text-muted" style="font-size: smaller">Total number of people that were added to the pool within the selected time frame and have funded.</span></a>
                                                 <div id="funded_<?php echo $from.$to;?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                                <h4 class="modal-title">Funded (<?php echo date_to_text($from); ?> -> <?php echo date_to_text($to); ?>)</h4></div>
+                                                                <h4 class="modal-title">Funded (<?php echo date_to_text($from); ?> -> <?php echo date_to_text($to); ?>)</h4>
+                                                            </div>
                                                             <div class="modal-body">
                                                                 <div style="width: 100%; word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
                                                                     <div class="row">
                                                                         <div class="col-sm-12">
                                                                             <table class="table table-responsive table-striped table-bordered table-hover">
-                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Total Amount</th></tr></thead>
+                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Joined</th><th>Total Amount</th></tr></thead>
                                                                                 <tbody>
                                                                                 <?php $leads_generated = $obj_loyalty_training->sum_leads_funded($from, $to, 2);
                                                                                 if(isset($leads_generated) && !empty($leads_generated))
@@ -251,6 +248,57 @@ $client_operation = new clientOperation();
                                                                                             <td><?php echo $key['f_name']." ".strtoupper($key['l_name']);?></td>
                                                                                             <td><?php echo $key['phone'];?></td>
                                                                                             <td><?php echo $key['email'];?></td>
+                                                                                            <td><?php echo $key['created'];?></td>
+                                                                                            <td><?php echo $key['dollar_amount'];?></td>
+                                                                                        </tr>
+                                                                                    <?php }
+                                                                                }
+                                                                                ?>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><?php echo $obj_loyalty_training->sum_leads_funded($from, $to, 1);?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="javascript:void(0);" data-target="#funded_<?php echo date('Y');?>" data-toggle="modal"><b>Leads Funded (<?php echo date('Y');?>)</b><br/>
+                                                    <span class="text-muted" style="font-size: smaller">Total number of people that were added to the pool this year and have funded.</span></a>
+                                                <div id="funded_<?php echo date('Y');?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
+                                                                <h4 class="modal-title">Funded (<?php echo date_to_text('01-01-'.date('Y')); ?> -> <?php echo date_to_text(date('d-m-Y')); ?>)</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div style="width: 100%; word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <table class="table table-responsive table-striped table-bordered table-hover">
+                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Joined</th><th>Total Amount</th></tr></thead>
+                                                                                <tbody>
+                                                                                <?php $leads_generated = $obj_loyalty_training->sum_leads_funded($from, $to, 2);
+                                                                                if(isset($leads_generated) && !empty($leads_generated))
+                                                                                {
+                                                                                    $count = 1;
+                                                                                    foreach ($leads_generated as $key)
+                                                                                    {?>
+                                                                                        <tr>
+                                                                                            <td><?php echo $count; $count++;?></td>
+                                                                                            <td><?php echo $key['f_name']." ".strtoupper($key['l_name']);?></td>
+                                                                                            <td><?php echo $key['phone'];?></td>
+                                                                                            <td><?php echo $key['email'];?></td>
+                                                                                            <td><?php echo $key['created'];?></td>
                                                                                             <td><?php echo $key['dollar_amount'];?></td>
                                                                                         </tr>
                                                                                     <?php }
@@ -280,13 +328,13 @@ $client_operation = new clientOperation();
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                                <h4 class="modal-title">Training Leads (Forex Optimizer Course) (<?php echo date_to_text($from); ?> -> <?php echo date_to_text($to); ?>)</h4></div>
+                                                                <h4 class="modal-title">Training Leads (Forex Money Maker Course) (<?php echo date_to_text($from); ?> -> <?php echo date_to_text($to); ?>)</h4></div>
                                                             <div class="modal-body">
                                                                 <div style="width: 100%; word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
                                                                     <div class="row">
                                                                         <div class="col-sm-12">
                                                                             <table class="table table-responsive table-striped table-bordered table-hover">
-                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th></tr></thead>
+                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Joined</th></tr></thead>
                                                                                 <tbody>
                                                                                 <?php $leads_generated = $obj_loyalty_training->sum_training_leads($from, $to, 2, 2);
                                                                                 if(isset($leads_generated) && !empty($leads_generated))
@@ -299,6 +347,7 @@ $client_operation = new clientOperation();
                                                                                             <td><?php echo $key['f_name']." ".strtoupper($key['l_name']);?></td>
                                                                                             <td><?php echo $key['phone'];?></td>
                                                                                             <td><?php echo $key['email'];?></td>
+                                                                                            <td><?php echo $key['created'];?></td>
                                                                                         </tr>
                                                                                     <?php }
                                                                                 }
@@ -413,6 +462,162 @@ $client_operation = new clientOperation();
                                             </td>
                                             <td>
                                                 <?php echo $obj_loyalty_training->sum_active_leads($from, $to, 1); ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="javascript:void(0);" data-target="#at_<?php echo date('Y');?>" data-toggle="modal"><b>Active Traders (<?php echo date('Y');?>)</b><br/>
+                                                    <span class="text-muted" style="font-size: smaller">Total number of people that were added to the pool this year and are actively trading within the current year.</span></a>
+                                                <div id="at_<?php echo date('Y');?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
+                                                                <h4 class="modal-title">Active Traders (<?php echo date_to_text('01-01-'.date('Y')); ?> -> <?php echo date_to_text(date('d-m-Y')); ?>)</h4></div>
+                                                            <div class="modal-body">
+                                                                <div style="width: 100%; word-break:break-all; max-height: 400px; overflow-y: scroll; overflow-x: hidden">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <table class="table table-responsive table-striped table-bordered table-hover">
+                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Last Trade Date</th></tr></thead>
+                                                                                <tbody>
+                                                                                <?php $leads_generated = $obj_loyalty_training->sum_active_leads('01-01-'.date('Y'), date('d-m-Y'), 2);
+                                                                                if(isset($leads_generated) && !empty($leads_generated))
+                                                                                {
+                                                                                    $count = 1;
+                                                                                    foreach ($leads_generated as $key)
+                                                                                    {?>
+                                                                                        <tr>
+                                                                                            <td><?php echo $count; $count++;?></td>
+                                                                                            <td><?php echo $key['f_name']." ".strtoupper($key['l_name']);?></td>
+                                                                                            <td><?php echo $key['phone'];?></td>
+                                                                                            <td><?php echo $key['email'];?></td>
+                                                                                            <td><?php echo $key['last_trade_date'];?></td>
+                                                                                        </tr>
+                                                                                    <?php }
+                                                                                }
+                                                                                ?>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <?php echo $obj_loyalty_training->sum_active_leads('01-01-'.date('Y'), date('d-m-Y'), 1); ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="javascript:void(0);" data-target="#na1_<?php echo $from.$to;?>" data-toggle="modal"><b>No Action (Training Leads)</b><br/>
+                                                    <span class="text-muted" style="font-size: smaller">
+                                                        Total number of people that were added to the pool and have not taken the <span style="text-decoration: underline">primary</span> desired action for Training Leads.
+                                                        <br/><b>Primary Action: </b>Leads are to login to FxAcademy.
+                                                    </span></a>
+                                                <div id="na1_<?php echo $from.$to;?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
+                                                                <h4 class="modal-title">No Action (Training Leads)(<?php echo date_to_text('01-01-'.date('Y')); ?> -> <?php echo date_to_text(date('d-m-Y')); ?>)</h4></div>
+                                                            <div class="modal-body">
+                                                                <div style="width: 100%; word-break:break-all; max-height: 400px; overflow-y: scroll; overflow-x: hidden">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <table class="table table-responsive table-striped table-bordered table-hover">
+                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Joined</th></tr></thead>
+                                                                                <tbody>
+                                                                                <?php $leads_generated = $obj_loyalty_training->sum_none_active('01-01-'.date('Y'), date('d-m-Y'),1, 2);
+                                                                                if(isset($leads_generated) && !empty($leads_generated))
+                                                                                {
+                                                                                    $count = 1;
+                                                                                    foreach ($leads_generated as $key)
+                                                                                    {?>
+                                                                                        <tr>
+                                                                                            <td><?php echo $count; $count++;?></td>
+                                                                                            <td><?php echo $key['f_name']." ".strtoupper($key['l_name']);?></td>
+                                                                                            <td><?php echo $key['phone'];?></td>
+                                                                                            <td><?php echo $key['email'];?></td>
+                                                                                            <td><?php echo $key['created'];?></td>
+                                                                                        </tr>
+                                                                                    <?php }
+                                                                                }
+                                                                                ?>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <?php echo $obj_loyalty_training->sum_none_active('01-01-'.date('Y'), date('d-m-Y'),1, 1); ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="javascript:void(0);" data-target="#na2_<?php echo $from.$to;?>" data-toggle="modal"><b>No Action (ILPR Leads)</b><br/>
+                                                    <span class="text-muted" style="font-size: smaller">
+                                                        Total number of people that were added to the pool and have not taken the <span style="text-decoration: underline">primary</span> desired action for Training Leads.
+                                                        <br/><b>Primary Action: </b>Leads are to open ILPR Accounts.
+                                                    </span></a>
+                                                <div id="na2_<?php echo $from.$to;?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
+                                                                <h4 class="modal-title">No Action (ILPR Leads)(<?php echo date_to_text('01-01-'.date('Y')); ?> -> <?php echo date_to_text(date('d-m-Y')); ?>)</h4></div>
+                                                            <div class="modal-body">
+                                                                <div style="width: 100%; word-break:break-all; max-height: 400px; overflow-y: scroll; overflow-x: hidden">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <table class="table table-responsive table-striped table-bordered table-hover">
+                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Joined</th></tr></thead>
+                                                                                <tbody>
+                                                                                <?php $leads_generated = $obj_loyalty_training->sum_none_active('01-01-'.date('Y'), date('d-m-Y'),2, 2);
+                                                                                if(isset($leads_generated) && !empty($leads_generated))
+                                                                                {
+                                                                                    $count = 1;
+                                                                                    foreach ($leads_generated as $key)
+                                                                                    {?>
+                                                                                        <tr>
+                                                                                            <td><?php echo $count; $count++;?></td>
+                                                                                            <td><?php echo $key['f_name']." ".strtoupper($key['l_name']);?></td>
+                                                                                            <td><?php echo $key['phone'];?></td>
+                                                                                            <td><?php echo $key['email'];?></td>
+                                                                                            <td><?php echo $key['created'];?></td>
+                                                                                        </tr>
+                                                                                    <?php }
+                                                                                }
+                                                                                ?>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <?php echo $obj_loyalty_training->sum_none_active('01-01-'.date('Y'), date('d-m-Y'),2, 1); ?>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -547,7 +752,7 @@ $client_operation = new clientOperation();
                                                                                             <td><?php echo $key['f_name']." ".strtoupper($key['l_name']);?></td>
                                                                                             <td><?php echo $key['phone'];?></td>
                                                                                             <td><?php echo $key['email'];?></td>
-                                                                                            <td><?php echo $key['dollar_amount'];?></td>
+                                                                                            <td><?php echo '$'.$key['dollar_amount'];?></td>
                                                                                         </tr>
                                                                                     <?php }
                                                                                 }
@@ -566,7 +771,7 @@ $client_operation = new clientOperation();
                                                 </div>
                                             </td>
                                             <td title="Total number of people that were added to the pool that are currently taking the Forex Money Maker Course.">
-                                                <a href="javascript:void(0);" data-target="#fmmc_<?php echo $row?>" data-toggle="modal"><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 1, 1); ?></a>
+                                                <a href="javascript:void(0);" data-target="#fmmc_<?php echo $row?>" data-toggle="modal"><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 2, 1); ?></a>
                                                 <div id="fmmc_<?php echo $row?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
@@ -578,7 +783,7 @@ $client_operation = new clientOperation();
                                                                     <div class="row">
                                                                         <div class="col-sm-12">
                                                                             <table class="table table-responsive table-striped table-bordered table-hover">
-                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Total Amount</th></tr></thead>
+                                                                                <thead><tr><th></th><th>Name</th><th>Phone</th><th>Email</th></tr></thead>
                                                                                 <tbody>
                                                                                 <?php $leads_generated = $obj_loyalty_training->sum_training_leads($row, $row, 2, 2);
                                                                                 if(isset($leads_generated) && !empty($leads_generated))
@@ -609,7 +814,7 @@ $client_operation = new clientOperation();
                                                 </div>
                                             </td>
                                             <td title="Total number of people that were added to the pool that are currently taking the Forex Optimizer Course.">
-                                                <a href="javascript:void(0);" data-target="#foc_<?php echo $row?>" data-toggle="modal"><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 2, 1); ?></a>
+                                                <a href="javascript:void(0);" data-target="#foc_<?php echo $row?>" data-toggle="modal"><?php echo $obj_loyalty_training->sum_training_leads($row, $row, 1, 1); ?></a>
                                                 <div id="foc_<?php echo $row?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">

@@ -4,6 +4,47 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+//$user_code = "";
+//$client_operation = new clientOperation();
+//$user_detail = $client_operation->get_user_by_user_code($user_code);
+//$client_credential = $client_operation->get_user_credential($user_code);
+//$client_address = $client_operation->get_user_address_by_code($user_code);
+//
+//$passport = $client_credential['passport'];
+//$signature = $client_credential['signature'];
+//$date = datetime_to_text($client_credential['updated']);
+//$client_name = $user_detail['last_name'] . ' ' . $user_detail['middle_name'] . ' ' . $user_detail['first_name'];
+//$full_address = $client_address['address'] . ' ' . $client_address['address2'] . ' ' . $client_address['city'] . ' ' . $client_address['state'];
+//
+//$message_final = <<<MAIL
+//<div>
+//    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+//        <p><strong>Client Declaration</strong></p>
+//        <hr />
+//        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+//            <p><img src="https://instafxng.com/userfiles/$passport" width="186" height="191"></p>
+//            <p>
+//            I, <strong>$client_name</strong> of <strong>$full_address</strong> declare that all the information I have submitted to Instant Web-Net Technologies Limited are genuine and true.
+//            <p> I declare that I shall only use any information including bank account belonging to Instant Web-Net Technologies Limited which may come into my possession through the use of this website (www.instafxng.com) for legitimate business activities including making deposits and withdrawal to and from my Instaforex account.</p>
+//            <p> I further declare that I shall not use the Website or any other information belonging to Instant Web-Net Technologies Limited for any fraudulent or malicious purposes.
+//                I willingly make this declaration on <strong>$date</strong>.
+//            </p>
+//            <p><img src="https://instafxng.com/userfiles/$signature" width="146" height="91"></p>
+//            <p>Signature</p>
+//        </div>
+//        <hr />
+//        <div style="background-color: #EBDEE9;">
+//            <div style="font-size: 11px !important; padding: 15px; text-align: center">
+//                <p>Instant Web-Net Technologies Ltd</p>
+//            </div>
+//        </div>
+//    </div>
+//</div>
+//MAIL;
+//
+//$mpdf = new \Mpdf\Mpdf();
+//$mpdf->WriteHTML($message_final);
+//$mpdf->Output();
 
 // LOYALTY POINT ARCHIVING
 //$start_date = "2017-12-01";
