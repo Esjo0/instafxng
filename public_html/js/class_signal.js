@@ -145,7 +145,7 @@ function Signal()
             table.setAttribute("align", 'center');
             var row_ = table.insertRow(0);
             row_.setAttribute("align", 'center');
-            row_.innerHTML = '<span class="text-center text-danger" style="font-size:15px;margin-left:60px"><i>No  signals  at  the  Moment</i></span>';
+            row_.innerHTML = '<span class="text-center text-danger" style="font-size:15px;margin-left:50px"><i>No  signals  at  the  Moment</i></span>';
         }
         else {
             var signal_array = JSON.parse(json);
