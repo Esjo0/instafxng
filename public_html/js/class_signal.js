@@ -152,7 +152,7 @@ function Signal()
             for(var x in signal_array)
             {
             var row = table.insertRow(0);
-            row.classList += this.get_Context(signal_array[x]['trigger_time']);
+            row.setAttribute("class", this.get_Context(signal_array[x]['trigger_time']));
             row.setAttribute("data-toggle", 'modal');
             row.setAttribute("title", 'Click Here For More Details');
             row.setAttribute("id", signal_array[x]['signal_id']);

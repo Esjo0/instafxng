@@ -11,7 +11,7 @@ CREATE TABLE `signal_daily` (
  `trigger_time` time NOT NULL,
  `trend` enum('0','1') NOT NULL COMMENT '1-Bullish 0-Bearish',
  `note` text,
- `views` int(11) NULL,
+ `views` int(11),
  PRIMARY KEY (`signal_id`)
 )
 

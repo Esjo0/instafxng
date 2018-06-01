@@ -42,15 +42,17 @@ if(isset($_POST['new_signal'])){
 	$trend = $db_handle->sanitizePost($_POST['trend']);
 	
 	if(($options == 1) || ($options == 3)){
-    $query ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend)
-              VALUE('$symbol','1','$buy_price', '$buy_price_tp', '$buy_price_sl', '$signal_date', '$signal_time', '$comment', '$trend')";
+    $query ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
+              VALUE('$symbol','1','$buy_price', '$buy_price_tp', '$buy_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')";
 
-	}else if(($options == 2) || ($options == 3)){
-		$query ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend)
-              VALUE('$symbol','2' , '$sell_price', '$sell_price_tp', '$sell_price_sl', '$signal_date', '$signal_time', '$comment', '$trend')";
+	}
+	if(($options == 2) || ($options == 3)){
+		$query2 ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
+              VALUE('$symbol','2' , '$sell_price', '$sell_price_tp', '$sell_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')";
 	}	  
     $result =$db_handle->runQuery($query);
-    if($result) {
+	$result2 =$db_handle->runQuery($query2);
+    if($result || $result2) {
         $message_success = "Signal Successfully created for ".datetime_to_text($signal_time);
     } else {
         $message_error = "Something went wrong. Please try again.";
@@ -256,7 +258,7 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                         <script type="text/javascript">
                                                             $(function () {
                                                                 $('#datetimepicker3').datetimepicker({
-                                                                    format: 'h:m:s'
+                                                                    format: 'HH:mm:ss'
                                                                 });
                                                             });
                                                         </script>
@@ -421,7 +423,7 @@ $all_signals = $db_handle->fetchAssoc($result);
                                             <script type="text/javascript">
                                                 $(function () {
                                                     $('#datetimepickert<?php echo $row['signal_id']?>').datetimepicker({
-                                                        format: 'h:m:s'
+                                                        format: 'HH:mm:ss'
                                                     });
                                                 });
                                             </script>
