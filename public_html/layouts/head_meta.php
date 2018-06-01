@@ -36,8 +36,11 @@
             fbq('init', '859859360822977'); // Insert your pixel ID here.
             fbq('track', 'PageView');
         </script>
-        <noscript><img height="1" width="1" style="display:none"
-                       src="https://www.facebook.com/tr?id=859859360822977&ev=PageView&noscript=1"
-            /></noscript>
+        <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=859859360822977&ev=PageView&noscript=1"/></noscript>
         <!-- DO NOT MODIFY -->
         <!-- End Facebook Pixel Code -->
+        <!--<script src="js/class_signal.js"></script>-->
+        <script>
+                <?php include 'js/class_signal.js';?>
+        </script>
+        <link rel="stylesheet" href="css/signal_table_context.css">

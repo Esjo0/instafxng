@@ -84,31 +84,7 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
 <div class="row ">
     <div class="col-sm-6 col-md-12">
         <div class="nav-display super-shadow">
-            <header><i class="fa fa-bars fa-fw"></i> Daily Forex Signal</header>
-            <article>
-                <small><em><strong>Date:</strong> <?php echo datetime_to_text2($date_today); ?></em></small>
-                <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Symbol</th>
-                            <th>Order</th>
-                            <th>Price</th>
-                            <th>TP</th>
-                            <th>SL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-
-                        if(isset($featured_signal)) { foreach($featured_signal as $row) {
-                        ?>
-                        <tr><td><?php echo $row['symbol']; ?></td><td><?php echo $row['order_type']; ?></td><td><?php echo $row['price']; ?></td><td><?php echo $row['take_profit']; ?></td><td><?php echo $row['stop_loss']; ?></td></tr>
-                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
-                    </tbody>
-                </table>
-                <hr>
-                <small>Your use of the signals means you have read and accepted our <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>. Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">signal guide</a> to learn how to use the signals.</small>
-            </article>
+           <?php include "signals.php"; ?>
         </div>
     </div>
 </div>
