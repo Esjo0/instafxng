@@ -712,7 +712,7 @@ MAIL;
             case '100': $message = "Passport and Signature Not Approved"; break;
             case '101': $message = "Passport Not Approved"; break;
             case '110': $message = "Signature Not Approved"; break;
-            case '111': $message = "All Approved"; break;
+            case '111': $message = "ID Card, Passport and Signature is good."; break;
         }
 
 
@@ -732,9 +732,9 @@ MAIL;
             Please <a href="https://instafxng.com/verify_account.php">click here</a> to update
             and submit again.</p>
 
-            <p>Reason: $message <br /></p>
-
             <p>Remark: $remarks</p>
+
+            <p>Note: $message</p>
 
             <p>Thank you.</p>
 
