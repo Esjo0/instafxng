@@ -64,7 +64,8 @@ $client_group_DEFAULT = array(
     "47" => "Last Months New Clients with Accounts",
     "48" => "Last Months New Clients without Accounts and have no Training",
     "49" => "Last Months New Clients without Accounts and have Training",
-    "50" => "Last Months New Clients not yet funded above $50"
+    "50" => "Last Months New Clients not yet funded above $50",
+    "51" => "April 2018 ILPR campaign leads"
 );
 $client_group_DESC = array(
     "1" => "*Consist of all clients that have at anytime come into our system.",
