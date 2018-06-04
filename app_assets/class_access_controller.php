@@ -153,6 +153,8 @@ define("PAGE_CODE", json_encode(array(
     240 => "facility_manager.php||",
     241 => "facility_admin.php||",
     242 => "facility_user.php||",
+    257 => "deposit_pending_sorted.php||",
+    253 => "rms.php||",
     )));
 class Access_Controller
 {

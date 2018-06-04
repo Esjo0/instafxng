@@ -1,1 +1,0 @@
-ALTER TABLE `campaign_category` CHANGE `client_group` `client_group` INT NOT NULL COMMENT 'Client groups';

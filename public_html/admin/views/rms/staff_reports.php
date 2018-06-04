@@ -12,7 +12,7 @@ $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
 array_sort_by_column_desc($pending_reports, 'created');
-$pending_reports = paginate_array($offset,$pending_reports, $rowsperpage);
+if(!empty($pending_reports)) {$pending_reports = paginate_array($offset,$pending_reports, $rowsperpage);}
 ?>
 <h4><strong>STAFF REPORTS</strong></h4>
 <table class="table table-responsive table-striped table-bordered table-hover">
@@ -79,6 +79,7 @@ $pending_reports = paginate_array($offset,$pending_reports, $rowsperpage);
                                     <div class="row">
                                         <div class="col-sm-7">
                                             <?php $rpt_id = $row['report_id']; ?>
+                                            <?php $id['report_id'] = $row['report_id']; ?>
                                             <?php include 'views/rms/read_report.php'?>
                                         </div>
                                         <div class="col-sm-5">
@@ -109,7 +110,7 @@ $pending_reports = paginate_array($offset,$pending_reports, $rowsperpage);
                                                 <?php } ?>
                                             </div
                                             <form  data-toggle="validator" role="form" method="post" action="">
-                                                <input type="hidden" class="form-control" id="report_id" name="r_id" value="<?php echo $rpt_id; ?>">
+                                                <input type="hidden" class="form-control" id="report_id" name="report_id" value="<?php echo $rpt_id; ?>">
                                                 <div class="form-group">
                                                     <div>
                                                         <textarea placeholder="Your Remark" rows="3" name="comment" type="text" id="comment" class="form-control" required></textarea>

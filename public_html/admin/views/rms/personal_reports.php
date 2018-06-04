@@ -97,7 +97,7 @@ ksort($_past_reports);
 
 <h4><strong>PERSONAL REPORTS</strong></h4>
 <table class="table table-responsive table-striped table-bordered table-hover">
-    <thead><tr><th>Report</th><th>Created</th></tr></thead>
+    <thead><tr><th>Report</th><th>Created</th><th></th></tr></thead>
     <tbody>
     <?php if(isset($_past_reports) && !empty($_past_reports)) {  foreach ($_past_reports as $row) {$created_date = $row['created']; ?>
         <tr>
@@ -109,12 +109,13 @@ ksort($_past_reports);
                             <form data-toggle="validator" role="form" method="post" action="">
                                 <div class="modal-header">
                                     <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                    <h4 class="modal-title">Report Deatils</h4>
+                                    <h4 class="modal-title">Report Details</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-sm-7">
                                             <?php $rpt_id = $row['report_id']; ?>
+                                            <?php $id['report_id'] = $row['report_id']; ?>
                                             <?php include 'views/rms/read_report.php'?>
                                         </div>
                                         <div class="col-sm-5">
@@ -167,6 +168,17 @@ ksort($_past_reports);
                 </div>
             </td>
             <td><?php echo datetime_to_text($created_date); ?></td>
+            <td class="nowrap">
+                <?php if($row['status'] == '1'):?>
+                <a onclick="document.getElementById('e_r_php1<?php echo $row['report_id']; ?>').click();" href="javascript:void(0);" title="Edit this report" class="btn btn-xs btn-info"><i class="glyphicon glyphicon-pencil"></i></a>
+                <?php endif; ?>
+                <div style="display: none;">
+                    <form action="" method="post">
+                        <input type="text" name="extra" value="<?php echo '?r_id='.$row['report_id']; ?>"/>
+                        <button name="selection" id="e_r_php1<?php echo $row['report_id']; ?>" value="n_r_php" type="submit"></button>
+                    </form>
+                </div>
+            </td>
         </tr>
     <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
     </tbody>
