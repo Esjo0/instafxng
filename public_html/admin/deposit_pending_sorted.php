@@ -23,8 +23,7 @@ if (isset($_POST['sort'])) {
 if (isset($_POST['bulk_comment'])) {
     $trans_id = $_POST['trans_id'];
     $comment = $db_handle->sanitizePost(trim($_POST['comment']));
-    foreach ($trans_id as $row)
-    {
+    foreach ($trans_id as $row) {
         $transaction_id = $db_handle->sanitizePost(trim($row));
         $sorted = $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $comment);
     }
@@ -51,15 +50,12 @@ $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_paya
         ORDER BY ud.user_deposit_id DESC ";
 $numrows = $db_handle->numRows($query);
 
-$rowsperpage = 20;
+$rowsperpage = 10;
 
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
-if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
-    $currentpage = (int) $_GET['pg'];
-} else {
-    $currentpage = 1;
-}
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {$currentpage = (int) $_GET['pg'];}
+else {$currentpage = 1;}
 if ($currentpage > $totalpages) { $currentpage = $totalpages; }
 if ($currentpage < 1) { $currentpage = 1; }
 
@@ -75,12 +71,15 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
 function get_pending_transactions($user_code)
 {
     global $db_handle;
+    $from = date('Y-m-d');
+    $to = date('Y-m-d');
     $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_payable, ui.ifx_acct_no, ui.ifxaccount_id, ud.user_deposit_id, u.user_code, ud.sort 
 FROM user_deposit AS ud
 INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
 INNER JOIN user AS u ON ui.user_code = u.user_code
-WHERE ud.status = '1' 
-AND u.user_code = '$user_code' 
+WHERE (ud.status = '1') 
+AND (u.user_code = '$user_code')
+AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
 ORDER BY ud.user_deposit_id DESC ";
     $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
     return $result;
@@ -148,7 +147,7 @@ function bulk_sms_url($from, $to)
                         <p class="pull-right"><a href="<?php echo bulk_sms_url(date('Y-m-d'), date('Y-m-d')) ?>" class="btn btn-sm btn-default">Send Bulk SMS For <?php echo  date_to_text(date('Y-m-d'));?>  <i class="glyphicon glyphicon-arrow-right"></i></a>
                         <p>Deposit Transactions Initiated by Clients. These transactions have not been notified.</p>
                         <?php if(isset($pending_deposit_requests) && !empty($pending_deposit_requests)) {foreach ($pending_deposit_requests as $row) {?>
-                        <table class="table table-responsive table-striped table-hover">
+                        <table class="table table-bordered table-responsive table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>Client Details</th>
@@ -165,7 +164,7 @@ function bulk_sms_url($from, $to)
                                 <tr>
                                     <td rowspan="<?php echo count($transactions); ?>">
                                         <?php echo $row['full_name']; ?><br/><?php echo $row['phone']; ?><br/>
-                                        <button data-target="#bulk_comment_<?php echo $row['user_code']; ?>" data-toggle="modal" title="Add a comment to all the listed transactions for this client" class="btn btn-sm btn-info">Add Comment</button>
+                                        <button data-target="#bulk_comment_<?php echo $row['user_code']; ?>" data-toggle="modal" title="Add a comment to all the listed transactions for this client" class="btn btn-xs btn-default">Add Comment</button>
                                         <!--Modal - confirmation boxes-->
                                         <div id="bulk_comment_<?php echo $row['user_code']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                             <div class="modal-dialog modal-lg">
@@ -218,7 +217,7 @@ function bulk_sms_url($from, $to)
                                             <input type="hidden" name="sort_value" value="<?php if($transactions[0]['sort'] == "0"){echo "1";}else{echo "0";} ?>" />
                                             <div class="checkbox">
                                                 <label onclick="document.getElementById('sort_<?php echo $transactions[0]['trans_id'] ?>').click();">
-                                                    <input <?php if($transactions[0]['sort'] == "1"){echo "checked";}?>  data-size="mini" data-toggle="toggle" type="checkbox">
+                                                    <input <?php if($transactions[0]['sort'] == "1"){echo "checked";}?>  data-size="mini" data-on="Open" data-off="Closed" data-toggle="toggle" type="checkbox">
                                                 </label>
                                             </div>
                                             <input style="display: none" id="sort_<?php echo $transactions[0]['trans_id'] ?>" type="submit" name="sort">
@@ -240,7 +239,7 @@ function bulk_sms_url($from, $to)
                                                 <form data-toggle="validator" role="form" method="post" action="">
                                                     <input type="hidden" name="trans_id" value="<?php echo $key['trans_id'] ?>" />
                                                     <input type="hidden" name="sort_value" value="<?php if($key['sort'] == "0"){echo "1";}else{echo "0";} ?>" />
-                                                    <div class="checkbox"><label onclick="document.getElementById('sort_<?php echo $key['trans_id'] ?>').click();"><input  <?php if($key['sort'] == "1"){echo "checked";}?> data-size="mini" data-toggle="toggle" type="checkbox"></label></div>
+                                                    <div class="checkbox"><label onclick="document.getElementById('sort_<?php echo $key['trans_id'] ?>').click();"><input  <?php if($key['sort'] == "1"){echo "checked";}?> data-size="mini" data-on="Open" data-off="Closed" data-toggle="toggle" type="checkbox"></label></div>
                                                     <input style="display: none" id="sort_<?php echo $key['trans_id'] ?>" type="submit" name="sort">
                                                 </form>
                                             </td>
