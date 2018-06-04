@@ -1,7 +1,7 @@
 <?php
 set_include_path('/home/tboy9/public_html/init/');
 require_once 'initialize_general.php';
-
+//Paid for the Forex optimizer Course but have not started
 $my_subject_1a = "Your Forex Profit Optimizer course is on…";
 $my_message_1a =
     <<<MAIL
@@ -17,8 +17,8 @@ Your training portal awaits and all you need to do is begin now.</p>
 <p>Hurry Now! I can’t wait to for you to join our league of profitable traders</p>
 MAIL;
 
-$my_subject_1a = " You’ve Paid Your Dues [NAME], you deserve…";
-$my_message_1a =
+$my_subject_1b = " You’ve Paid Your Dues [NAME], you deserve…";
+$my_message_1b =
     <<<MAIL
 <p>Hello [Name]</p>
 <p>How are you doing?</p>
@@ -67,6 +67,7 @@ $my_message_1d =
 </button></p>
 MAIL;
 
+// Student between Lesson 1-6 course2
 $my_subject_2a = "";
 $my_message_2a =
     <<<MAIL
@@ -139,6 +140,8 @@ $my_message_2d =
 <p>I look forward to reading and responding to your reply.</p>
 MAIL;
 
+
+// Student between Lesson 7-13 course2
 $my_subject_3a = "[NAME], Take the Bull by The Horn This Week";
 $my_message_3a =
     <<<MAIL
@@ -227,91 +230,25 @@ MAIL;
 //<p>Why delay further? Click here to get in now.</p>
 //<p>Email to students who haven’t continued to the Forex profit Optimizer course 5 days after the previous mail.</p>
 
-$my_subject_4a = "Congratulations! Let’s Take it a Notch Higher";
+//Students who have completed course 2 but no deposit
+$my_subject_4a = "";
 $my_message_4a =
     <<<MAIL
-<p>Hello [NAME],</p>
-<p>How are you doing?</p>
-<p>It’s been 5 days since you completed the Forex Money Maker Course. </p>
-<p>I hope you have been testing your trading knowledge on the Demo platform. How has it been?</p>
-<p>Did you make profits? Losses? Both?</p>
-<p>Please click <a href="mailto:support@instafxng.com?subject=My%20Trading%20Experience%20&body=Hello%20Mercy,%0A%0AMy%20experience%20went%20thus:%0A%0APlease%20type%20your%20experience%20here.%0A%0A%0AThanks!">here</a> to share your experience with me, I would like to know how you are doing.</p>
-MAIL;
-
-$my_subject_4b = "Here’s one of the Emotion to Avoid when trading Forex…";
-$my_message_4b =
-    <<<MAIL
 <p>Dear [NAME],</p>
-<p>How are you today?</p>
-<p>I’m sure you already know by now that Forex trading is one heck of a profitable business and the opportunities and freedom you get with Forex is unbelievable.</p>
-<p>That’s very true.</p>
-<p>However, most beginner traders make one small yet big mistake.</p>
-<p>Do you remember the idiom that talks about how the straw that broke the camel’s back? This is how this particular vice is.</p>
-<p>It’s seemingly tiny and inconsequential, yet, it can cause a great havoc and destruct the consistent flow of cash that is available to a Forex trader.</p>
-<p>It’s called Greed! </p>
-<p>Greed is a terrible vice amongst Forex traders and as a budding forex trader with great potentials, I thought to hold your hands and guide you through to the point of making steady profits from Forex trading.</p>
-<p>Forex is like every other business where you buy and sell to make profits and to make profit, you must avoid been greedy and approach trading realistically by setting SMART goals.</p>
-<p>Forex traders who took our trainings in the past know that they must put money management skills in place when trading so that their profit is not lost amidst the struggle to make more money from the currency market.</p> 
-<p>This is one of the things you will learn when you take the Forex Profit Optimizer course. You will learn what you need to do in order to take your profit from every trade and how to avoid making much losses.</p>
-<p>This is one lesson that every trader interested in trading Forex profitably must take.</p>
-<p>Click here to complete your lessons and be on your way to living full and free.</p>
-<p>Traders who took the Forex Profit optimizer course in the past paid the sum of N117, 000 to access the course and here it is offered to you at a very low fee of N5000.</p>
-<p>Make sure to click here to continue from where you stopped so you can start making consistent income from Forex trading.</p>
-<p>I look forward to seeing you on the other side.</p>
-MAIL;
-
-
-$my_subject_4c = "You Don’t Have to Wait till the Weekend to Make your Profit";
-$my_message_4c =
-    <<<MAIL
-<p>Dear name,</p>
-<p>Do you sometimes wonder why you can’t place or close trades on weekends? Well, this is because the Forex market is always closed at the weekend.</p>
-<p>And this is because the biggest player in the business “Banks” are not always opened on Saturday and Sundays.</p>
-<p>Should this news discourage you from trading Forex? Not at all!</p>
-<p>If you know the best time of the day to trade Forex and make your profit, you won’t need to spend all day in the market.</p>
-<p>You would readily know the best time of the day to trade and you would be able to take your own share of the dollars that is being traded in the Forex market on a daily basis.</p>
-<p>One of the things you will learn when you take the Forex Profit Optimizer course is the best time of the day to trade.</p>
-<p>Also, you need to know how to take advantage of economic news in order to make money at the weekends.</p>
-<p>Can you see that there’s more to learn? Be sure to click here to proceed to the Forex Profit Optimizer course.</p>
-<p>One of the trainees who completed the Forex Profit Optimizer course last week has started making profit from Forex trading. He has made $150 from Forex trading just in the first week of trading.</p>
-<p>If you would like to make money from Forex trading, then you need to acquire enough knowledge that can guarantee your trading success.</p> 
-<p>Be sure to click here to continue from where you stopped.</p>
-
-MAIL;
-
-$my_subject_4d = "These Tools Will Help You Make Consistent Income From Your Trades";
-$my_message_4d =
-    <<<MAIL
-<p>Dear [NAME],</p>
-<p>Today, I would like to tell you more about the dynamics of the Forex market.</p>
-<p>Did you know that one of the most important skill you need to acquire to trade Forex profitably is to be able to forecast and tell whether to price of a trading instrument will rise, fall or remain stable?</p>
-<p>Now you know!</p>
-<p>Knowing how to do this will help you determine whether to place a buy trade or a sell trade or to even steer clear of the Forex market.</p>
-<p>And the best part…</p>
-<p>The tools and methods you need to use to forecast the direction that the Forex market will move in is readily available to you in the Forex profit optimizer course.</p>
-<p>[NAME], the best gift you can ever give to yourself is to invest in knowledge that will in turn make more money for you.</p>
-<p>Give yourself the gift of this e-course and start making steady income from Forex trading.</p> 
-
-MAIL;
-
-$my_subject_5a = "";
-$my_message_5a =
-    <<<MAIL
-<p>Dear [NAME]</p>
 <p>How are you doing?</p>
 <p>Today, I had a very interesting conversation with our market analyst.</p>
 <p>I found out something amazing and I thought to share that with you.</p>
 <p>The Forex market is currently worth $5.3Trillion and on a daily basis, more than half of that money exchanges hands yielding into lots of profits for skillful traders in the market.</p>
 <p>Doesn’t this excite you? Let me break it down…</p>
 <p>For you, this simply means you have been missing out on a whole lot of money because you haven’t started trading.</p>
-<p>Start today! Click <a href="http://bit.ly/2mpqehQ">here</a> to quickly open a Forex account immediately if you haven’t done that before now.</p>
+<p>Start today! Click <a href="http://bit.ly/2BjGSYF">here</a> to quickly open a Forex account immediately if you haven’t done that before now.</p>
 <p>Start trading now so that you can get as much profit as you can before the year runs out, we are ready to reward you every step of the way.</p>
 <p>To start with, you’ll get a whopping $130% bonus on your first deposit of either $50, $100 or $150.</p>
 <p>You can click here to claim your bonus now. Don’t let all the money pass you by oo.</p>
 MAIL;
 
-$my_subject_5b = "[Name], You are missing out on our 130% Bonus Offer.";
-$my_message_5b =
+$my_subject_4b = "[Name], You are missing out on our 130% Bonus Offer.";
+$my_message_4b =
     <<<MAIL
 <p>Dear [Name],</p>
 <p>Got your 130% bonus yet?</p>
@@ -328,8 +265,8 @@ $my_message_5b =
 MAIL;
 
 
-$my_subject_5c = "[Name], Grab your Share of  $5.3 Trillion Today!";
-$my_message_5c =
+$my_subject_4c = "[Name], Grab your Share of  $5.3 Trillion Today!";
+$my_message_4c =
     <<<MAIL
 <p>More than $10000 profit have been made today!</p>
 <p>Hello [NAME]!</p>
@@ -345,8 +282,8 @@ $my_message_5c =
 <p>I can’t wait to see you top our loyalty chat and get rewarded, see you at the top soon.</p>
 MAIL;
 
-$my_subject_5d = "[NAME], Be The Lucky Winner of $250 This Month.";
-$my_message_5d =
+$my_subject_4d = "[NAME], Be The Lucky Winner of $250 This Month.";
+$my_message_4d =
     <<<MAIL
 <p>Dear [NAME],</p>
 <p>How are you today?</p>
@@ -366,6 +303,73 @@ $my_message_5d =
 <p>Don’t sleep on this gossip, act on it now!</p>
 <p>[NAME], If you experience any difficulty in going through my secret step, please send me a message.</p>
 <p>I’ll be eager to respond and clarify any issue.</p>
+MAIL;
+
+//As soon as you finish the lesson 5 of course 2
+$my_subject_5a = "";
+$my_message_5a =
+    <<<MAIL
+<p>Hello [NAME],</p>
+<p>How are you doing?</p>
+<p>It’s been 5 days since you completed the Forex Money Maker Course. </p>
+<p>I hope you have been testing your trading knowledge on the Demo platform. How has it been?</p>
+<p>Did you make profits? Losses? Both?</p>
+<p>Please click <a href="mailto:support@instafxng.com?subject=My%20Trading%20Experience%20&body=Hello%20Mercy,%0A%0AMy%20experience%20went%20thus:%0A%0APlease%20type%20your%20experience%20here.%0A%0A%0AThanks!">here</a> to share your experience with me, I would like to know how you are doing.</p>
+MAIL;
+
+$my_subject_5b = "Here’s one of the Emotion to Avoid when trading Forex…";
+$my_message_5b =
+    <<<MAIL
+<p>Dear [NAME]</p>
+<p>How are you today</p>
+<p>I’m sure you already know by now that Forex trading is one heck of a profitable business and the opportunities and freedom you get with Forex is unbelievable.</p>
+<p>That’s very true.</p>
+<p>However, most beginner traders make one small yet big mistake.</p>
+<p>Do you remember the idiom that talks about how the straw that broke the camel’s back? This is how this particular vice is.</p>
+<p>It’s seemingly tiny and inconsequential, yet, it can cause a great havoc and destruct the consistent flow of cash that is available to a Forex trader.</p>
+<p>It’s called Greed!</p> 
+<p>Greed is a terrible vice amongst Forex traders and as a budding forex trader with great potentials, I thought to hold your hands and guide you through to the point of making steady profits from Forex trading.</p>
+<p>Forex is like every other business where you buy and sell to make profits and to make profit, you must avoid been greedy and approach trading realistically by setting SMART goals. </p>
+<p>Forex traders who took our trainings in the past know that they must put money management skills in place when trading so that their profit is not lost amidst the struggle to make more money from the currency market.</p> 
+<p>This is one of the things you will learn when you take the Forex Profit Optimizer course. You will learn what you need to do in order to take your profit from every trade and how to avoid making much losses.</p>
+<p>This is one lesson that every trader interested in trading Forex profitably must take.</p>
+<p>Click here to complete your lessons and be on your way to living full and free.</p>
+<p>Traders who took the Forex Profit optimizer course in the past paid the sum of N117, 000 to access the course and here it is offered to you at a very low fee of N5000.</p>
+<p>Make sure to click <a href="http://bit.ly/2iExTpN">here</a> to continue from where you stopped so you can start making consistent income from Forex trading.</p>
+<p>I look forward to seeing you on the other side.</p>
+MAIL;
+
+
+$my_subject_5c = "You Don’t Have to Wait till the Weekend to Make your Profit";
+$my_message_5c =
+    <<<MAIL
+<p>Dear name,</p>
+<p>Do you sometimes wonder why you can’t place or close trades on weekends? Well, this is because the Forex market is always closed at the weekend.</p>
+<p>And this is because the biggest player in the business “Banks” are not always opened on Saturday and Sundays.</p>
+<p>Should this news discourage you from trading Forex? Not at all!</p>
+<p>If you know the best time of the day to trade Forex and make your profit, you won’t need to spend all day in the market.</p>
+<p>You would readily know the best time of the day to trade and you would be able to take your own share of the dollars that is being traded in the Forex market on a daily basis.</p>
+<p>One of the things you will learn when you take the Forex Profit Optimizer course is the best time of the day to trade.</p>
+<p>Also, you need to know how to take advantage of economic news in order to make money at the weekends.</p>
+<p>Can you see that there’s more to learn? Be sure to click here to proceed to the Forex Profit Optimizer course.</p>
+<p>One of the trainees who completed the Forex Profit Optimizer course last week has started making profit from Forex trading. He has made $150 from Forex trading just in the first week of trading.</p>
+<p>If you would like to make money from Forex trading, then you need to acquire enough knowledge that can guarantee your trading success.</p> 
+<p>Be sure to <a href="http://bit.ly/2iExTpN">click here</a> to continue from where you stopped.</a>
+MAIL;
+
+$my_subject_5d = "These Tools Will Help You Make Consistent Income From Your Trades";
+$my_message_5d =
+    <<<MAIL
+<p>Dear [NAME],</p>
+<p>Today, I would like to tell you more about the dynamics of the Forex market.</p>
+<p>Did you know that one of the most important skill you need to acquire to trade Forex profitably is to be able to forecast and tell whether to price of a trading instrument will rise, fall or remain stable?</p>
+<p>Now you know!</p>
+<p>Knowing how to do this will help you determine whether to place a buy trade or a sell trade or to even steer clear of the Forex market.</p>
+<p>And the best part…</p>
+<p>The tools and methods you need to use to forecast the direction that the Forex market will move in is readily available to you in the Forex profit optimizer course.</p>
+<p>[NAME], the best gift you can ever give to yourself is to invest in knowledge that will in turn make more money for you.</p>
+<p>Give yourself the gift of this <a href="http://bit.ly/2iExTpN">e-course</a> and start making steady income from Forex trading.</p> 
+
 MAIL;
 
 
