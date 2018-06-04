@@ -305,7 +305,7 @@ $my_message_4d =
 <p>I’ll be eager to respond and clarify any issue.</p>
 MAIL;
 
-//As soon as you finish the lesson 5 of course 2
+//As soon as you finish the lesson 5 of course 1
 $my_subject_5a = "";
 $my_message_5a =
     <<<MAIL
@@ -431,54 +431,55 @@ function student_auto_mail_query($query_type, $day_value) {
 
     switch($query_type) {
         case 1:
-            $query = "SELECT u.first_name, u.email
-                FROM user_edu_exercise_log AS ueel
-                INNER JOIN user AS u ON ueel.user_code = u.user_code
-                INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-                INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-                LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-                WHERE (DATEDIFF('$today', STR_TO_DATE(uefp.created, '%Y-%m-%d')) = $day_value) AND uefp.user_code = u.user_code AND u.user_code <> ueel.usercode AND ueel.lesson_id = 1
-                GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC";
+            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
+INNER JOIN user AS u ON ueel.user_code = u.user_code 
+LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
+WHERE (DATEDIFF('$today', STR_TO_DATE(uefp.created, '%Y-%m-%d')) = $day_value) 
+AND u.user_code <> ueel.user_code 
+AND ueel.lesson_id = '1' 
+AND uefp.user_code = u.user_code 
+GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
             break;
         case 2:
-            $query = "SELECT u.first_name, u.email
-                FROM user_edu_exercise_log AS ueel
-                INNER JOIN user AS u ON ueel.user_code = u.user_code
-                INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-                INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-                LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) AND ueel.lesson_id <= 6 AND uefp.user_code = u.user_code
-                GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC";
+            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
+INNER JOIN user AS u ON ueel.user_code = u.user_code 
+LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
+WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) 
+AND u.user_code = ueel.user_code 
+AND (ueel.lesson_id BETWEEN '1' AND '6') 
+AND uefp.user_code = u.user_code 
+GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
             break;
         case 3:
-        $query = "SELECT u.first_name, u.email
-                FROM user_edu_exercise_log AS ueel AND user_deposit AS ud
-                INNER JOIN user AS u ON ueel.user_code = u.user_code
-                INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-                INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-                LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) AND ueel.lesson_id = 13 AND uefp.user_code <> ud.user_code
-                GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC";
+            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
+INNER JOIN user AS u ON ueel.user_code = u.user_code 
+LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
+WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) 
+AND u.user_code = ueel.user_code 
+AND (ueel.lesson_id BETWEEN '7' AND '13') 
+AND uefp.user_code = u.user_code 
+GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
         break;
         case 4:
-            $query = "SELECT u.first_name, u.email
-                FROM user_edu_exercise_log AS ueel AND user_deposit AS ud
-                INNER JOIN user AS u ON ueel.user_code = u.user_code
-                INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-                INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-                LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) AND ueel.lesson_id = 13 AND uefp.user_code <> ud.user_code
-                GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC";
+            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
+INNER JOIN user AS u ON ueel.user_code = u.user_code 
+LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code 
+LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
+WHERE (DATEDIFF('$today', STR_TO_DATE(uefp.created, '%Y-%m-%d')) = $day_value) 
+AND u.user_code = ueel.user_code 
+AND ueel.lesson_id = '13') 
+AND uefp.user_code = u.user_code 
+GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
             break;
         case 5:
             $query = "SELECT u.first_name, u.email
-                FROM user_edu_exercise_log AS ueel AND user_deposit AS ud
+                FROM user_edu_exercise_log AS ueel
                 INNER JOIN user AS u ON ueel.user_code = u.user_code
-                INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-                INNER JOIN admin AS a ON ao.admin_code = a.admin_code
                 LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) AND ueel.lesson_id = 13 AND uefp.user_code <> ud.user_code
-                GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC";
+                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) 
+                AND ueel.lesson_id = 5 
+                AND uefp.user_code <> u.user_code";
             break;
         default:
             $query = "";
@@ -564,26 +565,26 @@ $get_mail_2d = student_auto_mail_template($my_message_2d);
 $send_message_2d = student_auto_mail_send($query_2d, $my_subject_2d, $get_mail_2d);
 
 //Clients who have completed course two but have not Funded their accounts
-$interval_3a = 15;
+$interval_3a = 7;
 
 $query_3a = student_auto_mail_query(3, $interval_3a);
 $get_mail_3a = student_auto_mail_template($my_message_3a);
 $send_message_3a = student_auto_mail_send($query_3a, $my_subject_3a, $get_mail_3a);
 
 
-$interval_3b = 30;
+$interval_3b = 14;
 
 $query_3b = student_auto_mail_query(3, $interval_3b);
 $get_mail_3b = student_auto_mail_template($my_message_3b);
 $send_message_3b = student_auto_mail_send($query_3b, $my_subject_3b, $get_mail_3b);
 
-$interval_3c = 45;
+$interval_3c = 21;
 
 $query_3c = student_auto_mail_query(3, $interval_3c);
 $get_mail_3c = student_auto_mail_template($my_message_3c);
 $send_message_3c = student_auto_mail_send($query_3c, $my_subject_3c, $get_mail_3c);
 
-$interval_3d = 60;
+$interval_3d =28;
 
 $query_3d = student_auto_mail_query(3, $interval_3d);
 $get_mail_3d = student_auto_mail_template($my_message_3d);
@@ -616,26 +617,26 @@ $get_mail_4d = student_auto_mail_template($my_message_4d);
 $send_message_4d = student_auto_mail_send($query_4d, $my_subject_4d, $get_mail_4d);
 
 //people who have reached lesson 5 of the Forex money maker course.
-$interval_5a = 15;
+$interval_5a = 5;
 
 $query_5a = student_auto_mail_query(5, $interval_5a);
 $get_mail_5a = student_auto_mail_template($my_message_5a);
 $send_message_5a = student_auto_mail_send($query_5a, $my_subject_5a, $get_mail_5a);
 
 
-$interval_5b = 30;
+$interval_5b = 12;
 
 $query_5b = student_auto_mail_query(5, $interval_5b);
 $get_mail_5b = student_auto_mail_template($my_message_5b);
 $send_message_5b = student_auto_mail_send($query_5b, $my_subject_5b, $get_mail_5b);
 
-$interval_5c = 45;
+$interval_5c = 19;
 
 $query_5c = student_auto_mail_query(5, $interval_5c);
 $get_mail_5c = student_auto_mail_template($my_message_5c);
 $send_message_5c = student_auto_mail_send($query_5c, $my_subject_5c, $get_mail_5c);
 
-$interval_5d = 60;
+$interval_5d = 26;
 
 $query_5d = student_auto_mail_query(5, $interval_5d);
 $get_mail_5d = student_auto_mail_template($my_message_5d);
