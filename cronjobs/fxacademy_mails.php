@@ -203,9 +203,99 @@ $my_message_3d =
 <p>Fantastic, huh? You bet!</p>
 MAIL;
 
+//<p>Hello [NAME],</p>
+//<p>A big congratulation to you!</p>
+//<p>I’m so glad you have hit a milestone in the ongoing online Forex trading course and I know you feel like a superman right now.</p>
+//<p>Yes ooo, please feel like it because you are actually a SUPERMAN!</p>
+//<p>Now is not the time to relax at all, you have just completed the basics of Forex trading and it’s time for you to move on and get to the part where you can use all the knowledge you have acquired on this level to achieve a greater feat in the next course.</p>
+//<p>Be sure to keep the knowledge you have garnered as you will be needing every one of them at the advanced level.</p>
+//<p>You have laid the foundation, now is the time to build your mansion on the foundation you have laid.</p>
+//<p>Introducing the Brand New Forex Profit Optimizer Course...</p>
+//<p>When you take the Forex Profit Optimizer Course, you will discover the following:</p>
+//<ul>
+//    <li>Important Forex Trading terminologies that you must know to succeed</li>
+//    <li>The right time to trade and make profit</li>
+//	<li>Very easy ways to analyse the market and know whether to enter a buy or sell trade for profit</li>
+//    <li>How to open your own free Live account and earn real dollars</li>
+//	<li>Get guaranteed 100% bonus up to $150 on deposit to your live trading account</li>
+//	<li>How to make an extra $4,200 and N1,000,000 in rewards annually while taking your normal trades</li>
+//</ul>
+//<p>With this knowledge, not only are you ready to make consistent income from Forex trading, you will be adequately equipped to set money goals and meet each of them. </p>
+//<p>So if you are really interested in making consistent money from Forex Trading then go ahead and immediately take the Forex Profit Optimizer Course Click here to enrol now. </p>
+//<p>We have limited spaces left! We have been receiving a truckload of requests from students who wants to be a part of the Forex optimizer course but because we need to maintain a high standard of training and our instructors have to schedule a personal phone/Skype consultation session with each student, we cannot afford to take everyone that tries to enrol.</p>
+//<p>I can guarantee you a space if you get in before 48 hours elapse. If you don't enrol and get in before 48 hours, I am afraid you may lose this opportunity.</p>
+//<p>Why delay further? Click here to get in now.</p>
+//<p>Email to students who haven’t continued to the Forex profit Optimizer course 5 days after the previous mail.</p>
 
-$my_subject_4a = "";
+$my_subject_4a = "Congratulations! Let’s Take it a Notch Higher";
 $my_message_4a =
+    <<<MAIL
+<p>Hello [NAME],</p>
+<p>How are you doing?</p>
+<p>It’s been 5 days since you completed the Forex Money Maker Course. </p>
+<p>I hope you have been testing your trading knowledge on the Demo platform. How has it been?</p>
+<p>Did you make profits? Losses? Both?</p>
+<p>Please click <a href="mailto:support@instafxng.com?subject=My%20Trading%20Experience%20&body=Hello%20Mercy,%0A%0AMy%20experience%20went%20thus:%0A%0APlease%20type%20your%20experience%20here.%0A%0A%0AThanks!">here</a> to share your experience with me, I would like to know how you are doing.</p>
+MAIL;
+
+$my_subject_4b = "Here’s one of the Emotion to Avoid when trading Forex…";
+$my_message_4b =
+    <<<MAIL
+<p>Dear [NAME],</p>
+<p>How are you today?</p>
+<p>I’m sure you already know by now that Forex trading is one heck of a profitable business and the opportunities and freedom you get with Forex is unbelievable.</p>
+<p>That’s very true.</p>
+<p>However, most beginner traders make one small yet big mistake.</p>
+<p>Do you remember the idiom that talks about how the straw that broke the camel’s back? This is how this particular vice is.</p>
+<p>It’s seemingly tiny and inconsequential, yet, it can cause a great havoc and destruct the consistent flow of cash that is available to a Forex trader.</p>
+<p>It’s called Greed! </p>
+<p>Greed is a terrible vice amongst Forex traders and as a budding forex trader with great potentials, I thought to hold your hands and guide you through to the point of making steady profits from Forex trading.</p>
+<p>Forex is like every other business where you buy and sell to make profits and to make profit, you must avoid been greedy and approach trading realistically by setting SMART goals.</p>
+<p>Forex traders who took our trainings in the past know that they must put money management skills in place when trading so that their profit is not lost amidst the struggle to make more money from the currency market.</p> 
+<p>This is one of the things you will learn when you take the Forex Profit Optimizer course. You will learn what you need to do in order to take your profit from every trade and how to avoid making much losses.</p>
+<p>This is one lesson that every trader interested in trading Forex profitably must take.</p>
+<p>Click here to complete your lessons and be on your way to living full and free.</p>
+<p>Traders who took the Forex Profit optimizer course in the past paid the sum of N117, 000 to access the course and here it is offered to you at a very low fee of N5000.</p>
+<p>Make sure to click here to continue from where you stopped so you can start making consistent income from Forex trading.</p>
+<p>I look forward to seeing you on the other side.</p>
+MAIL;
+
+
+$my_subject_4c = "You Don’t Have to Wait till the Weekend to Make your Profit";
+$my_message_4c =
+    <<<MAIL
+<p>Dear name,</p>
+<p>Do you sometimes wonder why you can’t place or close trades on weekends? Well, this is because the Forex market is always closed at the weekend.</p>
+<p>And this is because the biggest player in the business “Banks” are not always opened on Saturday and Sundays.</p>
+<p>Should this news discourage you from trading Forex? Not at all!</p>
+<p>If you know the best time of the day to trade Forex and make your profit, you won’t need to spend all day in the market.</p>
+<p>You would readily know the best time of the day to trade and you would be able to take your own share of the dollars that is being traded in the Forex market on a daily basis.</p>
+<p>One of the things you will learn when you take the Forex Profit Optimizer course is the best time of the day to trade.</p>
+<p>Also, you need to know how to take advantage of economic news in order to make money at the weekends.</p>
+<p>Can you see that there’s more to learn? Be sure to click here to proceed to the Forex Profit Optimizer course.</p>
+<p>One of the trainees who completed the Forex Profit Optimizer course last week has started making profit from Forex trading. He has made $150 from Forex trading just in the first week of trading.</p>
+<p>If you would like to make money from Forex trading, then you need to acquire enough knowledge that can guarantee your trading success.</p> 
+<p>Be sure to click here to continue from where you stopped.</p>
+
+MAIL;
+
+$my_subject_4d = "These Tools Will Help You Make Consistent Income From Your Trades";
+$my_message_4d =
+    <<<MAIL
+<p>Dear [NAME],</p>
+<p>Today, I would like to tell you more about the dynamics of the Forex market.</p>
+<p>Did you know that one of the most important skill you need to acquire to trade Forex profitably is to be able to forecast and tell whether to price of a trading instrument will rise, fall or remain stable?</p>
+<p>Now you know!</p>
+<p>Knowing how to do this will help you determine whether to place a buy trade or a sell trade or to even steer clear of the Forex market.</p>
+<p>And the best part…</p>
+<p>The tools and methods you need to use to forecast the direction that the Forex market will move in is readily available to you in the Forex profit optimizer course.</p>
+<p>[NAME], the best gift you can ever give to yourself is to invest in knowledge that will in turn make more money for you.</p>
+<p>Give yourself the gift of this e-course and start making steady income from Forex trading.</p> 
+
+MAIL;
+
+$my_subject_5a = "";
+$my_message_5a =
     <<<MAIL
 <p>Dear [NAME]</p>
 <p>How are you doing?</p>
@@ -220,8 +310,8 @@ $my_message_4a =
 <p>You can click here to claim your bonus now. Don’t let all the money pass you by oo.</p>
 MAIL;
 
-$my_subject_4b = "[Name], You are missing out on our 130% Bonus Offer.";
-$my_message_4b =
+$my_subject_5b = "[Name], You are missing out on our 130% Bonus Offer.";
+$my_message_5b =
     <<<MAIL
 <p>Dear [Name],</p>
 <p>Got your 130% bonus yet?</p>
@@ -238,8 +328,8 @@ $my_message_4b =
 MAIL;
 
 
-$my_subject_4c = "[Name], Grab your Share of  $5.3 Trillion Today!";
-$my_message_4c =
+$my_subject_5c = "[Name], Grab your Share of  $5.3 Trillion Today!";
+$my_message_5c =
     <<<MAIL
 <p>More than $10000 profit have been made today!</p>
 <p>Hello [NAME]!</p>
@@ -255,8 +345,8 @@ $my_message_4c =
 <p>I can’t wait to see you top our loyalty chat and get rewarded, see you at the top soon.</p>
 MAIL;
 
-$my_subject_4d = "[NAME], Be The Lucky Winner of $250 This Month.";
-$my_message_4d =
+$my_subject_5d = "[NAME], Be The Lucky Winner of $250 This Month.";
+$my_message_5d =
     <<<MAIL
 <p>Dear [NAME],</p>
 <p>How are you today?</p>
@@ -367,6 +457,16 @@ function student_auto_mail_query($query_type, $day_value) {
                 GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC";
         break;
         case 4:
+            $query = "SELECT u.first_name, u.email
+                FROM user_edu_exercise_log AS ueel AND user_deposit AS ud
+                INNER JOIN user AS u ON ueel.user_code = u.user_code
+                INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+                INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+                LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
+                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) AND ueel.lesson_id = 13 AND uefp.user_code <> ud.user_code
+                GROUP BY ueel.user_code ORDER BY u.academy_signup DESC, u.last_name ASC";
+            break;
+        case 5:
             $query = "SELECT u.first_name, u.email
                 FROM user_edu_exercise_log AS ueel AND user_deposit AS ud
                 INNER JOIN user AS u ON ueel.user_code = u.user_code
@@ -511,3 +611,28 @@ $query_4d = student_auto_mail_query(4, $interval_4d);
 $get_mail_4d = student_auto_mail_template($my_message_4d);
 $send_message_4d = student_auto_mail_send($query_4d, $my_subject_4d, $get_mail_4d);
 
+//people who have reached lesson 5 of the Forex money maker course.
+$interval_5a = 15;
+
+$query_5a = student_auto_mail_query(5, $interval_5a);
+$get_mail_5a = student_auto_mail_template($my_message_5a);
+$send_message_5a = student_auto_mail_send($query_5a, $my_subject_5a, $get_mail_5a);
+
+
+$interval_5b = 30;
+
+$query_5b = student_auto_mail_query(5, $interval_5b);
+$get_mail_5b = student_auto_mail_template($my_message_5b);
+$send_message_5b = student_auto_mail_send($query_5b, $my_subject_5b, $get_mail_5b);
+
+$interval_5c = 45;
+
+$query_5c = student_auto_mail_query(5, $interval_5c);
+$get_mail_5c = student_auto_mail_template($my_message_5c);
+$send_message_5c = student_auto_mail_send($query_5c, $my_subject_5c, $get_mail_5c);
+
+$interval_5d = 60;
+
+$query_5d = student_auto_mail_query(5, $interval_5d);
+$get_mail_5d = student_auto_mail_template($my_message_5d);
+$send_message_5d = student_auto_mail_send($query_5d, $my_subject_5d, $get_mail_5d);
