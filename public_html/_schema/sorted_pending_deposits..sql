@@ -1,0 +1,2 @@
+ALTER TABLE `user_deposit` ADD `sort` ENUM('0','1') NOT NULL DEFAULT '1' COMMENT '0-Sorted 1-Unsorted' AFTER `updated`;
+ALTER TABLE `rms_reports` ADD `status` ENUM('1','2') NOT NULL DEFAULT '1' COMMENT '1-Draft 2-Publish' AFTER `target_id`;
