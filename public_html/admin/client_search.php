@@ -19,7 +19,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3 || isset($_
                     INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
                     INNER JOIN admin AS a ON ao.admin_code = a.admin_code
                     LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-                    WHERE u.status = '1' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ";
+                    WHERE (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ";
         $_SESSION['search_client_query'] = $query;
 
     } else {

@@ -130,14 +130,20 @@ if(isset($_POST['deposit_funds_kyc'])) {
         if($user_code) {
             $user_ifx_details = $client_operation->set_client_data($account_no);
             extract($user_ifx_details);
-            
-            if(is_null($client_password) || empty($client_password)) {
-                // User has not chosen a password, phone not verified, email not verified.
-                $client_operation->send_verification_message($client_user_code, $client_email, $client_phone_number, $client_first_name, $client_verification_id);
-                $page_requested = 'deposit_funds_pcode_new_php'; // No associated pass code
+
+            if($client_status != '1') {
+                $page_requested = "";
+                $message_error = "Your profile is yet to be activated on our system or is inactive, on probation or suspended, please contact support.";
             } else {
-                $page_requested = 'deposit_funds_pcode_php'; // Continue, has pass code
+                if(is_null($client_password) || empty($client_password)) {
+                    // User has not chosen a password, phone not verified, email not verified.
+                    $client_operation->send_verification_message($client_user_code, $client_email, $client_phone_number, $client_first_name, $client_verification_id);
+                    $page_requested = 'deposit_funds_pcode_new_php'; // No associated pass code
+                } else {
+                    $page_requested = 'deposit_funds_pcode_php'; // Continue, has pass code
+                }
             }
+
         }
     }
 }
