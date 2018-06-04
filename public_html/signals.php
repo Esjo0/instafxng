@@ -1,8 +1,17 @@
-<header><i class="fa fa-bars fa-fw"></i> Daily Forex Signal</header>
+
+<header><i class="fa fa-bars fa-fw"></i> Daily Forex Signal<em class="pull-right">
+        <button title="Refresh Signals" class="btn btn-default" onclick="refresh()"><i class="glyphicon glyphicon-refresh"></i></button>
+    </em></header>
 <article>
+
+    <script>
+        function refresh() {
+            signal.getSignals('sig');
+        }
+        </script>
     <script>
         signal.getSignals('sig');
-        $(document).ready(function() {setInterval(function(){signal.getSignals('sig');}, 10000);});
+        $(document).ready(function() {setInterval(function(){signal.getSignals('sig');}, 3600000);});
     </script>
     <small>
         <em><strong>Date:</strong></em>
@@ -11,6 +20,7 @@
                 $(document).ready(function() {setInterval(function(){signal.get_date('table_date');}, 10000);});
             </script>
         </em>
+
         <em class="pull-right" id="table_time">
             <script>
                 $(document).ready(function() {setInterval(function(){signal.get_time('table_time');}, 1000);});
@@ -35,6 +45,7 @@
         Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
             signal guide</a> to learn how to use the signals.
     </small>
+
 </article>
 <div id="signal_display" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
     <div class="modal-dialog">
