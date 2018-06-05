@@ -1,5 +1,5 @@
 <?php
-/* header("Access-Control-Allow-Origin: *"); */
+header("Access-Control-Allow-Origin: *");
 require_once('../init/initialize_client.php');
 define("ACCESS_TOKEN", "mWSUe7/msniZD3f8EzN1m1dyzFXQdSnraUcfox7kgp8=");
 $get_params = allowed_get_params(['type', 'access_token', 'user_token', 'user_code']);
@@ -14,7 +14,7 @@ if(validRequest($_u_access_token))
         echo json_encode($result);
     }
     if($request_type == 2){
-        $result = array('feedback' => setUserToken($user_code, $user_token));
+        $result = array('feedback' => setUserToken($_SESSION['client_unique_code'], $user_token));
         echo json_encode($result);
     }
 }
