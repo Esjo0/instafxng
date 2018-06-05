@@ -10,6 +10,17 @@ $todays_signals = $db_handle->numRows($query);
 $query = "SELECT SUM(views) AS Total FROM signal_daily WHERE trigger_date = '$today'";
 $result_view = $db_handle->runQuery($query);
 
+if(isset($_POST['trigger'])){
+    $id = $db_handle->sanitizePost($_POST['id']);
+    $query = "UPDATE signal_intraday SET status = '1' WHERE id = '$id'";
+    $result =$db_handle->runQuery($query);
+    if($result) {
+        $message_success = "Signal Triggered Successfully created for ".datetime_to_text($signal_time);
+    } else {
+        $message_error = "Something went wrong. Please try again.";
+    }
+}
+
 if(isset($_POST['create_symbol'])){
    $pair = $db_handle->sanitizePost($_POST['pair']);
    $query = "SELECT * FROM signal_symbol WHERE symbol = '$pair'";
@@ -455,6 +466,8 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                         </form>
                                                 </div>
                                                 <div class="modal-footer">
+                                                    <center><?php if($row['status'] == 0){?><form method="post" action=""><input name="id" type="hidden" value="<?php echo $row['id'];?>"><button name="trigger" type="submit" class="btn btn-success">Trigger</button></form><?php }?></center>
+
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
                                                 </div>
