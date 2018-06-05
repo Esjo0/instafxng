@@ -21,5 +21,3 @@ CREATE TABLE `signal_symbol` (
  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`symbol_id`)
 )
-
-ALTER TABLE `signal_daily` ADD `trigger_status` INT NULL DEFAULT '0' COMMENT '0=Not triggered 1=triggered' AFTER `views`
