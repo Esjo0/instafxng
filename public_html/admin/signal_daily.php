@@ -12,7 +12,7 @@ $result_view = $db_handle->runQuery($query);
 
 if(isset($_POST['trigger'])){
     $id = $db_handle->sanitizePost($_POST['id']);
-    $query = "UPDATE signal_intraday SET status = '1' WHERE id = '$id'";
+    $query = "UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '$id'";
     $result =$db_handle->runQuery($query);
     if($result) {
         $message_success = "Signal Triggered Successfully created for ".datetime_to_text($signal_time);
@@ -352,7 +352,8 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form  role="form" method="post" action="">
+                                                        <center><?php if($row['trigger_status'] == 0){?><form method="post" action=""><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><button name="trigger" type="submit" class="btn btn-success btn-sm">Confirm Signal Trigger</button></form><?php }?></center>
+                                                       <br><hr> <form  role="form" method="post" action="">
                                                             <div class="form-group row">
                                                                 <label class="control-label col-sm-3" for="location">Currency Pair </label>
                                                                 <div class="col-sm-9 col-lg-5">
@@ -466,7 +467,6 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                         </form>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <center><?php if($row['status'] == 0){?><form method="post" action=""><input name="id" type="hidden" value="<?php echo $row['id'];?>"><button name="trigger" type="submit" class="btn btn-success">Trigger</button></form><?php }?></center>
 
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 

@@ -17,8 +17,12 @@ if (isset($_POST['signal_report'])) {
     $query = "SELECT SUM(views) AS Total FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date'";
     $result_view = $db_handle->runQuery($query);
 
+    $query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
+    $total_triggered = $db_handle->numRows($query);
+
     $query = "SELECT * FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' ";
     $numrows = $db_handle->numRows($query);
+    $total_untriggered = $numrows - $total_triggered;
     $rowsperpage = 10;
     $totalpages = ceil($numrows / $rowsperpage);
     if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {    $currentpage = (int) $_GET['pg'];} else {    $currentpage = 1;}
@@ -40,9 +44,12 @@ else
     $query = "SELECT SUM(views) AS Total FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date'";
     $result_view = $db_handle->runQuery($query);
 
+    $query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
+    $total_triggered = $db_handle->numRows($query);
 
     $query = "SELECT * FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' ";
     $numrows = $db_handle->numRows($query);
+    $total_untriggered = $numrows - $total_triggered;
     $rowsperpage = 10;
     $totalpages = ceil($numrows / $rowsperpage);
     if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {    $currentpage = (int) $_GET['pg'];} else {    $currentpage = 1;}
@@ -147,6 +154,8 @@ else
                                 </form>
                             </center>
                         </div>
+                        <br>
+                        <br>
                             <div class="row">
                                 <div class="col-sm-4"></div>
                         <ul class="list-group mb-3 col-sm-4">
@@ -154,6 +163,14 @@ else
                                     <span>Total Signals Posted</span>
                                     <strong><?php echo $numrows;?></strong>
                                 </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Total Triggered Signals</span>
+                                <strong><?php echo $total_triggered;?></strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Total Un-Triggered Signals</span>
+                                <strong><?php echo $total_untriggered;?></strong>
+                            </li>
 
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>Total Signals Views</span>
@@ -182,6 +199,7 @@ else
                                     <th>Trigger Date and Time</th>
                                     <th>Date Created</th>
                                     <th>Views</th>
+                                    <th>Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -203,11 +221,11 @@ else
                                     <td><?php
                                         if($row['order_type'] == 2)
                                         {
-                                            echo" <b class='text-danger'><i class='glyphicon glyphicon-arrow-down'></i></b>";
+                                            echo" <b class='text-danger'><i class='glyphicon glyphicon-arrow-down'></i></b> (BUY)";
                                         }
                                         elseif($row['order_type'] == 1)
                                         {
-                                            echo"<b class='text-success'><i class='glyphicon glyphicon-arrow-up'></i></b>";
+                                            echo"<b class='text-success'><i class='glyphicon glyphicon-arrow-up'></i></b> (SELL)";
                                         }
                                         ?></td>
                                     <td><?php echo $row['price']; ?></td>
@@ -216,6 +234,16 @@ else
                                     <td><?php echo datetime_to_text($row['trigger_date']." ".$row['trigger_time']); ?></td>
                                     <td><?php echo datetime_to_text2($row['created']); ?></td>
                                     <td><?php echo $row['views']; ?></td>
+                                    <td><?php
+                                        if($row['trigger_status'] == 0)
+                                        {
+                                            echo" <b class='text-danger'><i class='glyphicon glyphicon-remove'></i></b>";
+                                        }
+                                        elseif($row['trigger_status'] == 1)
+                                        {
+                                            echo"<b class='text-success'><i class='glyphicon glyphicon-ok'></i></b>";
+                                        }
+                                        ?></td>
                         </tr>
                     <?php
                     }?>

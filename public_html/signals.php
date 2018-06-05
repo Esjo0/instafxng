@@ -1,7 +1,5 @@
 
-<header><i class="fa fa-bars fa-fw"></i> Daily Forex Signal<em class="pull-right">
-        <button title="Refresh Signals" class="btn btn-default" onclick="refresh()"><i class="glyphicon glyphicon-refresh"></i></button>
-    </em></header>
+<header><i class="fa fa-bars fa-fw"></i> Daily Forex Signal</header>
 <article>
 
     <script>
@@ -20,11 +18,14 @@
                 $(document).ready(function() {setInterval(function(){signal.get_date('table_date');}, 10000);});
             </script>
         </em>
-
-        <em class="pull-right" id="table_time">
+        <em style="margin:10px;">    </em>
+        <em id="table_time">
             <script>
                 $(document).ready(function() {setInterval(function(){signal.get_time('table_time');}, 1000);});
             </script>
+        </em>
+        <em  class="pull-right">
+            <button style=" border: 0px;border-radius:50%;" title="Refresh Signals" class="btn btn-default btn-sm" onclick="refresh()"><i class="glyphicon glyphicon-refresh"></i></button>
         </em>
     </small>
     <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-hover">
