@@ -13,7 +13,7 @@ $my_message_1a =
 <p>    I quite understand that you have been very busy, however, I’d like to encourage you to take out time to begin your training so you can start earning extra money.
 Your training portal awaits and all you need to do is begin now.</p>
 <p>Rest assured, after the training, you will be fully equipped to trade profitably and optimally.</p>
-<p>Start taking your lessons now here https://bit.ly/2iExTpN</p>
+<p>Start taking your lessons now <a href="https://bit.ly/2iExTpN">here</a></p>
 <p>Hurry Now! I can’t wait to for you to join our league of profitable traders</p>
 MAIL;
 
@@ -29,7 +29,7 @@ $my_message_1b =
 <p>Easy and efficient right?</p>
 <p>    Tag along [Name], you have paid your dues and you sure deserve to get your money’s worth.</p>
 <p>Why not start your course this weekend? That way you can lay comfortably on your bed on a Saturday morning, take the course on your phone and practice your newly acquired skill.</p>
-<p>Click here to begin your profit optimizer course now.</p>
+<p>Click <a href="https://bit.ly/2iExTpN">here</a> to begin your profit optimizer course now.</p>
 <p>I would love for you to start and complete your optimizer course as soon as possible because it will equip you to be prepared to trade profitably.</p>
 <p>If you have any concern, please feel free share with me</p>
 <p>I am eager to read and respond to your email.</p>
@@ -46,7 +46,7 @@ $my_message_1c =
 <p>The Loyalty Reward Program for this year has begun and you are missing out!</p>
 <p>The sooner you begin and conclude the Forex Profit Optimizer course, the earlier you start trading and making money from your trades.</p>
 <p>[Name], you can still hit this year’s financial target and become a millionaire!</p>
-<p>Complete your course and get equipped now! Click here to begin now.</p>
+<p>Complete your course and get equipped now! Click <a href="https://bit.ly/2iExTpN">here</a> to begin now.</p>
 <p>I look forward to seeing you in class.</p>
 <p>Please feel free to reach out to me if you need any assistance. I’ll always be here.</p>
 MAIL;
@@ -55,89 +55,90 @@ $my_subject_1d = "All you Need to build a Successful Side Business is in here";
 $my_message_1d =
     <<<MAIL
 <p>Dear [Name],</p>
-<p>I hope you are doing well?</p>
-<p>    You have been off your training for a very long time, are you experiencing any difficulty? If yes, please click here to send me a mail so I can get in on it and assist you with it right away.</p>
-<p>Do you know that with the right knowledge, you can make millions of dollars while trading Forex? I bet you do!</p>
-<p>I would like to encourage you to take your Forex Profit optimizer course today as I want to see you make more money and see the result of signing up from the start.</p>
-<p>A lot of other traders who started the training with you have begun to cash out hundreds and thousands of dollars.</p>
-<p>Don’t wait a day more! Click here to start your Forex Profit Optimizer course so you can finish it in good time.</p>
-<p>I’m earnestly rooting for you [NAME] and I can’t wait for you to become a pro at this and start making money with ease.</p>
-<p>
-<button style="background: #2f88bc; border-radius: 15px; height: 35px;"><strong><a style="text-decoration: none; text-align: center; color: white;" href="http://bit.ly/2iExTpN" target="_blank">Get me Started</a></strong>
-</button></p>
+            <p>I hope you are doing well?</p>
+            <p>    You have been off your training for a very long time, are you experiencing any difficulty? If yes, please click here to send me a mail so I can get in on it and assist you with it right away.</p>
+            <p>Do you know that with the right knowledge, you can make millions of dollars while trading Forex? I bet you do!</p>
+            <p>I would like to encourage you to take your Forex Profit optimizer course today as I want to see you make more money and see the result of signing up from the start.</p>
+            <p>A lot of other traders who started the training with you have begun to cash out hundreds and thousands of dollars.</p>
+            <p>Don’t wait a day more! Click here to start your Forex Profit Optimizer course so you can finish it in good time.</p>
+            <p>I’m earnestly rooting for you [NAME] and I can’t wait for you to become a pro at this and start making money with ease.</p>
+            <p>
+                <center><a href="http://bit.ly/2iExTpN" target="_blank"><button style="background: #2f88bc; border-radius: 15px; height: 35px;text-decoration: none; text-align: center; color: white;"><strong>Get me Started</strong>
+        </button></a></center></p>
 MAIL;
 
 // Student between Lesson 1-6 course2
-$my_subject_2a = "";
+$my_subject_2a = "Hy [NAME], Get equipped now";
 $my_message_2a =
     <<<MAIL
 <p>Dear [NAME],</p>
-<p>How are you doing?</p>
-<p>    I am happy to see that you are half way gone with your Forex profit optimizer course.</p>
-<p>Well done [NAME]! You have come a long way and I’m super proud of you!</p>
-<p>You have just a few lessons more and I would really like you to take one step further and complete the lessons.</p>
-<p>Do not leave any stone unturned as information is key to trading Forex successfully!</p>
-<p>A lot of traders have made thousands of dollars this year already, you definitely should not miss out on this opportunity to make more money from Forex trading.</p>
-<p>Get equipped now by completing your course and in few weeks you will be cashing out like a pro.</p>
-<p>Click here to finish your profit optimizer course right away!</p>
-<p>Should you experience any challenge or need any help, do well to reply this mail and I will be sure to respond swiftly.</p>
+            <p>How are you doing?</p>
+            <p>    I am happy to see that you are half way gone with your Forex profit optimizer course.</p>
+            <p>Well done [NAME]! You have come a long way and I’m super proud of you!</p>
+            <p>You have just a few lessons more and I would really like you to take one step further and complete the lessons.</p>
+            <p>Do not leave any stone unturned as information is key to trading Forex successfully!</p>
+            <p>A lot of traders have made thousands of dollars this year already, you definitely should not miss out on this opportunity to make more money from Forex trading.</p>
+            <p>Get equipped now by completing your course and in few weeks you will be cashing out like a pro.</p>
+            <p>Click <a href="https://instafxng.com/fxacademy/login.php">here</a> to finish your profit optimizer course right away!</p>
+            <p>Should you experience any challenge or need any help, do well to reply this mail and I will be sure to respond swiftly.</p>
 MAIL;
 
 $my_subject_2b = "All that you need to know is just a click away";
 $my_message_2b =
     <<<MAIL
 <p>Dear [Name],</p>
-<p>Good day,</p>
-<p>How have you been?</p>
-<p>    I noticed you haven’t completed your Forex Profit Optimizer course yet.</p>
-<p>The journey has begun and I believe in you.</p>
-<p>It’s important that you get all the information you need to create and implement key strategies that will help you make more profit with ease.</p>
-<p>Time is money [NAME]! The earlier you conclude your course the better!</p>
-<p>With more knowledge, you will definitely be a professional trader with steady income in your account.</p>
-<p>Click <a href="C:\Users\InstaForex\Desktop\bit.ly\2iExTpN">here</a> to finish your course right away!</p>
-<p>Are you stuck at a particular lesson, do you need clearer explanations?</p>
-<p>    Kindly let me know how to help you move on with your course, and begin to make more money.</p>
-<p>I am looking forward to your response.</p>
+            <p>Good day,</p>
+            <p>How have you been?</p>
+            <p>    I noticed you haven’t completed your Forex Profit Optimizer course yet.</p>
+            <p>The journey has begun and I believe in you.</p>
+            <p>It’s important that you get all the information you need to create and implement key strategies that will help you make more profit with ease.</p>
+            <p>Time is money [NAME]! The earlier you conclude your course the better!</p>
+            <p>With more knowledge, you will definitely be a professional trader with steady income in your account.</p>
+            <p>Click <a href="https://bit.ly/2iExTpN">here</a> to finish your course right away!</p>
+            <p>Are you stuck at a particular lesson, do you need clearer explanations?</p>
+            <p>    Kindly let me know how to help you move on with your course, and begin to make more money.</p>
+            <p>I am looking forward to your response.</p>
 MAIL;
 
 $my_subject_2c = "[NAME], Here’s a Boss Move You Should Take Today";
 $my_message_2c =
     <<<MAIL
 <p>Hello [Name],</p>
-<p>Pipsy the trainer, asked about you today!</p>
-<p>How are you?</p>
-<p>    It’s been a while you checked into your training portal.</p>
-<p>You have probably been very busy and don’t have time to login to take the training.</p>
-<p>Currently, 5.3tr is traded in the Forex market on a daily basis and those who have acquired the right skill are benefitting from the market right now.</p>
-<p>With how far you have come in this course, you are 50-70% ready to start making money from Forex.</p>
-<p>Trust me, when it comes to Forex trading, that percent isn’t enough. You need to complete the Forex Profit Optimizer course so you can join the pool of traders making steady profits from Forex trading.</p>
-<p>Ready to finish up now?</p> 
-<p>Click <a href="C:\Users\InstaForex\Desktop\bit.ly\2iExTpN">here to complete the course right away.</a></p>
-<p>I’ll be waiting for you at the other side.</p>
+            <p>Pipsy the trainer, asked about you today!</p>
+            <p>How are you?</p>
+            <p>    It’s been a while you checked into your training portal.</p>
+            <p>You have probably been very busy and don’t have time to login to take the training.</p>
+            <p>Currently, 5.3tr is traded in the Forex market on a daily basis and those who have acquired the right skill are benefitting from the market right now.</p>
+            <p>With how far you have come in this course, you are 50-70% ready to start making money from Forex.</p>
+            <p>Trust me, when it comes to Forex trading, that percent isn’t enough. You need to complete the Forex Profit Optimizer course so you can join the pool of traders making steady profits from Forex trading.</p>
+            <p>Ready to finish up now?</p>
+            <p>Click <a href="https://bit.ly/2iExTpN">here</a> to complete the course right away.</p>
+            <p>I’ll be waiting for you at the other side.</p>
+
 MAIL;
 
 $my_subject_2d = "[NAME], Don’t Be Like Bukky!";
 $my_message_2d =
     <<<MAIL
 <p>Hello [NAME],</p>
-<p>Bukky, who went from being a newbie to a Pro trader sent in her testimonial on the Forex Profit Optimizer Course.</p>
-<p>I started out as a novice trader and went through the Forex money maker course.</p>
-<p>At the conclusion of lesson 3, I quickly created my live account, funded it and placed a trade.</p>
-<p>I was so eager to make money.</p>
-<p>Guess what? I was so lucky I made profit on my first trade.</p>
-<p>That felt so good and then I began to brag that I was a forex trader!</p>
-<p>Little did I know that I was headed for the rock without adequate information, training and skill.</p>
-<p>The following week I decided to trade a larger lot size (I didn’t know about the 3 types of lot sizes and how to use them). I had neither the skill nor the strategy to trade profitably.</p>
-<p>Oops! The trade didn’t go in my favor, my money was gone…I became sad and left my account dormant for months.</p>
-<p>                                                                                                      Scrolling through my mail box later on, I saw several reminders to continue my course and what I would gain in the following course!</p>
-<p>This was my chance to take another shot at it! I jumped at it and after the course I was sure of the next steps to take and how to calculate and manage my risk.</p>
-<p>I experimented my new skills in my demo account, afterwards I became a pro trader, I could even create my own trading strategy and started trading profitably on my live account!</p>
-<p>Don’t be like Bukky who had it rough before getting it right.</p>
-<p>Click  <a href="C:\Users\InstaForex\Desktop\bit.ly\2iExTpN">here</a> to continue from where you stopped.</p>
-<p>You are a few lessons away to becoming a professional trader and hitting your income goals!</p>
-<p>Make sure to click here to take the remaining lessons now.</p>
-<p>Experiencing any challenge? Kindly hit the reply button to share the challenge with me so I can look into it immediately.</p>
-<p>I look forward to reading and responding to your reply.</p>
+            <p>Bukky, who went from being a newbie to a Pro trader sent in her testimonial on the Forex Profit Optimizer Course.</p>
+            <p>I started out as a novice trader and went through the Forex money maker course.</p>
+            <p>At the conclusion of lesson 3, I quickly created my live account, funded it and placed a trade.</p>
+            <p>I was so eager to make money.</p>
+            <p>Guess what? I was so lucky I made profit on my first trade.</p>
+            <p>That felt so good and then I began to brag that I was a forex trader!</p>
+            <p>Little did I know that I was headed for the rock without adequate information, training and skill.</p>
+            <p>The following week I decided to trade a larger lot size (I didn’t know about the 3 types of lot sizes and how to use them). I had neither the skill nor the strategy to trade profitably.</p>
+            <p>Oops! The trade didn’t go in my favor, my money was gone…I became sad and left my account dormant for months.</p>
+            <p>                                                                                                      Scrolling through my mail box later on, I saw several reminders to continue my course and what I would gain in the following course!</p>
+            <p>This was my chance to take another shot at it! I jumped at it and after the course I was sure of the next steps to take and how to calculate and manage my risk.</p>
+            <p>I experimented my new skills in my demo account, afterwards I became a pro trader, I could even create my own trading strategy and started trading profitably on my live account!</p>
+            <p>Don’t be like Bukky who had it rough before getting it right.</p>
+            <p>Click  <a href="https://bit.ly/2iExTpN">here</a> to continue from where you stopped.</p>
+            <p>You are a few lessons away to becoming a professional trader and hitting your income goals!</p>
+            <p>Make sure to click here to take the remaining lessons now.</p>
+            <p>Experiencing any challenge? Kindly hit the reply button to share the challenge with me so I can look into it immediately.</p>
+            <p>I look forward to reading and responding to your reply.</p>
 MAIL;
 
 
@@ -146,16 +147,16 @@ $my_subject_3a = "[NAME], Take the Bull by The Horn This Week";
 $my_message_3a =
     <<<MAIL
 <p>Dear [NAME],</p>
-<p>It’s been quite some time, how are you doing?</p>
-<p>I have been looking forward to seeing you at the training, but you haven’t showed up for a while.</p> 
-<p>Time is so limited right? Yes, I know.</p>
-<p>You have done such a great job to have come this far. You’re almost done with the course, well done! You deserve some accolades.</p>
-<p>I just want to encourage you to reach the finish line because your reward awaits you at the end of this race.</p>
-<p>Click here to go back to the training right away.</p>
-<p>A lot awaits you after this phase, just like a young chap who goes through school and is equipped with wisdom to go face the world and add value to it, after your course you would be able to trade profitably and add value to your bank account.</p> 
-<p>You can add a few zeros to your bank account and break your normal income limit this year. Get into it now!</p>
-<p>Click here to continue from where you stopped.</p>
-<p>I will be waiting with a startup bonus of 130% at the finish line, hurry now! My offer stands till the end of Month.</p>
+            <p>It’s been quite some time, how are you doing?</p>
+            <p>I have been looking forward to seeing you at the training, but you haven’t showed up for a while.</p>
+            <p>Time is so limited right? Yes, I know.</p>
+            <p>You have done such a great job to have come this far. You’re almost done with the course, well done! You deserve some accolades.</p>
+            <p>I just want to encourage you to reach the finish line because your reward awaits you at the end of this race.</p>
+            <p>Click here to go back to the training right away.</p>
+            <p>A lot awaits you after this phase, just like a young chap who goes through school and is equipped with wisdom to go face the world and add value to it, after your course you would be able to trade profitably and add value to your bank account.</p>
+            <p>You can add a few zeros to your bank account and break your normal income limit this year. Get into it now!</p>
+            <p>Click <a href="https://bit.ly/2iExTpN">here</a> to continue from where you stopped.</p>
+            <p>I will be waiting with a startup bonus of 130% at the finish line, hurry now! My offer stands till the end of Month.</p>
 
 MAIL;
 
@@ -231,7 +232,7 @@ MAIL;
 //<p>Email to students who haven’t continued to the Forex profit Optimizer course 5 days after the previous mail.</p>
 
 //Students who have completed course 2 but no deposit
-$my_subject_4a = "";
+$my_subject_4a = "[NAME] Stop Missing Out";
 $my_message_4a =
     <<<MAIL
 <p>Dear [NAME],</p>
@@ -244,7 +245,7 @@ $my_message_4a =
 <p>Start today! Click <a href="http://bit.ly/2BjGSYF">here</a> to quickly open a Forex account immediately if you haven’t done that before now.</p>
 <p>Start trading now so that you can get as much profit as you can before the year runs out, we are ready to reward you every step of the way.</p>
 <p>To start with, you’ll get a whopping $130% bonus on your first deposit of either $50, $100 or $150.</p>
-<p>You can click here to claim your bonus now. Don’t let all the money pass you by oo.</p>
+<p>You can click <a href="http://bit.ly/2BjGSYF">here</a> to claim your bonus now. Don’t let all the money pass you by oo.</p>
 MAIL;
 
 $my_subject_4b = "[Name], You are missing out on our 130% Bonus Offer.";
@@ -260,8 +261,8 @@ $my_message_4b =
 <p>On your deposit of $100, you will get an extra $130 which makes a total of $230 and on $150, you will get an extra $195 and this makes a total of $345.</p>
 <p>Wow! What an amazing opportunity to increase your capital base so you can make more money from your trades.</p>
 <p>A lot of traders have already started meeting their monthly financial goals and you can get your own share too.</p>
-<p>Click here to claim your bonus right away!</p>
-<p>Don’t have an account yet? Quickly go here to open one.</p>
+<p>Click <a href="http://bit.ly/2BjGSYF">here</a> to claim your bonus right away!</p>
+<p>Don’t have an account yet? Quickly go <a href="https://instafxng.com/live_account.php">here</a> to open one.</p>
 MAIL;
 
 
@@ -285,28 +286,28 @@ MAIL;
 $my_subject_4d = "[NAME], Be The Lucky Winner of $250 This Month.";
 $my_message_4d =
     <<<MAIL
-<p>Dear [NAME],</p>
-<p>How are you today?</p>
-<p>    Something mega has been happening behind you, so I quickly stopped by to hint you.</p>
-<p>Every month the top 5 loyal active traders on InstaFxNg share $500! And you look like the next winner.</p>
-<p>Now that you have completed your optimizer course, it’s time to start earning and getting rewards.</p>
-<p>Wondering how to?  Follow my little secret step below</p>
-<p>Here’s how to get there;</p>
-<ul>
-    <li>Open a live account <a href="http://bit.ly/2mpqehQ">here</a></li>
-    <li>Fund your account with either $50, $100 or $150 dollars and above then <a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,%0A%0AI%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.%0A%0AThanks!">click get my share</a> to enjoy a 130% bonus right away!</li>
-    <li>Start trading, keep trading and finally don’t stop trading.</li>
- </ul>
-<p>That’s all! Just that and you can qualify for the monthly share.</p>
-<p>Don’t worry winners will not be selected at random, they would be picked by total points gathered, so yes! You’ve got the chance to be the winner if you start trading from today.</p>
-<p>I honestly do not want anybody to get a point higher than you, so get started now.</p>
-<p>Don’t sleep on this gossip, act on it now!</p>
-<p>[NAME], If you experience any difficulty in going through my secret step, please send me a message.</p>
-<p>I’ll be eager to respond and clarify any issue.</p>
+            <p>Dear [NAME],</p>
+            <p>How are you today?</p>
+            <p>    Something mega has been happening behind you, so I quickly stopped by to hint you.</p>
+            <p>Every month the top 5 loyal active traders on InstaFxNg share $500! And you look like the next winner.</p>
+            <p>Now that you have completed your optimizer course, it’s time to start earning and getting rewards.</p>
+            <p>Wondering how to?  Follow my little secret step below</p>
+            <p>Here’s how to get there;</p>
+            <ul>
+                <li>Open a live account <a href="http://bit.ly/2mpqehQ">here</a></li>
+                <li>Fund your account with either $50, $100 or $150 dollars and above then click <a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,%0A%0AI%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.%0A%0AThanks!">get my share</a> to enjoy a 130% bonus right away!</li>
+                <li>Start trading, keep trading and finally don’t stop trading.</li>
+            </ul>
+            <p>That’s all! Just that and you can qualify for the monthly share.</p>
+            <p>Don’t worry winners will not be selected at random, they would be picked by total points gathered, so yes! You’ve got the chance to be the winner if you start trading from today.</p>
+            <p>I honestly do not want anybody to get a point higher than you, so get started now.</p>
+            <p>Don’t sleep on this gossip, act on it now!</p>
+            <p>[NAME], If you experience any difficulty in going through my secret step, please send me a message.</p>
+            <p>I’ll be eager to respond and clarify any issue.</p>
 MAIL;
 
 //As soon as you finish the lesson 5 of course 1
-$my_subject_5a = "";
+$my_subject_5a = "[NAME]";
 $my_message_5a =
     <<<MAIL
 <p>Hello [NAME],</p>
@@ -333,7 +334,7 @@ $my_message_5b =
 <p>Forex traders who took our trainings in the past know that they must put money management skills in place when trading so that their profit is not lost amidst the struggle to make more money from the currency market.</p> 
 <p>This is one of the things you will learn when you take the Forex Profit Optimizer course. You will learn what you need to do in order to take your profit from every trade and how to avoid making much losses.</p>
 <p>This is one lesson that every trader interested in trading Forex profitably must take.</p>
-<p>Click here to complete your lessons and be on your way to living full and free.</p>
+<p>Click <a href="http://bit.ly/2iExTpN">here</a> to complete your lessons and be on your way to living full and free.</p>
 <p>Traders who took the Forex Profit optimizer course in the past paid the sum of N117, 000 to access the course and here it is offered to you at a very low fee of N5000.</p>
 <p>Make sure to click <a href="http://bit.ly/2iExTpN">here</a> to continue from where you stopped so you can start making consistent income from Forex trading.</p>
 <p>I look forward to seeing you on the other side.</p>
@@ -354,7 +355,7 @@ $my_message_5c =
 <p>Can you see that there’s more to learn? Be sure to click here to proceed to the Forex Profit Optimizer course.</p>
 <p>One of the trainees who completed the Forex Profit Optimizer course last week has started making profit from Forex trading. He has made $150 from Forex trading just in the first week of trading.</p>
 <p>If you would like to make money from Forex trading, then you need to acquire enough knowledge that can guarantee your trading success.</p> 
-<p>Be sure to <a href="http://bit.ly/2iExTpN">click here</a> to continue from where you stopped.</a>
+<p>Be sure to <a href="https://bit.ly/2iExTpN">click here</a> to continue from where you stopped.</a>
 MAIL;
 
 $my_subject_5d = "These Tools Will Help You Make Consistent Income From Your Trades";
@@ -434,7 +435,7 @@ function student_auto_mail_query($query_type, $day_value) {
             $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
 INNER JOIN user AS u ON ueel.user_code = u.user_code 
 LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
-WHERE (DATEDIFF('$today', STR_TO_DATE(uefp.created, '%Y-%m-%d')) = $day_value) 
+WHERE (DATEDIFF('$today', STR_TO_DATE(uefp.created, '%Y-%m-%d')) = '$day_value') 
 AND u.user_code <> ueel.user_code 
 AND ueel.lesson_id = '1' 
 AND uefp.user_code = u.user_code 
@@ -444,7 +445,7 @@ GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
             $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
 INNER JOIN user AS u ON ueel.user_code = u.user_code 
 LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
-WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) 
+WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value') 
 AND u.user_code = ueel.user_code 
 AND (ueel.lesson_id BETWEEN '1' AND '6') 
 AND uefp.user_code = u.user_code 
@@ -454,7 +455,7 @@ GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
             $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
 INNER JOIN user AS u ON ueel.user_code = u.user_code 
 LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
-WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) 
+WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value') 
 AND u.user_code = ueel.user_code 
 AND (ueel.lesson_id BETWEEN '7' AND '13') 
 AND uefp.user_code = u.user_code 
@@ -466,9 +467,10 @@ INNER JOIN user AS u ON ueel.user_code = u.user_code
 LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code 
 LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
 LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
-WHERE (DATEDIFF('$today', STR_TO_DATE(uefp.created, '%Y-%m-%d')) = $day_value) 
+WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value' ) 
 AND u.user_code = ueel.user_code 
 AND ueel.lesson_id = '13') 
+AND ui.user_code <> u.user_code
 AND uefp.user_code = u.user_code 
 GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
             break;
@@ -477,9 +479,10 @@ GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
                 FROM user_edu_exercise_log AS ueel
                 INNER JOIN user AS u ON ueel.user_code = u.user_code
                 LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = $day_value) 
-                AND ueel.lesson_id = 5 
-                AND uefp.user_code <> u.user_code";
+                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value' ) 
+                AND ueel.lesson_id = '5' 
+                AND uefp.user_code <> u.user_code
+                GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
             break;
         default:
             $query = "";
