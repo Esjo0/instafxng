@@ -373,7 +373,6 @@ $my_message_5d =
 
 MAIL;
 
-
 function student_auto_mail_template($core_msg) {
 
     $my_message_template =
@@ -469,7 +468,7 @@ LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
 LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
 WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value' ) 
 AND u.user_code = ueel.user_code 
-AND ueel.lesson_id = '13') 
+AND ueel.lesson_id = '13' 
 AND ui.user_code <> u.user_code
 AND uefp.user_code = u.user_code 
 GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
