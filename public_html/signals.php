@@ -1,12 +1,6 @@
 
 <header><i class="fa fa-bars fa-fw"></i> Daily Forex Signal</header>
 <article>
-
-    <script>
-        function refresh() {
-            signal.getSignals('sig');
-        }
-        </script>
     <script>
         signal.getSignals('sig');
         $(document).ready(function() {setInterval(function(){signal.getSignals('sig');}, 3600000);});
@@ -15,7 +9,7 @@
         <em><strong>Date:</strong></em>
         <em id="table_date">
             <script>
-                $(document).ready(function() {setInterval(function(){signal.get_date('table_date');}, 10000);});
+                $(document).ready(function() {setInterval(function(){signal.get_date('table_date');}, 1000);});
             </script>
         </em>
         <em style="margin:10px;">    </em>
@@ -25,7 +19,7 @@
             </script>
         </em>
         <em  class="pull-right">
-            <button style=" border: 0px;border-radius:50%;" title="Refresh Signals" class="btn btn-default btn-sm" onclick="refresh()"><i class="glyphicon glyphicon-refresh"></i></button>
+            <button style=" border: 0px;border-radius:50%;" title="Refresh Signals" class="btn btn-default btn-sm" onclick="signal.refreshList();"><i class="glyphicon glyphicon-refresh"></i></button>
         </em>
     </small>
     <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-hover">
@@ -36,9 +30,9 @@
     </table>
     <hr>
     <small>
-        <span class="text-success">GREEN</span> = Upcoming |
-        <span class="text-danger">RED</span> = Expired |
-        <span class="text-warning">YELLOW</span> = Now
+        <span class="text-success">GREEN ROW</span> = Upcoming |
+        <span class="text-danger">RED ROW</span> = Expired |
+        <span class="text-warning">YELLOW ROW</span> = Now
     </small>
     <br>
     <small style="font-size: x-small">Your use of the signals means you have read and accepted our
