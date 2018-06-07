@@ -30,6 +30,7 @@ function Signal()
         var d = new Date();
         var date = d.getFullYear()+'-'+(d.getMonth() + 1)+'-'+d.getDate();
         var query = "SELECT signal_id, order_type, price, take_profit, stop_loss, CONCAT(trigger_date, SPACE(1), trigger_time) AS triger, trigger_time, trend, note, signal_symbol.symbol AS currency_pair FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id AND trigger_date = '"+date+"' ORDER BY triger ASC";
+        console.log(query);
         var type = "1";
         this.ajax_request(id,query, type);
     };
@@ -141,7 +142,7 @@ function Signal()
         //localStorage.setItem("signal_array", JSON.stringify(json));
         if(json.length < 1)
         {
-            console.log(json.length);
+            //console.log(json.length);
             table.setAttribute("align", 'center');
             var row_ = table.insertRow(0);
             row_.setAttribute("align", 'center');
@@ -198,8 +199,8 @@ function Signal()
                                 "<td rowspan='5'><center>"+this.getBigTrend(signal_array[0]['order_type'])+"</center></td>"+
                             "</tr>"+
                             "<tr><td><b>CURRENCY PAIR</b></td><td>"+signal_array[0]['currency_pair']+"</td></tr>"+
-                            "<tr><td><b>PRICE</b></td><td>"+signal_array[0]['price'].toString()+"</td></tr>"+
-                            "<tr><td><b>TAKE PROFIT</b></td><td>"+signal_array[0]['take_profit'].toString()+"</td></tr>"+
+                            "<tr><td><b>PRICE</b></td><td>"+signal_array[0]['price']+"</td></tr>"+
+                            "<tr><td><b>TAKE PROFIT</b></td><td>"+signal_array[0]['take_profit']+"</td></tr>"+
                             "<tr><td><b>STOP LOSS</b></td><td>"+signal_array[0]['stop_loss']+"</td></tr>"+
                             "<tr><td><b>TRIGGER DATE & TIME</b></td><td>"+signal_array[0]['triger']+"</td></tr>"+
                             "<tr><td><b>KEYNOTE</b></td><td colspan='2'>"+signal_array[0]['note']+"</td></tr>"+
@@ -213,5 +214,12 @@ function Signal()
         var query = "UPDATE signal_daily SET views = CONCAT(views p_l_u_s 1) WHERE signal_id = "+"'"+id+"'";
         this.ajax_request('', query, '3');
     };
+
+    this.refreshList = function()
+    {
+        document.getElementById('preloader').style.display = 'block';
+        document.getElementById('sig').innerHTML = '';
+        this.getSignals('sig');
+    }
 }
 var signal = new Signal();
