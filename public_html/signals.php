@@ -36,9 +36,11 @@
     </table>
     <hr>
     <small>
-        <span class="text-success">GREEN</span> = Upcoming |
-        <span class="text-danger">RED</span> = Expired |
-        <span class="text-warning">YELLOW</span> = Now
+	<center>
+        <span class="text-success">GREEN ROW</span> = Upcoming |
+        <span class="text-danger">RED ROW</span> = Expired |
+        <span class="text-warning">YELLOW ROW</span> = Now
+		</center>
     </small>
     <br>
     <small style="font-size: x-small">Your use of the signals means you have read and accepted our
