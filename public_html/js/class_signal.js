@@ -30,7 +30,6 @@ function Signal()
         var d = new Date();
         var date = d.getFullYear()+'-'+(d.getMonth() + 1)+'-'+d.getDate();
         var query = "SELECT signal_id, order_type, price, take_profit, stop_loss, CONCAT(trigger_date, SPACE(1), trigger_time) AS triger, trigger_time, trend, note, signal_symbol.symbol AS currency_pair FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id AND trigger_date = '"+date+"' ORDER BY triger ASC";
-        console.log(query);
         var type = "1";
         this.ajax_request(id,query, type);
     };
@@ -142,7 +141,6 @@ function Signal()
         //localStorage.setItem("signal_array", JSON.stringify(json));
         if(json.length < 1)
         {
-            //console.log(json.length);
             table.setAttribute("align", 'center');
             var row_ = table.insertRow(0);
             row_.setAttribute("align", 'center');
