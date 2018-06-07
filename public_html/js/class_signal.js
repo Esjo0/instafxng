@@ -197,6 +197,7 @@ function Signal()
                                 "<td><b>ORDER</b></td><td>"+order_type+"</td>"+
                                 "<td rowspan='5'><center>"+this.getBigTrend(signal_array[0]['trend'])+"</center></td>"+
                             "</tr>"+
+                            "<tr><td><b>CURRENCY PAIR</b></td><td>"+signal_array[0]['currency_pair']+"</td></tr>"+
                             "<tr><td><b>PRICE</b></td><td>"+signal_array[0]['price'].toString()+"</td></tr>"+
                             "<tr><td><b>TAKE PROFIT</b></td><td>"+signal_array[0]['take_profit'].toString()+"</td></tr>"+
                             "<tr><td><b>STOP LOSS</b></td><td>"+signal_array[0]['stop_loss']+"</td></tr>"+
