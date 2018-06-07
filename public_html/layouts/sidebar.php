@@ -80,7 +80,7 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
         </div>
     </div>
 </div>
-
+<section id="signals">
 <div class="row ">
     <div class="col-sm-6 col-md-12">
         <div class="nav-display super-shadow">
@@ -88,6 +88,7 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
         </div>
     </div>
 </div>
+</section>
 
 <div class="row ">
     <div class="col-sm-6 col-md-12">
