@@ -2627,4 +2627,26 @@ MAIL;
         return $last_trade_detail ? $last_trade_detail : false;
     }
 
+    public function notify_admin($transaction_type, $transaction_id, $access_code, $author)
+    {
+        global $obj_push_notification;
+        switch ($transaction_type)
+        {
+            case 0:
+                $title = "New Pending Deposit";
+                $url = "https://instafxng.com/admin/deposit_pending.php";
+                break;
+            case 1:
+                $title = "New Notified Deposit";
+                $url = "https://instafxng.com/admin/deposit_notified.php";
+                break;
+            default:
+                $title = "Unknown";
+                $url = "https://instafxng.com/admin/";
+                break;
+        }
+        $message = " A new pending deposit order was added <br/> Transaction ID: $transaction_id <br/> <a href='$url' target='_blank'>Click here to review this order.</a>";
+        $recipients = $obj_push_notification->get_recipients_by_access($access_code);
+        $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $url);
+    }
 }

@@ -295,6 +295,8 @@ if(isset($_POST['deposit_funds_pay_type'])) {
     
     $client_full_name = $client_first_name . " " . $client_last_name;
     $formated_client_naira_total = number_format($client_naira_total, 2);
+
+    $client_operation->notify_admin(0, $trans_id, 30, $client_full_name); //Notify an admin
     
     switch ($pay_type) {
         case '1':
