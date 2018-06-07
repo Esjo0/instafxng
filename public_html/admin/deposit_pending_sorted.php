@@ -47,7 +47,7 @@ $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_paya
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
         WHERE ud.status = '1' 
         GROUP BY u.user_code 
-        ORDER BY ud.user_deposit_id DESC ";
+        ORDER BY user_deposit_id DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 10;
