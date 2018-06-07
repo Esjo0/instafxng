@@ -95,7 +95,7 @@ function Signal()
         switch (id)
         {
             case '1' : x = "<b style='color: green!important; font-size: 150px'><i class='glyphicon glyphicon-arrow-up'></i></b>"; break;
-            case '1' : x = "<b style='color: red!important; font-size: 150px'><i class='glyphicon glyphicon-arrow-down'></i></b>"; break;
+            case '2' : x = "<b style='color: red!important; font-size: 150px'><i class='glyphicon glyphicon-arrow-down'></i></b>"; break;
             default : x = 'UNKNOWN'; break;
         }
         return x;
