@@ -83,8 +83,8 @@ function Signal()
         var x;
         switch (id)
         {
-            case '0' : x = '<b class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b>'; break;
             case '1' : x = '<b class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>'; break;
+            case '2' : x = '<b class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b>'; break;
             default : x = 'UNKNOWN'; break;
         }
         return x;
@@ -94,8 +94,8 @@ function Signal()
         var x;
         switch (id)
         {
-            case '0' : x = "<b style='color: red!important; font-size: 150px'><i class='glyphicon glyphicon-arrow-down'></i></b>"; break;
             case '1' : x = "<b style='color: green!important; font-size: 150px'><i class='glyphicon glyphicon-arrow-up'></i></b>"; break;
+            case '2' : x = "<b style='color: red!important; font-size: 150px'><i class='glyphicon glyphicon-arrow-down'></i></b>"; break;
             default : x = 'UNKNOWN'; break;
         }
         return x;
@@ -141,7 +141,6 @@ function Signal()
         //localStorage.setItem("signal_array", JSON.stringify(json));
         if(json.length < 1)
         {
-            console.log(json.length);
             table.setAttribute("align", 'center');
             var row_ = table.insertRow(0);
             row_.setAttribute("align", 'center');
@@ -168,7 +167,7 @@ function Signal()
 
             cell1.innerHTML = signal_array[x]['currency_pair'];
             cell3.innerHTML = this.get_OrderType(signal_array[x]['order_type']);
-            cell4.innerHTML = this.getSmallTrend(signal_array[x]['trend']);
+            cell4.innerHTML = this.getSmallTrend(signal_array[x]['order_type']);
             cell5.innerHTML = this.formatTime(signal_array[x]['trigger_time']);
             }
         }
@@ -195,11 +194,11 @@ function Signal()
                         "<tbody>"+
                             "<tr>"+
                                 "<td><b>ORDER</b></td><td>"+order_type+"</td>"+
-                                "<td rowspan='5'><center>"+this.getBigTrend(signal_array[0]['trend'])+"</center></td>"+
+                                "<td rowspan='5'><center>"+this.getBigTrend(signal_array[0]['order_type'])+"</center></td>"+
                             "</tr>"+
                             "<tr><td><b>CURRENCY PAIR</b></td><td>"+signal_array[0]['currency_pair']+"</td></tr>"+
-                            "<tr><td><b>PRICE</b></td><td>"+signal_array[0]['price'].toString()+"</td></tr>"+
-                            "<tr><td><b>TAKE PROFIT</b></td><td>"+signal_array[0]['take_profit'].toString()+"</td></tr>"+
+                            "<tr><td><b>PRICE</b></td><td>"+signal_array[0]['price']+"</td></tr>"+
+                            "<tr><td><b>TAKE PROFIT</b></td><td>"+signal_array[0]['take_profit']+"</td></tr>"+
                             "<tr><td><b>STOP LOSS</b></td><td>"+signal_array[0]['stop_loss']+"</td></tr>"+
                             "<tr><td><b>TRIGGER DATE & TIME</b></td><td>"+signal_array[0]['triger']+"</td></tr>"+
                             "<tr><td><b>KEYNOTE</b></td><td colspan='2'>"+signal_array[0]['note']+"</td></tr>"+
@@ -213,5 +212,12 @@ function Signal()
         var query = "UPDATE signal_daily SET views = CONCAT(views p_l_u_s 1) WHERE signal_id = "+"'"+id+"'";
         this.ajax_request('', query, '3');
     };
+
+    this.refreshList = function()
+    {
+        document.getElementById('preloader').style.display = 'block';
+        document.getElementById('sig').innerHTML = '';
+        this.getSignals('sig');
+    }
 }
 var signal = new Signal();
