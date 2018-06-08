@@ -46,46 +46,45 @@ $cat = $_SESSION['cat'];
 switch ($cat)
 {
     case '1':
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = user.email 
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U
+WHERE CL.email = U.email 
+ORDER BY CL.created DESC";
         $msg = "all leads.";
         break;
     case '2':
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = user.email
- AND campaign_leads.interest = '1'
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U 
+WHERE CL.email = U.email
+ AND CL.interest = '1'
+ORDER BY CL.created DESC";
         $msg = "all Training leads";
         break;
     case '3':
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = user.email
- AND campaign_leads.interest = '2'
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U
+WHERE CL.email = U.email
+ AND CL.interest = '2'
+ORDER BY CL.created DESC";
         $msg = "all ILPR leads";
         break;
     case '4':
         $search = $db_handle->sanitizePost($_POST['search']);
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = '$search' AND campaign_leads.email = user.email
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U 
+WHERE CL.email = '$search' AND CL.email = U.email
+ORDER BY CL.created DESC";
         $msg = "Results For ".$search;
         break;
     default:
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = user.email 
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U
+WHERE CL.email = U.email 
+ORDER BY CL.created DESC";
         $msg = "All leads.";
         break;
 }
 
-//$query = "SELECT *, user.user_code, campaign_leads.phone FROM campaign_leads, user WHERE campaign_leads.email = user.email ORDER BY campaign_leads.created DESC";
 $numrows = $db_handle->numRows($query);
 $rowsperpage = 20;
 $totalpages = ceil($numrows / $rowsperpage);
