@@ -31,9 +31,9 @@
     <hr>
     <small>
 	<center>
-        <span class="text-success">GREEN ROW</span> = Upcoming |
-        <span class="text-danger">RED ROW</span> = Expired |
-        <span class="text-warning">YELLOW ROW</span> = Now
+        <span class="text-success">GREEN ROW</span> = PENDING |
+        <span class="text-danger">RED ROW</span> = TRADING ENDED/CLOSED |
+        <span class="text-warning">YELLOW ROW</span> = TRIGGERED/NOW RUNNING
     </center>
     </small>
     <br>
