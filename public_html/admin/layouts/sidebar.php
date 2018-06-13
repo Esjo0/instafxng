@@ -242,6 +242,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(87, $my_pages_sidebar)) { ?><li><a href="campaign_sms.php">Compose SMS</a></li><?php } ?>
                         <?php if (in_array(232, $my_pages_sidebar)) { ?><li><a href="campaign_sms_single.php">Compose Single SMS</a></li><?php } ?>
                         <?php if (in_array(88, $my_pages_sidebar)) { ?><li><a href="campaign_email.php">Compose Email</a></li><?php } ?>
+                        <?php if (in_array(87, $my_pages_sidebar)) { ?><li><a href="_campaign_push_single.php">Compose Push Notification</a></li><?php } ?>
                         <?php if (in_array(89, $my_pages_sidebar)) { ?><li><a href="campaign_email_view.php">Email Campaign</a></li><?php } ?>
                         <?php if (in_array(90, $my_pages_sidebar)) { ?><li><a href="campaign_sms_view.php">SMS Campaign</a></li><?php } ?>
                         <?php if (in_array(91, $my_pages_sidebar)) { ?><li><a href="campaign_sales.php">Sales Management</a></li><?php } ?>

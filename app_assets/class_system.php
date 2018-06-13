@@ -58,14 +58,13 @@ class InstafxngSystem {
     }
 
     // function to send app push notifications - using fcm
-    public function send_push($token, $message){
+    public function send_push($token, $message, $title){
         $path_to_firebase_cm = 'https://fcm.googleapis.com/fcm/send';
         $API_SERVER_KEY = 'AAAAC0QYmqE:APA91bGSDtRp6HucthhIimDbmH3rzVakSLUIQRIIFqgBV-jXmYCfzE7sWvEdGVghRTSXL-fdLnnjdiXwTKibzrn4KrTaOTSrbyPGKkQylOt5mkRkvmup6MmUN9zZh-8QzYutQPazAvZu';
-
         $fields = array(
             'registration_ids' => $token,
             'priority' => 'high',
-            'data' => array('title' => 'FxAcademy', 'body' =>  $message ,'sound'=>'Enabled','image'=>'Notification Image' ),
+            'notification' => array('title' => $title, 'body' =>  $message ,'sound'=>'Enabled','image'=>'Notification Image' ),
             'delay_while_idle' => false,
             'content_available' => true,
 			'time_to_live' => 2419200

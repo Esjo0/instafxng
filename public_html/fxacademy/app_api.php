@@ -14,8 +14,8 @@ if(validRequest($_u_access_token))
         echo json_encode($result);
     }
     if($request_type == 2){
-        $result = array('feedback' => setUserToken($_SESSION['client_unique_code'], $user_token));
-        echo json_encode($result);
+       $result = array('feedback' => setUserToken($_SESSION['client_unique_code'], $user_token));
+       echo json_encode($result);
     }
 }
 
@@ -44,6 +44,6 @@ function setUserToken($user_code, $user_token){
     else{
         $query = "INSERT INTO fxacademy_app_users (user_code, user_token) VALUES('$user_code', '$user_token') ";
         $x = $db_handle->runQuery($query);}
-    return $x;
+    return $query;
 }
 
