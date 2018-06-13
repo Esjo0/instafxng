@@ -11,8 +11,8 @@ $prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
 $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
-$pending_reports = paginate_array($offset,$pending_reports, $rowsperpage);
 array_sort_by_column_desc($pending_reports, 'created');
+if(!empty($pending_reports)) {$pending_reports = paginate_array($offset,$pending_reports, $rowsperpage);}
 ?>
 <h4><strong>STAFF REPORTS</strong></h4>
 <table class="table table-responsive table-striped table-bordered table-hover">
@@ -26,14 +26,15 @@ array_sort_by_column_desc($pending_reports, 'created');
     </tr>
     </thead>
     <tbody>
-    <?php if(isset($pending_reports) && !empty($pending_reports)) { foreach ($pending_reports as $row) {?>
+    <?php if(isset($pending_reports) && !empty($pending_reports)) { foreach ($pending_reports as $row) { ?>
         <tr>
             <td><b><?php echo $admin_object->get_admin_name_by_code($row['admin_code'])?></b></td>
             <td>
                 <?php $window_period = explode('*', $row['window_period']); ?>
                 <b><?php echo $window_period[0]; ?>  <i class='glyphicon glyphicon-arrow-right'></i>  <?php echo $window_period[1]; ?></b>
             </td>
-            <td><?php
+            <td>
+                <?php
                 echo $obj_rms->get_report_type($row['target_id'], $row['report_id']);
                 $target_details = $obj_rms->get_target_by_id($row['target_id']);
                 ?>
@@ -77,13 +78,15 @@ array_sort_by_column_desc($pending_reports, 'created');
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-sm-7">
+                                            <?php $rpt_id = $row['report_id']; ?>
+                                            <?php $id['report_id'] = $row['report_id']; ?>
                                             <?php include 'views/rms/read_report.php'?>
                                         </div>
                                         <div class="col-sm-5">
                                             <p class="text-center"><b>COMMENTS</b></p>
                                             <div style="word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
                                                 <?php
-                                                $latest_comments = $obj_rms->get_report_comment($row['report_id']);
+                                                $latest_comments = $obj_rms->get_report_comment($rpt_id);
                                                 if(isset($latest_comments) && !empty($latest_comments)) {
                                                     foreach ($latest_comments as $row1) {
                                                         ?>
@@ -105,9 +108,9 @@ array_sort_by_column_desc($pending_reports, 'created');
                                                         </div>
                                                     </div>
                                                 <?php } ?>
-                                            </div>
+                                            </div
                                             <form  data-toggle="validator" role="form" method="post" action="">
-                                                <input type="hidden" class="form-control" id="report_id" name="report_id" value="<?php echo $row['report_id']; ?>">
+                                                <input type="hidden" class="form-control" id="report_id" name="report_id" value="<?php echo $rpt_id; ?>">
                                                 <div class="form-group">
                                                     <div>
                                                         <textarea placeholder="Your Remark" rows="3" name="comment" type="text" id="comment" class="form-control" required></textarea>

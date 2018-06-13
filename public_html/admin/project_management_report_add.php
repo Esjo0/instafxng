@@ -16,7 +16,7 @@ $query = "SELECT
           FROM project_management_projects
           WHERE project_management_projects.project_code = '$project_code'  LIMIT 1";
 $result = $db_handle->runQuery($query);
-$result = $db_handle->fetchAssoc($result);
+$project_details = $db_handle->fetchAssoc($result)[0];
 
 
 if (isset($_POST['process']))
@@ -61,8 +61,6 @@ if (isset($_POST['process']))
         }
 
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,41 +108,30 @@ if (isset($_POST['process']))
                     <?php require_once 'layouts/sidebar.php'; ?>
                 </div>
                 <div id="main-body-content-area" class="col-md-8 col-lg-9">
-                    
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                                        
                     <div class="row">
                         <div class="col-sm-12 text-danger">
                             <h4 class="text-center"><strong>PROJECT REPORT</strong></h4>
                         </div>
                     </div>
-                    
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p><a onclick="window.history.back()" class="btn btn-default" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a></p>
-                                
-                                <p>Create a project report. </p>
-                                <p></p>
+                                <p><a href="project_management_project_view.php?x=<?php echo $project_code_encrypted;?>" class="btn btn-default" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a></p>
+                                <p>Create a project report. </p><br/>
+                                <p><b>Project Title: </b><?php echo $project_details['project_title']; ?></p>
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                    <input type="hidden" name="MAX_FILE_SIZE" value="500000" />
-                                    <input type="hidden" name="POST_MAX_SIZE" value="500000" />
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="content">Project Title:</label>
-                                        <div class="col-sm-10">
-                                            <?php foreach ($result as $row) { ?>
-                                                <p class="text-center text-justify"> <?php echo $row['project_title']; ?>
-                                                    <input name="project_code" type="hidden" value="<?php echo $row['project_code']; ?>" />
-                                                </p>
-                                                <input name="supervisor_code" type="hidden" value="<?php echo $row['supervisor_code']; ?>"/>
-                                            <?php } ?>
+                                        <div class="col-sm-12">
+                                            <input name="supervisor_code" type="hidden" value="<?php echo $project_details['supervisor_code']; ?>"/>
+                                            <input name="project_code" type="hidden" value="<?php echo $project_details['project_code']; ?>" />
                                             <textarea placeholder="Enter your report here..." name="content" id="content" rows="3" class="form-control" required></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="col-sm-10">
                                             <button type="button" data-target="#add-report-confirm" data-toggle="modal" class="btn btn-success"><i class="fa fa-send fa-fw"></i> Submit</button>
                                         </div>
                                     </div>

@@ -30,8 +30,12 @@ $thisPage = "Home";
             <div class="row no-gutter">
                 <?php require_once 'layouts/topnav.php'; ?>
 
+                <div id="main-body-side-bar" class="col-md-4 col-lg-3 ">
+                    <?php require_once 'layouts/sidebar.php'; ?>
+                </div>
+
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-                <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
+                <div id="main-body-content-area" class="col-md-8 col-lg-9 right-nav">
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div  class="item super-shadow page-top-section">
@@ -95,9 +99,6 @@ $thisPage = "Home";
 
                 </div>
                 <!-- Main Body - Side Bar  -->
-                <div id="main-body-side-bar" class="col-md-4 col-md-pull-8 col-lg-3 col-lg-pull-9 left-nav">
-                <?php require_once 'layouts/sidebar.php'; ?>
-                </div>
                 
             </div>
         </div>

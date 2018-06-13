@@ -59,6 +59,14 @@ class Reporting_System
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
+    public function update_target($target_id, $title, $description, $window_period, $admin_code, $reportees)
+    {
+        global $db_handle;
+        $query = "UPDATE rms_targets SET title = '$title', description = '$description', window_period = '$window_period', admin_code = '$admin_code', reportees = '$reportees' WHERE target_id = $target_id";
+        $db_handle->runQuery($query);
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
     public function get_past_reports($admin_code)
     {
         global $db_handle;
@@ -67,15 +75,39 @@ class Reporting_System
         return $db_handle->fetchAssoc($result);
     }
 
-    public function set_report($window_period, $admin_code, $report, $target_id)
+    public function set_report($window_period, $admin_code, $report, $target_id, $status)
     {
         global $db_handle;
         if(isset($target_id) && !empty($target_id)) {
-            $query = "INSERT INTO rms_reports (window_period, admin_code, report, target_id) VALUES ('$window_period', '$admin_code', '$report', '$target_id')";
+            $query = "INSERT INTO rms_reports (window_period, admin_code, report, target_id, status) VALUES ('$window_period', '$admin_code', '$report', '$target_id', '$status')";
         }
         else {
-            $query = "INSERT INTO rms_reports (window_period, admin_code, report) VALUES ('$window_period', '$admin_code', '$report')";
+            $query = "INSERT INTO rms_reports (window_period, admin_code, report, status) VALUES ('$window_period', '$admin_code', '$report', '$status')";
         }
+        $db_handle->runQuery($query);
+        $response = array();
+        if($db_handle->affectedRows() > 0)
+        {
+            $response['status'] = true;
+            $response['report_id'] = $db_handle->insertedId();
+        }
+        else{
+            $response['status'] = false;
+            $response['report_id'] = null;
+        }
+        return  $response;
+    }
+
+    public function update_report($window_period, $admin_code, $report, $target_id, $report_id, $status)
+    {
+        global $db_handle;
+        $query = "UPDATE rms_reports 
+        SET window_period = '$window_period', 
+        admin_code = '$admin_code', 
+        report = '$report', 
+        status = '$status', 
+        target_id = '$target_id'
+        WHERE report_id = $report_id ";
         $db_handle->runQuery($query);
         $response = array();
         if($db_handle->affectedRows() > 0)
@@ -177,7 +209,7 @@ class Reporting_System
         $reportees = $this->get_reportees($admin_code);
         foreach ($reportees as $row)
         {
-            $query = "SELECT * FROM rms_reports WHERE admin_code = '$row' ";
+            $query = "SELECT * FROM rms_reports WHERE admin_code = '$row' AND status = '2' ";
             $result = $db_handle->runQuery($query);
             $result = $db_handle->fetchAssoc($result);
             foreach ($result as $key)

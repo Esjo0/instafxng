@@ -1,5 +1,5 @@
 <?php
-
+use PHPMailer\PHPMailer\PHPMailer;
 class InstafxngSystem {
     
     // function to send SMTP emails

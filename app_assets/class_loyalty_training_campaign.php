@@ -490,13 +490,13 @@ MAIL;
     public function sum_leads_with_accounts($from, $to, $x)
     {
         global $db_handle;
-        $query = "SELECT CL.f_name, CL.email, CL.phone, CL.l_name, U.user_code, UI.ifx_acct_no, UI.type
+        $query = "SELECT CL.f_name, CL.email, CL.phone, CL.l_name, U.user_code, UI.ifx_acct_no, UI.type, CL.created
                   FROM campaign_leads AS CL 
                   LEFT JOIN user AS U ON U.email = CL.email
                   LEFT JOIN user_ifxaccount AS UI ON UI.user_code = U.user_code
                   WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
-                  AND ((U.user_code IS NOT NULL) OR (UI.ifx_acct_no IS NOT NULL))
-                  AND  UI.type = '2'
+                  AND (U.user_code IS NOT NULL) 
+                  AND (UI.ifx_acct_no IS NOT NULL)
                   GROUP BY CL.email ";
         if($x == 1) {$result = $db_handle->numRows($query);}
         else if($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
@@ -507,14 +507,15 @@ MAIL;
     public function sum_leads_funded($from, $to, $x)
     {
         global $db_handle;
-        $query = "SELECT CL.f_name, CL.phone, CL.email, CL.l_name, UI.ifx_acct_no, SUM(UD.real_dollar_equivalent) AS dollar_amount 
+        $query = "SELECT CL.f_name, CL.phone, CL.email, CL.l_name, UI.ifx_acct_no, SUM(UD.real_dollar_equivalent) AS dollar_amount, CL.created 
 FROM campaign_leads AS CL 
 LEFT JOIN user AS U ON U.email = CL.email 
 LEFT JOIN user_ifxaccount AS UI ON UI.user_code = U.user_code 
 LEFT JOIN user_deposit AS UD ON UD.ifxaccount_id = UI.ifxaccount_id 
 WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
-AND ((U.user_code IS NOT NULL) OR (UI.ifx_acct_no IS NOT NULL)) 
-AND UD.real_dollar_equivalent IS NOT NULL 
+AND (U.user_code IS NOT NULL) 
+AND (UI.ifx_acct_no IS NOT NULL) 
+AND (UD.real_dollar_equivalent IS NOT NULL) 
 AND (STR_TO_DATE(UD.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
 AND UD.status = '8' 
 GROUP BY CL.email ";
@@ -531,20 +532,23 @@ GROUP BY CL.email ";
         {
             //FxAcademy - Forex Optimizer Course
             case "1" :
-                $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, UED.trans_id 
+                $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, UED.trans_id, CL.created
 FROM campaign_leads AS CL
 LEFT JOIN user AS U ON CL.email = U.email
 RIGHT JOIN user_edu_deposits AS UED ON UED.user_code = U.user_code
 WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
-AND U.user_code IN (SELECT user_edu_deposits.user_code FROM user_edu_deposits) GROUP BY CL.email";
+AND U.user_code IN (SELECT user_edu_deposits.user_code FROM user_edu_deposits WHERE STR_TO_DATE(user_edu_deposits.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
+AND UED.status = '3' 
+GROUP BY CL.email;";
                 break;
             //FxAcademy - Forex Money Maker Course
             case "2" :
-                $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email
-FROM campaign_leads AS CL
-LEFT JOIN user AS U ON CL.email = U.email
-WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to')
-AND U.user_code NOT IN (SELECT user_edu_deposits.user_code FROM user_edu_deposits)";
+                $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.created
+FROM campaign_leads AS CL, user AS U
+WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
+AND (CL.email = U.email) 
+AND (U.academy_signup IS NOT NULL) 
+AND (U.user_code NOT IN (SELECT user_edu_deposits.user_code FROM user_edu_deposits))";
                 break;
             default: $query = ""; break;
         }
@@ -556,15 +560,14 @@ AND U.user_code NOT IN (SELECT user_edu_deposits.user_code FROM user_edu_deposit
     //Done
     public function sum_active_leads($from, $to, $x)
     {
-        $from_month = explode('-', $from)[1];
-        $to_month = explode('-', $to)[1];
         global $db_handle;
-        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, TC.date_earned AS last_trade_date
-FROM campaign_leads AS CL
-LEFT JOIN user AS U ON CL.email = U.email
-LEFT JOIN user_ifxaccount AS UI ON U.user_code = UI.user_code
-LEFT JOIN trading_commission AS TC ON UI.ifx_acct_no = TC.ifx_acct_no
-WHERE (MONTH(TC.date_earned) BETWEEN $from_month AND $to_month)
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, MAX(STR_TO_DATE(TC.date_earned, '%Y-%m-%d')) AS last_trade_date, CL.created 
+FROM campaign_leads AS CL 
+LEFT JOIN user AS U ON CL.email = U.email 
+LEFT JOIN user_ifxaccount AS UI ON U.user_code = UI.user_code 
+LEFT JOIN trading_commission AS TC ON UI.ifx_acct_no = TC.ifx_acct_no 
+WHERE (STR_TO_DATE(CL.created, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
+AND (STR_TO_DATE(TC.date_earned, '%Y-%m-%d') BETWEEN '$from' AND '$to') 
 GROUP BY CL.email";
         if($x == 1) {$result = $db_handle->numRows($query);}
         elseif($x == 2){$result = $db_handle->fetchAssoc($db_handle->runQuery($query));}
@@ -581,6 +584,40 @@ GROUP BY CL.email";
         $fetched_data = $db_handle->fetchAssoc($result);
 
         return $fetched_data ? $fetched_data : false;
+    }
+
+    //Done
+    public function sum_none_active($from, $to, $type, $x)
+    {
+        global $db_handle;
+        $client_operation = new clientOperation();
+        switch ($type)
+        {
+            //Training Leads - Start The Training
+            case "1" :
+                $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.created 
+FROM campaign_leads AS CL, user AS U 
+WHERE U.academy_signup IS NULL
+AND CL.email = U.email
+AND CL.interest = '1'
+ GROUP BY CL.email";
+                $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
+                break;
+            //ILPR Leads - Open ILPR Account
+            case "2" :
+                $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.created, U.user_code FROM campaign_leads AS CL, user AS u WHERE CL.email = U.email AND CL.interest = '2'";
+                $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
+                foreach($result as $key => $value)
+                {
+                    $client_ilpr_account = $client_operation->get_client_ilpr_accounts_by_code($value['user_code']);
+                    if(!empty($client_ilpr_account)) {unset($result[$key]);}
+                }
+                break;
+            default: $query = ""; break;
+        }
+        if($x == 1){ $x = count($result); }
+        else if($x == 2){ $x = $result; }
+        return $x;
     }
 
 }

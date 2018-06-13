@@ -69,7 +69,7 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
 
             <div class="row">
                 <div class="col-sm-12 text-danger">
-                    <h4><strong>PENDING DEPOSIT</strong></h4>
+                    <h4><strong>ALL PENDING DEPOSITS</strong></h4>
                 </div>
             </div>
 

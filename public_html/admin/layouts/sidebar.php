@@ -95,7 +95,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <ul class="dropdown-menu">
                         <?php if (in_array(28, $my_pages_sidebar)) { ?><li><a href="deposit_add.php" title="Add Deposit">Deposit - Add</a></li><?php } ?>
                         <?php if (in_array(29, $my_pages_sidebar)) { ?><li><a href="deposit_search.php" title="Search Deposit Transactions">Deposit - Search</a></li><?php } ?>
-                        <?php if (in_array(30, $my_pages_sidebar)) { ?><li><a href="deposit_pending.php" title="Pending Deposit">Deposit - Pending</a></li><?php } ?>
+                        <?php if (in_array(30, $my_pages_sidebar)) { ?><li><a href="deposit_pending.php" title="Pending Deposit">Deposit - Pending(All)</a></li><?php } ?>
+                        <?php if (in_array(257, $my_pages_sidebar)) { ?><li><a href="deposit_pending_sorted.php" title="Pending Deposit">Deposit - Pending(Sorted)</a></li><?php } ?>
                         <?php if (in_array(31, $my_pages_sidebar)) { ?><li><a href="deposit_notified.php" title="Notified Deposit">Deposit - Notified</a></li><?php } ?>
                         <?php if (in_array(32, $my_pages_sidebar)) { ?><li><a href="deposit_confirmed.php" title="Confirmed Deposit">Deposit - Confirmed</a></li><?php } ?>
                         <?php if (in_array(234, $my_pages_sidebar)) { ?><li><a href="deposit_confirmed_view_only.php" title="Confirmed Deposit (View Only)">Deposit - Confirmed (View Only)</a></li><?php } ?>
@@ -133,6 +134,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(228, $my_pages_sidebar)) { ?><li><a href="dinner_2017_new_reg.php" title="New Dinner 2017 Reg">New Dinner 2017 Reg</a></li><?php } ?>
                         <?php if (in_array(229, $my_pages_sidebar)) { ?><li><a href="dinner_2017_all_reg.php" title="All Dinner 2017 Reg">All Dinner 2017 Reg</a></li><?php } ?>
                         <?php if (in_array(230, $my_pages_sidebar)) { ?><li><a href="dinner_2017_signin.php" title="Dinner Sign In">Dinner Sign In</a></li><?php } ?>
+
+                        <?php //if (in_array(230, $my_pages_sidebar)) { ?><li><a href="rma_lfc.php" title="Predictions">Predictions</a></li><?php //} ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -291,7 +294,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-square fa-fw"></i> Signal Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(77, $my_pages_sidebar)) { ?><li><a href="signal_daily.php">Update Daily Signal</a></li><?php } ?>
-                        <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_review.php">Weekly Market Analysis</a></li><?php } ?>
+                        <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_review.php">Signal Analysis</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">

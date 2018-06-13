@@ -46,46 +46,45 @@ $cat = $_SESSION['cat'];
 switch ($cat)
 {
     case '1':
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = user.email 
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U
+WHERE CL.email = U.email 
+ORDER BY CL.created DESC";
         $msg = "all leads.";
         break;
     case '2':
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = user.email
- AND campaign_leads.interest = '1'
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U 
+WHERE CL.email = U.email
+ AND CL.interest = '1'
+ORDER BY CL.created DESC";
         $msg = "all Training leads";
         break;
     case '3':
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = user.email
- AND campaign_leads.interest = '2'
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U
+WHERE CL.email = U.email
+ AND CL.interest = '2'
+ORDER BY CL.created DESC";
         $msg = "all ILPR leads";
         break;
     case '4':
         $search = $db_handle->sanitizePost($_POST['search']);
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = '$search' AND campaign_leads.email = user.email
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U 
+WHERE CL.email = '$search' AND CL.email = U.email
+ORDER BY CL.created DESC";
         $msg = "Results For ".$search;
         break;
     default:
-        $query = "SELECT *, user.user_code, campaign_leads.phone 
-FROM campaign_leads, user 
-WHERE campaign_leads.email = user.email 
-ORDER BY campaign_leads.created DESC";
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
+FROM campaign_leads AS CL, user AS U
+WHERE CL.email = U.email 
+ORDER BY CL.created DESC";
         $msg = "All leads.";
         break;
 }
 
-//$query = "SELECT *, user.user_code, campaign_leads.phone FROM campaign_leads, user WHERE campaign_leads.email = user.email ORDER BY campaign_leads.created DESC";
 $numrows = $db_handle->numRows($query);
 $rowsperpage = 20;
 $totalpages = ceil($numrows / $rowsperpage);
@@ -177,12 +176,10 @@ $client_operation = new clientOperation();
                                     <button class="btn btn-sm <?php if($_SESSION['cat'] == '1'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="1">All Leads</button>
                                     <button class="btn btn-sm <?php if($_SESSION['cat'] == '2'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="2">All Training Leads</button>
                                     <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All ILPR Leads</button>
-                                            <form method="post" action="campaign_leads.php" data-toggle="validator" class="form-vertical" role="form">
-                                                <input type="text" class="input" name="search" placeholder="Enter email address">
-                                                <button class="btn btn-sm <?php if($_SESSION['cat'] == '4'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="4">
+                                            <input type="text" class="input" name="search" placeholder="Enter email address"/>
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '4'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="4">
                                                     <i class="fa fa-search"></i>
                                                 </button>
-                                            </form>
                                     </div>
                                     </center>
                                     <br/><br/>
@@ -213,6 +210,7 @@ $client_operation = new clientOperation();
                                                     <b>Full Name:</b> <?php echo strtoupper($row['l_name']);?> <?php echo $row['f_name'];?> <?php echo $row['m_name'];?><br/>
                                                     <span><b>Email:</b> <?php echo $row['email'];?></span><br/>
                                                     <span><b>Phone:</b> <?php echo $row['phone'];?></span><br/>
+                                                    <span><b>Joined:</b> <?php echo datetime_to_text($row['created']);?></span><br/>
                                                     <span><b>Major Interest:</b> <?php echo $obj_loyalty_training->lead_interest($row['interest'])?></span><br/>
                                                 </td>
                                                 <td>
@@ -233,7 +231,6 @@ $client_operation = new clientOperation();
                                                         First Fund Amount -> $<?php echo number_format($client_deposits[0]['dollar_ordered'], 2, '.', ','); ?><br/>
                                                         First Fund Date -> <?php if(!empty($client_deposits[0]['created'])){echo date_to_text($client_deposits[0]['created']);}?><br/>
                                                         Last Fund Date -> <?php if(!empty($client_deposits[$c_count - 1]['created'])){echo date_to_text($client_deposits[$c_count - 1]['created']);} ?><br/>
-                                                        <!--First Trade Date -> <br/>-->
                                                         Last Trade Date -> <?php if(!empty($last_trade_date)){ echo date_to_text($last_trade_date); }?><br/>
                                                         Account Numbers -> <br/>
                                                         <?php
@@ -244,15 +241,15 @@ $client_operation = new clientOperation();
                                                 <td>
                                                     <!--<input data-toggle="toggle" type="checkbox">
                                                     <br/>-->
-                                                    <a title="View" class="btn btn-sm btn-success" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'campaign_leads'; ?>&c=<?php echo encrypt('NEW CAMPAIGN LEADS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                                    <a title="View" class="btn btn-xs btn-success" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'campaign_leads'; ?>&c=<?php echo encrypt('NEW CAMPAIGN LEADS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
                                                     <br/><br/>
-                                                    <a target="_blank" title="View" class="btn btn-sm btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <br/><br/>
-                                                    <a title="View" class="btn btn-sm btn-info" href="edu_free_training_view.php?x=<?php echo encrypt($row['lead_id']); ?>&pg=<?php echo $currentpage; ?>&selector=1"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
+                                                    <a title="View" class="btn btn-xs btn-info" href="edu_free_training_view.php?x=<?php echo encrypt($row['lead_id']); ?>&pg=<?php echo $currentpage; ?>&selector=1"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
                                                     <br/><br/>
-                                                    <a class="btn btn-sm btn-info" title="Send Email" href="campaign_email_single.php?name=<?php $name = $row['f_name']." ".$row['m_name']." ".$row['l_name']; echo  encrypt_ssl($name).'&email='.encrypt_ssl($row['email']);?>" ><i class="glyphicon glyphicon-envelope"></i></a>
+                                                    <a class="btn btn-xs btn-info" title="Send Email" href="campaign_email_single.php?name=<?php $name = $row['f_name']." ".$row['m_name']." ".$row['l_name']; echo  encrypt_ssl($name).'&email='.encrypt_ssl($row['email']);?>" ><i class="glyphicon glyphicon-envelope"></i></a>
                                                     <br/><br/>
-                                                    <a class="btn btn-sm btn-info" title="Send SMS" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                    <a class="btn btn-xs btn-info" title="Send SMS" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
                                                 </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='2' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

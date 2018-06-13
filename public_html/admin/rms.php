@@ -5,8 +5,8 @@ if (!$session_admin->is_logged_in()){    redirect_to("login.php");}
 if(isset($_POST['post_comment']))
 {
     $comment = $db_handle->sanitizePost(trim($_POST['comment']));
-    $report_id = $db_handle->sanitizePost(trim($_POST['report_id']));
-    $new_comment = $obj_rms->set_report_comment($report_id, $comment, $_SESSION['admin_unique_code']);
+    $r_id = $db_handle->sanitizePost(trim($_POST['report_id']));
+    $new_comment = $obj_rms->set_report_comment($r_id, $comment, $_SESSION['admin_unique_code']);
     $new_comment ? $message_success = "New comment added" : $message_error = "Operation failed";
 }
 $targets = $obj_rms->get_reportees_targets($_SESSION['admin_unique_code']);
@@ -37,6 +37,29 @@ if(isset($_POST['process_report']))
     $new_report['status'] ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
 
+if(isset($_POST['process_update']))
+{
+    $window_period = $db_handle->sanitizePost(trim($_POST['from_date']))."*".$db_handle->sanitizePost(trim($_POST['to_date']));
+    $report = htmlspecialchars_decode(stripslashes(trim($_POST['report'])));
+    $report_id = $db_handle->sanitizePost(trim($_POST['report_id']));
+    $target_id = $db_handle->sanitizePost(trim($_POST['target_id']));
+    $status = $db_handle->sanitizePost(trim($_POST['status']));
+    $new_report = $obj_rms->update_report($window_period, $_SESSION['admin_unique_code'], $report, $target_id, $report_id, $status);
+    if(count($_FILES['attachments']['name']))
+    {
+        foreach ($_FILES['attachments']['name'] as $key => $value)
+        {
+            $tmp_name = $_FILES['attachments']["tmp_name"][$key];
+            $name = strtolower($_FILES['attachments']["name"][$key]);
+            $dirname = "report_attachments".DIRECTORY_SEPARATOR.$new_report['report_id'];
+            if(!is_file("report_attachments")){mkdir("report_attachments");}
+            if(!is_file($dirname)){mkdir($dirname);}
+            move_uploaded_file($tmp_name, $dirname.DIRECTORY_SEPARATOR.$name);
+        }
+    }
+    $new_report['status'] ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
+}
+
 if(isset($_POST["process_settings"]))
 {
     $result = $obj_rms->set_reviewers($_POST['admin_code'], implode(',', $_POST['reviewers']));
@@ -52,6 +75,17 @@ if(isset($_POST['process_target']))
     $reportees = implode(',', $_POST['reportees']);
     $new_target = $obj_rms->set_target($title, $description, $window_period, $_SESSION['admin_unique_code'], $reportees);
     $new_target ? $message_success = "New target created." : $message_error = "Opertion Failed. Please try again.";
+}
+
+if(isset($_POST['edit_target']))
+{
+    $target_id = $db_handle->sanitizePost(trim($_POST['target_id']));
+    $title = $db_handle->sanitizePost(trim($_POST['title']));
+    $description = $db_handle->sanitizePost(trim($_POST['description']));
+    $window_period = $db_handle->sanitizePost(trim($_POST['from_date']))." * ".$db_handle->sanitizePost(trim($_POST['to_date']));
+    $reportees = implode(',', $_POST['reportees']);
+    $new_target = $obj_rms->update_target($target_id, $title, $description, $window_period, $_SESSION['admin_unique_code'], $reportees);
+    $new_target ? $message_success = "Target updated." : $message_error = "Opertion Failed. Please try again.";
 }
 ?>
 <!DOCTYPE html>
@@ -133,10 +167,8 @@ if(isset($_POST['process_target']))
                 {
                     j = file_selector.files[i].name;
                     var row = file_list.insertRow(0);
-                    var cell1 = row.insertCell(0);
-                    var cell2 = row.insertCell(1);
-                    var cell3 = row.insertCell(2);
-                    cell1.innerHTML = i + 1;
+                    var cell2 = row.insertCell(0);
+                    var cell3 = row.insertCell(1);
                     cell2.innerHTML = file_selector.files[i].name;
                     cell3.innerHTML = formatFileSize(file_selector.files[i].size);
                 }
