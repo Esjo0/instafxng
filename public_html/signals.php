@@ -30,11 +30,9 @@
     </table>
     <hr>
     <small>
-	<center>
-        <span class="text-success">GREEN ROW</span> = PENDING |
-        <span class="text-danger">RED ROW</span> = TRADING ENDED/CLOSED |
-        <span class="text-warning">YELLOW ROW</span> = TRIGGERED/NOW RUNNING
-    </center>
+        <span class="text-success">GREEN ROW</span> = PENDING ORDER<br/>
+        <span class="text-danger">RED ROW</span> = CLOSED TRADE<br/>
+        <span class="text-warning">YELLOW ROW</span> = LIVE ORDER<br/>
     </small>
     <br>
     <small style="font-size: x-small">Your use of the signals means you have read and accepted our

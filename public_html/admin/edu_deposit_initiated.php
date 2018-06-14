@@ -13,11 +13,11 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             WHERE ued.status = '1' GROUP BY ued.user_code
             ORDER BY ued.created DESC ";
 } else {
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, MAX(ued.created) AS created
             FROM user_edu_deposits AS ued
             INNER JOIN user AS u ON ued.user_code = u.user_code
             WHERE ued.status = '1' GROUP BY ued.user_code
-            ORDER BY ued.created DESC ";
+            ORDER BY created DESC ";
 }
 $numrows = $db_handle->numRows($query);
 
