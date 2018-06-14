@@ -76,7 +76,7 @@
 .table-danger,
 .table-danger > th,
 .table-danger > td {
-    background-color: #f5c6cb;
+    background-color: #ff4c62;
 }
 
 .table-hover .table-danger:hover {

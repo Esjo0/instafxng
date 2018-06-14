@@ -57,6 +57,37 @@ class InstafxngSystem {
         return true;
     }
 
+    // function to send app push notifications - using fcm
+    public function send_push($token, $message, $title){
+        $path_to_firebase_cm = 'https://fcm.googleapis.com/fcm/send';
+        $API_SERVER_KEY = 'AAAAC0QYmqE:APA91bGSDtRp6HucthhIimDbmH3rzVakSLUIQRIIFqgBV-jXmYCfzE7sWvEdGVghRTSXL-fdLnnjdiXwTKibzrn4KrTaOTSrbyPGKkQylOt5mkRkvmup6MmUN9zZh-8QzYutQPazAvZu';
+        $fields = array(
+            'registration_ids' => $token,
+            'priority' => 'high',
+            'notification' => array('title' => $title, 'body' =>  $message ,'sound'=>'Enabled','image'=>'Notification Image' ),
+            'delay_while_idle' => false,
+            'content_available' => true,
+			'time_to_live' => 2419200
+            );
+        $headers = array('Authorization:key='.$API_SERVER_KEY, 'Content-Type:application/json');
+
+        // Open connection
+        $ch = curl_init();
+        // Set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $path_to_firebase_cm);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        // Execute post
+        $result = curl_exec($ch);
+        // Close connection
+        curl_close($ch);
+        return $result;
+    }
+
     // Get all the states
     public function get_all_states() {
         global $db_handle;
