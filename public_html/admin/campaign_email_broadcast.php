@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
 
     $my_subject = trim($selected_campaign_email['subject']);
     $my_message = stripslashes($selected_campaign_email['content']);
+    $mail_sender = trim($selected_campaign_email['sender']);
 
     $email = $_POST['test_email'];  //only specified
     $email = trim(str_replace(" ", "", $email));
@@ -115,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $my_message_new = str_replace('[UC]', '', $my_message_new);
         }
         
-        $system_object->send_email($my_subject_new, $my_message_new, $sendto, $client_name);
+        $system_object->send_email($my_subject_new, $my_message_new, $sendto, $client_name, $mail_sender);
     }
     
     $message_success = "You have successfully sent the email test.";
