@@ -40,7 +40,5 @@
         <!-- DO NOT MODIFY -->
         <!-- End Facebook Pixel Code -->
         <!--<script src="js/class_signal.js"></script>-->
-        <script>
-                <?php include 'js/class_signal.js';?>
-        </script>
+        <script src="js/class_signal.js"></script>
         <link rel="stylesheet" href="css/signal_table_context.css">
