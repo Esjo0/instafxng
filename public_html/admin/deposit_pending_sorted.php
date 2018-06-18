@@ -38,6 +38,9 @@ if (isset($_POST['bulk_comment'])) {
         INNER JOIN user AS u ON ui.user_code = u.user_code
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
         WHERE ud.status = '1' ORDER BY ud.user_deposit_id DESC ";*/
+
+$today = date('Y-m-d');
+
 $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_payable,
         ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
         uc.passport, ui.ifxaccount_id, MAX(ud.user_deposit_id) AS user_deposit_id , u.user_code, ud.sort 
@@ -45,7 +48,7 @@ $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_paya
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
-        WHERE ud.status = '1' 
+        WHERE ud.status = '1' AND STR_TO_DATE(ud.created, '%Y-%m-%d') = '$today'
         GROUP BY u.user_code 
         ORDER BY user_deposit_id DESC ";
 $numrows = $db_handle->numRows($query);
