@@ -197,15 +197,33 @@ function Signal()
                                 "<td rowspan='5'><center>"+this.getBigTrend(signal_array[0]['order_type'])+"</center></td>"+
                             "</tr>"+
                             "<tr><td><b>CURRENCY PAIR</b></td><td>"+signal_array[0]['currency_pair']+"</td></tr>"+
-                            "<tr><td><b>PRICE</b></td><td>"+signal_array[0]['price']+"</td></tr>"+
-                            "<tr><td><b>TAKE PROFIT</b></td><td>"+signal_array[0]['take_profit']+"</td></tr>"+
-                            "<tr><td><b>STOP LOSS</b></td><td>"+signal_array[0]['stop_loss']+"</td></tr>"+
+                            "<tr><td><b>PRICE</b></td><td>"+ this.zeroCheck(signal_array[0]['price'])+"</td></tr>"+
+                            "<tr><td><b>TAKE PROFIT</b></td><td>"+ this.zeroCheck(signal_array[0]['take_profit'])+"</td></tr>"+
+                            "<tr><td><b>STOP LOSS</b></td><td>"+ this.zeroCheck(signal_array[0]['stop_loss'])+"</td></tr>"+
                             "<tr><td><b>TRIGGER DATE & TIME</b></td><td>"+signal_array[0]['triger']+"</td></tr>"+
                             "<tr><td><b>KEYNOTE</b></td><td colspan='2'>"+signal_array[0]['note']+"</td></tr>"+
                             "</tbody></table>";
         var feedback = "<tr><td><b>FEEDBACK</b></td>"+ "<td colspan='2'>"+"<textarea placeholder='Comments (If Any)' rows='2' id='comments' name='comments' class='form-control'></textarea>"+"</td>"+ "</tr>";
         table.innerHTML = content;
     };
+
+    //checks the number of decimal places and ensure its 4 digits after the decimal point.
+    this.zeroCheck = function(price)
+    {
+        var real = price;
+        if (Math.floor(price) !== price)
+            var num = price.toString().split(".")[1].length || 0;
+        if(num == 3){
+            real = real + "0";
+        }
+        if(num == 2){
+            real = real + "00";
+        }
+        if(num == 1){
+            real = real + "000";
+        }
+        return real;
+    }
 
     this.incrementViews = function(id)
     {
