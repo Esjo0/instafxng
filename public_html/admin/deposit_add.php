@@ -63,7 +63,7 @@ if (isset($_POST['deposit_add_qty'])) {
             $point_claimed_id = $client_operation->set_point_claimed($point_claimed, $client_user_code);
         }
         $stamp_duty = 0.00;
-        $trans_id = "IFX" . time();
+        $trans_id = "D" . time();
         $trans_id_encrypted = encrypt($trans_id);
         $service_charge = 0.00;
         $vat = 0.00;
