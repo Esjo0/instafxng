@@ -190,14 +190,8 @@ $packages = $db_handle->fetchAssoc($result);
                                     <?php } ?>
                                     </tbody>
                                 </table>
-                                <?php if(isset($pending_moderation) && !empty($pending_moderation)) { ?>
-                                    <div class="tool-footer text-right">
-                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
-                                    </div>
-                                <?php } ?>
                             </div>
                         </div>
-                        <?php if(isset($pending_moderation) && !empty($pending_moderation)) { require_once 'layouts/pagination_links.php'; } ?>
 
                     </div>
 

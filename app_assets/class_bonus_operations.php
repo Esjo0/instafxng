@@ -1,45 +1,13 @@
 <?php
-class Bonus_Operations
-{
-    public function get_conditions()
-    {
-        $result = array(
-            1 => array(
-                'title' => 'Bonus Expiry (Not traded for x number of days)',
-                'desc' => 'This API validates that an account has not traded for the specified number of days since the bonus was assigned.',
-                'extra' => array(
-                    'date' => '',
-                    'duration' => ''
-                ),
-            ),
-            2 => array(
-                'title' => 'Bonus Expiry (Not traded for x number of days since the last trade date)',
-                'desc' => 'This API validates that an account has not traded for the specified number of days since the accounts last trade date.',
-                'extra' => array(
-                    'date' => '',
-                    'duration' => ''
-                ),
-            ),
-            3 => array(
-                'title' => 'Bonus Withdrawal (Has traded x lot sizes)',
-                'desc' => 'This API validates that an account has not traded for the specified number of days since the bonus was assigned.',
-                'extra' => array(
-                    'date' => '',
-                    'duration' => ''
-                ),
-            ),
-            4 => array(
-                'title' => 'Bonus Withdrawal (Based on percentage)',
-                'desc' => 'This API notifies the Compliance Officer of the set percentage for withdrawal for accounts under the enrolled bonus package.',
-                'extra' => array(
-                    'date' => '',
-                    'duration' => ''
-                ),
-            )
-        );
-        return $result;
+class Bonus_Operations {
+
+    public function get_active_packages(){
+        global $db_handle;
+        $query = "SELECT * FROM bonus_packages WHERE status = '2' ORDER BY created DESC ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query));
     }
-    public function create_new_package($bonus_title, $bonus_desc, $condition_id, $status, $type, $admin_code)
+
+    public function create_new_package($bonus_title, $bonus_desc, $condition_id, $status, $type, $admin_code, $extra = '')
     {
         global $db_handle;
 
@@ -50,6 +18,168 @@ class Bonus_Operations
 
         $query = "INSERT INTO bonus_packages (bonus_code, bonus_title, bonus_desc, condition_id, status, type, admin_code) VALUES ('$bonus_code', '$bonus_title', '$bonus_desc', '$condition_id', '$status', $type, '$admin_code');";
         $result = $db_handle->runQuery($query);
+
+        if($extra && !empty($extra) && is_array($extra)) {
+            foreach ($extra as $row => $row_value) {
+                foreach ($row_value as $key => $value) {
+                    $this->create_new_package_meta($bonus_code, $row, $key, $value);
+                }
+            }
+        }
+
         return $result;
     }
+
+    public function create_new_package_meta($bonus_code, $condition_id, $meta_name, $meta_value)
+    {
+        global $db_handle;
+        $query = "INSERT INTO bonus_package_meta (bonus_code, condition_id, meta_name, meta_value) VALUES ('$bonus_code', $condition_id, '$meta_name', '$meta_value');";
+        $result = $db_handle->runQuery($query);
+        return $result;
+    }
+
+    public function get_package_active_clients($bonus_code, $x)
+    {
+        global $db_handle;
+        $query = "SELECT CONCAT(U.first_name, SPACE(1), UPPER(U.last_name)) AS fullname, BA.created AS created, U.phone, U.email, UI.ifx_acct_no  
+FROM bonus_accounts AS BA 
+INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id
+INNER JOIN user AS U ON UI.user_code = U.user_code
+WHERE BA.bonus_code = '$bonus_code'
+AND BA.enrolment_status = '2'
+AND BA.allocation_status = '1'
+AND BA.bonus_status = '1'
+ORDER BY created DESC";
+        if($x == 1){$return_value = $db_handle->fetchAssoc($db_handle->runQuery($query));}
+        else if($x == 0){$return_value = $db_handle->numRows($query);}
+        return $return_value;
+    }
+
+    public function get_package_recycled_clients($bonus_code, $x)
+    {
+        global $db_handle;
+        $query = "SELECT CONCAT(U.first_name, SPACE(1), UPPER(U.last_name)) AS fullname, BA.updated AS updated, U.phone, U.email, UI.ifx_acct_no  
+FROM bonus_accounts AS BA 
+INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id
+INNER JOIN user AS U ON UI.user_code = U.user_code
+WHERE BA.bonus_code = '$bonus_code'
+AND BA.enrolment_status = '2'
+AND BA.allocation_status = '1'
+AND BA.bonus_status IN ('2', '3') 
+ORDER BY updated DESC";
+        if($x == 1){$return_value = $db_handle->fetchAssoc($db_handle->runQuery($query));}
+        else if($x == 0){$return_value = $db_handle->numRows($query);}
+        return $return_value;
+    }
+
+    public function get_package_by_code($bonus_code)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM bonus_packages WHERE bonus_code = '$bonus_code' ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
+    }
+
+    public function get_package_meta_by_code($bonus_code)
+    {
+        global $db_handle;
+        $query = "SELECT * FROM bonus_package_meta WHERE bonus_code = '$bonus_code' ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query));
+    }
+
+    public function get_single_condition_by_id($condition_id){
+        $bonus_conditions = new Bonus_Condition();
+        $conditions = $bonus_conditions->BONUS_CONDITIONS;
+        return $conditions[$condition_id];
+    }
+
+    public function get_condition_extras($bonus_code,$condition_id){
+        global $db_handle;
+        $query = "SELECT meta_name, meta_value, condition_id FROM bonus_package_meta WHERE bonus_code = '$bonus_code' AND condition_id = $condition_id  ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query));
+    }
+
+    public function show_conditions_by_code($bonus_code){
+        $condition_ids = $this->get_package_by_code($bonus_code)['condition_id'];
+        $conditions = array();
+        $condition_ids = explode(',', $condition_ids);
+        $count = 1;
+        foreach ($condition_ids as $key) {
+            $conditions[$count] = $this->get_single_condition_by_id($key);
+            $count++;
+        }
+        foreach ($conditions as $key => $value) {
+            if(!empty($value)){
+                echo '<span class="text-justify">'.$key.'. '.$value['title'].'<br/>'.$value['desc'].'</span><br/><br/>';
+            }
+        }
+    }
+
+    public function update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $extra = '')
+    {
+        global $db_handle;
+
+        $query = "UPDATE bonus_packages SET bonus_title = '$bonus_title', bonus_desc = '$bonus_desc', condition_id = '$condition_id', status = '$status', type = $type, updated = now() WHERE bonus_code = '$bonus_code' ";
+        $result = $db_handle->runQuery($query);
+
+        $db_handle->runQuery("DELETE FROM bonus_package_meta WHERE bonus_code = '$bonus_code' ");
+
+        if($extra && !empty($extra) && is_array($extra)) {
+            foreach ($extra as $row => $row_value) {
+                foreach ($row_value as $key => $value) {
+                    $this->create_new_package_meta($bonus_code, $row, $key, $value);
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function new_bonus_application($account_no, $full_name, $email_address, $phone_number, $bonus_code){
+        global $db_handle;
+        $client_operation = new clientOperation();
+        $x = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2);
+        $db_handle->runQuery("UPDATE user_ifxaccount SET is_bonus_account = '2' WHERE ifx_acct_no = '$account_no' ");
+        $ifx_account_id = $db_handle->fetchAssoc($db_handle->runQuery("SELECT ifxaccount_id FROM user_ifxaccount WHERE ifx_acct_no = '$account_no' "))[0]['ifxaccount_id'];
+        $y = $db_handle->runQuery("INSERT INTO bonus_accounts (ifx_account_id, bonus_code) VALUES ($ifx_account_id, $bonus_code)");
+        $x && $y ? $result = true : $result = false;
+        return $result;
+    }
+
+    public function get_pending_applications(){
+        global $db_handle;
+        $query = "SELECT 
+BA.bonus_code, BA.enrolment_status, BA.allocation_status, BA.allocated_amount, BA.admin_code AS compliance_officer, BA.bonus_status, BA.
+UI.user_code, UI.ifx_acct_no, UI.type AS account_type, 
+U.first_name, UPPER(U.last_name) AS last_name, U.middle_name, U.email, U.phone, 
+BP.bonus_title, BP.bonus_desc, BP.condition_id, 
+BA.created AS created 
+FROM bonus_accounts AS BA 
+INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
+INNER JOIN user AS U ON UI.user_code = U.user_code 
+INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
+WHERE BA.enrolment_status = '0' 
+ORDER BY created DESC ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query));
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

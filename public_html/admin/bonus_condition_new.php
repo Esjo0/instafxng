@@ -2,35 +2,10 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
-$bonus_conditions = new Bonus_Condition();
-$all_conditions = $bonus_conditions->BONUS_CONDITIONS;
-
-$get_params = allowed_get_params(['package_code']);
-$package_code_encrypted = $get_params['package_code'];
-$package_code = decrypt_ssl(str_replace(" ", "+", $package_code_encrypted));
-if(!empty($package_code)){$package_details = $bonus_operations->get_package_by_code($package_code);}
-
+$all_conditions = $bonus_operations->get_conditions();
 if(isset($_POST['process']))
 {
-    $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));
-    $bonus_desc = $db_handle->sanitizePost(trim($_POST['bonus_desc']));
-    $condition_id = $db_handle->sanitizePost(trim(implode(',', $_POST['condition_id'])));
-    $status = $db_handle->sanitizePost(trim($_POST['status']));
-    $type = $db_handle->sanitizePost(trim($_POST['type']));
-    $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra']);
-    $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
-}
 
-if(isset($_POST['update']))
-{
-    $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));
-    $bonus_desc = $db_handle->sanitizePost(trim($_POST['bonus_desc']));
-    $condition_id = $db_handle->sanitizePost(trim(implode(',', $_POST['condition_id'])));
-    $status = $db_handle->sanitizePost(trim($_POST['status']));
-    $type = $db_handle->sanitizePost(trim($_POST['type']));
-    $bonus_code = $db_handle->sanitizePost(trim($_POST['bonus_code']));
-    $new_package = $bonus_operations->update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $_POST['extra']);
-    $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
 }
 ?>
 <!DOCTYPE html>
@@ -47,9 +22,11 @@ if(isset($_POST['update']))
         <script>
             function select_row (rowid, trigger) {
                 divElement = document.getElementById(rowid);
-                if(document.getElementById(trigger).checked) {
+                if(document.getElementById(trigger).checked)
+                {
                     inputElements = divElement.getElementsByTagName('input');
-                    for (i = 0; i < inputElements.length; i++) {
+                    for (i = 0; i < inputElements.length; i++)
+                    {
                         if (inputElements[i].type != 'text')
                             continue;
                         inputElements[i].disabled = false;
@@ -57,7 +34,8 @@ if(isset($_POST['update']))
                     }
                 } else {
                     inputElements = divElement.getElementsByTagName('input');
-                    for (i = 0; i < inputElements.length; i++) {
+                    for (i = 0; i < inputElements.length; i++)
+                    {
                         if (inputElements[i].type != 'text')
                             continue;
                         inputElements[i].disabled = true;
@@ -83,7 +61,7 @@ if(isset($_POST['update']))
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong><?php if(!empty($package_details)){echo "UPDATE BONUS PACKAGE";}else{echo "CREATE NEW BONUS PACKAGE";}?></strong></h4>
+                            <h4><strong>CREATE NEW BONUS PACKAGE</strong></h4>
                         </div>
                     </div>
                     
@@ -91,22 +69,19 @@ if(isset($_POST['update']))
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p><a href="bonus_list.php" class="btn btn-default" title="Manage Bonus Packages"><i class="fa fa-arrow-circle-left"></i> Manage Bonus Packages</a></p>
-                                <p>Fill the form below to create a new bonus package.</p>
+                                <p><a href="bonus_condition_list.php" class="btn btn-default" title="Manage Bonus Conditions"><i class="fa fa-arrow-circle-left"></i> Manage Bonus Conditions</a></p>
+                                <p>Fill the form below to create a new bonus condition.</p>
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                    <?php if(!empty($package_details)):?>
-                                        <input type="hidden" value="<?php echo $package_details['bonus_code'] ?>" name="bonus_code">
-                                    <?php endif; ?>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="bonus_title">Package Name:</label>
                                         <div class="col-sm-9">
-                                            <textarea id="bonus_title" name="bonus_title" class="form-control" rows="2" required><?php if(!empty($package_details)){echo $package_details['bonus_title'];}?></textarea>
+                                            <textarea id="bonus_title" name="bonus_title" class="form-control" rows="2" required></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="bonus_desc">Package Description:</label>
                                         <div class="col-sm-9">
-                                            <textarea id="bonus_desc" name="bonus_desc" class="form-control" rows="7" required><?php if(!empty($package_details)){echo $package_details['bonus_desc'];}?></textarea>
+                                            <textarea id="bonus_desc" name="bonus_desc" class="form-control" rows="7" required></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -114,17 +89,16 @@ if(isset($_POST['update']))
                                         <div class="col-sm-9">
                                             <?php foreach ($all_conditions as $key => $value){ ?>
                                             <div id="cond_<?php echo $key; ?>" class="col-sm-12">
-                                                <div class="checkbox"><label for="_<?php echo $key; ?>"><input <?php if(in_array_r($key,explode(',',$package_details['condition_id']))){echo 'checked';} ?> type="checkbox" onclick="select_row('cond_<?php echo $key; ?>','_<?php echo $key; ?>')" name="condition_id[]" value="<?php echo $key; ?>" id="_<?php echo $key; ?>" /> <?php echo $value['title']; ?></label></div>
-                                                <span><?php echo $value['desc']; ?></span>
+                                                <div class="checkbox"><label for="_<?php echo $key; ?>"><input type="checkbox" onclick="select_row('cond_<?php echo $key; ?>','_<?php echo $key; ?>')" name="condition_id[]" value="<?php echo $key; ?>" id="_<?php echo $key; ?>" /> <?php echo $value['title']; ?></label></div>
                                                 <?php foreach ($value['extra'] as $pin){ ?>
-                                                    <div class="col-sm-4"><input value="<?php echo $bonus_operations->get_condition_extras($package_details['bonus_code'],$key)[0]['meta_value'] ?>" placeholder="<?php echo $pin; ?>" type="text" name="extra[<?php echo $key; ?>][<?php echo $pin; ?>]" class="form-control" <?php if(!in_array_r($key,explode(',',$package_details['condition_id']))){echo 'disabled';} ?> /></div>
+                                                    <div class="col-sm-4"><input placeholder="<?php echo $pin; ?>" type="text" name="extra[<?php echo $key; ?>][<?php echo $pin; ?>]" class="form-control" disabled/></div>
                                                 <?php } ?>
                                             </div>
                                             <?php } ?>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3">Package Type:</label>
+                                        <label class="control-label col-sm-3" for="firstname">Package Type:</label>
                                         <div class="col-sm-9">
                                             <div class="col-sm-12"><div class="radio"><label for="1"><input type="radio" checked name="type" value="1" id="1" required /> Default</label></div></div>
                                         </div>
@@ -132,9 +106,9 @@ if(isset($_POST['update']))
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="firstname">Status:</label>
                                         <div class="col-sm-9">
-                                            <div class="col-sm-12"><div class="radio"><label for="1"><input type="radio" name="status" <?php if(!empty($package_details) && $package_details['status'] == '1'){echo 'checked';}?> value="1" id="1" required /> Save As Draft</label></div></div>
-                                            <div class="col-sm-12"><div class="radio"><label for="2"><input type="radio" name="status" <?php if(!empty($package_details) && $package_details['status'] == '2'){echo 'checked';}?> value="2" id="2" required /> Active Package</label></div></div>
-                                            <div class="col-sm-12"><div class="radio"><label for="3"><input type="radio" name="status" <?php if(!empty($package_details) && $package_details['status'] == '3'){echo 'checked';}?> value="3" id="3" required /> Inactive Package</label></div></div>
+                                            <div class="col-sm-12"><div class="radio"><label for="1"><input type="radio" name="status" value="1" id="1" required /> Save As Draft</label></div></div>
+                                            <div class="col-sm-12"><div class="radio"><label for="2"><input type="radio" name="status" value="2" id="2" required /> Active Package</label></div></div>
+                                            <div class="col-sm-12"><div class="radio"><label for="3"><input type="radio" name="status" value="3" id="3" required /> Inactive Package</label></div></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -142,6 +116,7 @@ if(isset($_POST['update']))
                                             <button type="button" data-target="#confirm-add" data-toggle="modal" class="btn btn-sm btn-success">Process</button>
                                         </div>
                                     </div>
+                                    
                                     <!--Modal - confirmation boxes--> 
                                     <div id="confirm-add" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                         <div class="modal-dialog">
@@ -153,7 +128,7 @@ if(isset($_POST['update']))
                                                     <center>Are you sure you want to process this bonus package?
                                                     <br/>This action cannot be reversed.</center></div>
                                                 <div class="modal-footer">
-                                                    <input name="<?php if(!empty($package_details)){echo "update";}else{echo "process";}?>" type="submit" class="btn btn-sm btn-success" value="Proceed">
+                                                    <input name="process" type="submit" class="btn btn-sm btn-success" value="Proceed">
                                                     <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>
                                                 </div>
                                             </div>
@@ -162,10 +137,14 @@ if(isset($_POST['update']))
                                 </form>
                             </div>
                         </div>
+
                     </div>
+
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
+                    
                 </div>
+                
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>

@@ -79,6 +79,15 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                 </li>
 
                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-dollar"></i> Bonus Management<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_app_moderation.php" title="Moderate Bonus Applications">Moderate Bonus Applications</a></li><?php //} ?>
+                        <?php// if (in_array(23, $my_pages_sidebar)) { ?><li><a href="bonus_new.php" title="Create New Bonus Package">Create Package</a></li><?php //} ?>
+                        <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_list.php" title="Manage Bonus Packages">Manage Packages</a></li><?php //} ?>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-star-half-o fa-fw"></i> System Insights<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(23, $my_pages_sidebar)) { ?><li><a href="insight/last_month_funding.php" title="Last Month Funding">Last Month Funding</a></li><?php } ?>
