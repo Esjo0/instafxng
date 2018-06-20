@@ -20,7 +20,7 @@ if (isset($_POST['signal_report'])) {
     $query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
     $total_triggered = $db_handle->numRows($query);
 
-    $query = "SELECT * FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' ";
+    $query = "SELECT * FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' ORDER BY created DESC";
     $numrows = $db_handle->numRows($query);
     $total_untriggered = $numrows - $total_triggered;
     $rowsperpage = 10;
@@ -47,7 +47,7 @@ else
     $query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
     $total_triggered = $db_handle->numRows($query);
 
-    $query = "SELECT * FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' ";
+    $query = "SELECT * FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' ORDER BY created DESC";
     $numrows = $db_handle->numRows($query);
     $total_untriggered = $numrows - $total_triggered;
     $rowsperpage = 10;
@@ -232,7 +232,7 @@ else
                                     <td><?php echo $row['take_profit']; ?></td>
                                     <td><?php echo $row['stop_loss']; ?></td>
                                     <td><?php echo datetime_to_text($row['trigger_date']." ".$row['trigger_time']); ?></td>
-                                    <td><?php echo datetime_to_text2($row['created']); ?></td>
+                                    <td><?php echo datetime_to_text($row['created']); ?></td>
                                     <td><?php echo $row['views']; ?></td>
                                     <td><?php
                                         if($row['trigger_status'] == 0)

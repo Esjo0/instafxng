@@ -22,6 +22,9 @@
             <button style=" border: 0px;border-radius:50%;" title="Refresh Signals" class="btn btn-default btn-sm" onclick="signal.refreshList();"><i class="glyphicon glyphicon-refresh"></i></button>
         </em>
     </small>
+    <hr>
+    <small><span class="glyphicon glyphicon-exclamation-sign"></span> Click on each signal Row for Details and Guide. </small>
+    <br>
     <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-hover">
         <thead><tr><th></th><th></th><th></th><th></th><th></th></tr></thead>
         <tbody id="sig">
