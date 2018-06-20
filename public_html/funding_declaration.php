@@ -11,18 +11,19 @@ if($_POST['verify_account_ifx_acct']) {
     $user_ifx_details = $client_operation->get_client_data();
     if($user_ifx_details) {
         extract($user_ifx_details);
-        /*if(!$client_operation->authenticate_user_password($password_submitted, $client_pass_salt, $client_password)) {
+        if(!$client_operation->authenticate_user_password($password_submitted, $client_pass_salt, $client_password)) {
             $message_error = "Account and Pass Code combination do not match, please try again or <a href='contact_info.php'>contact support</a>.";
-        }else{$page_requested = "verify_account_declare_php";}*/
-        $query ="SELECT UC.passport, CONCAT(U.first_name, SPACE(1), U.last_name) AS client_name, U.middle_name, UM.address, UC.signature 
+        }else {
+            $query = "SELECT UC.passport, CONCAT(U.first_name, SPACE(1), U.last_name) AS client_name, U.middle_name, UM.address, UC.signature 
         FROM user_ifxaccount AS UI
         INNER JOIN user AS U ON UI.user_code = U.user_code
         INNER JOIN user_meta AS UM ON UI.user_code = UM.user_code
         INNER JOIN user_credential AS UC ON UI.user_code = UC.user_code
          WHERE UI.ifx_acct_no = '$account_no' LIMIT 1";
-        $result = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
-        extract($result);
-        $page_requested = "verify_account_declare_php";
+            $result = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
+            extract($result);
+            $page_requested = "verify_account_declare_php";
+        }
     } else {
         $message_error = "The account number you entered does not exist in our records.";
     }
