@@ -48,8 +48,7 @@ ORDER BY created DESC ";
         return $result;
     }
 
-    public function create_new_package_meta($bonus_code, $condition_id, $meta_name, $meta_value)
-    {
+    public function create_new_package_meta($bonus_code, $condition_id, $meta_name, $meta_value){
         global $db_handle;
         $query = "INSERT INTO bonus_package_meta (bonus_code, condition_id, meta_name, meta_value) VALUES ('$bonus_code', $condition_id, '$meta_name', '$meta_value');";
         $result = $db_handle->runQuery($query);
@@ -142,11 +141,6 @@ ORDER BY updated DESC";
             $count++;
         }
         return $conditions;
-        /*foreach ($conditions as $key => $value) {
-            if(!empty($value)){
-                echo '<span class="text-justify">'.$key.'. '.$value['title'].'<br/>'.$value['desc'].'</span><br/><br/>';
-            }
-        }*/
     }
 
     public function update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $extra = '')

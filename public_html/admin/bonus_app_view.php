@@ -64,9 +64,9 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                 <table class="table table-responsive table-bordered">
                                     <tbody>
                                     <tr>
-                                        <td><b>BONUS PACKAGE:</b>  <?php echo $app_details['first_name']; ?> <?php echo $app_details['middle_name']; ?> <?php echo $app_details['last_name']; ?></td>
+                                        <td><b>BONUS PACKAGE:</b>  <?php echo $app_details['bonus_title']; ?></td>
                                     </tr>
-                                    <tr><td><b>PACKAGE DETAILS:</b>  <?php echo $app_details['email']; ?></td></tr>
+                                    <tr><td><b>PACKAGE DETAILS:</b>  <?php echo $app_details['bonus_desc']; ?></td></tr>
                                     <tr>
                                         <td>
                                             <center><b>PACKAGE CONDITIONS</b></center>
