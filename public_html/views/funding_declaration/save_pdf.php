@@ -13,5 +13,5 @@ if(isset($file_content) && !empty($file_content))
     </div>
 </div>
 MAIL;
-        $system_object->send_email($subject, $message, 'emmauel@instafxng.com', 'Demola', 'Instafxng');
+        $system_object->send_email($subject, $message, 'demola@instafxng.com', 'Demola', 'Instafxng');
 }
