@@ -3,7 +3,8 @@ require_once 'init/initialize_general.php';
 $thisPage = "Account";
 $source = $_GET['id'];
 $page_requested = "";
-
+$bonus_operations = new Bonus_Operations();
+$all_bonus_packages = $bonus_operations->get_active_packages();
 // This section processes - views/live_account_info.php
 if(isset($_POST['live_account_info'])) {
     $page_requested = "live_account_open_php";
@@ -28,9 +29,9 @@ if(isset($_POST['live_account_ilpr_reg'])) {
     $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
     $bonus_code = $db_handle->sanitizePost(trim($_POST['bonus_code']));
 
-    if(!$responseData->success) {
+    /*if(!$responseData->success) {
         $message_error = "You did not pass the robot verification, please try again.";
-    } elseif(empty($full_name) || empty($email_address) || empty($phone_number) || empty($account_no) || empty($bonus_code)) {
+    } else*/if(empty($full_name) || empty($email_address) || empty($phone_number) || empty($account_no) || empty($bonus_code)) {
         $message_error = "All fields must be filled.";
     } elseif (!check_email($email_address)) {
         $message_error = "You have provided an invalid email address. Please try again.";
@@ -51,9 +52,6 @@ switch($page_requested) {
     case 'live_account_completed_php': $live_account_completed_php = true; break;
     default: $live_account_info_php = true;
 }
-
-$bonus_operations = new Bonus_Operations();
-$all_bonus_packages = $bonus_operations->get_active_packages();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,10 +89,10 @@ $all_bonus_packages = $bonus_operations->get_active_packages();
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
                                 <?php 
-                                    if($live_account_info_php) { include_once 'views/live_bonus_account/live_account_info.php'; }
-                                    if($live_account_open_php) { include_once 'views/live_bonus_account/live_account_open.php'; }
-                                    if($live_account_ilpr_reg_php) { include_once 'views/live_bonus_account/live_account_ilpr_reg.php'; }
-                                    if($live_account_completed_php) { include_once 'views/live_bonus_account/live_account_completed.php'; }
+                                    if($live_account_info_php) { include_once 'views/live_bonus_account/live_bonus_account_info.php'; }
+                                    if($live_account_open_php) { include_once 'views/live_bonus_account/live_bonus_account_open.php'; }
+                                    if($live_account_ilpr_reg_php) { include_once 'views/live_bonus_account/live_bonus_account_reg.php'; }
+                                    if($live_account_completed_php) { include_once 'views/live_bonus_account/live_bonus_account_completed.php'; }
                                 ?>                                
                             </div>
                         </div>

@@ -1,5 +1,23 @@
 <?php
 class Bonus_Operations {
+    
+    public function get_app_by_id($app_id){
+        global $db_handle;
+        $query = "SELECT 
+BA.bonus_code, BA.enrolment_status, BA.allocation_status, BA.allocated_amount, BA.admin_code AS compliance_officer, BA.bonus_status, 
+UI.user_code, UI.ifx_acct_no, UI.type AS account_type, 
+U.first_name, UPPER(U.last_name) AS last_name, U.middle_name, U.email, U.phone, 
+BP.bonus_title, BP.bonus_desc, BP.condition_id, 
+BA.created AS created 
+FROM bonus_accounts AS BA 
+INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
+INNER JOIN user AS U ON UI.user_code = U.user_code 
+INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
+WHERE BA.enrolment_status = '0' 
+AND BA.bonus_account_id = $app_id
+ORDER BY created DESC ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
+    }
 
     public function get_active_packages(){
         global $db_handle;
@@ -114,6 +132,23 @@ ORDER BY updated DESC";
         }
     }
 
+    public function get_conditions_by_code($bonus_code){
+        $condition_ids = $this->get_package_by_code($bonus_code)['condition_id'];
+        $conditions = array();
+        $condition_ids = explode(',', $condition_ids);
+        $count = 1;
+        foreach ($condition_ids as $key) {
+            $conditions[$count] = $this->get_single_condition_by_id($key);
+            $count++;
+        }
+        return $conditions;
+        /*foreach ($conditions as $key => $value) {
+            if(!empty($value)){
+                echo '<span class="text-justify">'.$key.'. '.$value['title'].'<br/>'.$value['desc'].'</span><br/><br/>';
+            }
+        }*/
+    }
+
     public function update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $extra = '')
     {
         global $db_handle;
@@ -137,12 +172,12 @@ ORDER BY updated DESC";
     public function new_bonus_application($account_no, $full_name, $email_address, $phone_number, $bonus_code){
         global $db_handle;
         $client_operation = new clientOperation();
-        $x = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2);
+        $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2);
         $db_handle->runQuery("UPDATE user_ifxaccount SET is_bonus_account = '2' WHERE ifx_acct_no = '$account_no' ");
         $ifx_account_id = $db_handle->fetchAssoc($db_handle->runQuery("SELECT ifxaccount_id FROM user_ifxaccount WHERE ifx_acct_no = '$account_no' "))[0]['ifxaccount_id'];
-        $y = $db_handle->runQuery("INSERT INTO bonus_accounts (ifx_account_id, bonus_code) VALUES ($ifx_account_id, $bonus_code)");
-        $x && $y ? $result = true : $result = false;
-        return $result;
+        return $db_handle->runQuery("INSERT INTO bonus_accounts (ifx_account_id, bonus_code) VALUES ($ifx_account_id, '$bonus_code')");
+        //$x && $y ? $result = true : $result = false;
+        //return $result;
     }
 
     public function get_pending_applications(){
