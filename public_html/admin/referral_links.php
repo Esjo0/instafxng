@@ -2,34 +2,10 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $xml_filename = "external_resource_links.xml";
-if(isset($_POST['save'])) {
-    $url = $db_handle->sanitizePost($_POST['url']);
-    $desc = $db_handle->sanitizePost($_POST['desc']);
-
-    if(!file_exists($xml_filename)) {
-        $_file = fopen($xml_filename, "w");
-        fwrite($_file, '<resources>');
-        fclose($_file);
-    }
-
-    $lines = file($xml_filename);
-    $last = sizeof(file($xml_filename)) - 1 ;
-    unset($lines[$last]);
-    $_file = fopen($xml_filename, "w");
-    fwrite($_file, implode('', $lines));
-    fwrite($_file, '<resource>');
-    fwrite($_file, "<url>".$url."</url>");
-    fwrite($_file, "<desc>".$desc."</desc>");
-    fwrite($_file, "</resource>");
-    fwrite($_file, "\n");
-    fwrite($_file, "</resources>");
-    fclose($_file);
-}
 if(file_exists($xml_filename)){
     $xml = simplexml_load_file($xml_filename);
     $links = $xml->children();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +20,7 @@ if(file_exists($xml_filename)){
     <?php require_once 'layouts/head_meta.php'; ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
     <script>
-        function show_form(div) {
+        /*function show_form(div) {
             var x = document.getElementById(div);
             if (x.style.display === 'none') {
                 x.style.display = 'block';
@@ -53,7 +29,7 @@ if(file_exists($xml_filename)){
                 x.style.display = 'none';
                 document.getElementById('trigger').innerHTML = '<i class="glyphicon glyphicon-plus"></i>';
             }
-        }
+        }*/
         function copy_text(btn_id) {
             var btn = document.getElementById(btn_id);
             var clipboard = new ClipboardJS(btn);
@@ -91,10 +67,10 @@ if(file_exists($xml_filename)){
                         <div class="col-sm-12">
                             <?php require_once 'layouts/feedback_message.php'; ?>
                             <p class="pull-left">List of all the direct links to instaforex website.</p>
-                            <p class="pull-right"><button title="Add a new link" id="trigger" onclick="show_form('filter')" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-plus"></i>  Click Here To Add A New Link</button></p>
+                            <!--<p class="pull-right"><button title="Add a new link" id="trigger" onclick="show_form('filter')" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-plus"></i>  Click Here To Add A New Link</button></p>
                             <div id="filter">
                                 <p>Add a new referral link</p>
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php /*echo $_SERVER['REQUEST_URI']; */?>">
                                     <div class="input-group date">
                                         <input  name="url" type="text" class="form-control" id="link" required>
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-link"></span></span>
@@ -105,7 +81,7 @@ if(file_exists($xml_filename)){
                                     </div>
                                     <input name="save" type="submit" class="btn btn-success" value="SAVE" />
                                 </form>
-                            </div>
+                            </div>-->
                             <table  class="table table-responsive table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
