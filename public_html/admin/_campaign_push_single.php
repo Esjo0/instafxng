@@ -4,7 +4,7 @@ if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send']))
 {
-    foreach($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
+    //foreach($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
     extract($_POST);
     if(empty($content)) {$message_error = "All fields must be filled, please try again";}
     else
