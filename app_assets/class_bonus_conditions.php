@@ -29,7 +29,7 @@ class Bonus_Condition
         )
     );
 
-    public $BONUS_TYPES = array(
+    public $CONDITIONS_TYPES = array(
         0 => 'Conditions to be met before allocation of bonus',
         1 => 'Conditions to be met after allocation of bonus',
         2 => 'Conditions to be met before recycling out of bonus'
@@ -37,7 +37,7 @@ class Bonus_Condition
 
     public function get_condition_types(){
         $result = array();
-        foreach ($this->BONUS_TYPES as $key => $value) {
+        foreach ($this->CONDITIONS_TYPES as $key => $value) {
             $result[count($result) + 1] = $key;
         }
         return $result;
