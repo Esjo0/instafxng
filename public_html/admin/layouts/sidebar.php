@@ -239,6 +239,9 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(243, $my_pages_sidebar)) { ?><li><a href="system_ad_section.php"> Front-End Advert Section</a></li><?php } ?>
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a href="referral_links.php" ><i class="glyphicon glyphicon-link"></i> Instaforex Foreign Links</a>
+                </li>
                 <?php /*if (in_array(79, $my_pages_sidebar)) { */?><!--<li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li>--><?php /*} */?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bookmark fa-fw"></i> Campaign<b class="caret"></b></a>

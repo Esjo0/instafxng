@@ -716,6 +716,38 @@ class InstafxngSystem {
         return $fetched_data ? $fetched_data : false;
     }
 
+    public function get_sum_client_completed_funding($user_code) {
+        global $db_handle;
+        $query = "SELECT SUM(ud.real_dollar_equivalent) AS total_dollar, SUM(ud.real_naira_confirmed) AS total_naira
+              FROM user_deposit AS ud
+              INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE ud.status = '8' AND u.user_code = '$user_code' ORDER BY ud.created ASC ";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $funding_sum = $fetched_data[0];
+        return $funding_sum ? $funding_sum : false;
+    }
+
+    public function get_client_completed_funding($user_code) {
+        global $db_handle;
+        $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_payable, ud.real_dollar_equivalent, ud.real_naira_confirmed,
+                    ud.client_naira_notified, ud.client_pay_date, ud.client_reference, ud.client_pay_method,
+                    ud.client_notified_date, ud.status AS deposit_status, ud.points_claimed_id, u.user_code,
+                    ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
+                    uc.passport, ui.ifxaccount_id, ud.updated, ud.order_complete_time, pbc.dollar_amount AS points_dollar_value
+                  FROM user_deposit AS ud
+                  INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+                  INNER JOIN user AS u ON ui.user_code = u.user_code
+                  LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
+                  LEFT JOIN point_based_claimed AS pbc ON ud.points_claimed_id = pbc.point_based_claimed_id
+                  WHERE ud.status = '8' AND u.user_code = '$user_code' ORDER BY ud.created ASC ";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
     public function get_latest_withdrawal( $user_code = '' ) {
         global $db_handle;
 
@@ -734,6 +766,36 @@ class InstafxngSystem {
               ORDER BY uw.created DESC LIMIT 10";
         }
 
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
+    public function get_sum_client_completed_withdrawal($user_code) {
+        global $db_handle;
+        $query = "SELECT SUM(uw.dollar_withdraw) AS total_dollar, SUM(uw.naira_total_withdrawable) AS total_naira
+              FROM user_withdrawal AS uw
+              INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE uw.status = '10' AND u.user_code = '$user_code' ORDER BY uw.created ASC ";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $funding_sum = $fetched_data[0];
+        return $funding_sum ? $funding_sum : false;
+    }
+
+    public function get_client_completed_withdrawal($user_code) {
+        global $db_handle;
+        $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.created, uw.naira_total_withdrawable,
+                uw.client_phone_password, uw.status AS withdrawal_status,
+                CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
+                uc.passport, ui.ifxaccount_id, ui.ifx_acct_no, uw.updated
+                FROM user_withdrawal AS uw
+                INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+                INNER JOIN user AS u ON ui.user_code = u.user_code
+                LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
+                WHERE uw.status = '10' AND u.user_code = '$user_code' ORDER BY uw.created ASC ";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
