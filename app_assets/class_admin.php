@@ -765,6 +765,8 @@ MAIL;
     </table>
 </div>
 MAIL;
+                //$content = htmlspecialchars_decode(stripslashes(trim($content)));
+                $content = $db_handle->sanitizePost(trim($content));
                 $sender = "Instaforex NG";
                 $campaign_category = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM campaign_category WHERE client_group = 46 "))[0]['campaign_category_id'];
                 if(empty($campaign_category))

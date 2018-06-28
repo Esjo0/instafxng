@@ -206,14 +206,10 @@ class clientOperation {
             $result = $db_handle->runQuery($query);
 
             //TODO: Come back later to understand this....
-            if($db_handle->numOfRows($result) == 0)
-            {
-                if(empty($source) || $source != "lp")
-                {
+            if($db_handle->numOfRows($result) == 0) {
+                if(empty($source) || $source != "lp") {
                     $this->send_welcome_email($last_name, $email_address);
-                }
-                else
-                {
+                } else {
                     $subject = $last_name.', Your Welcome Bonus Is Here!';
                     $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -225,7 +221,7 @@ class clientOperation {
                                 <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
                                 <p>You have made a fantastic decision $last_name!</p>
                                 <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
-                                <p>This is what’s happening right now…</p>                                
+                                <p>This is what’s happening right now...</p>
                                 <p>Your Welcome bonus is here!</p>
                                 <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
                                 <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
@@ -277,7 +273,16 @@ MAIL;
             }
             
             if($this->ifx_account_is_duplicate($account_no)) {
-                return false; //TODO: Send a proper message stating that this ifxaccount already exist in the database
+                // Get the ifxaccount_id and the account type
+                // If account type is ILPR, ignore logging enrollment request
+                $query = "SELECT ifxaccount_id, type FROM user_ifxaccount WHERE ifx_acct_no = '$account_no' LIMIT 1";
+                $result = $db_handle->runQuery($query);
+                $fetched_data = $db_handle->fetchAssoc($result);
+                $ifxaccount_type = $fetched_data[0]['type'];
+                $ifxaccount_id = $fetched_data[0]['ifxaccount_id'];
+
+                $ilpr_enrolment = $ifxaccount_type == '1' ? false : true; //don't log enrolment when already ILPR
+
             } else {
                 if(isset($my_refferer) && !empty($my_refferer)) {
                     $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no, partner_code) VALUES ('$user_code', '$account_no', '$my_refferer')";
@@ -289,6 +294,7 @@ MAIL;
 
                 // get returned ifxaccount_id generated
                 $ifxaccount_id = $db_handle->insertedId();
+                $ilpr_enrolment = true; //Default account type when inserting is 2 - Non-ILPR, hence allow enrolment
             }
         } else {
             usercode:
@@ -304,12 +310,9 @@ MAIL;
             if(empty($middle_name)) {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                if(empty($source) || $source != "lp")
-                {
+                if(empty($source) || $source != "lp") {
                     $this->send_welcome_email($last_name, $email_address);
-                }
-                else
-                {
+                } else {
                     $subject = $last_name.', Your Welcome Bonus Is Here!';
                     $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -374,12 +377,10 @@ MAIL;
             } else {
                 $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
                 $db_handle->runQuery($query);
-                if(empty($source) || $source != "lp"){
+                if(empty($source) || $source != "lp") {
                     //This client came in through the landing page
                     $this->send_welcome_email($last_name, $email_address);
-                }
-                else
-                {
+                } else {
                     $subject = $last_name.', Your Welcome Bonus Is Here!';
                     $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -451,13 +452,14 @@ MAIL;
 
             // get returned ifxaccount_id generated
             $ifxaccount_id = $db_handle->insertedId();
+            $ilpr_enrolment = true; //Default account type when inserting is 2 - Non-ILPR, hence allow enrolment
 
             // Create a record for the user on the loyalty log table
             $this->user_loyalty_log_record($user_code);
         }
 
         // log ilpr application
-        if($type == 2) {
+        if($ilpr_enrolment && $type == 2) {
             $query = "INSERT INTO user_ilpr_enrolment (ifxaccount_id) VALUES ($ifxaccount_id)";
             $db_handle->runQuery($query);
         }
@@ -710,7 +712,7 @@ MAIL;
             case '100': $message = "Passport and Signature Not Approved"; break;
             case '101': $message = "Passport Not Approved"; break;
             case '110': $message = "Signature Not Approved"; break;
-            case '111': $message = "All Approved"; break;
+            case '111': $message = "ID Card, Passport and Signature is good."; break;
         }
 
 
@@ -730,9 +732,9 @@ MAIL;
             Please <a href="https://instafxng.com/verify_account.php">click here</a> to update
             and submit again.</p>
 
-            <p>Reason: $message <br /></p>
-
             <p>Remark: $remarks</p>
+
+            <p>Note: $message</p>
 
             <p>Thank you.</p>
 
@@ -2625,4 +2627,26 @@ MAIL;
         return $last_trade_detail ? $last_trade_detail : false;
     }
 
+    public function notify_admin($transaction_type, $transaction_id, $access_code, $author)
+    {
+        global $obj_push_notification;
+        switch ($transaction_type)
+        {
+            case 0:
+                $title = "New Pending Deposit";
+                $url = "https://instafxng.com/admin/deposit_pending.php";
+                break;
+            case 1:
+                $title = "New Notified Deposit";
+                $url = "https://instafxng.com/admin/deposit_notified.php";
+                break;
+            default:
+                $title = "Unknown";
+                $url = "https://instafxng.com/admin/";
+                break;
+        }
+        $message = " A new pending deposit order was added <br/> Transaction ID: $transaction_id <br/> <a href='$url' target='_blank'>Click here to review this order.</a>";
+        $recipients = $obj_push_notification->get_recipients_by_access($access_code);
+        $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $url);
+    }
 }

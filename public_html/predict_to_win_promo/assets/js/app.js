@@ -41,7 +41,7 @@ function Sports_Prediction()
 	};
 
 	this.GetMsgs = function() {
-		var query = "SELECT * FROM sports_leads_msgs ORDER BY created ASC";
+		var query = "SELECT * FROM sports_leads_msgs ORDER BY created DESC";
 		this.ajax_request('', query, '3');
 	};
 	
@@ -167,7 +167,6 @@ function Sports_Prediction()
 		this.addToStorage('nickname', nickname);
 		this.addToStorage('email', email);
 		var query = "INSERT INTO sports_leads (nickname, fullname, phone, email, prediction) VALUES ('"+nickname+"', '"+fullname+"', '"+phone+"', '"+email+"', '"+prediction+"');";
-		console.log(query);
 		document.getElementById('ud_form').style.display = 'none';
 		document.getElementById('form_preloader').style.display = 'block';
 		this.ajax_request('form_preloader', query, '1');
@@ -209,8 +208,8 @@ function Sports_Prediction()
 		else {   return false;    }
 	};
 
-	this.GetPredictions = function(num){
-		var query = "SELECT nickname, prediction FROM sports_leads ORDER BY created ASC";
+	this.GetPredictions = function(){
+		var query = "SELECT nickname, prediction FROM sports_leads ORDER BY created DESC";
 		this.ajax_request('form_preloader', query, '2');
 	};
 

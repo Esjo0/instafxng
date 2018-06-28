@@ -95,7 +95,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <ul class="dropdown-menu">
                         <?php if (in_array(28, $my_pages_sidebar)) { ?><li><a href="deposit_add.php" title="Add Deposit">Deposit - Add</a></li><?php } ?>
                         <?php if (in_array(29, $my_pages_sidebar)) { ?><li><a href="deposit_search.php" title="Search Deposit Transactions">Deposit - Search</a></li><?php } ?>
-                        <?php if (in_array(30, $my_pages_sidebar)) { ?><li><a href="deposit_pending.php" title="Pending Deposit">Deposit - Pending</a></li><?php } ?>
+                        <?php if (in_array(30, $my_pages_sidebar)) { ?><li><a href="deposit_pending.php" title="Pending Deposit">Deposit - Pending(All)</a></li><?php } ?>
+                        <?php if (in_array(257, $my_pages_sidebar)) { ?><li><a href="deposit_pending_sorted.php" title="Pending Deposit">Deposit - Pending(Sorted)</a></li><?php } ?>
                         <?php if (in_array(31, $my_pages_sidebar)) { ?><li><a href="deposit_notified.php" title="Notified Deposit">Deposit - Notified</a></li><?php } ?>
                         <?php if (in_array(32, $my_pages_sidebar)) { ?><li><a href="deposit_confirmed.php" title="Confirmed Deposit">Deposit - Confirmed</a></li><?php } ?>
                         <?php if (in_array(234, $my_pages_sidebar)) { ?><li><a href="deposit_confirmed_view_only.php" title="Confirmed Deposit (View Only)">Deposit - Confirmed (View Only)</a></li><?php } ?>
@@ -229,6 +230,9 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(243, $my_pages_sidebar)) { ?><li><a href="system_ad_section.php"> Front-End Advert Section</a></li><?php } ?>
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a href="referral_links.php" ><i class="glyphicon glyphicon-link"></i> Instaforex Foreign Links</a>
+                </li>
                 <?php /*if (in_array(79, $my_pages_sidebar)) { */?><!--<li><a href="system_message.php" title="System Messages"><i class="fa fa-envelope fa-fw"></i> System Messages</a></li>--><?php /*} */?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bookmark fa-fw"></i> Campaign<b class="caret"></b></a>
@@ -244,6 +248,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(87, $my_pages_sidebar)) { ?><li><a href="campaign_sms.php">Compose SMS</a></li><?php } ?>
                         <?php if (in_array(232, $my_pages_sidebar)) { ?><li><a href="campaign_sms_single.php">Compose Single SMS</a></li><?php } ?>
                         <?php if (in_array(88, $my_pages_sidebar)) { ?><li><a href="campaign_email.php">Compose Email</a></li><?php } ?>
+                        <?php if (in_array(87, $my_pages_sidebar)) { ?><li><a href="_campaign_push_single.php">Compose Push Notification</a></li><?php } ?>
                         <?php if (in_array(89, $my_pages_sidebar)) { ?><li><a href="campaign_email_view.php">Email Campaign</a></li><?php } ?>
                         <?php if (in_array(90, $my_pages_sidebar)) { ?><li><a href="campaign_sms_view.php">SMS Campaign</a></li><?php } ?>
                         <?php if (in_array(91, $my_pages_sidebar)) { ?><li><a href="campaign_sales.php">Sales Management</a></li><?php } ?>
@@ -292,7 +297,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-square fa-fw"></i> Signal Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(77, $my_pages_sidebar)) { ?><li><a href="signal_daily.php">Update Daily Signal</a></li><?php } ?>
-                        <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_review.php">Weekly Market Analysis</a></li><?php } ?>
+                        <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_review.php">Signal Analysis</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">

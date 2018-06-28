@@ -5,30 +5,39 @@ if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send']))
 {
     //foreach($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
-
     extract($_POST);
-
-    if(empty($content) || empty($phone_num)) {$message_error = "All fields must be filled, please try again";}
-
+    if(empty($content)) {$message_error = "All fields must be filled, please try again";}
     else
     {
-        $phone_num = explode(',',$phone_num);
-        foreach ($phone_num as $row)
+        $recipeints = get_recipients($_POST['recipeints']);
+        $new_push = $system_object->send_push($recipeints, $_POST['content'], $_POST['title']);
+        if(count($recipeints) == json_decode($new_push)->success) {
+            $message_success = "Push Notification Message delivered to ".json_decode($new_push)->success." user(s).";}
+        else {$message_error = "Push Notification Message delivered to ".json_decode($new_push)->success." user(s).";}
+        /*foreach ($recipeints as $row)
         {
             $new_sms = $system_object->send_sms($row, $content);
             if($new_sms) {$message_success = "You have successfully sent the sms.";} else {$message_error = "Looks like something went wrong or you didn't make any change.";}
-        }
+        }*/
     }
 }
 
-// Confirm that campaign category exist before a new sms campaign is saved
-$all_campaign_category = $system_object->get_all_campaign_category();
-
-if(!$all_campaign_category) {
-    $message_error = "No campaign category created, you must create a category before any campaign. <a href=\"campaign_new_category.php\" title=\"Create new category\">Click here</a> to create one.";
+function get_recipients($id){
+    global $db_handle;
+    switch ($id){
+        case "1":
+            $result = $db_handle->fetchAssoc($db_handle->runQuery("SELECT user_token FROM fxacademy_app_users WHERE (user_code IS NOT NULL) AND (user_token IS NOT NULL)"));
+            $recipeints = array();
+            foreach ($result as $key=>$value) {$recipeints[count($recipeints)] = $value['user_token'];}
+            break;
+        default:
+            $result = $db_handle->fetchAssoc($db_handle->runQuery("SELECT user_token FROM fxacademy_app_users WHERE (user_code IS NOT NULL) AND (user_token IS NOT NULL)"));
+            $recipeints = array();
+            foreach ($result as $key=>$value) {$recipeints[count($recipeints)] = $value['user_token'];}
+            break;
+    }
+    return $recipeints;
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -73,7 +82,7 @@ if(!$all_campaign_category) {
                                         
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>COMPOSE A SINGLE SMS</strong></h4>
+                            <h4><strong>COMPOSE A NOTIFICATION MESSAGE</strong></h4>
                         </div>
                     </div>
                     
@@ -81,22 +90,35 @@ if(!$all_campaign_category) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p><a href="campaign_sms_view.php" class="btn btn-default" title="Manage SMS Campaigns"><i class="fa fa-arrow-circle-left"></i> Manage SMS Campaigns</a></p>
-                                <p>Compose an SMS below.</p>
+                                <p>Compose a message below.</p>
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="">
-                                    <input type="hidden" name="campaign_sms_no" value="<?php if(isset($selected_campaign_sms['campaign_sms_id'])) { echo $selected_campaign_sms['campaign_sms_id']; } ?>" />
-                                    <div class="form-group">
+<!--                                    <input type="hidden" name="campaign_sms_no" value="<?php /*if(isset($selected_campaign_sms['campaign_sms_id'])) { echo $selected_campaign_sms['campaign_sms_id']; } */?>" />
+-->                                    <!--<div class="form-group">
                                         <label class="control-label col-sm-2" for="phone_num">Phone Number:</label>
                                         <div class="col-sm-10">
-                                            <textarea  name="phone_num" id="phone_num" rows="1" class="form-control" placeholder="Phone Number(s)" required><?php if(isset($_GET['lead_phone'])) { echo decrypt_ssl(str_replace(" ", "+", $_GET['lead_phone']));} ?></textarea>
+                                            <textarea  name="phone_num" id="phone_num" rows="1" class="form-control" placeholder="Phone Number(s)" required><?php /*if(isset($_GET['lead_phone'])) { echo decrypt_ssl(str_replace(" ", "+", $_GET['lead_phone']));} */?></textarea>
                                             <small>Multiple phone numbers should be comma(,) seperated.</small>
+                                        </div>
+                                    </div>-->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="message">Title:</label>
+                                        <div class="col-sm-10">
+                                            <input name="title" class="form-control" placeholder="Enter A Title" required/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="message">Message:</label>
                                         <div class="col-sm-10">
-                                            <textarea onChange="javascript:check_count();document.form1.count_display.value=document.form1.message.value.length;check_count();" onkeypress="document.form1.count_display.value=document.form1.message.value.length;check_count();"  onBlur="document.form1.count_display.value=document.form1.message.value.length;check_count();" name="content" id="message" rows="3" class="form-control" placeholder="Enter Message"  onKeyDown="limitText(this.form.message,this.form.countdown,320);" onKeyUp="limitText(this.form.message,this.form.countdown,320);" required><?php if(isset($selected_campaign_sms['content'])) { echo $selected_campaign_sms['content']; } ?></textarea>
+                                            <textarea onChange="javascript:check_count();document.form1.count_display.value=document.form1.message.value.length;check_count();" onkeypress="document.form1.count_display.value=document.form1.message.value.length;check_count();"  onBlur="document.form1.count_display.value=document.form1.message.value.length;check_count();" name="content" id="message" rows="3" class="form-control" placeholder="Enter Message"  onKeyDown="limitText(this.form.message,this.form.countdown,320);" onKeyUp="limitText(this.form.message,this.form.countdown,320);" required></textarea>
                                             <small>(Maximum characters: 320)<br>You have <input readonly type="text" name="countdown" size="3" value="320"> characters left.</small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="recipients">Recipients:</label>
+                                        <div class="col-sm-10 col-lg-5">
+                                            <div class="radio">
+                                                <label><input type="radio" name="recipients" value="1" checked required>All App Users</label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -112,7 +134,7 @@ if(!$all_campaign_category) {
                                                     <button type="button" data-dismiss="modal" aria-hidden="true"
                                                             class="close">&times;</button>
                                                     <h4 class="modal-title">Send SMS Confirmation</h4></div>
-                                                <div class="modal-body">Do you want to send this SMS now?</div>
+                                                <div class="modal-body">Do you want to send this message now?</div>
                                                 <div class="modal-footer">
                                                     <input name="send" type="submit" class="btn btn-success" value="Send">
                                                     <button type="submit" name="decline" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>

@@ -98,7 +98,7 @@
                             <br/>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <p class="text-center text-justify"><center><b>How To Win</b></center></p>
+                                    <!--<p class="text-center text-justify"><center><b>How To Win</b></center></p>
                                     <p class="text-justify">It's #InstaFxNgPredictandWin time! </p>
                                     <p class="text-justify">Who will win the UEFA Champions League? Predict Accurately  and Stand a chance to Win Airtime Vouchers.</p>
                                     <p class="text-justify">Be among the 30 people to predict the score line for this march correctly and win free airtime vouchers</p>
@@ -109,11 +109,11 @@
                                         <li class="text-justify">Fill the form below to predict the scores. (Only one entry allowed per person)</li>
                                     </ol>
                                     <br/>
-                                    <br/>
+                                    <br/>-->
                                     <div style="display: none;" id="form_preloader">
                                         <center><h4>Please Wait...</h4></center>
                                     </div>
-                                    <form id="ud_form" data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <form style="display: none" id="ud_form" data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                         <div class="form-group">
                                             <div class="col-sm-12">
                                                 <div class="input-group input-group-sm">
@@ -173,8 +173,9 @@
                                 </div>
                             </div>
                             <br/>
-                            <div id="p_list" style="display: none; height: 220px; overflow-y: scroll;" class="row">
+                            <div id="p_list" style="height: 600px; overflow-y: scroll;" class="row">
                                 <div class="col-sm-12">
+                                    <script>sports_pred.GetPredictions();</script>
                                     <table class="table table-responsive">
                                         <thead><tr><td colspan="3"><center><b>Recent Predictions</b></center></td><tr></thead>
                                         <tbody id="predictions">
@@ -185,8 +186,8 @@
 							<br/><br/><br/>
                         </div>
                         <div class="col-sm-6">
-						<p><b>Join The Conversation</b></p>
-                            <div id="msg_container" style="height: 540px; overflow-y: scroll;">
+						<p><center><b>Join The Conversation</b></center></p>
+                            <div id="msg_container" style="height: 800px; overflow-y: scroll;">
                                 <script>sports_pred.GetMsgs();</script>
                                 <div style="display: block" id="msg_preloader" class="w3-card-4">
                                     <header class="w3-container"><h3></h3></header>
@@ -197,7 +198,7 @@
                                 </div>
                                 <div id="msgs">
                                 </div>
-								<button id="msg_txt_trigger" onclick="sports_pred.show_chat('new_msg', 'new_msg_textbox', 'msg_container', 'msg_txt_trigger')" class="float"><i id="btn_ico" class="glyphicon glyphicon-comment my-float"></i></button>
+								<button style="display: none" id="msg_txt_trigger" onclick="sports_pred.show_chat('new_msg', 'new_msg_textbox', 'msg_container', 'msg_txt_trigger')" class="float"><i id="btn_ico" class="glyphicon glyphicon-comment my-float"></i></button>
                                 <div style="display: none;" id="new_msg" class="w3-card-4">
                                     <header class="w3-container"><h3></h3></header>
                                     <div class="w3-container">

@@ -222,7 +222,8 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="28" id="" <?php if (in_array(28, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Add</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="29" id="" <?php if (in_array(29, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Search</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="30" id="" <?php if (in_array(30, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Pending</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="30" id="" <?php if (in_array(30, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Pending(All)</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="257" id="" <?php if (in_array(257, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Pending(Sorted)</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="31" id="" <?php if (in_array(31, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Notified</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="32" id="" <?php if (in_array(32, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Confirmed</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="234" id="" <?php if (in_array(234, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Confirmed (View Only)</label></div></div>
@@ -331,7 +332,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                     <p><strong>Signal Management</strong></p>
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="77" id="" <?php if (in_array(77, $my_pages)) { echo 'checked="checked"'; } ?>/> Update Daily Signal</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="78" id="" <?php if (in_array(78, $my_pages)) { echo 'checked="checked"'; } ?>/> Weekly Market Analysis</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="78" id="" <?php if (in_array(78, $my_pages)) { echo 'checked="checked"'; } ?>/> Signal Analysis</label></div></div>
                                     </div>
                                     <hr/>
                                     

@@ -18,6 +18,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             $client_email = $db_handle->sanitizePost($_POST['client_email']);
             $user_code = $client_operation->get_user_by_email($client_email);
 
+
             if(empty($user_code) || !isset($user_code)) { redirect_to("register.php?id=$client_email"); }
 
             $user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);

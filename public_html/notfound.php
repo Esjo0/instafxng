@@ -6,6 +6,7 @@ $thisPage = "";
 <html lang="en">
     <head>
         <base target="_self">
+        <base href="https://instafxng.com/">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Instaforex Nigeria | The page you requested cannot be found!</title>
