@@ -52,10 +52,10 @@ if(isset($_GET['logout'])) {
         <link rel="stylesheet" href="../css/instafx.css">
         <link rel="stylesheet" href="../css/instafx_admin.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.png">
-        <link rel="stylesheet" href="../css/bootstrap_3.3.5.min.css">
+        <link rel="stylesheet" href="../css/bootstrap_4.0.0.min.css">
         <link rel="stylesheet" href="../css/font-awesome_4.3.0.min.css">
         <script src="../js/jquery_2.1.1.min.js"></script>
-        <script src="../js/bootstrap_3.3.5.min.js"></script>        
+        <script src="../js/bootstrap_4.0.0.min.js"></script>
         <script src="../js/ie10-viewport-bug-workaround.js"></script>
     </head>
     <body>
