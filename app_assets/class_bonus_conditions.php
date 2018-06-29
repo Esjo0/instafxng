@@ -7,7 +7,7 @@ class Bonus_Condition
             'desc' => 'This helps to validate that a given account is a new instaforex account.',
             'type' => 0,
             'extra' => '',
-            'api' => '',
+            'api' => 'new_account_cond',
             'set_params' => array('account_no'),
             'get_params' => array('valid_acc', 'return_type')
         ),
@@ -15,6 +15,7 @@ class Bonus_Condition
             'title' => 'ILPR Account Validation',
             'desc' => 'This helps to validate that a given account is enrolled into the Instafxng Loyalty Promotion and Rewards.',
             'type' => 0,
+            'api' => 'valid_ilpr_account_cond',
             'extra' => '',
             'set_params' => array('account_no'),
             'get_params' => array('valid_acc')
@@ -23,6 +24,7 @@ class Bonus_Condition
             'title' => 'Bonus Withdrawal (Case 1)',
             'desc' => 'This helps to validate that the amount to be withdrawn does not exceed the stated amount.',
             'type' => 0,
+            'api' => 'bonus_withdrawal_case_1_cond',
             'extra' => array('Amount'),
             'set_params' => array('account_no'),
             'get_params' => array('valid_acc')
@@ -43,13 +45,17 @@ class Bonus_Condition
         return $result;
     }
 
-    public function get_condition_result($condition_id, $args){
+    /**
+     * @param $condition_id
+     * @return bool
+     */
+    public function get_condition_result($condition_id, $bonus_account_id){
         switch ($condition_id){
             case 1:
-                $result = $this->new_account($args);
+                $result = $this->new_account($bonus_account_id);
                 break;
             case 2:
-                $result = $this->valid_ilpr_account($args);
+                $result = $this->valid_ilpr_account($bonus_account_id);
                 break;
             default:
                 break;
@@ -57,11 +63,15 @@ class Bonus_Condition
         return $result;
     }
 
-    public function new_account($account_no){
+    public function new_account_cond($bonus_account_id){
         return json_encode(true);
     }
 
-    public function valid_ilpr_account($account_no){
+    public function valid_ilpr_account_cond($bonus_account_id){
+        return json_encode(true);
+    }
+
+    public function bonus_withdrawal_case_1_cond($bonus_account_id){
         return json_encode(true);
     }
 

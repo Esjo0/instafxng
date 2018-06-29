@@ -2,9 +2,9 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
-$pending_moderation = $bonus_operations->get_pending_applications();
+$bonus_accounts = $bonus_operations->get_bonus_accounts();
 
-$numrows = count($pending_moderation);
+$numrows = count($bonus_accounts);
 $rowsperpage = 20;
 $totalpages = ceil($numrows / $rowsperpage);
 if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {$currentpage = (int) $_GET['pg'];}
@@ -15,7 +15,7 @@ $prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
 $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
-$pending_moderation = paginate_array($offset, $pending_moderation, $rowsperpage);
+$bonus_accounts = paginate_array($offset, $bonus_accounts, $rowsperpage);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +45,7 @@ $pending_moderation = paginate_array($offset, $pending_moderation, $rowsperpage)
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>MODERATE BONUS APPLICATION</strong></h4>
+                            <h4><strong>BONUS ACCOUNTS</strong></h4>
                         </div>
                     </div>
                     
@@ -65,15 +65,15 @@ $pending_moderation = paginate_array($offset, $pending_moderation, $rowsperpage)
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php if(isset($pending_moderation) && !empty($pending_moderation)){ ?>
-                                        <?php foreach($pending_moderation as $row){ extract($row);?>
+                                    <?php if(isset($bonus_accounts) && !empty($bonus_accounts)){ ?>
+                                        <?php foreach($bonus_accounts as $row){ extract($row);?>
                                             <tr>
                                                 <td><?php echo $first_name ?> <?php echo $middle_name ?> <?php echo $last_name ?></td>
                                                 <td><?php echo $phone ?> </td>
                                                 <td><?php echo $email ?> </td>
                                                 <td><?php echo $bonus_title ?> </td>
                                                 <td><?php echo datetime_to_text($created); ?></td>
-                                                <td class="nowrap"><a class="btn-xs btn btn-default" href="bonus_app_view.php?app_id=<?php echo encrypt_ssl($row['app_id']);?>"><i class="glyphicon glyphicon-arrow-right"></i></a></td>
+                                                <td class="nowrap"><a class="btn-xs btn btn-default" href="bonus_account_view.php?app_id=<?php echo encrypt_ssl($row['app_id']);?>"><i class="glyphicon glyphicon-arrow-right"></i></a></td>
                                             </tr>
                                         <?php } ?>
                                     <?php }else{ ?>
@@ -82,14 +82,14 @@ $pending_moderation = paginate_array($offset, $pending_moderation, $rowsperpage)
                                     </tbody>
                                 </table>
 
-                                <?php if(isset($pending_moderation) && !empty($pending_moderation)) { ?>
+                                <?php if(isset($bonus_accounts) && !empty($bonus_accounts)) { ?>
                                     <div class="tool-footer text-right">
                                         <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                     </div>
                                 <?php } ?>
                             </div>
                         </div>
-                        <?php if(isset($pending_moderation) && !empty($pending_moderation)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($bonus_accounts) && !empty($bonus_accounts)) { require_once 'layouts/pagination_links.php'; } ?>
                     </div>
 
                     <!-- Unique Page Content Ends Here

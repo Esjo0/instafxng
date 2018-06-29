@@ -2,7 +2,7 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
-
+$bonus_conditions = new Bonus_Condition();
 //TODO: Get a list all the reasons a bonus application can be declined
 if(isset($_POST['process-app'])){
     $_app_id = $db_handle->sanitizePost($_POST['app_id']);
@@ -20,6 +20,8 @@ $app_id = decrypt_ssl(str_replace(" ", "+", $_GET['app_id']));
 $app_details = $bonus_operations->get_app_by_id($app_id);
 if(empty($app_details)) {redirect_to("bonus_app_moderation.php");}
 $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code']);
+$_meta = $bonus_operations->get_app_meta_by_id($app_id);
+
 
 ?>
 <!DOCTYPE html>
@@ -50,7 +52,7 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>VIEW BONUS APPLICATION</strong></h4>
+                            <h4><strong>MANAGE BONUS ACCOUNT</strong></h4>
                         </div>
                     </div>
                     
@@ -60,78 +62,29 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                    <p class="pull-left"><a href="bonus_app_moderation.php" class="btn btn-default" title="Bonus Applications"><i class="fa fa-arrow-circle-left"></i> Bonus Applications</a></p>
-                                        <?php if($app_details['enrolment_status'] == '0'){?>
-                                            <p class="pull-right">
-                                                <button data-toggle="modal" data-target="#app_decline" class="btn btn-sm btn-danger" title="Decline Application."><b style="font-size: medium">&times;</b> Decline</button>
-                                                <button data-toggle="modal" data-target="#app_approve" class="btn btn-sm btn-success" title="Approve Application"><b style="font-size: medium"><i class="fa fa-check"></i></b> Approve</button>
-                                            </p>
+                                        <p class="pull-left"><a href="bonus_accounts.php" class="btn btn-default" title="Bonus Accounts"><i class="fa fa-arrow-circle-left"></i> Bonus Accounts</a></p>
+                                        <?php if($app_details['bonus_status'] == '1'){?>
+                                        <p class="pull-right"><button data-toggle="modal" data-target="#app_approve" class="btn btn-sm btn-success" title=""><b style="font-size: medium"><i class="fa fa-check"></i> Reviewed</b></button></p>
                                         <?php } ?>
                                     </div>
                                 </div>
 
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                    <div id="app_decline" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                    <h4 class="modal-title">Decline Bonus Application</h4></div>
-                                                <div class="modal-body">
-                                                    <input type="hidden" name="app_id" value="<?php echo $app_id; ?>" />
-                                                    <textarea maxlength="255" placeholder="Please state explicitly why this application is being denied." rows="4" class="form-control" name="reasons" required></textarea>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <input name="process-dec" type="submit" class="btn btn-sm btn-success" value="Proceed">
-                                                    <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div id="app_approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                    <h4 class="modal-title">Approve Bonus Application</h4></div>
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-sm-3">Allocate Bonus:</label>
-                                                        <div class="col-sm-9 col-md-4">
-                                                            <input type="hidden" name="app_id" value="<?php echo $app_id; ?>" />
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon"><b>&dollar;</b></span>
-                                                                <input  class="form-control" placeholder="Amount" type="text" name="allocated_amount" id="3" required />
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                    <h4 class="modal-title">Live Bonus Reviewed</h4></div>
+                                                <div class="modal-body">Are you sure you have reviewed all the details on this bonus account?</div>
                                                 <div class="modal-footer">
-                                                    <input name="process-app" type="submit" class="btn btn-sm btn-success" value="Proceed">
-                                                    <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>
+                                                    <input name="process-app" type="submit" class="btn btn-xs btn-success" value="Proceed">
+                                                    <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-xs btn-danger">Close!</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
-
-                                <?php if($app_details['enrolment_status'] == '1'){$_meta = $bonus_operations->get_app_meta_by_id($app_id); ?>
-                                    <div class="alert alert-danger ">
-                                        This bonus application has been declined by <?php echo $admin_object->get_admin_name_by_code($_meta['admin_code']); ?> on <?php echo datetime_to_text($_meta['_created']) ?>.<br/>
-                                        <strong>Reasons: </strong><?php echo $_meta['comments']?>
-                                    </div>
-                                <?php } ?>
-                                <?php if($app_details['enrolment_status'] == '2'){$_meta = $bonus_operations->get_app_meta_by_id($app_id); ?>
-                                    <div class="alert alert-success">
-                                        This bonus application has been approved by <?php echo $admin_object->get_admin_name_by_code($app_details['compliance_officer']); ?> on <?php echo datetime_to_text($app_details['updated']) ?>.<br/>
-                                        <strong>Allocated Amount: </strong> &dollar; <?php echo number_format($app_details['allocated_amount'], 2, ".", ","); ?><br/>
-                                        <strong>Date Of Allocation: </strong> <?php echo datetime_to_text($app_details['allocation_date'])?><br/>
-                                        <strong>Bonus Status: </strong> <?php echo $bonus_operations->bonus_status($app_details['allocation_status']); ?>
-                                    </div>
-                                <?php } ?>
-
-
 
                                 <table class="table table-responsive table-bordered">
                                     <tbody>
@@ -152,6 +105,22 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                 <table class="table table-responsive table-bordered">
                                     <tbody>
                                     <tr>
+                                        <td><b>Compliance Officer:</b> <?php echo $admin_object->get_admin_name_by_code($app_details['compliance_officer']); ?></td>
+                                        <td><b>Date:</b>  <?php echo datetime_to_text($app_details['updated']) ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Allocated Amount:</b>  &dollar; <?php echo number_format($app_details['allocated_amount'], 2, ".", ","); ?></td>
+                                        <td><b>Date Of Allocation:</b>  <?php echo datetime_to_text($app_details['allocation_date'])?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Bonus Status:</b>  <?php echo $bonus_operations->bonus_status($app_details['allocation_status']); ?></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table table-responsive table-bordered">
+                                    <tbody>
+                                    <tr>
                                         <td><b>BONUS PACKAGE:</b>  <?php echo $app_details['bonus_title']; ?></td>
                                     </tr>
                                     <tr><td><b>PACKAGE DETAILS:</b>  <?php echo $app_details['bonus_desc']; ?></td></tr>
@@ -164,6 +133,8 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                                     <?php foreach ($conditions as $key => $value){ ?>
                                                         <?php if(!empty($value)){ ?>
                                                     <tr>
+                                                        <?php $func = $bonus_conditions->{$value['api']}($app_details['bonus_account_id']); ?>
+                                                        <?php var_dump($func); ?>
                                                         <td><?php echo $key; ?></td>
                                                         <td><?php echo $value['title'].'<br/>'.$value['desc']; ?></td>
                                                         <td class="nowrap"><input class="checkbox" type="checkbox" name=""></td>

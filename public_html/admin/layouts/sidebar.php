@@ -79,8 +79,9 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-dollar"></i> Bonus Management<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-euro"></i> Bonus Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                        <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_accounts.php" title="Bonus Accounts">Bonus Accounts</a></li><?php //} ?>
                         <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_app_moderation.php" title="Moderate Bonus Applications">Moderate Bonus Applications</a></li><?php //} ?>
                         <?php// if (in_array(23, $my_pages_sidebar)) { ?><li><a href="bonus_new.php" title="Create New Bonus Package">Create Package</a></li><?php //} ?>
                         <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_list.php" title="Manage Bonus Packages">Manage Packages</a></li><?php //} ?>

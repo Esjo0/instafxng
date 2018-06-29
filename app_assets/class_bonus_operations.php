@@ -77,18 +77,22 @@ MAIL;
         global $system_object;
         if(!empty($amount) && ($amount > 0)) {
             $query = "UPDATE bonus_accounts 
-SET enrolment_status = '2', 
-allocation_status = '1', 
-updated = now(), 
-admin_code = '$admin_code', 
-allocation_date = now(), 
-allocated_amount = $amount, 
-bonus_status = '1'  
-WHERE bonus_account_id = $app_id; ";
+                        SET enrolment_status = '2', 
+                        allocation_status = '1', 
+                        updated = now(), 
+                        admin_code = '$admin_code', 
+                        allocation_date = now(), 
+                        allocated_amount = $amount, 
+                        bonus_status = '1'  
+                        WHERE bonus_account_id = $app_id; ";
         }else{
-            $query = "UPDATE bonus_accounts SET enrolment_status = '2', allocation_status = '2', updated = now(), admin_code = '$admin_code' WHERE bonus_account_id = $app_id; ";
+            $query = "UPDATE bonus_accounts 
+SET enrolment_status = '2', 
+allocation_status = '2', 
+updated = now(), 
+admin_code = '$admin_code' 
+WHERE bonus_account_id = $app_id; ";
         }
-        var_dump($query);
         $updates = $db_handle->runQuery($query);
         if($updates) {
             $app_details = $this->get_app_by_id($app_id);
@@ -146,7 +150,9 @@ BA.bonus_code, BA.enrolment_status, BA.allocation_status, BA.allocation_date, BA
 UI.user_code, UI.ifx_acct_no, UI.type AS account_type, 
 U.first_name, UPPER(U.last_name) AS last_name, U.middle_name, U.email, U.phone, 
 BP.bonus_title, BP.bonus_desc, BP.condition_id, 
-BA.created AS created 
+BA.created AS created, 
+BA.bonus_account_id,
+BA.updated 
 FROM bonus_accounts AS BA 
 INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
 INNER JOIN user AS U ON UI.user_code = U.user_code 
@@ -314,33 +320,38 @@ ORDER BY updated DESC";
     public function get_pending_applications(){
         global $db_handle;
         $query = "SELECT 
-BA.bonus_code, BA.enrolment_status, BA.allocation_status, BA.allocated_amount, BA.admin_code AS compliance_officer, BA.bonus_status, BA.bonus_account_id AS app_id,
-UI.user_code, UI.ifx_acct_no, UI.type AS account_type, 
-U.first_name, UPPER(U.last_name) AS last_name, U.middle_name, U.email, U.phone, 
-BP.bonus_title, BP.bonus_desc, BP.condition_id, 
-BA.created AS created 
-FROM bonus_accounts AS BA 
-INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
-INNER JOIN user AS U ON UI.user_code = U.user_code 
-INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
-WHERE BA.enrolment_status = '0' 
-ORDER BY created DESC ";
+                BA.bonus_code, BA.enrolment_status, BA.allocation_status, BA.allocated_amount, BA.admin_code AS compliance_officer, BA.bonus_status, BA.bonus_account_id AS app_id,
+                UI.user_code, UI.ifx_acct_no, UI.type AS account_type, 
+                U.first_name, UPPER(U.last_name) AS last_name, U.middle_name, U.email, U.phone, 
+                BP.bonus_title, BP.bonus_desc, BP.condition_id, 
+                BA.created AS created 
+                FROM bonus_accounts AS BA 
+                INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
+                INNER JOIN user AS U ON UI.user_code = U.user_code 
+                INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
+                WHERE BA.enrolment_status = '0' 
+                ORDER BY created DESC ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query));
     }
 
     public function get_bonus_accounts(){
         global $db_handle;
-        $query = "SELECT U.user_code, U. 
+        $query = "SELECT 
+                  BA.bonus_code, BA.enrolment_status, BA.allocation_status, BA.allocated_amount, BA.admin_code AS compliance_officer, BA.bonus_status, BA.bonus_account_id AS app_id,
+                  UI.user_code, UI.ifx_acct_no, UI.type AS account_type, 
+                  U.first_name, UPPER(U.last_name) AS last_name, U.middle_name, U.email, U.phone, 
+                  BP.bonus_title, BP.bonus_desc, BP.condition_id, 
+                  BA.created AS created 
                   FROM bonus_accounts AS BA 
                   INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
-                  INNER JOIN user AS U ON UI.user_code = U.user_code
-                  INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code
-                  WHERE ";
-
-
+                  INNER JOIN user AS U ON UI.user_code = U.user_code 
+                  INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
+                  WHERE BA.enrolment_status = '2' 
+                  ORDER BY created DESC ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query));
     }
 
-    public function get_single_pending_applications($app_id){
+    public function get_single_pending_application($app_id){
         global $db_handle;
         $query = "SELECT 
 BA.bonus_code, BA.enrolment_status, BA.allocation_status, BA.allocated_amount, BA.admin_code AS compliance_officer, BA.bonus_status, BA.bonus_account_id AS app_id
