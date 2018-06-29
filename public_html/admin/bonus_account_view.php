@@ -5,10 +5,14 @@ $bonus_operations = new Bonus_Operations();
 $bonus_conditions = new Bonus_Condition();
 //TODO: Get a list all the reasons a bonus application can be declined
 if(isset($_POST['reviewed'])){
-    $_app_id = $db_handle->sanitizePost($_POST['app_id']);
-    $_allocated_amount = $db_handle->sanitizePost($_POST['allocated_amount']);
-    $result = $bonus_operations->approve_app($_app_id, $_allocated_amount, $_SESSION['admin_unique_code']);
-    $result ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
+    $bonus_account_id = $db_handle->sanitizePost($_POST['bonus_account_id']);
+    $responses = array();
+    foreach($_POST['condition'] as $key => $value){
+        $condition_id = $db_handle->sanitizePost($key);
+        $status = $db_handle->sanitizePost($value);
+        $responses[] = $bonus_operations->bonus_acc_reviwed($bonus_account_id, $condition_id, $status);
+    }
+    count($_POST['condition']) == count($responses) ? $message_success = "Operation Successful" : $message_warning = "Operation Failed: Please review this bonus profile afresh.";
 }
 
 $app_id = decrypt_ssl(str_replace(" ", "+", $_GET['app_id']));
@@ -73,13 +77,14 @@ $_meta = $bonus_operations->get_app_meta_by_id($app_id);
                                                     <h4 class="modal-title">Live Bonus Reviewed</h4></div>
                                                 <div class="modal-body">Are you sure you have reviewed all the details on this bonus account?</div>
                                                 <div class="modal-footer">
-                                                    <input name="process-app" type="submit" class="btn btn-xs btn-success" value="Proceed">
+                                                    <input type="hidden" value="<?php echo $app_details['bonus_account_id'] ?>" name="bonus_account_id">
+                                                    <input name="reviewed" type="submit" class="btn btn-xs btn-success" value="Proceed">
                                                     <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-xs btn-danger">Close!</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+
 
                                 <table class="table table-responsive table-bordered">
                                     <tbody>
@@ -128,11 +133,10 @@ $_meta = $bonus_operations->get_app_meta_by_id($app_id);
                                                     <?php foreach ($conditions as $key => $value){ ?>
                                                         <?php if(!empty($value)){ ?>
                                                     <tr>
-                                                        <?php $func = $bonus_conditions->{$value['api']}($app_details['bonus_account_id']); ?>
-                                                        <?php var_dump($func); ?>
+                                                        <?php $func = $bonus_conditions->{$value['api']}($app_details[$value['args']]); ?>
                                                         <td><?php echo $key; ?></td>
                                                         <td><?php echo $value['title'].'<br/>'.$value['desc']; ?></td>
-                                                        <td class="nowrap"><input class="checkbox" type="checkbox" name=""></td>
+                                                        <td class="nowrap"><input class="checkbox" type="checkbox" <?php if($func['status']){ echo 'checked';} ?> value="<?php echo $func['status']?>"  name="condition[<?php echo $key; ?>]"></td>
                                                     </tr>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -143,6 +147,7 @@ $_meta = $bonus_operations->get_app_meta_by_id($app_id);
                                     </tr>
                                     </tbody>
                                 </table>
+                                </form>
                             </div>
                         </div>
 

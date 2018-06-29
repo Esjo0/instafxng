@@ -1,6 +1,17 @@
 <?php
 class Bonus_Operations {
 
+    public function bonus_acc_reviwed($bonus_account_id, $condition_id, $status){
+        global $db_handle;
+        $query = "DELETE FROM bonus_acc_condition_meta WHERE bonus_account_id = $bonus_account_id AND condition_id = $condition_id";
+        $db_handle->runQuery($query);
+        $query = "INSERT INTO bonus_acc_condition_meta (bonus_account_id, condition_id, status_id) VALUES ($bonus_account_id, $condition_id, '$status')";
+        if($db_handle->runQuery($query)){
+            return true;
+        }
+
+    }
+
     public function bonus_status($app_id){
         switch ($app_id){
             case '1': $x = "Bonus Live"; break;

@@ -46,15 +46,17 @@ class Bonus_Condition
     }
 
     public function new_account_cond($bonus_account_id){
-        return json_encode(true);
+        $result['status'] = true;
+        return $result;
     }
 
     public function valid_ilpr_account_cond($bonus_account_id){
-        return json_encode(true);
+        $result['status'] = true;
+        return $result;
     }
 
     public function bonus_withdrawal_case_1_cond($bonus_account_id){
-        return json_encode(true);
+        $result['status'] = true;
+        return $result;
     }
-
 }
