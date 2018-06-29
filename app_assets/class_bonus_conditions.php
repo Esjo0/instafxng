@@ -8,8 +8,8 @@ class Bonus_Condition
             'type' => 0,
             'extra' => '',
             'api' => 'new_account_cond',
-            'set_params' => array('account_no'),
-            'get_params' => array('valid_acc', 'return_type')
+            'args' => array('bonus_account_id'),
+            'returns' => array('status')
         ),
         2 => array(
             'title' => 'ILPR Account Validation',
@@ -17,8 +17,8 @@ class Bonus_Condition
             'type' => 0,
             'api' => 'valid_ilpr_account_cond',
             'extra' => '',
-            'set_params' => array('account_no'),
-            'get_params' => array('valid_acc')
+            'args' => array('bonus_account_id'),
+            'returns' => array('status')
         ),
         3 => array(
             'title' => 'Bonus Withdrawal (Case 1)',
@@ -26,8 +26,8 @@ class Bonus_Condition
             'type' => 0,
             'api' => 'bonus_withdrawal_case_1_cond',
             'extra' => array('Amount'),
-            'set_params' => array('account_no'),
-            'get_params' => array('valid_acc')
+            'args' => array('bonus_account_id'),
+            'returns' => array('valid_acc')
         )
     );
 
@@ -41,24 +41,6 @@ class Bonus_Condition
         $result = array();
         foreach ($this->CONDITIONS_TYPES as $key => $value) {
             $result[count($result) + 1] = $key;
-        }
-        return $result;
-    }
-
-    /**
-     * @param $condition_id
-     * @return bool
-     */
-    public function get_condition_result($condition_id, $bonus_account_id){
-        switch ($condition_id){
-            case 1:
-                $result = $this->new_account($bonus_account_id);
-                break;
-            case 2:
-                $result = $this->valid_ilpr_account($bonus_account_id);
-                break;
-            default:
-                break;
         }
         return $result;
     }

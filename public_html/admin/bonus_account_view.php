@@ -4,18 +4,13 @@ if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
 $bonus_conditions = new Bonus_Condition();
 //TODO: Get a list all the reasons a bonus application can be declined
-if(isset($_POST['process-app'])){
+if(isset($_POST['reviewed'])){
     $_app_id = $db_handle->sanitizePost($_POST['app_id']);
     $_allocated_amount = $db_handle->sanitizePost($_POST['allocated_amount']);
     $result = $bonus_operations->approve_app($_app_id, $_allocated_amount, $_SESSION['admin_unique_code']);
     $result ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
-if(isset($_POST['process-dec'])){
-    $_app_id = $db_handle->sanitizePost($_POST['app_id']);
-    $_reasons = $db_handle->sanitizePost($_POST['reasons']);
-    $result = $bonus_operations->decline_app($_app_id, $_reasons, $_SESSION['admin_unique_code']);
-    $result ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
-}
+
 $app_id = decrypt_ssl(str_replace(" ", "+", $_GET['app_id']));
 $app_details = $bonus_operations->get_app_by_id($app_id);
 if(empty($app_details)) {redirect_to("bonus_app_moderation.php");}
