@@ -87,7 +87,7 @@ if(strlen($news_id) > 4) {
         $latest_comments = $db_handle->fetchAssoc($result);
 
         // Select the latest news
-        $result = $db_handle->runQuery("SELECT * FROM article ORDER BY article_id DESC LIMIT  1, 6");
+        $result = $db_handle->runQuery("SELECT * FROM article WHERE status = 1 ORDER BY article_id DESC LIMIT  1, 6");
         $latest_news = $db_handle->fetchAssoc($result);
     } else {
         header("Location: view_news.php");
