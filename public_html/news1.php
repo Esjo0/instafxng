@@ -342,7 +342,9 @@ function print_reply($replies)
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12"><div class="addthis_sharing_toolbox">Share on social media: </div></div>
+                            <?php if($news_id != 604){?>
+                                <div class="col-sm-12"><div class="addthis_sharing_toolbox">Share on social media: </div></div>
+                            <?php } ?>
                             <div class="col-sm-12 text-danger">
                                 <h4><strong><?php if(isset($title)) { echo stripslashes($title); } ?></strong></h4>
                             </div>
