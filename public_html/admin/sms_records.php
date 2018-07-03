@@ -1,6 +1,51 @@
 <?php
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
+$response_msg = array();
+if(isset($_POST['resend_sms'])){
+    $message = $db_handle->sanitizePost(trim($_POST['message']));
+    $phone = $db_handle->sanitizePost(trim($_POST['phone']));
+    $x = $system_object->send_sms($phone, $message);
+    if($x){
+        $node = count($response_msg);
+        $response_msg[$node]['type'] = '1';
+        $response_msg[$node]['msg'] = "Message Sent Successfully.<br/>
+                <b>Message: </b> $message<br/>
+                <b>Phone: </b> $phone<br/>
+                <b>Sent: </b> ".datetime_to_text(date('y-m-d h:m:s'))."<br/>
+                <b>Status: </b> Delivery In Progress<br/>";
+    }else{
+        $node = count($response_msg);
+        $response_msg[$node]['type'] = '0';
+        $response_msg[$node]['msg'] = "Message Failed.<br/>
+                <b>Message: </b> $message<br/>
+                <b>Phone: </b> $phone<br/>
+                <b>Status: </b> Delivery Failed<br/>";
+    }
+}
+if(isset($_POST['forward_sms'])){
+    $message = $db_handle->sanitizePost(trim($_POST['message']));
+    $phone = explode(',', $db_handle->sanitizePost(trim($_POST['phone'])));
+    foreach ($phone as $key){
+        $x = $system_object->send_sms($key, $message);
+        if($x){
+            $node = count($response_msg);
+            $response_msg[$node]['type'] = '1';
+            $response_msg[$node]['msg'] = "Message Sent Successfully.<br/>
+                <b>Message: </b> $message<br/>
+                <b>Phone: </b> $key<br/>
+                <b>Sent: </b> ".datetime_to_text(date('y-m-d h:m:s'))."<br/>
+                <b>Status: </b> Delivery In Progress<br/>";
+        }else{
+            $node = count($response_msg);
+            $response_msg[$node]['type'] = '0';
+            $response_msg[$node]['msg'] = "Message Failed.<br/>
+                <b>Message: </b> $message<br/>
+                <b>Phone: </b> $key<br/>
+                <b>Status: </b> Delivery Failed<br/>";
+        }
+    }
+}
 
 $query = "SELECT * FROM sms_records ORDER BY created DESC ";
 $numrows = $db_handle->numRows($query);
@@ -18,6 +63,24 @@ $query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $records = $db_handle->fetchAssoc($result);
 
+function response_message($msg_array){
+    if(!empty($msg_array)){
+        foreach ($msg_array as $row){
+            if(!empty($row['type']) && !empty($row['msg'])){
+                if($row['type'] == '1'){
+                    echo "<div class='alert alert-success'>
+                    <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                    <strong>Success!</strong>".$row['msg'].
+                        "</div>";}
+                if($row['type'] == '0'){
+                    echo "<div class='alert alert-danger'>
+                    <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                    <strong>Oops!</strong>".$row['msg'].
+                        "</div>";}
+            }
+        }
+    }
+}
 function delivery_status($status){
     switch ($status){
         case '1701':
@@ -44,7 +107,15 @@ function delivery_status($status){
     }
     return $msg;
 }
-
+function get_sender($sender){
+    global $admin_object;
+    if($sender != 'INSTAFXNG'){
+        return $admin_object->get_admin_name_by_code($sender);
+    }else{
+        return $sender;
+    }
+}
+$account_balance = "&#8358; ".number_format(file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=fisayo75&request=balance"), 2, '.', ',');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,20 +151,18 @@ function delivery_status($status){
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <div class="col">
-                                <table class="table table-responsive table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Message</th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                                <div class="col-sm-3 pull-right">
+                                    <table class="table table-responsive table-striped table-bordered table-hover">
+                                        <thead><tr><th><b class="text-success">Balance:  <?php echo $account_balance;?></b></th></tr></thead>
+                                    </table>
+                                </div>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th>Phone</th>
                                             <th>Message</th>
+                                            <th>Sender</th>
                                             <th>Status</th>
                                             <th>Created</th>
                                             <th></th>
@@ -104,26 +173,57 @@ function delivery_status($status){
                                         <tr>
                                             <td><?php echo $row['phone_no']; ?></td>
                                             <td><?php echo $row['message']; ?></td>
-                                            <td><?php echo $row['status']; ?></td>
-                                            <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                            <td>
-                                                <button type="button" data-target="#log_<?php echo $row['admin_code'];?>" data-toggle="modal" class="btn btn-sm btn-default">View</button>
-                                                <!--Modal - confirmation boxes-->
-                                                <div id="log_<?php echo $row['admin_code'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                                <h4 class="modal-title"><?php echo $row['last_name'] . ' ' . $row['middle_name'] . ' ' . $row['first_name']; ?>'s Activity Log</h4></div>
-                                                            <div class="modal-body">
-                                                                <textarea rows="20" class="form-control" disabled><?php echo file_get_contents("logs".DIRECTORY_SEPARATOR.$row['admin_code'].".txt"); ?></textarea>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                            <td><?php echo get_sender($row['sender']); ?></td>
+                                            <td><?php echo delivery_status($row['status']); ?></td>
+                                            <td><?php echo datetime_to_text($row['created']); ?></td>
+                                            <td class="nowrap">
+                                                <button title="Resend Message" type="button" data-target="#resend_<?php echo $row['record_id'];?>" data-toggle="modal" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-repeat"></i></button>
+
+                                                <button title="Forward Message" type="button" data-target="#forward_<?php echo $row['record_id'];?>" data-toggle="modal" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-forward"></i></button>
+                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                    <!--Modal - confirmation boxes-->
+                                                    <div id="resend_<?php echo $row['record_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
+                                                                    <h4 class="modal-title">Resend SMS Message</h4></div>
+                                                                <div class="modal-body">
+                                                                    <p class="text-justify">Do you want to resend this message to <?php echo $row['phone_no'];?></p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <input type="hidden" name="msg" value="<?php echo $row['message']; ?>">
+                                                                    <input type="hidden" name="phone" value="<?php echo $row['phone_no'];?>">
+                                                                    <input name="resend_sms" value="Proceed" class="btn btn-xs btn-success" type="submit">
+                                                                    <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-xs btn-danger">Close!</button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </form>
+                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                    <!--Modal - confirmation boxes-->
+                                                    <div id="forward_<?php echo $row['record_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                        <div class="modal-dialog modal-md">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
+                                                                    <h4 class="modal-title">Forward SMS Message</div>
+                                                                <div class="modal-body">
+                                                                    <p class="text-justify">Please fill the form below to forward this message.</p>
+                                                                    <textarea class="form-control" rows="2" disabled><?php echo $row['message']; ?></textarea><br/>
+                                                                    <textarea placeholder="Phone Number" rows="2" name="phone" class="form-control" required></textarea>
+                                                                    <span style="font-size: x-small" class="text-muted">* Multiple phone numbers should be comma separated.</span>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <input type="hidden" name="msg" value="<?php echo $row['message']; ?>">
+                                                                    <input name="forward_sms" value="Proceed" class="btn btn-xs btn-success" type="submit">
+                                                                    <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-xs btn-danger">Close!</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

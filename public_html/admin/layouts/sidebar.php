@@ -228,6 +228,9 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <div class="divider"></div>
                         <!-- 84 -->
                         <?php if (in_array(243, $my_pages_sidebar)) { ?><li><a href="system_ad_section.php"> Front-End Advert Section</a></li><?php } ?>
+                        <div class="divider"></div>
+                        <!-- 84 -->
+                        <?php if (in_array(258, $my_pages_sidebar)) { ?><li><a href="sms_records.php"> SMS Records</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
