@@ -237,5 +237,47 @@ function Signal()
         document.getElementById('sig').innerHTML = '';
         this.getSignals('sig');
     }
+
+    this.ajax_pull = function (response_div, type) {
+        var XMLHttpRequestObject = false;
+        if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
+        else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
+        if(XMLHttpRequestObject)
+        {
+            XMLHttpRequestObject.open('POST', "getQuotesData.php");
+            XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            XMLHttpRequestObject.setRequestHeader('charset','UTF-8');
+            XMLHttpRequestObject.send();
+            XMLHttpRequestObject.onreadystatechange = function()
+            {
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
+                {
+                    //document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;
+                    //return XMLHttpRequestObject.responseText;
+                    var json = XMLHttpRequestObject.responseText;
+                    console.log(json);
+                    if(type == '1') { signal.showQuotes(json, response_div);}
+                }
+            };
+
+        }
+        else {   return false;    }
+    };
+
+    this.showQuotes = function(json, id)
+    {
+        var quotes_array = JSON.parse(json);
+        for(var x in quotes_array){
+            document.getElementById(id).innerHTML = quotes_array[0]['symbol']+" PRICE "+quotes_array[0]['price']+" BID "+quotes_array[0]['bid']+" ASK "+quotes_array[0]['ask']+"   |"+quotes_array[1]['symbol']+" PRICE "+quotes_array[1]['price']+" BID "+quotes_array[1]['bid']+" ASK "+quotes_array[1]['ask']+"   |"+quotes_array[2]['symbol']+" PRICE "+quotes_array[2]['price']+" BID "+quotes_array[2]['bid']+" ASK "+quotes_array[2]['ask'];
+        }
+
+    };
+
+    this.getQuotes = function (id)
+    {
+        var type = "1";
+        this.ajax_pull(id, type);
+
+    };
 }
 var signal = new Signal();
