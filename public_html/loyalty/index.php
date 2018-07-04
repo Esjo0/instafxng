@@ -153,7 +153,7 @@ if(isset($_POST['sign_up']))
 					</div>
 					<div class="modal-body">
 						<div style="padding: 10px">
-							<h2>Fill the form below to begin making money.</h2>
+							<h2>Fill the form below to start earning in dollars daily.</h2>
 							<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
 								<?php if(isset($message_success)): ?>
 									<div class="alert alert-success">
