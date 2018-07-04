@@ -29,7 +29,7 @@ $thisPage = "Home";
         </script>
         <script>
             signal.getQuotes('live');
-            //$(document).ready(function() {setInterval(function(){signal.getQuotes('live');}, 30000);});
+            //$(document).ready(function() {setInterval(function(){signal.getQuotes('live');}, 60000);});
         </script>
     </head>
     <body>
