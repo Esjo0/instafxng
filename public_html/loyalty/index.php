@@ -119,7 +119,6 @@ if(isset($_POST['sign_up']))
 			<ol class="carousel-indicators">
 				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 				<li data-target="#myCarousel" data-slide-to="1" class=""></li>
-
 			</ol>
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
@@ -145,7 +144,6 @@ if(isset($_POST['sign_up']))
 			</a>
 			<!-- The Modal -->
 		</div>
-
 		<div  class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -216,11 +214,6 @@ if(isset($_POST['sign_up']))
 				</div>
 			</div>
 		</div>
-
-
-
-
-
 		<div class="banner_bottom">
 			<div class="container">
 				<!--<h3 class="tittle-w3ls">About Us</h3>-->
@@ -558,14 +551,8 @@ if(isset($_POST['sign_up']))
 			</script>
 		<?php endif; ?>
         <script type="text/javascript">
-
-            $(document).ready(function(){
-
-                $("#myModal").modal('show');
-
-            });
-
-        </script>
+			document.getElementById('gt').click();
+		</script>
 		<script src='https://www.google.com/recaptcha/api.js'></script>
 	</body>
 </html>
