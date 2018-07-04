@@ -80,7 +80,7 @@ if(isset($_POST['sign_up']))
 		<link href="css/font-awesome.css" rel="stylesheet">
 		<link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,300,300i,400,400i,500,500i,600,600i,700,800" rel="stylesheet">
 		<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,600,600i,700" rel="stylesheet">
-	</head>
+    </head>
 	<body>
 		<div class="top_header" id="home">
 			<!-- Fixed navbar -->
@@ -145,7 +145,8 @@ if(isset($_POST['sign_up']))
 			</a>
 			<!-- The Modal -->
 		</div>
-		<div class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
+
+		<div  class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -556,6 +557,15 @@ if(isset($_POST['sign_up']))
 				document.getElementById('gt').click();
 			</script>
 		<?php endif; ?>
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+
+                $("#myModal").modal('show');
+
+            });
+
+        </script>
 		<script src='https://www.google.com/recaptcha/api.js'></script>
 	</body>
 </html>

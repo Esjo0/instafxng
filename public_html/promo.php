@@ -39,6 +39,23 @@ $thisPage = "Promotion";
 
                     <div class="section-tint super-shadow">
                         <div class="row">
+                            <div class="col-sm-12"><h5>Instafxng Point Based Loyalty Program and Rewards</h5></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <a href="loyalty.php" title="click for full details" target="_blank"><img src="images\Loyalty_Points_Images\ilpr_landing_image.jpg" alt="" class="img-responsive" /></a>
+                            </div>
+                            <div class="col-sm-8">
+                                <p>Make Up To $4, 200 and N1, 000, 000 Extra While You Take Your Normal Trades</p>
+                                <p>Each funding transaction you make earn you points in our loyalty program, also
+                                    every trade you execute earn you points in our loyalty program.</p>
+                                <a class="btn btn-success" href="loyalty.php" title="click for full details" target="_blank">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-tint super-shadow">
+                        <div class="row">
                             <div class="col-sm-12"><h5>INSTAFXNG'S CELEBRATE A MILESTONE PROMO</h5></div>
                         </div>
                         <div class="row">
@@ -71,23 +88,6 @@ $thisPage = "Promotion";
                                     giveaway sum of $20. This means that 3 lucky winners are going to get $20
                                     each in this contest.</p>
                                 <a class="btn btn-success" href="https://instafxng.com/valentine_offer.php" title="click for full details" target="_blank">More Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="section-tint super-shadow">
-                        <div class="row">
-                            <div class="col-sm-12"><h5>Instafxng Point Based Loyalty Program and Rewards</h5></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <a href="loyalty.php" title="click for full details" target="_blank"><img src="images/point-based-rewards.jpg" alt="" class="img-responsive" /></a>
-                            </div>
-                            <div class="col-sm-8">
-                                <p>Make Up To $4, 200 and N1, 000, 000 Extra While You Take Your Normal Trades</p>
-                                <p>Each funding transaction you make earn you points in our loyalty program, also
-                                    every trade you execute earn you points in our loyalty program.</p>
-                                <a class="btn btn-success" href="loyalty.php" title="click for full details" target="_blank">More Details</a>
                             </div>
                         </div>
                     </div>
