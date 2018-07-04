@@ -4,6 +4,9 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+//Gets Administrator code
+$admin_code = $_SESSION['admin_unique_code'];
+
 $query = "SELECT SUM(facility_inventory.cost) AS total_cost
               FROM facility_inventory";
 $result = $db_handle->runQuery($query);
@@ -104,6 +107,25 @@ if(isset($_POST['assign'])){
     $reports = $db_handle->fetchAssoc($result);
 
 }
+
+if(isset($_POST['service'])){
+    $cost = $db_handle->sanitizePost(trim($_POST['cost']));
+    $details = $db_handle->sanitizePost($_POST['details']);
+    $invent_id = $db_handle->sanitizePost(trim($_POST['invent_id']));
+    $next = $db_handle->sanitizePost($_POST['next']);
+    $type = $db_handle->sanitizePost(trim($_POST['type']));
+    $executor = $admin_code;
+    $new_user = $obj_facility->servicing($invent_id, $cost, $executor, $type ,$next, $details);
+
+    if($new_user) {
+        $message_success = "You have successfully carried out ".$type;
+    } else {
+        $message_error = "Something went wrong. Please try again.";
+    }
+
+
+}
+
 if(isset($_POST['search'])){
     $filt = $db_handle->sanitizePost(trim($_POST['filter']));
     $search = $db_handle->sanitizePost(trim($_POST['x']));
@@ -269,7 +291,82 @@ if(isset($_POST['search'])){
                                                 <button type="button" data-target="#assign<?php echo $row['inventoryid'];?>" data-toggle="modal" class="btn btn-success">Assign</button>
                                                 <button type="button" data-target="#delete<?php echo $row['inventoryid'];?>" data-toggle="modal" class="btn btn-danger"><i class="fa fa-trash" ></i></button>
                                                 <button type="button" data-target="#edit<?php echo $row['inventoryid'];?>" data-toggle="modal" class="btn btn-success"><i class="fa fa-edit" ></i></button>
+                                                <button data-target="#service<?php echo $row['inventoryid'];?>" data-toggle="modal" class="btn btn-primary"><i class="fa fa-gear" ></i></button>
                                             </div>
+                                            <!--Modal - confirmation boxes-->
+                                            <div id="service<?php echo $row['inventoryid'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                    class="close">&times;</button>
+                                                            <h4 class="modal-title">Details</h4></div>
+                                                        <div class="modal-body">Details for <?php echo $row['name'];?>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <form data-toggle="validator" class="form-vertical" role="form" method="post" action="">
+                                                                        <input name="invent_id" type="hidden" id="id" value="<?php echo $row['inventoryid'];?>" class="form-control">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-sm-3" for="inventoryid">Service Cost:</label>
+                                                                            <div class="col-sm-12 col-lg-8">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-addon">₦</span>
+                                                                                    <input name="cost" type="text" id="cost" class="form-control" required/>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-sm-3" for="comment">Service Type:</label>
+                                                                            <div class="col-sm-8 ">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-addon"><i class="fa fa-support fa-fw"></i></span>
+                                                                                    <select name="type" class="form-control" id="filter" placeholder="Filter by">
+                                                                                        <option value="Sevicing" >Servicing</option>
+                                                                                        <option value="Maintenance" >Maintenace</option>
+                                                                                        <option value="Inspection" >Inspection</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-sm-3" for="comment">Details:</label>
+                                                                            <div class="col-sm-8 ">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
+                                                                                    <textarea name="details" class="form-control" rows="3" id="comment"></textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-sm-3" for="from_date">Next:</label>
+                                                                            <div class="">
+                                                                                <div class="input-group date">
+                                                                                    <input name="next" type="text" class="form-control" id="datetimepicker" required>
+                                                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <button type="submit"  name="service" class="btn btn-success"><i class="fa fa-send fa-fw"></i>Send</button>
+                                                                        </div>
+                                                                    </form></div>
+
+                                                            </div>
+                                                        </div>
+                                                        <form>
+                                                            <script type="text/javascript">
+                                                                $(function () {
+                                                                    $('#datetimepicker, #datetimepicker2').datetimepicker({
+                                                                        format: 'YYYY-MM-DD'
+                                                                    });
+                                                                });
+                                                            </script>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--Modal - confirmation boxes-->
                                             <!--Modal - edit confirmation boxes-->
                                             <div id="edit<?php echo $row['inventoryid'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                 <div class="modal-dialog">
