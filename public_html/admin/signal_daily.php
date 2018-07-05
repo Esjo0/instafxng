@@ -3,6 +3,7 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$signal_object = new Signal_Management();
 $today = date('Y-m-d');
 $query = "SELECT * FROM signal_daily WHERE trigger_date = '$today'";
 $todays_signals = $db_handle->numRows($query);
@@ -51,8 +52,8 @@ if(isset($_POST['new_signal'])){
 	$signal_date = $db_handle->sanitizePost($_POST['signal_date']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
 	$trend = $db_handle->sanitizePost($_POST['trend']);
-	
-	if(($options == 1) || ($options == 3)){
+
+	/*if(($options == 1) || ($options == 3)){
     $query ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
               VALUE('$symbol','1','$buy_price', '$buy_price_tp', '$buy_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')";
 
@@ -60,15 +61,21 @@ if(isset($_POST['new_signal'])){
 	if(($options == 2) || ($options == 3)){
 		$query2 ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
               VALUE('$symbol','2' , '$sell_price', '$sell_price_tp', '$sell_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')";
-	}	  
-    $result =$db_handle->runQuery($query);
+	}
+    /*$result =$db_handle->runQuery($query);
 	$result2 =$db_handle->runQuery($query2);
     if($result || $result2) {
         $message_success = "Signal Successfully created for ".datetime_to_text($signal_time);
     } else {
         $message_error = "Something went wrong. Please try again.";
-    }
+    }*/
 
+	$new_shadule = $signal_object->new_signal_schedule($symbol);
+    if($new_shadule){
+        $message_success = "Signal Successfully created for ".datetime_to_text($signal_time);
+    } else {
+        $message_error = "Something went wrong. Please try again.";
+    }
 }
 
 if(isset($_POST['update_signal'])){
