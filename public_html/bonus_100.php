@@ -1,6 +1,6 @@
 <?php
 require_once 'init/initialize_general.php';
-$thisPage = "Education";
+$thisPage = "Bonus";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,8 +28,8 @@ $thisPage = "Education";
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
-                                <h2>Instaforex 100% Bonus for New Clients</h2>
-                                <p>Instaforex offers a unique 100% Forex bonus to all new clients who recently joined
+                                <h2>InstaForex 130% Bonus </h2>
+                                <p>Instaforex offers a unique 130% Forex bonus to all new and existing clients of
                                     the company.</p>
                                 <p>This bonus is to increase your capital and give you an opportunity to earn
                                 more in the Forex market.</p>
@@ -42,9 +42,9 @@ $thisPage = "Education";
                     </div>
 
                     <div class="section-tint super-shadow">
-                        <h5>Please follow the steps below to claim your 100% Forex Bonus.</h5>
+                        <h5>Please follow the steps below to claim your 130% Forex Bonus.</h5>
                         <ol>
-                            <li>To  get the 100% bonus, you must have funded your account with either $50, $100, $150 or even $1000.
+                            <li>To  get the 130% bonus, you must have funded your account with either $50, $100, $150 or even $1000.
                             <a href="deposit.php" title="Fund your Instaforex Account" target="_blank">Click here</a> to fund your account now.</li>
                             <li>Download the bonus application form and fill the column for name, email address, account number and signature
                                 only. Leave the other column unfilled. <a href="downloads/instaforex_education_bonus_form.jpg" title="Click to download bonus application form" download>Click here to download form</a></li>

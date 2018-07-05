@@ -47,9 +47,9 @@ $thisPage = "Promotion";
                         
                         <div class="row">
                             <div class="col-sm-12">
-                                <p>The 100% bonus is available to all fans of sport and trading on their first deposit of 1000 USD. i.e., for deposit 1000 USD to your trading account, you will get additional 1000 USD as a bonus.</p>
-                                <p>Your desire for more purchasing power is our sole reason for this campaign. Now, you have an unrivalled opportunity of getting 100% on your first deposit of 1000 USD to your trading account.</p>
-                                <p>To qualify for this bonus, you need to fund your account with above $1000. For the deposit from $2000 to $5000, the bonus equals 50% of the deposit amount. If a trading account is funded with over $5000, the bonus will be 30%.</p>
+                                <p>The 100% bonus is available to all fans of sport and trading on their first deposit of 2000 USD. i.e., for deposit 2000 USD to your trading account, you will get additional 2000 USD as a bonus.</p>
+                                <p>Your desire for more purchasing power is our sole reason for this campaign. Now, you have an unrivalled opportunity of getting 100% on your first deposit of 2000 USD to your trading account.</p>
+                                <p>To qualify for this bonus, you need to fund your account with above $2000. For the deposit from $2000 to $5000, the bonus equals 50% of the deposit amount. If a trading account is funded with over $5000, the bonus will be 30%.</p>
                                 <p>Hurry up to take advantage of the great offer, you are just several steps away from it:</p>
                                 <h5>Three steps to get the Instaforex 100% bonus</h5>
                                 <ul class="fa-ul">
