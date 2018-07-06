@@ -735,7 +735,8 @@ class InstafxngSystem {
                     ud.client_naira_notified, ud.client_pay_date, ud.client_reference, ud.client_pay_method,
                     ud.client_notified_date, ud.status AS deposit_status, ud.points_claimed_id, u.user_code,
                     ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-                    uc.passport, ui.ifxaccount_id, ud.updated, ud.order_complete_time, pbc.dollar_amount AS points_dollar_value
+                    uc.passport, ui.ifxaccount_id, ud.updated, ud.order_complete_time, pbc.dollar_amount AS points_dollar_value,
+                    STR_TO_DATE(ud.created, '%Y-%m-%d') AS strip_date
                   FROM user_deposit AS ud
                   INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
                   INNER JOIN user AS u ON ui.user_code = u.user_code

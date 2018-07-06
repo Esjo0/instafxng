@@ -2,7 +2,7 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $links = array(
-    0 => array('url' => 'https://secure.instaforex.com/en/partner_open_account.aspx?x=BBLR', 'desc' => '<b>Live Instaforex Account Opening<b><br/>'),
+    0 => array('url' => 'https://secure.instaforex.com/en/partner_open_account.aspx?x=BBLR', 'desc' => '<b>Live Instaforex Account Opening</b><br/>'),
     1 => array('url' => 'https://instaforex.com/forexcopy_system.php?x=BBLR', 'desc' => 'Instaforex Forex Copy System'),
     2 => array('url' => 'https://instaforex.com/forex_options.php?x=BBLR', 'desc' => 'Instaforex Trading Options'),
     3 => array('url' => 'https://instaforex.com/pamm_system.php?x=BBLR', 'desc' => 'Instaforex Pamm System'),
