@@ -2,7 +2,7 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $links = array(
-    0 => array('url' => 'https://secure.instaforex.com/en/partner_open_account.aspx?x=BBLR', 'desc' => 'Live Instaforex Account Opening'),
+    0 => array('url' => 'https://secure.instaforex.com/en/partner_open_account.aspx?x=BBLR', 'desc' => '<b>Live Instaforex Account Opening<b><br/>'),
     1 => array('url' => 'https://instaforex.com/forexcopy_system.php?x=BBLR', 'desc' => 'Instaforex Forex Copy System'),
     2 => array('url' => 'https://instaforex.com/forex_options.php?x=BBLR', 'desc' => 'Instaforex Trading Options'),
     3 => array('url' => 'https://instaforex.com/pamm_system.php?x=BBLR', 'desc' => 'Instaforex Pamm System'),
@@ -10,8 +10,12 @@ $links = array(
     5 => array('url' => 'https://www.instaforex.com/nodeposit_bonus.php?x=BBLR', 'desc' => 'Instaforex No Deposit Bonus'),
     6 => array('url' => 'https://www.instaforex.com/55bonus.php?x=BBLR', 'desc' => 'Instaforex 55% Bonus'),
     7 => array('url' => 'https://instaforex.com/downloads.php?x=BBLR', 'desc' => 'Instaforex Trading Terminal'),
-    8 => array('url' => 'https://cabinet.instaforex.com/client/login?x=BBLR', 'desc' => 'Instaforex Client Cabinet')
-    );
+    8 => array('url' => 'https://cabinet.instaforex.com/client/login?x=BBLR', 'desc' => 'Instaforex Client Cabinet'),
+    9 => array('url' => 'https://secure.instaforex.com/en/agreement/bonus100?x=BBLR', 'desc' => '<b>Instaforex LFC Bonus</b><br/>This is for clients who wish to claim 100% LFC bonus on deposit. Encourage clients to read and understand the terms before claiming the bonus'),
+    10 => array('url' => 'https://secure.instaforex.com/en/deposits?x=BBLR', 'desc' => '<b>Instaforex Account Deposit</b><br/>This should be made available for clients who wish to make use of Bank wire using their domiciliary account to make a deposit into their Instaforex account.'),
+    11 => array('url' => 'https://secure.instaforex.com/withdrawals?x=BBLR', 'desc' => '<b>Instaforex Account Withdrawals</b>')
+
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +83,7 @@ $links = array(
                                     <?php if(isset($links) && !empty($links)){ $count = 1; ?>
                                         <?php foreach ($links as $link){ ?>
                                             <tr>
-                                                <td><?php echo htmlspecialchars($link['desc']) ?></td>
+                                                <td><?php echo $link['desc'] ?></td>
                                                 <td>
                                                     <a href="<?php echo htmlspecialchars($link['url']) ?>" target="_blank"><?php echo htmlspecialchars($link['url']) ?></a>
                                                     <button title="Click To Copy" id="btn_<?php echo $count?>" onclick="copy_text('btn_<?php echo $count?>')"  data-clipboard-text="<?php echo htmlspecialchars($link['url']) ?>" data-clipboard-action="copy" class="pull-right cbtn btn btn-default btn-xs"><i class="glyphicon glyphicon-copy"></i></button>
