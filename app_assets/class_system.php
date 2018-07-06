@@ -22,10 +22,10 @@ class InstafxngSystem {
             //Address to which recipient will reply
             $mail->addReplyTo("support@instafxng.com", $from_name);
         } else {
-            $mail->FromName = "Instaforex NG";
+            $mail->FromName = "InstaFxNg";
             
             //Address to which recipient will reply
-            $mail->addReplyTo("support@instafxng.com", "Instaforex NG");
+            $mail->addReplyTo("support@instafxng.com", "InstaFxNg");
         }
 
         //Send HTML or Plain Text email
@@ -36,7 +36,7 @@ class InstafxngSystem {
         $mail->addAddress("$sendto_email", "$sendto_name");
 
         //Set BCC address
-        $mail->addBCC("mailbox@instafxng.com", "Instafxng");
+        $mail->addBCC("mailbox@instafxng.com", "InstaFxNg");
 
         $mail->Subject = $subject;
         $mail->Body = $message;

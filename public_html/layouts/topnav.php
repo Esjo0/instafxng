@@ -83,6 +83,8 @@
                             <li><a href="partner/banners.php" title="">Banners</a></li>
                         </ul>
                     </li>-->
+                    <li class="<?php if ($thisPage == "Bonus") { echo " active"; } ?>"><a href="bonus.php" title="InstaFxNg Bonuses"><i class="fa fa-dropbox fa-fw"></i>Bonuses</a></li>
+
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="https://cabinet.instaforex.com/client/login?x=BBLR" title="Login into Client Cabinet" target="_blank"><i class="fa fa-lock fa-fw"></i> Client Login</a></li>
