@@ -64,6 +64,26 @@ function Signal()
         else {   return false;    }
     };
 
+    this.ajax_call = function (url, method,call_back_func, data) {
+        var XMLHttpRequestObject = false;
+        if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
+        else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
+        if(XMLHttpRequestObject) {
+            XMLHttpRequestObject.open(method, url, true);
+            XMLHttpRequestObject.setRequestHeader('Content-Type','application/json; charset=utf-8');
+            if(data){XMLHttpRequestObject.send(data);}
+            XMLHttpRequestObject.onreadystatechange = function() {
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                    if(call_back_func){
+                        signal[call_back_func](XMLHttpRequestObject.responseText);
+                    }
+                    //return XMLHttpRequestObject.responseText;
+                }
+            };
+        }
+        else{return false;}
+    };
+
     this.get_date = function (id) {
         document.getElementById(id).innerHTML = this.formatDate(new Date());
     };
@@ -173,8 +193,7 @@ function Signal()
         }
     };
 
-    this.getSignal = function (id)
-    {
+    this.getSignal = function (id) {
         document.getElementById('preloader').style.display = 'block';
         var query = "SELECT order_type, price, take_profit, stop_loss, CONCAT(trigger_date, SPACE(1), trigger_time) AS triger, trend, note, signal_symbol.symbol AS currency_pair FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id AND signal_id = '"+id+"'";
         var type = "2";
@@ -183,8 +202,7 @@ function Signal()
 
     };
 
-    this.DisplaySignal = function (json)
-    {
+    this.DisplaySignal = function (json) {
         document.getElementById('preloader').style.display = 'none';
         var table = document.getElementById('sig_content');
         table.innerHTML = '';
@@ -208,54 +226,44 @@ function Signal()
     };
 
     //checks the number of decimal places and ensure its 4 digits after the decimal point.
-    this.zeroCheck = function(price)
-    {
+    this.zeroCheck = function(price) {
         var real = price;
-        if (Math.floor(price) !== price)
-            var num = price.toString().split(".")[1].length || 0;
-        if(num == 3){
-            real = real + "0";
-        }
-        if(num == 2){
-            real = real + "00";
-        }
-        if(num == 1){
-            real = real + "000";
-        }
+        if (Math.floor(price) !== price){ var num = price.toString().split(".")[1].length || 0; }
+        if(num == 3){ real = real + "0";}
+        if(num == 2){real = real + "00";}
+        if(num == 1){real = real + "000";}
         return real;
-    }
+    };
 
-    this.incrementViews = function(id)
-    {
+    this.incrementViews = function(id){
         var query = "UPDATE signal_daily SET views = CONCAT(views p_l_u_s 1) WHERE signal_id = "+"'"+id+"'";
         this.ajax_request('', query, '3');
     };
 
-    this.refreshList = function()
-    {
+    this.refreshList = function() {
         document.getElementById('preloader').style.display = 'block';
         document.getElementById('sig').innerHTML = '';
         this.getSignals('sig');
-    }
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////
 
     this.ajax_pull = function (response_div, type) {
         var XMLHttpRequestObject = false;
         if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
         else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
-        if(XMLHttpRequestObject)
-        {
+        if(XMLHttpRequestObject) {
             XMLHttpRequestObject.open('POST', "getQuotesData.php");
             XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
             XMLHttpRequestObject.setRequestHeader('charset','UTF-8');
             XMLHttpRequestObject.send();
-            XMLHttpRequestObject.onreadystatechange = function()
-            {
-                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
-                {
+            XMLHttpRequestObject.onreadystatechange = function() {
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
                     //document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;
                     //return XMLHttpRequestObject.responseText;
                     var json = XMLHttpRequestObject.responseText;
-                    console.log(json);
+                    //console.log(json);
                     if(type == '1') { signal.showQuotes(json, response_div);}
                 }
             };
@@ -264,24 +272,31 @@ function Signal()
         else {   return false;    }
     };
 
-    this.showQuotes = function(json, id)
-    {
-        var quotes_array = JSON.parse(json);
+    this.showQuotes = function(quotes_array) {
         for(var x in quotes_array){
-            document.getElementById(id).innerHTML = quotes_array[0]['symbol']+" PRICE "+quotes_array[0]['price']+" BID "+quotes_array[0]['bid']+" ASK "+quotes_array[0]['ask']+"   |"+quotes_array[1]['symbol']+" PRICE "+quotes_array[1]['price']+" BID "+quotes_array[1]['bid']+" ASK "+quotes_array[1]['ask']+"   |"+quotes_array[2]['symbol']+" PRICE "+quotes_array[2]['price']+" BID "+quotes_array[2]['bid']+" ASK "+quotes_array[2]['ask'];
+            currency_pair = quotes_array[0]['symbol'][0];
+           document.getElementById('live_quotes').innerHTML = +" PRICE "+quotes_array[0]['price']+" BID "+quotes_array[0]['bid']+" ASK "+quotes_array[0]['ask']+"   |"+quotes_array[1]['symbol']+" PRICE "+quotes_array[1]['price']+" BID "+quotes_array[1]['bid']+" ASK "+quotes_array[1]['ask']+"   |"+quotes_array[2]['symbol']+" PRICE "+quotes_array[2]['price']+" BID "+quotes_array[2]['bid']+" ASK "+quotes_array[2]['ask'];
         }
-
     };
 
-    this.getQuotes = function (id)
-    {
+    this.getQuotes = function (id) {
         var type = "1";
         this.ajax_pull(id, type);
 
     };
 
-    this.getMainSignal = function(response_div)
-    {
+    this.get_live_quotes = function(){
+        if(!localStorage.getItem("live_quotes")){
+            var url = "https://forex.1forge.com/1.0.3/quotes?api_key=VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r";
+            var method = 'GET';
+            var feedback = this.ajax_call(url, method, 'showQuotes');
+            localStorage.setItem('live_quotes', JSON.parse(feedback))
+        }else{
+            this.showQuotes(JSON.parse(localStorage.getItem("live_quotes")));
+        }
+    };
+
+    this.getMainSignal = function(response_div) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {

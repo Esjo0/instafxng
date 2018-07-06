@@ -13,7 +13,6 @@ $thisPage = "Home";
         <meta name="keywords" content="instaforex, forex trading in nigeria, forex seminar, forex trading seminar, how to trade forex, trade forex, instaforex nigeria">
         <meta name="description" content="Instaforex, a multiple award winning international forex broker is the leading Forex broker in Nigeria, open account and enjoy forex trading with us.">
         <?php require_once 'layouts/head_meta.php'; ?>
-        
         <meta property="og:site_name" content="Instaforex Nigeria" />
         <meta property="og:title" content="Instaforex Nigeria | Online Instant Forex Trading Services" />
         <meta property="og:description" content="Instaforex, a multiple award winning international forex broker is the leading Forex broker in Nigeria, open account and enjoy forex trading with us." />
@@ -22,6 +21,7 @@ $thisPage = "Home";
         <meta property="og:type" content="website" />
         <link rel="stylesheet" href="font-awesome-animation.min.css">
         <script>
+            signal.get_live_quotes();
             $(document).ready(function() {setInterval(function(){signal.get_date('date');}, 1000);});
         </script>
         <script>
@@ -56,10 +56,39 @@ $thisPage = "Home";
                 <div id="main-body-content-area" class="col-md-8 col-lg-9 right-nav">
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    <div class="text-center section-tint super-shadow">
-                        <div class="row"><div class="col-sm-12"><h2>Forex Signals</h2><br /></div></div>
+                    <div class="super-shadow page-top-section">
+                        <div class="row ">
+                            <div class="col-sm-12">
+                                <h3 class="text-center"><strong>FOREX TRADING SIGNALS</strong></h3>
+                                <center><b>Trade the markets by following the best free trading signals!</b></center>
+                                <center>InstaFxNg's trading analysts spot market opportunities and provide
+                                    you with profitable, easy to follow trading signals</center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-tint super-shadow">
                         <div class="row">
-                            <p class="col-sm-12 item super-shadow page-top-section" style="padding-top:5px;"><strong><marquee id="live" behavior="scroll" direction="left" scrollamount="2"></marquee></strong></p>
+                            <div class="col-sm-12"><marquee id="live_quotes" behavior="scroll" direction="left" scrollamount="2"></marquee></div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="text-center section-tint super-shadow">
+                        <div class="row"><div class="col-sm-12"><h2>Forex Trading Signals</h2><br /></div></div>
+                        <div class="row">
+                            <p class="col-sm-12 item super-shadow page-top-section" style="padding-top:5px;"><strong></strong></p>
                             <div class="panel panel-default col-sm-4">
                                 <div class="panel-body">View Previous Signals</div>
                             </div>
@@ -97,7 +126,7 @@ $thisPage = "Home";
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <section style="min-height: 300px;">
-                                                        <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
+                                                        <!--<script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
                                                         <script type="text/javascript">
                                                             new TradingView.widget({
                                                                 "width": "100%",
@@ -115,7 +144,7 @@ $thisPage = "Home";
                                                                 "popup_width": "1000",
                                                                 "popup_height": "650"
                                                             });
-                                                        </script>
+                                                        </script>-->
                                                     </section>
                                                 </div>
                                             </div>
@@ -147,7 +176,7 @@ $thisPage = "Home";
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <section style="min-height: 300px;">
-                                                        <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
+                                                        <!--<script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
                                                         <script type="text/javascript">
                                                             new TradingView.widget({
                                                                 "width": "100%",
@@ -165,7 +194,7 @@ $thisPage = "Home";
                                                                 "popup_width": "1000",
                                                                 "popup_height": "650"
                                                             });
-                                                        </script>
+                                                        </script>-->
                                                     </section>
                                                 </div>
                                             </div>
@@ -197,7 +226,7 @@ $thisPage = "Home";
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <section style="min-height: 300px;">
-                                                        <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
+                                                        <!--<script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
                                                         <script type="text/javascript">
                                                             new TradingView.widget({
                                                                 "width": "100%",
@@ -215,7 +244,7 @@ $thisPage = "Home";
                                                                 "popup_width": "1000",
                                                                 "popup_height": "650"
                                                             });
-                                                        </script>
+                                                        </script>-->
                                                     </section>
                                                 </div>
                                             </div>
