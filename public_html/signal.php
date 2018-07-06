@@ -31,6 +31,15 @@ $thisPage = "Home";
             signal.getQuotes('live');
             //$(document).ready(function() {setInterval(function(){signal.getQuotes('live');}, 60000);});
         </script>
+        <script>
+            function get () {
+                $.post("signals_main_display.php",
+                    function(data) {
+                        $('#sign').html(data);
+                    });
+            }
+            $(document).ready(function() {setInterval(function(){get();}, 60000);});
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -61,7 +70,7 @@ $thisPage = "Home";
                                 <div class="panel-body" id="time">Time</div>
                             </div>
                             <div class="col-sm-12">
-                                <div class="panel-group" id="accordion">
+                                <div class="panel-group" id="sign">
                                     <div class="panel panel-success">
                                         <div class="panel-heading">
                                             <div class="row">

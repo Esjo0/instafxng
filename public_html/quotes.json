@@ -113,5 +113,281 @@
             "price": 0.738675,
             "timestamp": 1530694688
         }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.16999,
+            "ask": 1.17,
+            "price": 1.17,
+            "timestamp": 1530801485
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.238,
+            "ask": 146.244,
+            "price": 146.241,
+            "timestamp": 1530801485
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.73945,
+            "ask": 0.73946,
+            "price": 0.739455,
+            "timestamp": 1530801485
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.16987,
+            "ask": 1.16988,
+            "price": 1.16987,
+            "timestamp": 1530802401
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.229,
+            "ask": 146.237,
+            "price": 146.233,
+            "timestamp": 1530802401
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.7392,
+            "ask": 0.73921,
+            "price": 0.739205,
+            "timestamp": 1530802401
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.16993,
+            "ask": 1.16993,
+            "price": 1.16993,
+            "timestamp": 1530802443
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.228,
+            "ask": 146.231,
+            "price": 146.2295,
+            "timestamp": 1530802443
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.73891,
+            "ask": 0.73894,
+            "price": 0.738925,
+            "timestamp": 1530802443
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.17011,
+            "ask": 1.17012,
+            "price": 1.17012,
+            "timestamp": 1530802596
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.169,
+            "ask": 146.173,
+            "price": 146.171,
+            "timestamp": 1530802596
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.73857,
+            "ask": 0.73858,
+            "price": 0.738575,
+            "timestamp": 1530802596
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.17057,
+            "ask": 1.17057,
+            "price": 1.17057,
+            "timestamp": 1530802706
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.235,
+            "ask": 146.235,
+            "price": 146.235,
+            "timestamp": 1530802706
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.7389,
+            "ask": 0.7389,
+            "price": 0.7389,
+            "timestamp": 1530802706
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.17033,
+            "ask": 1.17035,
+            "price": 1.17034,
+            "timestamp": 1530803229
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.179,
+            "ask": 146.184,
+            "price": 146.1815,
+            "timestamp": 1530803229
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.7385,
+            "ask": 0.73851,
+            "price": 0.738505,
+            "timestamp": 1530803229
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.17019,
+            "ask": 1.1702,
+            "price": 1.1702,
+            "timestamp": 1530803247
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.198,
+            "ask": 146.203,
+            "price": 146.2005,
+            "timestamp": 1530803247
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.73826,
+            "ask": 0.73828,
+            "price": 0.73827,
+            "timestamp": 1530803247
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.17001,
+            "ask": 1.17003,
+            "price": 1.17002,
+            "timestamp": 1530803568
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.187,
+            "ask": 146.189,
+            "price": 146.188,
+            "timestamp": 1530803568
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.73858,
+            "ask": 0.7386,
+            "price": 0.73859,
+            "timestamp": 1530803568
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.16996,
+            "ask": 1.16997,
+            "price": 1.16996,
+            "timestamp": 1530803590
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.174,
+            "ask": 146.181,
+            "price": 146.1775,
+            "timestamp": 1530803590
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.7387,
+            "ask": 0.73871,
+            "price": 0.738705,
+            "timestamp": 1530803590
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.16995,
+            "ask": 1.16996,
+            "price": 1.16996,
+            "timestamp": 1530803645
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.177,
+            "ask": 146.18,
+            "price": 146.1785,
+            "timestamp": 1530803645
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.73849,
+            "ask": 0.73851,
+            "price": 0.7385,
+            "timestamp": 1530803645
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.16963,
+            "ask": 1.16964,
+            "price": 1.16963,
+            "timestamp": 1530806615
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.319,
+            "ask": 146.324,
+            "price": 146.3215,
+            "timestamp": 1530806615
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.73888,
+            "ask": 0.73889,
+            "price": 0.738885,
+            "timestamp": 1530806615
+        }
+    ],
+    [
+        {
+            "symbol": "EURUSD",
+            "bid": 1.16965,
+            "ask": 1.16967,
+            "price": 1.16966,
+            "timestamp": 1530806701
+        },
+        {
+            "symbol": "GBPJPY",
+            "bid": 146.316,
+            "ask": 146.322,
+            "price": 146.319,
+            "timestamp": 1530806701
+        },
+        {
+            "symbol": "AUDUSD",
+            "bid": 0.73884,
+            "ask": 0.73885,
+            "price": 0.738845,
+            "timestamp": 1530806701
+        }
     ]
 ]
