@@ -279,5 +279,17 @@ function Signal()
         this.ajax_pull(id, type);
 
     };
+
+    this.getMainSignal = function(response_div)
+    {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById(response_div).innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("POST", "signal_main_display", true);
+        xmlhttp.send();
+    }
 }
 var signal = new Signal();
