@@ -66,7 +66,12 @@ $client_group_DEFAULT = array(
     "49" => "Last Months New Clients without Accounts and have Training",
     "50" => "Last Months New Clients not yet funded above $50",
     "51" => "Clients that funded before March 22, 2018 and haven't funded till date.",
-    "52" => "April 2018 ILPR campaign leads"
+    "52" => "April 2018 ILPR campaign leads",
+	"53" => "All clients who funded their accounts last month",
+	"54" => "All clients who withdrew from the accounts last month"
+	
+	
+	
 );
 $client_group_DESC = array(
     "1" => "*Consist of all clients that have at anytime come into our system.",
@@ -120,5 +125,7 @@ $client_group_DESC = array(
     "49" => "*All clients who came into the system last month, have opened Instaforex accounts and have undergone online training",
     "50" => "*All New clients who havn't funded up to $50",
     "51" => "Clients that funded before March 22, 2018 and haven't funded till date.",
-    "52" => "*Campaign leads who came into our system in April 2018"
+    "52" => "*Campaign leads who came into our system in April 2018",
+	"53" => "All clients who made deposit in the Just concluded month",
+	"54" => "All clients who made withdrawals in the Just concluded month"
     );
