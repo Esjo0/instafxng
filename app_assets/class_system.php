@@ -50,10 +50,17 @@ class InstafxngSystem {
     
     // function to send sms - using smslive247.com
     public function send_sms($phone, $my_message) {
+        global $db_handle;
         $phone_number = trim(preg_replace('/[\s\t\n\r\s]+/', '', $phone));
         $message = str_replace(" ","+",$my_message);
-        file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=fisayo75&message=$message&sender=InstaFxNg&mobiles=$phone_number");
+        $status = file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=fisayo75&message=$message&sender=INSTAFXNG&mobiles=$phone_number");
 //        file_get_contents("http://www.smslive247.com/http/index.aspx?cmd=sendmsg&sessionid=5b422f10-7b78-4631-9b98-a1c2e1872099&message=$message&sender=INSTAFXNG&sendto=$phone_number&msgtype=0");
+        ///Record the sms
+        if(isset($_SESSION['admin_unique_code']) && !empty($_SESSION['admin_unique_code'])){$sender = $_SESSION['admin_unique_code'];}else{$sender = "INSTAFXNG";}
+        $status = str_replace('	', '', $status);
+        $message = str_replace('+', ' ', $message);
+        $query = "INSERT INTO sms_records(phone_no, message, status, sender) VALUES('$phone', '$message', '$status', '$sender')";
+        $db_handle->runQuery($query);
         return true;
     }
 
