@@ -385,6 +385,152 @@ FOOTER;
 
 if(isset($_POST['main_withdrawal_doc'])) {
 
+    $full_address = $client_address['address'] . ' ' . $client_address['address2'] . ' ' . $client_address['city'] . ' ' . $client_address['state'];
+    $successful_funding_naira = number_format($sum_successful_funding['total_naira'], 2, ".", ",");
+    $successful_withdrawal_naira = number_format($sum_successful_withdrawal['total_naira'], 2, ".", ",");
+
+    $header = <<<HEADER
+<div>
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+
+
+        <h3>
+        Client Name: $full_name <br />
+        Phone Number: $phone<br />
+        Address: $full_address<br />
+        </h3>
+
+        <div>
+            <table style="border: 1px solid black; border-collapse: collapse; width: 100%">
+                <thead>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Transaction ID</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Client Name</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">IFX Account</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Amount Withdrawn</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Total Paid</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Date</th>
+                </tr>
+
+                </thead>
+                <tbody>
+HEADER;
+
+
+    $body = <<<BODY
+BODY;
+
+    if(isset($successful_withdrawal) && !empty($successful_withdrawal)) {
+        $counter = 1;
+        $prev_month = "";
+
+        foreach ($successful_withdrawal as $row) {
+            $g_trans_id = $row['trans_id'];
+            $g_full_name = $row['full_name'];
+            $g_ifx_acct_no = $row['ifx_acct_no'];
+            $g_dollar_withdraw = number_format($row['dollar_withdraw'], 2, ".", ",");
+            $g_total_payable = number_format($row['naira_total_withdrawable'], 2, ".", ",");
+            $g_created = datetime_to_text($row['created']);
+
+            $strip_date = $row['strip_date'];
+            $myArray = explode('-', $strip_date);
+
+            $year = $myArray[0];
+            $month = $myArray[1];
+            $day = $myArray[2];
+
+            $dateObj   = DateTime::createFromFormat('!m', $month);
+            $monthName = $dateObj->format('F');
+
+            $g_date = "<p style='font-size: 1.5em'><strong>" . $monthName . ', ' . $year . "</strong></p>";
+
+            $g_month = $month;
+
+            if($prev_month != $g_month) {
+                $display_head = true;
+            } else {
+                $display_head = false;
+            }
+
+            if($counter == 1 || $display_head == true) {
+                $body .= "<tr><td colspan = \"6\" style=\"border: 0; padding: 15px;\">$g_date</td></tr>";
+            }
+
+            $body .= "<tr>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_trans_id</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_full_name</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_ifx_acct_no</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">($) $g_dollar_withdraw</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">N $g_total_payable</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_created</td>
+        </tr>";
+
+            $counter++;
+            $prev_month = $g_month;
+        }
+    }
+
+    $footer = <<<FOOTER
+        </tbody>
+        </table>
+
+        <pagebreak>
+
+        <div>
+            <table style="border: 1px solid black; border-collapse: collapse; width: 100%">
+                <thead>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;"></th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Client Name</strong></td><td style="border: 1px solid black; padding: 5px;">$full_name</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Email Address</strong></td><td style="border: 1px solid black; padding: 5px;">$email</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Phone Number</strong></td><td style="border: 1px solid black; padding: 5px;">$phone</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Address</strong></td><td style="border: 1px solid black; padding: 5px;">$full_address</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Successful Funding</strong></td><td style="border: 1px solid black; padding: 5px;">N$successful_funding_naira</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Successful Withdrawal</strong></td><td style="border: 1px solid black; padding: 5px;">N$successful_withdrawal_naira </td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px; text-align: center">
+                <p>Instant Web-Net Technologies Ltd</p>
+            </div>
+        </div>
+    </div>
+</div>
+FOOTER;
+
+    $message_final = $header . $body . $footer;
+
+    $mpdf = new \Mpdf\Mpdf([
+        'margin_left' => 15,
+        'margin_right' => 15,
+        'margin_top' => 20,
+        'margin_bottom' => 20,
+        'margin_header' => 10,
+        'margin_footer' => 10
+    ]);
+    $mpdf->SetProtection(array('print'));
+    $mpdf->SetTitle("Client Withdrawals - Instafxng.com");
+    $mpdf->SetAuthor("Instant Web-Net Technologies Ltd");
+    $mpdf->SetWatermarkText("Confidential - Instafxng");
+    $mpdf->showWatermarkText = true;
+    $mpdf->watermark_font = 'DejaVuSansCondensed';
+    $mpdf->watermarkTextAlpha = 0.1;
+    $mpdf->SetDisplayMode('fullpage');
+
+    $date_now = datetime_to_text(date('Y-m-d H:i:s'));
+
+    $mpdf->SetFooter("Date Generated: " . $date_now . " - {PAGENO}");
+
+    $mpdf->WriteHTML($message_final);
+    $mpdf->Output($full_name . ' - Withdrawals.pdf', \Mpdf\Output\Destination::DOWNLOAD);
 
 }
 

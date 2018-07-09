@@ -798,7 +798,7 @@ class InstafxngSystem {
         $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.created, uw.naira_total_withdrawable,
                 uw.client_phone_password, uw.status AS withdrawal_status,
                 CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-                uc.passport, ui.ifxaccount_id, ui.ifx_acct_no, uw.updated
+                uc.passport, ui.ifxaccount_id, ui.ifx_acct_no, uw.updated, STR_TO_DATE(uw.created, '%Y-%m-%d') AS strip_date
                 FROM user_withdrawal AS uw
                 INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
                 INNER JOIN user AS u ON ui.user_code = u.user_code
