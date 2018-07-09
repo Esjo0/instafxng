@@ -55,7 +55,7 @@ class Loyalty_Training
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Client Relations Manager,</p>
-            <p>InstaForex Nigeria</p>
+            <p>InstaFxNg</p>
             <p>www.instafxng.com</p>
             <br /><br />
         </div>
@@ -212,7 +212,7 @@ MAIL;
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Client Relations Manager,</p>
-            <p>InstaForex Nigeria</p>
+            <p>InstaFxNg</p>
             <p>www.instafxng.com</p>
             <br /><br />
         </div>
@@ -277,7 +277,7 @@ MAIL;
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Client Relations Manager,</p>
-            <p>InstaForex Nigeria</p>
+            <p>InstaFxNg</p>
             <p>www.instafxng.com</p>
             <br /><br />
         </div>
@@ -361,7 +361,7 @@ MAIL;
             <p>Best Regards,</p>
             <p>Mercy,</p>
             <p>Client Relations Manager,</p>
-            <p>InstaForex Nigeria</p>
+            <p>InstaFxNg</p>
             <p>www.instafxng.com</p>
             <br /><br />
         </div>
