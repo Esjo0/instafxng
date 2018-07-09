@@ -1,6 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Bonus";
+header('Location: https://instafxng.com');
 ?>
 <!DOCTYPE html>
 <html lang="en">
