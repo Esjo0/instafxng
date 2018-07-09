@@ -54,10 +54,14 @@ if($db_handle->numOfRows($result) > 0) {
         foreach ($all_selected_members as $row) {
             $client_name = ucwords(strtolower(trim($row['first_name'])));
             $client_email = strtolower(trim($row['email']));
+            $client_funding = trim($row['real_dollar_equivalent']);
+            $client_withdrawal = trim($row['dollar_withdraw']);
 
             // Replace [NAME] with clients full name
             $my_message_new = str_replace('[NAME]', $client_name, $my_message);
             $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
+            $my_message_new = str_replace('[FUNDED]', $client_funding, $my_message);
+            $my_subject_new = str_replace('[WITHDRAWN]', $client_withdrawal, $my_subject);
 
             if(array_key_exists('user_code', $row)) {
                 $user_code = $row['user_code'];
