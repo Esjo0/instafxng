@@ -83,7 +83,7 @@
                             <li><a href="partner/banners.php" title="">Banners</a></li>
                         </ul>
                     </li>-->
-                    <li class="<?php if ($thisPage == "Bonus") { echo " active"; } ?>"><a href="bonus.php" title="InstaFxNg Bonuses"><i class="fa fa-dropbox fa-fw"></i>Bonuses</a></li>
+<!--                    <li class="--><?php //if ($thisPage == "Bonus") { echo " active"; } ?><!--"><a href="bonus.php" title="InstaFxNg Bonuses"><i class="fa fa-dropbox fa-fw"></i>Bonuses</a></li>-->
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
