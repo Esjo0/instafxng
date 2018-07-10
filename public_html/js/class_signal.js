@@ -68,16 +68,19 @@ function Signal()
         var XMLHttpRequestObject = false;
         if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
         else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
-        if(XMLHttpRequestObject) {
-            XMLHttpRequestObject.open(method, url, true);
-            XMLHttpRequestObject.setRequestHeader('Content-Type','application/json; charset=utf-8');
+        if(XMLHttpRequestObject){
+            XMLHttpRequestObject.open(method, url);
+            XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            XMLHttpRequestObject.setRequestHeader('charset','UTF-8');
+            //XMLHttpRequestObject.setRequestHeader('Content-Type','application/json; charset=utf-8');
             if(data){XMLHttpRequestObject.send(data);}
             XMLHttpRequestObject.onreadystatechange = function() {
+                console.log(XMLHttpRequestObject.readyState);
                 if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
                     if(call_back_func){
+                        console.log(XMLHttpRequestObject.responseText);
                         signal[call_back_func](XMLHttpRequestObject.responseText);
                     }
-                    //return XMLHttpRequestObject.responseText;
                 }
             };
         }
@@ -273,6 +276,7 @@ function Signal()
     };
 
     this.showQuotes = function(quotes_array) {
+        console.log(quotes_array);
         for(var x in quotes_array){
             currency_pair = quotes_array[0]['symbol'][0];
            document.getElementById('live_quotes').innerHTML = +" PRICE "+quotes_array[0]['price']+" BID "+quotes_array[0]['bid']+" ASK "+quotes_array[0]['ask']+"   |"+quotes_array[1]['symbol']+" PRICE "+quotes_array[1]['price']+" BID "+quotes_array[1]['bid']+" ASK "+quotes_array[1]['ask']+"   |"+quotes_array[2]['symbol']+" PRICE "+quotes_array[2]['price']+" BID "+quotes_array[2]['bid']+" ASK "+quotes_array[2]['ask'];
@@ -286,17 +290,15 @@ function Signal()
     };
 
     this.get_live_quotes = function(){
-        if(!localStorage.getItem("live_quotes")){
+        if(!localStorage.getItem("live_quote")){
             var url = "https://forex.1forge.com/1.0.3/quotes?api_key=VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r";
             var method = 'GET';
             var feedback = this.ajax_call(url, method, 'showQuotes');
-            localStorage.setItem('live_quotes', JSON.parse(feedback))
-        }else{
-            this.showQuotes(JSON.parse(localStorage.getItem("live_quotes")));
-        }
+            //localStorage.setItem('live_quotes', JSON.parse(feedback))
+        }else{ this.showQuotes(JSON.parse(localStorage.getItem("live_quotes")));}
     };
 
-    this.getMainSignal = function(response_div) {
+    /*this.getMainSignal = function(response_div) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -305,6 +307,6 @@ function Signal()
         };
         xmlhttp.open("POST", "signal_main_display", true);
         xmlhttp.send();
-    }
+    }*/
 }
 var signal = new Signal();

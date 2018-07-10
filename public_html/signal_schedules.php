@@ -20,26 +20,7 @@ $thisPage = "Home";
         <meta property="og:url" content="https://instafxng.com/" />
         <meta property="og:type" content="website" />
         <link rel="stylesheet" href="font-awesome-animation.min.css">
-        <script>
-            signal.get_live_quotes();
-            $(document).ready(function() {setInterval(function(){signal.get_date('date');}, 1000);});
-        </script>
-        <script>
-            $(document).ready(function() {setInterval(function(){signal.get_time('time');}, 1000);});
-        </script>
-        <script>
-            signal.getQuotes('live');
-            //$(document).ready(function() {setInterval(function(){signal.getQuotes('live');}, 60000);});
-        </script>
-        <script>
-            function get () {
-                $.post("signals_main_display.php",
-                    function(data) {
-                        $('#sign').html(data);
-                    });
-            }
-            $(document).ready(function() {setInterval(function(){get();}, 60000);});
-        </script>
+        <script>signal.get_live_quotes();</script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -60,9 +41,11 @@ $thisPage = "Home";
                         <div class="row ">
                             <div class="col-sm-12">
                                 <h3 class="text-center"><strong>FOREX TRADING SIGNALS</strong></h3>
-                                <center><b>Trade the markets by following the best free trading signals!</b></center>
-                                <center>InstaFxNg's trading analysts spot market opportunities and provide
-                                    you with profitable, easy to follow trading signals</center>
+                                <p class="text-center">
+                                    <b>Trade the markets by following the best free trading signals!</b><br/>
+                                    InstaFxNg's trading analysts spot market opportunities and provide
+                                    you with profitable, easy to follow trading signals.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -73,20 +56,7 @@ $thisPage = "Home";
                         </div>
                     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-                    <div class="text-center section-tint super-shadow">
-                        <div class="row"><div class="col-sm-12"><h2>Forex Trading Signals</h2><br /></div></div>
+                    <!--<div class="text-center section-tint super-shadow">
                         <div class="row">
                             <p class="col-sm-12 item super-shadow page-top-section" style="padding-top:5px;"><strong></strong></p>
                             <div class="panel panel-default col-sm-4">
@@ -144,7 +114,7 @@ $thisPage = "Home";
                                                                 "popup_width": "1000",
                                                                 "popup_height": "650"
                                                             });
-                                                        </script>-->
+                                                        </script>
                                                     </section>
                                                 </div>
                                             </div>
@@ -194,7 +164,7 @@ $thisPage = "Home";
                                                                 "popup_width": "1000",
                                                                 "popup_height": "650"
                                                             });
-                                                        </script>-->
+                                                        </script>
                                                     </section>
                                                 </div>
                                             </div>
@@ -244,7 +214,7 @@ $thisPage = "Home";
                                                                 "popup_width": "1000",
                                                                 "popup_height": "650"
                                                             });
-                                                        </script>-->
+                                                        </script>
                                                     </section>
                                                 </div>
                                             </div>
@@ -253,15 +223,11 @@ $thisPage = "Home";
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-
+                    </div>-->
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
-
                 </div>
                 <!-- Main Body - Side Bar  -->
-                
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>
