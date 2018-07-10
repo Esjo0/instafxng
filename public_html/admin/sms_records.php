@@ -156,7 +156,6 @@ $account_balance = "&#8358; ".number_format(file_get_contents("http://sms.smswor
                                         <thead><tr><th><b class="text-success">Balance:  <?php echo $account_balance;?></b></th></tr></thead>
                                     </table>
                                 </div>
-
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -229,16 +228,18 @@ $account_balance = "&#8358; ".number_format(file_get_contents("http://sms.smswor
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
-                                
+                                <?php if(isset($records) && !empty($records)) { ?>
+                                    <div class="tool-footer text-right">
+                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                    </div>
+                                <?php } ?>
                             </div>
                         </div>
+                        <?php if(isset($records) && !empty($records)) { require_once 'layouts/pagination_links.php'; } ?>
                     </div>
-
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
-                    
                 </div>
-                
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>
