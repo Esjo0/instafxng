@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email_address = $db_handle->sanitizePost(trim($_POST['email_add']));
             $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
             $venue = $db_handle->sanitizePost(trim($_POST['venue']));
+            $entry_channel = $db_handle->sanitizePost(trim($_POST['entry_channel']));
             $date = $db_handle->sanitizePost($_POST['date']);
             $date = datetime_to_text2($date);
 
@@ -52,13 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             if($db_handle->numOfRows($result) > 0)
             {
-                $query = "UPDATE forum_participant SET venue = '$cvenue', forum_activate = '1' WHERE email = '$email_address' LIMIT 1";
+                $query = "UPDATE forum_participant SET venue = '$cvenue', forum_activate = '1', entry_route = '$entry_channel' WHERE email = '$email_address' LIMIT 1";
                 $db_handle->runQuery($query);
             }
             else
             {
-                $query = "INSERT INTO forum_participant (first_name, middle_name, last_name, email, phone, venue, forum_activate)
-                VALUES ('$first_name', '$middle_name', '$last_name', '$email_address', '$phone_number', '$cvenue', '1')";
+                $query = "INSERT INTO forum_participant (first_name, middle_name, last_name, email, phone, venue, entry_route, forum_activate)
+                VALUES ('$first_name', '$middle_name', '$last_name', '$email_address', '$phone_number', '$cvenue', '$entry_channel', '1')";
                 $db_handle->runQuery($query);
             }
             // Autoresponse email to client
@@ -334,11 +335,33 @@ $forum = $db_handle->fetchAssoc($result);
                                             </div>
                                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="entry_channel" class="control-label">How did you hear about the forum?</label>
+
+                                            <div class="form_group">
+                                                <select id="entry_channel" class="form-control" name="entry_channel" required='required'>
+                                                    <option value="">Choose an option</option>
+                                                    <option value="1">Facebook</option>
+                                                    <option value="2">Instagram</option>
+                                                    <option value="3">Twitter</option>
+                                                    <option value="4">WhatsApp</option>
+                                                    <option value="5">Email Invite</option>
+                                                    <option value="6">SMS Invite</option>
+                                                    <option value="7">Instafxng Website</option>
+                                                    <option value="8">Friend</option>
+                                                    <option value="9">Other means</option>
+                                                </select>
+                                            </div>
+
+                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+
+                                        </div>
+                                        <div><br /></div>
+
                                         <div class="form-group"><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>
-                                            <div class="form-group">
-                                            <button type="submit" name="reserve_seat"
-                                                    class="btn btn-default btn-lg">Reserve Your Seat&nbsp;<i
-                                                        class="fa fa-chevron-circle-right"></i></button>
+                                        <div class="form-group">
+                                            <button type="submit" name="reserve_seat" class="btn btn-default btn-lg">Reserve Your Seat&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
                                         </div>
 
                                         <small>All fields are required</small>
