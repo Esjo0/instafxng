@@ -190,6 +190,78 @@ MAIL;
         return $next_lesson ? $next_lesson : false;
     }
 
+    // Get the previous lesson position using course id and lesson id
+    /**
+     * @param $course_id
+     * @param $course_lesson_id
+     * @return array|bool
+     */
+    public function get_previous_lesson($course_id, $course_lesson_id) {
+        global $db_handle;
+
+        $previous_lesson_url = "";
+        $previous_lesson_name = "";
+
+        $query = "SELECT el.edu_lesson_id
+              FROM edu_lesson AS el
+              INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
+              WHERE el.course_id = $course_id AND el.status = '2' ORDER BY el.lesson_order ASC";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        $selected_lessons = array();
+        foreach ($fetched_data AS $key => $value) {
+            $selected_lessons[] = $value['edu_lesson_id'];
+        }
+
+        $lesson_count = count($selected_lessons);
+        $lesson_position = array_search($course_lesson_id, $selected_lessons);
+        if(($lesson_position - 1) < $lesson_count) {
+            if($selected_lessons[$lesson_position - 1]){
+                $previous_lesson_key = $lesson_position - 1;
+                $previous_lesson_url = "fxacademy/lesson_view.php?cid=" . encrypt($course_id) . "&lid=" . encrypt($selected_lessons[$previous_lesson_key]);
+                $previous_lesson_name = "Previous Lesson";
+            }
+
+        }
+        else {
+            $previous_lesson_url = "";
+            $previous_lesson_name = "";
+            /*// Go to Course Level
+            $query = "SELECT edu_course_id FROM edu_course WHERE status = '2' ORDER BY course_order ASC";
+            $result = $db_handle->runQuery($query);
+            $fetched_data = $db_handle->fetchAssoc($result);
+
+            $selected_courses = array();
+            foreach ($fetched_data AS $key => $value) {
+                $selected_courses[] = $value['edu_course_id'];
+            }
+
+            $course_count = count($selected_courses);
+            $course_position = array_search($course_id, $selected_courses);
+
+            if(($course_position - 1) < $course_count) {
+                if($selected_courses[$course_position - 1]) {
+                    $previous_course_key = $course_position - 1;
+
+                    $previous_lesson_url = "fxacademy/course_view.php?id=" . encrypt($selected_courses[$previous_course_key]);
+                    $previous_lesson_name = "Previous Course";
+                }
+            } else {
+                $previous_lesson_url = "fxacademy/completion_cert.php";
+                $previous_lesson_name = "Course Completion";
+            }*/
+        }
+
+        $previous_lesson = array(
+            'previous_lesson_url' => $previous_lesson_url,
+            'previous_lesson_name' => $previous_lesson_name
+        );
+
+        return $previous_lesson ? $previous_lesson : false;
+    }
+
     // Get all the courses attempted by this client
     public function get_courses_attempted($user_code) {
         global $db_handle;

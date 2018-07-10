@@ -545,11 +545,6 @@ if(isset($_POST['sign_up']))
 		<script src="js/jquery.quicksand.js" type="text/javascript"></script>
 		<script src="js/script.js" type="text/javascript"></script>
 		<script src="js/jquery.prettyPhoto.js" type="text/javascript"></script>
-		<?php if(isset($message_success) || isset($message_error) || isset($_POST['sign_up']) || isset($_POST['g-recaptcha-response'])): ?>
-			<script>
-				document.getElementById('gt').click();
-			</script>
-		<?php endif; ?>
         <script type="text/javascript">
 			document.getElementById('gt').click();
 		</script>
