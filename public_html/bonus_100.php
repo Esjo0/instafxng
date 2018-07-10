@@ -29,8 +29,8 @@ $thisPage = "Bonus";
                         <div class="row ">
                             <div class="col-sm-6">
                                 <h2>InstaForex 130% Bonus </h2>
-                                <p>Instaforex offers a unique 130% Forex bonus to all new and existing clients of
-                                    the company.</p>
+                                <p>Instaforex offers a unique 130% Forex bonus to all new and existing clients
+                                    (who haven’t received the bonus) of the company.</p>
                                 <p>This bonus is to increase your capital and give you an opportunity to earn
                                 more in the Forex market.</p>
                             </div>
@@ -44,16 +44,38 @@ $thisPage = "Bonus";
                     <div class="section-tint super-shadow">
                         <h5>Please follow the steps below to claim your 130% Forex Bonus.</h5>
                         <ol>
-                            <li>To  get the 130% bonus, you must have funded your account with either $50, $100, $150 or even $1000.
-                            <a href="deposit.php" title="Fund your Instaforex Account" target="_blank">Click here</a> to fund your account now.</li>
-                            <li>Download the bonus application form and fill the column for name, email address, account number and signature
-                                only. Leave the other column unfilled. <a href="downloads/instaforex_education_bonus_form.jpg" title="Click to download bonus application form" download>Click here to download form</a></li>
-                            <li>Scan and send the form alongside a valid government issued ID card such as International passport, National ID card,
-                                Tax card, Permanent voters card, driver’s license to support@instafxng.com</li>
-                            <p>After receiving your scanned application and ID card, The bonus will be processed within 24 hours.
-                                DO NOT PLACE A TRADE ON THE ACCOUNT till the bonus has been processed.</p>
+                            <li>You must have opened an InstaForex account.
+                                <br>If you don’t have an account yet, please visit <a href="https://instafxng.com/live_account.php">here</a> to open an
+                                    InstaForex account with your full name as it is on your valid means of
+                                    identification
+                            </li>
+                            <li>You must have funded your account with either $50, $100 or $150.Click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account now.</li>
+                            <li>Download the bonus application form and fill the column for name, email address,
+                                account number and signature only. Leave the other column unfilled. <br>
+
+                                (i). <a href="downloads/instaforex_education_bonus_form_$50.jpg" title="Click to download bonus application form" download>Click here to download form</a>
+                                for a 100% bonus on $50 deposit.<br>
+                                (ii). <a href="downloads/instaforex_education_bonus_form_$100.jpg" title="Click to download bonus application form" download>Click here to download form</a>
+                                for a 100% bonus on $100 deposit.</li>
+                            <p>You will be directed on how to claim the 30% bonus after the 100% bonus has been processed.
+                                Please note that the 100% bonus is a one-time bonus while the 30% bonus can be claimed on subsequent deposits.</p>
+                            <li>Scan and send the form alongside a valid government issued ID card such as
+                                International passport, National ID card, Tax card, Permanent voters card,
+                                driver’s license to support@instafxng.com</li>
+                            <li>After receiving your scanned application form and ID card, The bonus will be processed within 24 business hours.</li>
+
                         </ol>
-                        <p>For further enquiries, please call 08182045184, 08028281192, 08083956750 or send a mail to support@instafxng.com</p>
+                        <p><strong>DO NOT PLACE A TRADE ON THE ACCOUNT till the bonus has been processed.
+                                <br></br>Our dedicated customercare team will be available to attend to your requests and further inquiries through the following channels:
+                            </strong>
+                            <br>
+                        <center>
+                        <span class="glyphicon glyphicon-earphone"></span> PHONE CALL: Simply dial any of the following numbers; 08083956750, 08182045184, 08028281192, 08139250268
+<br>
+                            <span class="glyphicon glyphicon-comment"></span> WHATSAPP: Click here <a href="http://bit.ly/2M6Nco5">http://bit.ly/2M6Nco5</a> to chat with us on WhatsApp.
+                        <br><span class="glyphicon glyphicon-envelope"></span> EMAIL:  Send mail to <a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,%0A%0AI%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.%0A%0AThanks!">
+                                support@instafxng.com</a>
+                        </center></p>
                     </div>
 
                     <!-- Unique Page Content Ends Here
