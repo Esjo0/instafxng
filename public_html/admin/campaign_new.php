@@ -4,6 +4,9 @@ if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $form_fields = Loyalty_Training::DYNAMIC_LANDING_PAGE_FORM_FIELDS;
 $dlp_template = Loyalty_Training::DYNAMIC_LANDING_PAGE_TEMPLATE;
 $campaign_code = $obj_loyalty_training->new_campaign_code();
+if(isset($_POST['process'])){
+    var_dump($_POST);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,22 +52,23 @@ $campaign_code = $obj_loyalty_training->new_campaign_code();
                     console.log(e);
                 });
             }
-            function ValidateExtension() {
-                var allowedFiles = [".png", ".jpg"];
-                var fileUpload = document.getElementById("blah");
-                var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
-                if (!regex.test(fileUpload.value.toLowerCase())) {
-                    window.alert("Please upload files having extensions: <b>" + allowedFiles.join(', ') + "</b> only.");
-                    return false;
-                }
+            function ValidateExtension(input) {
+                var id = input.getAttribute('id');
+                console.log(id);
+                var fileInput = document.getElementById(id);
+                ////////////
                 return true;
             }
-            function readURL(input) {
-                if (input.files && input.files[0]) {
+            function readURL(input){
+                var filePath = input.value;
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                if(!allowedExtensions.exec(filePath)){
+                    alert('Please select a PNG or JPG file.');
+                    return false;
+                }
+                if (input.files && input.files[0]){
                     var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('#blah').attr('src', e.target.result);
-                    };
+                    reader.onload = function(e){$('#blah').attr('src', e.target.result);};
                     reader.readAsDataURL(input.files[0]);
                 }
             }
@@ -81,6 +85,10 @@ $campaign_code = $obj_loyalty_training->new_campaign_code();
                     .replace(/-+$/, "");
                 console.log(string+'/');
                 document.getElementById(output_id).value += string+'/';
+            }
+            function exchange_views(in_id, out_id){
+                document.getElementById(in_id).style.display = 'block';
+                document.getElementById(out_id).style.display = 'none';
             }
         </script>
     </head>
@@ -118,44 +126,48 @@ $campaign_code = $obj_loyalty_training->new_campaign_code();
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="campaign_desc">Campaign Description:</label>
                                         <div class="col-sm-9 col-lg-9">
-                                            <textarea placeholder="" required id="campaign_desc" name="campaign_desc" class="form-control" rows="2" ></textarea>
+                                            <textarea placeholder="Enter a precise description of this campaign" required id="campaign_desc" name="campaign_desc" class="form-control" rows="3" ></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="email">Landing Page:</label>
                                         <div class="col-sm-9 col-lg-9">
                                             <div class="form-group row">
-                                                <div class="col-sm-4"><div class="radio"><label for="landing_type_1"><input required type="radio" name="landing_type" value="1" id="landing_type_1" /> Custom Built Landing Page</label></div></div>
-                                                <div class="col-sm-4"><div class="radio"><label data-toggle="modal"  for="landing_type_2"><input required type="radio" name="landing_type" value="2" id="landing_type_2" /> Dynamic Landing Page</label></div></div>
+                                                <div class="col-sm-4"><div class="radio"><label for="landing_type_1"><input onclick="exchange_views('clp','dlp')" required type="radio" name="landing_type" value="1" id="landing_type_1" /> Custom Built Landing Page</label></div></div>
+                                                <div class="col-sm-4"><div class="radio"><label for="landing_type_2"><input onclick="exchange_views('dlp','clp')" required type="radio" name="landing_type" value="2" id="landing_type_2" /> Dynamic Landing Page</label></div></div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
-                                                    <br/><button class="btn btn-default btn-sm" data-target="#dynamic_landing_page" data-toggle="modal" id="dlp_trigger" type="button">Add Landing Page Contents</button>
-                                                    <br/><br/><span class="text-muted"><b>NB: </b>This is the link to the lead form <a onclick="copy_text('btn_<?php echo $count?>')"  data-clipboard-text="l_e_a_d_f_o_r_m_l_i_n_k" data-clipboard-action="copy" title="Click here to copy this link" href="javascript:void(0);">l_e_a_d_f_o_r_m_l_i_n_k</a> </span><br/><br/>
+                                            <div id="dlp" style="display: none">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <br/><button class="btn btn-default btn-sm" data-target="#dynamic_landing_page" data-toggle="modal" id="dlp_trigger" type="button">Add Landing Page Contents</button>
+                                                        <br/><br/><span class="text-muted"><b>NB: </b>This is the link to the lead form <a onclick="copy_text('btn_<?php echo $count?>')"  data-clipboard-text="l_e_a_d_f_o_r_m_l_i_n_k" data-clipboard-action="copy" title="Click here to copy this link" href="javascript:void(0);">l_e_a_d_f_o_r_m_l_i_n_k</a> </span><br/><br/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
-                                                    <b>Form Fields: </b><br/>
-                                                    <?php foreach($form_fields as $key => $value){ ?>
-                                                        <div class="col-sm-4"><div class="checkbox"><label title="<?php echo $value['desc'] ?>" for="field_<?php echo $key ?>"><input title="<?php echo $value['desc'] ?>" type="checkbox" name="fields[]" value="<?php echo $key ?>" id="field_<?php echo $key ?>" /> <?php echo $value['name'] ?></label></div></div>
-                                                    <?php } ?>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <b>Form Fields: </b><br/>
+                                                        <?php foreach($form_fields as $key => $value){ ?>
+                                                            <div class="col-sm-4"><div class="checkbox"><label title="<?php echo $value['desc'] ?>" for="field_<?php echo $key ?>"><input title="<?php echo $value['desc'] ?>" type="checkbox" name="fields[]" value="<?php echo $key ?>" id="field_<?php echo $key ?>" /> <?php echo $value['name'] ?></label></div></div>
+                                                        <?php } ?>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>
-                                                        <input name="dynamic_url" type="text" id="dynamic_url" value="https://instafxng.com/campaign/id/<?php echo $campaign_code?>/" class="form-control" required/>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>
+                                                            <input name="dynamic_url" type="text" id="dynamic_url" value="https://instafxng.com/campaign/id/<?php echo $campaign_code?>/" class="form-control" required/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
+                                            <div id="clp" style="display: none">
+                                                <div class="form-group row">
                                                 <div class="col-sm-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>
-                                                        <input name="custom_url" type="text" id="custom_url" value="" class="form-control" required/>
+                                                        <input placeholder="Enter the url to the landing page" name="custom_url" type="text" id="custom_url" value="" class="form-control" required/>
                                                     </div>
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -163,15 +175,15 @@ $campaign_code = $obj_loyalty_training->new_campaign_code();
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="display_picture">Lead Image:</label>
                                         <div class="col-sm-9 col-lg-9">
-                                            <label class="btn btn-sm btn-default" for="img"><img width="200px" height="100px" class="img-thumbnail" id="blah" src="<?php if(isset($selected_article['display_image']) && !empty($selected_article['display_image'])) {echo "https://instafxng.com/images/blog/".$selected_article['display_image'];} else{ echo '../images/placeholder.jpg';} ?>" alt="your image" />
+                                            <label class="btn btn-sm btn-default" for="img"><img width="200px" height="100px" class="img-thumbnail" id="blah" src="<?php if(isset($selected_article['display_image']) && !empty($selected_article['display_image'])) {echo "https://instafxng.com/images/blog/".$selected_article['display_image'];} else{ echo '../images/placeholder.jpg';} ?>" alt="Lead Image" />
                                                 <br/>
                                                 <input name="lead_image" style="display: none" id="img" class="btn btn-default" type='file' onchange="readURL(this);"  accept="['jpg', 'gif', 'png']" />
                                             </label>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="article_status">Status:</label>
-                                        <div class="col-sm-10 col-lg-5">
+                                        <label class="control-label col-sm-3" for="article_status">Status:</label>
+                                        <div class="col-sm-9 col-lg-9">
                                             <div class="radio">
                                                 <label><input id="status_1" type="radio" name="status" value="1" required>Active</label>
                                             </div>
