@@ -2,17 +2,24 @@ function Signal()
 {
     this.time_window = 60;//60 mins
 
-    this.formatDate = function (date){
-        var monthNames = [
-            "January", "February", "March",
-            "April", "May", "June", "July",
-            "August", "September", "October",
-            "November", "December"
-        ];
-        var day = date.getDate();
-        var monthIndex = date.getMonth();
-        var year = date.getFullYear();
-        return day + ' ' + monthNames[monthIndex] + ' ' + year;
+    this.formatDate = function (date, format){
+        if(format == 'simple'){
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            return year+'-'+month + '-'+day;
+        }else{
+            var _monthNames = [
+                "January", "February", "March",
+                "April", "May", "June", "July",
+                "August", "September", "October",
+                "November", "December"
+            ];
+            var _day = date.getDate();
+            var _monthIndex = date.getMonth();
+            var _year = date.getFullYear();
+            return _day + ' ' + _monthNames[_monthIndex] + ' ' + _year;
+        }
     };
 
     this.formatTime = function (time){
@@ -38,7 +45,66 @@ function Signal()
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    this.ajax_request = function (response_div, query, type) {
+    this.stamp_to_time_Converter = function (UNIX_timestamp) {
+        var a = new Date(UNIX_timestamp * 1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        //return date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        return hour + ':' + min + ':' + sec ;
+    };
+
+    this.get_currency_pair_from_str = function(string){
+        str = string.split('');
+        str = str[0]+str[1]+str[2]+'/'+str[3]+str[4]+str[5];
+        return str.toUpperCase();
+    };
+
+    this.get_news = function(currency_pair){
+        date = this.formatDate(new Date(), 'simple');
+        var url = 'https://newsapi.org/v2/everything?q='+currency_pair+'&from='+date+'&sortBy=popularity&apiKey=f954016b06bd412288ac281bc509a719';
+
+    };
+
+    this.show_extra_analysis = function(accordionElem){
+        //when panel is clicked, handlePanelClick is called.
+        function handlePanelClick(event){
+            showPanel(event.currentTarget);
+        }
+
+        //Hide currentPanel and show new panel.
+        function showPanel(panel){
+            //Hide current one. First time it will be null.
+            var expandedPanel = accordionElem.querySelector(".active");
+            if (expandedPanel){
+                expandedPanel.classList.remove("active");
+            }
+            //Show new one
+            panel.classList.add("active");
+        }
+
+        var allPanelElems = accordionElem.querySelectorAll(".panel");
+        for (var i = 0, len = allPanelElems.length; i < len; i++){
+            allPanelElems[i].addEventListener("click", handlePanelClick);
+        }
+
+        //By Default Show first panel
+        showPanel(allPanelElems[0]);
+        /*var x = document.getElementById(div);
+        if (x.style.display === 'none'){
+            x.style.display = 'block';
+        } else{
+            x.style.display = 'none';
+        }*/
+    };
+
+
+
+    /*this.ajax_request = function (response_div, query, type) {
         var XMLHttpRequestObject = false;
         if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
         else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
@@ -62,29 +128,18 @@ function Signal()
 
         }
         else {   return false;    }
-    };
+    };*/
 
-    this.ajax_call = function (url, method,call_back_func, data) {
-        var XMLHttpRequestObject = false;
-        if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
-        else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
-        if(XMLHttpRequestObject){
-            XMLHttpRequestObject.open(method, url);
-            XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-            XMLHttpRequestObject.setRequestHeader('charset','UTF-8');
-            //XMLHttpRequestObject.setRequestHeader('Content-Type','application/json; charset=utf-8');
-            if(data){XMLHttpRequestObject.send(data);}
-            XMLHttpRequestObject.onreadystatechange = function() {
-                console.log(XMLHttpRequestObject.readyState);
-                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
-                    if(call_back_func){
-                        console.log(XMLHttpRequestObject.responseText);
-                        signal[call_back_func](XMLHttpRequestObject.responseText);
-                    }
-                }
-            };
-        }
-        else{return false;}
+    this.ajax_call = function (url, method,call_back_func) {
+        if(window.XMLHttpRequest){ xmlhttp=new XMLHttpRequest();}
+        else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
+        xmlhttp.onreadystatechange = function(){
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                if(call_back_func){signal[call_back_func](JSON.parse(xmlhttp.responseText));}
+            }
+        };
+        xmlhttp.open(method, url, true);
+        xmlhttp.send();
     };
 
     this.get_date = function (id) {
@@ -93,8 +148,7 @@ function Signal()
 
     this.get_OrderType = function (id) {
         var x;
-        switch (id)
-        {
+        switch (id) {
             case '1' : x = 'BUY'; break;
             case '2' : x = 'SELL'; break;
             default : x = 'UNKNOWN';
@@ -104,8 +158,7 @@ function Signal()
 
     this.getSmallTrend = function (id) {
         var x;
-        switch (id)
-        {
+        switch (id) {
             case '1' : x = '<b class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>'; break;
             case '2' : x = '<b class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b>'; break;
             default : x = 'UNKNOWN'; break;
@@ -115,8 +168,7 @@ function Signal()
 
     this.getBigTrend = function (id) {
         var x;
-        switch (id)
-        {
+        switch (id) {
             case '1' : x = "<b style='color: green!important; font-size: 150px'><i class='glyphicon glyphicon-arrow-up'></i></b>"; break;
             case '2' : x = "<b style='color: red!important; font-size: 150px'><i class='glyphicon glyphicon-arrow-down'></i></b>"; break;
             default : x = 'UNKNOWN'; break;
@@ -138,8 +190,7 @@ function Signal()
         var seconds = z - c;
         var diff = (hours * 60) + minutes;
         var sign = diff > 0 ? 1 : diff == 0 ? 0 : -1;
-        if(sign === -1)
-        {
+        if(sign === -1) {
             if((- diff) <= this.time_window){ return 'table-warning';}
             else {return 'table-danger';}
         }
@@ -252,7 +303,7 @@ function Signal()
     ////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////
 
-    this.ajax_pull = function (response_div, type) {
+    /*this.ajax_pull = function (response_div, type) {
         var XMLHttpRequestObject = false;
         if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
         else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
@@ -273,13 +324,19 @@ function Signal()
 
         }
         else {   return false;    }
-    };
+    };*/
 
+    ///TODO: Revisit this loop
     this.showQuotes = function(quotes_array) {
-        console.log(quotes_array);
         for(var x in quotes_array){
-            currency_pair = quotes_array[0]['symbol'][0];
-           document.getElementById('live_quotes').innerHTML = +" PRICE "+quotes_array[0]['price']+" BID "+quotes_array[0]['bid']+" ASK "+quotes_array[0]['ask']+"   |"+quotes_array[1]['symbol']+" PRICE "+quotes_array[1]['price']+" BID "+quotes_array[1]['bid']+" ASK "+quotes_array[1]['ask']+"   |"+quotes_array[2]['symbol']+" PRICE "+quotes_array[2]['price']+" BID "+quotes_array[2]['bid']+" ASK "+quotes_array[2]['ask'];
+            if(x < 50){
+                currency_pair = '<b>'+this.get_currency_pair_from_str(quotes_array[x]['symbol'])+'</b>';
+                bid = '<span class="text-success"><b>BID: </b>'+quotes_array[x]['bid']+'</span>';
+                ask = '<span class="text-danger"><b>ASK: </b>'+quotes_array[x]['ask']+'</span>';
+                price = '<span class="text-info"><b>PRICE: </b>'+quotes_array[x]['bid']+'</span>';
+                timestamp = this.stamp_to_time_Converter(quotes_array[x]['timestamp']);
+                document.getElementById('live_quotes').innerHTML += currency_pair+" "+bid+" "+ask+" "+price+"   @ "+timestamp+" ... ";
+            }
         }
     };
 
