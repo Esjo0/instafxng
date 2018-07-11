@@ -2521,7 +2521,6 @@ MAIL;
 
     public function send_startup_bonus_training_mail($client_full_name, $client_email) {
         global $system_object;
-
         $subject = "[FREE TRAINING] You Need this to Make More Profit, [NAME]";
         $body = <<<MAIL
 <div style="background-color: #F3F1F2">
@@ -2530,7 +2529,6 @@ MAIL;
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Hello $client_full_name,</p>
-
             <p>Do you know that the Forex Market is the most liquid market in the world with
             over 5 trillion dollars traded on a daily basis?</p>
 
@@ -2625,6 +2623,40 @@ MAIL;
         $last_trade_detail = $fetched_data[0];
 
         return $last_trade_detail ? $last_trade_detail : false;
+    }
+
+    public function get_total_withdrawal($user_code, $from_date, $to_date) {
+        global $db_handle;
+
+        $query = "SELECT SUM(uw.dollar_withdraw) AS total_withdrawal FROM user_withdrawal AS uw 
+                 INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id 
+                 INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '7' AND STR_TO_DATE(uw.created, '%Y-%m-%d') 
+                 BETWEEN '$from_date' AND '$to_date'
+                 AND u.user_code = '$user_code'";
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $total = $fetched_data[0]['total_withdrawal'];
+        $total = number_format($total);
+        $total = "&#x24;$total";
+        return $total;
+    }
+
+    public function get_total_funding($user_code, $from_date, $to_date) {
+        global $db_handle;
+
+        $query = "SELECT SUM(ud.real_dollar_equivalent) AS total_funding 
+                  FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id 
+                  INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d')
+                  BETWEEN '$from_date' AND '$to_date' AND u.user_code = '$user_code'";
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $total = $fetched_data[0]['total_funding'];
+        $total = number_format($total);
+        $total = "&#x24;$total";
+
+        return $total;
     }
 
     public function notify_admin($transaction_type, $transaction_id, $access_code, $author)
