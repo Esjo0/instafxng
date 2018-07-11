@@ -1,4 +1,25 @@
 <?php
+
+/*
+* Table: forum_participants
+* Column: entry_route
+*/
+function entry_route_forum_participants($status) {
+    switch ($status) {
+        case '1': $message = "Facebook"; break;
+        case '2': $message = "Instagram"; break;
+        case '3': $message = "Twitter"; break;
+        case '4': $message = "WhatsApp"; break;
+        case '5': $message = "Email Invite"; break;
+        case '6': $message = "SMS Invite"; break;
+        case '7': $message = "Instafxng Website"; break;
+        case '8': $message = "Friend"; break;
+        case '9': $message = "Other means"; break;
+        default: $message = "Channel Unknown"; break;
+    }
+    return $message;
+}
+
 /*
 * Table: operations_log
 * Column: status
