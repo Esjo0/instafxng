@@ -52,7 +52,12 @@ $thisPage = "Home";
 
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <div class="col-sm-12"><marquee id="live_quotes" behavior="scroll" direction="left" scrollamount="2"></marquee></div>
+                            <div class="col-sm-12">
+
+                                <marquee id="live_quotes" behavior="scroll" direction="left" scrollamount="2"></marquee>
+
+
+                            </div>
                         </div>
                     </div>
 
