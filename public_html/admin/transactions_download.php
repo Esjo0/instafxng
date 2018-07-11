@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
 
         <h4 style="text-align: center">$full_name</h4>
+        <h3><strong>Funding Transaction</strong></h3>
 
         <div>
             <table style="border: 1px solid black; border-collapse: collapse; width: 100%">
@@ -81,6 +82,65 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 MAIL;
 
+    } else if($trans_type == 'W') {
+        $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.naira_equivalent_dollar_withdraw,
+            uw.created, uw.naira_total_withdrawable,
+            uw.client_phone_password, uw.transfer_reference, uw.status AS withdrawal_status, uw.updated,
+            CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
+            ui.ifx_acct_no, ui.user_code
+            FROM user_withdrawal AS uw
+            INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE uw.trans_id = '$trans_id'";
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) > 0) {
+            // result found, display transaction details
+            $fetched_data = $db_handle->fetchAssoc($result);
+            $trans_detail = $fetched_data[0];
+            extract($trans_detail);
+        }
+
+        $created = datetime_to_text($created);
+        $dollar_withdraw = number_format($dollar_withdraw, 2, ".", ",");
+        $naira_total_withdrawable = number_format($naira_total_withdrawable, 2, ".", ",");
+        $withdrawal_status = status_user_withdrawal($withdrawal_status);
+
+        $message_final = <<<MAIL2
+<div>
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+
+        <h4 style="text-align: center">$full_name</h4>
+        <h3><strong>Withdrawal Transaction</strong></h3>
+
+        <div>
+            <table style="border: 1px solid black; border-collapse: collapse; width: 100%">
+                <thead>
+                    <tr><th> </th><th> </th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="border: 1px solid black; padding: 5px;">Transaction ID</td><td style="border: 1px solid black; padding: 5px;">$trans_id</td></tr>
+                    <tr><td style="border: 1px solid black; padding: 5px;">Created</td><td style="border: 1px solid black; padding: 5px;">$created</td></tr>
+                    <tr><td style="border: 1px solid black; padding: 5px;">Account Number</td><td style="border: 1px solid black; padding: 5px;">$ifx_acct_no</td></tr>
+                    <tr><td style="border: 1px solid black; padding: 5px;">Client Name</td><td style="border: 1px solid black; padding: 5px;">$full_name</td></tr>
+                    <tr><td style="border: 1px solid black; padding: 5px;">Client Phone</td><td style="border: 1px solid black; padding: 5px;">$phone</td></tr>
+                    <tr><td style="border: 1px solid black; padding: 5px;">Client Email</td><td style="border: 1px solid black; padding: 5px;">$email</td></tr>
+                    <tr><td style="border: 1px solid black; padding: 5px;">Amount Ordered ($)</td><td style="border: 1px solid black; padding: 5px;">$dollar_withdraw</td></tr>
+                    <tr><td style="border: 1px solid black; padding: 5px;" title="After adding all the charges">Equivalent (N)</td><td style="border: 1px solid black; padding: 5px;">$naira_total_withdrawable</td></tr>
+                    <tr><td>Status</td><td style="border: 1px solid black; padding: 5px;">$withdrawal_status</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px; text-align: center">
+                <p>Instant Web-Net Technologies Ltd</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL2;
     }
 
     $mpdf = new \Mpdf\Mpdf([

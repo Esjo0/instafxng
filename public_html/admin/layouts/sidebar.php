@@ -72,8 +72,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(21, $my_pages_sidebar)) { ?><li><a href="client_ilpr.php" title="ILPR Clients">View ILPR Clients</a></li><?php } ?>
                         <?php if (in_array(22, $my_pages_sidebar)) { ?><li><a href="client_non_ilpr.php" title="Non-ILPR Clients">View Non-ILPR Clients</a></li><?php } ?>
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_top_traders.php" title="View Top Traders">View Top Traders</a></li><?php } ?>
-                        <?php if (in_array(244, $my_pages_sidebar)) { ?><li><a href="client_active.php" title="Active Clients">Active Clients</a></li><?php } ?>
-                        <?php if (in_array(245, $my_pages_sidebar)) { ?><li><a href="client_inactive.php" title="Inactive Clients">Inactive Clients</a></li><?php } ?>
+                        <?php if (in_array(244, $my_pages_sidebar)) { ?><li><a href="client_active.php" title="Active Trading Clients">Active Trading Clients</a></li><?php } ?>
+                        <?php if (in_array(245, $my_pages_sidebar)) { ?><li><a href="client_inactive.php" title="Inactive Trading Clients">Inactive Trading Clients</a></li><?php } ?>
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_commission_17.php" title="Commission Clients 17">Commission Clients 17</a></li><?php } ?>
                     </ul>
                 </li>
@@ -228,6 +228,9 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <div class="divider"></div>
                         <!-- 84 -->
                         <?php if (in_array(243, $my_pages_sidebar)) { ?><li><a href="system_ad_section.php"> Front-End Advert Section</a></li><?php } ?>
+                        <div class="divider"></div>
+                        <!-- 84 -->
+                        <?php if (in_array(258, $my_pages_sidebar)) { ?><li><a href="sms_records.php"> SMS Records</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
