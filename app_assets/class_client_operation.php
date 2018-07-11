@@ -2637,14 +2637,13 @@ MAIL;
         $result =  $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $total = $fetched_data[0]['total_withdrawal'];
-        $total = number_format($total);
+        $total = number_format($total, 2, ".", ",");
         $total = "&#x24;$total";
         return $total;
     }
 
     public function get_total_funding($user_code, $from_date, $to_date) {
         global $db_handle;
-
         $query = "SELECT SUM(ud.real_dollar_equivalent) AS total_funding 
                   FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id 
                   INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d')
@@ -2653,7 +2652,7 @@ MAIL;
         $result =  $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $total = $fetched_data[0]['total_funding'];
-        $total = number_format($total);
+        $total = number_format($total, 2, ".", ",");
         $total = "&#x24;$total";
 
         return $total;

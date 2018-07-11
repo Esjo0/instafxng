@@ -101,6 +101,8 @@ if($db_handle->numOfRows($result) > 0) {
 
                 $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);
                 $my_message_new = str_replace('[WITHDRAWN]', $withdrawn, $my_message_new);
+                $my_subject_new = str_replace('[FUNDED]', $funded, $my_subject_new);
+                $my_subject_new = str_replace('[WITHDRAWN]', $withdrawn, $my_subject_new);
 
                 $my_message_new = str_replace('[LPMP]', '', $my_message_new);
                 $my_message_new = str_replace('[LPMR]', '', $my_message_new);

@@ -3,6 +3,7 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$client_operation = new clientOperation();
 $from_date = date('Y-m-d', strtotime('first day of last month'));
 $to_date = date('Y-m-d', strtotime('last day of last month'));
 $days_left_this_month = date('t') - date('j');
@@ -109,6 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
 
             $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);
             $my_message_new = str_replace('[WITHDRAWN]', $withdrawn, $my_message_new);
+            $my_subject_new = str_replace('[FUNDED]', $funded, $my_subject_new);
+            $my_subject_new = str_replace('[WITHDRAWN]', $withdrawn, $my_subject_new);
 
             $my_message_new = str_replace('[LPMP]', '', $my_message_new);
             $my_message_new = str_replace('[LPMR]', '', $my_message_new);
@@ -122,7 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $my_message_new = str_replace('[LPYD]', '', $my_message_new);
             $my_message_new = str_replace('[UC]', '', $my_message_new);
         }
-        
         $system_object->send_email($my_subject_new, $my_message_new, $sendto, $client_name, $mail_sender);
     }
     
