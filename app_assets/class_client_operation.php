@@ -2521,7 +2521,6 @@ MAIL;
 
     public function send_startup_bonus_training_mail($client_full_name, $client_email) {
         global $system_object;
-
         $subject = "[FREE TRAINING] You Need this to Make More Profit, [NAME]";
         $body = <<<MAIL
 <div style="background-color: #F3F1F2">
@@ -2530,7 +2529,6 @@ MAIL;
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Hello $client_full_name,</p>
-
             <p>Do you know that the Forex Market is the most liquid market in the world with
             over 5 trillion dollars traded on a daily basis?</p>
 
@@ -2639,9 +2637,9 @@ MAIL;
         $result =  $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $total = $fetched_data[0]['total_withdrawal'];
-        if($total == 0){$total = "$0";}
-        else{$total = "$$total";}
-        return $total? $total : false;
+        $total = number_format($total);
+        $total = "&#x24;$total";
+        return $total;
     }
 
     public function get_total_funding($user_code, $from_date, $to_date) {
@@ -2655,10 +2653,10 @@ MAIL;
         $result =  $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $total = $fetched_data[0]['total_funding'];
-        if($total == 0){$total = "$0";}
-        else{$total = "$$total";}
+        $total = number_format($total);
+        $total = "&#x24;$total";
 
-        return $total? $total : false;
+        return $total;
     }
 
     public function notify_admin($transaction_type, $transaction_id, $access_code, $author)
