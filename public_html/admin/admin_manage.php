@@ -203,8 +203,8 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="20" id="" <?php if (in_array(20, $my_pages)) { echo 'checked="checked"'; } ?>/> Unverified Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="21" id="" <?php if (in_array(21, $my_pages)) { echo 'checked="checked"'; } ?>/> View ILPR Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="22" id="" <?php if (in_array(22, $my_pages)) { echo 'checked="checked"'; } ?>/> View Non-ILPR Clients</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="244" id="" <?php if (in_array(244, $my_pages)) { echo 'checked="checked"'; } ?>/> Active Clients</label></div></div>
-                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="245" id="" <?php if (in_array(245, $my_pages)) { echo 'checked="checked"'; } ?>/> Inactive Clients</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="244" id="" <?php if (in_array(244, $my_pages)) { echo 'checked="checked"'; } ?>/> Active Trading Clients</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="245" id="" <?php if (in_array(245, $my_pages)) { echo 'checked="checked"'; } ?>/> Inactive Trading Clients</label></div></div>
                                     </div>
                                     <hr/>
 
@@ -341,6 +341,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="79" id="" <?php if (in_array(79, $my_pages)) { echo 'checked="checked"'; } ?>/> System Messages</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="239" id="" <?php if (in_array(239, $my_pages)) { echo 'checked="checked"'; } ?>/> System Activity Logs</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="243" id="" <?php if (in_array(243, $my_pages)) { echo 'checked="checked"'; } ?>/> Front-End Advert Section</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="258" id="" <?php if (in_array(258, $my_pages)) { echo 'checked="checked"'; } ?>/> SMS Records</label></div></div>
                                     </div>
                                     <hr/>
                                     

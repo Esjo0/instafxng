@@ -349,8 +349,8 @@ function client_group_campaign_category($status) {
         case '50': $message = "Last Months New Clients not yet funded above $50"; break;
         case '51': $message = "Clients that funded before March 22, 2018 and haven't funded till date."; break;
         case '52': $message = "ILPR Campaign leads that came into our system in April"; break;
-		case '53': $message = "All clients who made deposit in the month of June 2018"; break;
-		case '54': $message = "All clients who made withdrawals in the month of June 2018"; break;
+		case '53': $message = "All clients who made deposit last month"; break;
+		case '54': $message = "All clients who made withdrawals last month"; break;
         default: $message = "Unknown"; break;
     }
     return $message;

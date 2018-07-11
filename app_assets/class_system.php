@@ -50,10 +50,17 @@ class InstafxngSystem {
     
     // function to send sms - using smslive247.com
     public function send_sms($phone, $my_message) {
+        global $db_handle;
         $phone_number = trim(preg_replace('/[\s\t\n\r\s]+/', '', $phone));
         $message = str_replace(" ","+",$my_message);
-        file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=fisayo75&message=$message&sender=InstaFxNg&mobiles=$phone_number");
+        $status = file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=fisayo75&message=$message&sender=INSTAFXNG&mobiles=$phone_number");
 //        file_get_contents("http://www.smslive247.com/http/index.aspx?cmd=sendmsg&sessionid=5b422f10-7b78-4631-9b98-a1c2e1872099&message=$message&sender=INSTAFXNG&sendto=$phone_number&msgtype=0");
+        ///Record the sms
+        if(isset($_SESSION['admin_unique_code']) && !empty($_SESSION['admin_unique_code'])){$sender = $_SESSION['admin_unique_code'];}else{$sender = "INSTAFXNG";}
+        $status = str_replace('	', '', $status);
+        $message = str_replace('+', ' ', $message);
+        $query = "INSERT INTO sms_records(phone_no, message, status, sender) VALUES('$phone', '$message', '$status', '$sender')";
+        $db_handle->runQuery($query);
         return true;
     }
 
@@ -735,7 +742,8 @@ class InstafxngSystem {
                     ud.client_naira_notified, ud.client_pay_date, ud.client_reference, ud.client_pay_method,
                     ud.client_notified_date, ud.status AS deposit_status, ud.points_claimed_id, u.user_code,
                     ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-                    uc.passport, ui.ifxaccount_id, ud.updated, ud.order_complete_time, pbc.dollar_amount AS points_dollar_value
+                    uc.passport, ui.ifxaccount_id, ud.updated, ud.order_complete_time, pbc.dollar_amount AS points_dollar_value,
+                    STR_TO_DATE(ud.created, '%Y-%m-%d') AS strip_date
                   FROM user_deposit AS ud
                   INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
                   INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -790,7 +798,7 @@ class InstafxngSystem {
         $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.created, uw.naira_total_withdrawable,
                 uw.client_phone_password, uw.status AS withdrawal_status,
                 CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-                uc.passport, ui.ifxaccount_id, ui.ifx_acct_no, uw.updated
+                uc.passport, ui.ifxaccount_id, ui.ifx_acct_no, uw.updated, STR_TO_DATE(uw.created, '%Y-%m-%d') AS strip_date
                 FROM user_withdrawal AS uw
                 INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
                 INNER JOIN user AS u ON ui.user_code = u.user_code
