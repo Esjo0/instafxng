@@ -57,10 +57,11 @@ class Signal_Management
 
     public function get_scheduled_signals($date){
         global $db_handle;
-        $query = "SELECT DISTINCT SS.symbol 
-                  FROM signal_daily AS SD 
-                  INNER JOIN signal_symbol AS SS ON SD.symbol_id
-                  WHERE SD.trigger_date = '$date' ";
+        $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.price, SD.take_profit,
+SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.trend, SD.note, SD.trigger_status, SS.symbol 
+FROM signal_daily AS SD 
+INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
+WHERE SD.trigger_date = '$date'";
         return $db_handle->fetchAssoc($db_handle->runQuery($query));
     }
 
@@ -78,7 +79,7 @@ class Signal_Management
         return $pairs;
     }
 
-    public function send_push($token, $message, $title){
+    /*public function send_push($token, $message, $title){
         $path_to_firebase_cm = 'https://fcm.googleapis.com/fcm/send';
         $API_SERVER_KEY = 'AAAAC0QYmqE:APA91bGSDtRp6HucthhIimDbmH3rzVakSLUIQRIIFqgBV-jXmYCfzE7sWvEdGVghRTSXL-fdLnnjdiXwTKibzrn4KrTaOTSrbyPGKkQylOt5mkRkvmup6MmUN9zZh-8QzYutQPazAvZu';
         $fields = array(
@@ -106,29 +107,32 @@ class Signal_Management
         // Close connection
         curl_close($ch);
         return $result;
+    }*/
+    public function update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type){
+        global $db_handle;
+        $query = "UPDATE signal_daily SET symbol_id = '$symbol', order_type = '$type', price = '$price', take_profit = '$take_profit', stop_loss = '$stop_loss', trigger_date = '$signal_date', trigger_time = '$signal_time', note = '$comment', trend = '$trend' WHERE signal_id = '$id'";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
+            $this->update_signal_daily_FILE($signal_array);
+        }
+        return $result;
     }
 
-    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '', $views = 0){
+    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = ''){
         global $db_handle;
-        INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
-              VALUE('$symbol','1','$buy_price', '$buy_price_tp', '$buy_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')
-        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend)";
+        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend) 
+                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', '$trend')";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
+            $this->update_signal_daily_FILE($signal_array);
+        }
+        return $result;
+    }
 
-        $signal_schedule = array(
-            'symbol_id' => $symbol_id,
-            'order_type' => $order_type,
-            'price' => $price,
-            'take_profit' => $take_profit,
-            'stop_loss' => $stop_loss,
-            'trigger_date' => $trigger_date,
-            'trigger_time' => $trigger_time,
-            'trend' => $trend,
-            'note' => $note,
-            'views' => $views
-        );
-        $old_schedule = json_decode(file_get_contents('../../models/signal_daily.json'));
-        $all_schedule = json_encode(array_merge($old_schedule, $signal_schedule));
-        return file_put_contents('../../models/signal_daily.json', $all_schedule);
+    public function update_signal_daily_FILE($signal_array){
+        file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
     }
 
     public function UI_select_currency_pair(){

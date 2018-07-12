@@ -52,6 +52,8 @@ if(isset($_POST['new_signal'])){
 	$signal_date = $db_handle->sanitizePost($_POST['signal_date']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
 	$trend = $db_handle->sanitizePost($_POST['trend']);
+    $buy_option = 1;
+    $sell_option = 2;
 
 	/*if(($options == 1) || ($options == 3)){
     $query ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
@@ -69,9 +71,13 @@ if(isset($_POST['new_signal'])){
     } else {
         $message_error = "Something went wrong. Please try again.";
     }*/
-
-	$new_shadule = $signal_object->new_signal_schedule($symbol);
-    if($new_shadule){
+	if(!empty($buy_price) && !empty($buy_price_tp) && !empty($buy_price_sl)){
+        $new_schedule1 = $signal_object->new_signal_schedule($symbol, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment);
+    }
+    if(!empty($sell_price) && !empty($sell_price_tp) && !empty($sell_price_sl)){
+        $new_schedule2 = $signal_object->new_signal_schedule($symbol, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment);
+    }
+    if($new_schedule1 || $new_schedule2){
         $message_success = "Signal Successfully created for ".datetime_to_text($signal_time);
     } else {
         $message_error = "Something went wrong. Please try again.";
@@ -90,8 +96,7 @@ if(isset($_POST['update_signal'])){
     $trend = $db_handle->sanitizePost($_POST['trend']);
     $type = $db_handle->sanitizePost($_POST['type']);
 
-    $query = "UPDATE signal_daily SET symbol_id = '$symbol', order_type = '$type', price = '$price', take_profit = '$take_profit', stop_loss = '$stop_loss', trigger_date = '$signal_date', trigger_time = '$signal_time', note = '$comment', trend = '$trend' WHERE signal_id = '$id'";
-    $result =$db_handle->runQuery($query);
+    $result = $signal_object->update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type);
     if($result) {
         $message_success = "Signal Updated Successfully created for ".datetime_to_text($signal_time);
     } else {
@@ -322,12 +327,9 @@ $all_signals = $db_handle->fetchAssoc($result);
                                         </div>
                                         <span class="text-muted">PRICE: <?php echo $row['price'];?>
                                             <?php
-                                            if($row['order_type'] == 2)
-                                            {
+                                            if($row['order_type'] == 2) {
                                                 echo" <b class='text-danger'><i class='glyphicon glyphicon-arrow-down'></i></b>";
-                                            }
-                                            elseif($row['order_type'] == 1)
-                                            {
+                                            } elseif($row['order_type'] == 1) {
                                                 echo"<b class='text-success'><i class='glyphicon glyphicon-arrow-up'></i></b>";
                                             }
                                             ?>
@@ -465,7 +467,6 @@ $all_signals = $db_handle->fetchAssoc($result);
                                         </div>
                                     </div>
                                 </div>
-
                             <?php } ?>
                             <?php require 'layouts/pagination_links.php'; ?>
                             <!--<li class="list-group-item d-flex justify-content-between">

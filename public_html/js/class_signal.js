@@ -90,34 +90,6 @@ function Signal()
         }
     };
 
-
-
-    /*this.ajax_request = function (response_div, query, type) {
-        var XMLHttpRequestObject = false;
-        if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
-        else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
-        if(XMLHttpRequestObject)
-        {
-            XMLHttpRequestObject.open('POST', "getSignalData.php");
-            XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-            XMLHttpRequestObject.setRequestHeader('charset','UTF-8');
-            XMLHttpRequestObject.send("query="+encodeURI(query)+"&type="+type);
-            XMLHttpRequestObject.onreadystatechange = function()
-            {
-                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
-                {
-                    //document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;
-                    //return XMLHttpRequestObject.responseText;
-                    var json = XMLHttpRequestObject.responseText;
-                    if(type == '1') { signal.showSignal(json, response_div);}
-                    if(type == '2') { signal.DisplaySignal(json);}
-                }
-            };
-
-        }
-        else {   return false;    }
-    };*/
-
     this.ajax_call = function (url, method,call_back_func) {
         if(window.XMLHttpRequest){ xmlhttp=new XMLHttpRequest();}
         else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
