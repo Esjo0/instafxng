@@ -70,36 +70,24 @@ function Signal()
 
     };
 
-    this.show_extra_analysis = function(accordionElem){
-        //when panel is clicked, handlePanelClick is called.
-        function handlePanelClick(event){
-            showPanel(event.currentTarget);
-        }
-
-        //Hide currentPanel and show new panel.
-        function showPanel(panel){
-            //Hide current one. First time it will be null.
-            var expandedPanel = accordionElem.querySelector(".active");
-            if (expandedPanel){
-                expandedPanel.classList.remove("active");
-            }
-            //Show new one
-            panel.classList.add("active");
-        }
-
-        var allPanelElems = accordionElem.querySelectorAll(".panel");
-        for (var i = 0, len = allPanelElems.length; i < len; i++){
-            allPanelElems[i].addEventListener("click", handlePanelClick);
-        }
-
-        //By Default Show first panel
-        showPanel(allPanelElems[0]);
-        /*var x = document.getElementById(div);
-        if (x.style.display === 'none'){
-            x.style.display = 'block';
+    this.show_extra_analysis = function(div_id){
+        signal_div = document.getElementById(div_id);
+        signal_main = document.getElementById(div_id+'_main');
+        signal_extra = document.getElementById(div_id+'_extra');
+        signal_trigger = document.getElementById(div_id+'_trigger');
+        if (signal_extra.style.display === 'none'){
+            //Make div big
+            signal_div.classList = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 card grid-item';
+            signal_main.classList = 'col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4';
+            signal_trigger.innerHTML = '<b><i class="glyphicon glyphicon-arrow-left"></i> HIDE EXTRA ANALYSIS </b>';
+            signal_extra.style.display = 'block';
         } else{
-            x.style.display = 'none';
-        }*/
+            //Make div small
+            signal_div.classList = 'col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item';
+            signal_main.classList = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12';
+            signal_trigger.innerHTML = '<b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b>';
+            signal_extra.style.display = 'none';
+        }
     };
 
 

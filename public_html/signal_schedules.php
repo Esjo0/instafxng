@@ -16,6 +16,17 @@ $thisPage = "Home";
                 z-index: 9999;
                 background: url(images/Spinner.gif) center no-repeat #fff;
             }
+            .vdivide [class*='col-']:not(:last-child):after {
+                background: #e0e0e0;
+                width: 1px;
+                content: "";
+                display:block;
+                position: absolute;
+                top:0;
+                bottom: 0;
+                right: 0;
+                min-height: 70px;
+            }
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
         <script>$(window).load(function() {$(".se-pre-con").fadeOut("slow");});</script>
@@ -93,120 +104,350 @@ $thisPage = "Home";
                                     </script>
                                 </div><br/>
                                 <!-- TradingView Widget END -->
-<!--                          <table class="table table-responsive table-striped table-bordered table-hover"><thead><tr><th><p><marquee id="live_quotes" behavior="scroll" direction="left" scrollamount="2"></marquee></p></th></tr></thead></table>-->
                             </div>
 
                             <div class="col-sm-12">
-                                <div id="accordion" class="row grid">
-                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item">
+                                <div class="row grid">
+                                    <div id="signal_1" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item">
                                         <div class="thumbnail">
                                             <div class="caption">
                                                 <div class="row">
-                                                    <div class="col-sm-2"></div>
-                                                    <div class="col-sm-7">
-                                                        <b id="thumbnail-label pull-left">USD/CAD (1.3164)</b>
-                                                        <br/>
-                                                        <span>Active...</span>
+                                                <!--.....................................-->
+                                                <div id="signal_1_main" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="row">
+                                                        <div class="col-sm-2"></div>
+                                                        <div class="col-sm-7">
+                                                            <b id="thumbnail-label pull-left">USD/CAD (1.3164)</b>
+                                                            <br/>
+                                                            <span>Active...</span>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <b class="text-info pull-right">BUY</b>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-3">
-                                                        <b class="text-info pull-right">BUY</b>
+                                                    <hr>
+                                                    <div class="well text-center"><b>ENTRY PRICE: 0.0000</b></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Stop Loss</span></div></div>
+                                                        <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Take Profit</span></div></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">TRADE NOW</a><br/></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-3"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></div>
+                                                        <div class="col-sm-9"><a id="signal_1_trigger" onclick="signal.show_extra_analysis('signal_1')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
                                                     </div>
                                                 </div>
-                                                <hr>
-                                                <div class="well text-center"><b>ENTRY PRICE: 0.0000</b></div>
-                                                <div class="row">
-                                                    <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Stop Loss</span></div></div>
-                                                    <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Take Profit</span></div></div>
+                                                <!--............................................-->
+                                                <!--............................................-->
+                                                <div id="signal_1_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                                                    <div class="row">
+                                                        <div  class="col-sm-5 col-xs-12">
+                                                            <script>
+                                                                signal.get_news('USD/CAD');
+                                                                new SimpleBar(document.getElementById('myElement'));
+                                                            </script>
+                                                            <div id="myElement" style="height: 300px; overflow-y: scroll;" data-simplebar data-simplebar-auto-hide="true" class="row">
+                                                                <div class="row col-sm-12 col-xs-12">
+                                                                    <div class="col-sm-4 col-xs-4">
+                                                                        <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
+                                                                    </div>
+                                                                    <div class="col-sm-8 col-xs-8">
+                                                                        <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
+                                                                        <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
+                                                                    </div>
+                                                                    <div class="col-sm-12"><hr/></div>
+                                                                </div>
+                                                                <div class="row col-sm-12 col-xs-12">
+                                                                    <div class="col-sm-4 col-xs-4">
+                                                                        <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
+                                                                    </div>
+                                                                    <div class="col-sm-8 col-xs-8">
+                                                                        <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
+                                                                        <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
+                                                                    </div>
+                                                                    <div class="col-sm-12"><hr/></div>
+                                                                </div>
+                                                                <div class="row col-sm-12 col-xs-12">
+                                                                    <div class="col-sm-4 col-xs-4">
+                                                                        <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
+                                                                    </div>
+                                                                    <div class="col-sm-8 col-xs-8">
+                                                                        <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
+                                                                        <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
+                                                                    </div>
+                                                                    <div class="col-sm-12"><hr/></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="" class="col-sm-7 col-xs-12">
+                                                            <!-- TradingView Widget BEGIN -->
+                                                            <div class="tradingview-widget-container">
+                                                                <div class="tradingview-widget-container__widget img-responsive"></div>
+                                                                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                                                                    {
+                                                                        "showChart": true,
+                                                                        "locale": "en",
+                                                                        "width": "100%",
+                                                                        "height": 230,
+                                                                        "largeChartUrl": "",
+                                                                        "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
+                                                                        "plotLineColorFalling": "rgba(255, 74, 104, 1)",
+                                                                        "gridLineColor": "rgba(233, 233, 234, 1)",
+                                                                        "scaleFontColor": "rgba(233, 233, 234, 1)",
+                                                                        "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
+                                                                        "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
+                                                                        "symbolActiveColor": "rgba(242, 250, 254, 1)",
+                                                                        "tabs": [
+                                                                        {
+                                                                            "title": "Forex",
+                                                                            "symbols": [
+                                                                                {
+                                                                                    "s": "FX:USDJPY"
+                                                                                }
+                                                                            ],
+                                                                            "originalTitle": "Forex"
+                                                                        }
+                                                                    ]
+                                                                    }
+                                                                </script>
+                                                            </div>
+                                                            <!-- TradingView Widget END--->
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">TRADE NOW</a><br/></div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-9"><a class="accordion-toggle" href="#"><span>FURTHER ANALYSIS  </span><b class="caret"></b></a></div>
-                                                    <div class="col-sm-3"><i class="glyphicon glyphicon-star-empty"></i></div>
+                                             <!--............................................-->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="body col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 card">
+
+                                    <div id="signal_2" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item">
                                         <div class="thumbnail">
                                             <div class="caption">
                                                 <div class="row">
-                                                    <div  class="col-sm-6 col-xs-12">
-                                                        <script>
-                                                            signal.get_news('USD/CAD');
-                                                            new SimpleBar(document.getElementById('myElement'));
-                                                        </script>
-                                                        <div id="myElement" style="height: 230px; overflow-y: scroll;" data-simplebar data-simplebar-auto-hide="true" class="row">
-                                                            <div class="row col-sm-12 col-xs-12">
-                                                                <div class="col-sm-4 col-xs-4">
-                                                                    <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
-                                                                </div>
-                                                                <div class="col-sm-8 col-xs-8">
-                                                                    <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
-    <!--                                                                <p class="text-justify" style="font-size: x-small !important;">The BoC meets this morning and despite Poloz's anti-guidance and rapidly shifting expectations of a rate hike, the market universally looks for a hike today, suggests the research team at TD Securities. Key Quotes “In the context of global trade tensions and …</p>
-    -->                                                             <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
-                                                                </div>
-                                                                <div class="col-sm-12"><hr/></div>
+                                                    <!--.....................................-->
+                                                    <div id="signal_2_main" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <div class="row">
+                                                            <div class="col-sm-2"></div>
+                                                            <div class="col-sm-7">
+                                                                <b id="thumbnail-label pull-left">USD/CAD (1.3164)</b>
+                                                                <br/>
+                                                                <span>Active...</span>
                                                             </div>
-                                                            <div class="row col-sm-12 col-xs-12">
-                                                                <div class="col-sm-4 col-xs-4">
-                                                                    <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
-                                                                </div>
-                                                                <div class="col-sm-8 col-xs-8">
-                                                                    <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
-                                                                    <!--                                                                <p class="text-justify" style="font-size: x-small !important;">The BoC meets this morning and despite Poloz's anti-guidance and rapidly shifting expectations of a rate hike, the market universally looks for a hike today, suggests the research team at TD Securities. Key Quotes “In the context of global trade tensions and …</p>
-                                                                    -->                                                             <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
-                                                                </div>
-                                                                <div class="col-sm-12"><hr/></div>
-                                                            </div>
-                                                            <div class="row col-sm-12 col-xs-12">
-                                                                <div class="col-sm-4 col-xs-4">
-                                                                    <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
-                                                                </div>
-                                                                <div class="col-sm-8 col-xs-8">
-                                                                    <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
-                                                                    <!--                                                                <p class="text-justify" style="font-size: x-small !important;">The BoC meets this morning and despite Poloz's anti-guidance and rapidly shifting expectations of a rate hike, the market universally looks for a hike today, suggests the research team at TD Securities. Key Quotes “In the context of global trade tensions and …</p>
-                                                                    -->                                                             <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
-                                                                </div>
-                                                                <div class="col-sm-12"><hr/></div>
+                                                            <div class="col-sm-3">
+                                                                <b class="text-info pull-right">BUY</b>
                                                             </div>
                                                         </div>
+                                                        <hr>
+                                                        <div class="well text-center"><b>ENTRY PRICE: 0.0000</b></div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Stop Loss</span></div></div>
+                                                            <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Take Profit</span></div></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">TRADE NOW</a><br/></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-3"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></div>
+                                                            <div class="col-sm-9"><a id="signal_2_trigger" onclick="signal.show_extra_analysis('signal_2')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
+                                                        </div>
                                                     </div>
-                                                    <div style="height: 230px" class="col-sm-6 col-xs-12">
-                                                        <!-- TradingView Widget BEGIN -->
-                                                        <div class="tradingview-widget-container">
-                                                            <div class="tradingview-widget-container__widget"></div>
-                                                            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-                                                                {
-                                                                    "showChart": true,
-                                                                    "locale": "en",
-                                                                    "width": "100%",
-                                                                    "height": "100%",
-                                                                    "largeChartUrl": "",
-                                                                    "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
-                                                                    "plotLineColorFalling": "rgba(255, 74, 104, 1)",
-                                                                    "gridLineColor": "rgba(233, 233, 234, 1)",
-                                                                    "scaleFontColor": "rgba(233, 233, 234, 1)",
-                                                                    "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
-                                                                    "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
-                                                                    "symbolActiveColor": "rgba(242, 250, 254, 1)",
-                                                                    "tabs": [
-                                                                    {
-                                                                        "title": "Forex",
-                                                                        "symbols": [
+                                                    <!--............................................-->
+                                                    <!--............................................-->
+                                                    <div id="signal_2_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                                                        <div class="row">
+                                                            <div  class="col-sm-5 col-xs-12">
+                                                                <script>
+                                                                    signal.get_news('USD/CAD');
+                                                                    new SimpleBar(document.getElementById('myElement'));
+                                                                </script>
+                                                                <div id="myElement" style="height: 300px; overflow-y: scroll;" data-simplebar data-simplebar-auto-hide="true" class="row">
+                                                                    <div class="row col-sm-12 col-xs-12">
+                                                                        <div class="col-sm-4 col-xs-4">
+                                                                            <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
+                                                                        </div>
+                                                                        <div class="col-sm-8 col-xs-8">
+                                                                            <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
+                                                                            <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
+                                                                        </div>
+                                                                        <div class="col-sm-12"><hr/></div>
+                                                                    </div>
+                                                                    <div class="row col-sm-12 col-xs-12">
+                                                                        <div class="col-sm-4 col-xs-4">
+                                                                            <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
+                                                                        </div>
+                                                                        <div class="col-sm-8 col-xs-8">
+                                                                            <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
+                                                                            <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
+                                                                        </div>
+                                                                        <div class="col-sm-12"><hr/></div>
+                                                                    </div>
+                                                                    <div class="row col-sm-12 col-xs-12">
+                                                                        <div class="col-sm-4 col-xs-4">
+                                                                            <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
+                                                                        </div>
+                                                                        <div class="col-sm-8 col-xs-8">
+                                                                            <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
+                                                                            <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
+                                                                        </div>
+                                                                        <div class="col-sm-12"><hr/></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div style="" class="col-sm-7 col-xs-12">
+                                                                <!-- TradingView Widget BEGIN -->
+                                                                <div class="tradingview-widget-container">
+                                                                    <div class="tradingview-widget-container__widget img-responsive"></div>
+                                                                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                                                                        {
+                                                                            "showChart": true,
+                                                                            "locale": "en",
+                                                                            "width": "100%",
+                                                                            "height": 230,
+                                                                            "largeChartUrl": "",
+                                                                            "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
+                                                                            "plotLineColorFalling": "rgba(255, 74, 104, 1)",
+                                                                            "gridLineColor": "rgba(233, 233, 234, 1)",
+                                                                            "scaleFontColor": "rgba(233, 233, 234, 1)",
+                                                                            "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
+                                                                            "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
+                                                                            "symbolActiveColor": "rgba(242, 250, 254, 1)",
+                                                                            "tabs": [
                                                                             {
-                                                                                "s": "FX:USDJPY"
+                                                                                "title": "Forex",
+                                                                                "symbols": [
+                                                                                    {
+                                                                                        "s": "FX:USDJPY"
+                                                                                    }
+                                                                                ],
+                                                                                "originalTitle": "Forex"
                                                                             }
-                                                                        ],
-                                                                        "originalTitle": "Forex"
-                                                                    }
-                                                                ]
-                                                                }
-                                                            </script>
+                                                                        ]
+                                                                        }
+                                                                    </script>
+                                                                </div>
+                                                                <!-- TradingView Widget END--->
+                                                            </div>
                                                         </div>
-                                                        <!-- TradingView Widget END -->
                                                     </div>
+                                                    <!--............................................-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="signal_3" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item">
+                                        <div class="thumbnail">
+                                            <div class="caption">
+                                                <div class="row">
+                                                    <!--.....................................-->
+                                                    <div id="signal_3_main" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <div class="row">
+                                                            <div class="col-sm-2"></div>
+                                                            <div class="col-sm-7">
+                                                                <b id="thumbnail-label pull-left">USD/CAD (1.3164)</b>
+                                                                <br/>
+                                                                <span>Active...</span>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <b class="text-info pull-right">BUY</b>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="well text-center"><b>ENTRY PRICE: 0.0000</b></div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Stop Loss</span></div></div>
+                                                            <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Take Profit</span></div></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">TRADE NOW</a><br/></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-3"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></div>
+                                                            <div class="col-sm-9"><a id="signal_3_trigger" onclick="signal.show_extra_analysis('signal_3')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
+                                                        </div>
+                                                    </div>
+                                                    <!--............................................-->
+                                                    <!--............................................-->
+                                                    <div id="signal_3_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                                                        <div class="row">
+                                                            <div  class="col-sm-5 col-xs-12">
+                                                                <script>
+                                                                    signal.get_news('USD/CAD');
+                                                                    new SimpleBar(document.getElementById('myElement'));
+                                                                </script>
+                                                                <div id="myElement" style="height: 300px; overflow-y: scroll;" data-simplebar data-simplebar-auto-hide="true" class="row">
+                                                                    <div class="row col-sm-12 col-xs-12">
+                                                                        <div class="col-sm-4 col-xs-4">
+                                                                            <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
+                                                                        </div>
+                                                                        <div class="col-sm-8 col-xs-8">
+                                                                            <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
+                                                                            <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
+                                                                        </div>
+                                                                        <div class="col-sm-12"><hr/></div>
+                                                                    </div>
+                                                                    <div class="row col-sm-12 col-xs-12">
+                                                                        <div class="col-sm-4 col-xs-4">
+                                                                            <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
+                                                                        </div>
+                                                                        <div class="col-sm-8 col-xs-8">
+                                                                            <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
+                                                                            <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
+                                                                        </div>
+                                                                        <div class="col-sm-12"><hr/></div>
+                                                                    </div>
+                                                                    <div class="row col-sm-12 col-xs-12">
+                                                                        <div class="col-sm-4 col-xs-4">
+                                                                            <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
+                                                                        </div>
+                                                                        <div class="col-sm-8 col-xs-8">
+                                                                            <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
+                                                                            <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
+                                                                        </div>
+                                                                        <div class="col-sm-12"><hr/></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div style="" class="col-sm-7 col-xs-12">
+                                                                <!-- TradingView Widget BEGIN -->
+                                                                <div class="tradingview-widget-container">
+                                                                    <div class="tradingview-widget-container__widget img-responsive"></div>
+                                                                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                                                                        {
+                                                                            "showChart": true,
+                                                                            "locale": "en",
+                                                                            "width": "100%",
+                                                                            "height": 230,
+                                                                            "largeChartUrl": "",
+                                                                            "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
+                                                                            "plotLineColorFalling": "rgba(255, 74, 104, 1)",
+                                                                            "gridLineColor": "rgba(233, 233, 234, 1)",
+                                                                            "scaleFontColor": "rgba(233, 233, 234, 1)",
+                                                                            "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
+                                                                            "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
+                                                                            "symbolActiveColor": "rgba(242, 250, 254, 1)",
+                                                                            "tabs": [
+                                                                            {
+                                                                                "title": "Forex",
+                                                                                "symbols": [
+                                                                                    {
+                                                                                        "s": "FX:USDJPY"
+                                                                                    }
+                                                                                ],
+                                                                                "originalTitle": "Forex"
+                                                                            }
+                                                                        ]
+                                                                        }
+                                                                    </script>
+                                                                </div>
+                                                                <!-- TradingView Widget END--->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--............................................-->
                                                 </div>
                                             </div>
                                         </div>

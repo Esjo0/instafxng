@@ -109,6 +109,11 @@ class Signal_Management
     }
 
     public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '', $views = 0){
+        global $db_handle;
+        INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
+              VALUE('$symbol','1','$buy_price', '$buy_price_tp', '$buy_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')
+        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend)";
+
         $signal_schedule = array(
             'symbol_id' => $symbol_id,
             'order_type' => $order_type,
@@ -126,4 +131,19 @@ class Signal_Management
         return file_put_contents('../../models/signal_daily.json', $all_schedule);
     }
 
+    public function UI_select_currency_pair(){
+        global $db_handle;
+        $query = "SELECT * FROM signal_symbol ";
+        $result = $db_handle->runQuery($query);
+        $result = $db_handle->fetchAssoc($result);
+        if(!empty($result) && is_array($result)){
+            echo '<select name="symbol" class="form-control" id="location">';
+            foreach ($result as $row) {
+                extract($row);
+                echo '<option value="'.$symbol_id.'">'.$symbol.'</option>';
+            }
+            echo '</select>';
+            echo '<span class="input-group-addon"><span class="fa fa-gg"></span></span>';
+        }
+    }
 }
