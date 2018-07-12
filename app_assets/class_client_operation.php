@@ -2630,7 +2630,7 @@ MAIL;
 
         $query = "SELECT SUM(uw.dollar_withdraw) AS total_withdrawal FROM user_withdrawal AS uw 
                  INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id 
-                 INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '7' AND STR_TO_DATE(uw.created, '%Y-%m-%d') 
+                 INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') 
                  BETWEEN '$from_date' AND '$to_date'
                  AND u.user_code = '$user_code'";
 
