@@ -209,7 +209,8 @@ MAIL;
     }
 
     public function UI_get_signals_for_page(){
-        $signals = (array) json_decode(file_get_contents('../../../models/signal_daily.json'));
+        //$signals = (array) json_decode(file_get_contents('../../../models/signal_daily.json'));
+        $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'));
         $output = '';
         if(!empty($signals)){
             for($i = 0; $i < count($signals); $i++){

@@ -80,7 +80,7 @@ if(isset($_POST['login'])) {
         <!--............................-->
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
-        <script>signal.get_signals_for_page();</script>
+        <!--<script>signal.get_signals_for_page();</script>-->
         <!--................................-->
     </head>
     <body>
@@ -125,6 +125,8 @@ if(isset($_POST['login'])) {
 
                             <div class="col-sm-12">
                                 <div id="signal_page_list" class="row grid">
+
+                                    <?php echo $signal_object->UI_get_signals_for_page();?>
                                     <div style="display: none" id="signal_3" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item">
                                         <div class="thumbnail">
                                             <div class="caption">
