@@ -1,10 +1,8 @@
 <?php
-/**
- * @author lekan Olad
-*/
+
 require_once '../../init/initialize_partner.php';
 if (!$session_partner->is_logged_in()) {
-    redirect_to("../login.php");
+//    redirect_to("../login.php");
 }
 
 $partner_details = $_SESSION['partner_details'];
