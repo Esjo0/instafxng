@@ -1,5 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
+header('Location: https://instafxng.com/forex-income/');
+
 $thisPage = "Education";
 $next_seminar_date = NEWSEMINARDATE;
 

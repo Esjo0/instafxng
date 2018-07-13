@@ -111,6 +111,8 @@ $selected_lev3_clients = $db_handle->fetchAssoc($result);
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
 
+                                <?php if(isset($selected_lev3_clients) && !empty($selected_lev3_clients)) { require 'layouts/pagination_links.php'; } ?>
+
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -146,7 +148,7 @@ $selected_lev3_clients = $db_handle->fetchAssoc($result);
                             </div>
                         </div>
                         
-                        <?php if(isset($selected_lev3_clients) && !empty($selected_lev3_clients)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($selected_lev3_clients) && !empty($selected_lev3_clients)) { require 'layouts/pagination_links.php'; } ?>
                     </div>
 
                     <!-- Unique Page Content Ends Here
