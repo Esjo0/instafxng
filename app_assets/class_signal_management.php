@@ -3,7 +3,7 @@ class Signal_Management
 {
     const QUOTES_API = "https://forex.1forge.com/1.0.3/quotes";
     const QUOTES_API_KEY = "VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r";
-    private function curl_call($url, $method, $headers = '', $post_data = ''){
+    public function curl_call($url, $method, $headers = '', $post_data = ''){
         $ch = curl_init();
         switch ($method){
             case "POST":
@@ -43,6 +43,14 @@ class Signal_Management
         if(json_decode($old_quotes)) {
             return json_decode($old_quotes);
         }
+    }
+
+    public function UI_get_symbol_current_price($symbol){
+        $symbol = str_replace('/', '', $symbol);
+        $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".Signal_Management::QUOTES_API_KEY;
+        $get_data = $this->curl_call($url, 'GET');
+        $response = (array) json_decode($get_data, true);
+        return $response[0]['price'];
     }
 
     public function get_live_quotes(){
@@ -108,9 +116,215 @@ WHERE SD.trigger_date = '$date'";
         curl_close($ch);
         return $result;
     }*/
+    public function signal_file_listener(){
+        $file_current_property = date('Y-m-d h:i:s', stat('../../../models/signal_daily.json')['mtime']);
+        $file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
+
+        if($file_current_property != $file_old_property){
+            file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
+            $this->get_signals_for_page();
+            //return file_get_contents('../../../models/signal_daily.json');
+        }
+    }
+
+    public function UI_get_news_for_page($currency_pair){
+        $date = date('Y-m-d');
+        $news_array = (array) json_decode(file_get_contents("https://newsapi.org/v2/everything?q=$currency_pair&from=$date&sortBy=popularity&apiKey=f954016b06bd412288ac281bc509a719"));
+        $output = '';
+        if(!empty($news_array)){
+            foreach ($news_array as $row){
+                $output .= <<<MAIL
+<div class="row col-sm-12 col-xs-12">
+<div class="col-sm-4 col-xs-4">
+<img class="img-responsive" alt="" src="{$row['urlToImage']}" />
+</div>
+<div class="col-sm-8 col-xs-8">
+<b class="text-justify" style="font-size: small !important;"><a target="_blank" href="{$row['url']}">{$row['title']}</a></b><br/>
+<span class="text-justify" style="font-size: small !important;">Posted:{$row['publishedAt']}</span>
+</div>
+<div class="col-sm-12"><hr/></div>
+</div>
+MAIL;
+            }
+            return $output;
+        }
+    }
+
+    public function UI_signal_status_msg($trigger_stat){
+        $trigger_stat = (int)$trigger_stat;
+        switch ($trigger_stat){
+            case 0:
+                $msg = 'Pending...';
+                break;
+            case 1:
+                $msg = 'Active...';
+                break;
+            case 2:
+                $msg = 'Closed';
+                break;
+        }
+        return $msg;
+    }
+
+    public function UI_signal_trend_msg($trigger_stat){
+        $trigger_stat = (int)$trigger_stat;
+        switch ($trigger_stat){
+            case 1:
+                $msg = '<b style="font-size: large" class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>';
+                break;
+            case 2:
+                $msg = '<b style="font-size: large" class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b>';
+                break;
+        }
+        return $msg;
+    }
+
+    public function UI_signal_call_to_action_msg($trigger_stat){
+        $trigger_stat = (int)$trigger_stat;
+        switch ($trigger_stat){
+            case 0:
+                $msg = 'PLACE PENDING ORDER';
+                break;
+            case 1:
+                $msg = 'TRADE NOW';
+                break;
+            case 2:
+                $msg = 'CHECK MARKET HISTORY';
+                break;
+        }
+        return $msg;
+    }
+
+    public function UI_order_type_status_msg($order_type){
+        $order_type = (int)$order_type;
+        switch ($order_type){
+            case 0:
+                $msg = 'BUY';
+                break;
+            case 1:
+                $msg = 'SELL';
+                break;
+        }
+        return $msg;
+    }
+
+    public function UI_get_signals_for_page(){
+        $signals = (array) json_decode(file_get_contents('../../../models/signal_daily.json'));
+        $output = '';
+        if(!empty($signals)){
+            for($i = 0; $i < count($signals); $i++){
+                $row = (array) $signals[$i];
+                $output .= <<<MAIL
+<div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item">
+                                        <div class="thumbnail">
+                                            <div class="caption">
+                                                <div class="row">
+                                                    <!--.....................................-->
+                                                    <div id="signal_{$row['signal_id']}_main" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <div class="row">
+                                                            <div class="col-sm-2"><b style="font-size: large" class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>{$this->UI_signal_trend_msg($row['trend'])}</div>
+                                                            <div class="col-sm-7">
+                                                                <b id="thumbnail-label pull-left">{$row['symbol']} ({$this->UI_get_symbol_current_price($row['symbol'])})</b>
+                                                                <br/>
+                                                                <span>{$this->UI_signal_status_msg($row['trigger_status'])}</span>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <b class="text-info pull-right">{$this->UI_order_type_status_msg($row['order_type'])}</b>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="well text-center"><b>ENTRY PRICE: {$row['price']}</b></div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"><div class="well text-center"><span>{$row['stop_loss']}<br/>Stop Loss</span></div></div>
+                                                            <div class="col-sm-6"><div class="well text-center"><span>{$row['take_profit']}<br/>Take Profit</span></div></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-3"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></a></div>
+                                                            <div class="col-sm-9"><a id="signal_{$row['signal_id']}_trigger" onclick="signal.show_extra_analysis('signal_{$row['signal_id']}')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
+                                                        </div>
+                                                    </div>
+                                                    <!--............................................-->
+                                                    <!--............................................-->
+                                                    <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                                                        <div class="row">
+                                                            <div  class="col-sm-5 col-xs-12">
+                                                                <script>       
+                                                                    new SimpleBar(document.getElementById('signal_{$row['signal_id']}_news'));
+                                                                </script>
+                                                                <div id="signal_{$row['signal_id']}_news" style="height: 300px; overflow-y: scroll;" data-simplebar data-simplebar-auto-hide="true" class="row">
+                                                                    {$this->UI_get_news_for_page($row['symbol'])}
+                                                                </div>
+                                                            </div>
+                                                            <div style="" class="col-sm-7 col-xs-12">
+                                                                <!-- TradingView Widget BEGIN -->
+                                                                <div class="tradingview-widget-container">
+                                                                    <div class="tradingview-widget-container__widget img-responsive"></div>
+                                                                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                                                                        {
+                                                                            "showChart": true,
+                                                                            "locale": "en",
+                                                                            "width": "100%",
+                                                                            "height": 230,
+                                                                            "largeChartUrl": "",
+                                                                            "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
+                                                                            "plotLineColorFalling": "rgba(255, 74, 104, 1)",
+                                                                            "gridLineColor": "rgba(233, 233, 234, 1)",
+                                                                            "scaleFontColor": "rgba(233, 233, 234, 1)",
+                                                                            "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
+                                                                            "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
+                                                                            "symbolActiveColor": "rgba(242, 250, 254, 1)",
+                                                                            "tabs": [
+                                                                            {
+                                                                                "title": "Forex",
+                                                                                "symbols": [
+                                                                                    {
+                                                                                        "s": "FX:{$row['symbol']}"
+                                                                                    }
+                                                                                ],
+                                                                                "originalTitle": "Forex"
+                                                                            }
+                                                                        ]
+                                                                        }
+                                                                    </script>
+                                                                </div>
+                                                                <!-- TradingView Widget END--->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--............................................-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+MAIL;
+            }
+        }
+        return $output;
+    }
+
     public function update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type){
         global $db_handle;
         $query = "UPDATE signal_daily SET symbol_id = '$symbol', order_type = '$type', price = '$price', take_profit = '$take_profit', stop_loss = '$stop_loss', trigger_date = '$signal_date', trigger_time = '$signal_time', note = '$comment', trend = '$trend' WHERE signal_id = '$id'";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
+            $this->update_signal_daily_FILE($signal_array);
+        }
+        return $result;
+    }
+
+    public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips){
+        global $db_handle;
+        $query = "UPDATE signal_daily SET trigger_status = '$trigger_status' ";
+        if(!empty($entry_price)){ $query .=", entry_price = $entry_price";}
+        if(!empty($entry_time)){ $query .=", entry_time = '$entry_time'";}
+        if(!empty($exit_time)){ $query .=", exit_time = '$exit_time'";}
+        if(!empty($pips)){ $query .=", pips = $pips";}
+        $query .= "WHERE signal_id = $signal_id ";
+
         $result = $db_handle->runQuery($query);
         if($result){
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
@@ -149,5 +363,22 @@ WHERE SD.trigger_date = '$date'";
             echo '</select>';
             echo '<span class="input-group-addon"><span class="fa fa-gg"></span></span>';
         }
+    }
+
+    public function UI_show_live_quotes(){
+        global $db_handle;
+        $query = "SELECT symbol FROM signal_symbol";
+        $symbols = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        $symbol_array = array();
+        foreach ($symbols as $key => $value){
+            $symbol_array['symbols'][count($symbol_array['symbols'])] = array('title' => $value['symbol'], 'proName' => str_replace('/', '', $value['symbol']));
+        }
+        $symbol_array['locale'] = 'en';
+        echo "<div class='tradingview-widget-container'>";
+        echo "<div class='tradingview-widget-container__widget'></div>";
+        echo "<script type='text/javascript' src='https://s3.tradingview.com/external-embedding/embed-widget-tickers.js' async>";
+        echo json_encode($symbol_array);
+        echo "</script></div><br/>";
+
     }
 }

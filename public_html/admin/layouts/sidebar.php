@@ -301,6 +301,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <ul class="dropdown-menu">
                         <?php if (in_array(77, $my_pages_sidebar)) { ?><li><a href="signal_daily.php">Update Daily Signal</a></li><?php } ?>
                         <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_review.php">Signal Analysis</a></li><?php } ?>
+                        <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_users.php">Signal Users</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">

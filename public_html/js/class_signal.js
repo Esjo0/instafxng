@@ -2,6 +2,11 @@ function Signal()
 {
     this.time_window = 60;//60 mins
 
+    //TODO: Ensure this is changed
+    this.BASE_URL = 'http://localhost/instafxngwebsite/public_html/';
+    //this.SIGNAL_FILE_URL = 'http://localhost/instafxngwebsite/models/signal_daily.json';
+    this.SIGNAL_FILE_URL = '../../../models/signal_daily.json';
+
     this.formatDate = function (date, format){
         if(format == 'simple'){
             var day = date.getDate();
@@ -95,7 +100,13 @@ function Signal()
         else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
         xmlhttp.onreadystatechange = function(){
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
-                if(call_back_func){signal[call_back_func](JSON.parse(xmlhttp.responseText));}
+                if(call_back_func){
+                    if(xmlhttp.responseText) {
+                        /*var response = JSON.parse(xmlhttp.responseText) ? JSON.parse(xmlhttp.responseText) : xmlhttp.responseText;
+                        console.log(response);*/
+                        signal[call_back_func](xmlhttp.responseText);
+                    }
+                }
             }
         };
         xmlhttp.open(method, url, true);
@@ -325,5 +336,26 @@ function Signal()
         xmlhttp.open("POST", "signal_main_display", true);
         xmlhttp.send();
     }*/
+
+    this.signal_file_listener = function(){
+        var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=signal_file_listener";
+        var method = 'GET';
+        this.ajax_call(url, method, 'update_signal_page');
+    };
+
+    this.update_signal_page = function(array_value){
+        if(array_value){
+            console.log(array_value);
+            document.getElementById('signal_page_list').innerHTML = array_value;
+
+        }
+        setTimeout(this.signal_file_listener(), 60000)
+    };
+
+    this.get_signals_for_page = function(){
+        var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=UI_get_signals_for_page";
+        var method = 'GET';
+        this.ajax_call(url, method, 'update_signal_page');
+    };
 }
 var signal = new Signal();

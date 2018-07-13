@@ -200,6 +200,10 @@ else
                                     <th>Date Created</th>
                                     <th>Views</th>
                                     <th>Status</th>
+                                    <th>Entry Price</th>
+                                    <th>Entry Time</th>
+                                    <th>Exit Time</th>
+                                    <th>Pips</th>
                                 </tr>
                                 </thead>
                                 <tbody>
