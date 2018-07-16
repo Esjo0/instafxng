@@ -248,6 +248,10 @@ else
                                             echo"<b class='text-success'><i class='glyphicon glyphicon-ok'></i></b>";
                                         }
                                         ?></td>
+                                    <td><?php echo $row['entry_price']; ?></td>
+                                    <td><?php echo $row['entry_time']; ?></td>
+                                    <td><?php echo $row['exit_time']; ?></td>
+                                    <td><?php echo $row['pips']; ?></td>
                         </tr>
                     <?php
                     }?>
