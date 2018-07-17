@@ -5,18 +5,22 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
-    $search_text = $_POST['search_text'];
+if(isset($_POST['search']) && strlen($_POST['search_text']) > 3) {
+    $search_text = $db_handle->sanitizePost($_POST['search_text']);
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
             FROM user_edu_deposits AS ued
             INNER JOIN user AS u ON ued.user_code = u.user_code
-            WHERE ued.status = '1' GROUP BY ued.user_code
+            WHERE ued.status = '1' AND (u.email LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%') AND u.user_code  NOT IN(SELECT u.user_code FROM user_edu_deposits AS ued
+            INNER JOIN user AS u ON ued.user_code = u.user_code
+            WHERE ued.status = '3') GROUP BY ued.user_code
             ORDER BY ued.created DESC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, MAX(ued.created) AS created
             FROM user_edu_deposits AS ued
             INNER JOIN user AS u ON ued.user_code = u.user_code
-            WHERE ued.status = '1' GROUP BY ued.user_code
+            WHERE ued.status = '1' AND u.user_code  NOT IN(SELECT u.user_code FROM user_edu_deposits AS ued
+            INNER JOIN user AS u ON ued.user_code = u.user_code
+            WHERE ued.status = '3') GROUP BY ued.user_code
             ORDER BY created DESC ";
 }
 $numrows = $db_handle->numRows($query);
@@ -60,6 +64,7 @@ $education_deposit = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -79,7 +84,7 @@ $education_deposit = $db_handle->fetchAssoc($result);
                                         
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>EDUCATION - DEPOSIT INITIATED</strong></h4>
+                            <h4><strong>EDUCATION - UNCOMPLETED DEPOSIT INITIATED</strong></h4>
                         </div>
                     </div>
 
@@ -87,16 +92,23 @@ $education_deposit = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <a href="edu_deposit_initiated_only.php"><button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-arrow-left"></i> View UNCOMPLETED Deposit Initiated</button></a>
-                                <br>
-                                <p>See initiated education deposits below, click to process each deposit order.</p>
 
+                                <p class="pull-left">List of all FxAcademy Students who have initiated deposit But have not completed It.</p>
+                                <a href="edu_deposit_initiated.php"><button class="btn btn-default btn-sm pull-right">Go To Education Deposit Initiated <i class="glyphicon glyphicon-arrow-right"></i></button></a>
+                                <div class="row">
+                                <form action="" method="post" class="form-horizontal col-sm-12">
+                                    <input style="width: 350px; box-sizing: border-box; border: 2px solid #ccc;
+    border-radius: 4px;" class="form-input" type="text" name="search_text" placeholder="Enter Client Name, Email or Phone No....">
+                                    <button name="search" type="submit" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-search"></i></button>
+                                </form>
+                                </div>
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>Name</th>
                                         <th>Phone</th>
                                         <th>Email</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -111,39 +123,15 @@ $education_deposit = $db_handle->fetchAssoc($result);
                                             <td><strong><?php echo $row['full_name']; ?></strong></td>
                                             <td><strong><?php echo $row['phone']; ?></strong></td>
                                             <td><strong><?php echo $row['email']; ?></strong></td>
+                                            <?php
+                                            $selected_trans = $education_object->get_last_trans_id($row['user_code']);
+                                            if(isset($selected_trans)) { foreach ($selected_trans as $data) {
+                                                ?>
+                                                <td>
+                                                    <a class="btn btn-info" href="edu_deposit_process.php?x=initiated&id=<?php echo encrypt($data['trans_id']); ?>" title="Comment on Students last Transaction"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
+                                                </td>
+                                            <?php } } ?>
                                         </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                <table class="table table-responsive">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Trans ID</th>
-                                                        <th>Amount</th>
-                                                        <th>Created</th>
-                                                        <th></th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <?php
-                                                        $selected_trans = $education_object->get_initiated_trans_by_code($row['user_code']);
-                                                        if(isset($selected_trans)) { foreach ($selected_trans as $data) {
-                                                        $total_amount = $data['amount'] + $data['stamp_duty'] + $data['gateway_charge'];
-                                                    ?>
-                                                        <tr>
-                                                            <td><?php echo $data['trans_id']; ?></td>
-                                                            <td class="nowrap">&#8358; <?php echo number_format($total_amount, 2, ".", ","); ?></td>
-                                                            <td><?php echo datetime_to_text($data['created']); ?></td>
-                                                            <td class="nowrap">
-                                                                <a class="btn btn-info" href="edu_deposit_pay_notify.php?x=initiated&id=<?php echo encrypt($data['trans_id']); ?>" title="Payment Notification"><i class="fa fa-bell-o" aria-hidden="true"></i></a>
-                                                                <a class="btn btn-info" href="edu_deposit_process.php?x=initiated&id=<?php echo encrypt($data['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } } ?>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-
                                     <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
