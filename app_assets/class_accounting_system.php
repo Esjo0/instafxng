@@ -30,7 +30,10 @@ public function get_cash_out_details($cash_out_code)
         $order_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT req_order_total, author_code FROM accounting_system_req_order WHERE req_order_code = '$req_order_code' LIMIT 1 "))[0];
         $order_total = number_format($order_details['req_order_total'], 2, ".", ",");
         $order_owner = $admin_object->get_admin_name_by_code($order_details['author_code']);
-
+        $order_list = $db_handle->fetchAssoc($db_handle->runQuery("SELECT ASRI.item_desc, ASRI.app_no_of_items, ASRI.app_unit_cost, ASRI.app_total_cost FROM accounting_system_req_item AS ASRI
+INNER JOIN accounting_system_req_order AS ASRO ON ASRI.order_code = ASRO.req_order_code 
+WHERE ASRI.item_app = '2' 
+AND ASRO.req_order_code = '$req_order_code' "));
         $subject = "Cash Dispense";
         $mail_sender = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
         $message = <<<MAIL
@@ -41,8 +44,30 @@ public function get_cash_out_details($cash_out_code)
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Hi,</p>
             <p>Please disburse &#8358; $order_total to $order_owner.</p>
+            <p>The funds are for the items listed below;</p>
+            <center><table style="border:1px" class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>Item Description</th>
+                                                    <th>Number Of Items</th>
+                                                    <th>Unit Cost</th>
+                                                    <th>Total Cost</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+MAIL;
+        foreach($order_list as $row3) {
+        $_unit_cost = number_format($row3['app_unit_cost'], 2, ".", ",");
+        $_total_cost = number_format($row3['app_total_cost'], 2, ".", ",");
+        $message .= <<<MAIL
+    <tr><td>{$row3['item_desc']}</td><td>{$row3['app_no_of_items']}</td><td>&#8358; {$_unit_cost}</td><td>&#8358; {$_total_cost}</td></tr>
+MAIL;
+        }
+        $message .= <<<MAIL
+            </tbody>
+</table></center>
             <p>Thank you for your prompt response.</p>
-   
             <br/><br/>
             <p>Best Regards,</p>
             <p>$mail_sender,</p>
@@ -76,7 +101,6 @@ public function get_cash_out_details($cash_out_code)
     </div>
 </div>
 MAIL;
-
         $system_object->send_email($subject, $message, $admin_email, '', $mail_sender);
         return $result ? true : false;
     }

@@ -228,7 +228,7 @@ MAIL;
         else {
             $previous_lesson_url = "";
             $previous_lesson_name = "";
-            /*// Go to Course Level
+            // Go to Course Level
             $query = "SELECT edu_course_id FROM edu_course WHERE status = '2' ORDER BY course_order ASC";
             $result = $db_handle->runQuery($query);
             $fetched_data = $db_handle->fetchAssoc($result);
@@ -251,7 +251,7 @@ MAIL;
             } else {
                 $previous_lesson_url = "fxacademy/completion_cert.php";
                 $previous_lesson_name = "Course Completion";
-            }*/
+            }
         }
 
         $previous_lesson = array(
