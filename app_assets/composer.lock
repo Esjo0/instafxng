@@ -4,8 +4,31 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "910af5dcd0f7b7f4bd5c38d1422fb68f",
+    "content-hash": "9c56cd5bf90a9182559da3f3e30538df",
     "packages": [
+        {
+            "name": "datatables/datatables",
+            "version": "1.10.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DataTables/DataTables.git",
+                "reference": "156faa83386460c578e00c460eca9766e38a0c5f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DataTables/DataTables/zipball/156faa83386460c578e00c460eca9766e38a0c5f",
+                "reference": "156faa83386460c578e00c460eca9766e38a0c5f",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
+            "homepage": "http://www.datatables.net/",
+            "time": "2018-06-22T15:34:14+00:00"
+        },
         {
             "name": "mpdf/mpdf",
             "version": "v7.1.0",

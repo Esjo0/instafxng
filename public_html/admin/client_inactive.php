@@ -27,7 +27,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                 INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
                 INNER JOIN user AS u ON ui.user_code = u.user_code
                 WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
-            ) ";
+            ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$to_date' ";
         if(isset($search_text) && strlen($search_text) > 3) {
             $query .= "AND (td.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR td.date_earned LIKE '$search_text%') ";
         }
@@ -67,6 +67,36 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
     $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
     $result = $db_handle->runQuery($query);
     $selected_inactive_clients = $db_handle->fetchAssoc($result);
+
+
+    ///
+    $query2 = "CREATE TEMPORARY TABLE inactive_client_temp
+        SELECT u.user_code
+        FROM trading_commission AS td
+        INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        WHERE u.user_code NOT IN (
+            SELECT u.user_code
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
+        ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$to_date' GROUP BY u.user_code ";
+    $db_handle->runQuery($query2);
+
+    $query3 = "SELECT COUNT(ict.user_code) AS total FROM inactive_client_temp AS ict
+        INNER JOIN user AS u ON u.user_code = ict.user_code
+        INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+        INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+        INNER JOIN trading_commission AS td ON td.ifx_acct_no = ui.ifx_acct_no
+        WHERE STR_TO_DATE(ud.created, '%Y-%m-%d') > '$to_date'
+        AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') > '$to_date'";
+    $result3 = $db_handle->runQuery($query3);
+    $selected_total = $db_handle->fetchAssoc($result3);
+    $total_active = $selected_total[0]['total'];
+//    var_dump($total_active);
+
+    $db_handle->closeDB();
 }
 
 ?>
