@@ -1056,6 +1056,21 @@ MAIL;
         return $fetched_data ? $fetched_data : false;
     }
 
+    // Get the transaction ID of the user latest transaction by user code
+    public function get_last_trans_id($user_code) {
+        global $db_handle;
+
+        $query = "SELECT trans_id
+            FROM user_edu_deposits
+            WHERE status = '1' AND user_code = '$user_code'
+            ORDER BY created DESC LIMIT 1 ";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
     //Send access confirmation mail to client
     public function set_access_confirmation_mail($user_code)
     {
