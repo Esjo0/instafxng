@@ -3,7 +3,7 @@ require_once 'init/initialize_general.php';
 $thisPage = "Bonus";
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
     <head>
         <base target="_self">
         <meta charset="UTF-8">
@@ -28,8 +28,8 @@ $thisPage = "Bonus";
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-6">
-                                <h2>InstaForex 130% Bonus </h2>
-                                <p>Instaforex offers a unique 130% Forex bonus to all new and existing clients
+                                <h2>InstaForex 100% Bonus </h2>
+                                <p>Instaforex offers a unique 100% Forex bonus to all new and existing clients
                                     (who haven’t received the bonus) of the company.</p>
                                 <p>This bonus is to increase your capital and give you an opportunity to earn
                                 more in the Forex market.</p>
@@ -42,7 +42,7 @@ $thisPage = "Bonus";
                     </div>
 
                     <div class="section-tint super-shadow">
-                        <h5>Please follow the steps below to claim your 130% Forex Bonus.</h5>
+                        <h5>Please follow the steps below to claim your 100% Forex Bonus.</h5>
                         <ol>
                             <li>You must have opened an InstaForex account.
                                 <br>If you don’t have an account yet, please visit <a href="https://instafxng.com/live_account.php">here</a> to open an
@@ -57,8 +57,9 @@ $thisPage = "Bonus";
                                 for a 100% bonus on $50 deposit.<br>
                                 (ii). <a href="downloads/instaforex_education_bonus_form_$100.jpg" title="Click to download bonus application form" download>Click here to download form</a>
                                 for a 100% bonus on $100 deposit.</li>
-                            <p>You will be directed on how to claim the 30% bonus after the 100% bonus has been processed.
-                                Please note that the 100% bonus is a one-time bonus while the 30% bonus can be claimed on subsequent deposits.</p>
+                            <embed><span class="glyphicon glyphicon-warning-sign"></span> Note: If you would like to fund $150, kindly download both forms.</embed>
+                            <br>
+
                             <li>Scan and send the form alongside a valid government issued ID card such as
                                 International passport, National ID card, Tax card, Permanent voters card,
                                 driver’s license to support@instafxng.com</li>
@@ -73,7 +74,7 @@ $thisPage = "Bonus";
                         <span class="glyphicon glyphicon-earphone"></span> PHONE CALL: Simply dial any of the following numbers; 08083956750, 08182045184, 08028281192, 08139250268
 <br>
                             <span class="glyphicon glyphicon-comment"></span> WHATSAPP: Click here <a href="http://bit.ly/2M6Nco5">http://bit.ly/2M6Nco5</a> to chat with us on WhatsApp.
-                        <br><span class="glyphicon glyphicon-envelope"></span> EMAIL:  Send mail to <a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,%0A%0AI%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.%0A%0AThanks!">
+                        <br><span class="glyphicon glyphicon-envelope"></span> EMAIL:  Send mail to <a href="mailto:support@instafxng.com?subject=100%20Percent%20Bonus%20&body=Hello%20Mercy,%0A%0AI%20am%20interested%20in%20getting%20the%20100%20percent%20bonus.%0A%0AThanks!">
                                 support@instafxng.com</a>
                         </center></p>
                     </div>
