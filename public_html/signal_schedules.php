@@ -80,7 +80,10 @@ if(isset($_POST['login'])) {
         <!--............................-->
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
-        <!--<script>signal.get_signals_for_page();</script>-->
+        <script>
+            signal.get_signals_for_page();
+            $(document).ready(function() {setInterval(function(){signal.get_signals_for_page('date');}, 1000);});
+        </script>
         <!--................................-->
     </head>
     <body>
@@ -117,7 +120,7 @@ if(isset($_POST['login'])) {
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <?php include 'layouts/feedback_message.php'; ?>
-                            <div class="col-sm-12">
+                            <div class="col-sm-12" style="pointer-events: none;">
                                 <!-- TradingView Widget BEGIN -->
                                 <?php $signal_object->UI_show_live_quotes();?>
                                 <!-- TradingView Widget END -->

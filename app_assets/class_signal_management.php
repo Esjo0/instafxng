@@ -261,36 +261,28 @@ MAIL;
                                                             </div>
                                                             <div style="" class="col-sm-7 col-xs-12">
                                                                 <!-- TradingView Widget BEGIN -->
-                                                                <div class="tradingview-widget-container">
-                                                                    <div class="tradingview-widget-container__widget img-responsive"></div>
-                                                                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-                                                                        {
-                                                                            "showChart": true,
-                                                                            "locale": "en",
-                                                                            "width": "100%",
-                                                                            "height": 230,
-                                                                            "largeChartUrl": "",
-                                                                            "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
-                                                                            "plotLineColorFalling": "rgba(255, 74, 104, 1)",
-                                                                            "gridLineColor": "rgba(233, 233, 234, 1)",
-                                                                            "scaleFontColor": "rgba(233, 233, 234, 1)",
-                                                                            "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
-                                                                            "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
-                                                                            "symbolActiveColor": "rgba(242, 250, 254, 1)",
-                                                                            "tabs": [
-                                                                            {
-                                                                                "title": "Forex",
-                                                                                "symbols": [
-                                                                                    {
-                                                                                        "s": "FX:{$row['symbol']}"
-                                                                                    }
-                                                                                ],
-                                                                                "originalTitle": "Forex"
-                                                                            }
-                                                                        ]
-                                                                        }
-                                                                    </script>
-                                                                </div>
+                                                             
+                                                                <section style="min-height: 300px; pointer-events: none;">
+                                                        <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
+                                                        <script type="text/javascript">
+                                                            new TradingView.widget({
+                                                                "width": "100%",
+                                                                "height": 300,
+                                                                "symbol": "FX:{$row['symbol']}",
+                                                                "interval": "5",
+                                                                "timezone": "UTC",
+                                                                "theme": "White",
+                                                                "style": "8",
+                                                                "toolbar_bg": "#f1f3f6",
+                                                                "hide_side_toolbar": false,
+                                                                "allow_symbol_change": true,
+                                                                "hideideas": true,
+                                                                "show_popup_button": true,
+                                                                "popup_width": "1000",
+                                                                "popup_height": "650"
+                                                            });
+                                                        </script>
+                                                    </section>
                                                                 <!-- TradingView Widget END--->
                                                             </div>
                                                         </div>
