@@ -372,6 +372,7 @@ function client_group_campaign_category($status) {
         case '52': $message = "ILPR Campaign leads that came into our system in April"; break;
 		case '53': $message = "All clients who made deposit last month"; break;
 		case '54': $message = "All clients who made withdrawals last month"; break;
+        case '55': $message = "All inactive clients before May 1 2018."; break;
         default: $message = "Unknown"; break;
     }
     return $message;
