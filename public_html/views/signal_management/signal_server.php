@@ -6,4 +6,5 @@ $method_name = $db_handle->sanitizePost(trim($_GET['method_name']));
 $method_args = $db_handle->sanitizePost(trim($_GET['method_args']));
 
 $response = $signal_object->{$method_name}($method_args);
+var_dump($response);
 if(!empty($response)){echo $response;}

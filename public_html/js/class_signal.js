@@ -354,8 +354,41 @@ function Signal()
 
     this.get_signals_for_page = function(){
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=UI_get_signals_for_page";
+        console.log(url);
         var method = 'GET';
         this.ajax_call(url, method, 'update_signal_page');
+
+    };
+    this.ajax_page_display = function (response_div, type) {
+        var XMLHttpRequestObject = false;
+        if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
+        else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
+        if(XMLHttpRequestObject)
+        {
+            XMLHttpRequestObject.open('POST', "getQuotesData");
+            XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            XMLHttpRequestObject.setRequestHeader('charset','UTF-8');
+            XMLHttpRequestObject.send();
+            XMLHttpRequestObject.onreadystatechange = function()
+            {
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
+                {
+                    document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;
+                    //return XMLHttpRequestObject.responseText;
+                    // var json = XMLHttpRequestObject.responseText;
+                    // if(type == '1') { signal.showPageDisplay(json, response_div);
+                    // }
+                }
+            };
+
+        }
+        else {   return false;    }
+    };
+
+    this.getPageDisplay = function (id)
+    {
+        var type = "1";
+        this.ajax_page_display(id, type);
     };
 }
 var signal = new Signal();
