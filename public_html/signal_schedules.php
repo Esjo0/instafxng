@@ -124,15 +124,16 @@ if(isset($_POST['login'])) {
                             </div>
 
                             <div class="col-sm-12">
-                                <div id="signal_page_list" class="row grid">
+                                <!--<div id="signal_page_list" class="row grid">-->
+                                <div class="row grid">
 
-                                    <?php echo $signal_object->UI_get_signals_for_page();?>
-                                    <div style="display: none" id="signal_3" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item">
+                                    <?php //echo //$signal_object->UI_get_signals_for_page();?>
+                                    <div  id="signal_3" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 card grid-item">
                                         <div class="thumbnail">
                                             <div class="caption">
                                                 <div class="row">
                                                     <!--.....................................-->
-                                                    <div id="signal_3_main" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div id="signal_3_main" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                                                         <div class="row">
                                                             <div class="col-sm-2"></div>
                                                             <div class="col-sm-7">
@@ -160,7 +161,7 @@ if(isset($_POST['login'])) {
                                                     </div>
                                                     <!--............................................-->
                                                     <!--............................................-->
-                                                    <div id="signal_3_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                                                    <div id="signal_3_extra" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                                         <div class="row">
                                                             <div  class="col-sm-5 col-xs-12">
                                                                 <script>

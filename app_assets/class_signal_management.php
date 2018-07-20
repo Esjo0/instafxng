@@ -150,18 +150,12 @@ MAIL;
         }
     }
 
-    public function UI_signal_status_msg($trigger_stat){
+    public function UI_get_signal_trigger_status_msg($trigger_stat){
         $trigger_stat = (int)$trigger_stat;
         switch ($trigger_stat){
-            case 0:
-                $msg = 'Pending...';
-                break;
-            case 1:
-                $msg = 'Active...';
-                break;
-            case 2:
-                $msg = 'Closed';
-                break;
+            case 0: $msg = 'Pending...'; break;
+            case 1: $msg = 'Active...'; break;
+            case 2: $msg = 'Closed'; break;
         }
         return $msg;
     }
@@ -198,13 +192,8 @@ MAIL;
     public function UI_order_type_status_msg($order_type){
         $order_type = (int)$order_type;
         switch ($order_type){
-            case 0:
-                $msg = 'BUY';
-                break;
-            case 1:
-                $msg = 'SELL';
-                break;
-        }
+            case 0: $msg = "<b class='text-danger'><i class='glyphicon glyphicon-arrow-down'></i></b>"; break;
+            case 1: $msg = "<b class='text-success'><i class='glyphicon glyphicon-arrow-up'></i></b>"; break; }
         return $msg;
     }
 
