@@ -511,12 +511,11 @@ MAIL;
 
     public function get_lead_type($interest)
     {
-        $interest == 1 ? $x = "ILPR" : $x = "FxAcademy";
+        $interest == 1 ? $x = "FxAcademy" : $x = "ILPR" ;
         return $x;
     }
 
-    public function lead_interest($interest)
-    {
+    public function lead_interest($interest){
         switch ($interest) {
             case "1" :
                 $x = "FxAcademy";
@@ -531,8 +530,7 @@ MAIL;
         return $x;
     }
 
-    public function get_lead_reg_by_id($selected_id)
-    {
+    public function get_lead_reg_by_id($selected_id){
         global $db_handle;
 
         $query = "SELECT cl.lead_id, CONCAT(cl.l_name, SPACE(1), cl.f_name) AS full_name, cl.email, cl.phone, cl.created, u.user_code, cl.l_name as last_name, cl.f_name as first_name 
@@ -545,8 +543,7 @@ MAIL;
         return $fetched_data ? $fetched_data : false;
     }
 
-    public function update_lead_registration($selected_id, $training_email, $training_phone, $training_first_name, $training_last_name, $comment, $admin_unique_code, $state = '', $add_ifx_account = '', $client_user_code = '')
-    {
+    public function update_lead_registration($selected_id, $training_email, $training_phone, $training_first_name, $training_last_name, $comment, $admin_unique_code, $state = '', $add_ifx_account = '', $client_user_code = ''){
         global $db_handle;
 
         if (!empty($state)) {
@@ -766,6 +763,33 @@ AND CL.interest = '1'
             goto campaign_code;
         }
         return $campaign_code;
+    }
+
+    public function get_all_campaigns(){
+        global $db_handle;
+        $query ="SELECT campaign_title, created, form_field_ids, landing_url, status, lead_image, campaign_code FROM campaign_leads_campaign ORDER BY created DESC";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query));
+    }
+
+    public function get_campaign_status($status){
+        switch($status){
+            case '1':
+                $msg = 'ACTIVE';
+                break;
+            case '2':
+                $msg = 'INACTIVE';
+                break;
+        }
+        return $msg;
+    }
+
+    public function get_campaign_by_code($campaign_code){
+        global $db_handle;
+        $query = "SELECT campaign_title, campaign_desc, created, 
+                  updated, campaign_code, form_field_ids, landing_title, 
+                  landing_body, landing_url, status, lead_image 
+                  FROM campaign_leads_campaign WHERE campaign_code = '$campaign_code' ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
     }
 }
 $obj_loyalty_training = new Loyalty_Training();

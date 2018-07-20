@@ -3,10 +3,56 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $form_fields = Loyalty_Training::DYNAMIC_LANDING_PAGE_FORM_FIELDS;
 $dlp_template = Loyalty_Training::DYNAMIC_LANDING_PAGE_TEMPLATE;
-$campaign_code = $obj_loyalty_training->new_campaign_code();
-if(isset($_POST['process'])){
-    var_dump($_POST);
+///
+
+$get_params = allowed_get_params(['x', 'cc']);
+$campaign_code_encrypted = $get_params['cc'];
+$campaign_code = decrypt(str_replace(" ", "+", $campaign_code_encrypted));
+$campaign_code = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_code);
+
+if($get_params['cc'] == 'edit' && !empty($campaign_code)){
+    $selected_campaign = $obj_loyalty_training->get_campaign_by_code($campaign_code);
+}else{
+    $campaign_code = $obj_loyalty_training->new_campaign_code();
 }
+
+if(isset($_POST['process'])){
+    $campaign_title = $db_handle->sanitizePost(trim($_POST['campaign_title']));
+    $campaign_desc = $db_handle->sanitizePost(trim($_POST['campaign_desc']));
+    $landing_type = $db_handle->sanitizePost(trim($_POST['landing_type']));
+    $dynamic_url = $db_handle->sanitizePost(trim($_POST['dynamic_url']));
+    $custom_url = $db_handle->sanitizePost(trim($_POST['custom_url']));
+    $status = $db_handle->sanitizePost(trim($_POST['status']));
+    $dlp_content = $_POST['dlp_content'];
+
+    foreach ($_POST['fields'] as $key => $value){ $_form_fields[$key] = $db_handle->sanitizePost(trim($value)); }
+    $_form_fields = implode(',', $_form_fields);
+
+    if($_FILES["lead_image"]["error"] == UPLOAD_ERR_OK) {
+        $tmp_name = $_FILES["lead_image"]["tmp_name"];
+        $extension = explode(".", $_FILES["lead_image"]["name"]);
+        $lead_image = strtolower($campaign_code.'.'.end($extension));
+        move_uploaded_file($tmp_name, "../images/campaigns/$lead_image");
+    }
+
+    switch ($landing_type){
+        case '2':
+            $query = "INSERT INTO campaign_leads_campaign 
+                      (campaign_title, campaign_desc, campaign_code, form_field_ids, landing_body, landing_url, status, lead_image) 
+                      VALUES 
+                      ('$campaign_title', '$campaign_desc', '$campaign_code', '$_form_fields', '$dlp_content', '$dynamic_url', '$status', '$lead_image')";
+            break;
+        case '1':
+            $query = "INSERT INTO campaign_leads_campaign 
+                      (campaign_title, campaign_desc, campaign_code, landing_url, status, lead_image) 
+                      VALUES 
+                      ('$campaign_title', '$campaign_desc', '$campaign_code', '$custom_url', '$status', '$lead_image')";
+            break;
+    }
+    $result = $db_handle->runQuery($query);
+    $result ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +102,6 @@ if(isset($_POST['process'])){
                 var id = input.getAttribute('id');
                 console.log(id);
                 var fileInput = document.getElementById(id);
-                ////////////
                 return true;
             }
             function readURL(input){
@@ -88,7 +133,9 @@ if(isset($_POST['process'])){
             }
             function exchange_views(in_id, out_id){
                 document.getElementById(in_id).style.display = 'block';
+                document.getElementById(in_id).disabled = false;
                 document.getElementById(out_id).style.display = 'none';
+                document.getElementById(out_id).disabled = true;
             }
         </script>
     </head>
@@ -120,28 +167,28 @@ if(isset($_POST['process'])){
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="campaign_title">Campaign Title:</label>
                                         <div class="col-sm-9 col-lg-9">
-                                            <textarea id="campaign_title" onchange="slugify('campaign_title', 'dynamic_url')" required name="campaign_title" maxlength="255" class="form-control" rows="2" placeholder="Enter the flagship title of this leads campaign."></textarea>
+                                            <textarea id="campaign_title" onchange="slugify('campaign_title', 'dynamic_url')" required name="campaign_title" maxlength="255" class="form-control" rows="2" placeholder="Enter the flagship title of this leads campaign."><?php echo $selected_campaign['campaign_title']?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="campaign_desc">Campaign Description:</label>
-                                        <div class="col-sm-9 col-lg-9">
-                                            <textarea placeholder="Enter a precise description of this campaign" required id="campaign_desc" name="campaign_desc" class="form-control" rows="3" ></textarea>
+                                        <div class="col-sm-9 col-lg-9">$selected_campaign['campaign_desc']
+                                            <textarea placeholder="Enter a precise description of this campaign" required id="campaign_desc" name="campaign_desc" class="form-control" rows="3" ><?php echo $selected_campaign['campaign_desc'];?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="email">Landing Page:</label>
                                         <div class="col-sm-9 col-lg-9">
                                             <div class="form-group row">
-                                                <div class="col-sm-4"><div class="radio"><label for="landing_type_1"><input onclick="exchange_views('clp','dlp')" required type="radio" name="landing_type" value="1" id="landing_type_1" /> Custom Built Landing Page</label></div></div>
+                                                <div class="col-sm-4"><div class="radio"><label for="landing_type_1"><input onclick="exchange_views('clp','dlp')" required type="radio" name="landing_type" value="1" <?php if(empty($selected_campaign['campaign_desc'])){echo 'checked';} ?> id="landing_type_1" /> Custom Built Landing Page</label></div></div>
                                                 <div class="col-sm-4"><div class="radio"><label for="landing_type_2"><input onclick="exchange_views('dlp','clp')" required type="radio" name="landing_type" value="2" id="landing_type_2" /> Dynamic Landing Page</label></div></div>
                                             </div>
                                             <div id="dlp" style="display: none">
                                                 <div class="form-group row">
                                                     <div class="col-sm-12">
                                                         <br/><button class="btn btn-default btn-sm" data-target="#dynamic_landing_page" data-toggle="modal" id="dlp_trigger" type="button">Add Landing Page Contents</button>
-                                                        <br/><br/><span class="text-muted"><b>NB: </b>This is the link to the lead form <a onclick="copy_text('btn_<?php echo $count?>')"  data-clipboard-text="l_e_a_d_f_o_r_m_l_i_n_k" data-clipboard-action="copy" title="Click here to copy this link" href="javascript:void(0);">l_e_a_d_f_o_r_m_l_i_n_k</a> </span><br/><br/>
-                                                    </div>
+<!--                                                        <br/><br/><span class="text-muted"><b>NB: </b>This is the link to the lead form <a onclick="copy_text('btn_<?php /*echo $count*/?>')"  data-clipboard-text="l_e_a_d_f_o_r_m_l_i_n_k" data-clipboard-action="copy" title="Click here to copy this link" href="javascript:void(0);">l_e_a_d_f_o_r_m_l_i_n_k</a> </span><br/><br/>
+-->                                                    </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <div class="col-sm-12">
