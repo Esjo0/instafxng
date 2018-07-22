@@ -32,32 +32,16 @@ if(isset($_POST['login'])) {
         $message_error = "You entered an invalid email address, please try again.";
     }
 }
+
+$scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <!--........................................-->
         <style>
-            .se-pre-con {
-                position: fixed;
-                left: 0px;
-                top: 0px;
-                width: 100%;
-                height: 100%;
-                z-index: 9999;
-                background: url(images/Spinner.gif) center no-repeat #fff;
-            }
-            .vdivide [class*='col-']:not(:last-child):after {
-                background: #e0e0e0;
-                width: 1px;
-                content: "";
-                display:block;
-                position: absolute;
-                top:0;
-                bottom: 0;
-                right: 0;
-                min-height: 70px;
-            }
+            .se-pre-con {  position: fixed;  left: 0px;  top: 0px;  width: 100%;  height: 100%;  z-index: 9999;  background: url(images/Spinner.gif) center no-repeat #fff;  }
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
         <script>$(window).load(function() {$(".se-pre-con").fadeOut("slow");});</script>
@@ -116,132 +100,23 @@ if(isset($_POST['login'])) {
 
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <?php include 'layouts/feedback_message.php'; ?>
+                            <div class="col-sm-12">
+                                <?php include 'layouts/feedback_message.php'; ?>
+                                <div id="page_reloader" style="display: none" class="alert alert-success">
+                                    <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
+                                    <strong>New Updates Availabe!</strong> <a href="signal_schedules.php">Click here to view these updates.</a>
+                                </div>
+                            </div>
+
                             <div class="col-sm-12">
                                 <!-- TradingView Widget BEGIN -->
-                                <?php $signal_object->UI_show_live_quotes();?>
+                                <?php //$signal_object->UI_show_live_quotes();?>
                                 <!-- TradingView Widget END -->
                             </div>
 
                             <div class="col-sm-12">
-                                <!--<div id="signal_page_list" class="row grid">-->
-                                <div class="row grid">
-
-                                    <?php //echo //$signal_object->UI_get_signals_for_page();?>
-                                    <div  id="signal_3" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 card grid-item">
-                                        <div class="thumbnail">
-                                            <div class="caption">
-                                                <div class="row">
-                                                    <!--.....................................-->
-                                                    <div id="signal_3_main" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                                        <div class="row">
-                                                            <div class="col-sm-2"></div>
-                                                            <div class="col-sm-7">
-                                                                <b id="thumbnail-label pull-left">USD/CAD (1.3164)</b>
-                                                                <br/>
-                                                                <span>Active...</span>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <b class="text-info pull-right">BUY</b>
-                                                            </div>
-                                                        </div>
-                                                        <hr>
-                                                        <div class="well text-center"><b>ENTRY PRICE: 0.0000</b></div>
-                                                        <div class="row">
-                                                            <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Stop Loss</span></div></div>
-                                                            <div class="col-sm-6"><div class="well text-center"><span>0.0000<br/>Take Profit</span></div></div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">TRADE NOW</a><br/></div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-3"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></div>
-                                                            <div class="col-sm-9"><a id="signal_3_trigger" onclick="signal.show_extra_analysis('signal_3')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
-                                                        </div>
-                                                    </div>
-                                                    <!--............................................-->
-                                                    <!--............................................-->
-                                                    <div id="signal_3_extra" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                                                        <div class="row">
-                                                            <div  class="col-sm-5 col-xs-12">
-                                                                <script>
-                                                                    signal.get_news('USD/CAD');
-                                                                    new SimpleBar(document.getElementById('myElement'));
-                                                                </script>
-                                                                <div id="myElement" style="height: 300px; overflow-y: scroll;" data-simplebar data-simplebar-auto-hide="true" class="row">
-                                                                    <div class="row col-sm-12 col-xs-12">
-                                                                        <div class="col-sm-4 col-xs-4">
-                                                                            <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
-                                                                        </div>
-                                                                        <div class="col-sm-8 col-xs-8">
-                                                                            <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
-                                                                            <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
-                                                                        </div>
-                                                                        <div class="col-sm-12"><hr/></div>
-                                                                    </div>
-                                                                    <div class="row col-sm-12 col-xs-12">
-                                                                        <div class="col-sm-4 col-xs-4">
-                                                                            <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
-                                                                        </div>
-                                                                        <div class="col-sm-8 col-xs-8">
-                                                                            <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
-                                                                            <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
-                                                                        </div>
-                                                                        <div class="col-sm-12"><hr/></div>
-                                                                    </div>
-                                                                    <div class="row col-sm-12 col-xs-12">
-                                                                        <div class="col-sm-4 col-xs-4">
-                                                                            <img class="img-responsive" alt="" src="https://editorial.azureedge.net/images/Macroeconomics/CentralBanks/BOC/Bank_of_Canada2_2016_Large.jpg" />
-                                                                        </div>
-                                                                        <div class="col-sm-8 col-xs-8">
-                                                                            <b class="text-justify" style="font-size: small !important;"><a>Long USDCAD into the BoC meeting - TDS</a></b><br/>
-                                                                            <span class="text-justify" style="font-size: small !important;">Posted:2018-07-11 12:56:23 PM</span>
-                                                                        </div>
-                                                                        <div class="col-sm-12"><hr/></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div style="" class="col-sm-7 col-xs-12">
-                                                                <!-- TradingView Widget BEGIN -->
-                                                                <div class="tradingview-widget-container">
-                                                                    <div class="tradingview-widget-container__widget img-responsive"></div>
-                                                                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-                                                                        {
-                                                                            "showChart": true,
-                                                                            "locale": "en",
-                                                                            "width": "100%",
-                                                                            "height": 230,
-                                                                            "largeChartUrl": "",
-                                                                            "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
-                                                                            "plotLineColorFalling": "rgba(255, 74, 104, 1)",
-                                                                            "gridLineColor": "rgba(233, 233, 234, 1)",
-                                                                            "scaleFontColor": "rgba(233, 233, 234, 1)",
-                                                                            "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
-                                                                            "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
-                                                                            "symbolActiveColor": "rgba(242, 250, 254, 1)",
-                                                                            "tabs": [
-                                                                            {
-                                                                                "title": "Forex",
-                                                                                "symbols": [
-                                                                                    {
-                                                                                        "s": "FX:USDJPY"
-                                                                                    }
-                                                                                ],
-                                                                                "originalTitle": "Forex"
-                                                                            }
-                                                                        ]
-                                                                        }
-                                                                    </script>
-                                                                </div>
-                                                                <!-- TradingView Widget END--->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--............................................-->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div id="signals-grid" class="row grid">
+                                    <?php echo $signal_object->UI_get_signals_for_page();?>
                                 </div>
                             </div>
                         </div>
@@ -255,16 +130,9 @@ if(isset($_POST['login'])) {
                             <form class="form-horizontal" role="form" method="post" action="">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <!--<div class="modal-header">
-                                            <center>
-                                                <img width="40%" height="40%" class="img-responsive" style="border-radius: 50%" src="assets/images/dinner_2017.jpg">
-                                            <!--<h3 class="text-center text-danger modal-title">The Ethnic Impression 2017</h3>
-                                    </center>
-                                </div>-->
                                         <div class="modal-body">
                                             <?php include 'layouts/feedback_message.php'; ?>
                                             <center>
-                                                <!--<img width="40%" height="40%" class="img-responsive" style="border-radius: 50%" src="assets/images/dinner_2017.jpg">-->
                                                 <h3 class="text-center"><strong>FOREX TRADING SIGNALS</strong></h3>
                                                 <p class="text-center">
                                                     <b>Trade the markets by following the best free trading signals!</b><br/>
@@ -298,14 +166,11 @@ if(isset($_POST['login'])) {
                                 </div>
                             </form>
                         </div>
-                        <script>
-                            $(document).ready(function()
-                            {
-                                $('#confirm-add-admin').modal("show");
-                            });
-                        </script>
+                        <script>$(document).ready(function() {$('#confirm-add-admin').modal("show");});</script>
                     <?php } ?>
                     <!--//////////////////////////////-->
+
+
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
                 </div>
@@ -313,5 +178,8 @@ if(isset($_POST['login'])) {
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>
+    <script>
+        signal.new_signal_listener();
+    </script>
     </body>
 </html>

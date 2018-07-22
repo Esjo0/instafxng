@@ -66,7 +66,7 @@ class Signal_Management
     public function get_scheduled_signals($date){
         global $db_handle;
         $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.price, SD.take_profit,
-SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.trend, SD.note, SD.trigger_status, SS.symbol 
+SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol 
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE SD.trigger_date = '$date'";
@@ -87,43 +87,20 @@ WHERE SD.trigger_date = '$date'";
         return $pairs;
     }
 
-    /*public function send_push($token, $message, $title){
-        $path_to_firebase_cm = 'https://fcm.googleapis.com/fcm/send';
-        $API_SERVER_KEY = 'AAAAC0QYmqE:APA91bGSDtRp6HucthhIimDbmH3rzVakSLUIQRIIFqgBV-jXmYCfzE7sWvEdGVghRTSXL-fdLnnjdiXwTKibzrn4KrTaOTSrbyPGKkQylOt5mkRkvmup6MmUN9zZh-8QzYutQPazAvZu';
-        $fields = array(
-            'registration_ids' => $token,
-            'priority' => 'high',
-            'notification' => array('title' => $title, 'body' =>  $message ,'sound'=>'Enabled','image'=>'Notification Image' ),
-            'delay_while_idle' => false,
-            'content_available' => true,
-            'time_to_live' => 2419200
-        );
-        $headers = array('Authorization:key='.$API_SERVER_KEY, 'Content-Type:application/json');
 
-        // Open connection
-        $ch = curl_init();
-        // Set the url, number of POST vars, POST data
-        curl_setopt($ch, CURLOPT_URL, $path_to_firebase_cm);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-        // Execute post
-        $result = curl_exec($ch);
-        // Close connection
-        curl_close($ch);
-        return $result;
-    }*/
-    public function signal_file_listener(){
+
+    public function new_signal_listener(){
+        /*$signal_list = explode('-', $raw_signal_list);
+        foreach ($signal_list as $key => $value){
+            $signal_list[$key] = str_replace('signal_', '', $value);
+        }*/
         $file_current_property = date('Y-m-d h:i:s', stat('../../../models/signal_daily.json')['mtime']);
         $file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
-
+        //var_dump($file_current_property, $file_old_property);
         if($file_current_property != $file_old_property){
+            echo 'new-signals-found';
             file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
-            $this->get_signals_for_page();
-            //return file_get_contents('../../../models/signal_daily.json');
+
         }
     }
 
@@ -160,8 +137,8 @@ MAIL;
         return $msg;
     }
 
-    public function UI_signal_trend_msg($trigger_stat){
-        $trigger_stat = (int)$trigger_stat;
+    public function UI_signal_trend_msg($order_type){
+        $trigger_stat = (int)$order_type;
         switch ($trigger_stat){
             case 1:
                 $msg = '<b style="font-size: large" class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>';
@@ -176,15 +153,9 @@ MAIL;
     public function UI_signal_call_to_action_msg($trigger_stat){
         $trigger_stat = (int)$trigger_stat;
         switch ($trigger_stat){
-            case 0:
-                $msg = 'PLACE PENDING ORDER';
-                break;
-            case 1:
-                $msg = 'TRADE NOW';
-                break;
-            case 2:
-                $msg = 'CHECK MARKET HISTORY';
-                break;
+            case 0: $msg = 'PLACE PENDING ORDER'; break;
+            case 1: $msg = 'TRADE NOW'; break;
+            case 2: $msg = 'CHECK MARKET HISTORY';break;
         }
         return $msg;
     }
@@ -192,34 +163,32 @@ MAIL;
     public function UI_order_type_status_msg($order_type){
         $order_type = (int)$order_type;
         switch ($order_type){
-            case 0: $msg = "<b class='text-danger'><i class='glyphicon glyphicon-arrow-down'></i></b>"; break;
-            case 1: $msg = "<b class='text-success'><i class='glyphicon glyphicon-arrow-up'></i></b>"; break; }
+            case 1: $msg = "<b class='text-success'>BUY</b>"; break;
+            case 2: $msg = "<b class='text-danger'>SELL</b>"; break; }
         return $msg;
     }
 
     public function UI_get_signals_for_page(){
-        //$signals = (array) json_decode(file_get_contents('../../../models/signal_daily.json'));
         $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'));
-        $output = '';
         if(!empty($signals)){
-            for($i = 0; $i < count($signals); $i++){
-                $row = (array) $signals[$i];
-                $output .= <<<MAIL
-<div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item">
+            foreach ($signals as $row){
+                $row = (array) $row;
+                $output = <<<MAIL
+<div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
                                         <div class="thumbnail">
                                             <div class="caption">
                                                 <div class="row">
                                                     <!--.....................................-->
                                                     <div id="signal_{$row['signal_id']}_main" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                         <div class="row">
-                                                            <div class="col-sm-2"><b style="font-size: large" class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>{$this->UI_signal_trend_msg($row['trend'])}</div>
+                                                            <div class="col-sm-2"><p style="font-size: xxx-large">{$this->UI_signal_trend_msg($row['order_type'])}</p></div>
                                                             <div class="col-sm-7">
-                                                                <b id="thumbnail-label pull-left">{$row['symbol']} ({$this->UI_get_symbol_current_price($row['symbol'])})</b>
+                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']} (<span class="current_price" id="signal_{$row['signal_id']}_current_price">{$this->UI_get_symbol_current_price($row['symbol'])}</span>)</b>
                                                                 <br/>
-                                                                <span>{$this->UI_signal_status_msg($row['trigger_status'])}</span>
+                                                                <span>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</span>
                                                             </div>
                                                             <div class="col-sm-3">
-                                                                <b class="text-info pull-right">{$this->UI_order_type_status_msg($row['order_type'])}</b>
+                                                                <b class="pull-right">{$this->UI_order_type_status_msg($row['order_type'])}</b>
                                                             </div>
                                                         </div>
                                                         <hr>
@@ -280,14 +249,14 @@ MAIL;
                                         </div>
                                     </div>
 MAIL;
+                echo $output;
             }
         }
-        return $output;
     }
 
     public function update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type){
         global $db_handle;
-        $query = "UPDATE signal_daily SET symbol_id = '$symbol', order_type = '$type', price = '$price', take_profit = '$take_profit', stop_loss = '$stop_loss', trigger_date = '$signal_date', trigger_time = '$signal_time', note = '$comment', trend = '$trend' WHERE signal_id = '$id'";
+        $query = "UPDATE signal_daily SET symbol_id = '$symbol', order_type = '$type', price = '$price', take_profit = '$take_profit', stop_loss = '$stop_loss', trigger_date = '$signal_date', trigger_time = '$signal_time', note = '$comment' WHERE signal_id = '$id'";
         $result = $db_handle->runQuery($query);
         if($result){
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
@@ -315,8 +284,9 @@ MAIL;
 
     public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = ''){
         global $db_handle;
-        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend) 
-                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', '$trend')";
+        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note) 
+                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note')";
+
         $result = $db_handle->runQuery($query);
         if($result){
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));

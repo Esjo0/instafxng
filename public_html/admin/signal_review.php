@@ -20,21 +20,23 @@ FROM signal_daily AS SD
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
 
-$total_Signals_Posted = $db_handle->runQuery($query);
-$total_Signals_triggered = $db_handle->runQuery($query."AND SD.entry_price IS NOT NULL OR SD.entry_time IS NOT NULL ");
-$total_Signals_triggered_tp = $db_handle->runQuery($query."AND SD.exit_type = '0' ");
-$total_Signals_triggered_sl = $db_handle->runQuery($query."AND SD.exit_type = '1' ");
-$total_Signals_pending = $db_handle->runQuery($query."AND SD.trigger_status = '0' ");
+$total_Signals_Posted = $db_handle->numRows($query);
+$total_Signals_triggered = $db_handle->numRows($query."AND SD.entry_price IS NOT NULL OR SD.entry_time IS NOT NULL ");
+$total_Signals_triggered_tp = $db_handle->numRows($query."AND SD.exit_type = '0' ");
+$total_Signals_triggered_sl = $db_handle->numRows($query."AND SD.exit_type = '1' ");
+$total_Signals_pending = $db_handle->numRows($query."AND SD.trigger_status = '0' ");
+$total_Signals_users = $db_handle->numRows("SELECT email FROM signal_users");
 
-$query = "SELECT SUM(views) AS Total FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date'";
-$result_view = $db_handle->runQuery($query);
 
-$query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
-$total_triggered = $db_handle->numRows($query);
+//$query = "SELECT SUM(views) AS Total FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date'";
+//$result_view = $db_handle->runQuery($query);
 
-$query = "SELECT * FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' ORDER BY created DESC";
+//$query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
+//$total_triggered = $db_handle->numRows($query);
+
+//$query = "SELECT * FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' ORDER BY created DESC";
 $numrows = $db_handle->numRows($query);
-$total_untriggered = $numrows - $total_triggered;
+//$total_untriggered = $numrows - $total_triggered;
 $rowsperpage = 10;
 $totalpages = ceil($numrows / $rowsperpage);
 if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {    $currentpage = (int) $_GET['pg'];} else {    $currentpage = 1;}
@@ -47,6 +49,15 @@ $offset = ($currentpage - 1) * $rowsperpage;
 $query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $all_signals = $db_handle->fetchAssoc($result);
+
+function table_context($trigger_status){
+    switch ((int) $trigger_status){
+        case 0: $msg = 'table-warning'; break;
+        case 1: $msg = 'table-success'; break;
+        case 2: $msg = 'table-danger'; break;
+    }
+    echo $msg;
+}
 
 ?>
 <!DOCTYPE html>
@@ -145,21 +156,11 @@ $all_signals = $db_handle->fetchAssoc($result);
                                 <table class=" table table-responsive table-striped table-bordered table-hover">
                                         <thead>
                                             <tr><th>Total Signals Posted</th> <th><?php echo $total_Signals_Posted;?></th></tr>
-                                            <tr>
-                                                <th>Total Triggered Signals (All)</th> <th><?php echo $numrows;?></th>
-                                            </tr>
-                                            <tr>
-                                                <th>Total Triggered Signals (Take Profit)</th> <th><?php echo $numrows;?></th>
-                                            </tr>
-                                            <tr>
-                                                <th>Total Triggered Signals (Stop Loss)</th> <th><?php echo $numrows;?></th>
-                                            </tr>
-                                            <tr>
-                                                <th>Total Pending Signals</th> <th><?php echo $total_untriggered;?></th>
-                                            </tr>
-                                            <tr>
-                                                <th>Total Signal Users</th> <th><?php echo $numrows;?></th>
-                                            </tr>
+                                            <tr><th>Total Triggered Signals (All)</th> <th><?php echo $total_Signals_triggered;?></th></tr>
+                                            <tr><th>Total Triggered Signals (Take Profit)</th> <th><?php echo $total_Signals_triggered_tp;?></th></tr>
+                                            <tr><th>Total Triggered Signals (Stop Loss)</th> <th><?php echo $total_Signals_triggered_sl;?></th></tr>
+                                            <tr><th>Total Pending Signals</th> <th><?php echo $total_Signals_pending;?></th></tr>
+                                            <tr><th>Total Signal Users</th> <th><?php echo $total_Signals_users;?></th></tr>
                                         </thead>
                                     </table>
                             </div>
@@ -177,7 +178,7 @@ $all_signals = $db_handle->fetchAssoc($result);
                                 <?php foreach ($all_signals as $row) {?>
                                 <table  class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
-                                    <tr class="table-warning">
+                                    <tr class="<?php table_context($row['trigger_status']) ?>">
                                         <td rowspan="2"> <p style="font-size: xx-large"><b class='text-danger'><i class='glyphicon glyphicon-arrow-down'></i></b></p> </td>
                                         <td>
                                             <span><b>Currency Pair:</b> <?php echo $row['pair']; ?></span><br/>
@@ -200,6 +201,11 @@ $all_signals = $db_handle->fetchAssoc($result);
                                     </thead>
                                 </table>
                                     <?php }} else { echo "<table><tr><td ><em>No results to display...</em></td></tr></table>"; } ?>
+                                <?php if(isset($all_signals) && !empty($all_signals)) { ?>
+                                    <div class="tool-footer text-right">
+                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                    </div>
+                                <?php } ?>
                             </div>
                         </div>
                         <?php require 'layouts/pagination_links.php'; ?>

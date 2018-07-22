@@ -1,7 +1,6 @@
 function Signal()
 {
     this.time_window = 60;//60 mins
-
     //TODO: Ensure this is changed
     this.BASE_URL = 'http://localhost/instafxngwebsite/public_html/';
     //this.SIGNAL_FILE_URL = 'http://localhost/instafxngwebsite/models/signal_daily.json';
@@ -69,12 +68,14 @@ function Signal()
         return str.toUpperCase();
     };
 
+    ////remove
     this.get_news = function(currency_pair){
         date = this.formatDate(new Date(), 'simple');
         var url = 'https://newsapi.org/v2/everything?q='+currency_pair+'&from='+date+'&sortBy=popularity&apiKey=f954016b06bd412288ac281bc509a719';
 
     };
 
+    ////fine
     this.show_extra_analysis = function(div_id){
         signal_div = document.getElementById(div_id);
         signal_main = document.getElementById(div_id+'_main');
@@ -95,15 +96,15 @@ function Signal()
         }
     };
 
+    ///fine
     this.ajax_call = function (url, method,call_back_func) {
+        console.log(url);
         if(window.XMLHttpRequest){ xmlhttp=new XMLHttpRequest();}
         else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
         xmlhttp.onreadystatechange = function(){
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
                 if(call_back_func){
                     if(xmlhttp.responseText) {
-                        /*var response = JSON.parse(xmlhttp.responseText) ? JSON.parse(xmlhttp.responseText) : xmlhttp.responseText;
-                        console.log(response);*/
                         signal[call_back_func](xmlhttp.responseText);
                     }
                 }
@@ -265,97 +266,34 @@ function Signal()
         this.ajax_request('', query, '3');
     };
 
+    ///recheck
     this.refreshList = function() {
         document.getElementById('preloader').style.display = 'block';
         document.getElementById('sig').innerHTML = '';
         this.getSignals('sig');
     };
 
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////
-
-    /*this.ajax_pull = function (response_div, type) {
-        var XMLHttpRequestObject = false;
-        if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
-        else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
-        if(XMLHttpRequestObject) {
-            XMLHttpRequestObject.open('POST', "getQuotesData.php");
-            XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-            XMLHttpRequestObject.setRequestHeader('charset','UTF-8');
-            XMLHttpRequestObject.send();
-            XMLHttpRequestObject.onreadystatechange = function() {
-                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
-                    //document.getElementById(response_div).innerHTML = XMLHttpRequestObject.responseText;
-                    //return XMLHttpRequestObject.responseText;
-                    var json = XMLHttpRequestObject.responseText;
-                    //console.log(json);
-                    if(type == '1') { signal.showQuotes(json, response_div);}
-                }
-            };
-
+    ///fine
+    this.new_signal_listener = function(){
+        var signal_list = document.getElementsByClassName('main');
+        var id_list = [];
+        for(var row in signal_list){
+            if(signal_list[row]['id']){ id_list.push(signal_list[row]['id']);}
         }
-        else {   return false;    }
-    };*/
+        id_list = id_list.join('-');
+        var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
+        this.ajax_call(url, 'GET', 'update_signal_page');
+        setInterval(function(){signal.new_signal_listener();}, 60000);//TODO: Fix this back to 5000
+    };
 
-    ///TODO: Revisit this loop
-    this.showQuotes = function(quotes_array) {
-        for(var x in quotes_array){
-            if(x < 50){
-                currency_pair = '<b>'+this.get_currency_pair_from_str(quotes_array[x]['symbol'])+'</b>';
-                bid = '<span class="text-success"><b>BID: </b>'+quotes_array[x]['bid']+'</span>';
-                ask = '<span class="text-danger"><b>ASK: </b>'+quotes_array[x]['ask']+'</span>';
-                price = '<span class="text-info"><b>PRICE: </b>'+quotes_array[x]['bid']+'</span>';
-                timestamp = this.stamp_to_time_Converter(quotes_array[x]['timestamp']);
-                document.getElementById('live_quotes').innerHTML += currency_pair+" "+bid+" "+ask+" "+price+"   @ "+timestamp+" ... ";
-            }
+    ///fine
+    this.update_signal_page = function(update_msg){
+        if(update_msg == 'new-signals-found'){
+            document.getElementById('page_reloader').style.display = 'block';
         }
+        //setTimeout(this.new_signal_listener(), 10000)
     };
 
-    this.getQuotes = function (id) {
-        var type = "1";
-        this.ajax_pull(id, type);
 
-    };
-
-    this.get_live_quotes = function(){
-        if(!localStorage.getItem("live_quote")){
-            var url = "https://forex.1forge.com/1.0.3/quotes?api_key=VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r";
-            var method = 'GET';
-            var feedback = this.ajax_call(url, method, 'showQuotes');
-            //localStorage.setItem('live_quotes', JSON.parse(feedback))
-        }else{ this.showQuotes(JSON.parse(localStorage.getItem("live_quotes")));}
-    };
-
-    /*this.getMainSignal = function(response_div) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById(response_div).innerHTML = this.responseText;
-            }
-        };
-        xmlhttp.open("POST", "signal_main_display", true);
-        xmlhttp.send();
-    }*/
-
-    this.signal_file_listener = function(){
-        var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=signal_file_listener";
-        var method = 'GET';
-        this.ajax_call(url, method, 'update_signal_page');
-    };
-
-    this.update_signal_page = function(array_value){
-        if(array_value){
-            console.log(array_value);
-            document.getElementById('signal_page_list').innerHTML = array_value;
-
-        }
-        setTimeout(this.signal_file_listener(), 60000)
-    };
-
-    this.get_signals_for_page = function(){
-        var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=UI_get_signals_for_page";
-        var method = 'GET';
-        this.ajax_call(url, method, 'update_signal_page');
-    };
 }
 var signal = new Signal();

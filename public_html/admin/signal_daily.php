@@ -51,7 +51,7 @@ if(isset($_POST['new_signal'])){
     $signal_time = $db_handle->sanitizePost($_POST['signal_time']);
 	$signal_date = $db_handle->sanitizePost($_POST['signal_date']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
-	$trend = $db_handle->sanitizePost($_POST['trend']);
+	//$trend = $db_handle->sanitizePost($_POST['trend']);
     $buy_option = 1;
     $sell_option = 2;
 
@@ -409,11 +409,7 @@ $all_signals = $db_handle->fetchAssoc($result);
                                             </div>
                                         </div>
                                         <script type="text/javascript">
-                                            $(function () {
-                                                $('#datetimepickerd<?php echo $row['signal_id']?>').datetimepicker({
-                                                    format: 'YYYY-MM-DD'
-                                                });
-                                            });
+                                            $(function () {$('#datetimepickerd<?php echo $row['signal_id']?>').datetimepicker({format: 'YYYY-MM-DD'});});
                                         </script>
                                     </div>
 
