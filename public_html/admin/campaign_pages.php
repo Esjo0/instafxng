@@ -1,7 +1,26 @@
 <?php
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
-$campaigns = $obj_loyalty_training->get_all_campaigns();
+//$campaigns = $obj_loyalty_training->get_all_campaigns();
+
+$query = "SELECT campaign_title, created, form_field_ids, landing_url, status, lead_image, campaign_code FROM campaign_leads_campaign ORDER BY created DESC ";
+$numrows = $db_handle->numRows($query);
+$rowsperpage = 10;
+$totalpages = ceil($numrows / $rowsperpage);
+// get the current page or set a default
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {$currentpage = (int) $_GET['pg'];
+} else {$currentpage = 1;}
+if ($currentpage > $totalpages) { $currentpage = $totalpages; }
+if ($currentpage < 1) { $currentpage = 1; }
+
+$prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
+$prespagehigh = $currentpage * $rowsperpage;
+if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
+
+$offset = ($currentpage - 1) * $rowsperpage;
+$query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
+$result = $db_handle->runQuery($query);
+$campaigns = $db_handle->fetchAssoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +58,8 @@ $campaigns = $obj_loyalty_training->get_all_campaigns();
                         <div class="col-sm-12">
                             <?php require_once 'layouts/feedback_message.php'; ?>
                             <p class="text-right"><a href="campaign_new.php" class="btn btn-default" title="New Lead's Campaign"> New Lead's Campaign  <i class="fa fa-arrow-circle-right"></i></a></p>
-                            <p>Fill the form below to create a new leads campaign.</p>
+
+                            <?php if(isset($campaigns) && !empty($campaigns)) { require 'layouts/pagination_links.php'; } ?>
 
                             <table class="table table-bordered table-responsive table-hover">
                                 <thead>
@@ -57,19 +77,13 @@ $campaigns = $obj_loyalty_training->get_all_campaigns();
                                 <?php if(!empty($campaigns)){ ?>
                                     <?php foreach($campaigns as $row){ ?>
                                         <tr>
-                                            <td><img height="200px" width="170px" src="../images/campaigns/<?php echo $row['lead_image'];?>" class="img-thumbnail img-responsive" /></td>
+                                            <td><img height="100px" width="70px" src="../images/campaigns/<?php echo $row['lead_image'];?>" class="img-thumbnail img-responsive" /></td>
                                             <td><?php echo $row['campaign_title'];?></td>
-                                            <td>
-                                                <?php
-                                                foreach(explode(',', $row['form_field_ids']) as $key){
-                                                    echo Loyalty_Training::DYNAMIC_LANDING_PAGE_FORM_FIELDS[$key]['name'].'<br/> <br/>';
-                                                }
-                                                ?>
-                                            </td>
+                                            <td><?php foreach(explode(',', $row['form_field_ids']) as $key){ echo Loyalty_Training::DYNAMIC_LANDING_PAGE_FORM_FIELDS[$key]['name'].'<br/> <br/>';} ?></td>
                                             <td><?php echo $obj_loyalty_training->get_campaign_status($row['status']);?></td>
                                             <td> <a target="_blank" href="<?php echo $row['landing_url'];?>"><?php echo $row['landing_url'];?></a> </td>
                                             <td><?php echo datetime_to_text($row['created']);?></td>
-                                            <td class="nowrap"> <a class="btn btn-xs btn-info" href="campaign_new.php?cc=<?php echo $row['campaign_code'];?>">Edit</a> </td>
+                                            <td class="nowrap"> <a class="btn btn-xs btn-info" href="campaign_new.php?cc=<?php echo $row['campaign_code'];?>&x=edit">Edit</a> </td>
                                         </tr>
                                     <?php } ?>
                                 <?php }else{ ?>
@@ -79,9 +93,14 @@ $campaigns = $obj_loyalty_training->get_all_campaigns();
                                 <?php } ?>
                                 </tbody>
                             </table>
+                            <?php if(isset($campaigns) && !empty($campaigns)) { ?>
+                                <div class="tool-footer text-right">
+                                    <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                </div>
+                            <?php } ?>
                     </div>
                 </div>
-
+                    <?php if(isset($campaigns) && !empty($campaigns)) { require_once 'layouts/pagination_links.php'; } ?>
             </div>
 
             <!-- Unique Page Content Ends Here

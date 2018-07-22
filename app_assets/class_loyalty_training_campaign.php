@@ -748,20 +748,15 @@ AND CL.interest = '1'
         }
         if ($x == 1) {
             $x = count($result);
-        } else if ($x == 2) {
-            $x = $result;
-        }
+        } else if ($x == 2) {$x = $result;}
         return $x;
     }
 
-    public function new_campaign_code()
-    {
+    public function new_campaign_code(){
         global $db_handle;
         campaign_code:
         $campaign_code = rand_string(6);
-        if ($db_handle->numRows("SELECT campaign_code FROM campaign_leads_campaign WHERE campaign_code = '$campaign_code'") > 0) {
-            goto campaign_code;
-        }
+        if ($db_handle->numRows("SELECT campaign_code FROM campaign_leads_campaign WHERE campaign_code = '$campaign_code'") > 0) {goto campaign_code;}
         return $campaign_code;
     }
 
@@ -773,21 +768,14 @@ AND CL.interest = '1'
 
     public function get_campaign_status($status){
         switch($status){
-            case '1':
-                $msg = 'ACTIVE';
-                break;
-            case '2':
-                $msg = 'INACTIVE';
-                break;
-        }
-        return $msg;
+            case '1': $msg = 'ACTIVE'; break;
+            case '2': $msg = 'INACTIVE';break;
+        }return $msg;
     }
 
     public function get_campaign_by_code($campaign_code){
         global $db_handle;
-        $query = "SELECT campaign_title, campaign_desc, created, 
-                  updated, campaign_code, form_field_ids, landing_title, 
-                  landing_body, landing_url, status, lead_image 
+        $query = "SELECT campaign_title, campaign_desc, created, updated, campaign_code, form_field_ids, landing_title, landing_body, landing_url, status, lead_image 
                   FROM campaign_leads_campaign WHERE campaign_code = '$campaign_code' ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
     }

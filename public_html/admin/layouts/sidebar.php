@@ -262,6 +262,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <ul class="dropdown-menu">
                         <?php if (in_array(255, $my_pages_sidebar)) { ?><li><a href="campaign_leads.php">Campaign Leads</a></li><?php } ?>
                         <?php if (in_array(256, $my_pages_sidebar)) { ?><li><a href="campaign_analytics.php">Campaign Analytics</a></li><?php } ?>
+                        <?php //if (in_array(256, $my_pages_sidebar)) { ?><li><a href="campaign_pages.php">Campaign Pages</a></li><?php //} ?>
                     </ul>
                 </li>
                 <li class="dropdown">
