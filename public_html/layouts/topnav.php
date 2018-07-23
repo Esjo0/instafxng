@@ -59,7 +59,7 @@
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="live_account.php" title="Open live Account">Live Account</a></li>
-                            <li><a href="bonus_account.php" title="$20 Bonus Account">$20 Bonus Account</a></li>
+<!--                            <li><a href="bonus_account.php" title="$20 Bonus Account">$20 Bonus Account</a></li>-->
                             <li><a href="https://instaforex.com/open_demo_account.php?x=BBLR" title="Demo Account" target="_blank">Demo Account</a></li>
                             <li><a href="https://instaforex.com/downloads.php?x=BBLR" title="Download Trading Terminal" target="_blank">Download Trading Terminal</a></li>
                         </ul>
