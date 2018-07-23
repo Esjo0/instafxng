@@ -219,12 +219,16 @@ MAIL;
                                                             </div>
                                                             <div style="" class="col-sm-7 col-xs-12">
                                                                 <!-- TradingView Widget BEGIN -->
+                                                                <!-- TradingView Widget BEGIN -->
+
+<!-- TradingView Widget END -->
                             <section>
+                            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
                                                         <script type="text/javascript">
                                                             new TradingView.widget({
                                                                 "width": "100%",
                                                                 "height": 300,
-                                                                "symbol": "FX:EURUSD",
+                                                                "symbol": "FX:{$row['symbol']}",
                                                                 "interval": "5",
                                                                 "timezone": "UTC",
                                                                 "theme": "White",
@@ -329,6 +333,20 @@ MAIL;
         echo "<script type='text/javascript' src='https://s3.tradingview.com/external-embedding/embed-widget-tickers.js' async>";
         echo json_encode($symbol_array);
         echo "</script></div><br/>";
-
     }
+
+    public function UI_get_signals_for_sidebar(){
+        $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'));
+        if(!empty($signals)){
+            foreach ($signals as $row){
+                $row = (array) $row;
+                $output = <<<MAIL
+                <tr><a href="signal_schedule.php#signal_{$row['signal_id']}"><td>{$row['symbol']}</td><td></td><td>{$this->UI_order_type_status_msg($row['order_type'])}</td><td>{$this->UI_signal_trend_msg($row['order_type'])}</td><td>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</td></a></tr>
+MAIL;
+                echo $output;
+            }
+        }
+    }
+
+
 }

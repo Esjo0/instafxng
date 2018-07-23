@@ -1,4 +1,4 @@
-
+<?php $signal_object = new Signal_Management();?>
 <header><i class="fa fa-bars fa-fw"></i> Daily Forex Trading Signal</header>
 <article>
     <script>
@@ -28,6 +28,7 @@
     <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-hover">
         <thead><tr><th></th><th></th><th></th><th></th><th></th></tr></thead>
         <tbody id="sig">
+        <?php echo $signal_object->UI_get_signals_for_sidebar();?>
         <tr><td colspan="5"><center><h4><strong><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</strong></h4></center></td></tr>
         </tbody>
     </table>
