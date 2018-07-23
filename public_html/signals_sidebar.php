@@ -2,6 +2,7 @@
 <header><i class="fa fa-bars fa-fw"></i> Daily Forex Trading Signal</header>
 <article>
     <script>
+
         signal.getSignals('sig');
         $(document).ready(function() {setInterval(function(){signal.getSignals('sig');}, 3600000);});
     </script>
@@ -25,13 +26,16 @@
     <hr>
     <small><span class="glyphicon glyphicon-exclamation-sign"></span> Click on each signal Row for Details and Guide. </small>
     <br>
+    <a href="signal_schedules.php">
     <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-hover">
         <thead><tr><th></th><th></th><th></th><th></th><th></th></tr></thead>
         <tbody id="sig">
         <tr><td colspan="5"><center><h4><strong><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</strong></h4></center></td></tr>
         </tbody>
     </table>
+    </a>
     <a class="btn btn-group-justified btn-success btn-xs" href="signal_schedules.php">View More</a>
+    <button onclick="goto('#signal')">ufihnsifun</button>
     <hr>
     <small>
         <span class="text-success">GREEN ROW</span> = PENDING ORDER<br/>

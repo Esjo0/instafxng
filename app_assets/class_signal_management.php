@@ -217,6 +217,7 @@ MAIL;
                 $row = (array) $signals[$i];
                 $output .= <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item">
+<section id="link_{$row['signal_id']}">
                                         <div class="thumbnail">
                                             <div class="caption">
                                                 <div class="row">
@@ -291,6 +292,7 @@ MAIL;
                                                 </div>
                                             </div>
                                         </div>
+                                        </section>
                                     </div>
 MAIL;
             }
