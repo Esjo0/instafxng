@@ -283,13 +283,14 @@ function Signal()
         id_list = id_list.join('-');
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
         this.ajax_call(url, 'GET', 'update_signal_page');
-        setInterval(function(){signal.new_signal_listener();}, 60000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.new_signal_listener();}, 5000);//TODO: Fix this back to 5000
     };
 
     ///fine
     this.update_signal_page = function(update_msg){
         if(update_msg == 'new-signals-found'){
             document.getElementById('page_reloader').style.display = 'block';
+            document.getElementById('page_reloader_side').style.display = 'block';
         }
         //setTimeout(this.new_signal_listener(), 10000)
     };

@@ -173,7 +173,8 @@ MAIL;
         if(!empty($signals)){
             foreach ($signals as $row){
                 $row = (array) $row;
-                $output = <<<MAIL
+                if(!empty($row)) {
+                    $output = <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
                                         <div class="thumbnail">
                                             <div class="caption">
@@ -244,6 +245,13 @@ MAIL;
                                                         </script>
                                                     </section>
                             <!-- TradingView Widget END--->
+                            <div>
+                            <small style="font-size: x-small">Your use of the signals means you have read and accepted our
+        <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
+        Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
+            signal guide</a> to learn how to use the signals.
+    </small>
+</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -253,6 +261,11 @@ MAIL;
                                         </div>
                                     </div>
 MAIL;
+                }else{
+                    $output = <<<MAIL
+                <p>No signals at the moment...</p>
+MAIL;
+                }
                 echo $output;
             }
         }
@@ -340,9 +353,20 @@ MAIL;
         if(!empty($signals)){
             foreach ($signals as $row){
                 $row = (array) $row;
+                if(!empty($row)){
                 $output = <<<MAIL
-                <tr><a href="signal_schedule.php#signal_{$row['signal_id']}"><td>{$row['symbol']}</td><td></td><td>{$this->UI_order_type_status_msg($row['order_type'])}</td><td>{$this->UI_signal_trend_msg($row['order_type'])}</td><td>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</td></a></tr>
+                <tr><td><a href="signal_schedules.php#signal_{$row['signal_id']}"><strong Style="color: black">{$row['symbol']}</strong></a></td>
+                <td></td>
+                <td>{$this->UI_order_type_status_msg($row['order_type'])}</td>
+                <td>{$this->UI_signal_trend_msg($row['order_type'])}</td>
+                <td style="color:black;"><a href="signal_schedules.php#signal_{$row['signal_id']}">{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}<i class="glyphicon glyphicon-arrow-right"></i></a></td>
+                </tr>
 MAIL;
+                }else{
+                    $output = <<<MAIL
+                <tr><td colspan="5">No signals at the moment</td></tr>
+MAIL;
+                }
                 echo $output;
             }
         }
