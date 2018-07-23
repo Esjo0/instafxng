@@ -17,6 +17,22 @@ if(isset($_POST['process']))
     $condition_id = $db_handle->sanitizePost(trim(implode(',', $_POST['condition_id'])));
     $status = $db_handle->sanitizePost(trim($_POST['status']));
     $type = $db_handle->sanitizePost(trim($_POST['type']));
+
+    if($_FILES["bonus_img"]["error"] == UPLOAD_ERR_OK) {
+        if(isset($_FILES["bonus_img"]["name"])) {
+            $tmp_name = $_FILES["bonus_img"]["tmp_name"];
+            $name = strtolower($_FILES["bonus_img"]["name"]);
+            $extension = explode(".", $name);
+            new_name:
+            $name_string = rand_string(25);
+            $newfilename = $name_string . '.' . end($extension);
+            $display_picture = strtolower($newfilename);
+
+            if(file_exists("../images/bonus_packages/$display_picture")) { goto new_name;}
+            move_uploaded_file($tmp_name, "../images/bonus_packages/$display_picture");
+        }
+    }
+
     $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra']);
     $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
 }
@@ -29,6 +45,21 @@ if(isset($_POST['update']))
     $status = $db_handle->sanitizePost(trim($_POST['status']));
     $type = $db_handle->sanitizePost(trim($_POST['type']));
     $bonus_code = $db_handle->sanitizePost(trim($_POST['bonus_code']));
+
+    if($_FILES["bonus_img"]["error"] == UPLOAD_ERR_OK) {
+        if(isset($_FILES["bonus_img"]["name"])) {
+            $tmp_name = $_FILES["bonus_img"]["tmp_name"];
+            $name = strtolower($_FILES["bonus_img"]["name"]);
+            $extension = explode(".", $name);
+            new_file_name:
+            $name_string = rand_string(25);
+            $newfilename = $name_string . '.' . end($extension);
+            $display_picture = strtolower($newfilename);
+            if(file_exists("../images/bonus_packages/$display_picture")) { goto new_file_name;}
+            move_uploaded_file($tmp_name, "../images/blog/$display_picture");
+        }
+    }
+
     $new_package = $bonus_operations->update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $_POST['extra']);
     $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
 }
@@ -65,6 +96,36 @@ if(isset($_POST['update']))
                     }
                 }
             }
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {$('#blah').attr('src', e.target.result);};
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
+        <script src="tinymce/tinymce.min.js"></script>
+        <script type="text/javascript">
+            tinyMCE.init({
+                selector: "textarea#bonus_details",
+                height: 500,
+                theme: "modern",
+                relative_urls: false,
+                remove_script_host: false,
+                convert_urls: true,
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "emoticons template paste textcolor colorpicker textpattern responsivefilemanager"
+                ],
+                toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                toolbar2: "| responsivefilemanager print preview media | forecolor backcolor emoticons",
+                image_advtab: true,
+                external_filemanager_path: "../filemanager/",
+                filemanager_title: "Instafxng Filemanager",
+                browser_spellcheck: true
+            });
         </script>
     </head>
     <body>
@@ -100,13 +161,28 @@ if(isset($_POST['update']))
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="bonus_title">Package Name:</label>
                                         <div class="col-sm-9">
-                                            <textarea id="bonus_title" name="bonus_title" class="form-control" rows="2" required><?php if(!empty($package_details)){echo $package_details['bonus_title'];}?></textarea>
+                                            <textarea maxlength="255" id="bonus_title" name="bonus_title" class="form-control" rows="2" required><?php if(!empty($package_details)){echo $package_details['bonus_title'];}?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="bonus_desc">Package Description:</label>
                                         <div class="col-sm-9">
-                                            <textarea id="bonus_desc" name="bonus_desc" class="form-control" rows="7" required><?php if(!empty($package_details)){echo $package_details['bonus_desc'];}?></textarea>
+                                            <textarea maxlength="255" id="bonus_desc" name="bonus_desc" class="form-control" rows="7" required><?php if(!empty($package_details)){echo $package_details['bonus_desc'];}?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="bonus_desc">Package Details:</label>
+                                        <div class="col-sm-9">
+                                            <textarea id="bonus_details" name="bonus_details" class="form-control" rows="7" required><?php if(!empty($package_details)){echo $package_details['bonus_details'];}?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="bonus_desc">Package Image:</label>
+                                        <div class="col-sm-9">
+                                            <img width="200px" height="150px" class="img-thumbnail" id="blah" src="<?php if(isset($package_details['bonus_img']) && !empty($package_details['bonus_img'])) {echo "../images/bonus_packages/".$package_details['bonus_img'];} else{ echo '../images/placeholder.jpg';} ?>" alt="Bonus Image" />
+                                            <br/>
+                                            <input name="bonus_img" style="display: none" id="img" class="btn btn-default" type='file' onchange="readURL(this);"  accept="['jpg', 'gif', 'png']" />
+                                            <label class="btn btn-sm btn-default" for="img">Select Image</label>
                                         </div>
                                     </div>
                                     <div class="form-group">

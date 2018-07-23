@@ -2,6 +2,7 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
+$client_operation = new clientOperation();
 
 //TODO: Get a list all the reasons a bonus application can be declined
 if(isset($_POST['process-app'])){
@@ -145,6 +146,22 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                         </tr>
                                         <tr>
                                             <td><b>Account No:</b>  <?php echo $app_details['ifx_acct_no']; ?></td>
+                                            <td>
+                                                <center><b>Client Flags</b></center><br/>
+                                                <?php var_dump($client_operation->get_client_flag_by_code($app_details['user_code'])) ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <center><b>Funding Transaction History</b></center><br/>
+                                                <b>Total Funded:</b>  <?php echo number_format($bonus_operations->get_funding_history($app_details['ifx_acct_no'])['total'], 2, '.', ','); ?><br/>
+                                                <b>Average Funding:</b>  <?php echo number_format($bonus_operations->get_funding_history($app_details['ifx_acct_no'])['average'], 2, '.', ','); ?><br/>
+                                            </td>
+                                            <td>
+                                                <center><b>Withdrawal Transaction History</b></center><br/>
+                                                <b>Total Withdrawn:</b>  <?php echo number_format($bonus_operations->get_withdrawals_history($app_details['ifx_acct_no'])['total'], 2, '.', ','); ?><br/>
+                                                <b>Average Withdrawal:</b>  <?php echo number_format($bonus_operations->get_withdrawals_history($app_details['ifx_acct_no'])['average'], 2, '.', ','); ?><br/>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

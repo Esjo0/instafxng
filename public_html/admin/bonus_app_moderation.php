@@ -45,7 +45,7 @@ $pending_moderation = paginate_array($offset, $pending_moderation, $rowsperpage)
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>MODERATE BONUS APPLICATION</strong></h4>
+                            <h4><strong>MODERATE BONUS APPLICATIONS</strong></h4>
                         </div>
                     </div>
                     

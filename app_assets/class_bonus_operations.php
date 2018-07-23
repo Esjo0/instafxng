@@ -243,15 +243,13 @@ ORDER BY updated DESC";
         return $return_value;
     }
 
-    public function get_package_by_code($bonus_code)
-    {
+    public function get_package_by_code($bonus_code){
         global $db_handle;
         $query = "SELECT * FROM bonus_packages WHERE bonus_code = '$bonus_code' ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
     }
 
-    public function get_package_meta_by_code($bonus_code)
-    {
+    public function get_package_meta_by_code($bonus_code){
         global $db_handle;
         $query = "SELECT * FROM bonus_package_meta WHERE bonus_code = '$bonus_code' ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query));
@@ -379,6 +377,46 @@ AND BA.bonus_account_id = $app_id
 ORDER BY created DESC ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
     }
+
+    public function get_acc_ilpr_state($bonus_account){
+        global $db_handle;
+        $query = "SELECT type FROM user_ifxaccount WHERE ifx|_acct_no = '$bonus_account' ";
+        $acc_type = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['type'];
+        switch ((int) $acc_type){
+            case 1: $msg = "ILPR Account"; break;
+            case 2: $msg = "None-ILPR Account"; break;
+        }
+        return $msg;
+    }
+
+    public function get_funding_history($bonus_account){
+        global $db_handle;
+        $query = "SELECT real_dollar_equivalent AS amount, UD.created AS date FROM user_ifxaccount AS UI
+INNER JOIN user_deposit AS UD ON UI.ifxaccount_id = UD.ifxaccount_id 
+WHERE UI.ifx_acct_no = '$bonus_account' AND UD.status = '8'";
+        $funding_transactions = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        $total_funded = $db_handle->fetchAssoc($db_handle->runQuery("SELECT SUM(real_dollar_equivalent) AS total_amount FROM user_ifxaccount AS UI
+INNER JOIN user_deposit AS UD ON UI.ifxaccount_id = UD.ifxaccount_id 
+WHERE UI.ifx_acct_no = '$bonus_account' AND UD.status = '8'"))[0]['total_amount'];
+        $average_funding = $total_funded / $db_handle->numRows($query);
+        $funding_history = array('total' => $total_funded, 'average' => $average_funding, 'transactions' => $funding_transactions);
+        return $funding_history;
+    }
+
+    public function get_withdrawals_history($bonus_account){
+        global $db_handle;
+        $query = "SELECT dollar_withdraw AS amount, UW.created AS date FROM user_ifxaccount AS UI
+INNER JOIN user_withdrawal AS UW ON UI.ifxaccount_id = UW.ifxaccount_id 
+WHERE UI.ifx_acct_no = '$bonus_account' AND UW.status = '8'";
+        $withdrawal_transactions = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        $total_withdrawal = $db_handle->fetchAssoc($db_handle->runQuery("SELECT SUM(dollar_withdraw) AS total_amount FROM user_ifxaccount AS UI
+INNER JOIN user_withdrawal AS UW ON UI.ifxaccount_id = UW.ifxaccount_id 
+WHERE UI.ifx_acct_no = '$bonus_account' AND UW.status = '10'"))[0]['total_amount'];
+        $average_withdrawal = $total_withdrawal / $db_handle->numRows($query);
+        $withdrawal_history = array('total' => $total_withdrawal, 'average' => $average_withdrawal, 'transactions' => $withdrawal_transactions);
+        return $withdrawal_history;
+    }
+
 }
 
 
