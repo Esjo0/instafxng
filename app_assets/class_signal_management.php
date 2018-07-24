@@ -1,8 +1,21 @@
 <?php
 class Signal_Management
 {
+
     const QUOTES_API = "https://forex.1forge.com/1.0.3/quotes";
-    const QUOTES_API_KEY = "VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r";
+    //TODO: Update this...
+    const QUOTES_API_KEY = array(
+        1 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r',
+        2 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r',
+        3 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r',
+        4 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r'
+    );
+
+    public function quotes_api_key(){
+        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 4)];
+    }
+
+    //const QUOTES_API_KEY = "";
     public function curl_call($url, $method, $headers = '', $post_data = ''){
         $ch = curl_init();
         switch ($method){
@@ -47,7 +60,7 @@ class Signal_Management
 
     public function UI_get_symbol_current_price($symbol){
         $symbol = str_replace('/', '', $symbol);
-        $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".Signal_Management::QUOTES_API_KEY;
+        $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$this->quotes_api_key();
         $get_data = $this->curl_call($url, 'GET');
         $response = (array) json_decode($get_data, true);
         return $response[0]['price'];
@@ -56,7 +69,7 @@ class Signal_Management
     public function get_live_quotes(){
         $pairs = $this->get_scheduled_pairs(date('Y-m-d'));
         if(!empty($pairs)){
-            $url = Signal_Management::QUOTES_API."?pairs=$pairs&api_key=".Signal_Management::QUOTES_API_KEY;
+            $url = Signal_Management::QUOTES_API."?pairs=$pairs&api_key=".$this->quotes_api_key();
             $get_data = $this->curl_call($url, 'GET');
             $response = json_decode($get_data, true);
             return $response;
