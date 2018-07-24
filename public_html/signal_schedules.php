@@ -9,10 +9,12 @@ if(isset($_POST['login'])) {
     $phone = $db_handle->sanitizePost($_POST['phone']);
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
         if(empty($name) || empty($phone)){
-            if($db_handle->numRows('SELECT name, phone, email FROM signal_users WHERE email = $email') > 0){
+            $query = "SELECT name, phone, email FROM signal_users WHERE email = '$email' ";
+            if($db_handle->numRows($query) > 0){
                 $_SESSION['signal_schedule_user'] = $email;
             }else{
-                $user_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT phone, CONCAT(first_name, SPACE(1), last_name) AS name FROM users WHERE email = '$email'"))[0];
+                $user_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT phone, CONCAT(first_name, SPACE(1), last_name) AS name FROM users WHERE email = '$email'"));//[0];
+                var_dump($user_details);
                 if(empty($user_details['phone']) || empty($user_details['name'])){
                     $message_error = "Please update your profile details.";
                     $get_phone_and_name = true;
@@ -64,10 +66,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         <!--............................-->
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
-        <script>
-            // signal.getQuotes();
-            // $(document).ready(function() {setInterval(function(){signal.getQuotes();}, 1000);});
-        </script>
+
         <!--<script>signal.get_signals_for_page();</script>-->
         <!--................................-->
     </head>
@@ -130,8 +129,9 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
                     Login Form Scripting-->
                     <?php if(!isset($_SESSION['signal_schedule_user']) || empty($_SESSION['signal_schedule_user'])){ ?>
                         <!--Modal - confirmation boxes-->
-                        <div data-keyboard="false" data-backdrop="static" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                            <form class="form-horizontal" role="form" method="post" action="">
+<!--                        <div data-keyboard="false" data-backdrop="static" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+-->                            <div   id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                    <form class="form-horizontal" role="form" method="post" action="">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-body">

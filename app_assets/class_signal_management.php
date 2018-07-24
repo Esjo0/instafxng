@@ -38,7 +38,8 @@ class Signal_Management
     public function get_key(){
         $api_keys = array(
             "0" => "wmhaGdIcdztlSAXy76QZxeHAsWDpCtru",
-            "1" => "VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r");
+            "1" => "VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r",
+            "2" => "OADrX7UGJesDhvH5lDJ5NK93HZ3uSmxe");
         $max    = count($api_keys);//Inclusive
         $number = mt_rand( ) % ( $max );    //Time taken: 0.0038 Sec (10,000 iterations)
         $key = $api_keys[$number];
@@ -184,12 +185,21 @@ MAIL;
         return $msg;
     }
 
+    public function viewCount($id){
+        global $db_handle;
+        $query = "UPDATE signal_daily view SET views = views+1 WHERE signal_id = '$id''";
+        $result =$db_handle->runQuery($query);
+        return $result;
+
+
+    }
     public function UI_get_signals_for_page(){
         $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'));
         if(!empty($signals)){
             foreach ($signals as $row){
                 $row = (array) $row;
                 if(!empty($row)) {
+                    $this->viewCount($row['signal_id']);
                     $output = <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
                                         <div class="thumbnail">

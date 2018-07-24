@@ -82,3 +82,6 @@
         </div>
     </div>
 </div>
+<script>
+    signal.new_signal_listener();
+</script>

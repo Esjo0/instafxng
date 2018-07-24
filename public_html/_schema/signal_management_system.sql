@@ -46,3 +46,5 @@ CREATE TABLE `signal_users` (
  PRIMARY KEY (`signal_user_id`),
  UNIQUE KEY `email` (`email`)
 );
+
+CREATE TEMPORARY TABLE 'temp_signals'
