@@ -105,6 +105,7 @@ function Signal()
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
                 if(call_back_func){
                     if(xmlhttp.responseText) {
+                        console.log(xmlhttp.responseText);
                         signal[call_back_func](xmlhttp.responseText);
                     }
                 }
@@ -283,7 +284,8 @@ function Signal()
         id_list = id_list.join('-');
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
         this.ajax_call(url, 'GET', 'update_signal_page');
-        setInterval(function(){signal.new_signal_listener();}, 5000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.new_signal_listener();}, 60000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.getQuotes();}, 600000000000000000000000000000);//TODO: Fix this back to 1000
     };
 
     ///fine
@@ -295,6 +297,46 @@ function Signal()
         //setTimeout(this.new_signal_listener(), 10000)
     };
 
+    this.ajax_pull = function (type) {
+        var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=get_live_quotes";
+        var XMLHttpRequestObject = false;
+        if (window.XMLHttpRequest) {XMLHttpRequestObject = new XMLHttpRequest();}
+        else if (window.ActiveXObject) {XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");}
+        if(XMLHttpRequestObject)
+        {
+            XMLHttpRequestObject.open('GET', 'getQuotesData.php');
+            XMLHttpRequestObject.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            XMLHttpRequestObject.setRequestHeader('charset','UTF-8');
+            XMLHttpRequestObject.send();
+            XMLHttpRequestObject.onreadystatechange = function()
+            {
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200)
+                {
+                    var json = XMLHttpRequestObject.responseText;
+                    console.log(json);
+                    if(type == '1') { signal.showQuotes(json);}
+                }
+            };
+
+        }
+        else {   return false;    }
+    };
+
+    this.showQuotes = function(json)
+    {
+        var quotes_array = JSON.parse(json);
+        for(var x in quotes_array){
+            document.getElementById(quotes_array[0]['symbol']).innerHTML = quotes_array[0]['price'];
+        }
+
+    };
+
+    this.getQuotes = function ()
+    {
+        var type = "1";
+        this.ajax_pull(type);
+
+    };
 
 }
 var signal = new Signal();

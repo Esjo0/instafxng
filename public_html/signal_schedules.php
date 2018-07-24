@@ -64,12 +64,16 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         <!--............................-->
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+        <script>
+            // signal.getQuotes();
+            // $(document).ready(function() {setInterval(function(){signal.getQuotes();}, 1000);});
+        </script>
         <!--<script>signal.get_signals_for_page();</script>-->
         <!--................................-->
     </head>
     <body>
     <!--.............................-->
-        <div id="page_preloader" class="se-pre-con"></div>
+<!--        <div id="page_preloader" class="se-pre-con"></div>-->
     <!--......................-->
         <?php require_once 'layouts/header.php'; ?>
         <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
@@ -108,7 +112,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
                                 </div>
                             </div>
 
-                            <div class="col-sm-12" style="pointer-events: none">
+                            <div id="sig" class="col-sm-12" style="pointer-events: none">
                                 <!-- TradingView Widget BEGIN -->
                                 <?php $signal_object->UI_show_live_quotes();?>
                                 <!-- TradingView Widget END -->

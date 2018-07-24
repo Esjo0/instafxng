@@ -19,11 +19,11 @@
             </script>
         </em>
         <em  class="pull-right">
-            <button id="page_reloader_side" style="display: none; border: 0px;border-radius:50%;" title="Refresh Signals" class="btn btn-default btn-sm" ><i class="glyphicon glyphicon-refresh"></i></button>
+            <button id="page_reloader_side" style="display: none; border: 0px;border-radius:50%;" title="Refresh Signals" class="btn btn-success btn-sm" ><i class="glyphicon glyphicon-refresh"></i></button>
         </em>
     </small>
     <hr>
-    <small><span class="glyphicon glyphicon-exclamation-sign"></span> Click on each signal Row for Details and Guide. </small>
+    <small><span class="glyphicon glyphicon-exclamation-sign"></span> Click on each signal Status for Details and Guide. </small>
     <br>
     <table style="font-size: 0.8em; font-family: sans-serif;" class="table table-responsive table-hover">
         <thead><tr><th></th><th></th><th></th><th></th><th></th></tr></thead>

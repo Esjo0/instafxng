@@ -1,8 +1,12 @@
 <?php
 class Signal_Management
 {
+
+
+
     const QUOTES_API = "https://forex.1forge.com/1.0.3/quotes";
-    const QUOTES_API_KEY = "VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r";
+    const QUOTES_API_KEY = "wmhaGdIcdztlSAXy76QZxeHAsWDpCtru";
+
     public function curl_call($url, $method, $headers = '', $post_data = ''){
         $ch = curl_init();
         switch ($method){
@@ -31,6 +35,16 @@ class Signal_Management
         return $result;
     }
 
+    public function get_key(){
+        $api_keys = array(
+            "0" => "wmhaGdIcdztlSAXy76QZxeHAsWDpCtru",
+            "1" => "VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r");
+        $max    = count($api_keys);//Inclusive
+        $number = mt_rand( ) % ( $max );    //Time taken: 0.0038 Sec (10,000 iterations)
+        $key = $api_keys[$number];
+        return $key;
+    }
+
     public function get_symbol_id($pair_str){
         global $db_handle;
         $currrency_pair = implode('/',str_split($pair_str, 3));
@@ -47,7 +61,8 @@ class Signal_Management
 
     public function UI_get_symbol_current_price($symbol){
         $symbol = str_replace('/', '', $symbol);
-        $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".Signal_Management::QUOTES_API_KEY;
+        $key = $this->get_key();
+        $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=$key";
         $get_data = $this->curl_call($url, 'GET');
         $response = (array) json_decode($get_data, true);
         return $response[0]['price'];
@@ -56,7 +71,8 @@ class Signal_Management
     public function get_live_quotes(){
         $pairs = $this->get_scheduled_pairs(date('Y-m-d'));
         if(!empty($pairs)){
-            $url = Signal_Management::QUOTES_API."?pairs=$pairs&api_key=".Signal_Management::QUOTES_API_KEY;
+            $key = $this->get_key();
+            $url = Signal_Management::QUOTES_API."?pairs=$pairs&api_key=$key";
             $get_data = $this->curl_call($url, 'GET');
             $response = json_decode($get_data, true);
             return $response;
@@ -184,7 +200,7 @@ MAIL;
                                                         <div class="row">
                                                             <div class="col-sm-2"><p style="font-size: xxx-large">{$this->UI_signal_trend_msg($row['order_type'])}</p></div>
                                                             <div class="col-sm-7">
-                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']} (<span class="current_price" id="signal_{$row['signal_id']}_current_price">{$this->UI_get_symbol_current_price($row['symbol'])}</span>)</b>
+                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']} (<span class="current_price" id="{$row['symbol']}">{$this->UI_get_symbol_current_price($row['symbol'])}</span>)</b>
                                                                 <br/>
                                                                 <span>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</span>
                                                             </div>
