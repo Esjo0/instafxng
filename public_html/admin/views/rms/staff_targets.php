@@ -35,7 +35,7 @@ $_reportees = $obj_rms->get_reportees($_SESSION['admin_unique_code']);
                                 <input type="text" name="title" placeholder="Target Title" class="form-control" />
                             </div>
                             <div class="form-group">
-                                <textarea name="description" placeholder="Target Description" class="form-control" rows="4"></textarea>
+                                <textarea id="t-description" name="description" placeholder="Target Description" class="form-control" rows="6"></textarea>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-2"></div>
@@ -235,7 +235,7 @@ $_reportees = $obj_rms->get_reportees($_SESSION['admin_unique_code']);
                                                 <input value="<?php echo $title?>" type="text" name="title" placeholder="Target Title" class="form-control" />
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="description" placeholder="Target Description" class="form-control" rows="4"><?php echo $description?></textarea>
+                                                <textarea id="t-description" name="description" placeholder="Target Description" class="form-control" rows="4"><?php echo $description?></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-sm-2"></div>

@@ -98,28 +98,26 @@ class Reporting_System
         return  $response;
     }
 
-    public function update_report($window_period, $admin_code, $report, $target_id, $report_id, $status)
-    {
+    public function update_report($window_period, $admin_code, $report, $target_id, $report_id, $status){
         global $db_handle;
         $query = "UPDATE rms_reports 
         SET window_period = '$window_period', 
         admin_code = '$admin_code', 
         report = '$report', 
-        status = '$status', 
-        target_id = '$target_id'
-        WHERE report_id = $report_id ";
+        status = '$status' ";
+        if(!empty($target_id) && (int) $target_id){
+            $query.=", target_id = '$target_id'";
+        }
+        $query.="WHERE report_id = $report_id ";
         $db_handle->runQuery($query);
         $response = array();
-        if($db_handle->affectedRows() > 0)
-        {
+        if($db_handle->affectedRows() > 0) {
             $response['status'] = true;
             $response['report_id'] = $db_handle->insertedId();
-        }
-        else{
+        } else{
             $response['status'] = false;
             $response['report_id'] = null;
-        }
-        return  $response;
+        }return  $response;
     }
 
     public function get_report_comment($report_id)

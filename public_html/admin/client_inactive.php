@@ -14,6 +14,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
         $from_date = $_POST['from_date'];
         $to_date = $_POST['to_date'];
         $search_text = $_POST['search_text'];
+        $order = $_POST['order'];
 
         $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name, SUM(td.volume) AS my_volume, MAX(td.date_earned) AS last_trade_date
             FROM trading_commission AS td
@@ -31,7 +32,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
         if(isset($search_text) && strlen($search_text) > 3) {
             $query .= "AND (td.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR td.date_earned LIKE '$search_text%') ";
         }
-        $query .= "GROUP BY u.user_code ORDER BY last_trade_date DESC ";
+        $query .= "GROUP BY u.user_code ORDER BY $order DESC ";
 
         $_SESSION['search_client_query'] = $query;
         $_SESSION['search_client_query_from_date'] = $from_date;
@@ -64,7 +65,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
     if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
     $offset = ($currentpage - 1) * $rowsperpage;
-    $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+    $query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
     $result = $db_handle->runQuery($query);
     $selected_inactive_clients = $db_handle->fetchAssoc($result);
 
@@ -138,8 +139,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
-                                <p>Pick a date range below to see <strong>Inactive Trading Clients</strong>. If you want to search for
-                                    a client, enter a parameter in the search field.</p>
+                                <p>Pick a date range below to see <strong>Inactive Trading Clients</strong>. If you want to search for a client, enter a parameter in the search field.</p>
 
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                     <div class="form-group">
@@ -165,6 +165,15 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                                         <div class="col-sm-9 col-lg-5">
                                             <div>
                                                 <input type="text" class="form-control" name="search_text" value="" placeholder="Search term...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="search_text">Order:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <div class="row">
+                                                <div class="col-sm-6"><div class="radio"><label for="my_volume"><input type="radio" name="order" value="my_volume" id="my_volume" required/> Old Order</label></div></div>
+                                                <div class="col-sm-6"><div class="radio"><label for="last_trade_date"><input type="radio" name="order" value="last_trade_date" id="last_trade_date" /> Last Trade Date</label></div></div>
                                             </div>
                                         </div>
                                     </div>
