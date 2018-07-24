@@ -37,14 +37,6 @@ function Signal()
         return hours + ':' + minutes + ' ' + ampm;
     };
 
-    this.getSignals = function (id){
-        var d = new Date();
-        var date = d.getFullYear()+'-'+(d.getMonth() + 1)+'-'+d.getDate();
-        var query = "SELECT signal_id, order_type, price, take_profit, stop_loss, CONCAT(trigger_date, SPACE(1), trigger_time) AS triger, trigger_time, trend, note, signal_symbol.symbol AS currency_pair FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id AND trigger_date = '"+date+"' ORDER BY triger ASC";
-        var type = "1";
-        this.ajax_request(id,query, type);
-    };
-
     this.getRandomInt = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
@@ -105,7 +97,13 @@ function Signal()
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
                 if(call_back_func){
                     if(xmlhttp.responseText) {
+                        console.log(xmlhttp.responseText);
+                        if( call_back_func = "showQuotes"){
+
+                            signal[call_back_func](xmlhttp.responseText);
+                        }else{
                         signal[call_back_func](xmlhttp.responseText);
+                        }
                     }
                 }
             }
@@ -284,16 +282,35 @@ function Signal()
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
         this.ajax_call(url, 'GET', 'update_signal_page');
         setInterval(function(){signal.new_signal_listener();}, 60000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 1000
     };
 
     ///fine
     this.update_signal_page = function(update_msg){
         if(update_msg == 'new-signals-found'){
             document.getElementById('page_reloader').style.display = 'block';
+            document.getElementById('page_reloader_side').style.display = 'block';
         }
         //setTimeout(this.new_signal_listener(), 10000)
     };
 
+
+    this.showQuotes = function(json)
+    {
+        console.log(json);
+        var quotes_array = JSON.parse(json);
+        for(var x in quotes_array){
+            document.getElementById(quotes_array[0]['symbol']).innerHTML = quotes_array[0]['price'];
+        }
+
+    };
+
+    this.getQuotes = function ()
+    {
+        var url = "getQuotesData.php";
+        this.ajax_call(url,'GET','showQuotes');
+
+    };
 
 }
 var signal = new Signal();

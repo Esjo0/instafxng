@@ -1,7 +1,6 @@
 <?php
 class Signal_Management
 {
-
     const QUOTES_API = "https://forex.1forge.com/1.0.3/quotes";
     //TODO: Update this...
     const QUOTES_API_KEY = array(
@@ -11,9 +10,7 @@ class Signal_Management
         4 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r'
     );
 
-    public function quotes_api_key(){
-        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 4)];
-    }
+    public function quotes_api_key(){ return Signal_Management::QUOTES_API_KEY[mt_rand(1, 4)];}
 
     //const QUOTES_API_KEY = "";
     public function curl_call($url, $method, $headers = '', $post_data = ''){
@@ -100,16 +97,9 @@ WHERE SD.trigger_date = '$date'";
         return $pairs;
     }
 
-
-
     public function new_signal_listener(){
-        /*$signal_list = explode('-', $raw_signal_list);
-        foreach ($signal_list as $key => $value){
-            $signal_list[$key] = str_replace('signal_', '', $value);
-        }*/
         $file_current_property = date('Y-m-d h:i:s', stat('../../../models/signal_daily.json')['mtime']);
         $file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
-        //var_dump($file_current_property, $file_old_property);
         if($file_current_property != $file_old_property){
             echo 'new-signals-found';
             file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
@@ -135,8 +125,7 @@ WHERE SD.trigger_date = '$date'";
 <div class="col-sm-12"><hr/></div>
 </div>
 MAIL;
-            }
-            return $output;
+            }return $output;
         }
     }
 
@@ -153,14 +142,11 @@ MAIL;
     public function UI_signal_trend_msg($order_type){
         $trigger_stat = (int)$order_type;
         switch ($trigger_stat){
-            case 1:
-                $msg = '<b style="font-size: large" class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>';
+            case 1:$msg = '<b style="font-size: large" class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>';
                 break;
-            case 2:
-                $msg = '<b style="font-size: large" class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b>';
+            case 2:$msg = '<b style="font-size: large" class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b>';
                 break;
-        }
-        return $msg;
+        }return $msg;
     }
 
     public function UI_signal_call_to_action_msg($trigger_stat){
@@ -169,8 +155,7 @@ MAIL;
             case 0: $msg = 'PLACE PENDING ORDER'; break;
             case 1: $msg = 'TRADE NOW'; break;
             case 2: $msg = 'CHECK MARKET HISTORY';break;
-        }
-        return $msg;
+        }return $msg;
     }
 
     public function UI_order_type_status_msg($order_type){
@@ -181,12 +166,21 @@ MAIL;
         return $msg;
     }
 
+    public function viewCount($id){
+        global $db_handle;
+        $query = "UPDATE signal_daily view SET views = views+1 WHERE signal_id = '$id''";
+        $result =$db_handle->runQuery($query);
+        return $result;
+    }
+
     public function UI_get_signals_for_page(){
         $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'));
         if(!empty($signals)){
             foreach ($signals as $row){
                 $row = (array) $row;
-                $output = <<<MAIL
+                if(!empty($row)) {
+                    $this->viewCount($row['signal_id']);
+                    $output = <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
                                         <div class="thumbnail">
                                             <div class="caption">
@@ -196,7 +190,7 @@ MAIL;
                                                         <div class="row">
                                                             <div class="col-sm-2"><p style="font-size: xxx-large">{$this->UI_signal_trend_msg($row['order_type'])}</p></div>
                                                             <div class="col-sm-7">
-                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']} (<span class="current_price" id="signal_{$row['signal_id']}_current_price">{$this->UI_get_symbol_current_price($row['symbol'])}</span>)</b>
+                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']} (<span class="current_price" id="{$row['symbol']}">{$this->UI_get_symbol_current_price($row['symbol'])}</span>)</b>
                                                                 <br/>
                                                                 <span>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</span>
                                                             </div>
@@ -232,12 +226,16 @@ MAIL;
                                                             </div>
                                                             <div style="" class="col-sm-7 col-xs-12">
                                                                 <!-- TradingView Widget BEGIN -->
+                                                                <!-- TradingView Widget BEGIN -->
+
+<!-- TradingView Widget END -->
                             <section>
+                            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
                                                         <script type="text/javascript">
                                                             new TradingView.widget({
                                                                 "width": "100%",
                                                                 "height": 300,
-                                                                "symbol": "FX:EURUSD",
+                                                                "symbol": "FX:{$row['symbol']}",
                                                                 "interval": "5",
                                                                 "timezone": "UTC",
                                                                 "theme": "White",
@@ -253,6 +251,13 @@ MAIL;
                                                         </script>
                                                     </section>
                             <!-- TradingView Widget END--->
+                            <div>
+                            <small style="font-size: x-small">Your use of the signals means you have read and accepted our
+        <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
+        Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
+            signal guide</a> to learn how to use the signals.
+    </small>
+</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -262,6 +267,11 @@ MAIL;
                                         </div>
                                     </div>
 MAIL;
+                }else{
+                    $output = <<<MAIL
+                <p>No signals at the moment...</p>
+MAIL;
+                }
                 echo $output;
             }
         }
@@ -299,7 +309,6 @@ MAIL;
         global $db_handle;
         $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note) 
                   VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note')";
-
         $result = $db_handle->runQuery($query);
         if($result){
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
@@ -342,6 +351,31 @@ MAIL;
         echo "<script type='text/javascript' src='https://s3.tradingview.com/external-embedding/embed-widget-tickers.js' async>";
         echo json_encode($symbol_array);
         echo "</script></div><br/>";
-
     }
+
+    public function UI_get_signals_for_sidebar(){
+        $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'));
+        if(!empty($signals)){
+            foreach ($signals as $row){
+                $row = (array) $row;
+                if(!empty($row)){
+                $output = <<<MAIL
+                <tr><td><a href="signal_schedules.php#signal_{$row['signal_id']}"><strong Style="color: black">{$row['symbol']}</strong></a></td>
+                <td></td>
+                <td>{$this->UI_order_type_status_msg($row['order_type'])}</td>
+                <td>{$this->UI_signal_trend_msg($row['order_type'])}</td>
+                <td style="color:black;"><a href="signal_schedules.php#signal_{$row['signal_id']}">{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}<i class="glyphicon glyphicon-arrow-right"></i></a></td>
+                </tr>
+MAIL;
+                }else{
+                    $output = <<<MAIL
+                <tr><td colspan="5">No signals at the moment</td></tr>
+MAIL;
+                }
+                echo $output;
+            }
+        }
+    }
+
+
 }
