@@ -87,7 +87,8 @@ $education_deposit = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-
+                                <a href="edu_deposit_initiated_only.php"><button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-arrow-left"></i> View UNCOMPLETED Deposit Initiated</button></a>
+                                <br>
                                 <p>See initiated education deposits below, click to process each deposit order.</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">

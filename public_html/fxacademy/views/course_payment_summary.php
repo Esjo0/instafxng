@@ -26,12 +26,12 @@
             <input name="amount" type="text" class="form-control" id="amount" value="<?php if(isset($course_cost)) { echo number_format($course_cost, 2, ".", ","); } ?>" readonly="readonly">
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-sm-3" for="stamp_duty">CBN Stamp Duty (&#8358;):</label>
-        <div class="col-sm-9 col-lg-5">
-            <input name="stamp_duty" type="text" class="form-control" id="stamp_duty" value="<?php echo number_format($stamp_duty, 2, ".", ","); ?>" readonly="readonly">
-        </div>
-    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-sm-3" for="stamp_duty">CBN Stamp Duty (&#8358;):</label>-->
+<!--        <div class="col-sm-9 col-lg-5">-->
+<!--            <input name="stamp_duty" type="text" class="form-control" id="stamp_duty" value="--><?php //echo number_format($stamp_duty, 2, ".", ","); ?><!--" readonly="readonly">-->
+<!--        </div>-->
+<!--    </div>-->
     <hr />
     <div class="form-group">
         <label class="control-label col-sm-3" for="total_payable">Total Payable:</label>

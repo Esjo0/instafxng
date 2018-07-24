@@ -27,11 +27,11 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                 INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
                 INNER JOIN user AS u ON ui.user_code = u.user_code
                 WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
-            ) ";
+            ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$to_date' ";
         if(isset($search_text) && strlen($search_text) > 3) {
             $query .= "AND (td.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR td.date_earned LIKE '$search_text%') ";
         }
-        $query .= "GROUP BY u.user_code ORDER BY my_volume DESC ";
+        $query .= "GROUP BY u.user_code ORDER BY last_trade_date DESC ";
 
         $_SESSION['search_client_query'] = $query;
         $_SESSION['search_client_query_from_date'] = $from_date;
@@ -67,6 +67,36 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
     $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
     $result = $db_handle->runQuery($query);
     $selected_inactive_clients = $db_handle->fetchAssoc($result);
+
+
+    ///
+    $query2 = "CREATE TEMPORARY TABLE inactive_client_temp
+        SELECT u.user_code
+        FROM trading_commission AS td
+        INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        WHERE u.user_code NOT IN (
+            SELECT u.user_code
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
+        ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$to_date' GROUP BY u.user_code ";
+    $db_handle->runQuery($query2);
+
+    $query3 = "SELECT COUNT(ict.user_code) AS total FROM inactive_client_temp AS ict
+        INNER JOIN user AS u ON u.user_code = ict.user_code
+        INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+        INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+        INNER JOIN trading_commission AS td ON td.ifx_acct_no = ui.ifx_acct_no
+        WHERE STR_TO_DATE(ud.created, '%Y-%m-%d') > '$to_date'
+        AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') > '$to_date'";
+    $result3 = $db_handle->runQuery($query3);
+    $selected_total = $db_handle->fetchAssoc($result3);
+    $total_active = $selected_total[0]['total'];
+//    var_dump($total_active);
+
+    $db_handle->closeDB();
 }
 
 ?>
@@ -168,6 +198,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Reg Date</th>
+                                        <th>Last Trade Date</th>
                                         <th>Account Officer</th>
                                         <th>Action</th>
                                     </tr>
@@ -181,10 +212,11 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
+                                            <td><?php echo datetime_to_text2($row['last_trade_date']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
-                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_inactive'; ?>&c=<?php echo encrypt('INACTIVE TRADING CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_inactive'; ?>&c=<?php echo encrypt('INACTIVE TRADING CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

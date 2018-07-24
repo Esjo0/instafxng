@@ -228,7 +228,7 @@ MAIL;
         else {
             $previous_lesson_url = "";
             $previous_lesson_name = "";
-            /*// Go to Course Level
+            // Go to Course Level
             $query = "SELECT edu_course_id FROM edu_course WHERE status = '2' ORDER BY course_order ASC";
             $result = $db_handle->runQuery($query);
             $fetched_data = $db_handle->fetchAssoc($result);
@@ -251,7 +251,7 @@ MAIL;
             } else {
                 $previous_lesson_url = "fxacademy/completion_cert.php";
                 $previous_lesson_name = "Course Completion";
-            }*/
+            }
         }
 
         $previous_lesson = array(
@@ -1049,6 +1049,21 @@ MAIL;
             FROM user_edu_deposits
             WHERE status = '1' AND user_code = '$user_code'
             ORDER BY created DESC ";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
+    // Get the transaction ID of the user latest transaction by user code
+    public function get_last_trans_id($user_code) {
+        global $db_handle;
+
+        $query = "SELECT trans_id
+            FROM user_edu_deposits
+            WHERE status = '1' AND user_code = '$user_code'
+            ORDER BY created DESC LIMIT 1 ";
 
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);

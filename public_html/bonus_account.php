@@ -1,6 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Account";
+header('Location: https://instafxng.com/bonus_100.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
