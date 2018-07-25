@@ -51,7 +51,7 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
     if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
     $offset = ($currentpage - 1) * $rowsperpage;
-    $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+    $query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
     $result = $db_handle->runQuery($query);
     $completed_withdrawal_requests_filter = $db_handle->fetchAssoc($result);
 
@@ -61,7 +61,8 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
               INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
               INNER JOIN user AS u ON ui.user_code = u.user_code
               LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
-              WHERE (STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
+              WHERE uw.status = '10'
+              AND (STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
     $result = $db_handle->runQuery($query);
     $stats = $db_handle->fetchAssoc($result);
     $stats = $stats[0];
