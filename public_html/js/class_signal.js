@@ -75,15 +75,15 @@ function Signal()
         signal_trigger = document.getElementById(div_id+'_trigger');
         if (signal_extra.style.display === 'none'){
             //Make div big
-            signal_div.classList = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 card grid-item';
-            signal_main.classList = 'col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4';
-            signal_trigger.innerHTML = '<b><i class="glyphicon glyphicon-arrow-left"></i> HIDE EXTRA ANALYSIS </b>';
+            //signal_div.classList = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 card grid-item';
+            //signal_main.classList = 'col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4';
+            signal_trigger.innerHTML = '<b><i class="glyphicon glyphicon-arrow-left"></i> ANALYSIS </b>';
             signal_extra.style.display = 'block';
         } else{
             //Make div small
-            signal_div.classList = 'col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item';
-            signal_main.classList = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12';
-            signal_trigger.innerHTML = '<b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b>';
+            //signal_div.classList = 'col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item';
+            //signal_main.classList = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12';
+            signal_trigger.innerHTML = '<b><i class="glyphicon glyphicon-arrow-right"></i> ANALYSIS </b>';
             signal_extra.style.display = 'none';
         }
     };
