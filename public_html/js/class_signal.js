@@ -212,8 +212,8 @@ function Signal()
         id_list = id_list.join('-');
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
         this.ajax_call(url, 'GET', 'update_signal_page');
-        setInterval(function(){signal.new_signal_listener();}, 60000);//TODO: Fix this back to 5000
-        setInterval(function(){signal.getQuotes();}, 30000);//TODO: Fix this back to 1000
+        //setInterval(function(){signal.new_signal_listener();}, 60000);//TODO: Fix this back to 5000
+        //setInterval(function(){signal.getQuotes();}, 30000);//TODO: Fix this back to 1000
     };
 
     ///fine

@@ -14,7 +14,6 @@ if(isset($_POST['login'])) {
                 $_SESSION['signal_schedule_user'] = $email;
             }else{
                 $user_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT phone, CONCAT(first_name, SPACE(1), last_name) AS name FROM users WHERE email = '$email'"));//[0];
-                var_dump($user_details);
                 if(empty($user_details['phone']) || empty($user_details['name'])){
                     $message_error = "Please update your profile details.";
                     $get_phone_and_name = true;
