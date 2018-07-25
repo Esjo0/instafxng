@@ -17,25 +17,20 @@ class Partner {
 
     public function authenticate($email = "", $password = "") {
         global $db_handle;
-        $email = $db_handle->sanitizePost($email);
 
-        $query = "SELECT pass_salt FROM user WHERE email = '$email' LIMIT 1";
+        $username = $db_handle->sanitizePost($email);
 
+        $query = "SELECT * FROM partner WHERE email_address = '$email' LIMIT 1";
         $result = $db_handle->runQuery($query);
 
         if($db_handle->numOfRows($result) == 1) {
-            $user = $db_handle->fetchAssoc($result);
-            $pass_salt = $user[0]['pass_salt'];
-            $hashed_password = hash("SHA512", "$pass_salt.$password");
+            $found_user = $db_handle->fetchAssoc($result);
+            $found_user = $found_user[0];
 
-            $query = "SELECT * FROM user AS u LEFT JOIN partner AS p USING (user_code) "
-                    . "WHERE (email = '$email' AND password = '$hashed_password') AND (p.user_code = u.user_code) "
-                    . " LIMIT 1";
-            $result = $db_handle->runQuery($query);
+            $password_hash = $found_user['password'];
 
-            if($db_handle->numOfRows($result) == 1) {
-                $found_partner = $db_handle->fetchAssoc($result);
-                return $found_partner;
+            if(password_verify($password, $password_hash)) {
+                return $found_user;
             } else {
                 return false;
             }

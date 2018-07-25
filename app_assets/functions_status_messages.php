@@ -1,6 +1,21 @@
 <?php
 
 /*
+* Table: partner
+* Column: status
+*/
+function partner_status($status) {
+    switch ($status) {
+        case '1': $message = "New"; break;
+        case '2': $message = "Active"; break;
+        case '3': $message = "Inactive"; break;
+        case '4': $message = "Suspended"; break;
+        default: $message = "Status Unknown"; break;
+    }
+    return $message;
+}
+
+/*
 * Table: forum_participants
 * Column: entry_route
 */
