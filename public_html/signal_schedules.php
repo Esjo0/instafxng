@@ -182,8 +182,25 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>
+
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <!-- Firebase App is always required and must be first -->
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
+    <!-- Add additional services that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-functions.js"></script>
     <script>
-        signal.new_signal_listener();
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCdT2R-aTP1V-MtQ3K8QTIGauSiijRr_6k",
+            authDomain: "instafxng-signals-e6755.firebaseapp.com",
+            databaseURL: "https://instafxng-signals-e6755.firebaseio.com",
+            projectId: "instafxng-signals-e6755",
+            storageBucket: "instafxng-signals-e6755.appspot.com",
+            messagingSenderId: "179558919499"
+        };
+        firebase.initializeApp(config);
     </script>
+    <script> signal.new_signal_listener(); </script>
     </body>
 </html>

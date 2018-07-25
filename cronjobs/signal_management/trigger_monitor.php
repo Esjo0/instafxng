@@ -8,7 +8,7 @@ if(!empty($scheduled_signals)) {
     for ($i = 0; $i < count($scheduled_signals); $i++){
         $row = (array) $scheduled_signals[$i];
         $symbol = str_replace('/', '', $row['symbol']);
-        $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".Signal_Management::QUOTES_API_KEY;
+        $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
         $get_data = $signal_object->curl_call($url, 'GET');
         $response = (array) json_decode($get_data, true);
         if($response[0]['price'] == $row['price']){
@@ -23,7 +23,7 @@ if(!empty($scheduled_signals)) {
 function trigger_buy_order($row){
     global $signal_object;
     $symbol = str_replace('/', '', $row['symbol']);
-    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".Signal_Management::QUOTES_API_KEY;
+    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
     $get_data = $signal_object->curl_call($url, 'GET');
     $response = (array) json_decode($get_data, true);
     if($response[0]['price'] == $row['price']){
@@ -47,7 +47,7 @@ function trigger_buy_order($row){
 function trigger_sell_order($row){
     global $signal_object;
     $symbol = str_replace('/', '', $row['symbol']);
-    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".Signal_Management::QUOTES_API_KEY;
+    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
     $get_data = $signal_object->curl_call($url, 'GET');
     $response = (array) json_decode($get_data, true);
     if($response[0]['price'] == $row['price']){

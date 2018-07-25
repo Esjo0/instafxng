@@ -5,5 +5,7 @@ $signal_object = new Signal_Management();
 $method_name = $db_handle->sanitizePost(trim($_GET['method_name']));
 $method_args = $db_handle->sanitizePost(trim($_GET['method_args']));
 
+$signal_object->quotes_api_key();
+
 $response = $signal_object->{$method_name}($method_args);
 if(!empty($response)){echo $response;}
