@@ -1,12 +1,14 @@
 <?php
-// If it's going to need the database, then it's 
-// probably smart to require it before we start.
-require_once(LIB_PATH.DS.'class_database.php');
-
 
 //this class handles handles activities pertaining to a partner
 class Partner {
     
+    public function check_email_phone_duplicate($email, $phone) {
+        global $db_handle;
+
+
+    }
+
     public function authenticate($email = "", $password = "") {
         global $db_handle;
         $email = $db_handle->sanitizePost($email);
