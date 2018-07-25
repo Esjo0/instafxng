@@ -634,3 +634,9 @@ function paginate_array($offset, $array, $benchmark)
     }
     return $result;
 }
+
+function random_password( $length = 7 ) {
+    $chars = "abcdefghijkmnpqrtwyz123456789";
+    $password = substr( str_shuffle( $chars ), 0, $length );
+    return $password;
+}

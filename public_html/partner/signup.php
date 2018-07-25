@@ -22,16 +22,18 @@ if (isset($_POST['partner_signup'])) {
         empty($your_state)
     ) {
         $message_error = "Kindly fill all required fields";
-    } elseif(check_email($your_email)) {
+    } elseif(!check_email($your_email)) {
         $message_error = "You have entered an invalid email";
-    } elseif()
-
-
-
-    if($register) {
-        $message_success = $register;
+    } elseif($partner_object->email_phone_is_duplicate($email, $phone)) {
+        $message_error = "You have entered a duplicate email or phone number, please try again.";
     } else {
-        $message_error = "Your registration was not successful, something went wrong or you provided an existing email address.";
+        $new_partner = $partner_object->new_partner($your_first_name, $your_last_name, $your_email, $your_phone_number, $your_address, $your_city, $your_state, $your_email_address);
+
+        if($new_partner) {
+            $message_success = $new_partner . " You have successfully registered, please check your email for further instructions.";
+        } else {
+            $message_error = "An error occurred, your registration failed, please try again.";
+        }
     }
 }
 
@@ -154,8 +156,8 @@ $all_states = $system_object->get_all_states();
                                             </div>
                                         </form>
                                         <p class="text-center">Already have a Partnership Account? <a href="partner/login.php" title="Log in to your IPP">Login here</a></p>
-                                    </div>
 
+                                    </div>
 
                                 </div>
                             </div>

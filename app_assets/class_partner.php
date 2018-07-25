@@ -3,10 +3,16 @@
 //this class handles handles activities pertaining to a partner
 class Partner {
     
-    public function check_email_phone_duplicate($email, $phone) {
+    public function email_phone_is_duplicate($email, $phone) {
         global $db_handle;
 
+        $query = "SELECT * FROM partner WHERE email_address = '$email' OR phone_number = '$phone' LIMIT 1";
 
+        if($db_handle->numRows($query) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function authenticate($email = "", $password = "") {
@@ -54,64 +60,25 @@ class Partner {
     }
     
     //this method is to register as a partner
-    public function new_partner($first_name, $last_name, $middle_name, $email, $phone, $password) {
+    public function new_partner($first_name, $last_name, $email, $phone, $address, $city, $state_id, $middle_name = '') {
         global $db_handle;
         global $system_object;
 
-        $client_operation = new clientOperation();
-        
-        // Check if supplied email is existing
-        $query = "SELECT user_code, user_id, password FROM user WHERE email = '$email' LIMIT 1";
+        $partner_code = $system_object->generate_partner_code();
+        $new_password = random_password();
+        $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+        $phone_code = generate_sms_code();
+
+        $query  = "INSERT INTO partner (partner_code, password, first_name, middle_name, last_name, email_address, phone_number, full_address, city, state_id, phone_code) VALUES
+                  ('$partner_code', '$password_hash', '$first_name', '$middle_name', '$last_name', '$email', '$phone', '$address', '$city', $state_id, '$phone_code')";
+
         $result = $db_handle->runQuery($query);
-        if($db_handle->numOfRows($result) > 0) {
-            // email existing, check if the user is already a partner
-            $user_detail = $db_handle->fetchAssoc($result);
-            $user_code = $user_detail[0]['user_code'];
-            $user_id = $user_detail[0]['user_id'];
-            $selected_password = $user_detail[0]['password'];
-            
-            $query = "SELECT user_code FROM partner WHERE user_code = '$user_code' LIMIT 1";
-            $result = $db_handle->runQuery($query);
-            
-            if($db_handle->numOfRows($result) > 0) {
-                // Partner exist
-                return false;
-            } else {
-                $partner_code = $system_object->generate_partner_code();
-                $query  = "INSERT INTO partner (partner_code, user_code, status, created) VALUES ('$partner_code', '$user_code', '1', NOW())";
-                $result = $db_handle->runQuery($query);
 
-                if($result) {
-                    if(is_null($selected_password) || empty($selected_password)) {
-                        // send verification email and sms
-                        $this->partner_phone_email_verification($user_code, $email, $phone, $first_name);
-                        return "Your registration has been completed, please check your email for activation instructions.";
-                    } else {
-                        return "You have been activated on the Partner system, you can now login with your email and your normal passcode.";
-                    }
-                } else {
-                    return false;
-                }
-
-            }
+        if($result) {
+            //TODO: send email verification and phone code
+            return $new_password;
         } else {
-            // new client
-            $user_code = $system_object->generate_user_code();
-            $partner_code = $system_object->generate_partner_code();
-            
-            $pass_salt = hash("SHA256", "$user_code");
-            $first_name = ucwords(strtolower(trim($first_name)));
-            $last_name = ucwords(strtolower(trim($last_name)));
-            $middle_name = ucwords(strtolower(trim($middle_name)));
-            
-            $query = "INSERT INTO user (user_code, email, pass_salt, first_name, last_name, middle_name, phone) VALUES ('$user_code', '$email', '$pass_salt',  '$first_name', '$last_name', '$middle_name', '$phone')";
-            $db_handle->runQuery($query);
-            
-            $query  = "INSERT INTO partner (partner_code, user_code, created) VALUES ('$partner_code', '$user_code', NOW())";
-            $db_handle->runQuery($query);
-
-            $client_operation->send_verification_message($user_code, $email, $phone, $first_name, "");
-            return "Your registration has been completed, please check your email for activation instructions.";
+            return false;
         }
     }
     

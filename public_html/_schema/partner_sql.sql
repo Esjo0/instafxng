@@ -3,6 +3,7 @@ DROP TABLE `partner`, `partner_balance`, `partner_financial_activity_commission`
 CREATE TABLE IF NOT EXISTS `partner` (
  `partner_id` INT(11) NOT NULL AUTO_INCREMENT,
  `partner_code` VARCHAR(5) NOT NULL,
+ `password` VARCHAR(255) NOT NULL,
  `partner_code_alias` VARCHAR(15) NULL,
  `earning_balance` DECIMAL(10,2) NOT NULL DEFAULT 0,
  `first_name` VARCHAR(45) NOT NULL,
@@ -11,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `partner` (
  `email_address` VARCHAR(100) NOT NULL,
  `phone_number` VARCHAR(11) NOT NULL,
  `full_address` VARCHAR(255) NOT NULL,
+  `city` VARCHAR(100) NOT NULL,
  `state_id` INT(11) NOT NULL,
  `phone_code` VARCHAR(6) NOT NULL,
  `phone_code_status` ENUM('1', '2') NOT NULL DEFAULT '1' COMMENT '1 - New\n2 - Used',
