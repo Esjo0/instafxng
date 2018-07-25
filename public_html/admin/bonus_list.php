@@ -57,6 +57,7 @@ $packages = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
+                                <p class="pull-right"><a href="bonus_new.php" class="btn btn-default" title="Create New Bonus Package">Create New Bonus Package <i class="fa fa-arrow-circle-right"></i></a></p>
                                 <table class="table table-bordered table-responsive">
                                     <thead>
                                         <tr>

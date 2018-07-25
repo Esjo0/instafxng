@@ -1,6 +1,5 @@
 <?php
-class Bonus_Condition
-{
+class Bonus_Condition{
     public $BONUS_CONDITIONS = array(
         1 => array(
             'title' => 'New Account Validation',

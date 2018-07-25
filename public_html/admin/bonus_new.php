@@ -10,41 +10,38 @@ $package_code_encrypted = $get_params['package_code'];
 $package_code = decrypt_ssl(str_replace(" ", "+", $package_code_encrypted));
 if(!empty($package_code)){$package_details = $bonus_operations->get_package_by_code($package_code);}
 
-if(isset($_POST['process']))
-{
+if(isset($_POST['process'])) {
     $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));
     $bonus_desc = $db_handle->sanitizePost(trim($_POST['bonus_desc']));
+    $bonus_details = $db_handle->sanitizePost($_POST['bonus_details']);
+
     $condition_id = $db_handle->sanitizePost(trim(implode(',', $_POST['condition_id'])));
     $status = $db_handle->sanitizePost(trim($_POST['status']));
     $type = $db_handle->sanitizePost(trim($_POST['type']));
+    $type_value = $db_handle->sanitizePost(trim($_POST['bonus_type_value']));
 
+    var_dump($_FILES);
+    var_dump($_POST);
     if($_FILES["bonus_img"]["error"] == UPLOAD_ERR_OK) {
         if(isset($_FILES["bonus_img"]["name"])) {
             $tmp_name = $_FILES["bonus_img"]["tmp_name"];
-            $name = strtolower($_FILES["bonus_img"]["name"]);
-            $extension = explode(".", $name);
-            new_name:
-            $name_string = rand_string(25);
-            $newfilename = $name_string . '.' . end($extension);
-            $display_picture = strtolower($newfilename);
-
-            if(file_exists("../images/bonus_packages/$display_picture")) { goto new_name;}
-            move_uploaded_file($tmp_name, "../images/bonus_packages/$display_picture");
-        }
-    }
-
-    $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra']);
+            $bonus_img = strtolower($_FILES["bonus_img"]["name"]);
+            move_uploaded_file($tmp_name, "../images/bonus_packages/$bonus_img");
+        }}
+    //$new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra'], $type_value);
     $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
 }
 
-if(isset($_POST['update']))
-{
+if(isset($_POST['update'])) {
     $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));
     $bonus_desc = $db_handle->sanitizePost(trim($_POST['bonus_desc']));
     $condition_id = $db_handle->sanitizePost(trim(implode(',', $_POST['condition_id'])));
     $status = $db_handle->sanitizePost(trim($_POST['status']));
     $type = $db_handle->sanitizePost(trim($_POST['type']));
     $bonus_code = $db_handle->sanitizePost(trim($_POST['bonus_code']));
+    $type_value = $db_handle->sanitizePost(trim($_POST['bonus_type_value']));
+
+    $feedback = upload_file("bonus_img", $upload_path, $desired_file_name, $allowed_file_types = array(), $max_file_size = 5 * 1024 * 1024)
 
     if($_FILES["bonus_img"]["error"] == UPLOAD_ERR_OK) {
         if(isset($_FILES["bonus_img"]["name"])) {
@@ -60,7 +57,7 @@ if(isset($_POST['update']))
         }
     }
 
-    $new_package = $bonus_operations->update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $_POST['extra']);
+    $new_package = $bonus_operations->update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $_POST['extra'], $type_value);
     $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
 }
 ?>
@@ -154,7 +151,7 @@ if(isset($_POST['update']))
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <p><a href="bonus_list.php" class="btn btn-default" title="Manage Bonus Packages"><i class="fa fa-arrow-circle-left"></i> Manage Bonus Packages</a></p>
                                 <p>Fill the form below to create a new bonus package.</p>
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                     <?php if(!empty($package_details)):?>
                                         <input type="hidden" value="<?php echo $package_details['bonus_code'] ?>" name="bonus_code">
                                     <?php endif; ?>
@@ -177,12 +174,12 @@ if(isset($_POST['update']))
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="bonus_desc">Package Image:</label>
+                                        <label class="control-label col-sm-3" for="bonus_img">Package Image:</label>
                                         <div class="col-sm-9">
-                                            <img width="200px" height="150px" class="img-thumbnail" id="blah" src="<?php if(isset($package_details['bonus_img']) && !empty($package_details['bonus_img'])) {echo "../images/bonus_packages/".$package_details['bonus_img'];} else{ echo '../images/placeholder.jpg';} ?>" alt="Bonus Image" />
-                                            <br/>
+                                            <label title="Click Here To Select An Image" class="btn btn-sm btn-default" for="img">
+                                                <img width="200px" height="150px" class="img-thumbnail" id="blah" src="<?php if(isset($package_details['bonus_img']) && !empty($package_details['bonus_img'])) {echo "../images/bonus_packages/".$package_details['bonus_img'];} else{ echo '../images/placeholder.jpg';} ?>" alt="Bonus Image" />
+                                            </label>
                                             <input name="bonus_img" style="display: none" id="img" class="btn btn-default" type='file' onchange="readURL(this);"  accept="['jpg', 'gif', 'png']" />
-                                            <label class="btn btn-sm btn-default" for="img">Select Image</label>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -202,7 +199,20 @@ if(isset($_POST['update']))
                                     <div class="form-group">
                                         <label class="control-label col-sm-3">Package Type:</label>
                                         <div class="col-sm-9">
-                                            <div class="col-sm-12"><div class="radio"><label for="1"><input type="radio" checked name="type" value="1" id="1" required /> Default</label></div></div>
+                                            <div class="col-sm-6">
+                                                <div class="radio"><label onclick="document.getElementById('bonus_type_value_1').disabled = false; document.getElementById('bonus_type_value_2').disabled = true;" for="type_1"><input onclick="document.getElementById('bonus_type_value_1').disabled = false; document.getElementById('bonus_type_value_2').disabled = true;" type="radio" checked name="type" value="1" id="type_1" required /> Percentage Based Bonus</label></div>
+                                                <div class="input-group">
+                                                    <input id="bonus_type_value_1" placeholder="0.00" type="text" name="bonus_type_value" class="form-control" disabled />
+                                                    <span class="input-group-addon">&#37;</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="radio"><label onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" for="type_2"><input onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" type="radio" checked name="type" value="2" id="type_2" required /> Amount Based Bonus</label></div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">&dollar;</span>
+                                                    <input id="bonus_type_value_2" placeholder="0.00" type="text" name="bonus_type_value" class="form-control" disabled />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
