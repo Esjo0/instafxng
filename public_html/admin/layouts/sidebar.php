@@ -310,6 +310,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(111, $my_pages_sidebar)) { ?><li><a href="prospect_add.php">Add New Prospect</a></li><?php } ?>
                         <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage.php">Manage Prospects</a></li><?php } ?>
                         <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage_funded.php">Manage Prospects - Funded</a></li><?php } ?>
+                        <?php if (in_array(112, $my_pages_sidebar)) { ?><li><a href="prospect_manage_training.php">Manage Prospects - Training</a></li><?php } ?>
                         <?php if (in_array(246, $my_pages_sidebar)) { ?><li><a href="prospect_ilpr_manage.php">Manage ILPR Prospects</a></li><?php } ?>
                         <div class="divider"></div>
                         <?php if (in_array(248, $my_pages_sidebar)) { ?><li><a href="prospect_fb_leads.php">Manage Facebook Leads</a></li><?php } ?>
