@@ -3,7 +3,6 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-// last side bar item number == 258
 
 // Add New Admin User - Process submitted form
 if (isset($_POST['process'])) {
