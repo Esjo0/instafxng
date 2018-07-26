@@ -22,7 +22,7 @@ if (isset($_POST['filter_withdrawal']) || isset($_GET['pg'])) {
                 INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
                 INNER JOIN user AS u ON ui.user_code = u.user_code
                 LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
-                WHERE uw.status = '10' AND uw.created BETWEEN '$from_date' AND '$to_date' ORDER BY uw.updated DESC ";
+                WHERE uw.status = '10' AND (STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  ORDER BY uw.updated DESC ";
 
         $_SESSION['search_client_query'] = $query;
     } else {

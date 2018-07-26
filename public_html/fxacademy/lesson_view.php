@@ -56,6 +56,8 @@ if (isset($_POST['submit_question'])) {
 // Go to next lesson
 $next_lesson = $education_object->get_next_lesson($course_id, $course_lesson_id);
 
+// Go to previous lesson
+$previous_lesson = $education_object->get_previous_lesson($course_id, $course_lesson_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,8 +101,14 @@ $next_lesson = $education_object->get_next_lesson($course_id, $course_lesson_id)
 
                                 <ul class="pager">
                                     <?php if(empty($selected_exercise)) { ?>
+                                        <?php if(!empty($previous_lesson['previous_lesson_url']) || !empty($previous_lesson['previous_lesson_name'])): ?>
+                                        <li class="previous"><a href="<?php echo $previous_lesson['previous_lesson_url']; ?>">&larr; <?php echo $previous_lesson['previous_lesson_name']; ?> </a></li>
+                                        <?php endif; ?>
                                         <li class="next"><a href="<?php echo $next_lesson['next_lesson_url']; ?>"><?php echo $next_lesson['next_lesson_name']; ?> &rarr;</a></li>
                                     <?php } else { ?>
+                                        <?php if(!empty($previous_lesson['previous_lesson_url']) || !empty($previous_lesson['previous_lesson_name'])): ?>
+                                            <li class="previous"><a href="<?php echo $previous_lesson['previous_lesson_url']; ?>">&larr; <?php echo $previous_lesson['previous_lesson_name']; ?> </a></li>
+                                        <?php endif; ?>
                                         <li class="next"><a href="fxacademy/test_view.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($course_lesson_id); ?>">Proceed: Take Lesson Assessment &rarr;</a></li>
                                     <?php } ?>
                                 </ul>

@@ -24,13 +24,13 @@ require_once(LIB_PATH.DS."class_system.php");
 
 // Load other assets
 require_once(LIB_PATH.DS."vendor".DS."autoload.php");
+require_once(LIB_PATH.DS."class_loyalty_point.php");
 require_once(LIB_PATH.DS."class_client_operation.php");
 require_once(LIB_PATH.DS."config_sys.php");
 require_once(LIB_PATH.DS."class_careers.php");
 require_once(LIB_PATH.DS."class_project_management.php");
 require_once(LIB_PATH.DS."class_quiz.php");
 require_once(LIB_PATH.DS."session_quiz_participant.php");
-require_once(LIB_PATH.DS."class_loyalty_point.php");
 require_once(LIB_PATH.DS."class_push_notification.php");
 //Loyalty/Training Campaign Controller
 require_once(LIB_PATH.DS."class_loyalty_training_campaign.php");

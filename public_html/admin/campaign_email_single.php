@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $message_error = "All fields must be filled, please try again";
     } else {
         $name = ucwords(strtolower(trim($name)));
+
         // Replace [NAME] with clients full name
         $my_content_new = str_replace('[NAME]', $name, $content);
         $my_subject_new = str_replace('[NAME]', $name, $subject);
@@ -93,8 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
-                                <p>Compose a new email you want to send to a single client, use [NAME] where you want
-                                    the client name to be substituted in the email content.</p>
+                                <p>Compose a new email you want to send to a single client, use [NAME], [FUNDED], [WITHDRAWN] where you want
+                                    the client name, amount funded or amount withdrawn to be substituted in the email content.</p>
                                 
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 

@@ -1531,21 +1531,17 @@ MAIL;
     }
 
     public function update_loyalty_point($points_claimed_id, $point_status) {
-        global $db_handle;
+        global $db_handle, $obj_loyalty_point;
 
         $query = "UPDATE point_based_claimed SET status = '$point_status' WHERE point_based_claimed_id = $points_claimed_id LIMIT 1";
         $db_handle->runQuery($query);
 
-        // REVERSAL: When transaction failed, return deducted point back to the point balance
-        if($point_status == '3') {
-            $point_details = $this->get_point_based_claimed_by_id($points_claimed_id);
-            $point_claimed = $point_details['point_claimed'];
-            $user_code = $point_details['user_code'];
+        $query = "SELECT user_code FROM point_based_claimed WHERE point_based_claimed_id = $points_claimed_id LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $selected_data = $db_handle->fetchAssoc($result);
+        $client_user_code = $selected_data[0]['user_code'];
 
-            // Update client point balance
-            $query = "UPDATE user SET point_balance = point_balance + $point_claimed WHERE user_code = '$user_code' LIMIT 1";
-            $db_handle->runQuery($query);
-        }
+        $obj_loyalty_point->user_total_point_balance($client_user_code);
 
         return true;
     }
@@ -2029,12 +2025,18 @@ MAIL;
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
-    public function deposit_transaction_confirmation($transaction_id, $realamtpaid, $realDolVal, $status, $remarks, $admin_code) {
+    public function deposit_transaction_confirmation($transaction_id, $realamtpaid = '0.00', $realDolVal = '0.00', $status, $remarks, $admin_code) {
         global $db_handle;
+
+        if(empty($realamtpaid)) { $realamtpaid = '0.00'; }
+        if(empty($realDolVal)) { $realDolVal = '0.00'; }
 
         // Update transaction
         $query = "UPDATE user_deposit SET status = '$status', real_naira_confirmed = '$realamtpaid', "
             . "real_dollar_equivalent = '$realDolVal' WHERE trans_id = '$transaction_id' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        $query = "UPDATE user_deposit SET status = '$status' WHERE trans_id = '$transaction_id' LIMIT 1";
         $db_handle->runQuery($query);
 
         // Log comment on transaction
@@ -2521,7 +2523,6 @@ MAIL;
 
     public function send_startup_bonus_training_mail($client_full_name, $client_email) {
         global $system_object;
-
         $subject = "[FREE TRAINING] You Need this to Make More Profit, [NAME]";
         $body = <<<MAIL
 <div style="background-color: #F3F1F2">
@@ -2530,7 +2531,6 @@ MAIL;
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Hello $client_full_name,</p>
-
             <p>Do you know that the Forex Market is the most liquid market in the world with
             over 5 trillion dollars traded on a daily basis?</p>
 
@@ -2625,6 +2625,39 @@ MAIL;
         $last_trade_detail = $fetched_data[0];
 
         return $last_trade_detail ? $last_trade_detail : false;
+    }
+
+    public function get_total_withdrawal($user_code, $from_date, $to_date) {
+        global $db_handle;
+
+        $query = "SELECT SUM(uw.dollar_withdraw) AS total_withdrawal FROM user_withdrawal AS uw 
+                 INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id 
+                 INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d')
+                 BETWEEN '$from_date' AND '$to_date'
+                 AND u.user_code = '$user_code'";
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $total = $fetched_data[0]['total_withdrawal'];
+        $total = number_format($total, 2, ".", ",");
+        $total = "&#x24;$total";
+        return $total;
+    }
+
+    public function get_total_funding($user_code, $from_date, $to_date) {
+        global $db_handle;
+        $query = "SELECT SUM(ud.real_dollar_equivalent) AS total_funding 
+                  FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id 
+                  INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d')
+                  BETWEEN '$from_date' AND '$to_date' AND u.user_code = '$user_code'";
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $total = $fetched_data[0]['total_funding'];
+        $total = number_format($total, 2, ".", ",");
+        $total = "&#x24;$total";
+
+        return $total;
     }
 
     public function notify_admin($transaction_type, $transaction_id, $access_code, $author)

@@ -24,7 +24,7 @@ $total_point_balance = $client_point_details['point_balance'];
     <div class="alert alert-info">
         <strong>Loyalty Point Rewards - <a href="" data-toggle="modal" data-target="#myModal">Click for Details!</a></strong><br/>
         Points Balance: <?php if(!is_null($total_point_balance)) { echo $total_point_balance; } else { echo 0; } ?><br/>
-        <?php if(!is_null($total_point_balance) && $total_point_balance > 100) { ?>
+        <?php if(!is_null($total_point_balance) && $total_point_balance >= 100) { ?>
         <br/><input style="width: 230px" name="point_claimed" type="text" class="form-control" id="point_claimed" placeholder="Enter points to redeem">
         <?php } ?>
     </div>

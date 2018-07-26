@@ -3,7 +3,9 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-
+$client_operation = new clientOperation();
+$from_date = date('Y-m-d', strtotime('first day of last month'));
+$to_date = date('Y-m-d', strtotime('last day of last month'));
 $days_left_this_month = date('t') - date('j');
 
 // Get Month Loyalty Ranking
@@ -91,6 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $year_rank_difference = number_format(($year_rank_highest - $year_rank), 2, ".", ",");
             $year_rank_goal = number_format(($year_rank_difference / $days_left_this_month), 2, ".", ",");
 
+            $funded = $client_operation->get_total_funding($user_code, $from_date, $to_date);
+            $withdrawn = $client_operation->get_total_withdrawal($user_code, $from_date, $to_date);
+
             $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
             $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
             $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);
@@ -102,6 +107,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
             $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
             $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
+
+            $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);
+            $my_message_new = str_replace('[WITHDRAWN]', $withdrawn, $my_message_new);
+            $my_subject_new = str_replace('[FUNDED]', $funded, $my_subject_new);
+            $my_subject_new = str_replace('[WITHDRAWN]', $withdrawn, $my_subject_new);
 
             $my_message_new = str_replace('[LPMP]', '', $my_message_new);
             $my_message_new = str_replace('[LPMR]', '', $my_message_new);
@@ -115,7 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $my_message_new = str_replace('[LPYD]', '', $my_message_new);
             $my_message_new = str_replace('[UC]', '', $my_message_new);
         }
-        
         $system_object->send_email($my_subject_new, $my_message_new, $sendto, $client_name, $mail_sender);
     }
     

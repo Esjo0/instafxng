@@ -1,9 +1,12 @@
 <?php
+ini_set("xdebug.var_display_max_children", -1);
+ini_set("xdebug.var_display_max_data", -1);
+ini_set("xdebug.var_display_max_depth", -1);
+
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()){    redirect_to("login.php");}
 
-if(isset($_POST['post_comment']))
-{
+if(isset($_POST['post_comment'])) {
     $comment = $db_handle->sanitizePost(trim($_POST['comment']));
     $r_id = $db_handle->sanitizePost(trim($_POST['report_id']));
     $new_comment = $obj_rms->set_report_comment($r_id, $comment, $_SESSION['admin_unique_code']);
@@ -16,16 +19,15 @@ if(empty($_SESSION['selection'])){$_SESSION['selection'] = 'p_r_php';}
 if(isset($_POST['extra']) && !empty($_POST['extra'])){redirect_to('rms.php'.$_POST['extra']);}
 $selection = $_SESSION['selection'];
 
-if(isset($_POST['process_report']))
-{
+if(isset($_POST['process_report'])) {
     $window_period = $db_handle->sanitizePost(trim($_POST['from_date']))."*".$db_handle->sanitizePost(trim($_POST['to_date']));
-    $report = htmlspecialchars_decode(stripslashes(trim($_POST['report'])));
+    $report = $db_handle->sanitizePost(str_replace('â€™', "'", $_POST['report']));
+
     $target_id = $db_handle->sanitizePost(trim($_POST['target_id']));
-    $new_report = $obj_rms->set_report($window_period, $_SESSION['admin_unique_code'], $report, $target_id);
-    if(count($_FILES['attachments']['name']))
-    {
-        foreach ($_FILES['attachments']['name'] as $key => $value)
-        {
+    $status = $db_handle->sanitizePost(trim($_POST['status']));
+    $new_report = $obj_rms->set_report($window_period, $_SESSION['admin_unique_code'], $report, $target_id, $status);
+    if(count($_FILES['attachments']['name'])) {
+        foreach ($_FILES['attachments']['name'] as $key => $value) {
             $tmp_name = $_FILES['attachments']["tmp_name"][$key];
             $name = strtolower($_FILES['attachments']["name"][$key]);
             $dirname = "report_attachments".DIRECTORY_SEPARATOR.$new_report['report_id'];
@@ -37,18 +39,15 @@ if(isset($_POST['process_report']))
     $new_report['status'] ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
 
-if(isset($_POST['process_update']))
-{
+if(isset($_POST['process_update'])) {
     $window_period = $db_handle->sanitizePost(trim($_POST['from_date']))."*".$db_handle->sanitizePost(trim($_POST['to_date']));
-    $report = htmlspecialchars_decode(stripslashes(trim($_POST['report'])));
+    $report = $db_handle->sanitizePost(str_replace('â€™', "'", $_POST['report']));
     $report_id = $db_handle->sanitizePost(trim($_POST['report_id']));
     $target_id = $db_handle->sanitizePost(trim($_POST['target_id']));
     $status = $db_handle->sanitizePost(trim($_POST['status']));
     $new_report = $obj_rms->update_report($window_period, $_SESSION['admin_unique_code'], $report, $target_id, $report_id, $status);
-    if(count($_FILES['attachments']['name']))
-    {
-        foreach ($_FILES['attachments']['name'] as $key => $value)
-        {
+    if(count($_FILES['attachments']['name'])) {
+        foreach ($_FILES['attachments']['name'] as $key => $value) {
             $tmp_name = $_FILES['attachments']["tmp_name"][$key];
             $name = strtolower($_FILES['attachments']["name"][$key]);
             $dirname = "report_attachments".DIRECTORY_SEPARATOR.$new_report['report_id'];
@@ -60,15 +59,13 @@ if(isset($_POST['process_update']))
     $new_report['status'] ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
 
-if(isset($_POST["process_settings"]))
-{
+if(isset($_POST["process_settings"])) {
     $result = $obj_rms->set_reviewers($_POST['admin_code'], implode(',', $_POST['reviewers']));
     if($result){$message_success = "Operation Successful.";}
     else{$message_error = "Sorry the operation failed. Please try again.";}
 }
 
-if(isset($_POST['process_target']))
-{
+if(isset($_POST['process_target'])) {
     $title = $db_handle->sanitizePost(trim($_POST['title']));
     $description = $db_handle->sanitizePost(trim($_POST['description']));
     $window_period = $db_handle->sanitizePost(trim($_POST['from_date']))." * ".$db_handle->sanitizePost(trim($_POST['to_date']));
@@ -77,8 +74,7 @@ if(isset($_POST['process_target']))
     $new_target ? $message_success = "New target created." : $message_error = "Opertion Failed. Please try again.";
 }
 
-if(isset($_POST['edit_target']))
-{
+if(isset($_POST['edit_target'])) {
     $target_id = $db_handle->sanitizePost(trim($_POST['target_id']));
     $title = $db_handle->sanitizePost(trim($_POST['title']));
     $description = $db_handle->sanitizePost(trim($_POST['description']));
@@ -128,6 +124,27 @@ if(isset($_POST['edit_target']))
         <script>function resizeIframe(obj){obj.style.height = obj.contentWindow.document.body.scrollHeight+'px';}</script>
         <script src="tinymce/tinymce.min.js"></script>
         <script type="text/javascript">
+            tinyMCE.init({
+                selector: "textarea#t-description",
+                height: 300,
+                theme: "modern",
+                relative_urls: false,
+                remove_script_host: false,
+                convert_urls: true,
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "emoticons template paste textcolor colorpicker textpattern responsivefilemanager"
+                ],
+                toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                toolbar2: "| responsivefilemanager print preview media | forecolor backcolor emoticons",
+                image_advtab: true,
+                external_filemanager_path: "../filemanager/",
+                filemanager_title: "Instafxng Filemanager",
+//                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
+
+            });
             tinyMCE.init({
                 selector: "textarea#report",
                 height: 500,

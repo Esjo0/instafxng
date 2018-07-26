@@ -1,34 +1,59 @@
 <?php
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
-
+$response_msg = array();
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send']))
 {
     //foreach($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
-
     extract($_POST);
-
     if(empty($content) || empty($phone_num)) {$message_error = "All fields must be filled, please try again";}
-
-    else
-    {
+    else {
         $phone_num = explode(',',$phone_num);
-        foreach ($phone_num as $row)
-        {
+        foreach ($phone_num as $row) {
             $new_sms = $system_object->send_sms($row, $content);
-            if($new_sms) {$message_success = "You have successfully sent the sms.";} else {$message_error = "Looks like something went wrong or you didn't make any change.";}
+            if($new_sms){
+                $node = count($response_msg);
+                $response_msg[$node]['type'] = '1';
+                $response_msg[$node]['msg'] = "Message Sent Successfully.<br/>
+                <b>Message: </b> $content<br/>
+                <b>Phone: </b> $row<br/>
+                <b>Sent: </b> ".datetime_to_text(date('y-m-d h:m:s'))."<br/>
+                <b>Status: </b> Delivery In Progress<br/>";
+            }else{
+                $node = count($response_msg);
+                $response_msg[$node]['type'] = '0';
+                $response_msg[$node]['msg'] = "Message Failed.<br/>
+                <b>Message: </b> $content<br/>
+                <b>Phone: </b> $row<br/>
+                <b>Status: </b> Delivery Failed<br/>";
+            }
         }
     }
 }
-
 // Confirm that campaign category exist before a new sms campaign is saved
 $all_campaign_category = $system_object->get_all_campaign_category();
-
 if(!$all_campaign_category) {
     $message_error = "No campaign category created, you must create a category before any campaign. <a href=\"campaign_new_category.php\" title=\"Create new category\">Click here</a> to create one.";
 }
 
-
+function response_message($msg_array){
+    if(!empty($msg_array)){
+        foreach ($msg_array as $row){
+            if(!empty($row['type']) && !empty($row['msg'])){
+                if($row['type'] == '1'){
+                    echo "<div class='alert alert-success'>
+                    <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                    <strong>Success!</strong>".$row['msg'].
+                        "</div>";}
+                if($row['type'] == '0'){
+                    echo "<div class='alert alert-danger'>
+                    <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                    <strong>Oops!</strong>".$row['msg'].
+                        "</div>";}
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +95,7 @@ if(!$all_campaign_category) {
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                                        
+
                     <div class="row">
                         <div class="col-sm-12 text-danger">
                             <h4><strong>COMPOSE A SINGLE SMS</strong></h4>
@@ -81,6 +106,7 @@ if(!$all_campaign_category) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
+                                <?php response_message($response_msg); ?>
                                 <p><a href="campaign_sms_view.php" class="btn btn-default" title="Manage SMS Campaigns"><i class="fa fa-arrow-circle-left"></i> Manage SMS Campaigns</a></p>
                                 <p>Compose an SMS below.</p>
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="">
