@@ -22,11 +22,13 @@ foreach ($selected AS $row) {
     $point_balance = ($total_point_earned - $spent_point) - $additional_expired_point;
 
     // Make update to the point balance, total point claimed, total point earned, expired point
-    $query = "UPDATE user_loyalty_log SET
-        total_point_earned = $total_point_earned,
-        total_point_claimed = $total_point_claimed,
-        expired_point = expired_point + $additional_expired_point,
-        point_balance = $point_balance
-        WHERE user_code = '$user_code' LIMIT 1";
+    $query = "UPDATE user_loyalty_log AS ull
+            INNER JOIN user AS u ON ull.user_code = u.user_code
+            SET ull.total_point_earned = $total_point_earned,
+            ull.total_point_claimed = $total_point_claimed,
+            ull.expired_point = expired_point + $additional_expired_point,
+            ull.point_balance = $point_balance,
+            u.point_balance = $point_balance
+            WHERE ull.user_code = '$user_code'";
     $result = $db_handle->runQuery($query);
 }

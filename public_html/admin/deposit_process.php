@@ -76,7 +76,7 @@ if ($deposit_process_notified && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST
     }
     
     $client_operation->deposit_transaction_confirmation($transaction_id, $realamtpaid, $realDolVal, $status, $remarks, $_SESSION['admin_unique_code']);
-    
+
     if(isset($points_claimed_id) && !empty($points_claimed_id)) {
         if($status == '4') {
             $point_status = '3';

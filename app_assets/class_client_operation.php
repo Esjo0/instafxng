@@ -1531,21 +1531,17 @@ MAIL;
     }
 
     public function update_loyalty_point($points_claimed_id, $point_status) {
-        global $db_handle;
+        global $db_handle, $obj_loyalty_point;
 
         $query = "UPDATE point_based_claimed SET status = '$point_status' WHERE point_based_claimed_id = $points_claimed_id LIMIT 1";
         $db_handle->runQuery($query);
 
-        // REVERSAL: When transaction failed, return deducted point back to the point balance
-        if($point_status == '3') {
-            $point_details = $this->get_point_based_claimed_by_id($points_claimed_id);
-            $point_claimed = $point_details['point_claimed'];
-            $user_code = $point_details['user_code'];
+        $query = "SELECT user_code FROM point_based_claimed WHERE point_based_claimed_id = $points_claimed_id LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $selected_data = $db_handle->fetchAssoc($result);
+        $client_user_code = $selected_data[0]['user_code'];
 
-            // Update client point balance
-            $query = "UPDATE user SET point_balance = point_balance + $point_claimed WHERE user_code = '$user_code' LIMIT 1";
-            $db_handle->runQuery($query);
-        }
+        $obj_loyalty_point->user_total_point_balance($client_user_code);
 
         return true;
     }
@@ -2029,12 +2025,18 @@ MAIL;
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
-    public function deposit_transaction_confirmation($transaction_id, $realamtpaid, $realDolVal, $status, $remarks, $admin_code) {
+    public function deposit_transaction_confirmation($transaction_id, $realamtpaid = '0.00', $realDolVal = '0.00', $status, $remarks, $admin_code) {
         global $db_handle;
+
+        if(empty($realamtpaid)) { $realamtpaid = '0.00'; }
+        if(empty($realDolVal)) { $realDolVal = '0.00'; }
 
         // Update transaction
         $query = "UPDATE user_deposit SET status = '$status', real_naira_confirmed = '$realamtpaid', "
             . "real_dollar_equivalent = '$realDolVal' WHERE trans_id = '$transaction_id' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        $query = "UPDATE user_deposit SET status = '$status' WHERE trans_id = '$transaction_id' LIMIT 1";
         $db_handle->runQuery($query);
 
         // Log comment on transaction
