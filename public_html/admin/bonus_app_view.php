@@ -148,7 +148,7 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                             <td><b>Account No:</b>  <?php echo $app_details['ifx_acct_no']; ?></td>
                                             <td>
                                                 <center><b>Client Flags</b></center><br/>
-                                                <?php var_dump($client_operation->get_client_flag_by_code($app_details['user_code'])) ?>
+                                                <?php //var_dump($client_operation->get_client_flag_by_code($app_details['user_code'])) ?>
                                             </td>
                                         </tr>
                                         <tr>

@@ -20,15 +20,12 @@ if(isset($_POST['process'])) {
     $type = $db_handle->sanitizePost(trim($_POST['type']));
     $type_value = $db_handle->sanitizePost(trim($_POST['bonus_type_value']));
 
-    var_dump($_FILES);
-    var_dump($_POST);
-    if($_FILES["bonus_img"]["error"] == UPLOAD_ERR_OK) {
-        if(isset($_FILES["bonus_img"]["name"])) {
-            $tmp_name = $_FILES["bonus_img"]["tmp_name"];
-            $bonus_img = strtolower($_FILES["bonus_img"]["name"]);
-            move_uploaded_file($tmp_name, "../images/bonus_packages/$bonus_img");
-        }}
-    //$new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra'], $type_value);
+    $package_img = str_replace(' ', '-', $db_handle->sanitizePost(trim($_FILES["bonus_img"]["name"])));
+    $img_upload_feedback = upload_file("bonus_img", "../images/bonus_packages/", $package_img);
+
+    if($img_upload_feedback['status']){
+        $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $bonus_details, $img_upload_feedback['filename'], $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra'], $type_value);
+    }
     $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
 }
 
@@ -41,9 +38,9 @@ if(isset($_POST['update'])) {
     $bonus_code = $db_handle->sanitizePost(trim($_POST['bonus_code']));
     $type_value = $db_handle->sanitizePost(trim($_POST['bonus_type_value']));
 
-    $feedback = upload_file("bonus_img", $upload_path, $desired_file_name, $allowed_file_types = array(), $max_file_size = 5 * 1024 * 1024)
+    //$feedback = upload_file("bonus_img", $upload_path, $desired_file_name, $allowed_file_types = array(), $max_file_size = 5 * 1024 * 1024)
 
-    if($_FILES["bonus_img"]["error"] == UPLOAD_ERR_OK) {
+    /*if($_FILES["bonus_img"]["error"] == UPLOAD_ERR_OK) {
         if(isset($_FILES["bonus_img"]["name"])) {
             $tmp_name = $_FILES["bonus_img"]["tmp_name"];
             $name = strtolower($_FILES["bonus_img"]["name"]);
@@ -55,10 +52,10 @@ if(isset($_POST['update'])) {
             if(file_exists("../images/bonus_packages/$display_picture")) { goto new_file_name;}
             move_uploaded_file($tmp_name, "../images/blog/$display_picture");
         }
-    }
+    }*/
 
-    $new_package = $bonus_operations->update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $_POST['extra'], $type_value);
-    $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
+    //$new_package = $bonus_operations->update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $_POST['extra'], $type_value);
+    //$new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
 }
 ?>
 <!DOCTYPE html>
@@ -151,7 +148,7 @@ if(isset($_POST['update'])) {
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <p><a href="bonus_list.php" class="btn btn-default" title="Manage Bonus Packages"><i class="fa fa-arrow-circle-left"></i> Manage Bonus Packages</a></p>
                                 <p>Fill the form below to create a new bonus package.</p>
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                <form enctype="multipart/form-data" data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                     <?php if(!empty($package_details)):?>
                                         <input type="hidden" value="<?php echo $package_details['bonus_code'] ?>" name="bonus_code">
                                     <?php endif; ?>
@@ -185,34 +182,65 @@ if(isset($_POST['update'])) {
                                     <div class="form-group">
                                         <label class="control-label col-sm-3">Package Conditions:</label>
                                         <div class="col-sm-9">
-                                            <?php foreach ($all_conditions as $key => $value){ ?>
-                                            <div id="cond_<?php echo $key; ?>" class="col-sm-12">
-                                                <div class="checkbox"><label for="_<?php echo $key; ?>"><input <?php if(in_array_r($key,explode(',',$package_details['condition_id']))){echo 'checked';} ?> type="checkbox" onclick="select_row('cond_<?php echo $key; ?>','_<?php echo $key; ?>')" name="condition_id[]" value="<?php echo $key; ?>" id="_<?php echo $key; ?>" /> <?php echo $value['title']; ?></label></div>
-                                                <span><?php echo $value['desc']; ?></span>
-                                                <?php foreach ($value['extra'] as $pin){ ?>
-                                                    <div class="col-sm-4"><input value="<?php echo $bonus_operations->get_condition_extras($package_details['bonus_code'],$key)[0]['meta_value'] ?>" placeholder="<?php echo $pin; ?>" type="text" name="extra[<?php echo $key; ?>][<?php echo $pin; ?>]" class="form-control" <?php if(!in_array_r($key,explode(',',$package_details['condition_id']))){echo 'disabled';} ?> /></div>
+                                            <table class="table table-responsive table-bordered">
+                                                <tbody>
+                                                <?php foreach ($all_conditions as $key => $value){ ?>
+                                                    <tr id="cond_<?php echo $key; ?>">
+                                                        <td>
+                                                            <input class="checkbox" <?php if(in_array_r($key,explode(',',$package_details['condition_id']))){echo 'checked';} ?> type="checkbox" onclick="select_row('cond_<?php echo $key; ?>','_<?php echo $key; ?>')" name="condition_id[]" value="<?php echo $key; ?>" id="_<?php echo $key; ?>" />
+                                                        </td>
+                                                        <td>
+                                                            <label class="text-justify" for="_<?php echo $key; ?>"><?php echo $value['title']; ?></label><br/>
+                                                            <span class="text-justify" ><?php echo $value['desc']; ?></span>
+                                                        </td>
+                                                        <td>
+                                                            <?php foreach ($value['extra'] as $pin){ ?>
+                                                                <input value="<?php echo $bonus_operations->get_condition_extras($package_details['bonus_code'],$key)[0]['meta_value'] ?>" placeholder="<?php echo $pin; ?>" type="text" name="extra[<?php echo $key; ?>][<?php echo $pin; ?>]" class="form-control" <?php if(!in_array_r($key,explode(',',$package_details['condition_id']))){echo 'disabled';} ?> />
+                                                            <?php } ?>
+                                                        </td>
+                                                    </tr>
                                                 <?php } ?>
-                                            </div>
-                                            <?php } ?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3">Package Type:</label>
                                         <div class="col-sm-9">
-                                            <div class="col-sm-6">
-                                                <div class="radio"><label onclick="document.getElementById('bonus_type_value_1').disabled = false; document.getElementById('bonus_type_value_2').disabled = true;" for="type_1"><input onclick="document.getElementById('bonus_type_value_1').disabled = false; document.getElementById('bonus_type_value_2').disabled = true;" type="radio" checked name="type" value="1" id="type_1" required /> Percentage Based Bonus</label></div>
-                                                <div class="input-group">
-                                                    <input id="bonus_type_value_1" placeholder="0.00" type="text" name="bonus_type_value" class="form-control" disabled />
-                                                    <span class="input-group-addon">&#37;</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="radio"><label onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" for="type_2"><input onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" type="radio" checked name="type" value="2" id="type_2" required /> Amount Based Bonus</label></div>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">&dollar;</span>
-                                                    <input id="bonus_type_value_2" placeholder="0.00" type="text" name="bonus_type_value" class="form-control" disabled />
-                                                </div>
-                                            </div>
+                                            <table class="table table-responsive table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <input onclick="document.getElementById('bonus_type_value_1').disabled = false; document.getElementById('bonus_type_value_2').disabled = true;" type="radio" name="type" value="1" id="type_1" required />
+                                                        </td>
+                                                        <td>
+                                                            <label onclick="document.getElementById('bonus_type_value_1').disabled = false; document.getElementById('bonus_type_value_2').disabled = true;" for="type_1">
+                                                                Percentage Based Bonus</label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input id="bonus_type_value_1" placeholder="0.00" type="text" name="bonus_type_value" class="form-control" disabled />
+                                                                <span class="input-group-addon">&#37;</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" type="radio" name="type" value="2" id="type_2" required />
+                                                        </td>
+                                                        <td>
+                                                            <label onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" for="type_2">
+                                                                Amount Based Bonus</label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">&dollar;</span>
+                                                                <input id="bonus_type_value_2" placeholder="0.00" type="text" name="bonus_type_value" class="form-control" disabled />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="form-group">

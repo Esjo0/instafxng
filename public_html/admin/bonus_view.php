@@ -11,8 +11,8 @@ $package_details = $bonus_operations->get_package_by_code($package_code);
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin</title>
-        <meta name="title" content="Instaforex Nigeria | Admin" />
+        <title>Instaforex Nigeria | Admin - View Bonus Package</title>
+        <meta name="title" content="Instaforex Nigeria | Admin - View Bonus Package" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>

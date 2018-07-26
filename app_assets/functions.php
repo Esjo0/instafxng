@@ -643,7 +643,7 @@ function paginate_array($offset, $array, $benchmark)
  *  $allowed_file_types = (array) Array of allowed file types for the upload
  *  $max_file_size = (int) Maximum file size
  * */
-function upload_file($input_name, $upload_path, $desired_file_name, $allowed_file_types = array(), $max_file_size = 5 * 1024 * 1024){
+function upload_file($input_name, $upload_path, $desired_file_name, $allowed_file_types = array('image/jpeg', 'image/png'), $max_file_size = 5 * 1024 * 1024){
     $feedback = array();
     if(isset($_FILES[$input_name]) && $_FILES[$input_name]["error"] == UPLOAD_ERR_OK){
 
@@ -659,22 +659,27 @@ function upload_file($input_name, $upload_path, $desired_file_name, $allowed_fil
         if(!array_key_exists($ext, $allowed_file_types)){
             $feedback['status'] = false;
             $feedback['status_msg'] = "Error: Please select a valid file format.";
-            die();
+            //exit();
         }
 
         if($filesize > $max_file_size){
             $feedback['status'] = false;
             $feedback['status_msg'] = "Error: File size is larger than the allowed limit.";
-            die();
+            //exit();
         }
 
         if(in_array($filetype, $allowed_file_types)){
+            if(!file_exists($upload_path)){
+                mkdir($upload_path);
+            }
+
             if(file_exists($upload_path.$desired_file_name)){
                 $feedback['status'] = false;
                 $feedback['status_msg'] = "Error: $desired_file_name already exists in $upload_path";
-                die();
+                //exit();
             } else{
                 move_uploaded_file($_FILES[$input_name]["tmp_name"], $upload_path.$desired_file_name);
+                $feedback['file_properties']['filename'] = $desired_file_name;
                 $feedback['status'] = true;
                 $feedback['status_msg'] = "Success: Upload successful.";
             }

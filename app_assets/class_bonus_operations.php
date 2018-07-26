@@ -177,16 +177,16 @@ ORDER BY created DESC ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query));
     }
 
-    public function create_new_package($bonus_title, $bonus_desc, $condition_id, $status, $type, $admin_code, $extra = '', $type_value){
+    public function create_new_package($bonus_title, $bonus_desc, $bonus_details, $bonus_image, $condition_id, $status, $type, $admin_code, $extra = '', $type_value){
         global $db_handle;
         bonus_code:
         $bonus_code = rand_string(5);
         if($db_handle->numRows("SELECT bonus_code FROM bonus_packages WHERE bonus_code = '$bonus_code'") > 0) { goto bonus_code; };
 
         $query = "INSERT INTO bonus_packages 
-(bonus_code, bonus_title, bonus_desc, condition_id, status, type, admin_code, bonus_type_value) 
+(bonus_code, bonus_title, bonus_desc, bonus_details, bonus_img, condition_id, status, type, admin_code, bonus_type_value) 
 VALUES 
-('$bonus_code', '$bonus_title', '$bonus_desc', '$condition_id', '$status', $type, '$admin_code', $type_value);";
+('$bonus_code', '$bonus_title', '$bonus_desc', '$bonus_details', '$bonus_image','$condition_id', '$status', $type, '$admin_code', $type_value);";
         $result = $db_handle->runQuery($query);
 
         if($extra && !empty($extra) && is_array($extra)) {
@@ -240,7 +240,7 @@ ORDER BY updated DESC";
 
     public function get_package_by_code($bonus_code){
         global $db_handle;
-        $query = "SELECT * FROM bonus_packages WHERE bonus_code = '$bonus_code' ";
+        $query = "SELECT bonus_code, bonus_title, bonus_desc, bonus_details, bonus_img, bonus_type_value, created, updated, condition_id, status, type, admin_code FROM bonus_packages WHERE bonus_code = '$bonus_code' ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
     }
 
@@ -401,7 +401,8 @@ WHERE UI.ifx_acct_no = '$bonus_account' AND UW.status = '8'";
         $total_withdrawal = $db_handle->fetchAssoc($db_handle->runQuery("SELECT SUM(dollar_withdraw) AS total_amount FROM user_ifxaccount AS UI
 INNER JOIN user_withdrawal AS UW ON UI.ifxaccount_id = UW.ifxaccount_id 
 WHERE UI.ifx_acct_no = '$bonus_account' AND UW.status = '10'"))[0]['total_amount'];
-        $average_withdrawal = $total_withdrawal / $db_handle->numRows($query);
+        $average_withdrawal =  66666 / 20;
+        //$average_withdrawal = $total_withdrawal / $db_handle->numRows($query);
         $withdrawal_history = array('total' => $total_withdrawal, 'average' => $average_withdrawal, 'transactions' => $withdrawal_transactions);
         return $withdrawal_history;
     }
