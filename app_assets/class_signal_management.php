@@ -4,42 +4,44 @@ class Signal_Management
     const QUOTES_API = "https://forex.1forge.com/1.0.3/quotes";
     //TODO: Update this...
     const QUOTES_API_KEY = array(
-        1 => 'wmhaGdIcdztlSAXy76QZxeHAsWDpCtru ',
-        2 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r',
-        3 => 'OADrX7UGJesDhvH5lDJ5NK93HZ3uSmxe ',
-        4 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r'
+//        1 => 'wmhaGdIcdztlSAXy76QZxeHAsWDpCtru ',
+//        2 => 'nHpHP0Y6FgJ9NVbHO6cRf5yg2kJ5f5ky ',
+//        3 => 'OADrX7UGJesDhvH5lDJ5NK93HZ3uSmxe ',
+//        1 => 'Q0byrL4ELAk5jS8k11gyBq4i7dIL1PE6',
+//        1 => 'Oa9r9zco2Twqdw6vS0P9wDQXHj8qzbup'
+        1 => 'uoGGIjYh0JADs5GsdfuuJT3LFEPiFw8S'
     );
 
-    public function quotes_api_key(){ return Signal_Management::QUOTES_API_KEY[mt_rand(1, 4)];}
+    public function quotes_api_key(){ return Signal_Management::QUOTES_API_KEY[mt_rand(1, 1)];}
 
     //const QUOTES_API_KEY = "";
-    public function curl_call($url, $method, $headers = '', $post_data = ''){
-        $ch = curl_init();
-        switch ($method){
-            case "POST":
-                curl_setopt($ch, CURLOPT_POST, true);
-                if ($post_data)
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                break;
-            case "PUT":
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-                if ($post_data)
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                break;
-            default:
-                if ($post_data)
-                    $url = sprintf("%s?%s", $url, http_build_query($post_data));
-                break;
-        }
-        curl_setopt($ch, CURLOPT_URL, $url);
-        if(!empty($headers)){ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); }
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
-        $result = curl_exec($ch);
-        curl_close($ch);
-        return $result;
-    }
+//    public function curl_call($url, $method, $headers = '', $post_data = ''){
+//        $ch = curl_init();
+//        switch ($method){
+//            case "POST":
+//                curl_setopt($ch, CURLOPT_POST, true);
+//                if ($post_data)
+//                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+//                break;
+//            case "PUT":
+//                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+//                if ($post_data)
+//                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+//                break;
+//            default:
+//                if ($post_data)
+//                    $url = sprintf("%s?%s", $url, http_build_query($post_data));
+//                break;
+//        }
+//        curl_setopt($ch, CURLOPT_URL, $url);
+//        if(!empty($headers)){ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); }
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+//        $result = curl_exec($ch);
+//        curl_close($ch);
+//        return $result;
+//    }
 
     public function get_symbol_id($pair_str){
         global $db_handle;
@@ -58,7 +60,7 @@ class Signal_Management
     public function UI_get_symbol_current_price($symbol){
         $symbol = str_replace('/', '', $symbol);
         $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$this->quotes_api_key();
-        $get_data = $this->curl_call($url, 'GET');
+        $get_data = file_get_contents($url);
         $response = (array) json_decode($get_data, true);
         return $response[0]['price'];
     }
@@ -67,7 +69,7 @@ class Signal_Management
         $pairs = $this->get_scheduled_pairs(date('Y-m-d'));
         if(!empty($pairs)){
             $url = Signal_Management::QUOTES_API."?pairs=$pairs&api_key=".$this->quotes_api_key();
-            $get_data = $this->curl_call($url, 'GET');
+            $get_data = file_get_contents($url);
             $response = json_decode($get_data, true);
             return $response;
         }
@@ -190,7 +192,7 @@ MAIL;
                                                         <div class="row">
                                                             <div class="col-sm-2"><p style="font-size: xxx-large">{$this->UI_signal_trend_msg($row['order_type'])}</p></div>
                                                             <div class="col-sm-7">
-                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']} (<span class="current_price" id="{$row['symbol']}">{$this->UI_get_symbol_current_price($row['symbol'])}</span>)</b>
+                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']} (<span class="current_price" id="signal_{$row['signal_id']}_currency_price">{$this->UI_get_symbol_current_price($row['symbol'])}</span>)</b>
                                                                 <br/>
                                                                 <span>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</span>
                                                             </div>
@@ -217,39 +219,72 @@ MAIL;
                                                     <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                                         <div class="row">
                                                             <div  class="col-sm-5 col-xs-12">
-                                                                <script>       
-                                                                    new SimpleBar(document.getElementById('signal_{$row['signal_id']}_news'));
-                                                                </script>
-                                                                <div id="signal_{$row['signal_id']}_news" style="height: 300px; overflow-y: scroll;" data-simplebar data-simplebar-auto-hide="true" class="row">
-                                                                    {$this->UI_get_news_for_page($row['symbol'])}
-                                                                </div>
-                                                            </div>
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                        <div>
+                                            <h6 style="font-size: 20px" class="my-0 pull-right"><strong>Number of Pips to trigger</strong></h6>
+                                            <h6 class="my-0"></h6>
+
+                                            <small class="text-muted">
+                                                
+                                            </small>
+
+                                        </div>
+                                        <span class="text-muted"><span id="signal_currency_diff_{$row['signal_id']}">0</span> Pips</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                        <div>
+                                            <h6 style="font-size: 20px" class="my-0 pull-right"><strong>Calculate Amount Gain</strong></h6>
+                                            <h6 class="my-0"></h6>
+
+                                              <center> 
+                                              <form role="form" method="post" action="">
+                                               <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-dollar fa-fw"></i></span>
+                                                        <input name="name" type="text" id="" value="" class="form-control" placeholder="Enter Your Equity" required/>
+                                                </div>
+                                                <div>
+                                                    <input name="add" type="submit" class="btn btn-success" value="Calculate">                                                </div>
+                                                </div>
+                                            </form>
+                                            </center>
+                                        </div>
+                                        <span class="text-muted"></span>
+                                    </li>
                                                             <div style="" class="col-sm-7 col-xs-12">
                                                                 <!-- TradingView Widget BEGIN -->
                                                                 <!-- TradingView Widget BEGIN -->
 
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/currencies/" rel="noopener" target="_blank"><span class="blue-text">Forex</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+  {
+  "showChart": true,
+  "locale": "en",
+  "largeChartUrl": "",
+  "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
+  "plotLineColorFalling": "rgba(255, 74, 104, 1)",
+  "gridLineColor": "rgba(233, 233, 234, 1)",
+  "scaleFontColor": "rgba(214, 216, 224, 1)",
+  "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
+  "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
+  "symbolActiveColor": "rgba(242, 250, 254, 1)",
+  "tabs": [
+    {
+      "title": "Forex",
+      "symbols": [
+        {
+          "s": "FX:{$row['symbol']}"
+        }
+      ],
+      "originalTitle": "Forex"
+    }
+  ]
+}
+  </script>
+</div>
 <!-- TradingView Widget END -->
-                            <section>
-                            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-                                                        <script type="text/javascript">
-                                                            new TradingView.widget({
-                                                                "width": "100%",
-                                                                "height": 300,
-                                                                "symbol": "FX:{$row['symbol']}",
-                                                                "interval": "5",
-                                                                "timezone": "UTC",
-                                                                "theme": "White",
-                                                                "style": "8",
-                                                                "toolbar_bg": "#f1f3f6",
-                                                                "hide_side_toolbar": false,
-                                                                "allow_symbol_change": true,
-                                                                "hideideas": true,
-                                                                "show_popup_button": true,
-                                                                "popup_width": "1000",
-                                                                "popup_height": "650"
-                                                            });
-                                                        </script>
-                                                    </section>
                             <!-- TradingView Widget END--->
                             <div>
                             <small style="font-size: x-small">Your use of the signals means you have read and accepted our
