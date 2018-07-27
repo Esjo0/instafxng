@@ -9,7 +9,9 @@ class Signal_Management
 //        3 => 'OADrX7UGJesDhvH5lDJ5NK93HZ3uSmxe ',
 //        1 => 'Q0byrL4ELAk5jS8k11gyBq4i7dIL1PE6',
 //        1 => 'Oa9r9zco2Twqdw6vS0P9wDQXHj8qzbup'
-        1 => 'uoGGIjYh0JADs5GsdfuuJT3LFEPiFw8S'
+//        1 => 'uoGGIjYh0JADs5GsdfuuJT3LFEPiFw8S'
+        1 => 'MVirptGI9kaHg78rzH2d2Ol8AvG5wJ9V'
+
     );
 
     public function quotes_api_key(){ return Signal_Management::QUOTES_API_KEY[mt_rand(1, 1)];}
@@ -104,8 +106,7 @@ WHERE SD.trigger_date = '$date'";
         $file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
         if($file_current_property != $file_old_property){
             echo 'new-signals-found';
-            file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
-
+            //file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
         }
     }
 
@@ -210,8 +211,8 @@ MAIL;
                                                             <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-sm-3"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></a></div>
-                                                            <div class="col-sm-9"><a id="signal_{$row['signal_id']}_trigger" onclick="signal.show_extra_analysis('signal_{$row['signal_id']}')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
+                                                            <div class="col-sm-2"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></a></div>
+                                                            <div class="col-sm-10"><a id="signal_{$row['signal_id']}_trigger" onclick="signal.show_extra_analysis('signal_{$row['signal_id']}')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
                                                         </div>
                                                     </div>
                                                     <!--............................................-->
