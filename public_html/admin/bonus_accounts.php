@@ -23,7 +23,7 @@ $bonus_accounts = paginate_array($offset, $bonus_accounts, $rowsperpage);
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin</title>
+        <title>Instaforex Nigeria | Admin - Bonus Accounts</title>
         <meta name="title" content="Instaforex Nigeria | Admin" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />

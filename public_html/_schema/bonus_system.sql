@@ -12,7 +12,7 @@ CREATE TABLE `bonus_accounts` (
  `updated` datetime DEFAULT NULL,
  PRIMARY KEY (`bonus_account_id`),
  UNIQUE KEY `bonus_account_id` (`bonus_account_id`)
-)
+) ;
 
 CREATE TABLE `bonus_acc_condition_meta` (
  `bonus_acc_condition_meta_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -21,7 +21,7 @@ CREATE TABLE `bonus_acc_condition_meta` (
  `status_id` enum('0','1') NOT NULL COMMENT '0-Condition Not Met Yet    1-Condition Met',
  PRIMARY KEY (`bonus_acc_condition_meta_id`),
  UNIQUE KEY `bonus_acc_condition_meta_id` (`bonus_acc_condition_meta_id`)
-)
+) ;
 
 CREATE TABLE `bonus_app_meta` (
  `bonus_app_meta_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -30,8 +30,7 @@ CREATE TABLE `bonus_app_meta` (
  `admin_code` varchar(10) NOT NULL,
  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`bonus_app_meta_id`)
-)
-
+);
 
 CREATE TABLE `bonus_condition` (
  `condition_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -42,23 +41,25 @@ CREATE TABLE `bonus_condition` (
  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`condition_id`),
  UNIQUE KEY `condition_id` (`condition_id`)
-)
+);
 
 CREATE TABLE `bonus_packages` (
  `package_id` int(11) NOT NULL AUTO_INCREMENT,
  `bonus_code` varchar(10) NOT NULL,
- `bonus_title` text NOT NULL,
- `bonus_desc` text,
+ `bonus_title` varchar(255) NOT NULL,
+ `bonus_desc` varchar(255) DEFAULT NULL,
+ `bonus_details` text,
+ `bonus_img` varchar(200) DEFAULT NULL,
+ `bonus_type_value` float DEFAULT NULL,
  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `updated` datetime DEFAULT NULL,
  `condition_id` text,
  `status` enum('1','2','3') NOT NULL COMMENT '1-draft 2-active 3-inactive',
- `type` int(11) NOT NULL,
+ `type` int(11) NOT NULL COMMENT '1-Percentage Based Bonus                   2-Amount Based Bonus',
  `admin_code` varchar(10) NOT NULL,
  PRIMARY KEY (`package_id`),
  UNIQUE KEY `bonus_code` (`bonus_code`)
-)
-
+) ;
 
 CREATE TABLE `bonus_package_meta` (
  `bonus_package_meta_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -68,4 +69,4 @@ CREATE TABLE `bonus_package_meta` (
  `meta_value` varchar(100) NOT NULL,
  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`bonus_package_meta_id`)
-)
+) ;

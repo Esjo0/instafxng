@@ -160,14 +160,16 @@ UI.user_code, UI.ifx_acct_no, UI.type AS account_type,
 U.first_name, UPPER(U.last_name) AS last_name, U.middle_name, U.email, U.phone, 
 BP.bonus_title, BP.bonus_desc, BP.condition_id, 
 BA.created AS created, 
-BA.bonus_account_id,
-BA.updated 
+BA.bonus_account_id, UI.ifxaccount_id,
+BA.updated, UIE.user_ilpr_enrolment_id 
 FROM bonus_accounts AS BA 
 INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
 INNER JOIN user AS U ON UI.user_code = U.user_code 
 INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
+INNER JOIN user_ilpr_enrolment AS UIE ON UIE.ifxaccount_id = UI.ifxaccount_id
 WHERE BA.bonus_account_id = $app_id
 ORDER BY created DESC ";
+        //var_dump($query);
         return $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
     }
 

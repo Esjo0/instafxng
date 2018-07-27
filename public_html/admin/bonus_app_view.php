@@ -1,4 +1,8 @@
 <?php
+ini_set("xdebug.var_display_max_children", -1);
+ini_set("xdebug.var_display_max_data", -1);
+ini_set("xdebug.var_display_max_depth", -1);
+
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
@@ -17,6 +21,18 @@ if(isset($_POST['process-dec'])){
     $result = $bonus_operations->decline_app($_app_id, $_reasons, $_SESSION['admin_unique_code']);
     $result ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
+if(isset($_POST['account_type_update'])){
+    $account_type_update = $db_handle->sanitizePost($_POST['account_type_update']);
+    $user_ilpr_enrolment_id = $db_handle->sanitizePost($_POST['user_ilpr_enrolment_id']);
+    $ifxaccount_id = $db_handle->sanitizePost($_POST['ifxaccount_id']);
+    var_dump($account_type_update);
+    var_dump($user_ilpr_enrolment_id);
+    var_dump($ifxaccount_id);
+    //$db_handle->runQuery("UPDATE user_ilpr_enrolment SET status = '2' WHERE user_ilpr_enrolment_id = $user_ilpr_enrolment_id LIMIT 1");
+    //$update_account = $client_operation->update_account_type($ifxaccount_id, $account_type_update);
+    //$message_success = "You have successfully updated the account";
+}
+
 $app_id = decrypt_ssl(str_replace(" ", "+", $_GET['app_id']));
 $app_details = $bonus_operations->get_app_by_id($app_id);
 if(empty($app_details)) {redirect_to("bonus_app_moderation.php");}
@@ -144,6 +160,34 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                             <td><b>Email:</b>  <?php echo $app_details['email']; ?></td>
                                             <td><b>Phone:</b>  <?php echo $app_details['phone']; ?></td>
                                         </tr>
+                                        <tr>
+                                            <td><b>Account No:</b>  <?php echo $app_details['ifx_acct_no']; ?></td>
+                                            <td>
+                                                <div class="col-sm-12">
+                                                    <div class="input-group">
+                                                        <div class="input-group-btn ">
+                                                            <button type="button" class="btn btn-default dropdown-toggle btn-group-justified" data-toggle="dropdown"> <?php if($app_details['account_type'] == '2') { echo "None-ILPR Account"; }elseif($app_details['account_type'] == '1'){ echo "ILPR Account";} ?> <span class="caret"></span></button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <li><a onclick="document.getElementById('account_type_update_2').click();" href="javascript:void(0);"> None-ILPR Account </a></li>
+                                                                <li><a onclick="document.getElementById('account_type_update_1').click();" href="javascript:void(0);"> ILPR Account </a></li>
+                                                                <input style="display: none" type="submit" id="account_type_update_2" name="account_type_update" value="2" />
+                                                                <input style="display: none" type="submit" id="account_type_update_1" name="account_type_update" value="1" />
+                                                                <input type="hidden" value="<?php echo $app_details['user_ilpr_enrolment_id'];?>" name="user_ilpr_enrolment_id">
+                                                                <input type="hidden" value="<?php echo $app_details['ifxaccount_id'];?>" name="ifxaccount_id">
+                                                            </ul>
+                                                        </div><!-- /btn-group -->
+<!--                                                        <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-check"></i> Update</button>
+-->                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+
+                                <table class="table table-responsive table-bordered">
+                                    <tbody>
                                         <tr>
                                             <td><b>Account No:</b>  <?php echo $app_details['ifx_acct_no']; ?></td>
                                             <td>
