@@ -1,7 +1,24 @@
 <?php
 require_once 'init/initialize_general.php';
-$thisPage = "Bonus";
-header('Location: https://instafxng.com');
+$thisPage = "Promotion";
+$bonus_operations = new Bonus_Operations();
+//$all_bonus_packages = $bonus_operations->get_active_packages();
+
+$query = "SELECT bonus_title, bonus_img, bonus_desc, bonus_code FROM bonus_packages WHERE status = '2' ORDER BY created DESC ";
+$numrows = $db_handle->numRows($query);
+$rowsperpage = 10;
+$totalpages = ceil($numrows / $rowsperpage);
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {$currentpage = (int) $_GET['pg'];
+} else {$currentpage = 1;}
+if ($currentpage > $totalpages) { $currentpage = $totalpages; }
+if ($currentpage < 1) { $currentpage = 1; }
+$prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
+$prespagehigh = $currentpage * $rowsperpage;
+if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
+$offset = ($currentpage - 1) * $rowsperpage;
+$query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
+$result = $db_handle->runQuery($query);
+$all_bonus_packages = $db_handle->fetchAssoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +26,7 @@ header('Location: https://instafxng.com');
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Instaforex Promotions</title>
+        <title>Instaforex Nigeria | InstaFxNg Bonuses</title>
         <meta name="title" content="" />
         <meta name="keywords" content="instaforex, promotions of instaforex, gifts for forex traders, contest and promotions" />
         <meta name="description" content="" />
@@ -30,72 +47,49 @@ header('Location: https://instafxng.com');
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-12">
-                                <h3 class="text-center"><strong>InstaFxNg Bonuses</strong></h3>
-                                <p>InstaForex offers great opportunities and rewards for Forex Traders in addition to the best trading conditions.
-                                    We invite you to claim our bonuses to boost your trades and make more profit in the Forex market.</p>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <div class="section-tint super-shadow">
-                        <div class="row">
-                            <div class="col-sm-12"><h5>130% BONUS</h5></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <a href="https://instafxng.com/bonus_100.php" title="click for full details" target="_blank">
-                                    <img src="images/instaforex-bonus.jpg" alt="" class="img-responsive" />
-                                </a>
-                            </div>
-                            <div class="col-sm-8">
-                                <p>Instaforex offers a unique 130% Forex bonus to all new clients who recently joined
-                                    the company.</p>
-                                <p>This bonus is to increase your capital and give you an opportunity to earn
-                                    more in the Forex market.</p>
-                                <a class="btn btn-success" href="https://instafxng.com/bonus_100.php" title="click for full details" target="_blank">More Details</a>
+                                <h3 class="text-center"><strong>Bonus and Promotion Offers from InstaFxNg</strong></h3>
+                                <p>InstaFxNg offers great opportunities and bonuses for Forex Traders in addition to the best trading conditions.
+                                    We invite you to delight yourself by participating in any of our promotions and get a bonus also.</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="section-tint super-shadow">
-                        <div class="row">
-                            <div class="col-sm-12"><h5>EDUCATION BONUS</h5></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <img src="https://instafxng.com/images/instaforex_education_bonus.png" alt="" class="img-responsive" />
+                    <?php if (!empty($all_bonus_packages)){ ?>
+                    <?php foreach ($all_bonus_packages as $row){ extract($row); ?>
+                            <div class="section-tint super-shadow">
+                                <div class="row">
+                                    <div class="col-sm-12"><h5><?php echo $bonus_title; ?></h5></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <a href="bonus_view.php?bc=<?php echo encrypt($bonus_code); ?>" title="click for full details" target="_blank">
+                                            <img src="images/bonus_packages/<?php echo $bonus_img; ?>" alt="" class="img-responsive" />
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <p><?php echo $bonus_desc; ?></p>
+                                        <a class="btn btn-success" href="bonus_view.php?bc=<?php echo encrypt($bonus_code); ?>" title="click for full details" target="_blank">More Details</a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-8">
-                                <p>Instaforex offers a unique 100% Forex Education bonus to all clients who have
-                                    participated in the Forex Training Course.</p>
-                                <p>This bonus is to increase your capital and give you an opportunity to earn
-                                    more in the Forex market.</p>
-                                <a class="btn btn-success" href="https://instafxng.com/education_bonus.php" title="click for full details" target="_blank">More Details</a>
-                            </div>
-                        </div>
-                    </div>
+                        <?php } ?>
+                    <?php } ?>
 
-                    
+                    <?php if(isset($all_bonus_packages) && !empty($all_bonus_packages)) { ?>
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <div class="col-sm-12"><h5>Instaforex 100% LFC Partnership Bonus</h5></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <a href="forex_100bonus.php" title="click for full details" target="_blank"><img src="images/instaforex-100bonus.jpg" alt="" class="img-responsive" /></a>
-                            </div>
-                            <div class="col-sm-8">
-                                <p>Within the framework of partnership with eighteen Premier League titles holder - the 
-                                    legendary Liverpool FC, InstaForex is pleased to announce a new campaign! The 100% bonus offer.</p>
-                                <p>The 100% bonus is available to all fans of sport and trading on their first deposit of 2000 USD.
-                                    i.e., for deposit 2000 USD to your trading account, you will get additional 2000 USD as a bonus.</p>
-                                <a class="btn btn-success" href="forex_100bonus.php" title="click for full details" target="_blank">More Details</a>
+                            <div class="col-sm-12">
+                                <div class="tool-footer text-right">
+                                    <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    
+                    <?php } ?>
+
+
+
+                    <?php if(isset($all_bonus_packages) && !empty($all_bonus_packages)) { require_once 'layouts/pagination_links.php'; } ?>
 
                     <!-- Unique Page Content Ends Here
                     ================================================== -->

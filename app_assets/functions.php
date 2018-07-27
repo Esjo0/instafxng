@@ -634,11 +634,63 @@ function paginate_array($offset, $array, $benchmark)
     }
     return $result;
 }
-function str_replace_nth($search, $replace, $subject, $nth)
-{
-    $found = preg_match_all('/'.preg_quote($search).'/', $subject, $matches, PREG_OFFSET_CAPTURE);
-    if (false !== $found && $found > $nth) {
-        return substr_replace($subject, $replace, $matches[0][$nth][1], strlen($search));
+
+
+/*
+ * $input_name = (string) Name of the markup form field
+ * $upload_path = (string) Directory path for the uploaded file.
+ * $desired_file_name = (string) Desired name of the uploaded file.
+ *  $allowed_file_types = (array) Array of allowed file types for the upload
+ *  $max_file_size = (int) Maximum file size
+ * */
+function upload_file($input_name, $upload_path, $desired_file_name, $allowed_file_types = array('image/jpeg', 'image/png'), $max_file_size = 5 * 1024 * 1024){
+    $feedback = array();
+    if(isset($_FILES[$input_name]) && $_FILES[$input_name]["error"] == UPLOAD_ERR_OK){
+
+        $feedback['file_properties'] = array(
+            'filename' => $_FILES[$input_name]["name"],
+            'filetype' => $_FILES[$input_name]["type"],
+            'filesize' => $_FILES[$input_name]["size"]
+        );
+        extract($feedback['file_properties']);
+
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+        if(!array_key_exists($ext, $allowed_file_types)){
+            $feedback['status'] = false;
+            $feedback['status_msg'] = "Error: Please select a valid file format.";
+            //exit();
+        }
+
+        if($filesize > $max_file_size){
+            $feedback['status'] = false;
+            $feedback['status_msg'] = "Error: File size is larger than the allowed limit.";
+            //exit();
+        }
+
+        if(in_array($filetype, $allowed_file_types)){
+            if(!file_exists($upload_path)){
+                mkdir($upload_path);
+            }
+
+            if(file_exists($upload_path.$desired_file_name)){
+                $feedback['status'] = false;
+                $feedback['status_msg'] = "Error: $desired_file_name already exists in $upload_path";
+                //exit();
+            } else{
+                move_uploaded_file($_FILES[$input_name]["tmp_name"], $upload_path.$desired_file_name);
+                $feedback['file_properties']['filename'] = $desired_file_name;
+                $feedback['status'] = true;
+                $feedback['status_msg'] = "Success: Upload successful.";
+            }
+        } else{
+            $feedback['status'] = false;
+            $feedback['status_msg'] = "Error: There was a problem uploading your file. Please try again.";
+        }
     }
-    return $subject;
+    else{
+        $feedback['status'] = false;
+        $feedback['status_msg'] = "Error: ".$_FILES[$input_name]["error"];
+    }
+    return $feedback;
 }
