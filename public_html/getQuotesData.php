@@ -37,10 +37,4 @@ foreach ($signals as $row1) {
 
 $result = json_encode($quotes);
 echo $result;
-$file_current_property = date('Y-m-d h:i:s', stat('../../../models/signal_daily.json')['mtime']);
-$file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
-if($file_current_property != $file_old_property) {
-    echo 'new-signals-found';
-    file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
-}
 ?>

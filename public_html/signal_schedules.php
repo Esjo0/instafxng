@@ -66,10 +66,9 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
 
-<!--        <script>-->
-<!--            signal.getQuotes();-->
-<!--            $(document).ready(function() {setInterval(function(){signal.getQuotes();}, 5000);});-->
-<!--        </script>-->
+        <script>
+            signal.getQuotes();
+        </script>
 
         <!--<script>signal.get_signals_for_page();</script>-->
         <!--................................-->

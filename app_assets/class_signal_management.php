@@ -106,7 +106,7 @@ WHERE SD.trigger_date = '$date'";
         $file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
         if($file_current_property != $file_old_property){
             echo 'new-signals-found';
-            file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
+            //file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
         }
     }
 
@@ -211,8 +211,8 @@ MAIL;
                                                             <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-sm-3"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></a></div>
-                                                            <div class="col-sm-9"><a id="signal_{$row['signal_id']}_trigger" onclick="signal.show_extra_analysis('signal_{$row['signal_id']}')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
+                                                            <div class="col-sm-2"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></a></div>
+                                                            <div class="col-sm-10"><a id="signal_{$row['signal_id']}_trigger" onclick="signal.show_extra_analysis('signal_{$row['signal_id']}')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
                                                         </div>
                                                     </div>
                                                     <!--............................................-->
