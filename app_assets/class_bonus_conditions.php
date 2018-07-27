@@ -3,7 +3,7 @@ class Bonus_Condition{
     public $BONUS_CONDITIONS = array(
         1 => array(
             'title' => 'New Account Validation',
-            'desc' => 'This helps to validate that a given account is a new instaforex account.',
+            'desc' => 'All participating Instaforex accounts must be new accounts.',
             'type' => 0,
             'extra' => '',
             'api' => 'new_account_cond',
@@ -12,7 +12,7 @@ class Bonus_Condition{
         ),
         2 => array(
             'title' => 'ILPR Account Validation',
-            'desc' => 'This helps to validate that a given account is enrolled into the Instafxng Loyalty Promotion and Rewards.',
+            'desc' => 'All participating Instaforex accounts must be enrolled into the Instafxng Loyalty Promotion and Rewards (ILPR).',
             'type' => 0,
             'api' => 'valid_ilpr_account_cond',
             'extra' => '',
@@ -20,14 +20,23 @@ class Bonus_Condition{
             'returns' => array('status')
         ),
         3 => array(
-            'title' => 'Bonus Withdrawal (Case 1)',
-            'desc' => 'This helps to validate that the amount to be withdrawn does not exceed the stated amount.',
+            'title' => 'Client Verification',
+            'desc' => 'All clients benefiting from this bonus package must have verified their identities.',
             'type' => 0,
             'api' => 'bonus_withdrawal_case_1_cond',
             'extra' => array('Amount'),
             'args' => array('bonus_account_id'),
-            'returns' => array('valid_acc')
-        )
+            'returns' => array('status', 'docs')
+        ),
+        4 => array(
+            'title' => 'Bonus Expiry (Case 1)',
+            'desc' => 'This API validates that an account has not traded for the specified number of days since the bonus was assigned.',
+            'type' => 0,
+            'api' => 'bonus_withdrawal_case_1_cond',
+            'extra' => array('Amount'),
+            'args' => array('bonus_account_id'),
+            'returns' => array('status', 'docs')
+        ),
     );
 
     public $CONDITIONS_TYPES = array(

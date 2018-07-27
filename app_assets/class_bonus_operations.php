@@ -158,7 +158,7 @@ MAIL;
 BA.bonus_code, BA.enrolment_status, BA.allocation_status, BA.allocation_date, BA.allocated_amount, BA.admin_code AS compliance_officer, BA.bonus_status, 
 UI.user_code, UI.ifx_acct_no, UI.type AS account_type, 
 U.first_name, UPPER(U.last_name) AS last_name, U.middle_name, U.email, U.phone, 
-BP.bonus_title, BP.bonus_desc, BP.condition_id, 
+BP.bonus_title, BP.bonus_desc, BP.condition_id, BP.bonus_details, 
 BA.created AS created, 
 BA.bonus_account_id, UI.ifxaccount_id,
 BA.updated, UIE.user_ilpr_enrolment_id 
