@@ -214,7 +214,7 @@ function Signal()
         console.log(url);
         this.ajax_call(url, 'GET', 'update_signal_page');
         setInterval(function(){signal.new_signal_listener();}, 120000);//TODO: Fix this back to 5000
-        //setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
     };
 
     ///fine
