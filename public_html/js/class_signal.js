@@ -179,75 +179,6 @@ function Signal()
         document.getElementById(id).innerHTML = t_str;
     };
 
-    this.showSignal = function (json, id){
-        var table = document.getElementById(id);
-        table.innerHTML = '';
-        //localStorage.setItem("signal_array", JSON.stringify(json));
-        if(json.length < 1)
-        {
-            table.setAttribute("align", 'center');
-            var row_ = table.insertRow(0);
-            row_.setAttribute("align", 'center');
-            row_.innerHTML = '<span class="text-center text-danger" style="font-size:15px;margin-left:50px"><i>No signal at the Moment</i></span>';
-        }
-        else {
-            var signal_array = JSON.parse(json);
-            for(var x in signal_array)
-            {
-            var row = table.insertRow(0);
-            row.setAttribute("class", this.get_Context(signal_array[x]['trigger_time']));
-            row.setAttribute("data-toggle", 'modal');
-            row.setAttribute("title", 'Click Here For More Details');
-            row.setAttribute("id", signal_array[x]['signal_id']);
-            row.setAttribute("data-target", '#signal_display');
-            var id_ = signal_array[x]['signal_id'];
-            row.setAttribute("onclick", 'signal.getSignal('+id_+')');
-            //row.addEventListener("click", signal.getSignal(row.id));
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-            var cell5 = row.insertCell(4);
-
-            cell1.innerHTML = signal_array[x]['currency_pair'];
-            cell3.innerHTML = this.get_OrderType(signal_array[x]['order_type']);
-            cell4.innerHTML = this.getSmallTrend(signal_array[x]['order_type']);
-            cell5.innerHTML = this.formatTime(signal_array[x]['trigger_time']);
-            }
-        }
-    };
-
-    this.getSignal = function (id) {
-        document.getElementById('preloader').style.display = 'block';
-        var query = "SELECT order_type, price, take_profit, stop_loss, CONCAT(trigger_date, SPACE(1), trigger_time) AS triger, trend, note, signal_symbol.symbol AS currency_pair FROM signal_daily, signal_symbol WHERE signal_daily.symbol_id = signal_symbol.symbol_id AND signal_id = '"+id+"'";
-        var type = "2";
-        this.incrementViews(id);
-        this.ajax_request(id,query, type);
-
-    };
-
-    this.DisplaySignal = function (json) {
-        document.getElementById('preloader').style.display = 'none';
-        var table = document.getElementById('sig_content');
-        table.innerHTML = '';
-        var signal_array = JSON.parse(json);
-        var order_type  = this.get_OrderType(signal_array[0]['order_type']);
-        var content = "<table class='table table-bordered table-responsive'>"+
-                        "<tbody>"+
-                            "<tr>"+
-                                "<td><b>ORDER</b></td><td>"+order_type+"</td>"+
-                                "<td rowspan='5'><center>"+this.getBigTrend(signal_array[0]['order_type'])+"</center></td>"+
-                            "</tr>"+
-                            "<tr><td><b>CURRENCY PAIR</b></td><td>"+signal_array[0]['currency_pair']+"</td></tr>"+
-                            "<tr><td><b>PRICE</b></td><td>"+ this.zeroCheck(signal_array[0]['price'])+"</td></tr>"+
-                            "<tr><td><b>TAKE PROFIT</b></td><td>"+ this.zeroCheck(signal_array[0]['take_profit'])+"</td></tr>"+
-                            "<tr><td><b>STOP LOSS</b></td><td>"+ this.zeroCheck(signal_array[0]['stop_loss'])+"</td></tr>"+
-                            "<tr><td><b>TRIGGER DATE & TIME</b></td><td>"+signal_array[0]['triger']+"</td></tr>"+
-                            "<tr><td><b>KEYNOTE</b></td><td colspan='2'>"+signal_array[0]['note']+"</td></tr>"+
-                            "</tbody></table>";
-        var feedback = "<tr><td><b>FEEDBACK</b></td>"+ "<td colspan='2'>"+"<textarea placeholder='Comments (If Any)' rows='2' id='comments' name='comments' class='form-control'></textarea>"+"</td>"+ "</tr>";
-        table.innerHTML = content;
-    };
 
     //checks the number of decimal places and ensure its 4 digits after the decimal point.
     this.zeroCheck = function(price) {
@@ -281,8 +212,8 @@ function Signal()
         id_list = id_list.join('-');
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
         this.ajax_call(url, 'GET', 'update_signal_page');
-        setInterval(function(){signal.new_signal_listener();}, 60000);//TODO: Fix this back to 5000
-        setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 1000
+        //setInterval(function(){signal.new_signal_listener();}, 60000);//TODO: Fix this back to 5000
+        //setInterval(function(){signal.getQuotes();}, 30000);//TODO: Fix this back to 1000
     };
 
     ///fine

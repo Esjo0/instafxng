@@ -4,9 +4,9 @@ class Signal_Management
     const QUOTES_API = "https://forex.1forge.com/1.0.3/quotes";
     //TODO: Update this...
     const QUOTES_API_KEY = array(
-        1 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r',
+        1 => 'wmhaGdIcdztlSAXy76QZxeHAsWDpCtru ',
         2 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r',
-        3 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r',
+        3 => 'OADrX7UGJesDhvH5lDJ5NK93HZ3uSmxe ',
         4 => 'VvffCmdMk0g1RKjPBPqYHqAeWwIORY1r'
     );
 

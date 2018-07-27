@@ -13,7 +13,7 @@ $result_view = $db_handle->runQuery($query);
 
 if(isset($_POST['trigger'])){
     $id = $db_handle->sanitizePost($_POST['id']);
-    $query = "UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '$id'";
+    $query = "UPDATE signal_daily SET trigger_status = '1',note = note+' Triggered Manually' WHERE signal_id = '$id'";
     $result =$db_handle->runQuery($query);
     if($result) {
         $message_success = "Signal Triggered Successfully created for ".datetime_to_text($signal_time);
