@@ -23,7 +23,6 @@ $thisPage = "Promotion";
         <?php require_once 'layouts/topnav.php'; ?>
         <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
         <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
-
             <!-- Unique Page Content Starts Here
             ================================================== -->
             <div class="row">
@@ -32,7 +31,6 @@ $thisPage = "Promotion";
                         <center>
                             <img src="images/Q2_Promo/Instafxng_Milestone_Celebration.jpg" alt="" class="img-responsive" />
                         </center>
-
                         <h3 class="text-center">INSTAFXNG'S CELEBRATE A MILESTONE PROMO</h3>
                         <p class="text-justify">To celebrate the completion of the first quarter, we’re rewarding 3 clients with an All-Expense Paid Buffet at Four Points by Sheraton Hotel.</p>
                         <p class="text-justify">It's More than a Buffet, It’s an Experience!</p>
@@ -41,33 +39,33 @@ $thisPage = "Promotion";
                     </div>
                 </div>
             </div>
-            <div style="display: none" class="row">
+<!--            <div style="display: none" class="row">
                 <div class="col-sm-12">
                     <div class="section-tint super-shadow">
-                        <?php require_once 'layouts/feedback_message.php'; ?>
+                        <?php /*require_once 'layouts/feedback_message.php'; */?>
                         <div class="row">
                             <div class="col-sm-7">
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th colspan="3" class="text-center">Today's Race as at <?php echo date('h:i:s A')?>, <?php echo date('d M Y')?></th>
+                                        <th colspan="3" class="text-center">Today's Race as at <?php /*echo date('h:i:s A')*/?>, <?php /*echo date('d M Y')*/?></th>
                                     </tr>
                                     <tr>
                                         <th>Position</th>
                                         <th>Participants Name</th>
-                                        <!--<th>Promo Points</th>-->
+                                        <th>Promo Points</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php
-                                    $count = 1;
-                                    foreach ($top_entries as $row){ extract($row); ?>
+/*                                    $count = 1;
+                                    foreach ($top_entries as $row){ extract($row); */?>
                                         <tr>
-                                            <th><?php echo $count; ?></th>
-                                            <td><?php echo $obj_easter_promo->get_client_by_name($participant)['first_name']; ?></td>
-                                            <!--<th><?php /*//echo number_format($points); */?></th>-->
+                                            <th><?php /*echo $count; */?></th>
+                                            <td><?php /*echo $obj_easter_promo->get_client_by_name($participant)['first_name']; */?></td>
+                                            <th><?php /*echo number_format($points); */?></th>
                                         </tr>
-                                        <?php $count++; } ?>
+                                        <?php /*$count++; } */?>
                                     </tbody>
                                 </table>
                             </div>
@@ -83,7 +81,7 @@ $thisPage = "Promotion";
                                         <td>
                                             <p class="text-center text-success text-uppercase text-bold"><b>
                                                 <?php
-                                                $winner = $obj_easter_promo->get_winner(date('Y-m-d'), date('Y-m-d'));
+/*                                                $winner = $obj_easter_promo->get_winner(date('Y-m-d'), date('Y-m-d'));
                                                 if(isset($winner['participant']) && !empty($winner['participant']) && $winner['participant']!= 0)
                                                 {
                                                     echo $obj_easter_promo->get_client_by_name($winner['participant'])['first_name'];
@@ -92,7 +90,7 @@ $thisPage = "Promotion";
                                                 {
                                                     echo "---";
                                                 }
-                                                ?>
+                                                */?>
                                             </b></p>
                                         </td>
                                     </tr>
@@ -114,15 +112,15 @@ $thisPage = "Promotion";
                                                     </button>
                                                 </span>
                                     </div>
-                                    <?php if(isset($search_result) && (!empty($search_result['entries']) && !empty($search_result['points']))) {?>
-                                        <p class="text-success">You have <b><?php echo number_format($search_result['entries']);?> entry(s)</b><br/>
-                                            You have <b><?php echo number_format($search_result['points']);?> point(s)</b></p>
-                                    <?php }?>
-                                    <?php if(isset($search_result) && (empty($search_result['entries']) && empty($search_result['points']))) {?>
+                                    <?php /*if(isset($search_result) && (!empty($search_result['entries']) && !empty($search_result['points']))) {*/?>
+                                        <p class="text-success">You have <b><?php /*echo number_format($search_result['entries']);*/?> entry(s)</b><br/>
+                                            You have <b><?php /*echo number_format($search_result['points']);*/?> point(s)</b></p>
+                                    <?php /*}*/?>
+                                    <?php /*if(isset($search_result) && (empty($search_result['entries']) && empty($search_result['points']))) {*/?>
                                             <p class="text-danger">Sorry you do not yet have an entry yet, please fund you Instaforex Account to enter the Race.<br/>
-                                            You have <b><?php echo number_format($search_result['entries']);?> entry(s)</b><br/>
-                                            You have <b><?php echo number_format($search_result['points']);?> point(s)</b></p>
-                                    <?php }?>
+                                            You have <b><?php /*echo number_format($search_result['entries']);*/?> entry(s)</b><br/>
+                                            You have <b><?php /*echo number_format($search_result['points']);*/?> point(s)</b></p>
+                                    <?php /*}*/?>
                                 </form>
                                 <br/>
                             </div>
@@ -147,10 +145,9 @@ $thisPage = "Promotion";
                     </div>
                 </div>
             </div>
-
+-->
             <!-- Unique Page Content Ends Here
             ================================================== -->
-
         </div>
         <!-- Main Body - Side Bar  -->
         <div id="main-body-side-bar" class="col-md-4 col-md-pull-8 col-lg-3 col-lg-pull-9 left-nav">

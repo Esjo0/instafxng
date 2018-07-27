@@ -1,23 +1,17 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in())
-{
-    redirect_to("login.php");
-}
+if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
-if(isset($_POST['paid']))
-{
-    $result = $obj_acc_system->paid_req_order($_POST['req_order_code']);
+if(isset($_POST['paid'])){
+    $admin_email = $db_handle->sanitizePost(trim($_POST['dispenser']));
+    $result = $obj_acc_system->paid_req_order($_POST['req_order_code'], $admin_email);
     $result ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
 
-if(isset($_POST['search']))
-{
+if(isset($_POST['search'])) {
     $cash_out_details = $obj_acc_system->get_cash_out_details($_POST['cash_out_code']);
     !isset($cash_out_details) && empty($cash_out_details) ? $message_error = "No Result Found!" : $message_success = "<b>1</b> Result Found!";
-
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,10 +38,8 @@ if(isset($_POST['search']))
                 
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
                 <div id="main-body-content-area" class="col-md-8 col-lg-9">
-                    
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    
                     <div class="row">
                         <div class="col-sm-12 text-danger">
                             <h4><strong>REQUISITION FORM</strong></h4>
@@ -112,9 +104,31 @@ if(isset($_POST['search']))
                                         </div>
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                             <input name="req_order_code" type="hidden" value="<?php echo $cash_out_details['req_order_code']; ?>">
-                                            <button type="submit" name="paid" class="btn btn-success"><i class="glyphicon glyphicon-credit-card"></i> Paid</button>
+                                            <button type="button" data-target="#paid-order" data-toggle="modal" class="btn btn-success"><i class="glyphicon glyphicon-credit-card"></i> Paid</button>
+                                            <div id="paid-order" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                                    <h4 class="modal-title">Disburse Cash</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Enter an admin member's email below to dispense cash.</p>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <input name="dispenser" type="text" id="dispenser" placeholder="Email Address (Optional)" class="form-control" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input name="paid" type="submit" class="btn btn-sm btn-success" value="Process">
+                                                    <button type="submit" name="decline" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close !</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                         </form>
-                                    <?php }} ?>
+                                        <?php }} ?>
                                 </div>
                             </div>
                         </div>

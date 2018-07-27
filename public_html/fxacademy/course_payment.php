@@ -19,7 +19,7 @@ if(empty($selected_course)) {
     redirect_to("./"); // cannot find course or URL tampered
 } else {
     $origin_of_deposit = '1'; // Originates online
-    $stamp_duty = CBN_STAMP_DUTY;
+    $stamp_duty = 0; // It has been added to course cost
     $course_cost = $selected_course['course_cost'];
     $total_payable = $stamp_duty + $course_cost;
     $card_processing = 0.015 * $total_payable;
@@ -38,7 +38,7 @@ if(isset($_POST['course_payment_summary'])) {
     $pay_type = $db_handle->sanitizePost($_POST['pay_type']);
 
     $origin_of_deposit = '1'; // Originates online
-    $stamp_duty = CBN_STAMP_DUTY;
+    $stamp_duty = 0; // It has been added to course cost
     $course_cost = $selected_course['course_cost'];
     $total_payable = $stamp_duty + $course_cost;
     $card_processing = 0.015 * $total_payable;

@@ -4,6 +4,53 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+/*
+ * Period: One year ago
+ *
+ * Tier 0: No funding
+ * Tier 1: $1 - $150
+ * Tier 2: $151 - $500
+ * Tier 3: $501 - $2000
+ * Tier 4: $2001 and above
+ */
+
+//$date_start = "2017-07-07";
+//$date_end = "2018-07-06";
+//
+//$query1 = "SELECT ud.trans_id
+//    FROM user_deposit AS ud
+//    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+//    WHERE MAX(ud.dollar_ordered) BETWEEN 1 AND 150 AND ud.status = '8' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$date_start' AND '$date_end') GROUP BY ui.user_code";
+//
+//$tier1 = $db_handle->numRows($query1);
+//
+//$query2 = "SELECT ud.trans_id
+//    FROM user_deposit AS ud
+//    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+//    WHERE MAX(ud.dollar_ordered) BETWEEN 151 AND 500 AND ud.status = '8' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$date_start' AND '$date_end') GROUP BY ui.user_code";
+//
+//$tier2 = $db_handle->numRows($query2);
+//
+//$query3 = "SELECT ud.trans_id
+//    FROM user_deposit AS ud
+//    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+//    WHERE MAX(ud.dollar_ordered)BETWEEN 501 AND 2000 AND ud.status = '8' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$date_start' AND '$date_end') GROUP BY ui.user_code";
+//
+//$tier3 = $db_handle->numRows($query3);
+//
+//$query4 = "SELECT ud.trans_id
+//    FROM user_deposit AS ud
+//    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+//    WHERE MAX(ud.dollar_ordered) >= 2001 AND ud.status = '8' AND (STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$date_start' AND '$date_end') GROUP BY ui.user_code";
+//
+//$tier4 = $db_handle->numRows($query4);
+//
+//echo "Tier 1: " . $tier1 . "<br />";
+//echo "Tier 2: " . $tier2 . "<br />";
+//echo "Tier 3: " . $tier3 . "<br />";
+//echo "Tier 4: " . $tier4 . "<br />";
+
+
 //$user_code = "";
 //$client_operation = new clientOperation();
 //$user_detail = $client_operation->get_user_by_user_code($user_code);

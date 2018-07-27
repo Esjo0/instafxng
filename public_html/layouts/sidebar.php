@@ -84,7 +84,7 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
 <div class="row ">
     <div class="col-sm-6 col-md-12">
         <div class="nav-display super-shadow">
-           <?php include "signals.php"; ?>
+           <?php include "signals_sidebar.php"; ?>
         </div>
     </div>
 </div>

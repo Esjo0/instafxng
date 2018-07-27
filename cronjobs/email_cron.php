@@ -54,8 +54,10 @@ if($db_handle->numOfRows($result) > 0) {
         foreach ($all_selected_members as $row) {
             $client_name = ucwords(strtolower(trim($row['first_name'])));
             $client_email = strtolower(trim($row['email']));
+            $from_date = $row['date_from'];
+            $to_date = $row['date_to'];
 
-            // Replace [NAME] with clients full name
+                // Replace [NAME] with clients full name
             $my_message_new = str_replace('[NAME]', $client_name, $my_message);
             $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
 
@@ -80,6 +82,9 @@ if($db_handle->numOfRows($result) > 0) {
                 $last_trade_volume = $last_trade_detail['volume'];
                 $last_trade_date = $last_trade_detail['date_earned'];
 
+                $funded = $client_operation->get_total_funding($user_code, $from_date, $to_date);
+                $withdrawn = $client_operation->get_total_withdrawal($user_code, $from_date, $to_date);
+
                 $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
                 $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
                 $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);
@@ -93,6 +98,11 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
                 $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
                 $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
+
+                $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);
+                $my_message_new = str_replace('[WITHDRAWN]', $withdrawn, $my_message_new);
+                $my_subject_new = str_replace('[FUNDED]', $funded, $my_subject_new);
+                $my_subject_new = str_replace('[WITHDRAWN]', $withdrawn, $my_subject_new);
 
                 $my_message_new = str_replace('[LPMP]', '', $my_message_new);
                 $my_message_new = str_replace('[LPMR]', '', $my_message_new);

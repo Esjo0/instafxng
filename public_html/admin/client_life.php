@@ -20,9 +20,6 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
     
     if($user_detail) {
 
-        // Get client education log history
-        $client_education_history = $education_object->get_client_lesson_history($user_code);
-
         extract($user_detail);
 
         if($middle_name) {
@@ -37,20 +34,6 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
         $client_address = $client_operation->get_user_address_by_code($user_code);
         $client_verification = $client_operation->get_client_verification_status($user_code);
         $client_credential = $client_operation->get_user_credential($user_code);
-        $client_bank_account = $client_operation->get_user_bank_account($user_code);
-        $client_phone_code = $client_operation->get_user_phonecode($user_code);
-
-        $client_flags = $client_operation->get_client_flag_by_code($user_code);
-
-        $total_point = $client_operation->get_loyalty_point_earned($user_code);
-        $total_point_claimed = $client_operation->get_loyalty_point_claimed($user_code);
-        $total_point_frozen = $client_operation->get_loyalty_point_frozen($user_code);
-        $loyalty_point_balance = $total_point - ($total_point_claimed + $total_point_frozen);
-
-        $client_point_details = $obj_loyalty_point->get_user_point_details($user_code);
-
-        $selected_point_frozen_trans_id = $client_operation->get_loyalty_point_frozen_transaction($user_code);
-
         $last_trade_date = $client_operation->get_last_trade_detail($user_code)['date_earned'];
 
         switch($client_verification) {
@@ -64,12 +47,6 @@ if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
         redirect_to("./");
     }
 }
-
-// GET LATEST TRANSACTIONS
-$latest_funding = $system_object->get_latest_funding($user_code);
-
-// GET LATEST WITHDRAWALS
-$latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
 
 $sum_successful_withdrawal = $system_object->get_sum_client_completed_withdrawal($user_code);
 $sum_successful_funding = $system_object->get_sum_client_completed_funding($user_code);
@@ -254,6 +231,309 @@ MAIL;
     $mpdf->Output($full_name . ' - Biodata.pdf', \Mpdf\Output\Destination::DOWNLOAD);
 }
 
+
+if(isset($_POST['main_funding_doc'])) {
+
+    $full_address = $client_address['address'] . ' ' . $client_address['address2'] . ' ' . $client_address['city'] . ' ' . $client_address['state'];
+    $successful_funding_naira = number_format($sum_successful_funding['total_naira'], 2, ".", ",");
+    $successful_withdrawal_naira = number_format($sum_successful_withdrawal['total_naira'], 2, ".", ",");
+
+    $header = <<<HEADER
+<div>
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+
+
+        <h3>
+        Client Name: $full_name <br />
+        Phone Number: $phone<br />
+        Address: $full_address<br />
+        </h3>
+
+        <div>
+            <table style="border: 1px solid black; border-collapse: collapse; width: 100%">
+                <thead>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Transaction ID</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Client Name</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">IFX Account</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Amount Confirmed</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Total Confirmed</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Date Created</th>
+                </tr>
+
+                </thead>
+                <tbody>
+HEADER;
+
+
+    $body = <<<BODY
+BODY;
+
+if(isset($successful_funding) && !empty($successful_funding)) {
+    $counter = 1;
+    $prev_month = "";
+
+    foreach ($successful_funding as $row) {
+        $g_trans_id = $row['trans_id'];
+        $g_full_name = $row['full_name'];
+        $g_ifx_acct_no = $row['ifx_acct_no'];
+        $g_real_dollar_equivalent = number_format($row['real_dollar_equivalent'], 2, ".", ",");
+        $g_real_naira_confirmed = number_format($row['real_naira_confirmed'], 2, ".", ",");
+        $g_created = datetime_to_text($row['created']);
+
+        $strip_date = $row['strip_date'];
+        $myArray = explode('-', $strip_date);
+
+        $year = $myArray[0];
+        $month = $myArray[1];
+        $day = $myArray[2];
+
+        $dateObj   = DateTime::createFromFormat('!m', $month);
+        $monthName = $dateObj->format('F');
+
+        $g_date = "<p style='font-size: 1.5em'><strong>" . $monthName . ', ' . $year . "</strong></p>";
+
+        $g_month = $month;
+
+        if($prev_month != $g_month) {
+            $display_head = true;
+        } else {
+            $display_head = false;
+        }
+
+        if($counter == 1 || $display_head == true) {
+            $body .= "<tr><td colspan = \"6\" style=\"border: 0; padding: 15px;\">$g_date</td></tr>";
+        }
+
+        $body .= "<tr>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_trans_id</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_full_name</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_ifx_acct_no</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">($) $g_real_dollar_equivalent</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">N $g_real_naira_confirmed</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_created</td>
+        </tr>";
+
+        $counter++;
+        $prev_month = $g_month;
+    }
+}
+
+    $footer = <<<FOOTER
+        </tbody>
+        </table>
+
+        <pagebreak>
+
+        <div>
+            <table style="border: 1px solid black; border-collapse: collapse; width: 100%">
+                <thead>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;"></th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Client Name</strong></td><td style="border: 1px solid black; padding: 5px;">$full_name</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Email Address</strong></td><td style="border: 1px solid black; padding: 5px;">$email</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Phone Number</strong></td><td style="border: 1px solid black; padding: 5px;">$phone</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Address</strong></td><td style="border: 1px solid black; padding: 5px;">$full_address</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Successful Funding</strong></td><td style="border: 1px solid black; padding: 5px;">N$successful_funding_naira</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Successful Withdrawal</strong></td><td style="border: 1px solid black; padding: 5px;">N$successful_withdrawal_naira </td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px; text-align: center">
+                <p>Instant Web-Net Technologies Ltd</p>
+            </div>
+        </div>
+    </div>
+</div>
+FOOTER;
+
+    $message_final = $header . $body . $footer;
+
+    $mpdf = new \Mpdf\Mpdf([
+        'margin_left' => 15,
+        'margin_right' => 15,
+        'margin_top' => 20,
+        'margin_bottom' => 20,
+        'margin_header' => 10,
+        'margin_footer' => 10
+    ]);
+    $mpdf->SetProtection(array('print'));
+    $mpdf->SetTitle("Client Deposits - Instafxng.com");
+    $mpdf->SetAuthor("Instant Web-Net Technologies Ltd");
+    $mpdf->SetWatermarkText("Confidential - Instafxng");
+    $mpdf->showWatermarkText = true;
+    $mpdf->watermark_font = 'DejaVuSansCondensed';
+    $mpdf->watermarkTextAlpha = 0.1;
+    $mpdf->SetDisplayMode('fullpage');
+
+    $date_now = datetime_to_text(date('Y-m-d H:i:s'));
+
+    $mpdf->SetFooter("Date Generated: " . $date_now . " - {PAGENO}");
+
+    $mpdf->WriteHTML($message_final);
+    $mpdf->Output($full_name . ' - Deposits.pdf', \Mpdf\Output\Destination::DOWNLOAD);
+
+}
+
+if(isset($_POST['main_withdrawal_doc'])) {
+
+    $full_address = $client_address['address'] . ' ' . $client_address['address2'] . ' ' . $client_address['city'] . ' ' . $client_address['state'];
+    $successful_funding_naira = number_format($sum_successful_funding['total_naira'], 2, ".", ",");
+    $successful_withdrawal_naira = number_format($sum_successful_withdrawal['total_naira'], 2, ".", ",");
+
+    $header = <<<HEADER
+<div>
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+
+
+        <h3>
+        Client Name: $full_name <br />
+        Phone Number: $phone<br />
+        Address: $full_address<br />
+        </h3>
+
+        <div>
+            <table style="border: 1px solid black; border-collapse: collapse; width: 100%">
+                <thead>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Transaction ID</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Client Name</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">IFX Account</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Amount Withdrawn</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Total Paid</th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;">Date</th>
+                </tr>
+
+                </thead>
+                <tbody>
+HEADER;
+
+
+    $body = <<<BODY
+BODY;
+
+    if(isset($successful_withdrawal) && !empty($successful_withdrawal)) {
+        $counter = 1;
+        $prev_month = "";
+
+        foreach ($successful_withdrawal as $row) {
+            $g_trans_id = $row['trans_id'];
+            $g_full_name = $row['full_name'];
+            $g_ifx_acct_no = $row['ifx_acct_no'];
+            $g_dollar_withdraw = number_format($row['dollar_withdraw'], 2, ".", ",");
+            $g_total_payable = number_format($row['naira_total_withdrawable'], 2, ".", ",");
+            $g_created = datetime_to_text($row['created']);
+
+            $strip_date = $row['strip_date'];
+            $myArray = explode('-', $strip_date);
+
+            $year = $myArray[0];
+            $month = $myArray[1];
+            $day = $myArray[2];
+
+            $dateObj   = DateTime::createFromFormat('!m', $month);
+            $monthName = $dateObj->format('F');
+
+            $g_date = "<p style='font-size: 1.5em'><strong>" . $monthName . ', ' . $year . "</strong></p>";
+
+            $g_month = $month;
+
+            if($prev_month != $g_month) {
+                $display_head = true;
+            } else {
+                $display_head = false;
+            }
+
+            if($counter == 1 || $display_head == true) {
+                $body .= "<tr><td colspan = \"6\" style=\"border: 0; padding: 15px;\">$g_date</td></tr>";
+            }
+
+            $body .= "<tr>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_trans_id</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_full_name</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_ifx_acct_no</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">($) $g_dollar_withdraw</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">N $g_total_payable</td>
+            <td style=\"border: 1px solid black; padding: 5px; text-align: center;\">$g_created</td>
+        </tr>";
+
+            $counter++;
+            $prev_month = $g_month;
+        }
+    }
+
+    $footer = <<<FOOTER
+        </tbody>
+        </table>
+
+        <pagebreak>
+
+        <div>
+            <table style="border: 1px solid black; border-collapse: collapse; width: 100%">
+                <thead>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;"></th>
+                    <th style="border: 1px solid black; padding: 5px; text-align: center;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Client Name</strong></td><td style="border: 1px solid black; padding: 5px;">$full_name</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Email Address</strong></td><td style="border: 1px solid black; padding: 5px;">$email</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Phone Number</strong></td><td style="border: 1px solid black; padding: 5px;">$phone</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Address</strong></td><td style="border: 1px solid black; padding: 5px;">$full_address</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Successful Funding</strong></td><td style="border: 1px solid black; padding: 5px;">N$successful_funding_naira</td></tr>
+                <tr><td style="border: 1px solid black; padding: 5px;"><strong>Successful Withdrawal</strong></td><td style="border: 1px solid black; padding: 5px;">N$successful_withdrawal_naira </td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px; text-align: center">
+                <p>Instant Web-Net Technologies Ltd</p>
+            </div>
+        </div>
+    </div>
+</div>
+FOOTER;
+
+    $message_final = $header . $body . $footer;
+
+    $mpdf = new \Mpdf\Mpdf([
+        'margin_left' => 15,
+        'margin_right' => 15,
+        'margin_top' => 20,
+        'margin_bottom' => 20,
+        'margin_header' => 10,
+        'margin_footer' => 10
+    ]);
+    $mpdf->SetProtection(array('print'));
+    $mpdf->SetTitle("Client Withdrawals - Instafxng.com");
+    $mpdf->SetAuthor("Instant Web-Net Technologies Ltd");
+    $mpdf->SetWatermarkText("Confidential - Instafxng");
+    $mpdf->showWatermarkText = true;
+    $mpdf->watermark_font = 'DejaVuSansCondensed';
+    $mpdf->watermarkTextAlpha = 0.1;
+    $mpdf->SetDisplayMode('fullpage');
+
+    $date_now = datetime_to_text(date('Y-m-d H:i:s'));
+
+    $mpdf->SetFooter("Date Generated: " . $date_now . " - {PAGENO}");
+
+    $mpdf->WriteHTML($message_final);
+    $mpdf->Output($full_name . ' - Withdrawals.pdf', \Mpdf\Output\Destination::DOWNLOAD);
+
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -365,6 +645,19 @@ MAIL;
                                                     <tr><td>ILPR Accounts</td><td><?php echo count($client_ilpr_account); ?></td></tr>
                                                     <tr><td>Non - ILPR Accounts</td><td><?php echo count($client_non_ilpr_account); ?></td></tr>
                                                     <tr><td>Last Trading Date</td><td><?php if($last_trade_date) { echo datetime_to_text2($last_trade_date); } else { echo 'Nil'; } ?></td></tr>
+                                                    <tr><td>Successful Funding</td>
+                                                        <td>
+                                                            <?php if($sum_successful_funding) { echo "$" . number_format($sum_successful_funding['total_dollar'], 2, '.', ','); } else { echo 'Nil'; } ?><br />
+                                                            <?php if($sum_successful_funding) { echo "&#8358;" . number_format($sum_successful_funding['total_naira'], 2, '.', ','); } else { echo 'Nil'; } ?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr><td>Successful Withdrawal</td>
+                                                        <td>
+                                                            <?php if($sum_successful_withdrawal) { echo "$" . number_format($sum_successful_withdrawal['total_dollar'], 2, '.', ','); } else { echo 'Nil'; } ?><br />
+                                                            <?php if($sum_successful_withdrawal) { echo "&#8358;" . number_format($sum_successful_withdrawal['total_naira'], 2, '.', ','); } else { echo 'Nil'; } ?>
+
+                                                        </td>
+                                                    </tr>
                                                     </tbody>
                                                 </table>
 
@@ -387,6 +680,20 @@ MAIL;
                                                         <td>
                                                             <form class="form-horizontal" role="form" method="post" action="">
                                                                 <input type="submit" name="biodata_doc" value="Download" class="btn btn-success" />
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    <tr><td>Funding</td>
+                                                        <td>
+                                                            <form class="form-horizontal" role="form" method="post" action="">
+                                                                <input type="submit" name="main_funding_doc" value="Download" class="btn btn-success" />
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    <tr><td>Withdrawal</td>
+                                                        <td>
+                                                            <form class="form-horizontal" role="form" method="post" action="">
+                                                                <input type="submit" name="main_withdrawal_doc" value="Download" class="btn btn-success" />
                                                             </form>
                                                         </td>
                                                     </tr>
@@ -413,7 +720,6 @@ MAIL;
                                                     <th>Client Name</th>
                                                     <th>IFX Account</th>
                                                     <th>Amount Confirmed</th>
-                                                    <th>Points Claimed</th>
                                                     <th>Total Confirmed</th>
                                                     <th>Date Created</th>
                                                     <th>Order Completed Time</th>
@@ -433,7 +739,6 @@ MAIL;
                                                             <td><?php echo $row['full_name']; ?></td>
                                                             <td><?php echo $row['ifx_acct_no']; ?></td>
                                                             <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
-                                                            <td class="nowrap">&dollar; <?php echo number_format($row['points_dollar_value'], 2, ".", ","); ?></td>
                                                             <td class="nowrap">&#8358; <?php echo number_format($row['real_naira_confirmed'], 2, ".", ","); ?></td>
                                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                                             <td><?php echo datetime_to_text($row['order_complete_time']); ?></td>
@@ -486,11 +791,11 @@ MAIL;
                                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                                             <td><?php echo datetime_to_text($row['updated']); ?></td>
                                                             <td>
-<!--                                                                <form class="form-horizontal" role="form" method="post" action="https://instafxng.com/admin/transactions_download.php" target="_blank">-->
-<!--                                                                    <input type="hidden" name="trans_id" value="--><?php //echo $row['trans_id']; ?><!--" />-->
-<!--                                                                    <input type="hidden" name="trans_type" value="W" />-->
-<!--                                                                    <input type="submit" name="deposit_trans_--><?php //echo $withdrawal_count; ?><!--" value="Download" class="btn btn-success" />-->
-<!--                                                                </form>-->
+                                                                <form class="form-horizontal" role="form" method="post" action="https://instafxng.com/admin/transactions_download.php" target="_blank">
+                                                                    <input type="hidden" name="trans_id" value="<?php echo $row['trans_id']; ?>" />
+                                                                    <input type="hidden" name="trans_type" value="W" />
+                                                                    <input type="submit" name="deposit_trans_<?php echo $withdrawal_count; ?>" value="Download" class="btn btn-success" />
+                                                                </form>
                                                             </td>
                                                         </tr>
                                                     <?php $withdrawal_count++; } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

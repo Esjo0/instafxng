@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send']))
     else
     {
         $recipeints = get_recipients($_POST['recipeints']);
-        $new_push = $system_object->send_push($recipeints, $_POST['content'], $_POST['title']);
+        $new_push = $system_object->send_push_mobile($recipeints, $_POST['content'], $_POST['title']);
         if(count($recipeints) == json_decode($new_push)->success) {
             $message_success = "Push Notification Message delivered to ".json_decode($new_push)->success." user(s).";}
         else {$message_error = "Push Notification Message delivered to ".json_decode($new_push)->success." user(s).";}

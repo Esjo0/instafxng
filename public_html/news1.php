@@ -4,46 +4,60 @@ $thisPage = "About";
 
 $news_id = $_GET['id'];
 
-if (isset($_POST['post_comment']))
-{
-    $name = $db_handle->sanitizePost($_POST['name']);
-    $email = $db_handle->sanitizePost($_POST['email']);
-    $comment = $db_handle->sanitizePost($_POST['comment']);
-    $article_id = $db_handle->sanitizePost($_POST['article_id']);
+if (isset($_POST['post_comment'])){
 
-    if(empty($name) || empty($email) || empty($comment)) {
-        $message_error = "All fields are compulsory, please try again.";
-    } elseif (!check_email($email)) {
-        $message_error = "You have provided an invalid email address. Please try again.";
-    }  else
-    {
-        $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('$email', '$name')");
-        $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '$email'");
-        $block_status = $db_handle->fetchAssoc($block_status);
-        $block_status = $block_status[0];
-        $block_status = $block_status['block_status'];
+if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+$secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+$responseData = json_decode($verifyResponse);
 
-        if ($block_status == 'OFF')
-        {
-            $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery("SELECT visitor_id FROM article_visitors WHERE email = '$email'"));
-            $visitor_id = $fetched_data[0]['visitor_id'];
+    if ($responseData->success) {
+        $name = $db_handle->sanitizePost($_POST['name']);
+        $email = $db_handle->sanitizePost($_POST['email']);
+        $comment = $db_handle->sanitizePost($_POST['comment']);
+        $article_id = $db_handle->sanitizePost($_POST['article_id']);
 
-            $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment) VALUES ($visitor_id, '$article_id', '$comment')");
-
-            if($db_handle->affectedRows() > 0) {
-                $message_success = "You have successfully added a new comment.";
-            } else {
-                $message_error = "An error occurred, your comment could not be saved.";
-            }
+        if (empty($name) || empty($email) || empty($comment)) {
+            $message_error = "All fields are compulsory, please try again.";
+        } elseif (!check_email($email)) {
+            $message_error = "You have provided an invalid email address. Please try again.";
         } else {
-            $message_error = "An error occurred, you do not have permission to submit comments.";
+            $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('$email', '$name')");
+            $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '$email'");
+            $block_status = $db_handle->fetchAssoc($block_status);
+            $block_status = $block_status[0];
+            $block_status = $block_status['block_status'];
+
+            if ($block_status == 'OFF') {
+                $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery("SELECT visitor_id FROM article_visitors WHERE email = '$email'"));
+                $visitor_id = $fetched_data[0]['visitor_id'];
+
+                $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment) VALUES ($visitor_id, '$article_id', '$comment')");
+
+                if ($db_handle->affectedRows() > 0) {
+                    $message_success = "You have successfully added a new comment.";
+                } else {
+                    $message_error = "An error occurred, your comment could not be saved.";
+                }
+            } else {
+                $message_error = "An error occurred, you do not have permission to submit comments.";
+            }
+
         }
-
     }
-}
 
+} else {
+    $message_error = "Kindly take the robot test.";
+}
+}
 if (isset($_POST['reply_comment']))
 {
+if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+    $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+    $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+    $responseData = json_decode($verifyResponse);
+
+if ($responseData->success) {
     $name = $db_handle->sanitizePost($_POST['name']);
     $email = $db_handle->sanitizePost($_POST['email']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
@@ -71,6 +85,10 @@ if (isset($_POST['reply_comment']))
     }
 }
 
+} else {
+    $message_error = "Kindly take the robot test.";
+}
+}
 if(strlen($news_id) > 4) {
     header("Location: view_news.php");
 } else {
@@ -87,7 +105,7 @@ if(strlen($news_id) > 4) {
         $latest_comments = $db_handle->fetchAssoc($result);
 
         // Select the latest news
-        $result = $db_handle->runQuery("SELECT * FROM article ORDER BY article_id DESC LIMIT  1, 6");
+        $result = $db_handle->runQuery("SELECT * FROM article WHERE status = 1 ORDER BY article_id DESC LIMIT  1, 6");
         $latest_news = $db_handle->fetchAssoc($result);
     } else {
         header("Location: view_news.php");
@@ -177,6 +195,10 @@ function print_reply($replies)
                                                 <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for=""></label>
+                                        <div class="g-recaptcha col-sm-7" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">
@@ -342,7 +364,9 @@ function print_reply($replies)
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12"><div class="addthis_sharing_toolbox">Share on social media: </div></div>
+                            <?php if($news_id != 604){?>
+                                <div class="col-sm-12"><div class="addthis_sharing_toolbox">Share on social media: </div></div>
+                            <?php } ?>
                             <div class="col-sm-12 text-danger">
                                 <h4><strong><?php if(isset($title)) { echo stripslashes($title); } ?></strong></h4>
                             </div>
@@ -355,7 +379,8 @@ function print_reply($replies)
 
                                 <h5>Leave a comment</h5>
                                 <!--<div class="fb-comments" data-href="https://instafxng.com/news1/id/<?php /*echo $article_id . '/u/' . $url . '/'; */?>" data-numposts="10" data-mobile="1" data-width="100%"></div>-->
-                                <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
+                                <form data-toggle="validator" class="form-horizontal " role="form" method="post"
+                                      action="<?php echo htmlentities($_SERVER['REQUEST_URI']); ?>">
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="name">Full Name:</label>
                                         <div class="col-sm-7">
@@ -384,6 +409,10 @@ function print_reply($replies)
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="control-label col-sm-3" for="comment"></label>
+                                        <div class="g-recaptcha col-sm-7" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div>
+                                    </div>
+                                    <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">
                                             <input type="hidden" name="article_id" value="<?php echo $news_id;?>"/>
                                             <button type="submit" name="post_comment" class="btn btn-success">Post Comment</button>
@@ -391,7 +420,6 @@ function print_reply($replies)
                                     </div>
                                 </form>
                                 <hr class=""/>
-
                                 <?php if(isset($latest_comments)) { ?>
                                 <h5>Previous Comments</h5>
                                     <br/>
@@ -481,6 +509,10 @@ function print_reply($replies)
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group">
+                                                                                    <label class="control-label col-sm-3" for=""></label>
+                                                                                    <div class="g-recaptcha col-sm-7" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div>
+                                                                                </div>
+                                                                                <div class="form-group">
                                                                                     <div class="col-sm-offset-3 col-sm-9">
                                                                                         <input type="hidden" name="article_id" value="<?php echo $news_id;?>"/>
                                                                                         <input type="hidden" name="comment_id" value="<?php echo $row['comment_id'];?>"/>
@@ -556,5 +588,7 @@ function print_reply($replies)
             });
         </script>
         <script src="js/jquery.prettyPhoto.js"></script>
+
+        <script src='https://www.google.com/recaptcha/api.js'></script>
     </body>
 </html>
