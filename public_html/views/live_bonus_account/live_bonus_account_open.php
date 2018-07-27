@@ -3,7 +3,7 @@
 </ul>
 <p class="text-success text-center">
     <strong>
-        The Account Opening Form is Loading...
+        The New Account Opening Form is Loading...
         Kindly wait for it, fill the form and then proceed to Step 2.
     </strong>
 </p>

@@ -88,7 +88,7 @@ $packages = $db_handle->fetchAssoc($result);
                                                 </div>
                                             </td>
                                             <td>
-                                                <a href="javascript:void(0);" data-target="#activeUsers_<?php echo $row['bonus_code'] ?>" data-toggle="modal" title="Package Description" ><?php echo $bonus_operations->get_package_active_clients($row['bonus_code'], 0); ?> Active User(s)</a>
+                                                <a href="javascript:void(0);" data-target="#activeUsers_<?php echo $row['bonus_code'] ?>" data-toggle="modal" title="Package Description" ><?php echo $bonus_operations->get_package_active_clients($row['bonus_code'])['sum']; ?> Active User(s)</a>
                                                 <div id="activeUsers_<?php echo $row['bonus_code'] ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
@@ -108,7 +108,7 @@ $packages = $db_handle->fetchAssoc($result);
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    <?php $active_users = $bonus_operations->get_package_active_clients($row['bonus_code'], 1);?>
+                                                                    <?php $active_users = $bonus_operations->get_package_active_clients($row['bonus_code'])['details'];?>
                                                                     <?php if(isset($active_users) && !empty($active_users)): ?>
                                                                         <?php foreach ($active_users as $key){ ?>
                                                                             <tr>
@@ -136,7 +136,7 @@ $packages = $db_handle->fetchAssoc($result);
                                                 </div>
                                             </td>
                                             <td>
-                                                <a href="javascript:void(0);" data-target="#recycledUsers_<?php echo $row['bonus_code'] ?>" data-toggle="modal" title="List Of Recycled Users" ><?php echo $bonus_operations->get_package_recycled_clients($row['bonus_code'], 0); ?> Recycled User(s)</a>
+                                                <a href="javascript:void(0);" data-target="#recycledUsers_<?php echo $row['bonus_code'] ?>" data-toggle="modal" title="List Of Recycled Users" ><?php echo $bonus_operations->get_package_recycled_clients($row['bonus_code'])['sum']; ?> Recycled User(s)</a>
                                                 <div id="recycledUsers_<?php echo $row['bonus_code'] ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
@@ -156,7 +156,7 @@ $packages = $db_handle->fetchAssoc($result);
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    <?php $recycled_users = $bonus_operations->get_package_recycled_clients($row['bonus_code'], 1);?>
+                                                                    <?php $recycled_users = $bonus_operations->get_package_recycled_clients($row['bonus_code'])['details'];?>
                                                                     <?php if(isset($recycled_users) && !empty($recycled_users)): ?>
                                                                         <?php foreach ($recycled_users as $key){ ?>
                                                                             <tr>

@@ -62,8 +62,7 @@ $packages = $db_handle->fetchAssoc($result);
                                     <thead>
                                         <tr>
                                             <th>Package Name</th>
-                                            <th>Active Users</th>
-                                            <th>Recycled Users</th>
+                                            <th>Package Application URL</th>
                                             <th>Created</th>
                                             <th></th>
                                         </tr>
@@ -88,104 +87,9 @@ $packages = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <a href="javascript:void(0);" data-target="#activeUsers_<?php echo $row['bonus_code'] ?>" data-toggle="modal" title="Package Description" ><?php echo $bonus_operations->get_package_active_clients($row['bonus_code'], 0); ?> Active User(s)</a>
-                                                <div id="activeUsers_<?php echo $row['bonus_code'] ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                                <h4 class="modal-title"><?php echo $row['bonus_title']; ?></h4></div>
-                                                            <div class="modal-body">
-                                                                <p class="text-justify">Below is the list of this Bonus Package's active users.</p>
-                                                                <table class="table table-bordered table-responsive">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Full Name</th>
-                                                                            <th>Phone</th>
-                                                                            <th>Email</th>
-                                                                            <th>Account</th>
-                                                                            <th>Date Of Activation</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    <?php $active_users = $bonus_operations->get_package_active_clients($row['bonus_code'], 1);?>
-                                                                    <?php if(isset($active_users) && !empty($active_users)): ?>
-                                                                        <?php foreach ($active_users as $key){ ?>
-                                                                            <tr>
-                                                                                <td><?php echo $key['fullname']?></td>
-                                                                                <td><?php echo $key['phone']?></td>
-                                                                                <td><?php echo $key['email']?></td>
-                                                                                <td><?php echo $key['ifx_acct_no']?></td>
-                                                                                <td><?php echo datetime_to_text($key['created']); ?></td>
-                                                                            </tr>
-                                                                        <?php } ?>
-                                                                    <?php endif; ?>
-                                                                    <?php if(!isset($active_users) || empty($active_users)): ?>
-                                                                        <tr>
-                                                                            <td colspan="5"><center><em>No Active User</em></center></td>
-                                                                        </tr>
-                                                                    <?php endif; ?>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:void(0);" data-target="#recycledUsers_<?php echo $row['bonus_code'] ?>" data-toggle="modal" title="List Of Recycled Users" ><?php echo $bonus_operations->get_package_recycled_clients($row['bonus_code'], 0); ?> Recycled User(s)</a>
-                                                <div id="recycledUsers_<?php echo $row['bonus_code'] ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                                <h4 class="modal-title"><?php echo $row['bonus_title']; ?></h4></div>
-                                                            <div class="modal-body">
-                                                                <p class="text-justify">Below is the list of this Bonus Package's recycled users.</p>
-                                                                <table class="table table-bordered table-responsive">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th>Full Name</th>
-                                                                        <th>Phone</th>
-                                                                        <th>Email</th>
-                                                                        <th>Account</th>
-                                                                        <th>Date Of Completion</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    <?php $recycled_users = $bonus_operations->get_package_recycled_clients($row['bonus_code'], 1);?>
-                                                                    <?php if(isset($recycled_users) && !empty($recycled_users)): ?>
-                                                                        <?php foreach ($recycled_users as $key){ ?>
-                                                                            <tr>
-                                                                                <td><?php echo $key['fullname']?></td>
-                                                                                <td><?php echo $key['phone']?></td>
-                                                                                <td><?php echo $key['email']?></td>
-                                                                                <td><?php echo $key['ifx_acct_no']?></td>
-                                                                                <td><?php echo datetime_to_text($key['created']); ?></td>
-                                                                            </tr>
-                                                                        <?php } ?>
-                                                                    <?php endif; ?>
-                                                                    <?php if(!isset($recycled_users) || empty($recycled_users)): ?>
-                                                                        <tr>
-                                                                            <td colspan="5"><center><em>No Recycled User</em></center></td>
-                                                                        </tr>
-                                                                    <?php endif; ?>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                            <td><a href="../live_bonus_account.php?pc=<?php echo encrypt_ssl($row['bonus_code']);?>">https://instafxng.com/bonus_account.php?pc=<?php echo encrypt_ssl($row['bonus_code']);?></a></td>
                                             <td><?php echo datetime_to_text($row['created'])?></td>
-                                            <td class="nowrap"><a class="btn-xs btn btn-default" href="bonus_view.php?package_code=<?php echo encrypt_ssl($row['bonus_code']);?>"><i class="glyphicon glyphicon-arrow-right"></i></a></td>
+                                            <td class="nowrap"><a class="btn-xs btn btn-default" href="bonus_view.php?pc=<?php echo encrypt_ssl($row['bonus_code']);?>"><i class="glyphicon glyphicon-arrow-right"></i></a></td>
                                         </tr>
                                         <?php } ?>
                                     <?php } ?>

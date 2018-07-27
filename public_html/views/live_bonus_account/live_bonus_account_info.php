@@ -1,5 +1,5 @@
-<ul class="fa-ul">
-    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>2 EASY STEPS TO OPEN A LIVE TRADING ACCOUNT WITH INSTAFOREX</li>
+<!--<ul class="fa-ul">
+    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>2 EASY STEPS TO OPEN A BONUS TRADING ACCOUNT WITH INSTAFXNG</li>
 </ul>
 <ol>
     <li>Open A Live Bonus Account</li>
@@ -17,7 +17,8 @@
     <p>You also have a chance to Make Up To $4, 200 and N1, 000, 000 Extra While You Take Your
         Normal Trades in the Instafxng Point Based Loyalty Program and Reward.
         <a href="loyalty.php" target="_blank" title="Instafxng Point Based Loyalty Program and Reward">More Details</a>.</p>
-</ul>
+</ul>-->
+<p class="text-justify"><?php echo $package_details['bonus_details']; ?></p>
 <hr />
 <form class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
     <div class="form-group">

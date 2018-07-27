@@ -2,7 +2,7 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
-$package_code = decrypt_ssl(str_replace(" ", "+", $_GET['package_code']));
+$package_code = decrypt_ssl(str_replace(" ", "+", $_GET['pc']));
 $package_details = $bonus_operations->get_package_by_code($package_code);
 ?>
 <!DOCTYPE html>
@@ -57,6 +57,50 @@ $package_details = $bonus_operations->get_package_by_code($package_code);
                                         <tr>
                                             <td><b>Package Conditions:</b></td>
                                             <td><span class="text-justify"><?php echo $bonus_operations->show_conditions_by_code($package_code); ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Package Details:</b></td>
+                                            <td><span class="text-justify"><?php echo $package_details['bonus_details']; ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Package Status:</b></td>
+                                            <td><span class="text-justify"><?php echo $bonus_operations->bonus_package_status($package_details['status']); ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Package Type:</b></td>
+                                            <td><span class="text-justify"><?php $bonus_operations->show_bonus_package_type($package_details['type'], $package_details['bonus_type_value']); ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Package Last Updated:</b></td>
+                                            <td><span class="text-justify"><?php if(!empty($package_details['updated'])){ echo datetime_to_text($package_details['updated']); }  ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total Pending Applications:</b></td>
+                                            <td><span class="text-justify"><?php echo $bonus_operations->bonus_package_pending_applications($package_code)['sum'];  ?> Application(s)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total Approved Applications:</b></td>
+                                            <td><span class="text-justify"><?php echo $bonus_operations->bonus_package_approved_applications($package_code)['sum'];  ?> Application(s)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total Declined Applications:</b></td>
+                                            <td><span class="text-justify"><?php echo $bonus_operations->bonus_package_declined_applications($package_code)['sum'];  ?> Application(s)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total Active Accounts:</b></td>
+                                            <td><span class="text-justify"><?php echo $bonus_operations->get_package_active_clients($package_code)['sum']  ?> Account(s)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total Recycled Accounts:</b></td>
+                                            <td><span class="text-justify"><?php echo $bonus_operations->get_package_recycled_clients($package_code)['sum'];  ?> Account(s)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total Bonus Payouts:</b></td>
+                                            <td><span class="text-justify"> &dollar;<?php echo $bonus_operations->get_total_bonus_package_payouts($package_code)['sum']; ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total Bonus Withdrawn:</b></td>
+                                            <td><span class="text-justify"> &dollar;<?php echo  $bonus_operations->get_total_bonus_package_withdrawals($package_code)['sum']; ?></span></td>
                                         </tr>
                                     </tbody>
                                 </table>

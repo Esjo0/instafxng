@@ -133,7 +133,6 @@ if(isset($_POST['update'])) {
                 </div>
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
                 <div id="main-body-content-area" class="col-md-8 col-lg-9">
-                    
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div class="row">

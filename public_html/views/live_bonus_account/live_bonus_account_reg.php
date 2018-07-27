@@ -30,16 +30,19 @@
     <div class="form-group">
         <label class="control-label col-sm-3" for="bonus_package">Bonus Package:</label>
         <div class="col-sm-9 col-lg-5">
-            <?php if(isset($all_bonus_packages) && !empty($all_bonus_packages)){ ?>
-                <?php foreach ($all_bonus_packages as $row){ ?>
-                    <div class="col-sm-12">
-                        <div class="radio"><label for="1"><input type="radio" name="bonus_code" value="<?php echo $row['bonus_code'] ?>" id="<?php echo $row['bonus_code'] ?>" required /> <?php echo $row['bonus_title'] ?></label></div>
-                        <span class="text-justify"><?php echo $row['bonus_desc']; ?></span>
-                    </div>
-                <?php } ?>
-            <?php } ?>
+            <input value="<?php echo $package_details['bonus_code']; ?>" type="text" class="form-control" id="ifx_acct_no" required disabled>
         </div>
     </div>
+    <?php if($package_details['type'] == 1): ?>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="bonus_package">Deposit Order Transaction ID:</label>
+            <div class="col-sm-9 col-lg-5">
+                <input name="transaction_id" value="" type="text" class="form-control" id="ifx_acct_no" required>
+            </div>
+        </div>
+    <?php endif; ?>
+    <input name="bonus_code" value="<?php echo $package_details['bonus_title']; ?>" type="hidden" class="form-control" id="ifx_acct_no" required>
 
 
     <div class="form-group">

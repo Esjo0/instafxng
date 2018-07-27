@@ -206,7 +206,7 @@ VALUES
         return $result;
     }
 
-    public function get_package_active_clients($bonus_code, $x){
+    public function get_package_active_clients($bonus_code){
         global $db_handle;
         $query = "SELECT CONCAT(U.first_name, SPACE(1), UPPER(U.last_name)) AS fullname, BA.created AS created, U.phone, U.email, UI.ifx_acct_no  
 FROM bonus_accounts AS BA 
@@ -217,12 +217,12 @@ AND BA.enrolment_status = '2'
 AND BA.allocation_status = '1'
 AND BA.bonus_status = '1'
 ORDER BY created DESC";
-        if($x == 1){$return_value = $db_handle->fetchAssoc($db_handle->runQuery($query));}
-        else if($x == 0){$return_value = $db_handle->numRows($query);}
+        $return_value['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        $return_value['sum'] = $db_handle->numRows($query);
         return $return_value;
     }
 
-    public function get_package_recycled_clients($bonus_code, $x){
+    public function get_package_recycled_clients($bonus_code){
         global $db_handle;
         $query = "SELECT CONCAT(U.first_name, SPACE(1), UPPER(U.last_name)) AS fullname, BA.updated AS updated, U.phone, U.email, UI.ifx_acct_no  
 FROM bonus_accounts AS BA 
@@ -233,8 +233,40 @@ AND BA.enrolment_status = '2'
 AND BA.allocation_status = '1'
 AND BA.bonus_status IN ('2', '3') 
 ORDER BY updated DESC";
-        if($x == 1){$return_value = $db_handle->fetchAssoc($db_handle->runQuery($query));}
-        else if($x == 0){$return_value = $db_handle->numRows($query);}
+        $return_value['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        $return_value['sum'] = $db_handle->numRows($query);
+        return $return_value;
+    }
+
+    public function get_total_bonus_package_payouts($bonus_code){
+        global $db_handle;
+        $query = "SELECT CONCAT(U.first_name, SPACE(1), UPPER(U.last_name)) AS fullname, BA.updated AS updated, U.phone, U.email, UI.ifx_acct_no  
+FROM bonus_accounts AS BA 
+INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id
+INNER JOIN user AS U ON UI.user_code = U.user_code
+WHERE BA.bonus_code = '$bonus_code'
+AND BA.enrolment_status = '2'
+AND BA.allocation_status = '1'
+AND BA.bonus_status IN ('2', '3') 
+ORDER BY updated DESC";
+        $return_value['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        $return_value['sum'] = '0.00';
+        return $return_value;
+    }
+
+    public function get_total_bonus_package_withdrawals($bonus_code){
+        global $db_handle;
+        $query = "SELECT CONCAT(U.first_name, SPACE(1), UPPER(U.last_name)) AS fullname, BA.updated AS updated, U.phone, U.email, UI.ifx_acct_no  
+FROM bonus_accounts AS BA 
+INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id
+INNER JOIN user AS U ON UI.user_code = U.user_code
+WHERE BA.bonus_code = '$bonus_code'
+AND BA.enrolment_status = '2'
+AND BA.allocation_status = '1'
+AND BA.bonus_status IN ('2', '3') 
+ORDER BY updated DESC";
+        $return_value['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        $return_value['sum'] = '0.00';
         return $return_value;
     }
 
@@ -254,6 +286,62 @@ ORDER BY updated DESC";
         $bonus_conditions = new Bonus_Condition();
         $conditions = $bonus_conditions->BONUS_CONDITIONS;
         return $conditions[$condition_id];
+    }
+
+    public function bonus_package_status($package_status){
+        switch ((int) $package_status){
+            case 1: $msg = "Draft"; break;
+            case 2: $msg = "Active"; break;
+            case 3: $msg = "Inactive"; break;
+        }
+        return $msg;
+    }
+
+    public function bonus_package_pending_applications($bonus_code){
+        global $db_handle;
+        $query = "SELECT BA.ifx_account_id, BA.created, U.email, CONCAT(U.first_name, SPACE(1), U.last_name) AS full_name, U.phone, UI.ifx_acct_no  
+FROM bonus_accounts AS BA 
+INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
+INNER JOIN user AS U ON UI.user_code = U.user_code 
+WHERE BA.bonus_code = '$bonus_code' 
+AND BA.enrolment_status = '0' ";
+        $feedback['sum'] = $db_handle->numRows($query);
+        $feedback['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        return $feedback;
+    }
+
+    public function bonus_package_approved_applications($bonus_code){
+        global $db_handle;
+        $query = "SELECT BA.ifx_account_id, BA.created, U.email, CONCAT(U.first_name, SPACE(1), U.last_name) AS full_name, U.phone, UI.ifx_acct_no  
+FROM bonus_accounts AS BA 
+INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
+INNER JOIN user AS U ON UI.user_code = U.user_code 
+WHERE BA.bonus_code = '$bonus_code' 
+AND BA.enrolment_status = '2' ";
+        $feedback['sum'] = $db_handle->numRows($query);
+        $feedback['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        return $feedback;
+    }
+
+    public function bonus_package_declined_applications($bonus_code){
+        global $db_handle;
+        $query = "SELECT BA.ifx_account_id, BA.created, U.email, CONCAT(U.first_name, SPACE(1), U.last_name) AS full_name, U.phone, UI.ifx_acct_no  
+FROM bonus_accounts AS BA 
+INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
+INNER JOIN user AS U ON UI.user_code = U.user_code 
+WHERE BA.bonus_code = '$bonus_code' 
+AND BA.enrolment_status = '1' ";
+        $feedback['sum'] = $db_handle->numRows($query);
+        $feedback['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        return $feedback;
+    }
+
+    public function show_bonus_package_type($package_type, $bonus_type_value){
+        switch ((int) $package_type){
+            case 1: $msg = "$bonus_type_value% Bonus Package"; break;
+            case 2: $msg = "&dollar; $bonus_type_value Bonus Package"; break;
+        }
+        echo $msg;
     }
 
     public function get_condition_extras($bonus_code,$condition_id){

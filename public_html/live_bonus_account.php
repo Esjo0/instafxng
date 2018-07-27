@@ -1,10 +1,12 @@
 <?php
 require_once 'init/initialize_general.php';
-$thisPage = "Account";
-$source = $_GET['id'];
-$page_requested = "";
+$thisPage = "";
 $bonus_operations = new Bonus_Operations();
-$all_bonus_packages = $bonus_operations->get_active_packages();
+$package_code = decrypt_ssl(str_replace(" ", "+", $_GET['pc']));
+$package_details = $bonus_operations->get_package_by_code($package_code);
+
+$page_requested = '';
+
 // This section processes - views/live_account_info.php
 if(isset($_POST['live_account_info'])) {
     $page_requested = "live_account_open_php";
@@ -59,8 +61,8 @@ switch($page_requested) {
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Open a Live Account</title>
-        <meta name="title" content="Instaforex Nigeria | Open a Live Account" />
+        <title>Instaforex Nigeria | <?php echo $package_details['bonus_title'] ?></title>
+        <meta name="title" content="Instaforex Nigeria | <?php echo $package_details['bonus_title'] ?>" />
         <meta name="keywords" content="instaforex nigeria, open a live account,">
         <meta name="description" content="Learn how to trade forex, get free information about the forex market in our forex trading seminars.">
         <?php require_once 'layouts/head_meta.php'; ?>
@@ -73,21 +75,18 @@ switch($page_requested) {
                 <?php require_once 'layouts/topnav.php'; ?>
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
                 <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
-                    
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12 text-danger">
-                                <h4><strong>Open Live Bonus Trading Account</strong></h4>
+                                <h4><strong>Open A Bonus Trading Account</strong></h4>
                             </div>
                         </div>
                         
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-
                                 <?php 
                                     if($live_account_info_php) { include_once 'views/live_bonus_account/live_bonus_account_info.php'; }
                                     if($live_account_open_php) { include_once 'views/live_bonus_account/live_bonus_account_open.php'; }
@@ -97,10 +96,8 @@ switch($page_requested) {
                             </div>
                         </div>
                     </div>
-
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
-                    
                 </div>
                 <!-- Main Body - Side Bar  -->
                 <div id="main-body-side-bar" class="col-md-4 col-md-pull-8 col-lg-3 col-lg-pull-9 left-nav">
