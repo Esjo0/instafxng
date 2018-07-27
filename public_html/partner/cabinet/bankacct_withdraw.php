@@ -3,7 +3,7 @@ require_once '../../init/initialize_partner.php';
 require_once '../../init/initialize_general.php';
 
 if (!$session_partner->is_logged_in()) {
-//    redirect_to("../login.php");
+    redirect_to("../login.php");
 }
 
 $partner_code = $_SESSION['partner_code'];
