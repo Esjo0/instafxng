@@ -1,10 +1,10 @@
 <?php $signal_object = new Signal_Management();?>
 <header><i class="fa fa-bars fa-fw"></i> Daily Forex Trading Signal</header>
 <article>
-    <script>
-        signal.getSignals('sig');
-        $(document).ready(function() {setInterval(function(){signal.getSignals('sig');}, 3600000);});
-    </script>
+<!--    <script>-->
+<!--        signal.getSignals('sig');-->
+<!--        $(document).ready(function() {setInterval(function(){signal.getSignals('sig');}, 3600000);});-->
+<!--    </script>-->
     <small>
         <em><strong>Date:</strong></em>
         <em id="table_date">
