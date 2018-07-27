@@ -211,19 +211,21 @@ function Signal()
         }
         id_list = id_list.join('-');
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
-        //console.log(url);
+        console.log(url);
         this.ajax_call(url, 'GET', 'update_signal_page');
-
-        setInterval(function(){signal.getQuotes();}, 300000);//TODO: Fix this back to 1000
+        setInterval(function(){signal.new_signal_listener();}, 120000);//TODO: Fix this back to 5000
+        //setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
     };
 
     ///fine
     this.update_signal_page = function(update_msg){
+        console.log(update_msg);
         if(update_msg == 'new-signals-found'){
+            console.log(update_msg);
             document.getElementById('page_reloader').style.display = 'block';
             document.getElementById('page_reloader_side').style.display = 'block';
         }
-        setInterval(function(){signal.new_signal_listener();}, 6000);//TODO: Fix this back to 5000
+
         //setTimeout(this.new_signal_listener(), 10000)
     };
 
@@ -232,9 +234,10 @@ function Signal()
     {
         //console.log(json);
         var quotes_array = JSON.parse(json);
-        //console.log(quotes_array);
+        console.log(quotes_array);
         for(var x in quotes_array){
-            document.getElementById('signal_currency_diff_'+quotes_array[0]['symbol']).innerHTML = quotes_array[0]['price'];
+            document.getElementById('signal_currency_diff_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['price'];
+            //console.log('signal_currency_diff_'+quotes_array['symbol']);
         }
 
     };

@@ -9,7 +9,9 @@ class Signal_Management
 //        3 => 'OADrX7UGJesDhvH5lDJ5NK93HZ3uSmxe ',
 //        1 => 'Q0byrL4ELAk5jS8k11gyBq4i7dIL1PE6',
 //        1 => 'Oa9r9zco2Twqdw6vS0P9wDQXHj8qzbup'
-        1 => 'uoGGIjYh0JADs5GsdfuuJT3LFEPiFw8S'
+//        1 => 'uoGGIjYh0JADs5GsdfuuJT3LFEPiFw8S'
+        1 => 'MVirptGI9kaHg78rzH2d2Ol8AvG5wJ9V'
+
     );
 
     public function quotes_api_key(){ return Signal_Management::QUOTES_API_KEY[mt_rand(1, 1)];}
@@ -105,7 +107,6 @@ WHERE SD.trigger_date = '$date'";
         if($file_current_property != $file_old_property){
             echo 'new-signals-found';
             file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
-
         }
     }
 

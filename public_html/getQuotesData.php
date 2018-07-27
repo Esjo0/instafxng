@@ -7,9 +7,9 @@ $date = date('Y-m-d');
 $pair = $signal_object->get_scheduled_pairs($date);
 $key = $signal_object->quotes_api_key();
 //set api
+$quotes = array();
 
 $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'));
-$quotes = "";
     //if(!empty($json)) {echo $json;}
 foreach ($signals as $row1) {
     $row1 = (array)$row1;
@@ -23,17 +23,24 @@ foreach ($signals as $row1) {
 
        $diff = $row1['price'] - $response[0]['price'];
        $diff = (string)$diff;
-       $quotes = array( symbol=>$row1['signal_id'], price=>$diff);
-       $result = array_merge($quotes,$quotes);
+       $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$diff);
+       //var_dump($quotes);
+
        //echo $row1['signal_id'];
         //$result = json_decode($result);
 //        $result = json_encode([$result]);
 //       echo $result;
-}
+
+    }
+    //$result = array_merge($quotes,$quotes);
 }
 
-$result = json_encode([$result]);
+$result = json_encode($quotes);
 echo $result;
-
-//$e = [{"symbol_id":"1","signal_id":"35","order_type":"1","price":"1.16400","take_profit":"1.25460","stop_loss":"1.57890","created":"2018-07-27 04:38:01","trigger_date":"2018-07-27","trigger_time":"04:33:24","note":"                                                                                                                                                                                                                                                                                                                                                                                                hj                                                                                                                                                                                                                                                                                                                                                                        ","trigger_status":"0","symbol":"EURUSD"}];
+$file_current_property = date('Y-m-d h:i:s', stat('../../../models/signal_daily.json')['mtime']);
+$file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
+if($file_current_property != $file_old_property) {
+    echo 'new-signals-found';
+    file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
+}
 ?>
