@@ -115,7 +115,7 @@ function get_sender($sender){
         return $sender;
     }
 }
-$account_balance = "&#8358; ".number_format(file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=fisayo75&request=balance"), 2, '.', ',');
+$account_balance = "&#8358; ".number_format(file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=ijoba_09A&request=balance"), 2, '.', ',');
 ?>
 <!DOCTYPE html>
 <html lang="en">
