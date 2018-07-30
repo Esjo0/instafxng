@@ -182,7 +182,7 @@ MAIL;
     public function viewCount($id)
     {
         global $db_handle;
-        $query = "UPDATE signal_daily view SET views = views + 1 WHERE signal_id = '$id''";
+        $query = "UPDATE signal_daily SET views = views + 1 WHERE signal_id = '$id'";
         $result = $db_handle->runQuery($query);
         return $result;
     }
