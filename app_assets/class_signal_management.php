@@ -352,8 +352,7 @@ MAIL;
         if (!empty($pips)) {
             $query .= ", pips = $pips";
         }
-        $query .= "WHERE signal_id = $signal_id ";
-
+        $query .= " WHERE signal_id = '$signal_id'";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));

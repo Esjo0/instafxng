@@ -2,7 +2,8 @@ function Signal()
 {
     this.time_window = 60;//60 mins
     //TODO: Ensure this is changed
-    this.BASE_URL = 'http://localhost/instafxngwebsite/public_html/';
+    //this.BASE_URL = 'http://localhost/instafxngwebsite/public_html/';
+    this.BASE_URL = 'https://www.instafxng.com';
     //this.SIGNAL_FILE_URL = 'http://localhost/instafxngwebsite/models/signal_daily.json';
     this.SIGNAL_FILE_URL = '../../../models/signal_daily.json';
 
