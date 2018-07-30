@@ -1,6 +1,6 @@
-ALTER TABLE `signal_daily` DROP `views`
-ALTER TABLE `signal_daily` ADD `views` INT(11) NOT NULL AFTER `note`
-ALTER TABLE `signal_daily` CHANGE `pips` `pips` DECIMAL(10,4) NULL DEFAULT NULL
+ALTER TABLE `signal_daily` DROP `views`;
+ALTER TABLE `signal_daily` ADD `views` INT(11) NOT NULL AFTER `note`;
+ALTER TABLE `signal_daily` CHANGE `pips` `pips` DECIMAL(10,4) NULL DEFAULT NULL;
 
 CREATE TABLE `signal_daily` (
  `signal_id` int(11) NOT NULL AUTO_INCREMENT,
