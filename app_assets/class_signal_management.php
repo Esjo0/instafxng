@@ -182,7 +182,7 @@ MAIL;
     public function viewCount($id)
     {
         global $db_handle;
-        $query = "UPDATE signal_daily view SET views = views + 1 WHERE signal_id = '$id''";
+        $query = "UPDATE signal_daily SET views = views + 1 WHERE signal_id = '$id'";
         $result = $db_handle->runQuery($query);
         return $result;
     }
@@ -352,8 +352,7 @@ MAIL;
         if (!empty($pips)) {
             $query .= ", pips = $pips";
         }
-        $query .= "WHERE signal_id = $signal_id ";
-
+        $query .= " WHERE signal_id = '$signal_id'";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
