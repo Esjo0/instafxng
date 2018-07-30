@@ -14,11 +14,6 @@ class Signal_Management
 
     );
 
-    public function quotes_api_key()
-    {
-        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 7)];
-    }
-
     public function get_symbol_id($pair_str)
     {
         global $db_handle;
@@ -35,15 +30,6 @@ class Signal_Management
         }
     }
 
-    public function UI_get_symbol_current_price($symbol)
-    {
-        $symbol = str_replace('/', '', $symbol);
-        $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=" . $this->quotes_api_key();
-        $get_data = file_get_contents($url);
-        $response = (array)json_decode($get_data, true);
-        return $response[0]['price'];
-    }
-
     public function get_live_quotes()
     {
         $pairs = $this->get_scheduled_pairs(date('Y-m-d'));
@@ -53,17 +39,6 @@ class Signal_Management
             $response = json_decode($get_data, true);
             return $response;
         }
-    }
-
-    public function get_scheduled_signals($date)
-    {
-        global $db_handle;
-        $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.price, SD.take_profit,
-SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol 
-FROM signal_daily AS SD 
-INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
-WHERE SD.trigger_date = '$date'";
-        return $db_handle->fetchAssoc($db_handle->runQuery($query));
     }
 
     public function get_scheduled_pairs($date)
@@ -81,6 +56,11 @@ WHERE SD.trigger_date = '$date'";
         $pairs = implode(',', $pairs);
         $pairs = str_replace('/', '', $pairs);
         return $pairs;
+    }
+
+    public function quotes_api_key()
+    {
+        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 7)];
     }
 
     public function new_signal_listener()
@@ -117,82 +97,12 @@ MAIL;
         }
     }
 
-    public function UI_get_signal_trigger_status_msg($trigger_stat)
-    {
-        $trigger_stat = (int)$trigger_stat;
-        switch ($trigger_stat) {
-            case 0:
-                $msg = 'Pending...';
-                break;
-            case 1:
-                $msg = 'Active...';
-                break;
-            case 2:
-                $msg = 'Closed';
-                break;
-        }
-        return $msg;
-    }
-
-    public function UI_signal_trend_msg($order_type)
-    {
-        $trigger_stat = (int)$order_type;
-        switch ($trigger_stat) {
-            case 1:
-                $msg = '<b style="font-size: large" class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>';
-                break;
-            case 2:
-                $msg = '<b style="font-size: large" class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b>';
-                break;
-        }
-        return $msg;
-    }
-
-    public function UI_signal_call_to_action_msg($trigger_stat)
-    {
-        $trigger_stat = (int)$trigger_stat;
-        switch ($trigger_stat) {
-            case 0:
-                $msg = 'PLACE PENDING ORDER';
-                break;
-            case 1:
-                $msg = 'TRADE NOW';
-                break;
-            case 2:
-                $msg = 'CHECK MARKET HISTORY';
-                break;
-        }
-        return $msg;
-    }
-
-    public function UI_order_type_status_msg($order_type)
-    {
-        $order_type = (int)$order_type;
-        switch ($order_type) {
-            case 1:
-                $msg = "<b class='text-success'>BUY</b>";
-                break;
-            case 2:
-                $msg = "<b class='text-danger'>SELL</b>";
-                break;
-        }
-        return $msg;
-    }
-
-    public function viewCount($id)
-    {
-        global $db_handle;
-        $query = "UPDATE signal_daily view SET views = views + 1 WHERE signal_id = '$id''";
-        $result = $db_handle->runQuery($query);
-        return $result;
-    }
-
     public function UI_get_signals_for_page()
     {
         $signals = (array)json_decode(file_get_contents('../models/signal_daily.json'));
         if (!empty($signals)) {
-            foreach ($signals as $row) {
-                $row = (array)$row;
+            for( $i = 0; $i< count($signals); $i++) {
+                $row = (array)$signals[$i];
                 $this->viewCount($row['signal_id']);
                 $output = <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
@@ -314,14 +224,94 @@ MAIL;
                                         </div>
                                     </div>
 MAIL;
-
+                echo $output;
             }
         } else {
             $output = <<<MAIL
                 <center><p>No signals at the moment...</p></center>
 MAIL;
+            echo $output;
         }
-        echo $output;
+
+    }
+
+    public function viewCount($id)
+    {
+        global $db_handle;
+        $query = "UPDATE signal_daily view SET views = views + 1 WHERE signal_id = '$id''";
+        $result = $db_handle->runQuery($query);
+        return $result;
+    }
+
+    public function UI_signal_trend_msg($order_type)
+    {
+        $trigger_stat = (int)$order_type;
+        switch ($trigger_stat) {
+            case 1:
+                $msg = '<b style="font-size: large" class="text-success"><i class="glyphicon glyphicon-arrow-up"></i></b>';
+                break;
+            case 2:
+                $msg = '<b style="font-size: large" class="text-danger"><i class="glyphicon glyphicon-arrow-down"></i></b>';
+                break;
+        }
+        return $msg;
+    }
+
+    public function UI_get_symbol_current_price($symbol)
+    {
+        $symbol = str_replace('/', '', $symbol);
+        $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=" . $this->quotes_api_key();
+        $get_data = file_get_contents($url);
+        $response = (array)json_decode($get_data, true);
+        return $response[0]['price'];
+    }
+
+    public function UI_get_signal_trigger_status_msg($trigger_stat)
+    {
+        $trigger_stat = (int)$trigger_stat;
+        switch ($trigger_stat) {
+            case 0:
+                $msg = 'Pending...';
+                break;
+            case 1:
+                $msg = 'Active...';
+                break;
+            case 2:
+                $msg = 'Closed';
+                break;
+        }
+        return $msg;
+    }
+
+    public function UI_order_type_status_msg($order_type)
+    {
+        $order_type = (int)$order_type;
+        switch ($order_type) {
+            case 1:
+                $msg = "<b class='text-success'>BUY</b>";
+                break;
+            case 2:
+                $msg = "<b class='text-danger'>SELL</b>";
+                break;
+        }
+        return $msg;
+    }
+
+    public function UI_signal_call_to_action_msg($trigger_stat)
+    {
+        $trigger_stat = (int)$trigger_stat;
+        switch ($trigger_stat) {
+            case 0:
+                $msg = 'PLACE PENDING ORDER';
+                break;
+            case 1:
+                $msg = 'TRADE NOW';
+                break;
+            case 2:
+                $msg = 'CHECK MARKET HISTORY';
+                break;
+        }
+        return $msg;
     }
 
     public function update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type)
@@ -334,6 +324,22 @@ MAIL;
             $this->update_signal_daily_FILE($signal_array);
         }
         return $result;
+    }
+
+    public function get_scheduled_signals($date)
+    {
+        global $db_handle;
+        $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.price, SD.take_profit,
+SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol 
+FROM signal_daily AS SD 
+INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
+WHERE SD.trigger_date = '$date'";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query));
+    }
+
+    public function update_signal_daily_FILE($signal_array)
+    {
+        file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
     }
 
     public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips)
@@ -375,11 +381,6 @@ MAIL;
         return $result;
     }
 
-    public function update_signal_daily_FILE($signal_array)
-    {
-        file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
-    }
-
     public function UI_select_currency_pair()
     {
         global $db_handle;
@@ -418,8 +419,8 @@ MAIL;
     {
         $signals_side = (array)json_decode(file_get_contents('../../../models/signal_daily.json'));
         if (!empty($signals_side)) {
-            foreach ($signals_side as $row_side) {
-                $row_side = (array)$row_side;
+            for( $i = 0; $i< count($signals_side); $i++) {
+                $row_side = (array)$signals_side[$i];
                 $output_side = <<<MAIL
                 <tr><td><a href="signal_schedules.php#signal_{$row_side['signal_id']}"><strong Style="color: black">{$row_side['symbol']}</strong></a></td>
                 <td></td>
@@ -428,13 +429,15 @@ MAIL;
                 <td style="color:black;"><a href="signal_schedules.php#signal_{$row_side['signal_id']}">{$this->UI_get_signal_trigger_status_msg($row_side['trigger_status'])}<i class="glyphicon glyphicon-arrow-right"></i></a></td>
                 </tr>
 MAIL;
+                echo $output_side;
             }
         } else {
             $output_side = <<<MAIL
                 <center><p>No signals at the moment...</p></center>
 MAIL;
+            echo $output_side;
         }
-        echo $output_side;
+
     }
 
 }
