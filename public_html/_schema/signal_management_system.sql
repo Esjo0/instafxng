@@ -19,7 +19,7 @@ CREATE TABLE `signal_daily` (
  `exit_type` varchar(100) DEFAULT NULL,
  PRIMARY KEY (`signal_id`),
  UNIQUE KEY `signal_id` (`signal_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=latin1
+) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `signal_quotes` (
  `signal_quote_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,13 +29,14 @@ CREATE TABLE `signal_quotes` (
  `created` datetime NOT NULL,
  PRIMARY KEY (`signal_quote_id`),
  UNIQUE KEY `signal_quote_id` (`signal_quote_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1
-signal_symbol 	CREATE TABLE `signal_symbol` (
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE `signal_symbol` (
  `symbol_id` int(11) NOT NULL AUTO_INCREMENT,
  `symbol` varchar(40) NOT NULL,
  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`symbol_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 
  	CREATE TABLE `signal_users` (
@@ -47,7 +48,7 @@ signal_symbol 	CREATE TABLE `signal_symbol` (
  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`signal_user_id`),
  UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- CREATE TEMPORARY TABLE signal_temp AS
 --   SELECT *
