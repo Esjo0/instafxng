@@ -66,9 +66,9 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
 
-        <script>
-            signal.getQuotes();
-        </script>
+<!--        <script>-->
+<!--            signal.getQuotes();-->
+<!--        </script>-->
 
         <!--<script>signal.get_signals_for_page();</script>-->
         <!--................................-->
@@ -105,15 +105,13 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
                     </div>
 
                     <div class="section-tint super-shadow">
-                        <div class="row">
-                            <div class="col-sm-12">
+
                                 <?php include 'layouts/feedback_message.php'; ?>
-                                <div id="page_reloader" style="display: none" class="alert alert-success">
+                        <p><div id="page_reloader" style="display: none;" class="alert alert-success">
                                     <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
                                     <strong>New Updates Availabe!</strong> <a href="signal_schedules.php">Click here to view these updates.</a>
-                                </div>
-                            </div>
-
+                                </div></p>
+                            <div class="row">
                             <div id="sig" class="col-sm-12" style="pointer-events: none">
                                 <!-- TradingView Widget BEGIN -->
                                 <?php $signal_object->UI_show_live_quotes();?>
@@ -187,9 +185,9 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         <?php require_once 'layouts/footer.php'; ?>
 
 <!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>-->
-<!--    <!-- Firebase App is always required and must be first -->-->
+<!--    <!-- Firebase App is always required and must be first -->
 <!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>-->
-<!--    <!-- Add additional services that you want to use -->-->
+<!--    <!-- Add additional services that you want to use -->
 <!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-messaging.js"></script>-->
 <!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-functions.js"></script>-->
 <!--    <script>-->
