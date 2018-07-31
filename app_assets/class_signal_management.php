@@ -10,8 +10,10 @@ class Signal_Management
         4 => 'Q0byrL4ELAk5jS8k11gyBq4i7dIL1PE6',
         5 => 'Oa9r9zco2Twqdw6vS0P9wDQXHj8qzbup',
         6 => 'uoGGIjYh0JADs5GsdfuuJT3LFEPiFw8S',
-        7 => 'MVirptGI9kaHg78rzH2d2Ol8AvG5wJ9V'
-
+        7 => 'MVirptGI9kaHg78rzH2d2Ol8AvG5wJ9V',
+        8 => 'CI2becFW2E4R2f6OAgBQow3VoNJuDWjm',
+        9 => 'I7eLZvjx9cZZLMWJr4NdzDG20mMAC3uf',
+        10 => '7UDKNPEu1AR1DVXKoAcPDCXiTPGeEBfU'
     );
 
     public function get_symbol_id($pair_str)
@@ -60,7 +62,7 @@ class Signal_Management
 
     public function quotes_api_key()
     {
-        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 7)];
+        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 8)];
     }
 
     public function new_signal_listener()
