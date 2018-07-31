@@ -151,7 +151,7 @@ if(empty($trans_detail)) {
 }
 
 $transaction_access = allow_transaction_review($trans_id, $_SESSION['admin_unique_code']);
-if(!empty($feedback_msg['holder'])){
+if(!$transaction_access['status']){
     $message_error = "This transaction is currently being reviewed by {$transaction_access['holder']}";
 }
 

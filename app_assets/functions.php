@@ -749,7 +749,7 @@ function allow_transaction_review($transaction_ID, $admin_code){
     if($db_handle->numRows($query) > 0){
         $holder_details = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
         //if this is true, it means the holder of this transaction is the one making the current request
-        if($holder_details['admin_code'] = $admin_code){
+        if($holder_details['admin_code'] == $admin_code){
             $feedback_msg['status'] = true;
             //$feedback_msg['holder'] = $admin_object->get_admin_name_by_code($holder_details['admin_code']);
             $feedback_msg['msg'] = 'This request is valid and successful.';
