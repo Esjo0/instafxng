@@ -22,6 +22,5 @@ $pos = strrpos($insert_query, ',');
 if($pos !== false){$insert_query = substr_replace($insert_query, '', $pos, strlen(','));}
 if($db_handle->runQuery($insert_query)){
     file_put_contents('../../models/daily_quotes.json', '');
-    file_put_contents('../../models/signal_daily.json', '');
 }
-
+file_put_contents('../../models/signal_daily.json', '');
