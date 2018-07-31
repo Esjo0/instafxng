@@ -17,6 +17,16 @@ if(!empty($scheduled_signals)) {
             if($row['order_type']==1){trigger_buy_order($row);}
             if($row['order_type']==2){trigger_sell_order($row);}
         }
+        if($response[0]['price'] >= $row['price']){
+            $signal_object->update_signal_schedule($row['symbol_id'], $row['symbol'], $row['price'], $row['take_profit'], $row['stop_loss'], $row['trigger_time'], $row['trigger_date'], $row['note'], $row['trend'], $row['order_type']);
+            if($row['order_type']==1){trigger_buy_order($row);}
+            if($row['order_type']==2){trigger_sell_order($row);}
+        }
+        if($response[0]['price'] <= $row['price']){
+            $signal_object->update_signal_schedule($row['symbol_id'], $row['symbol'], $row['price'], $row['take_profit'], $row['stop_loss'], $row['trigger_time'], $row['trigger_date'], $row['note'], $row['trend'], $row['order_type']);
+            if($row['order_type']==1){trigger_buy_order($row);}
+            if($row['order_type']==2){trigger_sell_order($row);}
+        }
     }
 }
 
@@ -26,7 +36,7 @@ function trigger_buy_order($row){
     $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
-    if($response[0]['price'] == $row['price']){
+    if($response[0]['price'] <= $row['price']){
         $entry_price = $response[0]['price'];
         $entry_time = date('Y-m-d h:i:s', $response[0]['timestamp']);
         $signal_object->trigger_signal_schedule($row['signal_id'], $row['trigger_status'], $entry_price, $entry_time, '', '');
@@ -49,11 +59,12 @@ function trigger_sell_order($row){
     $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
-    if($response[0]['price'] == $row['price']){
+    if($response[0]['price'] >= $row['price']){
         $entry_price = $response[0]['price'];
         $entry_time = date('Y-m-d h:i:s', $response[0]['timestamp']);
         $signal_object->trigger_signal_schedule($row['signal_id'], $row['trigger_status'], $entry_price, $entry_time, '', '');
     }
+
     if($response[0]['ask'] == $row['stop_loss']){
         $exit_time = date('Y-m-d h:i:s', $response[0]['timestamp']);
         $pips = (float) $row['price'] - $response[0]['ask'];

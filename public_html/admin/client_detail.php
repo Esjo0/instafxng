@@ -115,6 +115,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                 <!------------- Contact Section --->
                                 <div class="row">
                                     <div class="col-sm-6">
+                                        <p><a target="_blank" title="Download Client Information" class="btn btn-info" href="client_life.php?id=<?php echo encrypt($user_code); ?>">Download Client Information </a></p>
                                         <h5>Client Information</h5>
                                         <span class="span-title text-right">Account Officer</span>
                                         <p class="text-right"><em><?php echo $account_officer_full_name; ?></em></p>

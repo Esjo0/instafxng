@@ -66,6 +66,10 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
 
+<!--        <script>-->
+<!--            signal.getQuotes();-->
+<!--        </script>-->
+
         <!--<script>signal.get_signals_for_page();</script>-->
         <!--................................-->
     </head>
@@ -101,15 +105,13 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
                     </div>
 
                     <div class="section-tint super-shadow">
-                        <div class="row">
-                            <div class="col-sm-12">
+
                                 <?php include 'layouts/feedback_message.php'; ?>
-                                <div id="page_reloader" style="display: none" class="alert alert-success">
+                        <p><div id="page_reloader" style="display: none;" class="alert alert-success">
                                     <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
                                     <strong>New Updates Availabe!</strong> <a href="signal_schedules.php">Click here to view these updates.</a>
-                                </div>
-                            </div>
-
+                                </div></p>
+                            <div class="row">
                             <div id="sig" class="col-sm-12" style="pointer-events: none">
                                 <!-- TradingView Widget BEGIN -->
                                 <?php $signal_object->UI_show_live_quotes();?>
@@ -182,24 +184,24 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         </div>
         <?php require_once 'layouts/footer.php'; ?>
 
-    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
-    <!-- Firebase App is always required and must be first -->
-    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
-    <!-- Add additional services that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-messaging.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-functions.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyCdT2R-aTP1V-MtQ3K8QTIGauSiijRr_6k",
-            authDomain: "instafxng-signals-e6755.firebaseapp.com",
-            databaseURL: "https://instafxng-signals-e6755.firebaseio.com",
-            projectId: "instafxng-signals-e6755",
-            storageBucket: "instafxng-signals-e6755.appspot.com",
-            messagingSenderId: "179558919499"
-        };
-        firebase.initializeApp(config);
-    </script>
+<!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>-->
+<!--    <!-- Firebase App is always required and must be first -->
+<!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>-->
+<!--    <!-- Add additional services that you want to use -->
+<!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-messaging.js"></script>-->
+<!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-functions.js"></script>-->
+<!--    <script>-->
+<!--        // Initialize Firebase-->
+<!--        var config = {-->
+<!--            apiKey: "AIzaSyCdT2R-aTP1V-MtQ3K8QTIGauSiijRr_6k",-->
+<!--            authDomain: "instafxng-signals-e6755.firebaseapp.com",-->
+<!--            databaseURL: "https://instafxng-signals-e6755.firebaseio.com",-->
+<!--            projectId: "instafxng-signals-e6755",-->
+<!--            storageBucket: "instafxng-signals-e6755.appspot.com",-->
+<!--            messagingSenderId: "179558919499"-->
+<!--        };-->
+<!--        firebase.initializeApp(config);-->
+<!--    </script>-->
     <script> signal.new_signal_listener(); </script>
     </body>
 </html>

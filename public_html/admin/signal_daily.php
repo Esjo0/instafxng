@@ -13,14 +13,65 @@ $result_view = $db_handle->runQuery($query);
 
 if(isset($_POST['trigger'])){
     $id = $db_handle->sanitizePost($_POST['id']);
-    $query = "UPDATE signal_daily SET trigger_status = '1',note = note+' Triggered Manually' WHERE signal_id = '$id'";
+    $symbol_id = $db_handle->sanitizePost($_POST['symbol_id']);
+
+    $query = "SELECT symbol FROM signal_symbol WHERE symbol_id = '$symbol_id' ";
+    $result = $db_handle->runQuery($query);
+    $result = $db_handle->fetchAssoc($result);
+    foreach ($result as $row3) {
+        extract($row3);
+    }
+
+    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
+    $get_data = file_get_contents($url);
+    $response = (array) json_decode($get_data, true);
+
+    $entry_price = $response[0]['price'];
+    $entry_time = date('Y-m-d h:i:s');
+    $signal_object->trigger_signal_schedule($id, 1, $entry_price, $entry_time, '', '');
+    var_dump($signal_object);
+
+    $query = "UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '$id'";
     $result =$db_handle->runQuery($query);
-    if($result) {
+    $signal_array = $signal_object->get_scheduled_signals(date('Y-m-d'));
+    $signal_object->update_signal_daily_FILE($signal_array);
+    if($result ) {
         $message_success = "Signal Triggered Successfully created for ".datetime_to_text($signal_time);
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
 }
+
+if(isset($_POST['close'])){
+    $id = $db_handle->sanitizePost($_POST['id']);
+    $symbol_id = $db_handle->sanitizePost($_POST['symbol_id']);
+
+    $query = "SELECT symbol FROM signal_symbol WHERE symbol_id = '$symbol_id' ";
+    $result = $db_handle->runQuery($query);
+    $result = $db_handle->fetchAssoc($result);
+    foreach ($result as $row3) {
+        extract($row3);
+    }
+
+    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
+    $get_data = file_get_contents($url);
+    $response = (array) json_decode($get_data, true);
+
+    $exit_time = date('Y-m-d h:i:s');
+    $pips = (float) $row['price'] - $response[0]['ask'];
+    $signal_object->trigger_signal_schedule($id, 2, '', '', $exit_time, $pips);
+var_dump($signal_object);
+
+    $query = "UPDATE signal_daily SET trigger_status = '2' WHERE signal_id = '$id'";
+    $signal_array = $signal_object->get_scheduled_signals(date('Y-m-d'));
+    $signal_object->update_signal_daily_FILE($signal_array);
+    if($result) {
+        $message_success = "Signal Closed Successfully created for ".datetime_to_text($signal_time);
+    } else {
+        $message_error = "Something went wrong. Please try again.";
+    }
+}
+
 
 if(isset($_POST['create_symbol'])){
    $pair = $db_handle->sanitizePost($_POST['pair']);
@@ -345,8 +396,9 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <center><?php if($row['trigger_status'] == 0){?><form method="post" action=""><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><button name="trigger" type="submit" class="btn btn-success btn-sm">Confirm Signal Trigger</button></form><?php }?></center>
-                                                   <br><hr> <form  role="form" method="post" action="">
+                                                    <center><?php if($row['trigger_status'] == 0){?><form method="post" action=""><input name="symbol_id" type="hidden" value="<?php echo $row['symbol_id'];?>"><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><button name="trigger" type="submit" class="btn btn-success btn-sm">Confirm Trade Trigger</button></form><?php }?></center>
+                                                    <center><?php if($row['trigger_status'] == 1){?><form method="post" action=""><input name="symbol_id" type="hidden" value="<?php echo $row['symbol_id'];?>"><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><button name="close" type="submit" class="btn btn-success btn-sm">Confirm Trade Close</button></form><?php }?></center>
+                                                    <br><hr> <form  role="form" method="post" action="">
                                                         <div class="form-group row">
                                                             <label class="control-label col-sm-3" for="location">Currency Pair </label>
                                                             <div class="col-sm-9 col-lg-5">
