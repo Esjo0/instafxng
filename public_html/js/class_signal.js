@@ -210,9 +210,6 @@ function Signal()
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
         //console.log(url);
         this.ajax_call(url, 'GET', 'update_signal_page');
-        //setInterval(function(){signal.new_signal_listener();}, 120000);//TODO: Fix this back to 5000
-
-        //setInterval(function(){signal.getQuotes();}, 30000);//TODO: Fix this back to 5000
     };
 
     ///fine
@@ -223,8 +220,6 @@ function Signal()
             document.getElementById('page_reloader').style.display = 'block';
             //document.getElementById('page_reloader_side').style.display = 'block';
         }
-        setInterval(function(){signal.new_signal_listener();}, 120000);//TODO: Fix this back to 5000
-        //setTimeout(this.new_signal_listener(), 10000)
     };
 
 

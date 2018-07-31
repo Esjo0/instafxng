@@ -11,10 +11,29 @@ if(isset($_POST['login'])) {
         if(empty($name) || empty($phone)){
             $query = "SELECT name, phone, email FROM signal_users WHERE email = '$email' ";
             if($db_handle->numRows($query) > 0){
-                $_SESSION['signal_schedule_user'] = $email;
+                //$_SESSION['signal_schedule_user'] = $email;
+                $ifxngsignals = "ifxng_signals";
+                $cookie_value = $email;
+                setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+                $message_success = "Welcome Thanks for Subscribing to InstaFxNg Signals <a href='signal_schedules.php'>Click Here To Continue</a>";
             }else{
-                $user_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT phone, CONCAT(first_name, SPACE(1), last_name) AS name FROM users WHERE email = '$email'"));//[0];
-                if(empty($user_details['phone']) || empty($user_details['name'])){
+                $user_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT phone, CONCAT(first_name, SPACE(1), last_name) AS name FROM user WHERE email = '$email'"));//[0];
+                if(!empty($user_details)){
+                    foreach($user_details AS $row) {
+                        extract($row);
+                        $query = "INSERT IGNORE INTO signal_users (name, phone, email) VALUES ('$name', '$phone', '$email') ";
+                        if ($db_handle->runQuery($query)) {
+                            //$_SESSION['signal_schedule_user'] = $email;
+                            $ifxngsignals = "ifxng_signals";
+                            $cookie_value = $email;
+                            setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+                            $message_success = "Welcome Thanks for Subscribing to InstaFxNg Signals <a href='signal_schedules.php'>Click Here To Continue</a>";
+                        } else {
+                            $message_error = "Sorry the operation failed, please try again.";
+                            $get_phone_and_name = true;
+                        }
+                    }
+                    }else{
                     $message_error = "Please update your profile details.";
                     $get_phone_and_name = true;
                 }
@@ -22,7 +41,11 @@ if(isset($_POST['login'])) {
         }else{
             $query = "INSERT IGNORE INTO signal_users (name, phone, email) VALUES ('$name', '$phone', '$email') ";
             if($db_handle->runQuery($query)){
-                $_SESSION['signal_schedule_user'] = $email;
+                //$_SESSION['signal_schedule_user'] = $email;
+                $ifxngsignals = "ifxng_signals";
+                $cookie_value = $email;
+                setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+                $message_success = "Welcome Thanks for Subscribing to InstaFxNg Signals <a href='signal_schedules.php'>Click Here To Continue</a>";
             }else{
                 $message_error = "Sorry the operation failed, please try again.";
             }
@@ -128,7 +151,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 
                     <!--///////////////////////////////
                     Login Form Scripting-->
-                    <?php if(!isset($_SESSION['signal_schedule_user']) || empty($_SESSION['signal_schedule_user'])){ ?>
+                    <?php if(!isset($_COOKIE['ifxng_signals'])){ ?>
                         <!--Modal - confirmation boxes-->
 <!--                        <div data-keyboard="false" data-backdrop="static" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
 -->                            <div   id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -202,6 +225,11 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 <!--        };-->
 <!--        firebase.initializeApp(config);-->
 <!--    </script>-->
-    <script> signal.new_signal_listener(); </script>
+    <script>
+        signal.new_signal_listener();
+        signal.getQuotes();
+        setInterval(function(){signal.new_signal_listener();}, 300000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.getQuotes();}, 1200000);//TODO: Fix this back to 5000
+    </script>
     </body>
 </html>
