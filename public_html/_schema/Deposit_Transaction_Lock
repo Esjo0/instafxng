@@ -1,0 +1,8 @@
+CREATE TABLE `active_transactions` (
+ `active_transaction_id` int(11) NOT NULL AUTO_INCREMENT,
+ `transaction_id` varchar(50) NOT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `admin_code` varchar(50) NOT NULL,
+ PRIMARY KEY (`active_transaction_id`),
+ UNIQUE KEY `transaction_id` (`transaction_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8

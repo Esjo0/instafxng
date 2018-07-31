@@ -46,6 +46,7 @@ if ($withdraw_process_initiated && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_PO
     }
 
     $client_operation->withdrawal_transaction_account_check($transaction_id, $status, $remarks, $_SESSION['admin_unique_code']);
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     header("Location: withdrawal_initiated.php");
 }
 
@@ -71,6 +72,7 @@ if ($withdraw_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_PO
     }
 
     $client_operation->withdrawal_transaction_ifx_debited($transaction_id, $transaction_reference, $status, $remarks, $_SESSION['admin_unique_code']);
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     header("Location: withdrawal_confirmed.php");
 }
 
@@ -144,6 +146,7 @@ MAIL;
     }
 
     $client_operation->withdrawal_transaction_completed($transaction_id, $status, $remarks, $_SESSION['admin_unique_code']);
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     header("Location: withdrawal_ifx_debited.php");
 }
 
@@ -154,6 +157,11 @@ if(empty($trans_detail)) {
     exit;
 } else {
     $trans_remark = $client_operation->get_withdrawal_remark($trans_id);
+}
+
+$transaction_access = allow_transaction_review($trans_id, $_SESSION['admin_unique_code']);
+if(!empty($feedback_msg['holder'])){
+    $message_error = "This transaction is currently being reviewed by {$transaction_access['holder']}";
 }
 
 ?>

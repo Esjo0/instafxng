@@ -40,6 +40,7 @@ if (isset($_POST['reply-deposit-comment'])) {
     if($update_comment_response) {
         $system_object->send_email($subject, $my_message, $client_email, $client_name);
         $message_success = "Your message has been sent.";
+        release_transaction($trans_id, $_SESSION['admin_unique_code']);
     } else {
         $message_error = "An error occurred, your message was not sent.";
     }
@@ -83,7 +84,7 @@ if ($deposit_process_notified && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST
             $client_operation->update_loyalty_point($points_claimed_id, $point_status);
         }
     }
-    
+    release_transaction($trans_id, $_SESSION['admin_unique_code']);
     header("Location: deposit_notified.php");
 }
 
@@ -119,7 +120,7 @@ if ($deposit_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POS
 
         $client_operation->update_loyalty_point($points_claimed_id, $point_status);
     }
-
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     $trans_id_encrypted = encrypt($transaction_id);
     header("Location: deposit_view_details.php?id=$trans_id_encrypted");
 }
@@ -134,7 +135,8 @@ if ($deposit_process_pending && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST[
     $remarks = $_POST['remarks'];
 
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
-    
+
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     header("Location: deposit_pending.php");
     exit;
 }
@@ -146,6 +148,11 @@ if(empty($trans_detail)) {
     exit;
 } else {
     $trans_remark = $client_operation->get_deposit_remark($trans_id);
+}
+
+$transaction_access = allow_transaction_review($trans_id, $_SESSION['admin_unique_code']);
+if(!empty($feedback_msg['holder'])){
+    $message_error = "This transaction is currently being reviewed by {$transaction_access['holder']}";
 }
 
 ?>
