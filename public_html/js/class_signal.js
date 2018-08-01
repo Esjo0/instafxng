@@ -2,7 +2,8 @@ function Signal()
 {
     this.time_window = 60;//60 mins
     //TODO: Ensure this is changed
-    this.BASE_URL = 'http://localhost/instafxngwebsite/public_html/';
+    //this.BASE_URL = 'http://localhost/instafxngwebsite/public_html/';
+    this.BASE_URL = 'https://instafxng.com/';
     //this.SIGNAL_FILE_URL = 'http://localhost/instafxngwebsite/models/signal_daily.json';
     this.SIGNAL_FILE_URL = '../../../models/signal_daily.json';
 
@@ -90,20 +91,13 @@ function Signal()
 
     ///fine
     this.ajax_call = function (url, method,call_back_func) {
-        //console.log(url);
         if(window.XMLHttpRequest){ xmlhttp=new XMLHttpRequest();}
         else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
         xmlhttp.onreadystatechange = function(){
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
                 if(call_back_func){
                     if(xmlhttp.responseText) {
-                        console.log(xmlhttp.responseText);
-                        if( call_back_func = "showQuotes"){
-
-                            signal[call_back_func](xmlhttp.responseText);
-                        }else{
                         signal[call_back_func](xmlhttp.responseText);
-                        }
                     }
                 }
             }
@@ -199,7 +193,7 @@ function Signal()
     this.refreshList = function() {
         document.getElementById('preloader').style.display = 'block';
         document.getElementById('sig').innerHTML = '';
-        this.getSignals('sig');
+        this.get_sidebar_signal();
     };
 
     ///fine
@@ -211,38 +205,49 @@ function Signal()
         }
         id_list = id_list.join('-');
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
-        //console.log(url);
         this.ajax_call(url, 'GET', 'update_signal_page');
-
-        setInterval(function(){signal.getQuotes();}, 300000);//TODO: Fix this back to 1000
     };
 
     ///fine
     this.update_signal_page = function(update_msg){
         if(update_msg == 'new-signals-found'){
             document.getElementById('page_reloader').style.display = 'block';
-            document.getElementById('page_reloader_side').style.display = 'block';
         }
-        setInterval(function(){signal.new_signal_listener();}, 6000);//TODO: Fix this back to 5000
-        //setTimeout(this.new_signal_listener(), 10000)
     };
 
 
     this.showQuotes = function(json)
     {
-        //console.log(json);
         var quotes_array = JSON.parse(json);
-        //console.log(quotes_array);
         for(var x in quotes_array){
-            document.getElementById('signal_currency_diff_'+quotes_array[0]['symbol']).innerHTML = quotes_array[0]['price'];
+            document.getElementById('signal_currency_diff_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['price'];
+            document.getElementById('signal_pl_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['pl'];
         }
-
+        //setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
     };
 
     this.getQuotes = function ()
     {
         var url = "getQuotesData.php";
         this.ajax_call(url,'GET','showQuotes');
+
+    };
+
+
+    this.show_sidebar_signal = function (signals)
+    {
+        if(signals != 'new-signals-found'){
+
+            document.getElementById('sig').innerHTML = signals;
+
+        }
+
+    };
+
+    this.get_sidebar_signal = function ()
+    {
+        var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=UI_get_signals_for_sidebar";
+        this.ajax_call(url,'GET','show_sidebar_signal');
 
     };
 

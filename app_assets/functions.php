@@ -481,6 +481,11 @@ function endsWith($haystack, $needle) {
     return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
 }
 
+function startsWith($haystack, $needle){
+    $length = strlen($needle);
+    return (substr($haystack, 0, $length) === $needle);
+}
+
 function add_activity_log()
 {
     global $admin_object;
@@ -635,6 +640,14 @@ function paginate_array($offset, $array, $benchmark)
     return $result;
 }
 
+function str_replace_nth($search, $replace, $subject, $nth) {
+    $found = preg_match_all('/'.preg_quote($search).'/', $subject, $matches, PREG_OFFSET_CAPTURE);
+
+    if (false !== $found && $found > $nth) {
+        return substr_replace($subject, $replace, $matches[0][$nth][1], strlen($search));
+    }
+    return $subject;
+}
 
 /*
  * $input_name = (string) Name of the markup form field
@@ -694,3 +707,76 @@ function upload_file($input_name, $upload_path, $desired_file_name, $allowed_fil
     }
     return $feedback;
 }
+
+
+
+
+
+
+/*
+*Transaction Review Functions
+*/
+function hold_transaction($transaction_ID, $admin_code){
+    global $db_handle;
+    $feedback_msg = array();
+    $query = "SELECT transaction_id FROM active_transactions WHERE transaction_id = '$transaction_ID' ";
+    if($db_handle->numRows($query) <= 0){
+        $query = "INSERT INTO active_transactions (transaction_id, admin_code) VALUES ('$transaction_ID', '$admin_code') ";
+        $db_handle->runQuery($query);
+        $feedback_msg['status'] = true;
+        $feedback_msg['msg'] = 'This request is valid and successful.';
+        return $feedback_msg;
+    }else{
+        $feedback_msg['status'] = false;
+        $feedback_msg['msg'] = 'This request is invalid and unsuccessful.';
+        return $feedback_msg;
+    }
+}
+
+function release_transaction($transaction_ID, $admin_code){
+    global $db_handle;
+    $query = "DELETE FROM active_transactions WHERE transaction_id = '$transaction_ID' AND admin_code = '$admin_code' ";
+    $db_handle->runQuery($query);
+}
+
+function allow_transaction_review($transaction_ID, $admin_code){
+    global $db_handle;
+    global $admin_object;
+    $feedback_msg = array();
+    $query = "SELECT transaction_id, admin_code FROM active_transactions WHERE transaction_id = '$transaction_ID' ";
+    if($db_handle->numRows($query) > 0){
+        $holder_details = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
+        //if this is true, it means the holder of this transaction is the one making the current request
+        if($holder_details['admin_code'] == $admin_code){
+            $feedback_msg['status'] = true;
+            //$feedback_msg['holder'] = $admin_object->get_admin_name_by_code($holder_details['admin_code']);
+            $feedback_msg['msg'] = 'This request is valid and successful.';
+            return $feedback_msg;
+        }
+        //this is false, this transaction is being managed by another person
+        else{
+            $feedback_msg['status'] = false;
+            $feedback_msg['holder'] = $admin_object->get_admin_name_by_code($holder_details['admin_code']);
+            $feedback_msg['msg'] = 'This request is valid but it failed.';
+            return $feedback_msg;
+        }
+    }else{return hold_transaction($transaction_ID, $admin_code);}
+}
+
+function clear_transactions(){
+    global $db_handle;
+    $max_time_diff = 1.0;  #Maximum of 1 hour
+    $query = "SELECT transaction_id, admin_code, created FROM active_transactions ";
+    $transactions = $db_handle->fetchAssoc($db_handle->runQuery($query));
+    foreach($transactions as $row){
+        $time1 = strtotime(date('Y-m-d h:i:s'));
+        $time2 = strtotime($row['created']);
+        $difference = (abs($time1 - $time2)) / 3600;
+        if($difference >= $max_time_diff){
+            $db_handle->runQuery("DELETE FROM active_transactions WHERE transaction_id = '{$row['transaction_id']}' ");
+        }
+    }
+}
+/*
+*Transaction Review Functions
+*/

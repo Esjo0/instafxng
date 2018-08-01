@@ -11,10 +11,29 @@ if(isset($_POST['login'])) {
         if(empty($name) || empty($phone)){
             $query = "SELECT name, phone, email FROM signal_users WHERE email = '$email' ";
             if($db_handle->numRows($query) > 0){
-                $_SESSION['signal_schedule_user'] = $email;
+                //$_SESSION['signal_schedule_user'] = $email;
+                $ifxngsignals = "ifxng_signals";
+                $cookie_value = $email;
+                setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+                $message_success = "Welcome Thanks for Subscribing to InstaFxNg Signals <a href='signal_schedules.php'>Click Here To Continue</a>";
             }else{
-                $user_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT phone, CONCAT(first_name, SPACE(1), last_name) AS name FROM users WHERE email = '$email'"));//[0];
-                if(empty($user_details['phone']) || empty($user_details['name'])){
+                $user_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT phone, CONCAT(first_name, SPACE(1), last_name) AS name FROM user WHERE email = '$email'"));//[0];
+                if(!empty($user_details)){
+                    foreach($user_details AS $row) {
+                        extract($row);
+                        $query = "INSERT IGNORE INTO signal_users (name, phone, email) VALUES ('$name', '$phone', '$email') ";
+                        if ($db_handle->runQuery($query)) {
+                            //$_SESSION['signal_schedule_user'] = $email;
+                            $ifxngsignals = "ifxng_signals";
+                            $cookie_value = $email;
+                            setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+                            $message_success = "Welcome Thanks for Subscribing to InstaFxNg Signals <a href='signal_schedules.php'>Click Here To Continue</a>";
+                        } else {
+                            $message_error = "Sorry the operation failed, please try again.";
+                            $get_phone_and_name = true;
+                        }
+                    }
+                    }else{
                     $message_error = "Please update your profile details.";
                     $get_phone_and_name = true;
                 }
@@ -22,7 +41,11 @@ if(isset($_POST['login'])) {
         }else{
             $query = "INSERT IGNORE INTO signal_users (name, phone, email) VALUES ('$name', '$phone', '$email') ";
             if($db_handle->runQuery($query)){
-                $_SESSION['signal_schedule_user'] = $email;
+                //$_SESSION['signal_schedule_user'] = $email;
+                $ifxngsignals = "ifxng_signals";
+                $cookie_value = $email;
+                setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+                $message_success = "Welcome Thanks for Subscribing to InstaFxNg Signals <a href='signal_schedules.php'>Click Here To Continue</a>";
             }else{
                 $message_error = "Sorry the operation failed, please try again.";
             }
@@ -66,8 +89,6 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
 
-        <!--<script>signal.get_signals_for_page();</script>-->
-        <!--................................-->
     </head>
     <body>
     <!--.............................-->
@@ -101,15 +122,13 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
                     </div>
 
                     <div class="section-tint super-shadow">
-                        <div class="row">
-                            <div class="col-sm-12">
+
                                 <?php include 'layouts/feedback_message.php'; ?>
-                                <div id="page_reloader" style="display: none" class="alert alert-success">
+                        <p><div id="page_reloader" style="display: none;" class="alert alert-success">
                                     <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
                                     <strong>New Updates Availabe!</strong> <a href="signal_schedules.php">Click here to view these updates.</a>
-                                </div>
-                            </div>
-
+                                </div></p>
+                            <div class="row">
                             <div id="sig" class="col-sm-12" style="pointer-events: none">
                                 <!-- TradingView Widget BEGIN -->
                                 <?php $signal_object->UI_show_live_quotes();?>
@@ -126,7 +145,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 
                     <!--///////////////////////////////
                     Login Form Scripting-->
-                    <?php if(!isset($_SESSION['signal_schedule_user']) || empty($_SESSION['signal_schedule_user'])){ ?>
+                    <?php if(!isset($_COOKIE['ifxng_signals'])){ ?>
                         <!--Modal - confirmation boxes-->
 <!--                        <div data-keyboard="false" data-backdrop="static" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
 -->                            <div   id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -182,24 +201,45 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         </div>
         <?php require_once 'layouts/footer.php'; ?>
 
-    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
-    <!-- Firebase App is always required and must be first -->
-    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
-    <!-- Add additional services that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-messaging.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-functions.js"></script>
+<!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>-->
+<!--    <!-- Firebase App is always required and must be first -->
+<!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>-->
+<!--    <!-- Add additional services that you want to use -->
+<!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-messaging.js"></script>-->
+<!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-functions.js"></script>-->
+<!--    <script>-->
+<!--        // Initialize Firebase-->
+<!--        var config = {-->
+<!--            apiKey: "AIzaSyCdT2R-aTP1V-MtQ3K8QTIGauSiijRr_6k",-->
+<!--            authDomain: "instafxng-signals-e6755.firebaseapp.com",-->
+<!--            databaseURL: "https://instafxng-signals-e6755.firebaseio.com",-->
+<!--            projectId: "instafxng-signals-e6755",-->
+<!--            storageBucket: "instafxng-signals-e6755.appspot.com",-->
+<!--            messagingSenderId: "179558919499"-->
+<!--        };-->
+<!--        firebase.initializeApp(config);-->
+<!--    </script>-->
     <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyCdT2R-aTP1V-MtQ3K8QTIGauSiijRr_6k",
-            authDomain: "instafxng-signals-e6755.firebaseapp.com",
-            databaseURL: "https://instafxng-signals-e6755.firebaseio.com",
-            projectId: "instafxng-signals-e6755",
-            storageBucket: "instafxng-signals-e6755.appspot.com",
-            messagingSenderId: "179558919499"
-        };
-        firebase.initializeApp(config);
+        signal.new_signal_listener();
+        signal.getQuotes();
+        setInterval(function(){signal.new_signal_listener();}, 120000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.getQuotes();}, 180000);//TODO: Fix this back to 5000
     </script>
-    <script> signal.new_signal_listener(); </script>
+<script>
+    function cal_gain(id) {
+        var equity = parseInt(document.getElementById('signal_equity_'+id).value);
+        var lots = parseFloat(document.getElementById('signal_lots_'+id).value);
+        var pips = parseInt(document.getElementById('signal_currency_diff_'+id).innerHTML);
+        console.log('signal_currency_diff_'+id);
+        if(equity!="" && lots!="" && equity!=null && lots!=null && equity > 0 && lots > 0){
+
+        var gain = equity + (lots * pips);
+
+        document.getElementById('signal_gain_'+id).value = "New Equity $"+gain;
+        document.getElementById('signal_gain_'+id).style.display = 'block';
+
+        }
+    }
+</script>
     </body>
 </html>

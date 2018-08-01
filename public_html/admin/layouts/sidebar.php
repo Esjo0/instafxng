@@ -59,6 +59,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(15, $my_pages_sidebar)) { ?><li><a href="client_doc_verify.php" title="Verify Documents">Verify Documents</a></li><?php } ?>
                         <?php if (in_array(202, $my_pages_sidebar)) { ?><li><a href="client_failed_sms_code.php" title="Failed SMS Code">Failed SMS Code</a></li><?php } ?>
                         <?php if (in_array(16, $my_pages_sidebar)) { ?><li><a href="client_bank_verify.php" title="Moderate Bank Account">Moderate Bank Account</a></li><?php } ?>
+                        <?php if (in_array(259, $my_pages_sidebar)) { ?><li><a href="client_life.php" title="Download Client Information">Download Client Information</a></li><?php } ?>
                     </ul>
                 </li>
 
