@@ -212,7 +212,7 @@ function Signal()
     this.update_signal_page = function(update_msg){
         if(update_msg == 'new-signals-found'){
             document.getElementById('page_reloader').style.display = 'block';
-.        }
+        }
     };
 
 
@@ -221,8 +221,9 @@ function Signal()
         var quotes_array = JSON.parse(json);
         for(var x in quotes_array){
             document.getElementById('signal_currency_diff_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['price'];
+            document.getElementById('signal_pl_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['pl'];
         }
-    //setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
+        //setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
     };
 
     this.getQuotes = function ()

@@ -22,6 +22,7 @@ if(isset($_POST['trigger'])){
         extract($row3);
     }
 
+    $symbol = str_replace('/', '', $symbol);
     $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
@@ -51,7 +52,7 @@ if(isset($_POST['close'])){
     foreach ($result as $row3) {
         extract($row3);
     }
-
+    $symbol = str_replace('/', '', $symbol);
     $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);

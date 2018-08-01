@@ -61,7 +61,7 @@ class Signal_Management
 
     public function quotes_api_key()
     {
-        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 8)];
+        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 10)];
     }
 
     public function new_signal_listener()
@@ -105,6 +105,7 @@ MAIL;
             for( $i = 0; $i< count($signals); $i++) {
                 $row = (array)$signals[$i];
                 $this->viewCount($row['signal_id']);
+                $row['symbol'] = str_replace('/', '', $row['symbol']);
                 $posted_date = datetime_to_text($row['trigger_date']+$row['trigger_time']);
                 $output = <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
@@ -153,11 +154,11 @@ MAIL;
                                             </small>
 
                                         </div>
-                                        <span class="text-muted"><span id="signal_currency_diff_{$row['signal_id']}">0</span> Pips</span>
+                                        <span class="text-muted"><span id="signal_currency_diff_{$row['signal_id']}">0</span> Pips</span>   <small id="signal_pl_{$row['signal_id']}" class="text-muted pull-right"></small>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                         <div>
-                                            <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Know how much you may gain from taking this trade.</strong></h6>
+                                            <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Know how much you can gain from taking this trade.</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                               <center> 
@@ -223,7 +224,6 @@ MAIL;
         Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
             signal guide</a> to learn how to use the signals.
     </small>
-    <div class="alert-info">
     <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                         <div>     
                                             <small class="text-muted">
@@ -232,12 +232,10 @@ MAIL;
                                         </div>
                                         <h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted for </span>$posted_date</span></strong></h6>
                                     </li>
-    </div>
 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!--............................................-->
                                                 </div>
                                             </div>
                                         </div>
@@ -293,7 +291,7 @@ MAIL;
                 $msg = '<i class="fa fa-circle-o-notch fa-spin"></i> Pending';
                 break;
             case 1:
-                $msg = '<i class="fa fa-circle-o-spinner fa-spin"></i> Active';
+                $msg = '<i class="fa fa-spinner fa-spin"></i> Active';
                 break;
             case 2:
                 $msg = '<i class="fa fa-circle"></i> Closed';
@@ -387,7 +385,6 @@ return $diff;
             $query .= ", pips = $pips";
         }
         $query .= " WHERE signal_id = $signal_id ";
-var_dump($query);
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
