@@ -229,6 +229,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
                 </div>
             <?php } ?>
 
+            <?php if($transaction_access['status']): ?>
             <div class="form-group">
                 <label class="control-label text-danger" for="realamtpaid">Actual Amount Paid (&#8358;):</label>
                 <div>
@@ -239,7 +240,6 @@ if(!empty($trans_detail['points_claimed_id'])) {
                 <label class="control-label text-danger" for="realDolVal">Real Dollar Value (&#36;):</label>
                 <div id="realDol"> </div>
             </div>
-            <?php if($transaction_access['status']): ?>
             <div class="form-group">
                 <label class="control-label" for="remarks">Your Remark:</label>
                 <div><textarea name="remarks" id="message" rows="3" class="form-control" placeholder="Enter your remark" required></textarea></div>

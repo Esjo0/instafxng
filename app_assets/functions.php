@@ -721,7 +721,8 @@ function hold_transaction($transaction_ID, $admin_code){
     $feedback_msg = array();
     $query = "SELECT transaction_id FROM active_transactions WHERE transaction_id = '$transaction_ID' ";
     if($db_handle->numRows($query) <= 0){
-        $db_handle->runQuery("INSERT INTO active_transactions (transaction_id, admin_code) VALUES ('$transaction_ID', '$admin_code') ");
+        $query = "INSERT INTO active_transactions (transaction_id, admin_code) VALUES ('$transaction_ID', '$admin_code') ";
+        $db_handle->runQuery($query);
         $feedback_msg['status'] = true;
         $feedback_msg['msg'] = 'This request is valid and successful.';
         return $feedback_msg;
@@ -734,11 +735,8 @@ function hold_transaction($transaction_ID, $admin_code){
 
 function release_transaction($transaction_ID, $admin_code){
     global $db_handle;
-    $query = "SELECT transaction_id FROM active_transactions WHERE transaction_id = '$transaction_ID' AND admin_code = '$admin_code' ";
-    $transaction_details = $db_handle->fetchAssoc($db_handle->runQuery($query));
-    if(count($transaction_details) > 0){
-        $db_handle->runQuery("DELETE FROM active_transactions WHERE transaction_id = '{$transaction_details[0]['transaction_id']}' ");
-    }
+    $query = "DELETE FROM active_transactions WHERE transaction_id = '$transaction_ID' AND admin_code = '$admin_code' ";
+    $db_handle->runQuery($query);
 }
 
 function allow_transaction_review($transaction_ID, $admin_code){
@@ -749,7 +747,7 @@ function allow_transaction_review($transaction_ID, $admin_code){
     if($db_handle->numRows($query) > 0){
         $holder_details = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
         //if this is true, it means the holder of this transaction is the one making the current request
-        if($holder_details['admin_code'] = $admin_code){
+        if($holder_details['admin_code'] == $admin_code){
             $feedback_msg['status'] = true;
             //$feedback_msg['holder'] = $admin_object->get_admin_name_by_code($holder_details['admin_code']);
             $feedback_msg['msg'] = 'This request is valid and successful.';
@@ -767,12 +765,14 @@ function allow_transaction_review($transaction_ID, $admin_code){
 
 function clear_transactions(){
     global $db_handle;
-    $max_time_diff = 1;  #Maximum of 1 hour
+    $max_time_diff = 1.0;  #Maximum of 1 hour
     $query = "SELECT transaction_id, admin_code, created FROM active_transactions ";
     $transactions = $db_handle->fetchAssoc($db_handle->runQuery($query));
     foreach($transactions as $row){
-        $difference = (int) abs(strtotime(date('Y-m-d h:i:s') - strtotime($row['created'])) / 3600);
-        if(number_format($difference, 2) >= $max_time_diff){
+        $time1 = strtotime(date('Y-m-d h:i:s'));
+        $time2 = strtotime($row['created']);
+        $difference = (abs($time1 - $time2)) / 3600;
+        if($difference >= $max_time_diff){
             $db_handle->runQuery("DELETE FROM active_transactions WHERE transaction_id = '{$row['transaction_id']}' ");
         }
     }
