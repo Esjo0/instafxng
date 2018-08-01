@@ -25,6 +25,20 @@ if($no_valid_page) {
     header("Location: ./");
 }
 
+#Process Transaction Release
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['release_transaction'])){
+    release_transaction($trans_id, $_SESSION['admin_unique_code']);
+    switch($get_params['x']) {
+        case 'pending': $url = 'deposit_pending'; break;
+        case 'confirmed': $url = 'deposit_confirmed'; break;
+        case 'inspect': $url = 'deposit_confirmed'; break;
+        case 'notified': $url = 'deposit_notified'; break;
+        case 'view': $url = 'deposit_confirmed'; break;
+    }
+    header("Location: $url.php");
+    exit();
+}
+
 // Process form for replying to client comment on deposit transaction
 if (isset($_POST['reply-deposit-comment'])) {
     
@@ -86,6 +100,7 @@ if ($deposit_process_notified && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST
     }
     release_transaction($trans_id, $_SESSION['admin_unique_code']);
     header("Location: deposit_notified.php");
+    exit;
 }
 
 // Process Confirmed Deposit
@@ -123,6 +138,7 @@ if ($deposit_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POS
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     $trans_id_encrypted = encrypt($transaction_id);
     header("Location: deposit_view_details.php?id=$trans_id_encrypted");
+    exit;
 }
 
 // Process Pending Deposit
@@ -151,10 +167,9 @@ if(empty($trans_detail)) {
 }
 
 $transaction_access = allow_transaction_review($trans_id, $_SESSION['admin_unique_code']);
-if(!$transaction_access['status']){
+if(!empty($transaction_access['holder'])){
     $message_error = "This transaction is currently being reviewed by {$transaction_access['holder']}";
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -242,6 +257,16 @@ if(!$transaction_access['status']){
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
+                                <?php if($transaction_access['status']): ?>
+                                    <div class="alert alert-success">
+                                        <form  data-toggle="validator" role="form" method="post" action="">
+                                            <p><strong>Are you done reviewing this transaction? </strong></p>
+                                            <input value="Click Here To Release This Transaction." name="release_transaction" type="submit" data-toggle="modal" class="btn btn-sm btn-success" />
+                                            <p>Clicking the button above allows other admin personnel work on this transaction.</p>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
+
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 
                                 <?php 
