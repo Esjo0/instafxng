@@ -212,7 +212,7 @@ function Signal()
     this.update_signal_page = function(update_msg){
         if(update_msg == 'new-signals-found'){
             document.getElementById('page_reloader').style.display = 'block';
-.        }
+        }
     };
 
 
