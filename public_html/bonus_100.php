@@ -47,7 +47,7 @@ $thisPage = "Bonus";
                             <li>You must have opened an InstaForex account.
                                 <br>If you don’t have an account yet, please visit <a href="https://instafxng.com/live_account.php">here</a> to open an
                                     InstaForex account with your full name as it is on your valid means of
-                                    identification
+                                    identification. Ensure to enrol the newly opened account into our loyalty programme by filling Step 2 of the account opening process.
                             </li>
                             <li>You must have funded your account with either $50, $100 or $150.Click <a href="https://instafxng.com/deposit_funds.php">here</a> to fund your account now.</li>
                             <li>Download the bonus application form and fill the column for name, email address,
@@ -56,14 +56,15 @@ $thisPage = "Bonus";
                                 (i). <a href="downloads/instaforex_education_bonus_form_$50.jpg" title="Click to download bonus application form" download>Click here to download form</a>
                                 for a 100% bonus on $50 deposit.<br>
                                 (ii). <a href="downloads/instaforex_education_bonus_form_$100.jpg" title="Click to download bonus application form" download>Click here to download form</a>
-                                for a 100% bonus on $100 deposit.</li>
-                            <embed><span class="glyphicon glyphicon-warning-sign"></span> Note: If you would like to fund $150, kindly download both forms.</embed>
-                            <br>
+                                for a 100% bonus on $100 deposit.
+                                <br>
+                                <strong>Note:</strong> If you would like to fund $150, kindly download both forms.</li>
+
 
                             <li>Scan and send the form alongside a valid government issued ID card such as
                                 International passport, National ID card, Tax card, Permanent voters card,
-                                driver’s license to support@instafxng.com</li>
-                            <li>After receiving your scanned application form and ID card, The bonus will be processed within 24 business hours.</li>
+                                driver’s license or Temporary Voters card, driver's license or NIMC card to support@instafxng.com</li>
+                            <li>After receiving your scanned application form and ID card, The bonus will be processed within 24 business hours. </li>
 
                         </ol>
                         <p><strong>DO NOT PLACE A TRADE ON THE ACCOUNT till the bonus has been processed.
