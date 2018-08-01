@@ -39,7 +39,8 @@ AND BA.ifx_account_id NOT IN (
     SELECT UW.trans_id FROM bonus_accounts AS BA INNER JOIN user_withdrawal AS UW ON BA.ifx_account_id = UW.ifxaccount_id 
 )
 AND BA.ifx_account_id = $bonus_account_id ";
-        $result['status'] = true;
+        $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        empty($result) ? $result['status'] = true : $result['status'] = false ;
         return $result;
     }
 

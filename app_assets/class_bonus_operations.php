@@ -9,7 +9,6 @@ class Bonus_Operations {
         if($db_handle->runQuery($query)){
             return true;
         }
-
     }
 
     public function bonus_status($app_id){
