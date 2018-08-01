@@ -8,12 +8,19 @@ $additional_msg = $get_params['x'];
 if($additional_msg == 'msg')
 {
     $special_msg = <<<msg
-        <p>To get more, you need to do more!</p>
-        <p>Funding your Instaforex account and trading actively increases your loyalty points
-        and qualifies you for the monthly reward of $500.</p>
-        <p>To be one of the 5 traders to get $500 in August, you need to start earning points
-        early!</p>
-        <p>Let's Get you Started</p>
+        <p><strong>MAKE CONSISTENT PROFITS ON YOUR TRADES</strong></p>
+        <p>Our Free 85% Accurate High Precision trading signals have gone Viral!</p>
+        <p>Just yesterday, It booked 70 pips profit to the accounts of traders who use them.</p>
+        <p>Today, it’s on the path to hitting 60 pips take profit, <a href="http://bit.ly/2JysCvT" target="_blank">Check it out here</a></p>
+        <p>Have you started using the signals yet?</p>
+        <p>This is a jaw-dropping opportunity to make consistent profit from your trades, earn more loyalty points and get a share of $500 this August!</p>
+        <p>Funding your Instaforex account and trading actively increases your loyalty points and qualifies you for the monthly reward of $500.</p>
+
+        <p><strong>Fund your InstaForex Account</strong></p>
+        <ul><li>Enter your Instaforex Account Number and click the submit button</li></ul>
+
+        <p>The trading signals are posted every day on our website and you can get direct notification via Facebook Messenger here as soon as they are posted so you can use them immediately.</p>
+        <p>Be sure to <a href="http://bit.ly/2KEWxWQ" target="_blank">click here</a> to get daily notifications as soon as the signals are posted.</p>
         <br />
 msg;
 }
