@@ -366,6 +366,7 @@ $diff1 = substr(strrchr($market_price, "."),1,$dec);
 $diff2 = substr(strrchr($price, "."),1,$dec);
 
 $diff = (integer)$diff1 - (integer)$diff2;
+        $diff = substr($diff,$dec-2,2);
 return $diff;
     }
     public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips)
