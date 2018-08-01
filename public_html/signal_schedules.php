@@ -234,7 +234,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         if(equity!="" && lots!="" && equity!=null && lots!=null && equity > 0 && lots > 0){
 
         var gain = equity + (lots * pips);
-            console.log(gain);
+
         document.getElementById('signal_gain_'+id).value = "New Equity $"+gain;
         document.getElementById('signal_gain_'+id).style.display = 'block';
 

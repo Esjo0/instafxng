@@ -14,7 +14,7 @@ $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'))
 foreach ($signals as $row1) {
     $row1 = (array)$row1;
     if (!empty($row1)) {
-        $pair = $row1['symbol'];
+        $pair = str_replace('/', '', $rowl['symbol']);
         $url = "https://forex.1forge.com/1.0.3/quotes?pairs=$pair&api_key=$key";
 
 //call api
@@ -28,9 +28,19 @@ foreach ($signals as $row1) {
 
        $diff = (integer)$diff1 - (integer)$diff2;
 
-       $diff = str_replace("-", '', $diff);
+        if($row1['order_type'] == 1){
+            //buy
+            if($diff < 0){$gain = "LOSS";}else{$gain = "  PROFIT";}
 
-       $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$diff);
+        }elseif($row1['order_type'] == 2){
+            //sell
+            if($diff < 0){$gain = "PROFIT";}else{$gain = "  LOSS";}
+        }
+
+        $diff = str_replace("-", '', $diff);
+
+
+       $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$diff, pl=>$gain);
 
     }
 }
