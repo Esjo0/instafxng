@@ -98,7 +98,7 @@ if (isset($_POST['deposit_add_qty'])) {
             $allow_funding = 1;
         }
     } else {
-        $message_error = "Something went wrong, we could not determine the details of this order, please contact the support department.";
+        $message_error = "Something went wrong, we could not determine the details of this order, or client is not verified.";
     }
 
     // If point is claimed, client must fund equivalent of point claimed or higher
