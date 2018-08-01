@@ -9,7 +9,6 @@ class Signal_Management
         3 => 'OADrX7UGJesDhvH5lDJ5NK93HZ3uSmxe',
         4 => 'Q0byrL4ELAk5jS8k11gyBq4i7dIL1PE6',
         5 => 'Oa9r9zco2Twqdw6vS0P9wDQXHj8qzbup',
-        6 => 'uoGGIjYh0JADs5GsdfuuJT3LFEPiFw8S',
         7 => 'MVirptGI9kaHg78rzH2d2Ol8AvG5wJ9V',
         8 => 'CI2becFW2E4R2f6OAgBQow3VoNJuDWjm',
         9 => 'I7eLZvjx9cZZLMWJr4NdzDG20mMAC3uf',
@@ -106,6 +105,7 @@ MAIL;
             for( $i = 0; $i< count($signals); $i++) {
                 $row = (array)$signals[$i];
                 $this->viewCount($row['signal_id']);
+                $posted_date = datetime_to_text($row['trigger_date']+$row['trigger_time']);
                 $output = <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
                                         <div class="thumbnail">
@@ -145,7 +145,7 @@ MAIL;
                                                             <div  class="col-sm-5 col-xs-12">
                                     <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                         <div>
-                                            <h6 style="font-size: 20px" class="my-0 pull-right"><strong>Number of Pips to trigger</strong></h6>
+                                            <h6 style="font-size: 15px" class="my-0 pull-right"><strong>Difference Between Live Market Price and Entry Price</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                             <small class="text-muted">
@@ -157,17 +157,24 @@ MAIL;
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                         <div>
-                                            <h6 style="font-size: 20px" class="my-0 pull-right"><strong>Calculate Amount Gain</strong></h6>
+                                            <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Know how much you may gain from taking this trade.</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                               <center> 
-                                              <form role="form" method="post" action="">
+                                              <form class="form form-validate" role="form" method="post" action="">
                                                <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-dollar fa-fw"></i></span>
-                                                        <input name="name" type="text" id="" value="" class="form-control" placeholder="Enter Your Equity" required/>
+                                                        <input name="name" type="text" id="signal_equity_{$row['signal_id']}" value="" class="form-control" placeholder="Enter Your Equity" required/>
+                                                </div>
+                                                <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-circle fa-fw"></i></span>
+                                                        <input name="name" type="text" id="signal_lots_{$row['signal_id']}" value="" class="form-control" placeholder="Enter Desired Lots" required/>
+                                                </div>
+                                                <div class="input-group" >
+                                                        <input style="display:none" name="name" type="text" id="signal_gain_{$row['signal_id']}" value="" class="form-control" placeholder="Enter Desired Lots"/>
                                                 </div>
                                                 <div>
-                                                    <input name="add" type="submit" class="btn btn-success" value="Calculate">                                                </div>
+                                                    <button onclick="cal_gain({$row['signal_id']})" type="button" class="btn btn-success">Calculate</button>                                              </div>
                                                 </div>
                                             </form>
                                             </center>
@@ -179,11 +186,13 @@ MAIL;
                                                                 <!-- TradingView Widget BEGIN -->
 
 <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
+<div class="tradingview-widget-container" style="pointer-events: none;">
   <div class="tradingview-widget-container__widget"></div>
   <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/currencies/" rel="noopener" target="_blank"><span class="blue-text">Forex</span></a> by TradingView</div>
   <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
   {
+  "width": 335,
+  "height": 250,
   "showChart": true,
   "locale": "en",
   "largeChartUrl": "",
@@ -196,13 +205,11 @@ MAIL;
   "symbolActiveColor": "rgba(242, 250, 254, 1)",
   "tabs": [
     {
-      "title": "Forex",
       "symbols": [
         {
           "s": "FX:{$row['symbol']}"
         }
-      ],
-      "originalTitle": "Forex"
+      ]
     }
   ]
 }
@@ -216,6 +223,16 @@ MAIL;
         Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
             signal guide</a> to learn how to use the signals.
     </small>
+    <div class="alert-info">
+    <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                        <div>     
+                                            <small class="text-muted">
+                                               KeyNote: {$row['note']}
+                                            </small>
+                                        </div>
+                                        <h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted for </span>$posted_date</span></strong></h6>
+                                    </li>
+    </div>
 </div>
                                                             </div>
                                                         </div>
@@ -240,7 +257,7 @@ MAIL;
     public function viewCount($id)
     {
         global $db_handle;
-        $query = "UPDATE signal_daily view SET views = views + 1 WHERE signal_id = '$id''";
+        $query = "UPDATE signal_daily view SET views = views + 1 WHERE signal_id = '$id'";
         $result = $db_handle->runQuery($query);
         return $result;
     }
@@ -273,13 +290,13 @@ MAIL;
         $trigger_stat = (int)$trigger_stat;
         switch ($trigger_stat) {
             case 0:
-                $msg = 'Pending...';
+                $msg = '<i class="fa fa-circle-o-notch fa-spin"></i> Pending';
                 break;
             case 1:
-                $msg = 'Active...';
+                $msg = '<i class="fa fa-circle-o-spinner fa-spin"></i> Active';
                 break;
             case 2:
-                $msg = 'Closed';
+                $msg = '<i class="fa fa-circle"></i> Closed';
                 break;
         }
         return $msg;
@@ -344,6 +361,15 @@ WHERE SD.trigger_date = '$date'";
         file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
     }
 
+    public function get_pips($market_price, $price){
+$dec = strlen(substr(strrchr($market_price, "."), 1));
+$diff1 = substr(strrchr($market_price, "."),1,$dec);
+
+$diff2 = substr(strrchr($price, "."),1,$dec);
+
+$diff = (integer)$diff1 - (integer)$diff2;
+return $diff;
+    }
     public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips)
     {
         global $db_handle;
@@ -360,8 +386,8 @@ WHERE SD.trigger_date = '$date'";
         if (!empty($pips)) {
             $query .= ", pips = $pips";
         }
-        $query .= "WHERE signal_id = $signal_id ";
-
+        $query .= " WHERE signal_id = $signal_id ";
+var_dump($query);
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
@@ -373,8 +399,8 @@ WHERE SD.trigger_date = '$date'";
     public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '')
     {
         global $db_handle;
-        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note) 
-                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note')";
+        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views) 
+                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0)";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));

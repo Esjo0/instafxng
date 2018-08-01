@@ -89,12 +89,6 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
 
-<!--        <script>-->
-<!--            signal.getQuotes();-->
-<!--        </script>-->
-
-        <!--<script>signal.get_signals_for_page();</script>-->
-        <!--................................-->
     </head>
     <body>
     <!--.............................-->
@@ -228,8 +222,24 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
     <script>
         signal.new_signal_listener();
         signal.getQuotes();
-        setInterval(function(){signal.new_signal_listener();}, 300000);//TODO: Fix this back to 5000
-        setInterval(function(){signal.getQuotes();}, 1200000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.new_signal_listener();}, 120000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.getQuotes();}, 180000);//TODO: Fix this back to 5000
     </script>
+<script>
+    function cal_gain(id) {
+        var equity = parseInt(document.getElementById('signal_equity_'+id).value);
+        var lots = parseFloat(document.getElementById('signal_lots_'+id).value);
+        var pips = parseInt(document.getElementById('signal_currency_diff_'+id).innerHTML);
+        console.log('signal_currency_diff_'+id);
+        if(equity!="" && lots!="" && equity!=null && lots!=null && equity > 0 && lots > 0){
+
+        var gain = equity + (lots * pips);
+            console.log(gain);
+        document.getElementById('signal_gain_'+id).value = "New Equity $"+gain;
+        document.getElementById('signal_gain_'+id).style.display = 'block';
+
+        }
+    }
+</script>
     </body>
 </html>

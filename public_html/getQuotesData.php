@@ -21,18 +21,18 @@ foreach ($signals as $row1) {
         $json = file_get_contents($url);
         $response = (array) json_decode($json, true);
 
-       $diff = $row1['price'] - $response[0]['price'];
-       $diff = (string)$diff;
-       $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$diff);
-       //var_dump($quotes);
+        $dec = strlen(substr(strrchr($response[0]['price'], "."), 1));
+        $diff1 = substr(strrchr($response[0]['price'], "."),1,$dec);
 
-       //echo $row1['signal_id'];
-        //$result = json_decode($result);
-//        $result = json_encode([$result]);
-//       echo $result;
+        $diff2 = substr(strrchr($row1['price'], "."),1,$dec);
+
+       $diff = (integer)$diff1 - (integer)$diff2;
+
+       $diff = str_replace("-", '', $diff);
+
+       $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$diff);
 
     }
-    //$result = array_merge($quotes,$quotes);
 }
 
 $result = json_encode($quotes);
