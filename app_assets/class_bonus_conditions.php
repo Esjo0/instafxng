@@ -28,10 +28,17 @@ class Bonus_Condition{
 
     public function new_account_cond($bonus_account_id){
         global $db_handle;
-        $query = "SELECT ifx_account_id, 
-        FROM bonus_accounts AS BA 
-        INNER JOIN user_deposit AS UD ON UD.
-        INN";
+        $query = "SELECT 
+BA.ifx_account_id 
+FROM bonus_accounts AS BA
+WHERE 
+BA.ifx_account_id NOT IN (
+    SELECT UD.trans_id FROM bonus_accounts AS BA INNER JOIN user_deposit AS UD ON BA.ifx_account_id = UD.ifxaccount_id 
+)
+AND BA.ifx_account_id NOT IN (
+    SELECT UW.trans_id FROM bonus_accounts AS BA INNER JOIN user_withdrawal AS UW ON BA.ifx_account_id = UW.ifxaccount_id 
+)
+AND BA.ifx_account_id = $bonus_account_id ";
         $result['status'] = true;
         return $result;
     }
