@@ -12,7 +12,24 @@ class Signal_Management
         7 => 'MVirptGI9kaHg78rzH2d2Ol8AvG5wJ9V',
         8 => 'CI2becFW2E4R2f6OAgBQow3VoNJuDWjm',
         9 => 'I7eLZvjx9cZZLMWJr4NdzDG20mMAC3uf',
-        10 => '7UDKNPEu1AR1DVXKoAcPDCXiTPGeEBfU'
+        10 => '7UDKNPEu1AR1DVXKoAcPDCXiTPGeEBfU',
+        12 => 'd4YPchqHgfO4htWlA7kUcJLkJomBTud5',
+        13 => 'liskO3jffqHmxil0DUi4svo5LahgNucj',
+        14 => 'OGhqcwRaoR9eROL4nkbeYCuTVly3YB7H',
+        15 => 'Kuow3F5BMpHwNC06UhlcncFKjdjP6eDQ',
+        16 => 'CZEcLcfQGpWDBMdoqqzUlXofH1YScsRY',
+        17 => 'jwJS0j8pJdGo8EqxvT5e3lkQBMhoZ5rP',
+        18 => 'ztccz3kIyAYQkc9jJoJcwUEZnfVtDhzH',
+        19 => 'VXLJbX58kBx9P9W8e12btpni9rph503d',
+        20 => 'ebStjJtD241H7RSD6KxhGayabVGITPuu',
+        21 => '4oC0cBBlKLeAY5Tp1OOtbs7aAUdT1hsN',
+        22 => 'FvLzdaOVM4AAdEAlFDZ37rYxVs4h4Wqi',
+        23 => 'eIyPTw8YhMNdeFZk22RHSJzUpnA13v38',
+        24 => 'INGrYU5jRTRiT2cYiSUc7cqznZjRKGiL',
+        25 => 'QHIlTNDwNcd3S12TadYisGvxNB5bckqj',
+        26 => 'n2HgTqLpTNSfWszd0FeBVim31xcSCwLF',
+        27 => 'pdXalhZVQbekguYqAWO4PKz9crA5V8yV',
+        28 => '5dmrvBzakweeiq9qRsgDmDzlsnnxOBqu'
     );
 
     public function get_symbol_id($pair_str)
@@ -61,7 +78,7 @@ class Signal_Management
 
     public function quotes_api_key()
     {
-        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 10)];
+        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 28)];
     }
 
     public function new_signal_listener()
@@ -134,10 +151,7 @@ MAIL;
                                                         <div class="row">
                                                             <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-2"><a class="pull-left" href="javascript:void(0);"><i class="glyphicon glyphicon-star-empty"></i></a></div>
-                                                            <div class="col-sm-10"><a id="signal_{$row['signal_id']}_trigger" onclick="signal.show_extra_analysis('signal_{$row['signal_id']}')" class="pull-right" href="javascript:void(0);"><b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></a></div>
-                                                        </div>
+
                                                     </div>
                                                     <!--............................................-->
                                                     <!--............................................-->

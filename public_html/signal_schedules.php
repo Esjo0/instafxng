@@ -221,25 +221,25 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 <!--    </script>-->
     <script>
         signal.new_signal_listener();
-        signal.getQuotes();
+        //signal.getQuotes();
         setInterval(function(){signal.new_signal_listener();}, 120000);//TODO: Fix this back to 5000
-        setInterval(function(){signal.getQuotes();}, 180000);//TODO: Fix this back to 5000
+        //setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
     </script>
-<script>
-    function cal_gain(id) {
-        var equity = parseInt(document.getElementById('signal_equity_'+id).value);
-        var lots = parseFloat(document.getElementById('signal_lots_'+id).value);
-        var pips = parseInt(document.getElementById('signal_currency_diff_'+id).innerHTML);
-        console.log('signal_currency_diff_'+id);
-        if(equity!="" && lots!="" && equity!=null && lots!=null && equity > 0 && lots > 0){
-
-        var gain = equity + (lots * pips);
-
-        document.getElementById('signal_gain_'+id).value = "New Equity $"+gain;
-        document.getElementById('signal_gain_'+id).style.display = 'block';
-
-        }
-    }
-</script>
+<!--<script>-->
+<!--    function cal_gain(id) {-->
+<!--        var equity = parseInt(document.getElementById('signal_equity_'+id).value);-->
+<!--        var lots = parseFloat(document.getElementById('signal_lots_'+id).value);-->
+<!--        var pips = parseInt(document.getElementById('signal_currency_diff_'+id).innerHTML);-->
+<!--        console.log('signal_currency_diff_'+id);-->
+<!--        if(equity!="" && lots!="" && equity!=null && lots!=null && equity > 0 && lots > 0){-->
+<!---->
+<!--        var gain = equity + (lots * pips);-->
+<!---->
+<!--        document.getElementById('signal_gain_'+id).value = "New Equity $"+gain;-->
+<!--        document.getElementById('signal_gain_'+id).style.display = 'block';-->
+<!---->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
     </body>
 </html>
