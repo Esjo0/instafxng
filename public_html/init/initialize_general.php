@@ -34,6 +34,9 @@ require_once(LIB_PATH.DS."class_loyalty_point.php");
 require_once(LIB_PATH.DS."class_push_notification.php");
 //Loyalty/Training Campaign Controller
 require_once(LIB_PATH.DS."class_loyalty_training_campaign.php");
+require_once(LIB_PATH.DS."class_bonus_operations.php");
+require_once(LIB_PATH.DS."class_bonus_conditions.php");
+require_once(LIB_PATH.DS."class_signal_management.php");
 
 /*
  * TRACK CLIENTS THAT PARTNERS REFER

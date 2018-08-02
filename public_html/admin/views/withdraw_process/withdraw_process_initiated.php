@@ -164,7 +164,7 @@
             </div>
         </div>
         <br/>
-
+        <?php if($transaction_access['status']): ?>
         <form  data-toggle="validator" role="form" method="post" action="">
             <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
             <div class="form-group">
@@ -226,6 +226,7 @@
                 </div>
             </div>
         </form>
+        <?php endif; ?>
 
     </div>
 
@@ -300,6 +301,7 @@
                     </div>
                 <?php }} else{ ?> <img class="img-responsive" src="../images/No-Comments.png" /> <?php } ?>
         </div>
+                <?php if($transaction_access['status']): ?>
         <form id="myForm" method="post" data-toggle="validator" class="form-vertical" role="form" enctype="multipart/form-data">
             <input id="admin" name="admin" type="hidden" value="<?php echo $admin_code;?>" required>
             <input id="trans_id" name="trans_id" type="hidden" value="<?php echo $trans_id; ?>" required>
@@ -310,6 +312,7 @@
             </div>
             <input type="button" name="addcomment"  class="btn btn-warning" onclick="SubmitFormData();" value="Add New Comment"></input>
         </form>
+                    <?php endif; ?>
         <?php }}?>
     </div>
     </div>

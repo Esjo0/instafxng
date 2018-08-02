@@ -53,10 +53,6 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3 || isset($_
     // search form has not been submitted
 }
 
-// Admin Allowed: Toye, Lekan, Demola, Bunmi
-$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6");
-$allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allowed) ? true : false;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -147,9 +143,7 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <td><?php echo $row['account_officer_full_name']; ?></td>
                                                 <td>
                                                     <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                                    <?php if($allowed_update_profile) { ?>
                                                     <a target="_blank" title="Update" class="btn btn-info" href="client_update.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
-                                                    <?php } ?>
                                                 </td>
                                             </tr>
                                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

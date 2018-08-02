@@ -1,1 +1,0 @@
-ALTER TABLE `forum_participant` ADD entry_route ENUM('1','2','3','4','5','6','7','8','9') COMMENT '1 - Facebook, 2 - Instagram, 3 - Twitter, 4 - WhatsApp, 5 - Email Invite, 6 - SMS Invite, 7 - Instafxng Website, 8 - Friend, 9 - Other Means' NULL AFTER venue;

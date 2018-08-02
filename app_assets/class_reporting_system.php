@@ -7,25 +7,19 @@ class Reporting_System
     {
         global $db_handle;
         $query = "SELECT * FROM rms_review_settings WHERE admin_code = '$admin_code' ";
-        if($db_handle->numRows($query) < 1)
-        {
+        if($db_handle->numRows($query) < 1) {
             $query = "INSERT INTO rms_review_settings (admin_code, reviewers) VALUES ('$admin_code', '$reviewers')";
-        }
-        else
-        {
-            $query = "UPDATE rms_review_settings SET reviewers = '$reviewers' WHERE admin_code = '$admin_code' ";
-        }
+        } else {
+            $query = "UPDATE rms_review_settings SET reviewers = '$reviewers' WHERE admin_code = '$admin_code' ";}
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
-    public function get_reviewers($admin_code)
-    {
+    public function get_reviewers($admin_code){
         global $db_handle;
         $query = "SELECT reviewers FROM rms_review_settings WHERE admin_code = '$admin_code' ";
         $result = $db_handle->runQuery($query);
-        $reviewers = explode(',', $db_handle->fetchAssoc($result)[0]['reviewers']);
-        return $reviewers;
+        return explode(',', $db_handle->fetchAssoc($result)[0]['reviewers']);
     }
 
     public function get_reportees($session_admin_code)
@@ -75,27 +69,69 @@ class Reporting_System
         return $db_handle->fetchAssoc($result);
     }
 
-    public function set_report($window_period, $admin_code, $report, $target_id, $status)
-    {
+    public function set_report($window_period, $admin_code, $report, $target_id, $status){
+        global $system_object;
         global $db_handle;
-        if(isset($target_id) && !empty($target_id)) {
-            $query = "INSERT INTO rms_reports (window_period, admin_code, report, target_id, status) VALUES ('$window_period', '$admin_code', '$report', '$target_id', '$status')";
-        }
-        else {
-            $query = "INSERT INTO rms_reports (window_period, admin_code, report, status) VALUES ('$window_period', '$admin_code', '$report', '$status')";
-        }
+        global $admin_object;
+        if(isset($target_id) && !empty($target_id)) { $query = "INSERT INTO rms_reports (window_period, admin_code, report, target_id, status) VALUES ('$window_period', '$admin_code', '$report', '$target_id', '$status')";}
+        else { $query = "INSERT INTO rms_reports (window_period, admin_code, report, status) VALUES ('$window_period', '$admin_code', '$report', '$status')";}
         $db_handle->runQuery($query);
+
+        if($status == '2'){
+            $reportees_details = $admin_object->get_admin_detail_by_code($admin_code);
+            $reviewers = $this->get_reviewers($admin_code);
+
+            foreach ($reviewers as $row){
+                $row = $admin_object->get_admin_detail_by_code($row);
+                $message = <<<MAIL
+<div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>Dear {$row['first_name']},</p>
+                                <p>{$reportees_details['first_name']} {$reportees_details['last_name']} left a new report.</p>
+                                <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Instafxng Support,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+                $system_object->send_email('New Report From '.$reportees_details['first_name'], $message, $row['email'], $row['first_name'], $reportees_details['first_name']." ".$reportees_details['last_name'] );
+            }
+        }
+
         $response = array();
-        if($db_handle->affectedRows() > 0)
-        {
-            $response['status'] = true;
-            $response['report_id'] = $db_handle->insertedId();
-        }
-        else{
-            $response['status'] = false;
-            $response['report_id'] = null;
-        }
-        return  $response;
+        if($db_handle->affectedRows() > 0) { $response['status'] = true; $response['report_id'] = $db_handle->insertedId();}
+        else{ $response['status'] = false; $response['report_id'] = null; }
+        return $response;
     }
 
     public function update_report($window_period, $admin_code, $report, $target_id, $report_id, $status){
@@ -138,9 +174,69 @@ class Reporting_System
 
     public function set_report_comment($report_id, $comment, $admin_code)
     {
+        global $admin_object;
+        global $system_object;
         global $db_handle;
         $query = "INSERT INTO rms_report_comments (report_id, comment, admin_code) VALUES ($report_id, '$comment', '$admin_code')";
         $db_handle->runQuery($query);
+        $result = $db_handle->fetchAssoc($db_handle->runQuery("
+        SELECT RRS.reviewers, RR.window_period, RR.admin_code AS creator
+FROM rms_reports RR 
+INNER JOIN rms_report_comments AS RRC ON RR.report_id = RRC.report_id 
+INNER JOIN rms_review_settings AS RRS ON RR.admin_code = RRS.admin_code 
+WHERE RR.report_id = $report_id
+        "))[0];
+        $recipeints = explode(',', $result['reviewers']);
+        $recipeints[count($recipeints)] = $admin_code;
+        $sender_details = $admin_object->get_admin_detail_by_code($admin_code);
+        $window_period = explode('*', $result['window_period']);
+        foreach ($window_period as $key => $value){ $window_period[$key] = date_to_text($value); }
+        foreach ($recipeints as $row){
+            $row = $admin_object->get_admin_detail_by_code($row);
+            $message = <<<MAIL
+<div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>Dear {$row['first_name']},</p>
+                               
+                                <p>{$sender_details['first_name']} {$sender_details['last_name']} left a new comment on your report for {$window_period[0]} to {$window_period[1]}.</p>
+                                <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Instafxng Support,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+            $system_object->send_email('New Comment From '.$sender_details['first_name'], $message, $row['email'], $row['first_name'], $sender_details['first_name']." ".$sender_details['last_name'] );
+        }
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
@@ -307,6 +403,72 @@ class Reporting_System
         $result = $db_handle->runQuery($query);
         return $db_handle->fetchAssoc($result);
 
+    }
+
+    public function notify_supervisor($title, $description, $deadline, $all_allowed_admin, $admin_code){
+        $admin_object = new AdminUser();
+        $system_object = new InstafxngSystem();
+        $supervisors = explode("," ,$admin_code);
+        for ($i = 0; $i < count($supervisors); $i++) {
+            if($supervisors[$i] != "") {
+                $destination_details = $admin_object->get_admin_detail_by_code($supervisors[$i]);
+                $admin_name = $destination_details['first_name'];
+                $admin_email = $destination_details['email'];
+                $subject = 'New Project Assignment - ' . $title;
+                $message_final = <<<MAIL
+                        <div style="background-color: #F3F1F2">
+                            <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                                <img src="https://instafxng.com/images/ifxlogo.png" />
+                                <hr />
+                                <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                    <p>Dear $admin_name,</p>
+                                    <p>You have created a new project.</p>
+                                    <p><b>PROJECT TITLE: </b>$title</p>
+                                    <p><b>PROJECT DESCRIPTION: </b><br/>$description</p>
+                                    <p><b>PROJECT DEADLINE: </b>$deadline<br/></p>
+                                    <p>You will be undertaking these project along with<br/>
+MAIL;
+                foreach($all_allowed_admin as $row)
+                {
+                    $message_final .= $admin_object->get_admin_name_by_code($row)."<br/>";
+                }
+                $message_final .= <<<MAIL
+                                    <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
+                                    <br /><br />
+                                    <p>Best Regards,</p>
+                                    <p>Instafxng Support,<br />
+                                       www.instafxng.com</p>
+                                    <br /><br />
+                                </div>
+                                <hr />
+                                <div style="background-color: #EBDEE9;">
+                                    <div style="font-size: 11px !important; padding: 15px;">
+                                        <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                            <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                            <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                            <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                            <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                            <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                        </p>
+                                        <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                        <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                        <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                        <br />
+                                    </div>
+                                    <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                        <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                            official Nigerian Representative of Instaforex, operator and administrator
+                                            of the website www.instafxng.com</p>
+                                        <p>To ensure you continue to receive special offers and updates from us,
+                                            please add support@instafxng.com to your address book.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+MAIL;
+                $system_object->send_email($subject, $message_final, $admin_email, $admin_name);
+            }
+        }
     }
 }
 

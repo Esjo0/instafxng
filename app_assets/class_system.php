@@ -53,7 +53,7 @@ class InstafxngSystem {
         global $db_handle;
         $phone_number = trim(preg_replace('/[\s\t\n\r\s]+/', '', $phone));
         $message = str_replace(" ","+",$my_message);
-        $status = file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=fisayo75&message=$message&sender=INSTAFXNG&mobiles=$phone_number");
+        $status = file_get_contents("http://sms.smsworks360.com/api/?username=support@instafxng.com&password=ijoba_09A&message=$message&sender=INSTAFXNG&mobiles=$phone_number");
 //        file_get_contents("http://www.smslive247.com/http/index.aspx?cmd=sendmsg&sessionid=5b422f10-7b78-4631-9b98-a1c2e1872099&message=$message&sender=INSTAFXNG&sendto=$phone_number&msgtype=0");
         ///Record the sms
         if(isset($_SESSION['admin_unique_code']) && !empty($_SESSION['admin_unique_code'])){$sender = $_SESSION['admin_unique_code'];}else{$sender = "INSTAFXNG";}
@@ -65,7 +65,7 @@ class InstafxngSystem {
     }
 
     // function to send app push notifications - using fcm
-    public function send_push($token, $message, $title){
+    public function send_push_mobile($token, $message, $title){
         $path_to_firebase_cm = 'https://fcm.googleapis.com/fcm/send';
         $API_SERVER_KEY = 'AAAAC0QYmqE:APA91bGSDtRp6HucthhIimDbmH3rzVakSLUIQRIIFqgBV-jXmYCfzE7sWvEdGVghRTSXL-fdLnnjdiXwTKibzrn4KrTaOTSrbyPGKkQylOt5mkRkvmup6MmUN9zZh-8QzYutQPazAvZu';
         $fields = array(
@@ -76,6 +76,36 @@ class InstafxngSystem {
             'content_available' => true,
 			'time_to_live' => 2419200
             );
+        $headers = array('Authorization:key='.$API_SERVER_KEY, 'Content-Type:application/json');
+
+        // Open connection
+        $ch = curl_init();
+        // Set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $path_to_firebase_cm);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        // Execute post
+        $result = curl_exec($ch);
+        // Close connection
+        curl_close($ch);
+        return $result;
+    }
+
+    public function send_push_web($token, $message, $title, $click_action){
+        $path_to_firebase_cm = 'https://fcm.googleapis.com/fcm/send';
+        $API_SERVER_KEY = '';
+        $fields = array(
+            'notification' => array(
+                'title' => $title,
+                'body' =>  $message ,
+                'icon' => 'https://instafxng.com/images/Insta_logo.jpg',
+                'click_action'=> $click_action ),
+            'to' => $token
+        );
         $headers = array('Authorization:key='.$API_SERVER_KEY, 'Content-Type:application/json');
 
         // Open connection

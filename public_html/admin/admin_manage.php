@@ -41,7 +41,7 @@ if (isset($_POST['approve'])) {
     $privilege_modified = $admin_object->modify_admin_privilege($admin_code, $allowed_pages);
     
     if($privilege_modified) {
-        $message_success = "You have successfully modified the privileges for this admin.";
+        $message_success = "You have successfully modified the privileges. Changes take effect after the next login.";
     } else {
         $message_error = "Something went wrong, the modifications were not saved.";
     }
@@ -191,6 +191,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="11" id="" <?php if (in_array(11, $my_pages)) { echo 'checked="checked"'; } ?>/> Search Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="300" id="" <?php if (in_array(300, $my_pages)) { echo 'checked="checked"'; } ?>/> Confirm IFX Account</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="12" id="" <?php if (in_array(12, $my_pages)) { echo 'checked="checked"'; } ?>/> View Clients</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="260" id="" <?php if (in_array(260, $my_pages)) { echo 'checked="checked"'; } ?>/> Update Client</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="201" id="" <?php if (in_array(201, $my_pages)) { echo 'checked="checked"'; } ?>/> Delete Client</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="13" id="" <?php if (in_array(13, $my_pages)) { echo 'checked="checked"'; } ?>/> Moderate IFX Account</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="14" id="" <?php if (in_array(14, $my_pages)) { echo 'checked="checked"'; } ?>/> Moderate Profile</label></div></div>
@@ -205,6 +206,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="22" id="" <?php if (in_array(22, $my_pages)) { echo 'checked="checked"'; } ?>/> View Non-ILPR Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="244" id="" <?php if (in_array(244, $my_pages)) { echo 'checked="checked"'; } ?>/> Active Trading Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="245" id="" <?php if (in_array(245, $my_pages)) { echo 'checked="checked"'; } ?>/> Inactive Trading Clients</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="259" id="" <?php if (in_array(259, $my_pages)) { echo 'checked="checked"'; } ?>/> Download Client Information</label></div></div>
                                     </div>
                                     <hr/>
 
