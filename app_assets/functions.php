@@ -640,13 +640,12 @@ function paginate_array($offset, $array, $benchmark)
     return $result;
 }
 
-<<<<<<< HEAD
 function random_password( $length = 7 ) {
     $chars = "abcdefghijkmnpqrtwyz123456789";
     $password = substr( str_shuffle( $chars ), 0, $length );
     return $password;
 }
-=======
+
 function str_replace_nth($search, $replace, $subject, $nth) {
     $found = preg_match_all('/'.preg_quote($search).'/', $subject, $matches, PREG_OFFSET_CAPTURE);
 
@@ -715,11 +714,6 @@ function upload_file($input_name, $upload_path, $desired_file_name, $allowed_fil
     return $feedback;
 }
 
-
-
-
-
-
 /*
 *Transaction Review Functions
 */
@@ -787,4 +781,3 @@ function clear_transactions(){
 /*
 *Transaction Review Functions
 */
->>>>>>> test_server
