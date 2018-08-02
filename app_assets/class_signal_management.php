@@ -1,4 +1,5 @@
 <?php
+
 class Signal_Management
 {
     const QUOTES_API = "https://forex.1forge.com/1.0.3/quotes";
@@ -119,7 +120,7 @@ MAIL;
     {
         $signals = (array)json_decode(file_get_contents('../models/signal_daily.json'));
         if (!empty($signals)) {
-            for( $i = 0; $i< count($signals); $i++) {
+            for ($i = 0; $i < count($signals); $i++) {
                 $row = (array)$signals[$i];
                 $this->viewCount($row['signal_id']);
                 //$row['symbol'] = str_replace('/', '', $row['symbol']);
@@ -374,43 +375,40 @@ WHERE SD.trigger_date = '$date'";
         file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
     }
 
-    public function get_pips($market_price, $price){
-$dec = strpos($market_price, ".");
-$diff1 = substr($market_price, $dec+1);
-$dec = strlen($diff1);
-var_dump($dec);
-$dec2 = strlen(substr(strrchr($price, "."), 1));
-var_dump($dec2);
-if($dec2 > $dec){
-$diff2 = substr(strrchr($price, "."),1,$dec);
-}elseif($dec2 < $dec){
-	$diff2 = substr(strrchr($price, "."),1,$dec2);
-	switch ($dec2) {
-            case 0:
-                $diff2 = $diff2.'0000';
-                break;
-            case 1:
-                $diff2 = $diff2.'000';
-                break;
-            case 2:
-                $diff2 = $diff2.'00';
-                break;
-			case 3:
-                $diff2 = $diff2.'0';
-                break;
+    public function get_pips($market_price, $price)
+    {
+        $dec = strpos($market_price, ".");
+        $diff1 = substr($market_price, $dec + 1);
+        $dec = strlen($diff1);
+        $dec2 = strlen(substr(strrchr($price, "."), 1));
+        if ($dec2 > $dec) {
+            $diff2 = substr(strrchr($price, "."), 1, $dec);
+        } elseif ($dec2 < $dec) {
+            $diff2 = substr(strrchr($price, "."), 1, $dec2);
+            switch ($dec2) {
+                case 0:
+                    $diff2 = $diff2 . '0000';
+                    break;
+                case 1:
+                    $diff2 = $diff2 . '000';
+                    break;
+                case 2:
+                    $diff2 = $diff2 . '00';
+                    break;
+                case 3:
+                    $diff2 = $diff2 . '0';
+                    break;
+            }
+        } else {
+            $diff2 = substr(strrchr($price, "."), 1, $dec2);
         }
-}else{
-	$diff2 = substr(strrchr($price, "."),1,$dec2);
-}
-var_dump($diff2);
-var_dump($dec);
-var_dump($dec2);
-$diff = (integer)$diff1 - (integer)$diff2;
-var_dump($diff);
-$dec3 = strlen($diff);
-        $diff = substr($diff,$dec3-2,2);
-return $diff;
+
+        $diff = (integer)$diff1 - (integer)$diff2;
+        $dec3 = strlen($diff);
+        $diff = substr($diff, $dec3 - 2, 2);
+        return $diff;
     }
+
     public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips)
     {
         global $db_handle;
@@ -428,7 +426,6 @@ return $diff;
             $query .= ", pips = $pips";
         }
         $query .= " WHERE signal_id = $signal_id ";
-		var_dump($query);
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
@@ -488,7 +485,7 @@ return $diff;
     {
         $signals_side = (array)json_decode(file_get_contents('../../../models/signal_daily.json'));
         if (!empty($signals_side)) {
-            for( $i = 0; $i< count($signals_side); $i++) {
+            for ($i = 0; $i < count($signals_side); $i++) {
                 $row_side = (array)$signals_side[$i];
                 $output_side = <<<MAIL
                 <tr><td><a href="signal_schedules.php#signal_{$row_side['signal_id']}"><strong Style="color: black">{$row_side['symbol']}</strong></a></td>

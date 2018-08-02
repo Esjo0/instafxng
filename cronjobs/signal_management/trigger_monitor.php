@@ -4,6 +4,7 @@ require_once 'initialize_general.php';
 $signal_object = new Signal_Management();
 
 $scheduled_signals = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
+
 if (!empty($scheduled_signals)) {
     for ($i = 0; $i < count($scheduled_signals); $i++) {
         $row = (array)$scheduled_signals[$i];
@@ -19,7 +20,7 @@ if (!empty($scheduled_signals)) {
                 $entry_price = $response[0]['price'];
                 $entry_time = date('Y-m-d h:i:s');
                 $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '');
-                echo "succefully triggered";
+
                 if ($row['order_type'] == 2) {
                     trigger_sell_order($row);
                 }
@@ -48,6 +49,7 @@ if (!empty($scheduled_signals)) {
     }
 }
 
+// Close Sell Order
 function trigger_sell_order($row)
 {
     global $signal_object;
@@ -67,6 +69,7 @@ function trigger_sell_order($row)
     }
 }
 
+// Close Buy Order
 function trigger_buy_order($row)
 {
     global $signal_object;
