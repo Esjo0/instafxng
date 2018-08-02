@@ -765,7 +765,7 @@ function allow_transaction_review($transaction_ID, $admin_code){
 
 function clear_transactions(){
     global $db_handle;
-    $max_time_diff = 1.0;  #Maximum of 1 hour
+    $max_time_diff = 0.50;  #Maximum of 1 hour
     $query = "SELECT transaction_id, admin_code, created FROM active_transactions ";
     $transactions = $db_handle->fetchAssoc($db_handle->runQuery($query));
     foreach($transactions as $row){
