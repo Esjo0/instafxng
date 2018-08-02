@@ -2,7 +2,7 @@
 //Define an array of the majour pages and its code
 define("PAGE_CODE", json_encode(array(
     1 => "admin_add.php||account_officers.php||",
-    2 => "admin_view.php||admin_manage.php||",
+    2 => "admin_view.php||",
     3 => "bulletin_add.php||",
     4 => "bulletin_view.php||",
     5 => "bulletin_centre.php||",
@@ -158,11 +158,11 @@ define("PAGE_CODE", json_encode(array(
     258 => "sms_records.php||",
     259 => "client_life.php||",
     260 => "client_update.php||",
+    261 => "locked_transactions.php||",
     )));
 class Access_Controller
 {
-    public function get_all_pages()
-    {
+    public function get_all_pages(){
         return json_decode(PAGE_CODE);
     }
     public function validate_access()
