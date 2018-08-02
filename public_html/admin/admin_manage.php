@@ -344,6 +344,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="239" id="" <?php if (in_array(239, $my_pages)) { echo 'checked="checked"'; } ?>/> System Activity Logs</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="243" id="" <?php if (in_array(243, $my_pages)) { echo 'checked="checked"'; } ?>/> Front-End Advert Section</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="258" id="" <?php if (in_array(258, $my_pages)) { echo 'checked="checked"'; } ?>/> SMS Records</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="261" id="" <?php if (in_array(261, $my_pages)) { echo 'checked="checked"'; } ?>/> Review Locked Transactions</label></div></div>
                                     </div>
                                     <hr/>
                                     
