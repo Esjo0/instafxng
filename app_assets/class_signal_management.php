@@ -123,7 +123,7 @@ MAIL;
                 $row = (array)$signals[$i];
                 $this->viewCount($row['signal_id']);
                 //$row['symbol'] = str_replace('/', '', $row['symbol']);
-                $posted_date = datetime_to_text($row['trigger_date']+$row['trigger_time']);
+                $posted_date = datetime_to_text($row['created']);
                 $output = <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
                                         <div class="thumbnail">
@@ -151,7 +151,8 @@ MAIL;
                                                         <div class="row">
                                                             <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
                                                         </div>
-
+<h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted on </span>$posted_date</span></strong></h6>
+                                                    
                                                     </div>
                                                     <!--............................................-->
                                                     <!--............................................-->
