@@ -122,8 +122,8 @@ MAIL;
             for( $i = 0; $i< count($signals); $i++) {
                 $row = (array)$signals[$i];
                 $this->viewCount($row['signal_id']);
-                $row['symbol'] = str_replace('/', '', $row['symbol']);
-                $posted_date = datetime_to_text($row['trigger_date']+$row['trigger_time']);
+                //$row['symbol'] = str_replace('/', '', $row['symbol']);
+                $posted_date = datetime_to_text($row['created']);
                 $output = <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
                                         <div class="thumbnail">
@@ -134,7 +134,7 @@ MAIL;
                                                         <div class="row">
                                                             <div class="col-sm-2"><p style="font-size: xxx-large">{$this->UI_signal_trend_msg($row['order_type'])}</p></div>
                                                             <div class="col-sm-7">
-                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']} (<span class="current_price" id="signal_{$row['signal_id']}_currency_price">{$this->UI_get_symbol_current_price($row['symbol'])}</span>)</b>
+                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']}</b>
                                                                 <br/>
                                                                 <span>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</span>
                                                             </div>
@@ -151,7 +151,8 @@ MAIL;
                                                         <div class="row">
                                                             <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
                                                         </div>
-
+<h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted on </span>$posted_date</span></strong></h6>
+                                                    
                                                     </div>
                                                     <!--............................................-->
                                                     <!--............................................-->
@@ -374,13 +375,40 @@ WHERE SD.trigger_date = '$date'";
     }
 
     public function get_pips($market_price, $price){
-$dec = strlen(substr(strrchr($market_price, "."), 1));
-$diff1 = substr(strrchr($market_price, "."),1,$dec);
-
+$dec = strpos($market_price, ".");
+$diff1 = substr($market_price, $dec+1);
+$dec = strlen($diff1);
+var_dump($dec);
+$dec2 = strlen(substr(strrchr($price, "."), 1));
+var_dump($dec2);
+if($dec2 > $dec){
 $diff2 = substr(strrchr($price, "."),1,$dec);
-
+}elseif($dec2 < $dec){
+	$diff2 = substr(strrchr($price, "."),1,$dec2);
+	switch ($dec2) {
+            case 0:
+                $diff2 = $diff2.'0000';
+                break;
+            case 1:
+                $diff2 = $diff2.'000';
+                break;
+            case 2:
+                $diff2 = $diff2.'00';
+                break;
+			case 3:
+                $diff2 = $diff2.'0';
+                break;
+        }
+}else{
+	$diff2 = substr(strrchr($price, "."),1,$dec2);
+}
+var_dump($diff2);
+var_dump($dec);
+var_dump($dec2);
 $diff = (integer)$diff1 - (integer)$diff2;
-        $diff = substr($diff,$dec-2,2);
+var_dump($diff);
+$dec3 = strlen($diff);
+        $diff = substr($diff,$dec3-2,2);
 return $diff;
     }
     public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips)
@@ -400,6 +428,7 @@ return $diff;
             $query .= ", pips = $pips";
         }
         $query .= " WHERE signal_id = $signal_id ";
+		var_dump($query);
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
