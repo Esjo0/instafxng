@@ -219,9 +219,12 @@ function Signal()
     this.showQuotes = function(json)
     {
         var quotes_array = JSON.parse(json);
+        console.log(quotes_array);
         for(var x in quotes_array){
-            document.getElementById('signal_currency_diff_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['price'];
-            document.getElementById('signal_pl_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['pl'];
+            // document.getElementById('signal_currency_diff_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['price'];
+            // document.getElementById('signal_pl_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['pl'];
+            //signal_{$row['signal_id']}_currency_price
+            document.getElementById('signal_'+quotes_array[x]['symbol']+'_currency_price').innerHTML = quotes_array[x]['price'];
         }
         //setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
     };
