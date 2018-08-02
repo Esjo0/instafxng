@@ -122,7 +122,7 @@ MAIL;
             for( $i = 0; $i< count($signals); $i++) {
                 $row = (array)$signals[$i];
                 $this->viewCount($row['signal_id']);
-                $row['symbol'] = str_replace('/', '', $row['symbol']);
+                //$row['symbol'] = str_replace('/', '', $row['symbol']);
                 $posted_date = datetime_to_text($row['trigger_date']+$row['trigger_time']);
                 $output = <<<MAIL
 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
@@ -134,7 +134,7 @@ MAIL;
                                                         <div class="row">
                                                             <div class="col-sm-2"><p style="font-size: xxx-large">{$this->UI_signal_trend_msg($row['order_type'])}</p></div>
                                                             <div class="col-sm-7">
-                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']} (<span class="current_price" id="signal_{$row['signal_id']}_currency_price">{$this->UI_get_symbol_current_price($row['symbol'])}</span>)</b>
+                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']}</b>
                                                                 <br/>
                                                                 <span>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</span>
                                                             </div>
