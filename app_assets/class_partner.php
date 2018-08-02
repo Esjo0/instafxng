@@ -70,8 +70,67 @@ class Partner {
         $result = $db_handle->runQuery($query);
 
         if($result) {
-            //TODO: send email verification and phone code
-            return $new_password;
+            $subject = 'Welcome to the Instafxng Partner System';
+            $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>It's official! Welcome to the money making gang! lol</p>
+                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You have made a fantastic decision $last_name!</p>
+                                <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
+                                <p>This is what’s happening right now...</p>
+                                <p>Your Welcome bonus is here!</p>
+                                <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
+                                <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
+                                <p>Let me quickly explain how to get the bonus...</p>
+                                <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
+                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
+                                <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
+                                <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
+                                <p>Super amazing, right? </p>
+                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
+                                <br /><br />
+                                <p>Best Regards,</p>
+                                <p>Mercy,</p>
+                                <p>Client Relationship Manager</p>
+                                <p>InstaFxNg Team,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                                        official Nigerian Representative of Instaforex, operator and administrator
+                                        of the website www.instafxng.com</p>
+                                    <p>To ensure you continue to receive special offers and updates from us,
+                                        please add support@instafxng.com to your address book.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+            $system_object->send_email($subject, $message_final, $email, $first_name);
+            return true;
+
         } else {
             return false;
         }
@@ -285,48 +344,31 @@ class Partner {
     }
 
     // this will calculate trading commission for partners
-    public function trading_commission()
-    {
+    public function trading_commission() {
         global $db_handle;
 
         $query = "SELECT user_code, ifx_acct_no, user_ifxaccount.partner_code FROM partner INNER JOIN user_ifxaccount USING(user_code)";
-
-        //echo $query;
-        
         $result = $db_handle->runQuery($query);
 
-        //echo $result->num_rows;
-
-        if($result->num_rows > 0)
-        {
+        if($result->num_rows > 0) {
             $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
 
             $partners = $db_handle->fetchAssoc($result);
 
-            //print_r($partners);
             // loop through partner row
-            for ($i = 0; $i < count($partners); $i++)
-            {
-                //print_r($partners);
-                //echo $i;
+            for ($i = 0; $i < count($partners); $i++) {
                 $ifxaccount_no = $partners[$i]['ifx_acct_no'];
                 $user_code = $partners[$i]['user_code'];
                 $partner_code = $partners[$i]['partner_code'];
 
-               // echo $ifxaccount_no;
-
-
                 $query = "SELECT ifx_acct_no, trading_commission_id, SUM(commission) AS t_commission FROM trading_commission WHERE ifx_acct_no = '$ifxaccount_no' AND DATE(date_earned) = '$yesterday'";
-
-                //echo $query;
 
                 $result_inner = $db_handle->runQuery($query);
                 $get_result = $db_handle->fetchAssoc($result_inner);
                 $commission = $get_result[0]['t_commission'];
 
                 // due to the SUM() function used in our query, it will return a null value if no row is found
-                if(!empty($commission))
-                {           
+                if(!empty($commission)) {
                     //print_r($result_inner);
 
                     $ifx_acct_no = $get_result[0]['ifx_acct_no'];
@@ -345,10 +387,8 @@ class Partner {
 
                     $result_balance = $db_handle->fetchAssoc($result_balance);
 
-                    if($result_balance->num_rows != 0)
-                    {
+                    if($result_balance->num_rows != 0) {
                         $get_result_balance = $db_handle->fetchAssoc($result_balance);
-
                         $balance = $get_result_balance[0]['balance'];
                     }
 
@@ -356,76 +396,58 @@ class Partner {
 
                     // log commission
                     $query = "INSERT INTO partner_trading_commission (partner_code, amount, balance, date, reference_trans_id, status) VALUES ('$partner_code', '$commission', '$balance', NOW(), '$tc_id', 1)";
-
-                    //echo $query;
-
-                    
-
                     $result_insert = $db_handle->runQuery($query);
 
                     // update commission balance
                     $query = "SELECT balance FROM partner_balance WHERE partner_code = '$partner_code' AND type = 1";
-
-                    //echo $query;
-
                     $result_bal = $db_handle->runQuery($query);
 
                     if($result_bal->num_rows > 0)
                     {
                         $query = "UPDATE partner_balance SET balance = '$balance', updated = NOW() WHERE partner_code = '$partner_code' AND type = 1";
-                    }
-
-                    else
-                    {
+                    } else {
                         $query = "INSERT INTO partner_balance (partner_code, type, balance) VALUES ('$partner_code', 1, '$balance')";
                     }
                     $result_update = $db_handle->runQuery($query);
                 }
             }
-        }
-        else
+        } else {
             return NULL;
+        }
     }
 
-    public function add_bank_details($user_code, $acct_name, $acct_no, $bank_id)
-    {
+    public function add_bank_details($user_code, $acct_name, $acct_no, $bank_id) {
         global $db_handle;
 
         $query = "SELECT user_bank_id FROM user_bank WHERE user_code = '$user_code'";
         $result = $db_handle->runQUery($query);
 
-        if($result->num_rows == 0)
-
+        if ($result->num_rows == 0) {
             $query = "INSERT INTO user_bank (user_code, bank_acct_name, bank_acct_no, bank_id) VALUES ('$user_code', '$acct_name', '$acct_no', '$bank_id')";
-        
-        else
+        } else {
             $query = "UPDATE user_bank SET bank_acct_name = '$acct_name', bank_acct_no = '$acct_no', bank_id = '$bank_id' WHERE user_code = '$user_code'";
-
-        //echo 
-
+        }
         $result = $db_handle->runQuery($query);
-
         return $result;
     }
 
-    public function view_financial_commission($partner_code)
-    {
+    public function view_financial_commission($partner_code) {
         global $db_handle;
 
         $query = "SELECT * FROM partner_financial_activity_commission WHERE partner_code = '$partner_code' ORDER BY partner_financial_activity_commission_id DESC";
 
         $result = $db_handle->runQuery($query);
-        if($db_handle->numOfRows($result) > 0)
-        {
+        if($db_handle->numOfRows($result) > 0) {
             $all = array();
             while($referalls = $db_handle->fetchAssoc($result))
             {
                 array_push($all, $referalls);
             }
             return $all;
-        }
-        else
+        } else {
             return NULL;
+        }
+
     }
 
     public function view_trading_commission($partner_code)
@@ -435,17 +457,16 @@ class Partner {
         $query = "SELECT * FROM partner_trading_commission WHERE partner_code = '$partner_code' ORDER BY partner_trading_commission_id DESC";
         $result = $db_handle->runQuery($query);
 
-        if($db_handle->numOfRows($result) > 0)
-        {
+        if($db_handle->numOfRows($result) > 0) {
             $all = array();
-            while($referalls = $db_handle->fetchAssoc($result))
-            {
+            while($referalls = $db_handle->fetchAssoc($result)) {
                 array_push($all, $referalls);
             }
             return $all;
-        }
-        else
+        } else {
             return NULL;
+        }
+
     }
 
     public function request_whitdrawal($partner_code, $account_id, $amount, $type,  $comment)
@@ -453,35 +474,20 @@ class Partner {
         global $db_handle;
 
         $query = "INSERT INTO partner_payment (partner_code, account_id, amount, trans_type, comment) VALUES ('$partner_code', '$account_id', '$amount', 1, '$comment')";
-
-       // echo $query; 
-
         $result = $db_handle->runQuery($query);
 
-        if($result)
-            return true;
-        else
-            return false;
+        return $result ? true : false;
     }
 
     public function get_partner_by_partner_code($partner_code) {
 
         global $db_handle;
-
-
-
         $query = "SELECT * FROM partner WHERE partner_code = '$partner_code' LIMIT 1";
-
         $result = $db_handle->runQuery($query);
-
         $fetched_data = $db_handle->fetchAssoc($result);
-
         $fetched_data = $fetched_data[0];
 
-
-
         return $fetched_data;
-
     }
 }
 
