@@ -375,13 +375,40 @@ WHERE SD.trigger_date = '$date'";
     }
 
     public function get_pips($market_price, $price){
-$dec = strlen(substr(strrchr($market_price, "."), 1));
-$diff1 = substr(strrchr($market_price, "."),1,$dec);
-
+$dec = strpos($market_price, ".");
+$diff1 = substr($market_price, $dec+1);
+$dec = strlen($diff1);
+var_dump($dec);
+$dec2 = strlen(substr(strrchr($price, "."), 1));
+var_dump($dec2);
+if($dec2 > $dec){
 $diff2 = substr(strrchr($price, "."),1,$dec);
-
+}elseif($dec2 < $dec){
+	$diff2 = substr(strrchr($price, "."),1,$dec2);
+	switch ($dec2) {
+            case 0:
+                $diff2 = $diff2.'0000';
+                break;
+            case 1:
+                $diff2 = $diff2.'000';
+                break;
+            case 2:
+                $diff2 = $diff2.'00';
+                break;
+			case 3:
+                $diff2 = $diff2.'0';
+                break;
+        }
+}else{
+	$diff2 = substr(strrchr($price, "."),1,$dec2);
+}
+var_dump($diff2);
+var_dump($dec);
+var_dump($dec2);
 $diff = (integer)$diff1 - (integer)$diff2;
-        $diff = substr($diff,$dec-2,2);
+var_dump($diff);
+$dec3 = strlen($diff);
+        $diff = substr($diff,$dec3-2,2);
 return $diff;
     }
     public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips)
@@ -401,6 +428,7 @@ return $diff;
             $query .= ", pips = $pips";
         }
         $query .= " WHERE signal_id = $signal_id ";
+		var_dump($query);
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));

@@ -222,7 +222,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
     <script>
         signal.new_signal_listener();
         //signal.getQuotes();
-        setInterval(function(){signal.new_signal_listener();}, 120000);//TODO: Fix this back to 5000
+        setInterval(function(){signal.new_signal_listener();}, 30000);//TODO: Fix this back to 5000
         //setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
     </script>
 <!--<script>-->

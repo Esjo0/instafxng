@@ -13,35 +13,30 @@ if(!empty($scheduled_signals)) {
         $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
         $get_data = file_get_contents($url);
         $response = (array) json_decode($get_data, true);
-
-        if($response[0]['price'] >= $row['price']){
-            $signal_object->update_signal_schedule($row['symbol_id'], $row['symbol'], $row['price'], $row['take_profit'], $row['stop_loss'], $row['trigger_time'], $row['trigger_date'], $row['note'], $row['trend'], $row['order_type']);
-            if($row['order_type']==1){trigger_buy_order($row);}
+//seller
+        if(($response[0]['price'] <= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2)){
+		if($row['trigger_status'] != 1){ 
+			$entry_price = $response[0]['price'];
+			$entry_time = date('Y-m-d h:i:s');
+			$signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '');
+			echo "succefully triggered";
             if($row['order_type']==2){trigger_sell_order($row);}
+		}else{
+			if($row['order_type']==2){trigger_sell_order($row);}
+		}
         }
-        if($response[0]['price'] <= $row['price']){
-            $signal_object->update_signal_schedule($row['symbol_id'], $row['symbol'], $row['price'], $row['take_profit'], $row['stop_loss'], $row['trigger_time'], $row['trigger_date'], $row['note'], $row['trend'], $row['order_type']);
+		
+//buyer
+        if(($response[0]['price'] >= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 1)){
+            if($row['trigger_status'] != 1){ 
+			$entry_price = $response[0]['price'];
+			$entry_time = date('Y-m-d h:i:s');
+			$signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '');
             if($row['order_type']==1){trigger_buy_order($row);}
-            if($row['order_type']==2){trigger_sell_order($row);}
+		}else{
+			if($row['order_type']==1){trigger_buy_order($row);}
+		}
         }
-    }
-}
-
-function trigger_buy_order($row){
-    global $signal_object;
-    $symbol = str_replace('/', '', $row['symbol']);
-    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
-    $get_data = file_get_contents($url);
-    $response = (array) json_decode($get_data, true);
-    if($response[0]['bid'] >= $row['stop_loss']){
-        $exit_time = date('Y-m-d h:i:s');
-        $pips = $signal_object->get_pips($response[0]['bid'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], $row['trigger_status'], '', '', $exit_time, $pips);
-    }
-    if($response[0]['ask'] >= $row['take_profit']){
-        $exit_time = date('Y-m-d h:i:s');
-        $pips = $signal_object->get_pips($response[0]['ask'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], $row['trigger_status'], '', '', $exit_time, $pips);
     }
 }
 
@@ -51,15 +46,39 @@ function trigger_sell_order($row){
     $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
-
-    if($response[0]['ask'] <= $row['stop_loss']){
+    if($response[0]['price'] <= $row['take_profit']){
         $exit_time = date('Y-m-d h:i:s');
-        $pips = $signal_object->get_pips($response[0]['ask'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], $row['trigger_status'], '', '', $exit_time, $pips);
+        $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+		echo $pips;
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips);
     }
-    if($response[0]['bid'] <= $row['take_profit']){
+    if($response[0]['price'] >= $row['stop_loss']){
         $exit_time = date('Y-m-d h:i:s');
-        $pips = $signal_object->get_pips($response[0]['bid'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], $row['trigger_status'], '', '', $exit_time, $pips);
+		echo $pips;
+        $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips);
+    }
+}
+
+function trigger_buy_order($row){
+    global $signal_object;
+    $symbol = str_replace('/', '', $row['symbol']);
+    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
+    $get_data = file_get_contents($url);
+    $response = (array) json_decode($get_data, true);
+
+    if($response[0]['price'] <= $row['take_profit']){
+        $exit_time = date('Y-m-d h:i:s');
+        $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+		echo $pips;
+		echo $pips;
+        $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', $exit_time, $pips);
+    }
+    if($response[0]['price'] >= $row['stop_loss']){
+        $exit_time = date('Y-m-d h:i:s');
+        $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+		echo $pips;
+		echo $pips;
+        $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', $exit_time, $pips);
     }
 }
