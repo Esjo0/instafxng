@@ -380,7 +380,6 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <center><?php if($row['trigger_status'] == 0){?><form method="post" action=""><input name="symbol_id" type="hidden" value="<?php echo $row['symbol_id'];?>"><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><button name="trigger" type="submit" class="btn btn-success btn-sm">Confirm Trade Trigger</button></form><?php }?></center>
                                                     <center><?php if($row['trigger_status'] == 1){?><form method="post" action=""><input name="symbol_id" type="hidden" value="<?php echo $row['symbol_id'];?>"><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><input name="entry_price" type="hidden" value="<?php echo $row['entry_price'];?>"><button name="close" type="submit" class="btn btn-success btn-sm">Confirm Trade Close</button></form><?php }?></center>
                                                     <br><hr> <form  role="form" method="post" action="">
                                                         <div class="form-group row">
