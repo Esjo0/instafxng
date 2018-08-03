@@ -10,7 +10,7 @@ if (!$session_admin->is_logged_in()) {
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin - Update Partners</title>
+        <title>Instaforex Nigeria | Admin - Partner Credentials</title>
         <meta name="title" content="Instaforex Nigeria | Admin - Update Partners" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
@@ -33,7 +33,7 @@ if (!$session_admin->is_logged_in()) {
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>UPDATE PARTNERS</strong></h4>
+                            <h4><strong>PARTNER CREDENTIALS</strong></h4>
                         </div>
                     </div>
                     

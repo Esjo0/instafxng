@@ -1,10 +1,11 @@
 <?php
 require_once("../init/initialize_admin.php");
+
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT * FROM partner ";
+$query = "SELECT * FROM partner WHERE status = '1'";
 
 $numrows = $db_handle->numRows($query);
 
@@ -33,7 +34,7 @@ if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$all_partners = $db_handle->fetchAssoc($result);
+$all_new_partners = $db_handle->fetchAssoc($result);
 
 ?>
 <!DOCTYPE html>
@@ -42,8 +43,8 @@ $all_partners = $db_handle->fetchAssoc($result);
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin - View Partners</title>
-        <meta name="title" content="Instaforex Nigeria | Admin - View Partners" />
+        <title>Instaforex Nigeria | Admin - New Partner</title>
+        <meta name="title" content="Instaforex Nigeria | Admin" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
@@ -63,17 +64,19 @@ $all_partners = $db_handle->fetchAssoc($result);
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
+                    
+                    
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>VIEW PARTNERS</strong></h4>
+                            <h4><strong>NEW PARTNER</strong></h4>
                         </div>
                     </div>
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p>Below is a list of all partners</p>
+
+                                <p>Below is a list of all new partners, choose a partner to view and activate.</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
@@ -89,7 +92,7 @@ $all_partners = $db_handle->fetchAssoc($result);
                                     </thead>
                                     <tbody>
                                     <?php
-                                    if(isset($all_partners) && !empty($all_partners)) { foreach ($all_partners as $row) {
+                                    if(isset($all_new_partners) && !empty($all_new_partners)) { foreach ($all_new_partners as $row) {
                                         ?>
                                         <tr>
                                             <td><?php echo $row['first_name'].' '.$row['middle_name'].' '.$row['last_name']; ?></td>
@@ -106,15 +109,16 @@ $all_partners = $db_handle->fetchAssoc($result);
                                     </tbody>
                                 </table>
 
-                                <?php if(isset($all_partners) && !empty($all_partners)) { ?>
+                                <?php if(isset($all_new_partners) && !empty($all_new_partners)) { ?>
                                     <div class="tool-footer text-right">
                                         <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                     </div>
                                 <?php } ?>
-
+                                
                             </div>
                         </div>
-                        <?php if(isset($all_partners) && !empty($all_partners)) { require 'layouts/pagination_links.php'; } ?>
+                        
+                        <?php if(isset($all_new_partners) && !empty($all_new_partners)) { require 'layouts/pagination_links.php'; } ?>
 
                     </div>
 

@@ -53,13 +53,24 @@ class Partner {
             return false;
         }
     }
+
+    // generate a unique partner code
+    public function generate_partner_code() {
+        global $db_handle;
+
+        unique_partner_code:
+        $partner_code = strtoupper(rand_string_caps(5));
+        if($db_handle->numRows("SELECT partner_code FROM partner WHERE partner_code = '$partner_code'") > 0) { goto unique_partner_code; };
+
+        return $partner_code;
+    }
     
     //this method is to register as a partner
     public function new_partner($first_name, $last_name, $email, $phone, $address, $city, $state_id, $middle_name = '') {
         global $db_handle;
         global $system_object;
 
-        $partner_code = $system_object->generate_partner_code();
+        $partner_code = $this->generate_partner_code();
         $new_password = random_password();
         $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
         $phone_code = generate_sms_code();
