@@ -208,7 +208,7 @@ if(isset($_POST['update'])) {
                                         <div class="col-sm-9">
                                             <table class="table table-responsive table-bordered">
                                                 <tbody>
-                                                    <tr>
+                                                    <!--<tr class="disabled">
                                                         <td>
                                                             <input onclick="document.getElementById('bonus_type_value_1').disabled = false; document.getElementById('bonus_type_value_2').disabled = true;" type="radio" name="type" value="1" id="type_1" required />
                                                         </td>
@@ -222,7 +222,7 @@ if(isset($_POST['update'])) {
                                                                 <span class="input-group-addon">&#37;</span>
                                                             </div>
                                                         </td>
-                                                    </tr>
+                                                    </tr>-->
                                                     <tr>
                                                         <td>
                                                             <input onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" type="radio" name="type" value="2" id="type_2" required />

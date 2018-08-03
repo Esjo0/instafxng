@@ -82,9 +82,12 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-euro"></i> Bonus Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_accounts.php" title="Bonus Accounts">Active Bonus Accounts</a></li><?php //} ?>
-                        <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_app_moderation.php" title="Moderate Bonus Applications">Moderate Bonus Applications</a></li><?php //} ?>
-                        <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_list.php" title="Manage Bonus Packages">Manage Bonus Packages</a></li><?php //} ?>
+                        <?php if (in_array(263, $my_pages_sidebar)) { ?><li><a href="bonus_accounts.php" title="Bonus Accounts">Active Bonus Accounts</a></li><?php } ?>
+                        <?php if (in_array(264, $my_pages_sidebar)) { ?><li><a href="bonus_app_moderation.php" title="Moderate Bonus Applications">Moderate Bonus Applications</a></li><?php } ?>
+                        <?php if (in_array(265, $my_pages_sidebar)) { ?><li><a href="bonus_list.php" title="Manage Bonus Packages">Manage Bonus Packages</a></li><?php } ?>
+                        <?php if (in_array(266, $my_pages_sidebar)) { ?><li><a href="bonus_allocation.php" title="Process Bonus Allocation">Process Bonus Allocation</a></li><?php } ?>
+                        <?php if (in_array(267, $my_pages_sidebar)) { ?><li><a href="bonus_defaulting_accounts.php" title="Review Defaulting Accounts">Review Defaulting Accounts</a></li><?php } ?>
+                        <?php if (in_array(268, $my_pages_sidebar)) { ?><li><a href="bonus_successful_accounts.php" title="Review Successful Accounts">Review Successful Accounts</a></li><?php } ?>
                     </ul>
                 </li>
 

@@ -268,6 +268,8 @@ if(!empty($transaction_access['holder'])){
                                 <?php endif; ?>
 
                                 <?php require_once 'layouts/feedback_message.php'; ?>
+
+                                <?php $bonus_obj = new Bonus_Operations(); $bonus_obj->UI_flag_as_bonus_transaction($trans_detail['ifx_acct_no']) ?>
                                 
                                 <?php 
                                     if($deposit_process_pending) { include_once 'views/deposit_process/deposit_process_pending.php'; }

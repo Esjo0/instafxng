@@ -210,6 +210,18 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                     </div>
                                     <hr/>
 
+                                    <p><strong>Bonus Management</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="263" id="" <?php if (in_array(263, $my_pages)) { echo 'checked="checked"'; } ?>/> Active Bonus Accounts</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="264" id="" <?php if (in_array(264, $my_pages)) { echo 'checked="checked"'; } ?>/> Moderate Bonus Applications</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="265" id="" <?php if (in_array(265, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Bonus Packages</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="266" id="" <?php if (in_array(266, $my_pages)) { echo 'checked="checked"'; } ?>/> Process Bonus Allocation</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="267" id="" <?php if (in_array(267, $my_pages)) { echo 'checked="checked"'; } ?>/> Review Defaulting Accounts</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="268" id="" <?php if (in_array(268, $my_pages)) { echo 'checked="checked"'; } ?>/> Review Successful Accounts</label></div></div>
+
+                                    </div>
+                                    <hr/>
+
                                     <p><strong>System Insights</strong></p>
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="23" id="" <?php if (in_array(23, $my_pages)) { echo 'checked="checked"'; } ?>/> Last Month Funding</label></div></div>
