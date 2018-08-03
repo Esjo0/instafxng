@@ -101,26 +101,10 @@ if(isset($_POST['new_signal'])){
     $signal_time = $db_handle->sanitizePost($_POST['signal_time']);
 	$signal_date = $db_handle->sanitizePost($_POST['signal_date']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
-	//$trend = $db_handle->sanitizePost($_POST['trend']);
+
     $buy_option = 1;
     $sell_option = 2;
 
-	/*if(($options == 1) || ($options == 3)){
-    $query ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
-              VALUE('$symbol','1','$buy_price', '$buy_price_tp', '$buy_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')";
-
-	}
-	if(($options == 2) || ($options == 3)){
-		$query2 ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
-              VALUE('$symbol','2' , '$sell_price', '$sell_price_tp', '$sell_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')";
-	}
-    /*$result =$db_handle->runQuery($query);
-	$result2 =$db_handle->runQuery($query2);
-    if($result || $result2) {
-        $message_success = "Signal Successfully created for ".datetime_to_text($signal_time);
-    } else {
-        $message_error = "Something went wrong. Please try again.";
-    }*/
 	if(!empty($buy_price) && !empty($buy_price_tp) && !empty($buy_price_sl)){
         $new_schedule1 = $signal_object->new_signal_schedule($symbol, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment);
     }
