@@ -2,6 +2,7 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
+$bonus_conditions = new Bonus_Condition();
 $client_operation = new clientOperation();
 
 //TODO: Get a list all the reasons a bonus application can be declined
@@ -228,7 +229,13 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                                     <tr>
                                                         <td><?php echo $key; ?></td>
                                                         <td><?php echo $value['title'].'<br/>'.$value['desc']; ?></td>
-                                                        <td class="nowrap"><input class="checkbox" type="checkbox" name=""></td>
+                                                        <td class="nowrap">
+
+                                                            <?php $cond_feedback = $bonus_conditions->{$value['api']}($app_details['bonus_account_id']) ?>
+                                                            <!--<input class="checkbox" type="checkbox" <?php /*if($cond_feedback['status']== true){echo "checked";} */?> name="">-->
+                                                            <?php if($cond_feedback['status']== false){echo '<p style="font-size: larger" class="text-center text-danger"><b>&times;</b></p>';} ?>
+                                                            <?php if($cond_feedback['status']== true){echo '<p style="font-size: larger" class="text-center text-success"><b><i class="fa fa-check"></i></b></p>';} ?>
+                                                        </td>
                                                     </tr>
                                                         <?php } ?>
                                                     <?php } ?>

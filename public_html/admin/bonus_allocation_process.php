@@ -227,7 +227,7 @@ if(!empty($transaction_access['holder'])){
                                                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                                                     class="close">&times;</button>
                                                             <h4 class="modal-title">Approve Bonus Allocation</h4></div>
-                                                        <div class="modal-body">Are you sure you want to CONFIRM this deposit? This action cannot be reversed.</div>
+                                                        <div class="modal-body">Are you sure you want to Allocate this Bonus? This action cannot be reversed.</div>
                                                         <div class="modal-footer">
                                                             <input name="process" type="submit" class="btn btn-success" value="Confirm Deposit">
                                                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
@@ -240,18 +240,17 @@ if(!empty($transaction_access['holder'])){
 
                                     <div class="col-sm-6">
                                         <h5>Admin Remarks</h5>
-                                        <div style="max-height: 550px; overflow: scroll;">
-                                            <?php if(isset($all_comments) && !empty($all_comments)) {
-                                                foreach ($all_comments as $row) {?>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="transaction-remarks">
-                                                                <span id="trans_remark_author"><?php echo $row['admin_name']; ?></span>
-                                                                <span id="trans_remark"><?php echo $row['comment']; ?></span>
-                                                                <span id="trans_remark_date"><?php echo $row['created']; ?></span>
-                                                            </div>
+                                        <div style="word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
+                                            <?php if(isset($all_comments) && !empty($all_comments)) { foreach ($all_comments as $row) {?>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="transaction-remarks">
+                                                            <span id="trans_remark_author"><?php echo $row['admin_name']; ?></span>
+                                                            <span id="trans_remark"><?php echo $row['comment'];?></span>
+                                                            <span id="trans_remark_date"><?php echo $row['created']; ?></span>
                                                         </div>
                                                     </div>
+                                                </div>
                                                 <?php } } else { ?>
                                                 <div class="row">
                                                     <div class="col-sm-12">
