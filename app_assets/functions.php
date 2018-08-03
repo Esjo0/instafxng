@@ -780,3 +780,47 @@ function clear_transactions(){
 /*
 *Transaction Review Functions
 */
+
+
+
+#Edu_Sales_Tracker Functions
+/*$category = array('cat_0','cat_1','cat_2','cat_3','cat_4'); */
+function edu_sale_track($category, $user_code){
+    global $db_handle;
+    $query = "INSERT INTO edu_sale_tracker (user_code, sale_stat, sale_cat) VALUES ('$user_code', '1', '$category') ;";
+    return $db_handle->runQuery($query);
+}
+
+function edu_sale_untrack($category, $user_code){
+    global $db_handle;
+    $query = "UPDATE edu_sale_tracker SET sale_stat = '0' WHERE user_code = '$user_code' AND sale_cat = '$category' ;";
+    return $db_handle->runQuery($query);
+}
+
+function edu_sale_track_reset($category){
+    global $db_handle;
+    $query = "DELETE FROM edu_sale_tracker WHERE sale_cat = '$category' ";
+    return $db_handle->runQuery($query);
+}
+
+function UI_sale_status($user_code, $category){
+    global $db_handle;
+    $query = "SELECT sale_stat FROM edu_sale_track WHERE sale_cat = '$category' AND user_code = '$user_code' ";
+    $sale_stat = (int) $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
+    if($sale_stat == 0 || empty($sale_stat)){
+        $button = '<button name="edu_sale_track" type="submit" class="btn btn-xs btn-info"><i class="fa fa-check"></i></button>';
+    }elseif($sale_stat == 1){
+        $button = '<button name="edu_sale_track" type="submit" class="btn btn-xs btn-info" disabled><i class="glyphicon glyphicon-check"></i></button>';
+    }
+    $markup = <<<MAIL
+<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+<div class="input-group">
+<input type="hidden" name="user_code" value="{$user_code}" >
+<input type="hidden" name="category" value="{$category}" >
+{$button}
+</div>
+</form>
+MAIL;
+    echo $markup;
+}
+#Edu_Sales_Tracker Functions

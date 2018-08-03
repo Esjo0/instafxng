@@ -115,6 +115,25 @@ $education_students = $db_handle->fetchAssoc($result);
 
                                 <p>List of students that have reached lesson 5 of course 1.</p>
 
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <center>
+                                        <div class="input-group-sm">
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '1'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="1">All Leads</button>
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '2'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="2">All Training Leads</button>
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All ILPR Leads</button>
+                                        </div>
+                                    </center>
+                                    <br/><br/>
+                                </form>
+
+                                <?php if(isset($education_students) && !empty($education_students)) { ?>
+                                    <div class="tool-footer text-right">
+                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                    </div>
+                                <?php } ?>
+
+                                <?php if(isset($education_students) && !empty($education_students)) { include 'layouts/pagination_links.php'; } ?>
+
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -133,8 +152,9 @@ $education_students = $db_handle->fetchAssoc($result);
                                             <td><?php echo datetime_to_text($row['academy_signup']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
-                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_3'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 3'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_3'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 3'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <?php UI_sale_status($row['user_code'], 'cat_3'); ?>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -147,7 +167,7 @@ $education_students = $db_handle->fetchAssoc($result);
                                     </div>
                                 <?php } ?>
 
-                                <?php if(isset($education_students) && !empty($education_students)) { require_once 'layouts/pagination_links.php'; } ?>
+                                <?php if(isset($education_students) && !empty($education_students)) { include 'layouts/pagination_links.php'; } ?>
 
                                 <div id="student_details" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                     <div class="modal-dialog">
