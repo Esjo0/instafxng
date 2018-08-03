@@ -159,34 +159,31 @@ if (isset($_POST['delete_comment']))
                             <thead>
                             <tr>
                                 <th>Article Title</th>
-                                <th>Name</th>
-                                <th>Email</th>
+                                <th>Name / Email</th>
                                 <th>Comment</th>
                                 <th>Created</th>
-                                <th>Reply</th>
-                                <th>Approve</th>
-                                <th>Delete</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php if(isset($all_comments_items) && !empty($all_comments_items)) {
                                 foreach ($all_comments_items as $row) { ?>
                                     <tr>
-                                        <td><a href="../news1/id/<?php echo $row['article_id'] . '/u/' . $row['url'] . '/'; ?>"><?php echo $row['title']; ?></a></td>
-                                        <td><?php echo $row['full_name']; ?></td>
-                                        <td><?php echo $row['email']; ?></td>
+                                        <td><a href="../news1/id/<?php echo $row['article_id'] . '/u/' . $row['url'] . '/'; ?>" target="_blank" title="Visit Article Page"><?php echo $row['title']; ?></a></td>
+                                        <td><strong><?php echo $row['full_name']; ?></strong><br /><br />
+                                            <?php echo $row['email']; ?></td>
                                         <td><?php echo $row['comment']; ?></td>
                                         <td><?php echo datetime_to_text($row['created']); ?></td>
-                                        <td>
+                                        <td nowrap>
                                             <button type="button" data-target="#reply-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-info"><i class="glyphicon glyphicon-comment icon-white"></i> </button>
                                             <!--Modal - confirmation boxes-->
                                             <div id="reply-comment<?php echo $row['comment_id'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                                    class="close">&times;</button>
-                                                            <h4 class="modal-title">Reply Comment</h4></div>
+                                                            <button title="Reply Comment" type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                                            <h4 class="modal-title">Reply Comment</h4>
+                                                        </div>
                                                         <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
                                                             <div class="modal-body">
                                                                 <p>Reply <?php echo $row['full_name'] ?>'s comment on <?php echo $title?>.</p>
@@ -239,9 +236,10 @@ if (isset($_POST['delete_comment']))
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <button type="button" data-target="#confirm-approve-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-success"><i class="glyphicon glyphicon-play icon-white"></i></button>
+
+
+                                            <!-- Approve Comment Section -------------->
+                                            <button title="Approve Comment" type="button" data-target="#confirm-approve-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-success"><i class="glyphicon glyphicon-ok icon-white"></i></button>
                                             <!--Modal - confirmation boxes-->
                                             <div id="confirm-approve-comment<?php echo $row['comment_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                 <div class="modal-dialog">
@@ -261,9 +259,10 @@ if (isset($_POST['delete_comment']))
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <button type="button" data-target="#confirm-delete-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-danger"><i class="glyphicon glyphicon-remove icon-white"></i> </button>
+
+
+                                            <!-- Delete Comment Section ------------->
+                                            <button  title="Delete Comment" type="button" data-target="#confirm-delete-comment<?php echo $row['comment_id']; ?>" data-toggle="modal" class="btn btn-danger"><i class="glyphicon glyphicon-remove icon-white"></i> </button>
                                             <!--Modal - confirmation boxes-->
                                             <div id="confirm-delete-comment<?php echo $row['comment_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                                 <div class="modal-dialog">
@@ -283,10 +282,10 @@ if (isset($_POST['delete_comment']))
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
 
+                                        </td>
                                     </tr>
-                                <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No new comments on this platform.</em></td></tr>"; } ?>
+                                <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No new comments on this platform.</em></td></tr>"; } ?>
                             </tbody>
                         </table>
 

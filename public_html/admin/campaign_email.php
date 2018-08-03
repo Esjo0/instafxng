@@ -171,8 +171,8 @@ if($get_params['x'] == 'duplicate') {
                                     <li>[UC] - User Code (Unique to every client)</li>
                                     <li>[LTD] - Last Trade Date</li>
                                     <li>[LTV] - Last Trade Volume</li>
-                                    <li>[FUNDED] - Amount funded</li>
-                                    <li>[WITHDRAWN] - Amount withdrawn </li>
+                                    <li>[FUNDED] - Total Amount funded last Month</li>
+                                    <li>[WITHDRAWN] - Total Amount withdrawn last Month</li>
                                 </ul>
                                 
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">

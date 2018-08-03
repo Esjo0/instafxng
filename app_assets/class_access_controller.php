@@ -1,8 +1,8 @@
 <?php
 //Define an array of the majour pages and its code
 define("PAGE_CODE", json_encode(array(
-    1 => "admin_add.php||account_officers.php",
-    2 => "admin_view.php||",
+    1 => "admin_add.php||account_officers.php||",
+    2 => "admin_view.php||admin_manage.php||",
     3 => "bulletin_add.php||",
     4 => "bulletin_view.php||",
     5 => "bulletin_centre.php||",
@@ -14,7 +14,7 @@ define("PAGE_CODE", json_encode(array(
     11 => "client_search.php||",
     300 => "deposit_confirm_ifx_account.php||",
     12 => "client_commission_17.php||client_view.php||client_top_traders.php||",
-    201 => "client_delete.php||",
+    201 => "client_delete.php||client_delete_view.php||",
     13 => "client_moderate_account.php||",
     14 => "client_update_account.php||",
     15 => "client_doc_verify.php||",
@@ -156,11 +156,13 @@ define("PAGE_CODE", json_encode(array(
     257 => "deposit_pending_sorted.php||",
     253 => "rms.php||",
     258 => "sms_records.php||",
+    259 => "client_life.php||",
+    260 => "client_update.php||",
+    261 => "locked_transactions.php||",
     )));
 class Access_Controller
 {
-    public function get_all_pages()
-    {
+    public function get_all_pages(){
         return json_decode(PAGE_CODE);
     }
     public function validate_access()
@@ -179,7 +181,6 @@ class Access_Controller
                 $user_privilege = $_SESSION['user_privilege'];
                 if(!in_array($key, $user_privilege))
                 {
-                    //redirect_to('https://localhost/instafxngwebsite_master/public_html/admin/access_denied.php');
                     redirect_to('https://instafxng.com/admin/access_denied.php');
                     exit();
                 }

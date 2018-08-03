@@ -42,8 +42,8 @@ $user_code_encrypted = encrypt($user_code);
         <label class="control-label col-sm-3" for="point_claimed">Loyalty Point:</label>
         <div class="col-sm-9 col-lg-5">
             <div class="alert alert-info">
-                Points Earned: <?php if ($total_point_earned) { echo $total_point_earned; } else { echo 0; } ?><br/>
-                <?php if($total_point_earned > 100) { ?>
+                Points Balance: <?php if ($total_point_balance) { echo $total_point_balance; } else { echo 0; } ?><br/>
+                <?php if($total_point_balance >= 100) { ?>
                 <br/><input style="width: 230px" name="point_claimed" type="text" class="form-control" id="point_claimed" placeholder="Enter points to redeem">
                 <?php } ?>
             </div>
@@ -58,7 +58,7 @@ $user_code_encrypted = encrypt($user_code);
                 <label><input type="radio" name="deposit_origin" value="2" required>Diamond Office</label>
             </div>
             <div class="radio">
-                <label><input type="radio" name="deposit_origin" value="3" required>Ikota Office</label>
+                <label><input type="radio" name="deposit_origin" value="3" required>Eastline Office</label>
             </div>
         </div>
     </div>

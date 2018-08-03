@@ -57,6 +57,13 @@ $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $forum_regs = $db_handle->fetchAssoc($result);
+
+
+// Get forum entry route analysis
+$query = "SELECT entry_route, COUNT(*) AS entry_count FROM forum_participant WHERE forum_activate = '1' GROUP BY entry_route";
+$result = $db_handle->runQuery($query);
+$forum_reg_route_analysis = $db_handle->fetchAssoc($result);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,6 +104,28 @@ $forum_regs = $db_handle->fetchAssoc($result);
                         <?php require_once 'layouts/feedback_message.php'; ?>
 
                         <p><a href="edu_forum_reg2.php" class="btn btn-default" title="All time registrations"><i class="fa fa-arrow-circle-right"></i> View All Forum Registrations</a></p>
+                        <hr />
+                        <p>Entry channel for current registrations.</p>
+                        <table class="table table-responsive table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Channel</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if(isset($forum_reg_route_analysis) && !empty($forum_reg_route_analysis)) { foreach ($forum_reg_route_analysis as $row) { ?>
+                                <tr>
+                                    <td><?php echo entry_route_forum_participants($row['entry_route']); ?></td>
+                                    <td><?php echo $row['entry_count']; ?></td>
+                                </tr>
+                            <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                            </tbody>
+                        </table>
+
+                        <hr />
+                        <br />
+
                         <center>
                             <div class="btn-group btn-group-sm">
                                 <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="<?php if(!$location){echo 'btn btn-info';}else{echo 'btn btn-default';} ?>">All</a>

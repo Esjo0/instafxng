@@ -12,14 +12,16 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             LEFT JOIN user_ifxaccount AS ui ON uc.user_code = ui.user_code
-            WHERE (uc.doc_status = '111') AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
+            LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
+            WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
             FROM user_credential AS uc
             INNER JOIN user AS u ON uc.user_code = u.user_code
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE (uc.doc_status = '111') GROUP BY u.email ORDER BY u.created DESC ";
+            LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
+            WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) GROUP BY u.email ORDER BY u.created DESC ";
 }
 $numrows = $db_handle->numRows($query);
 
@@ -111,6 +113,8 @@ $selected_lev2_clients = $db_handle->fetchAssoc($result);
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
 
+                                <?php if(isset($selected_lev2_clients) && !empty($selected_lev2_clients)) { require 'layouts/pagination_links.php'; } ?>
+
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -146,7 +150,7 @@ $selected_lev2_clients = $db_handle->fetchAssoc($result);
                             </div>
                         </div>
                         
-                        <?php if(isset($selected_lev2_clients) && !empty($selected_lev2_clients)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($selected_lev2_clients) && !empty($selected_lev2_clients)) { require 'layouts/pagination_links.php'; } ?>
                     </div>
 
                     <!-- Unique Page Content Ends Here

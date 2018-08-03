@@ -15,7 +15,9 @@ if (isset($_POST['deposit_add_ifx_acct'])) {
 
     if($user_ifx_details) {
         extract($user_ifx_details); // turn table columns selected into variables
-        $total_point_earned = $client_operation->get_loyalty_point($client_user_code);
+
+        $client_point_details = $obj_loyalty_point->get_user_point_details($client_user_code);
+        $total_point_balance = $client_point_details['point_balance'];
 
         $page_requested = 'deposit_add_qty_php';
     } else {
@@ -34,11 +36,24 @@ if (isset($_POST['deposit_add_qty'])) {
     $point_claimed = $db_handle->sanitizePost($_POST['point_claimed']);
     $remarks = $db_handle->sanitizePost($_POST['remarks']);
 
+    if(isset($_POST['point_claimed'])) {
+        $point_claimed = $db_handle->sanitizePost($_POST['point_claimed']);
+
+        $point_claimed = (float)$point_claimed;
+
+        $point_rate_used = DOLLAR_PER_POINT;
+        $point_dollar_amount = $point_claimed * $point_rate_used;
+    }
+
     $client_operation = new clientOperation($account_no);
     $user_ifx_details = $client_operation->get_client_data();
     extract($user_ifx_details);
 
-    $total_point_earned = $client_operation->get_loyalty_point($client_user_code);
+    $client_point_details = $obj_loyalty_point->get_user_point_details($client_user_code);
+    $total_point_balance = $client_point_details['point_balance'];
+
+    $client_verification = $client_operation->get_client_verification_status($client_user_code);
+    $client_full_name = $client_last_name . " " . $client_first_name;
 
     switch($ifx_acc_type) {
         case '1': // ILPR Account
@@ -54,11 +69,46 @@ if (isset($_POST['deposit_add_qty'])) {
             $exchange = NFUNDRATE;
     }
 
-    $client_full_name = $client_last_name . " " . $client_first_name;
-    
-    if($point_claimed > $total_point_earned) {
-        $message_error = "You can not redeem more than your total earned point.";
+    if($client_verification == '1') {
+        // confirm total funding orders today, if > 2000, disallow this order
+        if($client_operation->deposit_limit_exceeded($client_user_code, $ifx_dollar_amount)) {
+            $message_error = "The client account is not verified. Please <a target='_blank' href='https://instafxng.com/verify_account.php'>click here to verify account.</a> ";
+            $message_error .= "<br />Address, valid ID, Passport Photograph and Signature is required for verification.";
+        } else {
+            $max_per_deposit = LEVEL_ONE_MAX_PER_DEPOSIT;
+            if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit) {
+                $message_error = "Please re-enter amount. Minimum order is $" . FUNDING_MIN_VALUE . " and maximum order is $" . number_format($max_per_deposit) . " per transaction.";
+            } elseif((isset($point_claimed) && !is_null($point_claimed)) && ($point_claimed > $total_point_balance)) {
+                $message_error = "You can not redeem more than your point balance.";
+            } elseif((isset($point_claimed) && !is_null($point_claimed) && !empty($point_claimed)) && ($point_claimed < 100)) {
+                $message_error = "You can not redeem less than 100 points.";
+            } else {
+                $allow_funding = 1;
+            }
+        }
+    } elseif($client_verification == '2' || $client_verification == '3') {
+        $max_per_deposit = LEVEL_TWO_MAX_PER_DEPOSIT;
+        if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit) {
+            $message_error = "Please re-enter amount. Minimum order is $" . FUNDING_MIN_VALUE . " and maximum order is $" . number_format($max_per_deposit) . " per transaction. Please split your transaction if you wish to fund more.";
+        } elseif((isset($point_claimed) && !is_null($point_claimed)) && ($point_claimed > $total_point_balance)) {
+            $message_error = "You can not redeem more than your point balance.";
+        } elseif((isset($point_claimed) && !is_null($point_claimed) && !empty($point_claimed)) && ($point_claimed < 100)) {
+            $message_error = "You can not redeem less than 100 points.";
+        } else {
+            $allow_funding = 1;
+        }
     } else {
+        $message_error = "Something went wrong, we could not determine the details of this order, or client is not verified.";
+    }
+
+    // If point is claimed, client must fund equivalent of point claimed or higher
+    $funding_amount = floatval($ifx_dollar_amount);
+    if(isset($point_claimed) && ($funding_amount < $point_dollar_amount)) {
+        $allow_funding = 0;
+        $message_error = "You are about to claim points worth $ $point_dollar_amount, you must fund minimum of $ $point_dollar_amount. Please try again to proceed.";
+    }
+    
+    if($allow_funding == 1) {
         if(isset($point_claimed) && !empty($point_claimed)) {
             $point_claimed_id = $client_operation->set_point_claimed($point_claimed, $client_user_code);
         }
@@ -81,14 +131,14 @@ if (isset($_POST['deposit_add_qty'])) {
 
             $client_operation->deposit_comment($trans_id, $_SESSION['admin_unique_code'], $remarks);
             $client_operation->user_payment_notification($trans_id, '7', $pay_date, "", $total_payable);
+
+            $obj_loyalty_point->user_total_point_balance($client_user_code);
+
             $page_requested = 'deposit_add_finalize_php';
         } else {
             $message_error = "Something went wrong, please try again.";
             $page_requested = "";
         }
-
-
-
     }
 }
 

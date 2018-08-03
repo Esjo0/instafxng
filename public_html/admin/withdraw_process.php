@@ -21,6 +21,19 @@ switch($get_params['x']) {
 
 if($no_valid_page) {
     header("Location: ./");
+    exit();
+}
+
+#Process Transaction Release
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['release_transaction'])){
+    release_transaction($trans_id, $_SESSION['admin_unique_code']);
+    switch($get_params['x']) {
+        case 'initiated': $url = 'withdrawal_initiated'; break;
+        case 'confirmed': $url = 'withdrawal_confirmed'; break;
+        case 'debited': $url = 'withdrawal_ifx_debited'; break;
+    }
+    header("Location: $url.php");
+    exit();
 }
 
 // Process Initiated Withdrawal
@@ -46,7 +59,9 @@ if ($withdraw_process_initiated && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_PO
     }
 
     $client_operation->withdrawal_transaction_account_check($transaction_id, $status, $remarks, $_SESSION['admin_unique_code']);
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     header("Location: withdrawal_initiated.php");
+    exit();
 }
 
 // Process Confirmed Withdrawal
@@ -71,7 +86,9 @@ if ($withdraw_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_PO
     }
 
     $client_operation->withdrawal_transaction_ifx_debited($transaction_id, $transaction_reference, $status, $remarks, $_SESSION['admin_unique_code']);
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     header("Location: withdrawal_confirmed.php");
+    exit();
 }
 
 $trans_detail = $client_operation->get_withdrawal_by_id_full($trans_id);
@@ -144,7 +161,9 @@ MAIL;
     }
 
     $client_operation->withdrawal_transaction_completed($transaction_id, $status, $remarks, $_SESSION['admin_unique_code']);
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     header("Location: withdrawal_ifx_debited.php");
+    exit();
 }
 
 $trans_detail = $client_operation->get_withdrawal_by_id_full($trans_id);
@@ -156,6 +175,10 @@ if(empty($trans_detail)) {
     $trans_remark = $client_operation->get_withdrawal_remark($trans_id);
 }
 
+$transaction_access = allow_transaction_review($trans_id, $_SESSION['admin_unique_code']);
+if(!empty($transaction_access['holder'])){
+    $message_error = "This transaction is currently being reviewed by {$transaction_access['holder']}";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -195,6 +218,18 @@ if(empty($trans_detail)) {
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
+                                <?php if($transaction_access['status']): ?>
+                                    <div class="alert alert-success">
+                                        <form  data-toggle="validator" role="form" method="post" action="">
+                                            <p><strong>Are you done reviewing this transaction? </strong></p>
+                                            <div class="form-group">
+                                                <input value="Click Here To Release This Transaction." name="release_transaction" type="submit" data-toggle="modal" class="btn btn-sm btn-success" />
+                                            </div>
+                                            <p>Clicking the button above allows other admin personnel work on this transaction.</p>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
+
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 
                                 <?php 

@@ -44,6 +44,8 @@ require_once(LIB_PATH.DS."class_loyalty_training_campaign.php");
 //Easter Promo Controller File
 require_once(LIB_PATH.DS."class_easter_promo.php");
 require_once(LIB_PATH.DS."class_signal_management.php");
+require_once(LIB_PATH.DS."class_bonus_operations.php");
+require_once(LIB_PATH.DS."class_bonus_conditions.php");
 
 if(!endsWith(getCurrentURL(), "push_notification_server.php")){add_activity_log();}
 $obj_access_control->validate_access();

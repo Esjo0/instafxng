@@ -8,12 +8,23 @@ $additional_msg = $get_params['x'];
 if($additional_msg == 'msg')
 {
     $special_msg = <<<msg
-        <p>To get more, you need to do more!</p>
-        <p>Funding your Instaforex account and trading actively increases your loyalty points
-        and qualifies you for the monthly reward of $500.</p>
-        <p>To be one of the 5 traders to get $500 in May, you need to start earning points
-        early!</p>
-        <p>Let's Get you Started</p>
+        <p>Our Free 85% Accurate High Precision trading signals have gone Viral!</p>
+        <p>Just yesterday, It booked 70 pips profit to the accounts of traders who use them.</p>
+
+        <p>Today, it hit 60 pips take profit, <a href="http://bit.ly/2JysCvT" target="_blank">Check it out here</a>.</p>
+        <p>Started using the signals yet?</p>
+
+        <p>This is a jaw-dropping opportunity to make consistent profit from your trades, earn more loyalty points and get a share of $500 this August!</p>
+
+        <p><strong>STEP 1: Fund your InstaForex Account</strong></p>
+        <p>Funding your Instaforex account and trading actively increases your loyalty points and qualifies you for the monthly reward of $500.</p>
+        <ul><li><a href="#acct_num">Click here</a> to fund account now.</li></ul>
+
+        <p><strong>STEP 2: Get Signals Alerts Daily</strong></p>
+
+        <p>The trading signals are posted every day on our website, just so you do not miss any of the entry prices as they drop, we have created a channel via Facebook Messenger where you can get direct notification as soon as the signals are posted.</p>
+        <p>Don’t miss any signal, <a href="http://bit.ly/2KEWxWQ" target="_blank">click here</a> to get daily notifications as soon as the signals are posted.</p>
+        <hr />
         <br />
 msg;
 }
@@ -169,8 +180,10 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
     $client_operation = new clientOperation($account_no);
     $user_ifx_details = $client_operation->get_client_data();
     extract($user_ifx_details);
+
+    $client_point_details = $obj_loyalty_point->get_user_point_details($client_user_code);
+    $total_point_balance = $client_point_details['point_balance'];
     
-    $total_point_earned = $client_operation->get_loyalty_point($client_user_code);
     $client_verification = $client_operation->get_client_verification_status($client_user_code);
     $client_full_name = $client_last_name . " " . $client_first_name;
 
@@ -191,7 +204,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
     if($client_verification == '1') {
         // confirm total funding orders today, if > 2000, disallow this order
         if($client_operation->deposit_limit_exceeded($client_user_code, $ifx_dollar_amount)) {
-            $message_error = "You are unable to complete this process now because you have not verified your account. Please <a href='verify_account.php'>click here to verify you account.</a> ";
+            $message_error = "You are unable to complete this process now because you have not verified your account. Please <a href='verify_account.php'>click here to verify your account.</a> ";
             $message_error .= "<br />Your address, valid ID, Passport Photograph and your Signature is required for verification.";
             //$message_error .= "The requested amount will make your total funding order today exceed the allowed daily limit of $" . LEVEL_ONE_MAX_PER_DEPOSIT;
             //$message_error .= "<br />To fund without limits please verify your account by <a href='verify_account.php'> clicking here</a> or reduce your funding order.<br />";
@@ -199,8 +212,8 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
             $max_per_deposit = LEVEL_ONE_MAX_PER_DEPOSIT;
             if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit) {
                 $message_error = "Please re-enter amount. Minimum order is $" . FUNDING_MIN_VALUE . " and maximum order is $" . number_format($max_per_deposit) . " per transaction.";
-            } elseif((isset($point_claimed) && !is_null($point_claimed)) && ($point_claimed > $total_point_earned)) {
-                $message_error = "You can not redeem more than your total earned point.";
+            } elseif((isset($point_claimed) && !is_null($point_claimed)) && ($point_claimed > $total_point_balance)) {
+                $message_error = "You can not redeem more than your point balance.";
             } elseif((isset($point_claimed) && !is_null($point_claimed) && !empty($point_claimed)) && ($point_claimed < 100)) {
                 $message_error = "You can not redeem less than 100 points.";
             } else {
@@ -211,8 +224,8 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
         $max_per_deposit = LEVEL_TWO_MAX_PER_DEPOSIT;
         if($ifx_dollar_amount < FUNDING_MIN_VALUE || $ifx_dollar_amount > $max_per_deposit) {
             $message_error = "Please re-enter amount. Minimum order is $" . FUNDING_MIN_VALUE . " and maximum order is $" . number_format($max_per_deposit) . " per transaction. Please split your transaction if you wish to fund more.";
-        } elseif((isset($point_claimed) && !is_null($point_claimed)) && ($point_claimed > $total_point_earned)) {
-            $message_error = "You can not redeem more than your total earned point.";
+        } elseif((isset($point_claimed) && !is_null($point_claimed)) && ($point_claimed > $total_point_balance)) {
+            $message_error = "You can not redeem more than your point balance.";
         } elseif((isset($point_claimed) && !is_null($point_claimed) && !empty($point_claimed)) && ($point_claimed < 100)) {
             $message_error = "You can not redeem less than 100 points.";
         } else {
@@ -250,6 +263,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
         }
 
         if($log_deposit) {
+            $obj_loyalty_point->user_total_point_balance($client_user_code);
             $page_requested = 'deposit_funds_finalize_php';
         } else {
             $message_error = "Something went wrong, please try again.";
@@ -364,7 +378,13 @@ switch($page_requested) {
                         <div class="row">
                             <?php if($additional_msg != 'msg_new'): ?>
                                 <div class="col-sm-12 text-danger">
-                                    <h4><strong>Fund Your Instaforex Account</strong></h4>
+
+                                    <?php if(!$special_msg) { ?>
+                                        <h4><strong>Fund Your Instaforex Account</strong></h4>
+                                    <?php } else { ?>
+                                        <h4><strong>Make Over 2000 pips on your Trades this August</strong></h4>
+                                    <?php } ?>
+
                                 </div>
                             <?php endif; ?>
 

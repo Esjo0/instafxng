@@ -1,4 +1,25 @@
 <?php
+
+/*
+* Table: forum_participants
+* Column: entry_route
+*/
+function entry_route_forum_participants($status) {
+    switch ($status) {
+        case '1': $message = "Facebook"; break;
+        case '2': $message = "Instagram"; break;
+        case '3': $message = "Twitter"; break;
+        case '4': $message = "WhatsApp"; break;
+        case '5': $message = "Email Invite"; break;
+        case '6': $message = "SMS Invite"; break;
+        case '7': $message = "Instafxng Website"; break;
+        case '8': $message = "Friend"; break;
+        case '9': $message = "Other means"; break;
+        default: $message = "Channel Unknown"; break;
+    }
+    return $message;
+}
+
 /*
 * Table: operations_log
 * Column: status
@@ -351,6 +372,7 @@ function client_group_campaign_category($status) {
         case '52': $message = "ILPR Campaign leads that came into our system in April"; break;
 		case '53': $message = "All clients who made deposit last month"; break;
 		case '54': $message = "All clients who made withdrawals last month"; break;
+        case '55': $message = "All inactive clients before May 1 2018."; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -386,8 +408,8 @@ function client_group_query($client_group, $campaign_type) {
             case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1'"; break;
             case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1'"; break;
             case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign"; break;
-            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1'"; break;
-            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1'"; break;
+            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code LEFT JOIN user_credential AS uc ON u.user_code = uc.user_code WHERE (uv.phone_status = '2') AND (uc.doc_status != '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.campaign_subscribe = '1' GROUP BY u.email "; break;
+            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.campaign_subscribe = '1' GROUP BY u.email "; break;
             case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1'"; break;
             case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 2 MONTH) AND u.campaign_subscribe = '1'"; break;
             case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2'"; break;
@@ -435,8 +457,9 @@ function client_group_query($client_group, $campaign_type) {
             case '50': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND u.user_code = ui.user_code AND ui.ifxaccount_id = ud.ifxaccount_id AND ud.real_dollar_equivalent < 50.00 AND u.campaign_subscribe = '1' GROUP BY u.email "; break;
             case '51': $query = "SELECT u.first_name, u.email, u.phone, u.status, u.user_code, ud.order_complete_time FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND u.user_code NOT IN (SELECT u.user_code FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '2018-03-22' AND '$date_today') GROUP BY u.user_code "; break;
             case '52': $query = "SELECT user.user_code, user.first_name, user.email, campaign_leads.phone FROM campaign_leads, user WHERE(STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '2018-04-01' AND '2018-04-30') AND campaign_leads.email = user.email AND campaign_leads.interest = '2' GROUP BY user.email"; break;
-            case '53': $query = "SELECT u.first_name, u.email, u.phone, u.status, u.user_code, ud.order_complete_time, SUM(ud.real_dollar_equivalent) FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' AND u.user_code NOT IN (SELECT u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '7' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.user_code "; break;
-            case '54': $query = "SELECT u.first_name, u.email, u.phone, u.status, u.user_code, uw.created, SUM(uw.dollar_withdraw) FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '7' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'  GROUP BY u.user_code "; break;
+            case '53': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' AND u.user_code NOT IN (SELECT u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.user_code "; break;
+            case '54': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'  GROUP BY u.user_code "; break;
+            case '55': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE u.user_code NOT IN ( SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '2018-07-20' AND '2018-07-20' ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '2018-07-20' GROUP BY u.user_code ORDER BY last_trade_date DESC LIMIT 0,600"; break;
 			default: $query = false; break;
         }
 
@@ -448,8 +471,8 @@ function client_group_query($client_group, $campaign_type) {
             case '1': $query = "SELECT user_code, first_name, email, phone FROM user WHERE campaign_subscribe = '1' GROUP BY user_code"; break;
             case '2': $query = "SELECT user_code, first_name, email, phone FROM user WHERE (STR_TO_DATE(created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND campaign_subscribe = '1' GROUP BY user_code"; break;
             case '3': $query = "SELECT first_name, email, phone FROM free_training_campaign GROUP BY phone"; break;
-            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code WHERE (uv.phone_status = '2') AND u.campaign_subscribe = '1' GROUP BY u.user_code"; break;
-            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code WHERE (uc.doc_status = '111') AND u.campaign_subscribe = '1' GROUP BY u.user_code"; break;
+            case '4': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_verification AS uv INNER JOIN user AS u ON uv.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code LEFT JOIN user_credential AS uc ON u.user_code = uc.user_code WHERE (uv.phone_status = '2') AND (uc.doc_status != '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.campaign_subscribe = '1' GROUP BY u.email "; break;
+            case '5': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_credential AS uc INNER JOIN user AS u ON uc.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.campaign_subscribe = '1' GROUP BY u.email "; break;
             case '6': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_bank AS ub INNER JOIN user AS u ON ub.user_code = u.user_code WHERE (ub.is_active = '1' AND ub.status = '2') AND u.campaign_subscribe = '1' GROUP BY u.user_code"; break;
             case '7': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u WHERE (u.password IS NULL OR u.password = '') AND u.created < DATE_SUB(NOW(), INTERVAL 2 MONTH) AND u.campaign_subscribe = '1' GROUP BY u.user_code"; break;
             case '8': $query = "SELECT full_name AS first_name, email, phone FROM dinner_2016 WHERE attended = '2' GROUP BY phone ORDER BY created ASC"; break;
@@ -497,9 +520,10 @@ function client_group_query($client_group, $campaign_type) {
             case '50': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND u.user_code = ui.user_code AND ui.ifxaccount_id = ud.ifxaccount_id AND ud.real_dollar_equivalent < 50.00 AND u.campaign_subscribe = '1' GROUP BY u.user_code "; break;
             case '51': $query = "SELECT u.first_name, u.email, u.phone, u.status, u.user_code, ud.order_complete_time FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND u.user_code NOT IN (SELECT u.user_code FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '2018-03-22' AND '$date_today') GROUP BY u.user_code "; break;
             case '52': $query = "SELECT user.user_code, user.first_name, user.email, campaign_leads.phone FROM campaign_leads, user WHERE(STR_TO_DATE(campaign_leads.created, '%Y-%m-%d') BETWEEN '2018-04-01' AND '2018-04-30')AND campaign_leads.email = user.email AND campaign_leads.interest = '2' GROUP BY user.user_code "; break;
-            case '53': $query = "SELECT u.first_name, u.email, u.phone, u.status, u.user_code, ud.order_complete_time, SUM(ud.real_dollar_equivalent) FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' AND u.user_code NOT IN (SELECT u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '7' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  GROUP BY u.user_code"; break;
-			case '54': $query = "SELECT u.first_name, u.email, u.phone, u.status, u.user_code, uw.created, SUM(uw.dollar_withdraw) FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '7' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'  GROUP BY u.user_code"; break;
-			default: $query = false; break;
+            case '53': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' AND u.user_code NOT IN (SELECT u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.user_code "; break;
+            case '54': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' GROUP BY u.user_code "; break;
+            case '55': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE u.user_code NOT IN ( SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '2018-07-20' AND '2018-07-20' ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '2018-07-20' GROUP BY u.phone ORDER BY last_trade_date DESC LIMIT 0,600"; break;
+            default: $query = false; break;
         }
 
     }
