@@ -6,7 +6,7 @@ if (!$session_partner->is_logged_in()) {
 
 $partner_details = $_SESSION['partner_details'];
 
-$user_code = "BBLR";// $partner_details['partner_code'];
+$partner_details['partner_code'];
 
 $query = "SELECT * FROM user_ifxaccount INNER JOIN user USING(user_code) WHERE user_ifxaccount.partner_code = '$user_code' ";
 $numrows = $db_handle->numRows($query);
