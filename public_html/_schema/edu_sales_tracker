@@ -1,0 +1,8 @@
+CREATE TABLE `edu_sales_tracker` (
+  `edu_sale_tracker_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_code` varchar(50) NOT NULL,
+  `sale_stat` enum('0','1') NOT NULL,
+  `sale_cat` enum('cat_0','cat_1','cat_2','cat_3','cat_4') NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`edu_sale_tracker_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
