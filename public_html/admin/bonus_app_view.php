@@ -1,18 +1,15 @@
 <?php
-ini_set("xdebug.var_display_max_children", -1);
-ini_set("xdebug.var_display_max_data", -1);
-ini_set("xdebug.var_display_max_depth", -1);
-
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
+$bonus_conditions = new Bonus_Condition();
 $client_operation = new clientOperation();
 
 //TODO: Get a list all the reasons a bonus application can be declined
 if(isset($_POST['process-app'])){
     $_app_id = $db_handle->sanitizePost($_POST['app_id']);
-    $_allocated_amount = $db_handle->sanitizePost($_POST['allocated_amount']);
-    $result = $bonus_operations->approve_app($_app_id, $_allocated_amount, $_SESSION['admin_unique_code']);
+    $_app_mod_comment = $db_handle->sanitizePost($_POST['app_mod_comment']);
+    $result = $bonus_operations->approve_app($_app_id, $_app_mod_comment, $_SESSION['admin_unique_code']);
     $result ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
 if(isset($_POST['process-dec'])){
@@ -21,16 +18,15 @@ if(isset($_POST['process-dec'])){
     $result = $bonus_operations->decline_app($_app_id, $_reasons, $_SESSION['admin_unique_code']);
     $result ? $message_success = "Operation Successful" : $message_error = "Operation Failed";
 }
-if(isset($_POST['account_type_update'])){
-    $account_type_update = $db_handle->sanitizePost($_POST['account_type_update']);
+
+
+#Process ILPR Approval
+if(isset($_POST['approve_ilpr'])){
+    $account_type_update = '1';
     $user_ilpr_enrolment_id = $db_handle->sanitizePost($_POST['user_ilpr_enrolment_id']);
     $ifxaccount_id = $db_handle->sanitizePost($_POST['ifxaccount_id']);
-    var_dump($account_type_update);
-    var_dump($user_ilpr_enrolment_id);
-    var_dump($ifxaccount_id);
-    //$db_handle->runQuery("UPDATE user_ilpr_enrolment SET status = '2' WHERE user_ilpr_enrolment_id = $user_ilpr_enrolment_id LIMIT 1");
-    //$update_account = $client_operation->update_account_type($ifxaccount_id, $account_type_update);
-    //$message_success = "You have successfully updated the account";
+    $update_account = $client_operation->update_account_type($ifxaccount_id, $account_type_update);
+    $message_success = "You have successfully updated the account";
 }
 
 $app_id = decrypt_ssl(str_replace(" ", "+", $_GET['app_id']));
@@ -113,14 +109,9 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                                     <h4 class="modal-title">Approve Bonus Application</h4></div>
                                                 <div class="modal-body">
                                                     <div class="form-group">
-                                                        <label class="control-label col-sm-3">Allocate Bonus:</label>
-                                                        <div class="col-sm-9 col-md-4">
+                                                        <div class="col-sm-12">
                                                             <input type="hidden" name="app_id" value="<?php echo $app_id; ?>" />
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon"><b>&dollar;</b></span>
-                                                                <input  class="form-control" placeholder="Amount" type="text" name="allocated_amount" id="3" required />
-                                                            </div>
-
+                                                            <textarea name="app_mod_comment" rows="3" class="form-control" placeholder="Enter a remark." required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -142,9 +133,9 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                 <?php if($app_details['enrolment_status'] == '2'){$_meta = $bonus_operations->get_app_meta_by_id($app_id); ?>
                                     <div class="alert alert-success">
                                         This bonus application has been approved by <?php echo $admin_object->get_admin_name_by_code($app_details['compliance_officer']); ?> on <?php echo datetime_to_text($app_details['updated']) ?>.<br/>
-                                        <strong>Allocated Amount: </strong> &dollar; <?php echo number_format($app_details['allocated_amount'], 2, ".", ","); ?><br/>
-                                        <strong>Date Of Allocation: </strong> <?php echo datetime_to_text($app_details['allocation_date'])?><br/>
-                                        <strong>Bonus Status: </strong> <?php echo $bonus_operations->bonus_status($app_details['allocation_status']); ?>
+<!--                                        <strong>Allocated Amount: </strong> &dollar; <?php /*echo number_format($app_details['allocated_amount'], 2, ".", ","); */?><br/>
+<!--                                        <strong>Date Of Review: </strong> <?php /*echo datetime_to_text($app_details['updated'])*/?><br/>
+                                        <!--<strong>Bonus Status: </strong> --><?php /*echo $bonus_operations->bonus_status($app_details['allocation_status']); */?>
                                     </div>
                                 <?php } ?>
 
@@ -164,20 +155,16 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                             <td><b>Account No:</b>  <?php echo $app_details['ifx_acct_no']; ?></td>
                                             <td>
                                                 <div class="col-sm-12">
-                                                    <div class="input-group">
-                                                        <div class="input-group-btn ">
-                                                            <button type="button" class="btn btn-default dropdown-toggle btn-group-justified" data-toggle="dropdown"> <?php if($app_details['account_type'] == '2') { echo "None-ILPR Account"; }elseif($app_details['account_type'] == '1'){ echo "ILPR Account";} ?> <span class="caret"></span></button>
-                                                            <ul class="dropdown-menu pull-right">
-                                                                <li><a onclick="document.getElementById('account_type_update_2').click();" href="javascript:void(0);"> None-ILPR Account </a></li>
-                                                                <li><a onclick="document.getElementById('account_type_update_1').click();" href="javascript:void(0);"> ILPR Account </a></li>
-                                                                <input style="display: none" type="submit" id="account_type_update_2" name="account_type_update" value="2" />
-                                                                <input style="display: none" type="submit" id="account_type_update_1" name="account_type_update" value="1" />
-                                                                <input type="hidden" value="<?php echo $app_details['user_ilpr_enrolment_id'];?>" name="user_ilpr_enrolment_id">
-                                                                <input type="hidden" value="<?php echo $app_details['ifxaccount_id'];?>" name="ifxaccount_id">
-                                                            </ul>
-                                                        </div><!-- /btn-group -->
-<!--                                                        <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-check"></i> Update</button>
--->                                                    </div>
+                                                    <?php if($app_details['account_type'] == '2'):?>
+                                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                        <input class="btn btn-sm btn-group-justified btn-success" type="submit" name="approve_ilpr" value="Enroll into ILPR" />
+                                                        <input type="hidden" value="<?php echo $app_details['user_ilpr_enrolment_id'];?>" name="user_ilpr_enrolment_id">
+                                                        <input type="hidden" value="<?php echo $app_details['ifxaccount_id'];?>" name="ifxaccount_id">
+                                                    </form>
+                                                        <?php endif; ?>
+                                                    <?php if($app_details['account_type'] == '1'):?>
+                                                        <b>ILPR Enrollment Status:</b>  Enrolled
+                                                    <?php endif; ?>
                                                 </div>
                                             </td>
                                         </tr>
@@ -189,10 +176,28 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                 <table class="table table-responsive table-bordered">
                                     <tbody>
                                         <tr>
-                                            <td><b>Account No:</b>  <?php echo $app_details['ifx_acct_no']; ?></td>
                                             <td>
+                                                <center><b>Withdrawal Transaction History</b></center><br/>
+                                                <b>Total Withdrawn:</b>  <?php echo number_format($bonus_operations->get_withdrawals_history($app_details['ifx_acct_no'])['total'], 2, '.', ','); ?><br/>
+                                                <b>Average Withdrawal:</b>  <?php echo number_format($bonus_operations->get_withdrawals_history($app_details['ifx_acct_no'])['average'], 2, '.', ','); ?><br/>
+                                            </td>
+                                            <td rowspan="2">
                                                 <center><b>Client Flags</b></center><br/>
-                                                <?php //var_dump($client_operation->get_client_flag_by_code($app_details['user_code'])) ?>
+                                                <?php $client_flag = $client_operation->get_client_flag_by_code($app_details['user_code']) ?>
+                                                <div style="max-height: 400px; overflow: scroll;">
+                                                    <?php if(isset($client_flag) && !empty($client_flag)) {
+                                                        foreach ($client_flag as $row) {?>
+                                                            <div class="col-sm-12">
+                                                                <div class="transaction-remarks">
+                                                                    <span id="trans_remark_author"><?php echo $row['admin_full_name']; ?></span>
+                                                                    <span id="trans_remark"><?php echo $row['comment']; ?></span>
+                                                                    <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+                                                                </div>
+                                                            </div>
+                                                        <?php } } else { ?>
+                                                        <div class="row"><div class="col-sm-12"><div class="transaction-remarks"><span class="text-danger"><em>There is no remark to display.</em></span></div></div></div>
+                                                    <?php } ?>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>
@@ -201,11 +206,7 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                                 <b>Total Funded:</b>  <?php echo number_format($bonus_operations->get_funding_history($app_details['ifx_acct_no'])['total'], 2, '.', ','); ?><br/>
                                                 <b>Average Funding:</b>  <?php echo number_format($bonus_operations->get_funding_history($app_details['ifx_acct_no'])['average'], 2, '.', ','); ?><br/>
                                             </td>
-                                            <td>
-                                                <center><b>Withdrawal Transaction History</b></center><br/>
-                                                <b>Total Withdrawn:</b>  <?php echo number_format($bonus_operations->get_withdrawals_history($app_details['ifx_acct_no'])['total'], 2, '.', ','); ?><br/>
-                                                <b>Average Withdrawal:</b>  <?php echo number_format($bonus_operations->get_withdrawals_history($app_details['ifx_acct_no'])['average'], 2, '.', ','); ?><br/>
-                                            </td>
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -215,7 +216,8 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                     <tr>
                                         <td><b>BONUS PACKAGE:</b>  <?php echo $app_details['bonus_title']; ?></td>
                                     </tr>
-                                    <tr><td><b>PACKAGE DETAILS:</b>  <?php echo $app_details['bonus_desc']; ?></td></tr>
+                                    <tr><td><b>PACKAGE DESCRIPTION:  </b>  <?php echo $app_details['bonus_desc']; ?></td></tr>
+                                    <tr style="display: none"><td><b>PACKAGE DETAILS:  </b>  <?php echo $app_details['bonus_details']; ?></td></tr>
                                     <tr>
                                         <td>
                                             <center><b>PACKAGE CONDITIONS</b></center>
@@ -227,7 +229,13 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                                     <tr>
                                                         <td><?php echo $key; ?></td>
                                                         <td><?php echo $value['title'].'<br/>'.$value['desc']; ?></td>
-                                                        <td class="nowrap"><input class="checkbox" type="checkbox" name=""></td>
+                                                        <td class="nowrap">
+
+                                                            <?php $cond_feedback = $bonus_conditions->{$value['api']}($app_details['bonus_account_id']) ?>
+                                                            <!--<input class="checkbox" type="checkbox" <?php /*if($cond_feedback['status']== true){echo "checked";} */?> name="">-->
+                                                            <?php if($cond_feedback['status']== false){echo '<p style="font-size: larger" class="text-center text-danger"><b>&times;</b></p>';} ?>
+                                                            <?php if($cond_feedback['status']== true){echo '<p style="font-size: larger" class="text-center text-success"><b><i class="fa fa-check"></i></b></p>';} ?>
+                                                        </td>
                                                     </tr>
                                                         <?php } ?>
                                                     <?php } ?>
