@@ -119,6 +119,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(36, $my_pages_sidebar)) { ?><li><a href="deposit_all.php" title="All Deposit Transactions">Deposit - All</a></li><?php } ?>
                         <?php if (in_array(37, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
                         <?php if (in_array(38, $my_pages_sidebar)) { ?><li><a href="deposit_reversal.php" title="Reverse Transaction">Deposit - Reversal</a></li><?php } ?>
+                        <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -133,6 +134,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(45, $my_pages_sidebar)) { ?><li><a href="withdrawal_declined.php" title="Declined/Failed Withdrawal">Withdrawal - Declined/Failed</a></li><?php } ?>
                         <?php if (in_array(46, $my_pages_sidebar)) { ?><li><a href="withdrawal_all.php" title="All Withdrawal Transactions">Withdrawal - All</a></li><?php } ?>
                         <?php if (in_array(47, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
+                        <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -235,14 +237,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear fa-fw"></i> System<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(79, $my_pages_sidebar)) { ?><li><a href="system_message.php">System Messages</a></li><?php } ?>
-                        <div class="divider"></div>
-                        <!-- 84 -->
                         <?php if (in_array(239, $my_pages_sidebar)) { ?><li><a href="system_activity_logs.php"> System Activity Logs</a></li><?php } ?>
-                        <div class="divider"></div>
-                        <!-- 84 -->
                         <?php if (in_array(243, $my_pages_sidebar)) { ?><li><a href="system_ad_section.php"> Front-End Advert Section</a></li><?php } ?>
-                        <div class="divider"></div>
-                        <!-- 84 -->
                         <?php if (in_array(258, $my_pages_sidebar)) { ?><li><a href="sms_records.php"> SMS Records</a></li><?php } ?>
                     </ul>
                 </li>

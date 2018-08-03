@@ -158,11 +158,11 @@ define("PAGE_CODE", json_encode(array(
     258 => "sms_records.php||",
     259 => "client_life.php||",
     260 => "client_update.php||",
+    261 => "locked_transactions.php||",
     )));
 class Access_Controller
 {
-    public function get_all_pages()
-    {
+    public function get_all_pages(){
         return json_decode(PAGE_CODE);
     }
     public function validate_access()

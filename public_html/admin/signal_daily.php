@@ -101,26 +101,11 @@ if(isset($_POST['new_signal'])){
     $signal_time = $db_handle->sanitizePost($_POST['signal_time']);
 	$signal_date = $db_handle->sanitizePost($_POST['signal_date']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
-	//$trend = $db_handle->sanitizePost($_POST['trend']);
+
     $buy_option = 1;
     $sell_option = 2;
 
-	/*if(($options == 1) || ($options == 3)){
-    $query ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
-              VALUE('$symbol','1','$buy_price', '$buy_price_tp', '$buy_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')";
 
-	}
-	if(($options == 2) || ($options == 3)){
-		$query2 ="INSERT INTO signal_daily(symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, trend, views)
-              VALUE('$symbol','2' , '$sell_price', '$sell_price_tp', '$sell_price_sl', '$signal_date', '$signal_time', '$comment', '$trend', '0')";
-	}
-    /*$result =$db_handle->runQuery($query);
-	$result2 =$db_handle->runQuery($query2);
-    if($result || $result2) {
-        $message_success = "Signal Successfully created for ".datetime_to_text($signal_time);
-    } else {
-        $message_error = "Something went wrong. Please try again.";
-    }*/
 	if(!empty($buy_price) && !empty($buy_price_tp) && !empty($buy_price_sl)){
         $new_schedule1 = $signal_object->new_signal_schedule($symbol, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment);
     }
@@ -128,7 +113,7 @@ if(isset($_POST['new_signal'])){
         $new_schedule2 = $signal_object->new_signal_schedule($symbol, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment);
     }
     if($new_schedule1 || $new_schedule2){
-        $message_success = "Signal Successfully created for ".datetime_to_text($signal_time);
+        $message_success = "Signal Successfully created for " . datetime_to_text($signal_time);
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
@@ -148,7 +133,7 @@ if(isset($_POST['update_signal'])){
 
     $result = $signal_object->update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type);
     if($result) {
-        $message_success = "Signal Updated Successfully created for ".datetime_to_text($signal_time);
+        $message_success = "Signal Updated Successfully created for " . datetime_to_text($signal_time);
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
@@ -395,7 +380,6 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <center><?php if($row['trigger_status'] == 0){?><form method="post" action=""><input name="symbol_id" type="hidden" value="<?php echo $row['symbol_id'];?>"><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><button name="trigger" type="submit" class="btn btn-success btn-sm">Confirm Trade Trigger</button></form><?php }?></center>
                                                     <center><?php if($row['trigger_status'] == 1){?><form method="post" action=""><input name="symbol_id" type="hidden" value="<?php echo $row['symbol_id'];?>"><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><input name="entry_price" type="hidden" value="<?php echo $row['entry_price'];?>"><button name="close" type="submit" class="btn btn-success btn-sm">Confirm Trade Close</button></form><?php }?></center>
                                                     <br><hr> <form  role="form" method="post" action="">
                                                         <div class="form-group row">

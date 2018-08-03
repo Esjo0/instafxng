@@ -16,32 +16,34 @@ foreach ($signals as $row1) {
     if (!empty($row1)) {
         $pair = str_replace('/', '', $rowl['symbol']);
         $url = "https://forex.1forge.com/1.0.3/quotes?pairs=$pair&api_key=$key";
-
-//call api
         $json = file_get_contents($url);
         $response = (array) json_decode($json, true);
-
-        $dec = strlen(substr(strrchr($response[0]['price'], "."), 1));
-        $diff1 = substr(strrchr($response[0]['price'], "."),1,$dec);
-
-        $diff2 = substr(strrchr($row1['price'], "."),1,$dec);
-
-       $diff = (integer)$diff1 - (integer)$diff2;
-
-        if($row1['order_type'] == 1){
-            //buy
-            if($diff < 0){$gain = "LOSS";}else{$gain = "  PROFIT";}
-
-        }elseif($row1['order_type'] == 2){
-            //sell
-            if($diff < 0){$gain = "PROFIT";}else{$gain = "  LOSS";}
-        }
-
-        $diff = str_replace("-", '', $diff);
-
-
-       $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$diff, pl=>$gain);
-
+////call api
+//
+//
+//        $dec = strlen(substr(strrchr($response[0]['price'], "."), 1));
+//        $diff1 = substr(strrchr($response[0]['price'], "."),1,$dec);
+//
+//        $diff2 = substr(strrchr($row1['price'], "."),1,$dec);
+//
+//       $diff = (integer)$diff1 - (integer)$diff2;
+//
+//        if($row1['order_type'] == 1){
+//            //buy
+//            if($diff < 0){$gain = "   LOSS";}else{$gain = "  PROFIT";}
+//
+//        }elseif($row1['order_type'] == 2){
+//            //sell
+//            if($diff < 0){$gain = "   PROFIT";}else{$gain = "  LOSS";}
+//        }
+//
+//        $diff = str_replace("-", '', $diff);
+//        $diff = substr($diff,$dec-2,2);
+//
+//       $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$diff, pl=>$gain);
+        $price = $response[0]['price'];
+        $price = (string)$price;
+        $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$price);
     }
 }
 

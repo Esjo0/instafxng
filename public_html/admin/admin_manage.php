@@ -247,6 +247,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="36" id="" <?php if (in_array(36, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - All</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="37" id="" <?php if (in_array(37, $my_pages)) { echo 'checked="checked"'; } ?>/> Transaction Calculator</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="38" id="" <?php if (in_array(38, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit - Reversal</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="261" id="" <?php if (in_array(261, $my_pages)) { echo 'checked="checked"'; } ?>/> Review Locked Transactions</label></div></div>
                                     </div>
                                     <hr/>
                                     
@@ -261,6 +262,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="45" id="" <?php if (in_array(45, $my_pages)) { echo 'checked="checked"'; } ?>/> Withdrawal - Declined/Failed</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="46" id="" <?php if (in_array(46, $my_pages)) { echo 'checked="checked"'; } ?>/> Withdrawal - All</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="47" id="" <?php if (in_array(47, $my_pages)) { echo 'checked="checked"'; } ?>/> Transaction Calculator</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="261" id="" <?php if (in_array(261, $my_pages)) { echo 'checked="checked"'; } ?>/> Review Locked Transactions</label></div></div>
                                     </div>
                                     <hr/>
 
