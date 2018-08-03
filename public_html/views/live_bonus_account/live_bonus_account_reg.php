@@ -45,12 +45,12 @@
         <label class="control-label col-sm-3">Terms Of Use:</label>
         <div class="col-sm-9 ">
             <div style="border: 1px solid #e5e5e5; height: 200px; overflow: auto; padding: 10px;">
-                <p class="text-justify">This signal is provided as is by InstaForex Nigeria (www.InstaFxNg.com) and though we have taken
+                <p style="font-size: smaller" class="text-justify">This signal is provided as is by InstaForex Nigeria (www.InstaFxNg.com) and though we have taken
                     utmost care and used the best available tools to generate these signals, by using it you agree
                     to release us from every liability arising directly or indirectly from the use of same signals.</p>
-                <p class="text-justify">Although the source of the signals has been producing about 85% accurate signals, we will advice
+                <p style="font-size: smaller" class="text-justify">Although the source of the signals has been producing about 85% accurate signals, we will advice
                     that you should try it on your demo account before you use them on your live account.</p>
-                <p class="text-justify">Remember Online Forex carries a degree of risk so do not use borrowed or money you cannot afford
+                <p style="font-size: smaller" class="text-justify">Remember Online Forex carries a degree of risk so do not use borrowed or money you cannot afford
                     to lose to trade Forex. Always make sure you apply money management, high lot (volume) can be
                     dangerous. Never enter a trade with more than 10% of your account size.</p>
             </div>
