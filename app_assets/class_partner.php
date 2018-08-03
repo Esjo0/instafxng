@@ -146,6 +146,45 @@ MAIL;
             return false;
         }
     }
+
+    public function get_selected_pending_application($partner_code) {
+        global $db_handle;
+
+        $query = "SELECT * FROM partner WHERE partner_code = '$partner_code' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $found_application = $db_handle->fetchAssoc($result);
+        $found_application = $found_application[0];
+
+        return $found_application ? $found_application : false;
+    }
+
+    public function modify_partner_application($partner_id, $partner_status) {
+        global $db_handle;
+
+        $query = "UPDATE partner SET status = '$partner_status' WHERE partner_code = '$partner_id' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function get_partner_by_code($partner_code) {
+        global $db_handle;
+
+        $query = "SELECT * FROM partner WHERE partner_code = '$partner_code' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) == 1) {
+            $fetched_data = $db_handle->fetchAssoc($result);
+            $fetched_data = $fetched_data[0];
+            return $fetched_data;
+        } else {
+            return false;
+        }
+    }
     
     // function to get referal details
     public function get_referalls($partner_code)
@@ -480,25 +519,13 @@ MAIL;
 
     }
 
-    public function request_whitdrawal($partner_code, $account_id, $amount, $type,  $comment)
-    {
+    public function request_whitdrawal($partner_code, $account_id, $amount, $type,  $comment) {
         global $db_handle;
 
         $query = "INSERT INTO partner_payment (partner_code, account_id, amount, trans_type, comment) VALUES ('$partner_code', '$account_id', '$amount', 1, '$comment')";
         $result = $db_handle->runQuery($query);
 
         return $result ? true : false;
-    }
-
-    public function get_partner_by_partner_code($partner_code) {
-
-        global $db_handle;
-        $query = "SELECT * FROM partner WHERE partner_code = '$partner_code' LIMIT 1";
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-        $fetched_data = $fetched_data[0];
-
-        return $fetched_data;
     }
 }
 

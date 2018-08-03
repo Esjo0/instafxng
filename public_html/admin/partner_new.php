@@ -5,7 +5,7 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT * FROM partner WHERE status = '1'";
+$query = "SELECT * FROM partner WHERE status = '1' ORDER BY created DESC ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -100,9 +100,9 @@ $all_new_partners = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['phone_number']; ?></td>
                                             <td><?php echo $row['partner_code']; ?></td>
                                             <td><?php echo partner_status($row['status']); ?></td>
-                                            <td><?php echo $row['created']; ?></td>
+                                            <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a target="_blank" title="View" class="btn btn-info" href="partner_detail.php?id=<?php echo encrypt_ssl($row['partner_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="View" class="btn btn-info" href="partner_manage_application.php?id=<?php echo encrypt_ssl($row['partner_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

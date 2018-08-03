@@ -173,7 +173,6 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(51, $my_pages_sidebar)) { ?><li><a href="partner_new.php">New Partners</a></li><?php } ?>
                         <?php if (in_array(51, $my_pages_sidebar)) { ?><li><a href="partner_view.php">View Partners</a></li><?php } ?>
                         <?php if (in_array(52, $my_pages_sidebar)) { ?><li><a href="partner_credentials.php">Approve Credentials</a></li><?php } ?>
-                        <?php if (in_array(54, $my_pages_sidebar)) { ?><li><a href="partner_set_commission.php">Set Commission Rate</a></li><?php } ?>
                         <?php if (in_array(55, $my_pages_sidebar)) { ?><li><a href="partner_pending_payout.php">Pending Payout</a></li><?php } ?>
                         <?php if (in_array(56, $my_pages_sidebar)) { ?><li><a href="partner_payout_history.php">Payout History</a></li><?php } ?>
                     </ul>

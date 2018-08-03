@@ -4,12 +4,15 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
-    $search_text = $_POST['search_text'];
-    $query = "SELECT us.first_name,us.middle_name,us.last_name,us.email,us.phone,par.partner_code,parpay.account_id,parpay.amount,parpay.comment FROM user us,partner_payment parpay WHERE us.user_code=parpay.user_code AND (CONCAT_WS(' ', us.first_name, us.last_name) LIKE '%$search_text%' OR CONCAT_WS(' ', us.first_name, us.middle_name, us.last_name) LIKE '%$search_text%' OR us.email LIKE '%$search_text%' OR us.phone LIKE '%$search_text%' OR parpay.partner_code LIKE '%$search_text%'  OR us.first_name LIKE '%$search_text%' OR us.last_name LIKE '%$search_text%') ORDER BY parpay.partner_pay_id DESC ";
-} else {
-    $query = "SELECT us.first_name,us.middle_name,us.last_name,us.email,us.phone,par.partner_code,parpay.account_id,parpay.amount,parpay.comment FROM user us,partner_payment parpay WHERE us.user_code=parpay.user_code ORDER BY parpay.partner_pay_id DESC ";
-}
+$query = "SELECT pw.transaction_id, pw.amount, pw.transfer_reference, pw.created, p.partner_code,
+        p.first_name, p.last_name, p.email_address, p.phone_number, pb.bank_acct_no, pb.bank_acct_name,
+        b.bank_name, p.earning_balance
+        FROM partner_withdrawal AS pw
+        INNER JOIN partner AS p ON pw.partner_code = p.partner_code
+        INNER JOIN partner_bank AS pb ON pw.partner_bank_id = pb.partner_bank_id
+        INNER JOIN bank AS b ON pw.partner_bank_id = b.bank_id
+        WHERE pw.status = '4' ";
+
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -29,7 +32,7 @@ $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
 $offset = ($currentpage - 1) * $rowsperpage;
-$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $all_partner_payout = $db_handle->fetchAssoc($result);
 
@@ -79,7 +82,6 @@ $all_partner_payout = $db_handle->fetchAssoc($result);
                                             <th>Account No</th>
                                             <th>Partner Code</th>
                                             <th>Amount</th>
-                                            <th>Trans Type</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -87,11 +89,12 @@ $all_partner_payout = $db_handle->fetchAssoc($result);
                                     <?php if(isset($all_partner_payout) && !empty($all_partner_payout)) { foreach ($all_partner_payout as $row) { ?>
                                         <tr>
                                             <td><?php echo $row['first_name'].' '.$row['middle_name'].' '.$row['last_name']; ?></td>
-                                            <td><?php echo $row['ifxaccount_id']; ?></td>
+                                            <td><?php echo $row['bank_acct_no']; ?></td>
                                             <td><?php echo $row['partner_code']; ?></td>
                                             <td><?php echo $row['amount']; ?></td>
-                                            <td><?php echo $row['trans_type']; ?></td>
-                                            <td><a class="btn btn-success" href="partner_payout_history_details.php?action=view&id=<?php echo $row['partner_pay_id']; ?>"><i class="glyphicon glyphicon-zoom-in icon-white"></i> View</a></td>
+                                            <td>
+<!--                                                <a class="btn btn-success" href="partner_payout_history_details.php?action=view&id=--><?php //echo encrypt_ssl($row['partner_withdrawal_id']); ?><!--"><i class="glyphicon glyphicon-zoom-in icon-white"></i> View</a>-->
+                                            </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
