@@ -18,6 +18,20 @@ foreach ($signals as $row1) {
         $url = "https://forex.1forge.com/1.0.3/quotes?pairs=$pair&api_key=$key";
         $json = file_get_contents($url);
         $response = (array) json_decode($json, true);
+        $dpips = $signal_object->get_pips($response[0]['price'], $row1['price']);
+        $id = $row1['signal_id'];
+        $query = "SELECT pips FROM signal_daily WHERE signal_id = '$id'";
+        $result = $db_handle->runQuery($query);
+        $result = $db_handle->fetchAssoc($result);
+        foreach ($result as $row) {
+            extract($row);
+            $ppips = $pips;
+        }
+        if($dpips > $ppips){
+            $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $dpips);
+        }else{
+            $dpips = $ppips;
+        }
 ////call api
 //
 //
@@ -41,9 +55,11 @@ foreach ($signals as $row1) {
 //        $diff = substr($diff,$dec-2,2);
 //
 //       $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$diff, pl=>$gain);
+
         $price = $response[0]['price'];
         $price = (string)$price;
-        $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$price);
+        $dpips = (string)$dpips;
+        $quotes[count($quotes)] = array( symbol=>$row1['signal_id'], price=>$price, pips=>$dppips);
     }
 }
 

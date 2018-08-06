@@ -66,14 +66,13 @@ class Signal_Management
         $query = "SELECT DISTINCT SS.symbol 
                   FROM signal_daily AS SD 
                   INNER JOIN signal_symbol AS SS ON SD.symbol_id
-                  WHERE SD.trigger_date = '$date' ";
+                  WHERE SD.trigger_date = '$date' AND SD.symbol_id = SS.symbol_id ";
         $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
         $pairs = array();
         foreach ($result as $row) {
             $pairs[count($pairs)] = $row['symbol'];
         }
         $pairs = implode(',', $pairs);
-        $pairs = str_replace('/', '', $pairs);
         return $pairs;
     }
 
@@ -373,6 +372,8 @@ WHERE SD.trigger_date = '$date'";
     public function update_signal_daily_FILE($signal_array)
     {
         file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+//        file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+
     }
 
     public function get_pips($market_price, $price)
@@ -466,14 +467,19 @@ WHERE SD.trigger_date = '$date'";
 
     public function UI_show_live_quotes()
     {
+        $date = date('Y-m-d');
         global $db_handle;
-        $query = "SELECT symbol FROM signal_symbol";
+        $query = "SELECT DISTINCT SS.symbol 
+                  FROM signal_daily AS SD 
+                  INNER JOIN signal_symbol AS SS ON SD.symbol_id
+                  WHERE SD.trigger_date = '$date' AND SD.symbol_id = SS.symbol_id ";
         $symbols = $db_handle->fetchAssoc($db_handle->runQuery($query));
         $symbol_array = array();
         foreach ($symbols as $key => $value) {
             $symbol_array['symbols'][count($symbol_array['symbols'])] = array('title' => $value['symbol'], 'proName' => str_replace('/', '', $value['symbol']));
         }
         $symbol_array['locale'] = 'en';
+
         echo "<div class='tradingview-widget-container'>";
         echo "<div class='tradingview-widget-container__widget'></div>";
         echo "<script type='text/javascript' src='https://s3.tradingview.com/external-embedding/embed-widget-tickers.js' async>";

@@ -1,9 +1,11 @@
 <?php
 set_include_path('/home/tboy9/public_html/init/');
+//set_include_path('../../public_html/init/');
 require_once 'initialize_general.php';
 $signal_object = new Signal_Management();
 
 $scheduled_signals = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
+//$scheduled_signals = (array)json_decode(file_get_contents('../../models/signal_daily.json'));
 
 if (!empty($scheduled_signals)) {
     for ($i = 0; $i < count($scheduled_signals); $i++) {
@@ -81,11 +83,11 @@ function trigger_buy_order($row)
     if ($response[0]['price'] >= $row['take_profit']) {
         $exit_time = date('Y-m-d h:i:s');
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', $exit_time, $pips);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips);
     }
     if ($response[0]['price'] <= $row['stop_loss']) {
         $exit_time = date('Y-m-d h:i:s');
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', $exit_time, $pips);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips);
     }
 }
