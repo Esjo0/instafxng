@@ -9,7 +9,7 @@ if($additional_msg == 'msg')
 {
     $special_msg = <<<msg
         <p>Our Free 85% Accurate High Precision trading signals have gone Viral!</p>
-        <p>Just yesterday, It booked 70 pips profit to the accounts of traders who use them.</p>
+        <p>Last week, It booked 300 pips profit to the account of traders who use them.</p>
 
         <p>Today, it hit 60 pips take profit, <a href="http://bit.ly/2JysCvT" target="_blank">Check it out here</a>.</p>
         <p>Started using the signals yet?</p>
