@@ -1,3 +1,5 @@
+ALTER TABLE `signal_daily` ADD `exit_price` DECIMAL(10,5) NULL DEFAULT NULL AFTER `exit_type`;
+
 ALTER TABLE `signal_daily` DROP `views`;
 ALTER TABLE `signal_daily` ADD `views` INT(11) NOT NULL AFTER `note`;
 ALTER TABLE `signal_daily` CHANGE `pips` `pips` DECIMAL(10,4) NULL DEFAULT NULL;

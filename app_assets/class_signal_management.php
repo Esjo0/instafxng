@@ -371,8 +371,8 @@ WHERE SD.trigger_date = '$date'";
 
     public function update_signal_daily_FILE($signal_array)
     {
-        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-//        file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+       file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+   //      file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
@@ -410,7 +410,7 @@ WHERE SD.trigger_date = '$date'";
         return $diff;
     }
 
-    public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips)
+    public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips, $exit_type, $exit_price)
     {
         global $db_handle;
         $query = "UPDATE signal_daily SET trigger_status = '$trigger_status' ";
@@ -425,6 +425,12 @@ WHERE SD.trigger_date = '$date'";
         }
         if (!empty($pips)) {
             $query .= ", pips = $pips";
+        }
+		if (!empty($exit_type)) {
+            $query .= ", exit_type = '$exit_type'";
+        }
+		if (!empty($exit_price)) {
+            $query .= ", exit_price = '$exit_price'";
         }
         $query .= " WHERE signal_id = $signal_id ";
         $result = $db_handle->runQuery($query);
