@@ -7,32 +7,42 @@ $thisPage = "Home";
 $page_requested = "";
 
 if (isset($_POST['partner_signup'])) {
-    foreach ($_POST as $key => $value) {
-        $_POST[$key] = $db_handle->sanitizePost(trim($value));
-    }
-    extract($_POST);
 
-    if(
-        empty($your_email) ||
-        empty($your_first_name) ||
-        empty($your_last_name) ||
-        empty($your_phone_number) ||
-        empty($your_address) ||
-        empty($your_city) ||
-        empty($your_state)
-    ) {
-        $message_error = "Kindly fill all required fields";
-    } elseif(!check_email($your_email)) {
-        $message_error = "You have entered an invalid email";
-    } elseif($partner_object->email_phone_is_duplicate($email, $phone)) {
-        $message_error = "You have entered a duplicate email or phone number, please try again.";
-    } else {
-        $new_partner = $partner_object->new_partner($your_first_name, $your_last_name, $your_email, $your_phone_number, $your_address, $your_city, $your_state, $your_email_address);
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+        $responseData = json_decode($verifyResponse);
+        if ($responseData->success) {
 
-        if($new_partner) {
-            $message_success = $new_partner . " You have successfully registered, please check your email for further instructions.";
-        } else {
-            $message_error = "An error occurred, your registration failed, please try again.";
+            foreach ($_POST as $key => $value) {
+                $_POST[$key] = $db_handle->sanitizePost(trim($value));
+            }
+            extract($_POST);
+
+            if(
+                empty($your_email) ||
+                empty($your_first_name) ||
+                empty($your_last_name) ||
+                empty($your_phone_number) ||
+                empty($your_address) ||
+                empty($your_city) ||
+                empty($your_state)
+            ) {
+                $message_error = "Kindly fill all required fields";
+            } elseif(!check_email($your_email)) {
+                $message_error = "You have entered an invalid email";
+            } elseif($partner_object->email_phone_is_duplicate($email, $phone)) {
+                $message_error = "You have entered a duplicate email or phone number, please try again.";
+            } else {
+                $new_partner = $partner_object->new_partner($your_first_name, $your_last_name, $your_email, $your_phone_number, $your_address, $your_city, $your_state, $your_email_address);
+
+                if($new_partner) {
+                    $message_success = $new_partner . " You have successfully registered, please check your email for further instructions.";
+                } else {
+                    $message_error = "An error occurred, your registration failed, please try again.";
+                }
+            }
+
         }
     }
 }
@@ -150,7 +160,7 @@ $all_states = $system_object->get_all_states();
                                                     <?php } ?>
                                                 </select>
                                             </div>
-
+                                            <div class="form-group"><div class="g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>
                                             <div class="form-group">
                                                 <input name="partner_signup" type="submit" class="btn btn-success" value="Register" />
                                             </div>
@@ -174,6 +184,6 @@ $all_states = $system_object->get_all_states();
             <?php require_once 'layouts/footer.php'; ?>
             </div>
         </div>
-        
+        <script src='https://www.google.com/recaptcha/api.js'></script>
     </body>
 </html>
