@@ -15,13 +15,14 @@ if (!empty($scheduled_signals)) {
         $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=" . $signal_object->quotes_api_key();
         $get_data = file_get_contents($url);
         $response = (array)json_decode($get_data, true);
-
+		$entry_price = $response[0]['price'];
         //Trigger Sell Order
-        if (($response[0]['price'] <= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2)) {
+        if (($response[0]['price'] <= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2) && !empty($response[0][price])) {
             if ($row['trigger_status'] != 1) {
                 $entry_price = $response[0]['price'];
                 $entry_time = date('Y-m-d h:i:s');
-                $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '');
+				echo $entry_price;
+                $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '');
 
                 if ($row['order_type'] == 2) {
                     trigger_sell_order($row);
@@ -34,11 +35,12 @@ if (!empty($scheduled_signals)) {
         }
 
         //Trigger Buy Order
-        if (($response[0]['price'] >= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 1)) {
+        if (($response[0]['price'] >= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 1) && !empty($response[0][price])) {
             if ($row['trigger_status'] != 1) {
                 $entry_price = $response[0]['price'];
+				echo $entry_price;
                 $entry_time = date('Y-m-d h:i:s');
-                $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '');
+                $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '');
                 if ($row['order_type'] == 1) {
                     trigger_buy_order($row);
                 }
@@ -59,15 +61,19 @@ function trigger_sell_order($row)
     $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=" . $signal_object->quotes_api_key();
     $get_data = file_get_contents($url);
     $response = (array)json_decode($get_data, true);
-    if ($response[0]['price'] <= $row['take_profit']) {
+    if (($response[0]['price'] <= $row['take_profit']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
+		$exit_type = "Automatic";
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips);
+		$exit_price = $response[0]['price'];
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
     }
-    if ($response[0]['price'] >= $row['stop_loss']) {
+    if (($response[0]['price'] >= $row['stop_loss']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
+		$exit_type = "Automatic";
+		$exit_price = $response[0]['price'];
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
     }
 }
 
@@ -80,14 +86,18 @@ function trigger_buy_order($row)
     $get_data = file_get_contents($url);
     $response = (array)json_decode($get_data, true);
 
-    if ($response[0]['price'] >= $row['take_profit']) {
+    if (($response[0]['price'] >= $row['take_profit']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
+		$exit_type = "Automatic";
+		$exit_price = $response[0]['price'];
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
     }
-    if ($response[0]['price'] <= $row['stop_loss']) {
+    if (($response[0]['price'] <= $row['stop_loss']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
+		$exit_type = "Automatic";
+		$exit_price = $response[0]['price'];
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
     }
 }
