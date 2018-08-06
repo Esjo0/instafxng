@@ -17,6 +17,33 @@ body {
     background: url("../images/bg.gif") repeat;
 }
 
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 10px
+}
+
+.padding-top-50 {
+    padding-top: 50px
+}
+
+#how-it-works p {
+    font-size: 16px
+}
+
+#how-it-works a {
+    text-decoration: none;
+    color: #ff6900
+}
+
+#how-it-works a.btn {
+    color: #fff
+}
+
+#how-it-works p {
+    font-size: 14px;
+}
+
 p, li {
     font-size: 1.15em;
 }
@@ -33,6 +60,8 @@ p, li {
     padding-top: 50px;
 }
 
+.row-space-4{ margin-bottom: 10px }
+
 .no-gutter > [class*='col-'] {
     padding-right:0;
     padding-left:0;
@@ -40,6 +69,11 @@ p, li {
 
 .masthead {
     padding: 10px;
+}
+
+.banner {
+    background: #ddd url(../images/bgw.jpg);
+    background-size: cover;
 }
 
 #footer {
@@ -66,12 +100,6 @@ p, li {
     padding: 0 !important;
 }
 
-#header hr {
-    border: 1px dotted #CACACA;
-    margin-top: 3px;
-    margin-bottom: 10px;
-}
-
 #header-blockquote {
     margin: 0 !important;
     padding-bottom: 0 !important;
@@ -89,15 +117,24 @@ p, li {
 
 /* MEDIA QUERIES GOES HERE */
 @media (max-device-width: 480px){
-    
+    .banner {
+        background-size: cover;
+        min-height: 200px;
+    }
 }
 
 @media (max-width: 767px){ /* xs */
-    
+    .banner {
+        background-size: cover;
+        min-height: 200px;
+    }
 }
 
 @media (min-width: 768px){ /* sm */
- 
+    .banner {
+        background-size: cover;
+        min-height: 450px;
+    }
 }
 
 @media (min-width: 992px){ /* md */
@@ -107,6 +144,11 @@ p, li {
     #main-body-side-bar {
         padding-right: 15px;
     }
+
+    .banner {
+        background-size: cover;
+        min-height: 450px;
+    }
 }
 
 @media (min-width: 1200px){ /* lg */
@@ -114,4 +156,9 @@ p, li {
     }
 
     #main-logo { text-align: left; }
+
+    .banner {
+        background-size: cover;
+        min-height: 600px;
+    }
 }

@@ -15,39 +15,49 @@ $thisPage = "Home";
     <?php require_once 'layouts/head_meta.php'; ?>
 </head>
 <body>
-<?php require_once 'layouts/header.php'; ?>
 
-<section class="padding-bottom-50 padding-top-25 white-bg">
+<!-- Header Section: Logo and Live Chat  -->
+<header id="header" class="banner">
     <div class="container-fluid no-gutter masthead">
         <div class="row">
-            <div id="how-it-works" class="col-sm-8 col-md-6 col-md-offset-3 col-sm-offset-2 padding-top-50 padding-bottom-25 wrapper-full clearfix text-center">
-                <h2 class="">Welcome, let's walk you through</h2>
-                <p>Tuteria helps you connect with qualified tutors in your area to master the subjects,
-                    skills and exams that matter to you.</p>
+            <div id="main-logo" class="col-sm-12 col-md-5">
+                <a href="./" title="Home Page"><img src="images/ifxlogo.png" alt="Instaforex Nigeria Logo" /></a>
             </div>
-            <div class="col-sm-12">
-                <div class=" col-sm-4 col-md-4">
+        </div>
+    </div>
+</header>
+
+<section class="padding-bottom-50 white-bg">
+    <div class="container mobile-top-25 no-padding-total">
+        <div class="row">
+            <div id="how-it-works" class="col-sm-8 col-md-6 col-md-offset-3 col-sm-offset-2 padding-top-50 padding-bottom-25 clearfix text-center">
+                <h2 class="">Instafxng Partnership Program (IPP)</h2>
+                <p>IPP is an easy means of making an extra income. Just refer new clients and start earning. You earn for as
+                long as your referrals are active.</p>
+            </div>
+            <div class="col-sm-12 padding-top-25">
+                <div class=" col-sm-4 col-md-4 row-space-4">
                     <div class="icon-box-6-item text-center">
-                        <i class="pro-img"></i>
-                        <h3 class="text-center">Trusted Professionals<br></h3>
-                        <span class="inline-block">Every tutor is experienced, friendly, manually
-                            screened, and thoroughly vetted for highest quality.</span>
-                    </div>
-                </div>
-                <div class=" col-sm-4 col-md-4">
-                    <div class="icon-box-6-item text-center">
-                        <i class="pace-img"></i>
-                        <h3 class="text-center">Learn at Your Pace<br></h3>
-                        <span class="inline-block">Book online in about 60 seconds and plan your private
-                            lessons according to your own schedule.</span>
+                        <i class="fa fa-exchange fa-5x"></i>
+                        <h3 class="text-center">Little Effort Big Income<br></h3>
+                        <span class="inline-block">Only a little effort is required on your part, just share your referral
+                        links with friends and everywhere on the internet, we will handle the rest.</span>
                     </div>
                 </div>
                 <div class=" col-sm-4 col-md-4 row-space-4">
                     <div class="icon-box-6-item text-center">
-                        <i class="budget-img"></i>
-                        <h3 class="text-center">Safe and Secure<br></h3>
-                        <span class="inline-block">Trusted by 100s of happy parents, professionals
-                            and students with more than 90% success rate.</span>
+                        <i class="fa fa-bar-chart fa-5x"></i>
+                        <h3 class="text-center">Real Time Reports<br></h3>
+                        <span class="inline-block">Our real time reporting system shows you details of your referrals
+                        and your earnings in real time. See how your earnings grow by the hour.</span>
+                    </div>
+                </div>
+                <div class=" col-sm-4 col-md-4 row-space-4">
+                    <div class="icon-box-6-item text-center">
+                        <i class="fa fa-money fa-5x"></i>
+                        <h3 class="text-center">Fast Withdrawals<br></h3>
+                        <span class="inline-block">Once you have earned the minimum payout of $50 and above,
+                        request for withdrawal and get the Naira equivalent in your bank account within 24 hours.</span>
                     </div>
                 </div>
             </div>
