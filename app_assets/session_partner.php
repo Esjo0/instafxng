@@ -1,8 +1,5 @@
 <?php
-// A class to help work with Sessions
-// In our case, primarily to manage logging users in and out
-// Keep in mind when working with sessions that it is generally
-// inadvisable to stor DB-related objects in sessions
+
 class SessionPartner {    
     private $logged_in = false;
     public $partner_code;
@@ -30,13 +27,12 @@ class SessionPartner {
         // database should find user based on username/password
         if($partner) {
             $this->partner_code = $_SESSION['partner_code'] = $partner['partner_code'];
-            $_SESSION['partner_user_code'] = $partner['user_code'];
             $_SESSION['partner_status'] = $partner['status'];
-            $_SESSION['partner_email'] = $partner['email'];
+            $_SESSION['partner_email'] = $partner['email_address'];
             $_SESSION['partner_first_name'] = $partner['first_name'];
             $_SESSION['partner_middle_name'] = $partner['middle_name'];
             $_SESSION['partner_last_name'] = $partner['last_name'];
-            $_SESSION['partner_phone'] = $partner['phone'];
+            $_SESSION['partner_phone'] = $partner['phone_number'];
             $_SESSION['partner_time'] = time();
             $this->logged_in = true;
         }
@@ -44,7 +40,6 @@ class SessionPartner {
     
     public function logout() {
         unset($_SESSION['partner_code']);
-        unset($_SESSION['partner_user_code']);
         unset($_SESSION['partner_status']);
         unset($_SESSION['partner_email']);
         unset($_SESSION['partner_first_name']);

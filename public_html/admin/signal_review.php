@@ -185,13 +185,13 @@ function table_context($trigger_status){
                                             <span><b>Price:</b> <?php echo $row['price']; ?></span><br/>
                                             <span><b>Take Profit:</b> <?php echo $row['take_profit']; ?></span><br/>
                                             <span><b>Stop Loss:</b> <?php echo $row['stop_loss']; ?></span><br/>
-                                            <span><b>Date Created:</b> <?php echo datetime_to_text2($row['created']); ?></span><br/>
+                                            <span><b>Date Created:</b> <?php echo datetime_to_text($row['created']); ?></span><br/>
 											<span><b>Keynote:</b> <?php echo $row['note']; ?>
                                         </td>
                                         <td>
                                             <span><b>Entry Price:</b> <?php echo $row['entry_price']; ?></span><br/>
-                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text2($row['entry_time']);} ?></span><br/>
-                                            <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text2($row['exit_time']);} ?></span><br/>
+                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);} ?></span><br/>
+                                            <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text($row['exit_time']);} ?></span><br/>
                                             <span><b>Pips:</b> <?php echo $row['pips']; ?></span><br/>
 											<span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
 											<span><b>Exit Price:</b> <?php echo $row['exit_price']; ?></span>

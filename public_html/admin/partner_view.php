@@ -4,12 +4,8 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
-    $search_text = $_POST['search_text'];
-    $query = "SELECT us.first_name,us.middle_name,us.last_name,us.email,us.phone,par.settlement_ifxaccount_id FROM user us,partner par WHERE us.user_code=par.user_code AND (CONCAT_WS(' ', us.first_name, us.last_name) LIKE '%$search_text%' OR CONCAT_WS(' ', us.first_name, us.middle_name, us.last_name) LIKE '%$search_text%' OR us.email LIKE '%$search_text%' OR us.phone LIKE '%$search_text%' OR par.settlement_ifxaccount_id LIKE '%$search_text%'  OR us.first_name LIKE '%$search_text%' OR us.last_name LIKE '%$search_text%') ORDER BY par.partner_id DESC ";
-} else {
-    $query = "SELECT us.first_name,us.middle_name,us.last_name,us.email,us.phone,us.user_code,par.settlement_ifxaccount_id,par.partner_code,par.status,par.created FROM user us,partner par WHERE us.user_code=par.user_code ORDER BY par.partner_id DESC ";
-}
+$query = "SELECT * FROM partner ORDER BY created DESC ";
+
 $numrows = $db_handle->numRows($query);
 
 // For search, make rows per page equal total rows found, meaning, no pagination
@@ -97,14 +93,16 @@ $all_partners = $db_handle->fetchAssoc($result);
                                         ?>
                                         <tr>
                                             <td><?php echo $row['first_name'].' '.$row['middle_name'].' '.$row['last_name']; ?></td>
-                                            <td><?php echo $row['email']; ?></td>
-                                            <td><?php echo $row['phone']; ?></td>
+                                            <td><?php echo $row['email_address']; ?></td>
+                                            <td><?php echo $row['phone_number']; ?></td>
                                             <td><?php echo $row['partner_code']; ?></td>
-                                            <td><?php echo $row['status']; ?></td>
-                                            <td><?php echo $row['created']; ?></td>
-                                            <td></td>
+                                            <td><?php echo partner_status($row['status']); ?></td>
+                                            <td><?php echo datetime_to_text($row['created']); ?></td>
+                                            <td>
+                                                <a target="_blank" title="View" class="btn btn-info" href="partner_detail.php?id=<?php echo encrypt_ssl($row['partner_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                            </td>
                                         </tr>
-                                    <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
 
