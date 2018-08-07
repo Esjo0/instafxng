@@ -35,10 +35,30 @@ $trading_comm = $partner_object->view_trading_commission($partner_code);
             <!-- Unique Page Content Starts Here
             ================================================== -->
             <div class="row">
-                <div class="col-sm-12">
-                    <img src="images/partner_pc.png" alt="" class="img-responsive center-block" width="668px" height="226px" />
+                <div class="col-xs-6 col-sm-3">
+                    <div class="dashboard-stats">
+                        <header>Account Balance</header>
+                        <footer>&dollar; 500.00</footer>
+                    </div>
                 </div>
-
+                <div class="col-xs-6 col-sm-3">
+                    <div class="dashboard-stats">
+                        <header>Earnings Yesterday</header>
+                        <footer>&dollar; 50.00</footer>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-3">
+                    <div class="dashboard-stats">
+                        <header>Total Referral</header>
+                        <footer>50</footer>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-3">
+                    <div class="dashboard-stats">
+                        <header>Active Referral</header>
+                        <footer>22</footer>
+                    </div>
+                </div>
             </div>
 
             <div class="section-tint super-shadow">
