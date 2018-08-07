@@ -83,11 +83,11 @@ class Signal_Management
 
     public function new_signal_listener()
     {
-        $file_current_property = date('Y-m-d h:i:s', stat('../../../models/signal_daily.json')['mtime']);
-        $file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
+        $file_current_property = date('Y-m-d h:i:s', stat('/home/tboy9/models/signal_daily.json')['mtime']);
+        $file_old_property = file_get_contents('/home/tboy9/models/signal_daily_bookmark.json');
         if ($file_current_property != $file_old_property) {
             echo 'new-signals-found';
-            file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
+            file_put_contents('/home/tboy9/models/signal_daily_bookmark.json', $file_current_property);
         }
     }
 
@@ -444,11 +444,11 @@ WHERE SD.trigger_date = '$date'";
         return $result;
     }
 
-    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '')
+    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '', $admin_code)
     {
         global $db_handle;
-        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views) 
-                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0)";
+        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views, created_by)
+                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0, '$admin_code')";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
@@ -498,7 +498,7 @@ WHERE SD.trigger_date = '$date'";
 
     public function UI_get_signals_for_sidebar()
     {
-        $signals_side = (array)json_decode(file_get_contents('../../../models/signal_daily.json'));
+        $signals_side = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
         if (!empty($signals_side)) {
             for ($i = 0; $i < count($signals_side); $i++) {
                 $row_side = (array)$signals_side[$i];
