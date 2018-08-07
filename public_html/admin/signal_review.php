@@ -179,7 +179,7 @@ function table_context($trigger_status){
                                 <table  class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr class="<?php table_context($row['trigger_status']) ?>">
-                                        <td rowspan="2"> <p style="font-size: xx-large"><b class='text-danger'><i class='glyphicon glyphicon-arrow-down'></i></b></p> </td>
+                                        <td rowspan="2"> <p style="font-size: xx-large"><?php $signal_object->UI_signal_trend_msg($row['order_type'])?></p></td>
                                         <td>
                                             <span><b>Currency Pair:</b> <?php echo $row['pair']; ?></span><br/>
                                             <span><b>Price:</b> <?php echo $row['price']; ?></span><br/>
@@ -190,8 +190,8 @@ function table_context($trigger_status){
                                         </td>
                                         <td>
                                             <span><b>Entry Price:</b> <?php echo $row['entry_price']; ?></span><br/>
-                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);} ?></span><br/>
-                                            <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text($row['exit_time']);} ?></span><br/>
+                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text3($row['entry_time']);} ?></span><br/>
+                                            <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text3($row['exit_time']);} ?></span><br/>
                                             <span><b>Pips:</b> <?php echo $row['pips']; ?></span><br/>
 											<span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
 											<span><b>Exit Price:</b> <?php echo $row['exit_price']; ?></span>

@@ -83,11 +83,11 @@ class Signal_Management
 
     public function new_signal_listener()
     {
-        $file_current_property = date('Y-m-d h:i:s', stat('../../../models/signal_daily.json')['mtime']);
-        $file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
+        $file_current_property = date('Y-m-d h:i:s', stat('/home/tboy9/models/signal_daily.json')['mtime']);
+        $file_old_property = file_get_contents('/home/tboy9/models/signal_daily_bookmark.json');
         if ($file_current_property != $file_old_property) {
             echo 'new-signals-found';
-            file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
+            file_put_contents('/home/tboy9/models/signal_daily_bookmark.json', $file_current_property);
         }
     }
 
