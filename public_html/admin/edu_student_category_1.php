@@ -1,8 +1,13 @@
 <?php
 require_once("../init/initialize_admin.php");
+if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
-if (!$session_admin->is_logged_in()) {
-    redirect_to("login.php");
+$this_cat = 'cat_1';
+
+if(isset($_POST['edu_sale_track'])){
+    foreach ($_POST[''] as $key => $value){$_POST[$key] = $db_handle->sanitizePost(trim($value));}
+    extract($_POST);
+    edu_sale_track($user_code, $category);
 }
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
@@ -29,19 +34,13 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 $numrows = $db_handle->numRows($query);
 
 // For search, make rows per page equal total rows found, meaning, no pagination for search results
-if (isset($_POST['search_text'])) {
-    $rowsperpage = $numrows;
-} else {
-    $rowsperpage = 20;
-}
+if (isset($_POST['search_text'])) {$rowsperpage = $numrows;}
+else {$rowsperpage = 20;}
 
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
-if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
-    $currentpage = (int) $_GET['pg'];
-} else {
-    $currentpage = 1;
-}
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {$currentpage = (int) $_GET['pg'];}
+else {$currentpage = 1;}
 if ($currentpage > $totalpages) { $currentpage = $totalpages; }
 if ($currentpage < 1) { $currentpage = 1; }
 

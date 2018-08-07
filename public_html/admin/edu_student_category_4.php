@@ -1,8 +1,13 @@
 <?php
 require_once("../init/initialize_admin.php");
+if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
-if (!$session_admin->is_logged_in()) {
-    redirect_to("login.php");
+$this_cat = 'cat_4';
+
+if(isset($_POST['edu_sale_track'])){
+    foreach ($_POST[''] as $key => $value){$_POST[$key] = $db_handle->sanitizePost(trim($value));}
+    extract($_POST);
+    edu_sale_track($user_code, $category);
 }
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
