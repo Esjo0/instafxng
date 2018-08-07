@@ -1,6 +1,10 @@
+ALTER TABLE `signal_daily` ADD `exit_price` DECIMAL(10,5) NULL DEFAULT NULL AFTER `exit_type`;
+
 ALTER TABLE `signal_daily` DROP `views`;
 ALTER TABLE `signal_daily` ADD `views` INT(11) NOT NULL AFTER `note`;
 ALTER TABLE `signal_daily` CHANGE `pips` `pips` DECIMAL(10,4) NULL DEFAULT NULL;
+
+INSERT INTO `system_setting` (constant, description, value, type) VALUE ('PARTNER_MINIMUM_WITHDRAWAL', 'The minimum dollar amount required for a partner to place withdrawal.', 5000, 1);
 
 CREATE TABLE `signal_daily` (
  `signal_id` int(11) NOT NULL AUTO_INCREMENT,

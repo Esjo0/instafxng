@@ -29,7 +29,7 @@ if(isset($_POST['trigger'])){
 
     $entry_price = $response[0]['price'];
     $entry_time = date('Y-m-d h:i:s');
-    $signal_object->trigger_signal_schedule($id, 1, $entry_price, $entry_time, '', '');
+    $signal_object->trigger_signal_schedule($id, 1, $entry_price, $entry_time, '', '', '', '');
     $query = "UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '$id'";
     $result =$db_handle->runQuery($query);
     $signal_array = $signal_object->get_scheduled_signals(date('Y-m-d'));
@@ -56,10 +56,11 @@ if(isset($_POST['close'])){
     $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
-
+$exit_price = $response[0]['price'];
     $exit_time = date('Y-m-d h:i:s');
     $pips = $signal_object->get_pips($response[0]['price'], $entry_price);
-    $signal_object->trigger_signal_schedule($id, 2, '', '', $exit_time, $pips);
+	$exit_type = "Manual";
+    $signal_object->trigger_signal_schedule($id, 2, '', '', $exit_time, $pips, $exit_type, $entry, $exit_price);
 
     $query = "UPDATE signal_daily SET trigger_status = '2' WHERE signal_id = '$id'";
     $signal_array = $signal_object->get_scheduled_signals(date('Y-m-d'));

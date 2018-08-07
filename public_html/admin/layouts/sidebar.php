@@ -82,9 +82,12 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-euro"></i> Bonus Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_accounts.php" title="Bonus Accounts">Active Bonus Accounts</a></li><?php //} ?>
-                        <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_app_moderation.php" title="Moderate Bonus Applications">Moderate Bonus Applications</a></li><?php //} ?>
-                        <?php// if (in_array(24, $my_pages_sidebar)) { ?><li><a href="bonus_list.php" title="Manage Bonus Packages">Manage Bonus Packages</a></li><?php //} ?>
+                        <?php if (in_array(263, $my_pages_sidebar)) { ?><li><a href="bonus_accounts.php" title="Bonus Accounts">Active Bonus Accounts</a></li><?php } ?>
+                        <?php if (in_array(264, $my_pages_sidebar)) { ?><li><a href="bonus_app_moderation.php" title="Moderate Bonus Applications">Moderate Bonus Applications</a></li><?php } ?>
+                        <?php if (in_array(265, $my_pages_sidebar)) { ?><li><a href="bonus_list.php" title="Manage Bonus Packages">Manage Bonus Packages</a></li><?php } ?>
+                        <?php if (in_array(266, $my_pages_sidebar)) { ?><li><a href="bonus_allocation.php" title="Process Bonus Allocation">Process Bonus Allocation</a></li><?php } ?>
+                        <?php if (in_array(267, $my_pages_sidebar)) { ?><li><a href="bonus_defaulting_accounts.php" title="Review Defaulting Accounts">Review Defaulting Accounts</a></li><?php } ?>
+                        <?php if (in_array(268, $my_pages_sidebar)) { ?><li><a href="bonus_successful_accounts.php" title="Review Successful Accounts">Review Successful Accounts</a></li><?php } ?>
                     </ul>
                 </li>
 
@@ -170,10 +173,9 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-suitcase fa-fw"></i> Partner Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                        <?php if (in_array(51, $my_pages_sidebar)) { ?><li><a href="partner_new.php">New Partners</a></li><?php } ?>
                         <?php if (in_array(51, $my_pages_sidebar)) { ?><li><a href="partner_view.php">View Partners</a></li><?php } ?>
-                        <?php if (in_array(52, $my_pages_sidebar)) { ?><li><a href="partner_update.php">Update Partners</a></li><?php } ?>
-                        <?php if (in_array(53, $my_pages_sidebar)) { ?><li><a href="paypartners.php">Pay Partners</a></li><?php } ?>
-                        <?php if (in_array(54, $my_pages_sidebar)) { ?><li><a href="partner_set_commission.php">Set Commission Rate</a></li><?php } ?>
+                        <?php if (in_array(52, $my_pages_sidebar)) { ?><li><a href="partner_credentials.php">Approve Credentials</a></li><?php } ?>
                         <?php if (in_array(55, $my_pages_sidebar)) { ?><li><a href="partner_pending_payout.php">Pending Payout</a></li><?php } ?>
                         <?php if (in_array(56, $my_pages_sidebar)) { ?><li><a href="partner_payout_history.php">Payout History</a></li><?php } ?>
                     </ul>
