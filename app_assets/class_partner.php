@@ -88,27 +88,13 @@ class Partner {
                             <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>It's official! Welcome to the money making gang! lol</p>
-                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
-                                <p>You have made a fantastic decision $last_name!</p>
-                                <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
-                                <p>This is what’s happening right now...</p>
-                                <p>Your Welcome bonus is here!</p>
-                                <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
-                                <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
-                                <p>Let me quickly explain how to get the bonus...</p>
-                                <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
-                                <p>Isn’t this amazing? You bet!</p>
-                                <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
-                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
-                                <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
-                                <p>How amazing will it be for you to get a double of your deposit so you can have more money to trade and more profit to make?</p>
-                                <p>Super amazing, right? </p>
-                                <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the button here to claim your bonus now.</a></p>
-                                <br /><br />
-                                <p>Best Regards,</p>
-                                <p>Mercy,</p>
-                                <p>Client Relationship Manager</p>
+                                <p>Hello $first_name;</p>
+                                <p>Welcome to the Instafxng Partnership system, your partner code is <strong>
+                                $partner_code</strong></p>
+                                <p>Login in at https://instafxng.com/partner/login.php</p>
+                                <p>Password: $new_password</p>
+
+
                                 <p>InstaFxNg Team,<br />
                                    www.instafxng.com</p>
                                 <br /><br />
@@ -127,13 +113,6 @@ class Partner {
                                     <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
                                     <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
                                     <br />
-                                </div>
-                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                                        official Nigerian Representative of Instaforex, operator and administrator
-                                        of the website www.instafxng.com</p>
-                                    <p>To ensure you continue to receive special offers and updates from us,
-                                        please add support@instafxng.com to your address book.</p>
                                 </div>
                             </div>
                         </div>
