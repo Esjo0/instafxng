@@ -795,35 +795,32 @@ function edu_sales_filter($query_result, $filter_criteria){
     global $db_handle;
     switch($filter_criteria){
         //all
-        case '1':
+        case '1': return $query_result;  break;
+
+        //contacted
+        case '2':
             $feedback_array = $query_result;
+            foreach ($query_result as $key => $value){
+                $query = "SELECT sale_stat FROM edu_sales_tracker WHERE user_code = '{$value['user_code']}'";
+                $sale_stat = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
+                if($sale_stat == '0' || empty($sale_stat)){
+                    unset($feedback_array[$key]);
+                }
+            }
+            return $feedback_array;
             break;
 
         //not contacted
         case '3':
             $feedback_array = $query_result;
             foreach ($query_result as $key => $value){
-                $query = "SELECT sale_stat FROM edu_sales_tracker WHERE user_code = {$value['user_code']}";
+                $query = "SELECT sale_stat FROM edu_sales_tracker WHERE user_code = '{$value['user_code']}'";
                 $sale_stat = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
-                var_dump($sale_stat);
                 if($sale_stat == '1'){ unset($feedback_array[$key]); }
             }
-            break;
-
-        //contacted
-        case '2':
-            $feedback_array = $query_result;
-            foreach ($query_result as $key => $value){
-                $query = "SELECT sale_stat FROM edu_sales_tracker WHERE user_code = {$value['user_code']}";
-                $sale_stat = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
-                if($sale_stat == '0' || empty($sale_stat)){
-                    unset($feedback_array[$key]);
-                }
-            }
+            return $feedback_array;
             break;
     }
-
-    return $feedback_array;
 }
 
 function edu_sale_untrack($category, $user_code){
@@ -842,7 +839,6 @@ function UI_sale_status($user_code, $category){
     global $db_handle;
     $query = "SELECT sale_stat, created FROM edu_sales_tracker WHERE sale_cat = '$category' AND user_code = '$user_code' ";
     $sale_stat = (int) $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
-    var_dump($sale_stat);
     $created =  datetime_to_text($db_handle->fetchAssoc($db_handle->runQuery($query))[0]['created']);
     if($sale_stat == 0 || empty($sale_stat)){
         $button = '<button title="Flag this client as contacted" name="edu_sale_track" type="submit" class="btn btn-group-justified btn-xs btn-info"><i class="fa fa-check"></i></buttonFlag>';

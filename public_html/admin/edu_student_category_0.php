@@ -4,6 +4,8 @@ if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
 $this_cat = 'cat_0';
 
+if(empty($_SESSION['cat'])) { $_SESSION['cat'] = '1';}
+
 if(isset($_POST['edu_sale_track_reset'])){edu_sale_track_reset($this_cat);}
 
 if(isset($_POST['cat'])){$_SESSION['cat'] = $_POST['cat'];}
@@ -13,8 +15,6 @@ if(isset($_POST['edu_sale_track'])){
     extract($_POST);
     edu_sale_track($user_code, $category);
 }
-
-if(empty($_SESSION['cat'])) { $_SESSION['cat'] = '1';}
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
@@ -88,21 +88,7 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
 
-                    <div class="search-section">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                    <div class="input-group">
-                                        <input type="hidden" name="search_param" value="all" id="search_param">
-                                        <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                                        </span>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <div class="row">
                         <div class="col-sm-12 text-danger">
@@ -121,6 +107,7 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                 </div>
 
                                 <div id="reset_contact_stat" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -135,6 +122,7 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                             </div>
                                         </div>
                                     </div>
+                                    </form>
                                 </div>
 
 
@@ -147,6 +135,28 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                                 <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All Clients Yet To Be Contacted</button>
                                             </div>
                                         </div>
+                                    </center>
+
+                                    <center>
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-6">
+                                            <div class="search-section">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                            <div class="input-group">
+                                                                <input type="hidden" name="search_param" value="all" id="search_param">
+                                                                <input minlength="3" type="text" class="form-control" name="search_text" placeholder="Search term...">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                                                </span>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3"></div>
                                     </center>
                                 </form>
 
