@@ -406,7 +406,7 @@ WHERE SD.trigger_date = '$date'";
 
         $diff = (integer)$diff1 - (integer)$diff2;
         $dec3 = strlen($diff);
-        $diff = substr($diff, $dec3 - 2, 2);
+        $diff = substr($diff, $dec3 - 3, 2);
         return $diff;
     }
 
