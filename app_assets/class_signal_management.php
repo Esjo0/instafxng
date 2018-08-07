@@ -251,8 +251,7 @@ MAIL;
                                                   </div>
                                             <h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted for </span>$posted_date</span></strong></h6>
                                             </li>
-
-
+                                       </div>
                                    </div>
                                </div>
                           </div>
@@ -260,7 +259,6 @@ MAIL;
                 </div>
             </div>
         </div>
-    </div>
 MAIL;
                 echo $output;
             }
