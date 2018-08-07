@@ -1,6 +1,7 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700);
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700);
-@import url(https://fonts.googleapis.com/css?family=Nunito:700);
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Nunito:700');
+@import url('https://fonts.googleapis.com/css?family=Acme');
 
 header, section, footer, aside, nav, article, figure, details, summary {
     display: block;
@@ -27,6 +28,22 @@ body {
     padding-top: 50px
 }
 
+.jumbo-header {
+    margin-top: 90px;
+    color: #9D0018;
+    font-weight: bolder;
+}
+
+.jumbo-header h1 {
+    font-family: 'Acme', sans-serif;
+    font-size: 40px;
+}
+
+.jumbo-header p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 20px;
+}
+
 #how-it-works p {
     font-size: 16px
 }
@@ -42,6 +59,10 @@ body {
 
 #how-it-works p {
     font-size: 14px;
+}
+
+#top-nav {
+    margin-top: 15px;
 }
 
 p, li {
@@ -125,6 +146,13 @@ p, li {
     #header hr {
         display: none;
     }
+
+    #top-nav { text-align: center; }
+    #main-logo { text-align: center; }
+
+    .jumbo-header {
+        display: none;
+    }
 }
 
 @media (max-width: 767px){ /* xs */
@@ -136,6 +164,14 @@ p, li {
     #header hr {
         display: none;
     }
+
+    #top-nav { text-align: center; }
+    #main-logo { text-align: center; }
+
+    .jumbo-header {
+        display: none;
+    }
+
 }
 
 @media (min-width: 768px){ /* sm */
@@ -144,10 +180,29 @@ p, li {
         min-height: 450px;
     }
 
+    #top-nav { text-align: center; }
+    #main-logo { text-align: center; }
+
     #header hr {
         border: 1px dotted #CACACA;
         margin-top: 3px;
         margin-bottom: 10px;
+    }
+
+    .jumbo-header {
+        margin-top: 50px;
+        color: #9D0018;
+        font-weight: bolder;
+    }
+
+    .jumbo-header h1 {
+        font-family: 'Acme', sans-serif;
+        font-size: 40px;
+    }
+
+    .jumbo-header p {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 20px;
     }
 }
 
@@ -175,6 +230,7 @@ p, li {
     .container-fluid {
     }
 
+    #top-nav { text-align: right; }
     #main-logo { text-align: left; }
 
     .banner {

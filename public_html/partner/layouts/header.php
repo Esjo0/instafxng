@@ -1,5 +1,5 @@
         <!-- Header Section: Logo and Live Chat  -->
-        <header id="header" class="banner">
+        <header id="header">
             <div class="container-fluid no-gutter masthead">
                 <div class="row">
                     <div id="main-logo" class="col-sm-12 col-md-5">
@@ -7,5 +7,4 @@
                     </div>
                 </div>
             </div>
-            <hr />
         </header>

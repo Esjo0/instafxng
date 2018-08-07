@@ -110,9 +110,7 @@ $all_states = $system_object->get_all_states();
                             <div class="row">
                                 <div class="col-sm-12">
 
-                                    <div class="col-sm-6"></div>
-
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <?php require_once 'layouts/feedback_message.php'; ?>
                                         <h5>Sign Up</h5>
                                         <p>Fill the form below to sign up for our partnership program.</p>

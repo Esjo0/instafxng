@@ -55,7 +55,7 @@ p, h1 {
 }
 
 .container-fluid {
-    max-width: 1020px;
+    max-width: 820px;
 }
 
 .no-gutter > [class*='col-'] {
@@ -283,7 +283,7 @@ p, h1 {
 
 @media (min-width: 992px){ /* md */
     .container-fluid {
-        max-width: 1020px !important;
+        max-width: 820px !important;
     }
     
     #main-logo { text-align: left; }
@@ -295,7 +295,7 @@ p, h1 {
 
 @media (min-width: 1200px){ /* lg */
     .container-fluid {
-        max-width: 1020px !important;
+        max-width: 820px !important;
     }
     
     #livechat { text-align: right; }

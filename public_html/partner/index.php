@@ -6,13 +6,25 @@ $thisPage = "Home";
 <html lang="en">
 <head>
     <base target="_self">
+    <base href="http://instafxng/" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Instaforex Nigeria | Instafxng Partnership Program</title>
     <meta name="title" content="Instaforex Nigeria | Online Instant Forex Trading Services"/>
     <meta name="keywords" content="instaforex, forex trading in nigeria, forex seminar, forex trading seminar, how to trade forex, trade forex, instaforex nigeria">
     <meta name="description" content="Instaforex, a multiple award winning international forex broker is the leading Forex broker in Nigeria, open account and enjoy forex trading with us.">
-    <?php require_once 'layouts/head_meta.php'; ?>
+    <link rel="stylesheet" href="css/instafx_partner_landing.css">
+
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
+
+    <link rel="stylesheet" href="css/bootstrap_3.3.5.min.css">
+    <link rel="stylesheet" href="css/font-awesome_4.6.3.min.css">
+    <script src="js/jquery_2.1.1.min.js"></script>
+    <script src="js/bootstrap_3.3.5.min.js"></script>
+
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/validator.min.js"></script>
+    <script src="js/npm.js"></script>
 </head>
 <body>
 
@@ -20,12 +32,25 @@ $thisPage = "Home";
 <header id="header" class="banner">
     <div class="container-fluid no-gutter masthead">
         <div class="row">
-            <div id="main-logo" class="col-sm-12 col-md-5">
+            <div id="main-logo" class="col-sm-12 col-md-9">
                 <a href="./" title="Home Page"><img src="images/ifxlogo.png" alt="Instaforex Nigeria Logo" /></a>
+            </div>
+            <div id="top-nav" class="col-sm-12 col-md-3">
+                <p><a href="partner/signup.php" title="Signup for our Partnership Program"> Register </a>&nbsp;&nbsp; | &nbsp;&nbsp;
+                <a href="partner/login.php" title="Log in to your Partner Cabinet"> Login </a></p>
             </div>
         </div>
     </div>
     <hr />
+
+    <div class="container jumbo-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Make an Extra Income Online with Ease</h1>
+                <p>Partner with us, refer new clients and earn repeatedly. It's easy.</p>
+            </div>
+        </div>
+    </div>
 </header>
 
 <section class="padding-bottom-50 white-bg">
@@ -63,6 +88,30 @@ $thisPage = "Home";
                 </div>
             </div>
 
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6" style="background-color: #2d3436; min-height: 450px; padding: 45px; color: #fff">
+                <h3>2 Ways of Earning</h3>
+                <ol>
+                    <li>Earn a percentage on every deposits</li>
+                    <p>Whenever your referrals make deposits through our website, you will earn a percentage of
+                    that deposit instantly, this will be available for withdrawal on your dashboard.</p>
+
+                    <li>Earn a percentage on every trading commissions</li>
+                    <p>For every commission earned on the trading activites of your referrals, you will earn a
+                    percentage of it.</p>
+                </ol>
+
+                <p><hr /><a href="partner/signup.php" title="Register for IPP" class="btn btn-default btn-lg">Register Now</a></p>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
         </div>
     </div>
 </section>
