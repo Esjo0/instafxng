@@ -63,14 +63,14 @@ function trigger_sell_order($row)
     $response = (array)json_decode($get_data, true);
     if (($response[0]['price'] <= $row['take_profit']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
-		$exit_type = "Automatic";
+		$exit_type = "Take Profit";
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
 		$exit_price = $response[0]['price'];
         $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
     }
     if (($response[0]['price'] >= $row['stop_loss']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
-		$exit_type = "Automatic";
+		$exit_type = "Stop Loss";
 		$exit_price = $response[0]['price'];
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
         $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
@@ -88,14 +88,14 @@ function trigger_buy_order($row)
 
     if (($response[0]['price'] >= $row['take_profit']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
-		$exit_type = "Automatic";
+		$exit_type = "Take Profit";
 		$exit_price = $response[0]['price'];
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
         $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
     }
     if (($response[0]['price'] <= $row['stop_loss']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
-		$exit_type = "Automatic";
+		$exit_type = "Stop Loss";
 		$exit_price = $response[0]['price'];
         $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
         $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
