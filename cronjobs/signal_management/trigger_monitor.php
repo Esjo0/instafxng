@@ -1,6 +1,6 @@
 <?php
-//set_include_path('/home/tboy9/public_html/init/');
-set_include_path('../../public_html/init/');
+set_include_path('/home/tboy9/public_html/init/');
+//set_include_path('../../public_html/init/');
 require_once 'initialize_general.php';
 $signal_object = new Signal_Management();
 

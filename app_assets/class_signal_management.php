@@ -295,7 +295,6 @@ MAIL;
                 break;
         }
         return $msg;
-        var_dump($msg);
     }
 
     public function UI_get_symbol_current_price($symbol)
