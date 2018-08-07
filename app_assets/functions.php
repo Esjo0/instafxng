@@ -647,6 +647,12 @@ function paginate_array($offset, $array, $benchmark)
     return $result;
 }
 
+function random_password( $length = 7 ) {
+    $chars = "abcdefghijkmnpqrtwyz123456789";
+    $password = substr( str_shuffle( $chars ), 0, $length );
+    return $password;
+}
+
 function str_replace_nth($search, $replace, $subject, $nth) {
     $found = preg_match_all('/'.preg_quote($search).'/', $subject, $matches, PREG_OFFSET_CAPTURE);
 
