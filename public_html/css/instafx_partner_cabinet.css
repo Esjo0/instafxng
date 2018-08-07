@@ -87,6 +87,30 @@ p, h1 {
     background-color: #FCEBED;
 }
 
+.dashboard-stats {
+    background-color: #535c68;
+    min-height: 100px;
+    margin-bottom: 10px;
+}
+
+.dashboard-stats header {
+    background-color: #fff;
+    border-top: 1px solid #000;
+    padding: 7px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 18px;
+}
+
+.dashboard-stats footer {
+    border-top: 1px solid #000;
+    padding: 7px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 24px;
+    color: #fff;
+}
+
 #page-top-section h1 {
     color: #E3253E;
 }
@@ -222,7 +246,6 @@ p, h1 {
 .carousel-indicators li.active {
     background-color: #000000;
 }
-
 
 /* Top Navigation */
 .navbar {

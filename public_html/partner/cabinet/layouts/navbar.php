@@ -11,19 +11,19 @@
     </div>
     <div  class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-            <li><a href="partner/cabinet/" title="Home Page"><i title="Instafxng Partners" class="fa fa-home"></i> Dashboard</a></li>
+            <li><a href="partner/cabinet/" title="Home Page"><i title="Instafxng Partners" class="fa fa-home"></i> </a></li>
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars fa-fw"></i> Transactions<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="partner/cabinet/commission_deposit.php" title="Financial Commission">Deposit Commission</a></li>
-                    <li><a href="partner/cabinet/commission_trading.php" title="Trading Commission">Trading Commission History</a></li>
+                    <li><a href="partner/cabinet/commission_trading.php" title="Trading Commission">Trading Commission</a></li>
                     <li><a href="partner/cabinet/cashout_history.php" title="Withdrawal History">Cashout History</a></li>
                     <li><a href="partner/cabinet/cashout.php" title="Request Cashout">Request Cashout</a></li>
                 </ul>
             </li>
 
-            <li><a href="partner/cabinet/my_referral.php" title="My Referrals"><i class="fa fa-file-text-o fa-fw"></i> My Referrals</a></li>
+            <li><a href="partner/cabinet/my_referral.php" title="My Referrals"><i class="fa fa-file-text-o fa-fw"></i> Referrals</a></li>
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-fw"></i> Settings<b class="caret"></b></a>
@@ -34,8 +34,15 @@
                 </ul>
             </li>
 
-            <li><a href="partner/cabinet/banners.php" title="Banners"><i class="fa fa-tasks fa-fw"></i> Banners</a></li>
-            <li><a href="partner/cabinet/ways_to_earn.php" title="Ways to Earn"><i class="fa fa-money fa-fw"></i> Ways to Earn</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tasks fa-fw"></i> Tools<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="partner/cabinet/banners.php" title="Banners"> Banners</a></li>
+                    <li><a href="partner/cabinet/ways_to_earn.php" title="Ways to Earn"> Ways to Earn</a></li>
+
+                </ul>
+            </li>
+
             <li><a href="https://instafxng.com/contact_info.php" target="_blank" title="Contact us"><i class="fa fa-phone fa-fw"></i> Contact us</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
