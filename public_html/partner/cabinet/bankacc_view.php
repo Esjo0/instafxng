@@ -41,94 +41,93 @@ if(isset($_GET['msg']) && $_GET['msg'] == 1) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <base target="_self">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instafxng Partner | View Bank Accounts</title>
-        <meta name="title" content="Instafxng Partner | View Bank Accounts" />
-        <meta name="keywords" content="" />
-        <meta name="description" content="" />
-        <?php require_once 'layouts/head_meta.php'; ?>
-    </head>
-    <body>
-        <?php require_once 'layouts/header.php'; ?>
-        <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
-        <div id="main-body" class="container-fluid">
-            <div class="row no-gutter">
-                <!-- Main Body - Side Bar  -->
-                <div id="main-body-side-bar" class="col-md-4 col-lg-3 left-nav">
-                <?php require_once 'layouts/sidebar.php'; ?>
-                </div>
-                
-                <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-                <div id="main-body-content-area" class="col-md-8 col-lg-9">
-                    
-                    <!-- Unique Page Content Starts Here
-                    ================================================== -->
-                    <div class="row">
-                        <div class="col-sm-12 text-danger">
-                            <h4><strong>BANK ACCOUNTS</strong></h4>
-                        </div>
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Instaforex Nigeria | Partner Area</title>
+    <meta name="title" content="Instaforex Nigeria | Partner Area" />
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <?php require_once 'layouts/head_meta.php'; ?>
+</head>
+<body>
+<?php require_once 'layouts/header.php'; ?>
+<!-- Main Body: The is the main content area of the web site, contains a side bar  -->
+<div id="main-body" class="container-fluid">
+    <div class="row no-gutter">
+        <?php require_once 'layouts/sidebar.php'; ?>
+        <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
+        <div id="main-body-content-area" class="col-md-12">
+
+            <!-- Unique Page Content Starts Here
+            ================================================== -->
+            <div class="section-tint super-shadow">
+                <div class="row">
+                    <div class="col-sm-12 text-danger">
+                        <h4><strong>BANK ACCOUNTS</strong></h4>
                     </div>
-                    
-                    <div class="section-tint super-shadow">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <?php require_once 'layouts/feedback_message.php'; ?>
+                </div>
 
-                                <div class="alert alert-info">
-                                  Please <strong><a href="partner/cabinet/bankacct_add.php">click here</a></strong> to add a new bank account
-                                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php require_once 'layouts/feedback_message.php'; ?>
 
-                                
+                        <div class="alert alert-info">
+                            Please <strong><a href="partner/cabinet/bankacct_add.php">click here</a></strong> to add a new bank account
+                        </div>
 
-                                <p>Below is the list of all referalls</p>
 
-                                <table class="table table-responsive table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Account Name</th>
-                                            <th>Account No</th>
-                                            <th>Bank name</th>
-                                            <th>Withdraw from account</th>
-                                        </tr>
 
-                                        <tbody>
-                                        <?php if(isset($selected_bank_account_details) && !empty($selected_bank_account_details)) {  
-                                            for($i = 0; $i < count($selected_bank_account_details); $i++) { 
-                                        ?> 
-                                        <tr>
-                                            <td><?php echo $selected_bank_account_details[$i]['bank_acct_name']; ?></td>
-                                            <td><?php echo $selected_bank_account_details[$i]['bank_acct_no']; ?></td>
-                                            <td><?php echo $system_object->get_bank_by_bank_id($selected_bank_account_details[$i]['bank_id']); ?></td>
-                                            <td><a href="partner/cabinet/bankacct_withdraw.php?acc=<?php echo $selected_bank_account_details[$i]['bank_acct_no']; ?>">withdraw</a></td>     
-                                        </tr>
-                                        <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
-                                        </tbody>
-                                    </thead>
-                                </table>
+                        <p>Below is the list of all referalls</p>
 
-                                <?php if(isset($selected_bank_account_details) && !empty($selected_bank_account_details)) { ?>
-                                <div class="tool-footer text-right">
-                                    <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
-                                </div>
-                                <?php } ?>
+                        <table class="table table-responsive table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Account Name</th>
+                                <th>Account No</th>
+                                <th>Bank name</th>
+                                <th>Withdraw from account</th>
+                            </tr>
 
+                            <tbody>
+                            <?php if(isset($selected_bank_account_details) && !empty($selected_bank_account_details)) {
+                                for($i = 0; $i < count($selected_bank_account_details); $i++) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $selected_bank_account_details[$i]['bank_acct_name']; ?></td>
+                                        <td><?php echo $selected_bank_account_details[$i]['bank_acct_no']; ?></td>
+                                        <td><?php echo $system_object->get_bank_by_bank_id($selected_bank_account_details[$i]['bank_id']); ?></td>
+                                        <td><a href="partner/cabinet/bankacct_withdraw.php?acc=<?php echo $selected_bank_account_details[$i]['bank_acct_no']; ?>">withdraw</a></td>
+                                    </tr>
+                                <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                            </tbody>
+                            </thead>
+                        </table>
+
+                        <?php if(isset($selected_bank_account_details) && !empty($selected_bank_account_details)) { ?>
+                            <div class="tool-footer text-right">
+                                <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                             </div>
-                        </div>
-
-                         <?php if(isset($selected_bank_account_details) && !empty($selected_bank_account_details)) {  require_once 'layouts/pagination_links.php'; } ?>
+                        <?php } ?>
 
                     </div>
-
-                    <!-- Unique Page Content Ends Here
-                    ================================================== -->
-                    
                 </div>
-                
+
+                <?php if(isset($selected_bank_account_details) && !empty($selected_bank_account_details)) {  require_once 'layouts/pagination_links.php'; } ?>
+
             </div>
+
+            <!-- Unique Page Content Ends Here
+            ================================================== -->
+
         </div>
+
+    </div>
+    <div class="row no-gutter">
         <?php require_once 'layouts/footer.php'; ?>
-    </body>
+    </div>
+</div>
+
+</body>
 </html>

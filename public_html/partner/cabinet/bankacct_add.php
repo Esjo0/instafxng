@@ -30,6 +30,72 @@ if (isset($_POST['submit_code']) && !empty($_POST['submit_code'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Instaforex Nigeria | Partner Area</title>
+    <meta name="title" content="Instaforex Nigeria | Partner Area" />
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <?php require_once 'layouts/head_meta.php'; ?>
+</head>
+<body>
+<?php require_once 'layouts/header.php'; ?>
+<!-- Main Body: The is the main content area of the web site, contains a side bar  -->
+<div id="main-body" class="container-fluid">
+    <div class="row no-gutter">
+        <?php require_once 'layouts/sidebar.php'; ?>
+        <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
+        <div id="main-body-content-area" class="col-md-12">
+
+            <!-- Unique Page Content Starts Here
+            ================================================== -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <img src="images/partner_pc.png" alt="" class="img-responsive center-block" width="668px" height="226px" />
+                </div>
+
+            </div>
+
+            <div class="section-tint super-shadow">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Partner Dashboard</h3>
+                        <p>Follow the links in the navigation bar to get to other parts of the portal.</p>
+                    </div>
+                </div>
+                <div class="row"><hr /></div>
+                <div class="row">
+                    <div class="col-sm-5">
+
+                    </div>
+                    <div class="col-sm-7">
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- Unique Page Content Ends Here
+            ================================================== -->
+
+        </div>
+
+    </div>
+    <div class="row no-gutter">
+        <?php require_once 'layouts/footer.php'; ?>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <base target="_self">
         <meta charset="UTF-8">
@@ -51,7 +117,6 @@ if (isset($_POST['submit_code']) && !empty($_POST['submit_code'])) {
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12 text-danger">
@@ -59,6 +124,7 @@ if (isset($_POST['submit_code']) && !empty($_POST['submit_code'])) {
                                 <h4><strong>Add Bank Account</strong></h4>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>

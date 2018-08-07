@@ -11,11 +11,13 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
     
     // Check database to see if username/password exist.
     $found_partner = $partner_object->authenticate($email, $password);
-    
+
     if($found_partner) {
-        $partner_code = $found_partner[0]['partner_code'];
-        if($partner_object->partner_is_active($partner_code)) {
-            $found_partner = $found_partner[0];
+        $partner_code = $found_partner['partner_code'];
+        $status = $found_partner['status'];
+
+        if($status == '2') {
+
             $session_partner->login($found_partner);
             redirect_to("cabinet/index.php");
         } else {

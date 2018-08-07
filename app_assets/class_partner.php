@@ -1,33 +1,36 @@
 <?php
-// If it's going to need the database, then it's 
-// probably smart to require it before we start.
-require_once(LIB_PATH.DS.'class_database.php');
-
 
 //this class handles handles activities pertaining to a partner
 class Partner {
     
+    public function email_phone_is_duplicate($email, $phone) {
+        global $db_handle;
+
+        $query = "SELECT * FROM partner WHERE email_address = '$email' OR phone_number = '$phone' LIMIT 1";
+
+        if($db_handle->numRows($query) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function authenticate($email = "", $password = "") {
         global $db_handle;
-        $email = $db_handle->sanitizePost($email);
 
-        $query = "SELECT pass_salt FROM user WHERE email = '$email' LIMIT 1";
+        $username = $db_handle->sanitizePost($email);
 
+        $query = "SELECT * FROM partner WHERE email_address = '$email' LIMIT 1";
         $result = $db_handle->runQuery($query);
 
         if($db_handle->numOfRows($result) == 1) {
-            $user = $db_handle->fetchAssoc($result);
-            $pass_salt = $user[0]['pass_salt'];
-            $hashed_password = hash("SHA512", "$pass_salt.$password");
+            $found_user = $db_handle->fetchAssoc($result);
+            $found_user = $found_user[0];
 
-            $query = "SELECT * FROM user AS u LEFT JOIN partner AS p USING (user_code) "
-                    . "WHERE (email = '$email' AND password = '$hashed_password') AND (p.user_code = u.user_code) "
-                    . " LIMIT 1";
-            $result = $db_handle->runQuery($query);
+            $password_hash = $found_user['password'];
 
-            if($db_handle->numOfRows($result) == 1) {
-                $found_partner = $db_handle->fetchAssoc($result);
-                return $found_partner;
+            if(password_verify($password, $password_hash)) {
+                return $found_user;
             } else {
                 return false;
             }
@@ -50,66 +53,115 @@ class Partner {
             return false;
         }
     }
+
+    // generate a unique partner code
+    public function generate_partner_code() {
+        global $db_handle;
+
+        unique_partner_code:
+        $partner_code = strtoupper(rand_string_caps(5));
+        if($db_handle->numRows("SELECT partner_code FROM partner WHERE partner_code = '$partner_code'") > 0) { goto unique_partner_code; };
+
+        return $partner_code;
+    }
     
     //this method is to register as a partner
-    public function new_partner($first_name, $last_name, $middle_name, $email, $phone, $password) {
+    public function new_partner($first_name, $last_name, $email, $phone, $address, $city, $state_id, $middle_name = '') {
         global $db_handle;
         global $system_object;
 
-        $client_operation = new clientOperation();
-        
-        // Check if supplied email is existing
-        $query = "SELECT user_code, user_id, password FROM user WHERE email = '$email' LIMIT 1";
+        $partner_code = $this->generate_partner_code();
+        $new_password = random_password();
+        $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+        $phone_code = generate_sms_code();
+
+        $query  = "INSERT INTO partner (partner_code, password, first_name, middle_name, last_name, email_address, phone_number, full_address, city, state_id, phone_code) VALUES
+                  ('$partner_code', '$password_hash', '$first_name', '$middle_name', '$last_name', '$email', '$phone', '$address', '$city', $state_id, '$phone_code')";
+
         $result = $db_handle->runQuery($query);
-        if($db_handle->numOfRows($result) > 0) {
-            // email existing, check if the user is already a partner
-            $user_detail = $db_handle->fetchAssoc($result);
-            $user_code = $user_detail[0]['user_code'];
-            $user_id = $user_detail[0]['user_id'];
-            $selected_password = $user_detail[0]['password'];
-            
-            $query = "SELECT user_code FROM partner WHERE user_code = '$user_code' LIMIT 1";
-            $result = $db_handle->runQuery($query);
-            
-            if($db_handle->numOfRows($result) > 0) {
-                // Partner exist
-                return false;
-            } else {
-                $partner_code = $system_object->generate_partner_code();
-                $query  = "INSERT INTO partner (partner_code, user_code, status, created) VALUES ('$partner_code', '$user_code', '1', NOW())";
-                $result = $db_handle->runQuery($query);
 
-                if($result) {
-                    if(is_null($selected_password) || empty($selected_password)) {
-                        // send verification email and sms
-                        $this->partner_phone_email_verification($user_code, $email, $phone, $first_name);
-                        return "Your registration has been completed, please check your email for activation instructions.";
-                    } else {
-                        return "You have been activated on the Partner system, you can now login with your email and your normal passcode.";
-                    }
-                } else {
-                    return false;
-                }
+        if($result) {
+            $subject = 'Welcome to the Instafxng Partner System';
+            $message_final = <<<MAIL
+                    <div style="background-color: #F3F1F2">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+                            <img src="https://instafxng.com/images/ifxlogo.png" />
+                            <hr />
+                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                                <p>Hello $first_name;</p>
+                                <p>Welcome to the Instafxng Partnership system, your partner code is <strong>
+                                $partner_code</strong></p>
+                                <p>Login in at https://instafxng.com/partner/login.php</p>
+                                <p>Password: $new_password</p>
 
-            }
+
+                                <p>InstaFxNg Team,<br />
+                                   www.instafxng.com</p>
+                                <br /><br />
+                            </div>
+                            <hr />
+                            <div style="background-color: #EBDEE9;">
+                                <div style="font-size: 11px !important; padding: 15px;">
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                                    </p>
+                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+MAIL;
+            $system_object->send_email($subject, $message_final, $email, $first_name);
+            return true;
+
         } else {
-            // new client
-            $user_code = $system_object->generate_user_code();
-            $partner_code = $system_object->generate_partner_code();
-            
-            $pass_salt = hash("SHA256", "$user_code");
-            $first_name = ucwords(strtolower(trim($first_name)));
-            $last_name = ucwords(strtolower(trim($last_name)));
-            $middle_name = ucwords(strtolower(trim($middle_name)));
-            
-            $query = "INSERT INTO user (user_code, email, pass_salt, first_name, last_name, middle_name, phone) VALUES ('$user_code', '$email', '$pass_salt',  '$first_name', '$last_name', '$middle_name', '$phone')";
-            $db_handle->runQuery($query);
-            
-            $query  = "INSERT INTO partner (partner_code, user_code, created) VALUES ('$partner_code', '$user_code', NOW())";
-            $db_handle->runQuery($query);
+            return false;
+        }
+    }
 
-            $client_operation->send_verification_message($user_code, $email, $phone, $first_name, "");
-            return "Your registration has been completed, please check your email for activation instructions.";
+    public function get_selected_pending_application($partner_code) {
+        global $db_handle;
+
+        $query = "SELECT * FROM partner WHERE partner_code = '$partner_code' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $found_application = $db_handle->fetchAssoc($result);
+        $found_application = $found_application[0];
+
+        return $found_application ? $found_application : false;
+    }
+
+    public function modify_partner_application($partner_id, $partner_status) {
+        global $db_handle;
+
+        $query = "UPDATE partner SET status = '$partner_status' WHERE partner_code = '$partner_id' LIMIT 1";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function get_partner_by_code($partner_code) {
+        global $db_handle;
+
+        $query = "SELECT * FROM partner WHERE partner_code = '$partner_code' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) == 1) {
+            $fetched_data = $db_handle->fetchAssoc($result);
+            $fetched_data = $fetched_data[0];
+            return $fetched_data;
+        } else {
+            return false;
         }
     }
     
@@ -321,48 +373,31 @@ class Partner {
     }
 
     // this will calculate trading commission for partners
-    public function trading_commission()
-    {
+    public function trading_commission() {
         global $db_handle;
 
         $query = "SELECT user_code, ifx_acct_no, user_ifxaccount.partner_code FROM partner INNER JOIN user_ifxaccount USING(user_code)";
-
-        //echo $query;
-        
         $result = $db_handle->runQuery($query);
 
-        //echo $result->num_rows;
-
-        if($result->num_rows > 0)
-        {
+        if($result->num_rows > 0) {
             $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
 
             $partners = $db_handle->fetchAssoc($result);
 
-            //print_r($partners);
             // loop through partner row
-            for ($i = 0; $i < count($partners); $i++)
-            {
-                //print_r($partners);
-                //echo $i;
+            for ($i = 0; $i < count($partners); $i++) {
                 $ifxaccount_no = $partners[$i]['ifx_acct_no'];
                 $user_code = $partners[$i]['user_code'];
                 $partner_code = $partners[$i]['partner_code'];
 
-               // echo $ifxaccount_no;
-
-
                 $query = "SELECT ifx_acct_no, trading_commission_id, SUM(commission) AS t_commission FROM trading_commission WHERE ifx_acct_no = '$ifxaccount_no' AND DATE(date_earned) = '$yesterday'";
-
-                //echo $query;
 
                 $result_inner = $db_handle->runQuery($query);
                 $get_result = $db_handle->fetchAssoc($result_inner);
                 $commission = $get_result[0]['t_commission'];
 
                 // due to the SUM() function used in our query, it will return a null value if no row is found
-                if(!empty($commission))
-                {           
+                if(!empty($commission)) {
                     //print_r($result_inner);
 
                     $ifx_acct_no = $get_result[0]['ifx_acct_no'];
@@ -381,10 +416,8 @@ class Partner {
 
                     $result_balance = $db_handle->fetchAssoc($result_balance);
 
-                    if($result_balance->num_rows != 0)
-                    {
+                    if($result_balance->num_rows != 0) {
                         $get_result_balance = $db_handle->fetchAssoc($result_balance);
-
                         $balance = $get_result_balance[0]['balance'];
                     }
 
@@ -392,76 +425,58 @@ class Partner {
 
                     // log commission
                     $query = "INSERT INTO partner_trading_commission (partner_code, amount, balance, date, reference_trans_id, status) VALUES ('$partner_code', '$commission', '$balance', NOW(), '$tc_id', 1)";
-
-                    //echo $query;
-
-                    
-
                     $result_insert = $db_handle->runQuery($query);
 
                     // update commission balance
                     $query = "SELECT balance FROM partner_balance WHERE partner_code = '$partner_code' AND type = 1";
-
-                    //echo $query;
-
                     $result_bal = $db_handle->runQuery($query);
 
                     if($result_bal->num_rows > 0)
                     {
                         $query = "UPDATE partner_balance SET balance = '$balance', updated = NOW() WHERE partner_code = '$partner_code' AND type = 1";
-                    }
-
-                    else
-                    {
+                    } else {
                         $query = "INSERT INTO partner_balance (partner_code, type, balance) VALUES ('$partner_code', 1, '$balance')";
                     }
                     $result_update = $db_handle->runQuery($query);
                 }
             }
-        }
-        else
+        } else {
             return NULL;
+        }
     }
 
-    public function add_bank_details($user_code, $acct_name, $acct_no, $bank_id)
-    {
+    public function add_bank_details($user_code, $acct_name, $acct_no, $bank_id) {
         global $db_handle;
 
         $query = "SELECT user_bank_id FROM user_bank WHERE user_code = '$user_code'";
         $result = $db_handle->runQUery($query);
 
-        if($result->num_rows == 0)
-
+        if ($result->num_rows == 0) {
             $query = "INSERT INTO user_bank (user_code, bank_acct_name, bank_acct_no, bank_id) VALUES ('$user_code', '$acct_name', '$acct_no', '$bank_id')";
-        
-        else
+        } else {
             $query = "UPDATE user_bank SET bank_acct_name = '$acct_name', bank_acct_no = '$acct_no', bank_id = '$bank_id' WHERE user_code = '$user_code'";
-
-        //echo 
-
+        }
         $result = $db_handle->runQuery($query);
-
         return $result;
     }
 
-    public function view_financial_commission($partner_code)
-    {
+    public function view_financial_commission($partner_code) {
         global $db_handle;
 
         $query = "SELECT * FROM partner_financial_activity_commission WHERE partner_code = '$partner_code' ORDER BY partner_financial_activity_commission_id DESC";
 
         $result = $db_handle->runQuery($query);
-        if($db_handle->numOfRows($result) > 0)
-        {
+        if($db_handle->numOfRows($result) > 0) {
             $all = array();
             while($referalls = $db_handle->fetchAssoc($result))
             {
                 array_push($all, $referalls);
             }
             return $all;
-        }
-        else
+        } else {
             return NULL;
+        }
+
     }
 
     public function view_trading_commission($partner_code)
@@ -471,53 +486,25 @@ class Partner {
         $query = "SELECT * FROM partner_trading_commission WHERE partner_code = '$partner_code' ORDER BY partner_trading_commission_id DESC";
         $result = $db_handle->runQuery($query);
 
-        if($db_handle->numOfRows($result) > 0)
-        {
+        if($db_handle->numOfRows($result) > 0) {
             $all = array();
-            while($referalls = $db_handle->fetchAssoc($result))
-            {
+            while($referalls = $db_handle->fetchAssoc($result)) {
                 array_push($all, $referalls);
             }
             return $all;
-        }
-        else
+        } else {
             return NULL;
+        }
+
     }
 
-    public function request_whitdrawal($partner_code, $account_id, $amount, $type,  $comment)
-    {
+    public function request_whitdrawal($partner_code, $account_id, $amount, $type,  $comment) {
         global $db_handle;
 
         $query = "INSERT INTO partner_payment (partner_code, account_id, amount, trans_type, comment) VALUES ('$partner_code', '$account_id', '$amount', 1, '$comment')";
-
-       // echo $query; 
-
         $result = $db_handle->runQuery($query);
 
-        if($result)
-            return true;
-        else
-            return false;
-    }
-
-    public function get_partner_by_partner_code($partner_code) {
-
-        global $db_handle;
-
-
-
-        $query = "SELECT * FROM partner WHERE partner_code = '$partner_code' LIMIT 1";
-
-        $result = $db_handle->runQuery($query);
-
-        $fetched_data = $db_handle->fetchAssoc($result);
-
-        $fetched_data = $fetched_data[0];
-
-
-
-        return $fetched_data;
-
+        return $result ? true : false;
     }
 }
 

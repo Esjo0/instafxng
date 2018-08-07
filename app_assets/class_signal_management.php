@@ -66,14 +66,13 @@ class Signal_Management
         $query = "SELECT DISTINCT SS.symbol 
                   FROM signal_daily AS SD 
                   INNER JOIN signal_symbol AS SS ON SD.symbol_id
-                  WHERE SD.trigger_date = '$date' ";
+                  WHERE SD.trigger_date = '$date' AND SD.symbol_id = SS.symbol_id ";
         $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
         $pairs = array();
         foreach ($result as $row) {
             $pairs[count($pairs)] = $row['symbol'];
         }
         $pairs = implode(',', $pairs);
-        $pairs = str_replace('/', '', $pairs);
         return $pairs;
     }
 
@@ -372,7 +371,9 @@ WHERE SD.trigger_date = '$date'";
 
     public function update_signal_daily_FILE($signal_array)
     {
-        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+       file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+   //      file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+
     }
 
     public function get_pips($market_price, $price)
@@ -405,11 +406,14 @@ WHERE SD.trigger_date = '$date'";
 
         $diff = (integer)$diff1 - (integer)$diff2;
         $dec3 = strlen($diff);
-        $diff = substr($diff, $dec3 - 2, 2);
+        $diff = substr($diff, $dec3 - 3, 3);
+		$diff = (integer)$diff;
+		$diff = $diff * 0.1;
+		$diff = (string)$diff;
         return $diff;
     }
 
-    public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips)
+    public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips, $exit_type, $exit_price)
     {
         global $db_handle;
         $query = "UPDATE signal_daily SET trigger_status = '$trigger_status' ";
@@ -424,6 +428,12 @@ WHERE SD.trigger_date = '$date'";
         }
         if (!empty($pips)) {
             $query .= ", pips = $pips";
+        }
+		if (!empty($exit_type)) {
+            $query .= ", exit_type = '$exit_type'";
+        }
+		if (!empty($exit_price)) {
+            $query .= ", exit_price = '$exit_price'";
         }
         $query .= " WHERE signal_id = $signal_id ";
         $result = $db_handle->runQuery($query);
@@ -466,14 +476,19 @@ WHERE SD.trigger_date = '$date'";
 
     public function UI_show_live_quotes()
     {
+        $date = date('Y-m-d');
         global $db_handle;
-        $query = "SELECT symbol FROM signal_symbol";
+        $query = "SELECT DISTINCT SS.symbol 
+                  FROM signal_daily AS SD 
+                  INNER JOIN signal_symbol AS SS ON SD.symbol_id
+                  WHERE SD.trigger_date = '$date' AND SD.symbol_id = SS.symbol_id ";
         $symbols = $db_handle->fetchAssoc($db_handle->runQuery($query));
         $symbol_array = array();
         foreach ($symbols as $key => $value) {
             $symbol_array['symbols'][count($symbol_array['symbols'])] = array('title' => $value['symbol'], 'proName' => str_replace('/', '', $value['symbol']));
         }
         $symbol_array['locale'] = 'en';
+
         echo "<div class='tradingview-widget-container'>";
         echo "<div class='tradingview-widget-container__widget'></div>";
         echo "<script type='text/javascript' src='https://s3.tradingview.com/external-embedding/embed-widget-tickers.js' async>";
