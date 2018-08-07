@@ -5,17 +5,10 @@ if (!$session_partner->is_logged_in()) {
 }
 
 $partner_details = $_SESSION['partner_details'];
-$partner_code = "BBLR";//$partner_details['partner_code'];
-
-//print_r($partner_details);
-
-//echo $partner_code;
+$partner_details['partner_code'];
 
 $fin_comm = $partner_object->view_financial_commission($partner_code);
-
 $trading_comm = $partner_object->view_trading_commission($partner_code);
-
-//print_r($trading_comm[0]);
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +28,7 @@ $trading_comm = $partner_object->view_trading_commission($partner_code);
 <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
 <div id="main-body" class="container-fluid">
     <div class="row no-gutter">
-        <?php require_once 'layouts/sidebar.php'; ?>
+        <?php require_once 'layouts/navbar.php'; ?>
         <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
         <div id="main-body-content-area" class="col-md-12">
 

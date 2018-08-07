@@ -8,7 +8,7 @@
         <meta name="rating" content="General" />
         <meta name="doc-rights" content="Private" />
         <meta name="doc-class" content="Living Document" />
-        <link rel="stylesheet" href="css/instafx_partner.css">
+        <link rel="stylesheet" href="css/instafx_partner_cabinet.css">
         <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
         <link rel="stylesheet" href="css/bootstrap_3.3.5.min.css">
         <link rel="stylesheet" href="css/font-awesome_4.3.0.min.css">
