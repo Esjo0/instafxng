@@ -15,7 +15,7 @@ if (isset($_POST['signal_report'])){
 
 
 $query = "SELECT SS.symbol AS pair, SD.price, SD.take_profit, SD.stop_loss, SD.created, SD.views, SD.entry_price, 
-SD.entry_time, SD.exit_time, SD.exit_type, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note
+SD.entry_time, SD.exit_time, SD.exit_type, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note, SD.created_by
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') ";
@@ -186,7 +186,8 @@ function table_context($trigger_status){
                                             <span><b>Take Profit:</b> <?php echo $row['take_profit']; ?></span><br/>
                                             <span><b>Stop Loss:</b> <?php echo $row['stop_loss']; ?></span><br/>
                                             <span><b>Date Created:</b> <?php echo datetime_to_text($row['created']); ?></span><br/>
-											<span><b>Keynote:</b> <?php echo $row['note']; ?>
+											<span><b>Keynote:</b> <?php echo $row['note']; ?><br/>
+                                            <span><b>Created By:</b> <?php echo $admin_object->get_admin_name_by_code($row['created_by']);; ?>
                                         </td>
                                         <td>
                                             <span><b>Entry Price:</b> <?php echo $row['entry_price']; ?></span><br/>

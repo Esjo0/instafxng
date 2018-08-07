@@ -3,6 +3,9 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+//Gets Administrator code
+$admin_code = $_SESSION['admin_unique_code'];
+
 $signal_object = new Signal_Management();
 $today = date('Y-m-d');
 $query = "SELECT * FROM signal_daily WHERE trigger_date = '$today'";
@@ -108,10 +111,10 @@ if(isset($_POST['new_signal'])){
 
 
 	if(!empty($buy_price) && !empty($buy_price_tp) && !empty($buy_price_sl)){
-        $new_schedule1 = $signal_object->new_signal_schedule($symbol, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment);
+        $new_schedule1 = $signal_object->new_signal_schedule($symbol, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code);
     }
     if(!empty($sell_price) && !empty($sell_price_tp) && !empty($sell_price_sl)){
-        $new_schedule2 = $signal_object->new_signal_schedule($symbol, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment);
+        $new_schedule2 = $signal_object->new_signal_schedule($symbol, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code);
     }
     if($new_schedule1 || $new_schedule2){
         $message_success = "Signal Successfully created for " . datetime_to_text($signal_time);
