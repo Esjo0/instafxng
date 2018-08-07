@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Nunito:700');
+@import url('https://fonts.googleapis.com/css?family=Acme');
+
+header, section, footer, aside, nav, article, figure, details, summary {
+    display: block;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #303030;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+    background: url("../images/bg.gif") repeat;
+}
+
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 10px
+}
+
+.padding-top-50 {
+    padding-top: 50px
+}
+
+.jumbo-header {
+    margin-top: 90px;
+    color: #9D0018;
+    font-weight: bolder;
+}
+
+.jumbo-header h1 {
+    font-family: 'Acme', sans-serif;
+    font-size: 40px;
+}
+
+.jumbo-header p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 20px;
+}
+
+#how-it-works p {
+    font-size: 16px
+}
+
+#how-it-works a {
+    text-decoration: none;
+    color: #ff6900
+}
+
+#how-it-works a.btn {
+    color: #fff
+}
+
+#how-it-works p {
+    font-size: 14px;
+}
+
+#top-nav {
+    margin-top: 15px;
+}
+
+p, li {
+    font-size: 1.15em;
+}
+
+.white-bg {
+    background-color: #ffffff;
+}
+
+.padding-bottom-50 {
+    padding-bottom: 50px;
+}
+
+.padding-top-25 {
+    padding-top: 50px;
+}
+
+.row-space-4{ margin-bottom: 10px }
+
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+.masthead {
+    padding: 10px;
+}
+
+.banner {
+    background: #ddd url(../images/bgw.jpg);
+    background-size: cover;
+}
+
+#footer {
+    margin-top: 3px;
+    width: 100%;
+    background: #ddd url(../images/footerbg.png);
+}
+
+#footer header {
+    border-bottom: 1px dotted #DA231B;
+    padding: 5px;
+}
+
+#footer article {
+    padding: 5px;
+}
+
+#footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+#footer p {
+    padding: 0 !important;
+}
+
+#header-blockquote {
+    margin: 0 !important;
+    padding-bottom: 0 !important;
+    border-right: 5px solid #E4E4E4 !important;
+}
+
+.copyright {
+    padding: 10px;
+}
+
+.copyright hr {
+    border: 1px dotted #727272;
+}
+
+
+/* MEDIA QUERIES GOES HERE */
+@media (max-device-width: 480px){
+    .banner {
+        background-size: cover;
+        min-height: 200px;
+    }
+
+    #header hr {
+        display: none;
+    }
+
+    #top-nav { text-align: center; }
+    #main-logo { text-align: center; }
+
+    .jumbo-header {
+        display: none;
+    }
+}
+
+@media (max-width: 767px){ /* xs */
+    .banner {
+        background-size: cover;
+        min-height: 200px;
+    }
+
+    #header hr {
+        display: none;
+    }
+
+    #top-nav { text-align: center; }
+    #main-logo { text-align: center; }
+
+    .jumbo-header {
+        display: none;
+    }
+
+}
+
+@media (min-width: 768px){ /* sm */
+    .banner {
+        background-size: cover;
+        min-height: 450px;
+    }
+
+    #top-nav { text-align: center; }
+    #main-logo { text-align: center; }
+
+    #header hr {
+        border: 1px dotted #CACACA;
+        margin-top: 3px;
+        margin-bottom: 10px;
+    }
+
+    .jumbo-header {
+        margin-top: 50px;
+        color: #9D0018;
+        font-weight: bolder;
+    }
+
+    .jumbo-header h1 {
+        font-family: 'Acme', sans-serif;
+        font-size: 40px;
+    }
+
+    .jumbo-header p {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 992px){ /* md */
+
+    #main-logo { text-align: left; }
+    
+    #main-body-side-bar {
+        padding-right: 15px;
+    }
+
+    .banner {
+        background-size: cover;
+        min-height: 450px;
+    }
+
+    #header hr {
+        border: 1px dotted #CACACA;
+        margin-top: 3px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 1200px){ /* lg */
+    .container-fluid {
+    }
+
+    #top-nav { text-align: right; }
+    #main-logo { text-align: left; }
+
+    .banner {
+        background-size: cover;
+        min-height: 600px;
+    }
+
+    #header hr {
+        border: 1px dotted #CACACA;
+        margin-top: 3px;
+        margin-bottom: 10px;
+    }
+}

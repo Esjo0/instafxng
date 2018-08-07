@@ -721,6 +721,11 @@ function upload_file($input_name, $upload_path, $desired_file_name, $allowed_fil
     return $feedback;
 }
 
+
+
+
+
+
 /*
 *Transaction Review Functions
 */
@@ -788,3 +793,80 @@ function clear_transactions(){
 /*
 *Transaction Review Functions
 */
+
+
+
+#Edu_Sales_Tracker Functions
+/*$category = array('cat_0','cat_1','cat_2','cat_3','cat_4'); */
+function edu_sale_track($user_code, $category){
+    global $db_handle;
+    $query = "INSERT INTO edu_sales_tracker (user_code, sale_stat, sale_cat) VALUES ('$user_code', '1', '$category') ;";
+    return $db_handle->runQuery($query);
+}
+
+function edu_sales_filter($query_result, $filter_criteria){
+    global $db_handle;
+    switch($filter_criteria){
+        //all
+        case '1': return $query_result;  break;
+
+        //contacted
+        case '2':
+            $feedback_array = $query_result;
+            foreach ($query_result as $key => $value){
+                $query = "SELECT sale_stat FROM edu_sales_tracker WHERE user_code = '{$value['user_code']}'";
+                $sale_stat = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
+                if($sale_stat == '0' || empty($sale_stat)){
+                    unset($feedback_array[$key]);
+                }
+            }
+            return $feedback_array;
+            break;
+
+        //not contacted
+        case '3':
+            $feedback_array = $query_result;
+            foreach ($query_result as $key => $value){
+                $query = "SELECT sale_stat FROM edu_sales_tracker WHERE user_code = '{$value['user_code']}'";
+                $sale_stat = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
+                if($sale_stat == '1'){ unset($feedback_array[$key]); }
+            }
+            return $feedback_array;
+            break;
+    }
+}
+
+function edu_sale_untrack($category, $user_code){
+    global $db_handle;
+    $query = "UPDATE edu_sales_tracker SET sale_stat = '0' WHERE user_code = '$user_code' AND sale_cat = '$category' ;";
+    return $db_handle->runQuery($query);
+}
+
+function edu_sale_track_reset($category){
+    global $db_handle;
+    $query = "DELETE FROM edu_sales_tracker WHERE sale_cat = '$category' ";
+    return $db_handle->runQuery($query);
+}
+
+function UI_sale_status($user_code, $category){
+    global $db_handle;
+    $query = "SELECT sale_stat, created FROM edu_sales_tracker WHERE sale_cat = '$category' AND user_code = '$user_code' ";
+    $sale_stat = (int) $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
+    $created =  datetime_to_text($db_handle->fetchAssoc($db_handle->runQuery($query))[0]['created']);
+    if($sale_stat == 0 || empty($sale_stat)){
+        $button = '<button title="Flag this client as contacted" name="edu_sale_track" type="submit" class="btn btn-group-justified btn-xs btn-info"><i class="fa fa-check"></i></buttonFlag>';
+    }elseif($sale_stat == 1){
+        $button = '<button title="This client has been contacted" disabled name="edu_sale_track" type="submit" class="btn btn-group-justified btn-xs btn-default"><i class="fa fa-check"></i></button>';
+    }
+    $markup = <<<MAIL
+<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+<div class="input-group">
+<input type="hidden" name="user_code" value="{$user_code}" >
+<input type="hidden" name="category" value="{$category}" >
+{$button}
+</div>
+</form>
+MAIL;
+    echo $markup;
+}
+#Edu_Sales_Tracker Functions
