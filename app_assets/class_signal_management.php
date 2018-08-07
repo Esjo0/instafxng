@@ -83,12 +83,20 @@ class Signal_Management
 
     public function new_signal_listener()
     {
-        $file_current_property = date('Y-m-d h:i:s', stat('/home/tboy9/models/signal_daily.json')['mtime']);
-        $file_old_property = file_get_contents('/home/tboy9/models/signal_daily_bookmark.json');
+        $file_current_property = date('Y-m-d h:i:s', stat('../../../models/signal_daily.json')['mtime']);
+        $file_old_property = file_get_contents('../../../models/signal_daily_bookmark.json');
         if ($file_current_property != $file_old_property) {
             echo 'new-signals-found';
-            file_put_contents('/home/tboy9/models/signal_daily_bookmark.json', $file_current_property);
+            file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
         }
+    }
+
+    public function round_price_to_4_dp($price)
+    {
+//        $price = round($price,4);
+//        $dec = strpos($price, ".");
+        $price = substr($price, 0, -1);
+        return $price;
     }
 
     public function UI_get_news_for_page($currency_pair)
@@ -143,21 +151,18 @@ MAIL;
                                             </div>
                                        </div>
                                                         <hr>
-                                        <div class="well text-center"><b>ENTRY PRICE: {$row['price']}</b></div>
+                                        <div class="well text-center"><b>ENTRY PRICE: {$this->round_price_to_4_dp($row['price'])}</b></div>
                                         <div class="row">
-                                            <div class="col-sm-6"><div class="well text-center"><span>{$row['stop_loss']}<br/>Stop Loss</span></div></div>
-                                            <div class="col-sm-6"><div class="well text-center"><span>{$row['take_profit']}<br/>Take Profit</span></div></div>
+                                            <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_4_dp($row['stop_loss'])}<br/>Stop Loss</span></div></div>
+                                            <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_4_dp($row['take_profit'])}<br/>Take Profit</span></div></div>
                                         </div>
                                         <div class="row">
                                              <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
                                         </div>
-                                        <h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted on </span>$posted_date</span></strong></h6>
                                         <div class="col-sm-12">
-                                        <small style="font-size: x-small">Your use of the signals means you have read and accepted our
-                                                    <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
-                                                    Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
-                                                        signal guide</a> to learn how to use the signals.
-                                        </small>
+                                        <h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted on </span>$posted_date</span></strong></h6>
+
+                                        <button class="pull-right" type="button" id="signal_{$row['signal_id']}_trigger" onclick="signal.show_extra_analysis('{$row['signal_id']}')"><b>VIEW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></button>
                                         </div>
                                        </div>
                                                     <!--............................................-->
@@ -167,7 +172,7 @@ MAIL;
                                                  <div  class="col-sm-5 col-xs-12">
                                                         <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                             <div>
-                                            <h6 style="font-size: 15px" class="my-0 pull-right"><strong>Difference Between Live Market Price and Entry Price</strong></h6>
+                                            <h6 style="font-size: 15px" class="my-0 pull-right"><strong>Highest Pips Gained</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                             <small class="text-muted">
@@ -249,7 +254,6 @@ MAIL;
                                                         KeyNote: {$row['note']}
                                                      </small>
                                                   </div>
-                                            <h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted for </span>$posted_date</span></strong></h6>
                                             </li>
                                        </div>
                                    </div>
@@ -291,6 +295,7 @@ MAIL;
                 break;
         }
         return $msg;
+        var_dump($msg);
     }
 
     public function UI_get_symbol_current_price($symbol)
@@ -366,7 +371,7 @@ MAIL;
     {
         global $db_handle;
         $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.price, SD.take_profit,
-SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol 
+SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol, SD.pips
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE SD.trigger_date = '$date'";
@@ -375,8 +380,8 @@ WHERE SD.trigger_date = '$date'";
 
     public function update_signal_daily_FILE($signal_array)
     {
-       file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-   //      file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+           file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+        // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
@@ -448,11 +453,11 @@ WHERE SD.trigger_date = '$date'";
         return $result;
     }
 
-    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '', $admin_code)
+    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '', $admin_code, $market_price)
     {
         global $db_handle;
-        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views, created_by)
-                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0, '$admin_code')";
+        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views, created_by, market_price, pips)
+                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0, '$admin_code', $market_price, 0)";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
@@ -502,7 +507,7 @@ WHERE SD.trigger_date = '$date'";
 
     public function UI_get_signals_for_sidebar()
     {
-        $signals_side = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
+        $signals_side = (array)json_decode(file_get_contents('../../../models/signal_daily.json'));
         if (!empty($signals_side)) {
             for ($i = 0; $i < count($signals_side); $i++) {
                 $row_side = (array)$signals_side[$i];
