@@ -121,6 +121,10 @@ p, li {
         background-size: cover;
         min-height: 200px;
     }
+
+    #header hr {
+        display: none;
+    }
 }
 
 @media (max-width: 767px){ /* xs */
@@ -128,12 +132,22 @@ p, li {
         background-size: cover;
         min-height: 200px;
     }
+
+    #header hr {
+        display: none;
+    }
 }
 
 @media (min-width: 768px){ /* sm */
     .banner {
         background-size: cover;
         min-height: 450px;
+    }
+
+    #header hr {
+        border: 1px dotted #CACACA;
+        margin-top: 3px;
+        margin-bottom: 10px;
     }
 }
 
@@ -149,6 +163,12 @@ p, li {
         background-size: cover;
         min-height: 450px;
     }
+
+    #header hr {
+        border: 1px dotted #CACACA;
+        margin-top: 3px;
+        margin-bottom: 10px;
+    }
 }
 
 @media (min-width: 1200px){ /* lg */
@@ -160,5 +180,11 @@ p, li {
     .banner {
         background-size: cover;
         min-height: 600px;
+    }
+
+    #header hr {
+        border: 1px dotted #CACACA;
+        margin-top: 3px;
+        margin-bottom: 10px;
     }
 }

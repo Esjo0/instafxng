@@ -25,6 +25,7 @@ $thisPage = "Home";
             </div>
         </div>
     </div>
+    <hr />
 </header>
 
 <section class="padding-bottom-50 white-bg">
