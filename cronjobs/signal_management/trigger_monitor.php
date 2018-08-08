@@ -38,6 +38,8 @@ if (!empty($scheduled_signals)) {
                     trigger_sell_order($row);
                 }
             }
+        }else if(($row['trigger_status'] == 1) && ($row['order_type'] == 2)){
+            trigger_sell_order($row);
         }
 
         //Trigger Buy Order
@@ -64,7 +66,10 @@ if (!empty($scheduled_signals)) {
                     trigger_buy_order($row);
                 }
             }
+        }else if(($row['trigger_status']==1) && ($row['order_type'] == 1)){
+            trigger_buy_order($row);
         }
+
     }
 }
 
