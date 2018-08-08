@@ -129,6 +129,9 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <p>What is thrilling is about the Loyalty rewards how much you can get without doing anything
                                     extra other than just trading as usual.</p>
                                 <p>You do not enter for a draw or trade a particular lot size to qualify <b>"Just Trade!"</b></p>
+                                <p class="text-danger text-center"><em>If you do not have an enrolled account yet,
+                                    (<a href="http://bit.ly/2mpqehQ" target="_blank">click here to open an account</a>), fill in step one
+                                    and 2 and start trading now! To make a deposit to your account, (<a href="http://bit.ly/2hnVw7d" target="_blank">click here.</a>)</em></p>
                                 <p>A total of N4 390 000 was paid out to clients in rewards during the one year duration of the last
                                     round of the promo. This does not even include the thousands of dollars withdrawn as loyalty
                                     points!</p>
@@ -147,6 +150,10 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <p>Each time you make a deposit to your account or trade as usual you earn some point’s equivalent
                                     to your deposit or trading actions. Our proprietary reward technology automatically calculates
                                     the points you have earned and your reward account is updated accordingly.</p>
+                                <p>Please note that only enrolled accounts can participate in this contest.</p>
+                                <p class="text-danger text-center"><em>If you do not have an enrolled account yet,
+                                        (<a href="http://bit.ly/2mpqehQ" target="_blank">click here to open an account</a>), fill in step one
+                                        and 2 and start trading now! To make a deposit to your account, (<a href="http://bit.ly/2hnVw7d" target="_blank">click here.</a>)</em></p>
 
                                 <h4>When can I redeem points?</h4>
                                 <ol>
@@ -178,9 +185,6 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                         <h4>5th Prize = $50</h4>
                                     </div>
                                 </div>
-
-
-
 
                                 <p>In addition to the prizes, each winner gets a guaranteed invite to our annual lavish dinner which holds at the
                                     end of every year in December.</p>
@@ -222,6 +226,10 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     <li>As the first prize annual cumulative winner, you will get one million naira (N1,000,000).</li>
                                 </ol>
                                 <p>This is an awesome opportunity for you to make earn while you earn. Get set and take your positions immediately and make the points start counting.</p>
+
+                                <p class="text-danger text-center"><em>If you do not have an enrolled account yet,
+                                        (<a href="http://bit.ly/2mpqehQ" target="_blank">click here to open an account</a>), fill in step one
+                                        and 2 and start trading now! To make a deposit to your account, (<a href="http://bit.ly/2hnVw7d" target="_blank">click here.</a>)</em></p>
 
                                 <p class="text-left"><a href="loyalty_archive.php" class="btn btn-success" title="Archived Results"><i class="fa fa-arrow-circle-right"></i> Archived Results</a></p>
                                 <br /><hr />

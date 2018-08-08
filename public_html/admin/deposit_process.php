@@ -25,6 +25,20 @@ if($no_valid_page) {
     header("Location: ./");
 }
 
+#Process Transaction Release
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['release_transaction'])){
+    release_transaction($trans_id, $_SESSION['admin_unique_code']);
+    switch($get_params['x']) {
+        case 'pending': $url = 'deposit_pending'; break;
+        case 'confirmed': $url = 'deposit_confirmed'; break;
+        case 'inspect': $url = 'deposit_confirmed'; break;
+        case 'notified': $url = 'deposit_notified'; break;
+        case 'view': $url = 'deposit_confirmed'; break;
+    }
+    header("Location: $url.php");
+    exit();
+}
+
 // Process form for replying to client comment on deposit transaction
 if (isset($_POST['reply-deposit-comment'])) {
     
@@ -40,6 +54,7 @@ if (isset($_POST['reply-deposit-comment'])) {
     if($update_comment_response) {
         $system_object->send_email($subject, $my_message, $client_email, $client_name);
         $message_success = "Your message has been sent.";
+        release_transaction($trans_id, $_SESSION['admin_unique_code']);
     } else {
         $message_error = "An error occurred, your message was not sent.";
     }
@@ -83,8 +98,9 @@ if ($deposit_process_notified && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST
             $client_operation->update_loyalty_point($points_claimed_id, $point_status);
         }
     }
-    
+    release_transaction($trans_id, $_SESSION['admin_unique_code']);
     header("Location: deposit_notified.php");
+    exit;
 }
 
 // Process Confirmed Deposit
@@ -119,9 +135,10 @@ if ($deposit_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POS
 
         $client_operation->update_loyalty_point($points_claimed_id, $point_status);
     }
-
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     $trans_id_encrypted = encrypt($transaction_id);
     header("Location: deposit_view_details.php?id=$trans_id_encrypted");
+    exit;
 }
 
 // Process Pending Deposit
@@ -134,7 +151,8 @@ if ($deposit_process_pending && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST[
     $remarks = $_POST['remarks'];
 
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
-    
+
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     header("Location: deposit_pending.php");
     exit;
 }
@@ -148,6 +166,10 @@ if(empty($trans_detail)) {
     $trans_remark = $client_operation->get_deposit_remark($trans_id);
 }
 
+$transaction_access = allow_transaction_review($trans_id, $_SESSION['admin_unique_code']);
+if(!empty($transaction_access['holder'])){
+    $message_error = "This transaction is currently being reviewed by {$transaction_access['holder']}";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -235,7 +257,19 @@ if(empty($trans_detail)) {
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
+                                <?php if($transaction_access['status']): ?>
+                                    <div class="alert alert-success">
+                                        <form  data-toggle="validator" role="form" method="post" action="">
+                                            <p><strong>Are you done reviewing this transaction? </strong></p>
+                                            <input value="Click Here To Release This Transaction." name="release_transaction" type="submit" data-toggle="modal" class="btn btn-sm btn-success" />
+                                            <p>Clicking the button above allows other admin personnel work on this transaction.</p>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
+
                                 <?php require_once 'layouts/feedback_message.php'; ?>
+
+                                <?php $bonus_obj = new Bonus_Operations(); $bonus_obj->UI_flag_as_bonus_transaction($trans_detail['ifx_acct_no']) ?>
                                 
                                 <?php 
                                     if($deposit_process_pending) { include_once 'views/deposit_process/deposit_process_pending.php'; }

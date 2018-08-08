@@ -93,6 +93,13 @@ function log_action($action, $message="") {
  * @param type $datetime
  * @return type
  */
+
+function datetime_to_text3($datetime="") {
+    $unixdatetime = strtotime($datetime);
+    return strftime("%b %d, %Y at %I:%M", $unixdatetime);
+}
+
+
 function datetime_to_text($datetime="") {
   $unixdatetime = strtotime($datetime);
   return strftime("%b %d, %Y at %I:%M %p", $unixdatetime);
@@ -481,6 +488,11 @@ function endsWith($haystack, $needle) {
     return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
 }
 
+function startsWith($haystack, $needle){
+    $length = strlen($needle);
+    return (substr($haystack, 0, $length) === $needle);
+}
+
 function add_activity_log()
 {
     global $admin_object;
@@ -634,3 +646,227 @@ function paginate_array($offset, $array, $benchmark)
     }
     return $result;
 }
+
+function random_password( $length = 7 ) {
+    $chars = "abcdefghijkmnpqrtwyz123456789";
+    $password = substr( str_shuffle( $chars ), 0, $length );
+    return $password;
+}
+
+function str_replace_nth($search, $replace, $subject, $nth) {
+    $found = preg_match_all('/'.preg_quote($search).'/', $subject, $matches, PREG_OFFSET_CAPTURE);
+
+    if (false !== $found && $found > $nth) {
+        return substr_replace($subject, $replace, $matches[0][$nth][1], strlen($search));
+    }
+    return $subject;
+}
+
+/*
+ * $input_name = (string) Name of the markup form field
+ * $upload_path = (string) Directory path for the uploaded file.
+ * $desired_file_name = (string) Desired name of the uploaded file.
+ *  $allowed_file_types = (array) Array of allowed file types for the upload
+ *  $max_file_size = (int) Maximum file size
+ * */
+function upload_file($input_name, $upload_path, $desired_file_name, $allowed_file_types = array('image/jpeg', 'image/png'), $max_file_size = 5 * 1024 * 1024){
+    $feedback = array();
+    if(isset($_FILES[$input_name]) && $_FILES[$input_name]["error"] == UPLOAD_ERR_OK){
+
+        $feedback['file_properties'] = array(
+            'filename' => $_FILES[$input_name]["name"],
+            'filetype' => $_FILES[$input_name]["type"],
+            'filesize' => $_FILES[$input_name]["size"]
+        );
+        extract($feedback['file_properties']);
+
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+        if(!array_key_exists($ext, $allowed_file_types)){
+            $feedback['status'] = false;
+            $feedback['status_msg'] = "Error: Please select a valid file format.";
+            //exit();
+        }
+
+        if($filesize > $max_file_size){
+            $feedback['status'] = false;
+            $feedback['status_msg'] = "Error: File size is larger than the allowed limit.";
+            //exit();
+        }
+
+        if(in_array($filetype, $allowed_file_types)){
+            if(!file_exists($upload_path)){
+                mkdir($upload_path);
+            }
+
+            if(file_exists($upload_path.$desired_file_name)){
+                $feedback['status'] = false;
+                $feedback['status_msg'] = "Error: $desired_file_name already exists in $upload_path";
+                //exit();
+            } else{
+                move_uploaded_file($_FILES[$input_name]["tmp_name"], $upload_path.$desired_file_name);
+                $feedback['file_properties']['filename'] = $desired_file_name;
+                $feedback['status'] = true;
+                $feedback['status_msg'] = "Success: Upload successful.";
+            }
+        } else{
+            $feedback['status'] = false;
+            $feedback['status_msg'] = "Error: There was a problem uploading your file. Please try again.";
+        }
+    }
+    else{
+        $feedback['status'] = false;
+        $feedback['status_msg'] = "Error: ".$_FILES[$input_name]["error"];
+    }
+    return $feedback;
+}
+
+
+
+
+
+
+/*
+*Transaction Review Functions
+*/
+function hold_transaction($transaction_ID, $admin_code){
+    global $db_handle;
+    $feedback_msg = array();
+    $query = "SELECT transaction_id FROM active_transactions WHERE transaction_id = '$transaction_ID' ";
+    if($db_handle->numRows($query) <= 0){
+        $query = "INSERT INTO active_transactions (transaction_id, admin_code) VALUES ('$transaction_ID', '$admin_code') ";
+        $db_handle->runQuery($query);
+        $feedback_msg['status'] = true;
+        $feedback_msg['msg'] = 'This request is valid and successful.';
+        return $feedback_msg;
+    }else{
+        $feedback_msg['status'] = false;
+        $feedback_msg['msg'] = 'This request is invalid and unsuccessful.';
+        return $feedback_msg;
+    }
+}
+
+function release_transaction($transaction_ID, $admin_code){
+    global $db_handle;
+    $query = "DELETE FROM active_transactions WHERE transaction_id = '$transaction_ID' AND admin_code = '$admin_code' ";
+    $db_handle->runQuery($query);
+}
+
+function allow_transaction_review($transaction_ID, $admin_code){
+    global $db_handle;
+    global $admin_object;
+    $feedback_msg = array();
+    $query = "SELECT transaction_id, admin_code FROM active_transactions WHERE transaction_id = '$transaction_ID' ";
+    if($db_handle->numRows($query) > 0){
+        $holder_details = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
+        //if this is true, it means the holder of this transaction is the one making the current request
+        if($holder_details['admin_code'] == $admin_code){
+            $feedback_msg['status'] = true;
+            //$feedback_msg['holder'] = $admin_object->get_admin_name_by_code($holder_details['admin_code']);
+            $feedback_msg['msg'] = 'This request is valid and successful.';
+            return $feedback_msg;
+        }
+        //this is false, this transaction is being managed by another person
+        else{
+            $feedback_msg['status'] = false;
+            $feedback_msg['holder'] = $admin_object->get_admin_name_by_code($holder_details['admin_code']);
+            $feedback_msg['msg'] = 'This request is valid but it failed.';
+            return $feedback_msg;
+        }
+    }else{return hold_transaction($transaction_ID, $admin_code);}
+}
+
+function clear_transactions(){
+    global $db_handle;
+    $max_time_diff = 0.50;  #Maximum of 1 hour
+    $query = "SELECT transaction_id, admin_code, created FROM active_transactions ";
+    $transactions = $db_handle->fetchAssoc($db_handle->runQuery($query));
+    foreach($transactions as $row){
+        $time1 = strtotime(date('Y-m-d h:i:s'));
+        $time2 = strtotime($row['created']);
+        $difference = (abs($time1 - $time2)) / 3600;
+        if($difference >= $max_time_diff){
+            $db_handle->runQuery("DELETE FROM active_transactions WHERE transaction_id = '{$row['transaction_id']}' ");
+        }
+    }
+}
+/*
+*Transaction Review Functions
+*/
+
+
+
+#Edu_Sales_Tracker Functions
+/*$category = array('cat_0','cat_1','cat_2','cat_3','cat_4'); */
+function edu_sale_track($user_code, $category){
+    global $db_handle;
+    $query = "INSERT INTO edu_sales_tracker (user_code, sale_stat, sale_cat) VALUES ('$user_code', '1', '$category') ;";
+    return $db_handle->runQuery($query);
+}
+
+function edu_sales_filter($query_result, $filter_criteria){
+    global $db_handle;
+    switch($filter_criteria){
+        //all
+        case '1': return $query_result;  break;
+
+        //contacted
+        case '2':
+            $feedback_array = $query_result;
+            foreach ($query_result as $key => $value){
+                $query = "SELECT sale_stat FROM edu_sales_tracker WHERE user_code = '{$value['user_code']}'";
+                $sale_stat = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
+                if($sale_stat == '0' || empty($sale_stat)){
+                    unset($feedback_array[$key]);
+                }
+            }
+            return $feedback_array;
+            break;
+
+        //not contacted
+        case '3':
+            $feedback_array = $query_result;
+            foreach ($query_result as $key => $value){
+                $query = "SELECT sale_stat FROM edu_sales_tracker WHERE user_code = '{$value['user_code']}'";
+                $sale_stat = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
+                if($sale_stat == '1'){ unset($feedback_array[$key]); }
+            }
+            return $feedback_array;
+            break;
+    }
+}
+
+function edu_sale_untrack($category, $user_code){
+    global $db_handle;
+    $query = "UPDATE edu_sales_tracker SET sale_stat = '0' WHERE user_code = '$user_code' AND sale_cat = '$category' ;";
+    return $db_handle->runQuery($query);
+}
+
+function edu_sale_track_reset($category){
+    global $db_handle;
+    $query = "DELETE FROM edu_sales_tracker WHERE sale_cat = '$category' ";
+    return $db_handle->runQuery($query);
+}
+
+function UI_sale_status($user_code, $category){
+    global $db_handle;
+    $query = "SELECT sale_stat, created FROM edu_sales_tracker WHERE sale_cat = '$category' AND user_code = '$user_code' ";
+    $sale_stat = (int) $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['sale_stat'];
+    $created =  datetime_to_text($db_handle->fetchAssoc($db_handle->runQuery($query))[0]['created']);
+    if($sale_stat == 0 || empty($sale_stat)){
+        $button = '<button title="Flag this client as contacted" name="edu_sale_track" type="submit" class="btn btn-group-justified btn-xs btn-info"><i class="fa fa-check"></i></buttonFlag>';
+    }elseif($sale_stat == 1){
+        $button = '<button title="This client has been contacted" disabled name="edu_sale_track" type="submit" class="btn btn-group-justified btn-xs btn-default"><i class="fa fa-check"></i></button>';
+    }
+    $markup = <<<MAIL
+<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+<div class="input-group">
+<input type="hidden" name="user_code" value="{$user_code}" >
+<input type="hidden" name="category" value="{$category}" >
+{$button}
+</div>
+</form>
+MAIL;
+    echo $markup;
+}
+#Edu_Sales_Tracker Functions

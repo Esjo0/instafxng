@@ -24,7 +24,6 @@ require_once(LIB_PATH.DS."class_database.php");
 require_once(LIB_PATH.DS."vendor".DS."autoload.php");
 require_once(LIB_PATH.DS."class_admin.php");
 require_once(LIB_PATH.DS."class_system.php");
-require_once(LIB_PATH.DS."class_loyalty_point.php");
 require_once(LIB_PATH.DS."class_client_operation.php");
 require_once(LIB_PATH.DS."class_education.php");
 require_once(LIB_PATH.DS."class_questions.php");
@@ -34,6 +33,7 @@ require_once(LIB_PATH.DS."class_careers.php");
 require_once(LIB_PATH.DS."class_project_management.php");
 require_once(LIB_PATH.DS."class_customer_care_log.php");
 require_once(LIB_PATH.DS."class_push_notification.php");
+require_once(LIB_PATH.DS."class_loyalty_point.php");
 require_once(LIB_PATH.DS."class_support_emails.php");
 require_once(LIB_PATH.DS."class_accounting_system.php");
 require_once(LIB_PATH.DS."class_facility.php");
@@ -43,6 +43,9 @@ require_once(LIB_PATH.DS."class_access_controller.php");
 require_once(LIB_PATH.DS."class_loyalty_training_campaign.php");
 //Easter Promo Controller File
 require_once(LIB_PATH.DS."class_easter_promo.php");
+require_once(LIB_PATH.DS."class_signal_management.php");
+require_once(LIB_PATH.DS."class_bonus_operations.php");
+require_once(LIB_PATH.DS."class_bonus_conditions.php");
 
 if(!endsWith(getCurrentURL(), "push_notification_server.php")){add_activity_log();}
 $obj_access_control->validate_access();

@@ -986,7 +986,7 @@ MAIL;
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Hello $client_first_name,</p>
 
-            <p>Your support request on the FX Academy has been responsded to by an Admin.</p>
+            <p>Your support request on the FX Academy has been responded to by an Admin.</p>
 
             <p>Kindly <a href="$return_url">click here</a> to login to the
              FX Academy portal to see the reply and the full support thread.</p>

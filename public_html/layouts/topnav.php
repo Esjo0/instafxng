@@ -59,7 +59,7 @@
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="live_account.php" title="Open live Account">Live Account</a></li>
-<!--                            <li><a href="bonus_account.php" title="$20 Bonus Account">$20 Bonus Account</a></li>-->
+                            <li><a href="bonus.php" title="Bonus Offers">Bonus Offers</a></li>
                             <li><a href="https://instaforex.com/open_demo_account.php?x=BBLR" title="Demo Account" target="_blank">Demo Account</a></li>
                             <li><a href="https://instaforex.com/downloads.php?x=BBLR" title="Download Trading Terminal" target="_blank">Download Trading Terminal</a></li>
                         </ul>
@@ -83,8 +83,6 @@
                             <li><a href="partner/banners.php" title="">Banners</a></li>
                         </ul>
                     </li>-->
-<!--                    <li class="--><?php //if ($thisPage == "Bonus") { echo " active"; } ?><!--"><a href="bonus.php" title="InstaFxNg Bonuses"><i class="fa fa-dropbox fa-fw"></i>Bonuses</a></li>-->
-
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="https://cabinet.instaforex.com/client/login?x=BBLR" title="Login into Client Cabinet" target="_blank"><i class="fa fa-lock fa-fw"></i> Client Login</a></li>

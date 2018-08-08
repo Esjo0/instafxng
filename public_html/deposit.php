@@ -8,12 +8,23 @@ $additional_msg = $get_params['x'];
 if($additional_msg == 'msg')
 {
     $special_msg = <<<msg
-        <p>To get more, you need to do more!</p>
-        <p>Funding your Instaforex account and trading actively increases your loyalty points
-        and qualifies you for the monthly reward of $500.</p>
-        <p>To be one of the 5 traders to get $500 in August, you need to start earning points
-        early!</p>
-        <p>Let's Get you Started</p>
+        <p>Our Free 85% Accurate High Precision trading signals have gone Viral!</p>
+        <p>Last week, It booked 300 pips profit to the account of traders who use them.</p>
+
+        <p>Today, it hit 60 pips take profit, <a href="http://bit.ly/2JysCvT" target="_blank">Check it out here</a>.</p>
+        <p>Started using the signals yet?</p>
+
+        <p>This is a jaw-dropping opportunity to make consistent profit from your trades, earn more loyalty points and get a share of $500 this August!</p>
+
+        <p><strong>STEP 1: Fund your InstaForex Account</strong></p>
+        <p>Funding your Instaforex account and trading actively increases your loyalty points and qualifies you for the monthly reward of $500.</p>
+        <ul><li><a href="#acct_num">Click here</a> to fund account now.</li></ul>
+
+        <p><strong>STEP 2: Get Signals Alerts Daily</strong></p>
+
+        <p>The trading signals are posted every day on our website, just so you do not miss any of the entry prices as they drop, we have created a channel via Facebook Messenger where you can get direct notification as soon as the signals are posted.</p>
+        <p>Don’t miss any signal, <a href="http://bit.ly/2KEWxWQ" target="_blank">click here</a> to get daily notifications as soon as the signals are posted.</p>
+        <hr />
         <br />
 msg;
 }
@@ -367,7 +378,13 @@ switch($page_requested) {
                         <div class="row">
                             <?php if($additional_msg != 'msg_new'): ?>
                                 <div class="col-sm-12 text-danger">
-                                    <h4><strong>Fund Your Instaforex Account</strong></h4>
+
+                                    <?php if(!$special_msg) { ?>
+                                        <h4><strong>Fund Your Instaforex Account</strong></h4>
+                                    <?php } else { ?>
+                                        <h4><strong>Make Over 2000 pips on your Trades this August</strong></h4>
+                                    <?php } ?>
+
                                 </div>
                             <?php endif; ?>
 

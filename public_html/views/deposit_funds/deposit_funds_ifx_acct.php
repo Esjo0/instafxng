@@ -18,7 +18,7 @@ $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
     {?>
         <p>Account funding is very fast and simple</p>
 <?php } ?>
-
+<span id="acct_num"></span>
 <ul class="fa-ul">
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter your Instaforex Account Number and click the submit button</li>
 </ul>

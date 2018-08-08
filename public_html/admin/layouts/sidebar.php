@@ -59,6 +59,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(15, $my_pages_sidebar)) { ?><li><a href="client_doc_verify.php" title="Verify Documents">Verify Documents</a></li><?php } ?>
                         <?php if (in_array(202, $my_pages_sidebar)) { ?><li><a href="client_failed_sms_code.php" title="Failed SMS Code">Failed SMS Code</a></li><?php } ?>
                         <?php if (in_array(16, $my_pages_sidebar)) { ?><li><a href="client_bank_verify.php" title="Moderate Bank Account">Moderate Bank Account</a></li><?php } ?>
+                        <?php if (in_array(259, $my_pages_sidebar)) { ?><li><a href="client_life.php" title="Download Client Information">Download Client Information</a></li><?php } ?>
                     </ul>
                 </li>
 
@@ -75,6 +76,18 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(244, $my_pages_sidebar)) { ?><li><a href="client_active.php" title="Active Trading Clients">Active Trading Clients</a></li><?php } ?>
                         <?php if (in_array(245, $my_pages_sidebar)) { ?><li><a href="client_inactive.php" title="Inactive Trading Clients">Inactive Trading Clients</a></li><?php } ?>
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_commission_17.php" title="Commission Clients 17">Commission Clients 17</a></li><?php } ?>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-euro"></i> Bonus Management<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(263, $my_pages_sidebar)) { ?><li><a href="bonus_accounts.php" title="Bonus Accounts">Active Bonus Accounts</a></li><?php } ?>
+                        <?php if (in_array(264, $my_pages_sidebar)) { ?><li><a href="bonus_app_moderation.php" title="Moderate Bonus Applications">Moderate Bonus Applications</a></li><?php } ?>
+                        <?php if (in_array(265, $my_pages_sidebar)) { ?><li><a href="bonus_list.php" title="Manage Bonus Packages">Manage Bonus Packages</a></li><?php } ?>
+                        <?php if (in_array(266, $my_pages_sidebar)) { ?><li><a href="bonus_allocation.php" title="Process Bonus Allocation">Process Bonus Allocation</a></li><?php } ?>
+                        <?php if (in_array(267, $my_pages_sidebar)) { ?><li><a href="bonus_defaulting_accounts.php" title="Review Defaulting Accounts">Review Defaulting Accounts</a></li><?php } ?>
+                        <?php if (in_array(268, $my_pages_sidebar)) { ?><li><a href="bonus_successful_accounts.php" title="Review Successful Accounts">Review Successful Accounts</a></li><?php } ?>
                     </ul>
                 </li>
 
@@ -106,6 +119,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(36, $my_pages_sidebar)) { ?><li><a href="deposit_all.php" title="All Deposit Transactions">Deposit - All</a></li><?php } ?>
                         <?php if (in_array(37, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
                         <?php if (in_array(38, $my_pages_sidebar)) { ?><li><a href="deposit_reversal.php" title="Reverse Transaction">Deposit - Reversal</a></li><?php } ?>
+                        <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -120,6 +134,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(45, $my_pages_sidebar)) { ?><li><a href="withdrawal_declined.php" title="Declined/Failed Withdrawal">Withdrawal - Declined/Failed</a></li><?php } ?>
                         <?php if (in_array(46, $my_pages_sidebar)) { ?><li><a href="withdrawal_all.php" title="All Withdrawal Transactions">Withdrawal - All</a></li><?php } ?>
                         <?php if (in_array(47, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
+                        <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -158,10 +173,9 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-suitcase fa-fw"></i> Partner Management<b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                        <?php if (in_array(51, $my_pages_sidebar)) { ?><li><a href="partner_new.php">New Partners</a></li><?php } ?>
                         <?php if (in_array(51, $my_pages_sidebar)) { ?><li><a href="partner_view.php">View Partners</a></li><?php } ?>
-                        <?php if (in_array(52, $my_pages_sidebar)) { ?><li><a href="partner_update.php">Update Partners</a></li><?php } ?>
-                        <?php if (in_array(53, $my_pages_sidebar)) { ?><li><a href="paypartners.php">Pay Partners</a></li><?php } ?>
-                        <?php if (in_array(54, $my_pages_sidebar)) { ?><li><a href="partner_set_commission.php">Set Commission Rate</a></li><?php } ?>
+                        <?php if (in_array(52, $my_pages_sidebar)) { ?><li><a href="partner_credentials.php">Approve Credentials</a></li><?php } ?>
                         <?php if (in_array(55, $my_pages_sidebar)) { ?><li><a href="partner_pending_payout.php">Pending Payout</a></li><?php } ?>
                         <?php if (in_array(56, $my_pages_sidebar)) { ?><li><a href="partner_payout_history.php">Payout History</a></li><?php } ?>
                     </ul>
@@ -222,14 +236,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear fa-fw"></i> System<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if (in_array(79, $my_pages_sidebar)) { ?><li><a href="system_message.php">System Messages</a></li><?php } ?>
-                        <div class="divider"></div>
-                        <!-- 84 -->
                         <?php if (in_array(239, $my_pages_sidebar)) { ?><li><a href="system_activity_logs.php"> System Activity Logs</a></li><?php } ?>
-                        <div class="divider"></div>
-                        <!-- 84 -->
                         <?php if (in_array(243, $my_pages_sidebar)) { ?><li><a href="system_ad_section.php"> Front-End Advert Section</a></li><?php } ?>
-                        <div class="divider"></div>
-                        <!-- 84 -->
                         <?php if (in_array(258, $my_pages_sidebar)) { ?><li><a href="sms_records.php"> SMS Records</a></li><?php } ?>
                     </ul>
                 </li>
@@ -301,6 +309,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <ul class="dropdown-menu">
                         <?php if (in_array(77, $my_pages_sidebar)) { ?><li><a href="signal_daily.php">Update Daily Signal</a></li><?php } ?>
                         <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_review.php">Signal Analysis</a></li><?php } ?>
+                        <?php if (in_array(78, $my_pages_sidebar)) { ?><li><a href="signal_users.php">Signal Users</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
