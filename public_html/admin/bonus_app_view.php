@@ -78,6 +78,8 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                             <p class="pull-right">
                                                 <button data-toggle="modal" data-target="#app_decline" class="btn btn-sm btn-danger" title="Decline Application."><b style="font-size: medium">&times;</b> Decline</button>
                                                 <button data-toggle="modal" data-target="#app_approve" class="btn btn-sm btn-success" title="Approve Application"><b style="font-size: medium"><i class="fa fa-check"></i></b> Approve</button>
+                                                <a target="_blank" class="btn btn-sm btn-default" href="campaign_email_single.php?name=<?php echo encrypt_ssl($app_details['first_name']." ".$app_details['middle_name']." ".$app_details['last_name']).'&email='.encrypt_ssl($app_details['email']);?>" title="Send This Client A Mail"><b style="font-size: medium"><i class="glyphicon glyphicon-envelope"></i></b> Send Mail</a>
+                                                <a target="_blank" class="btn btn-sm btn-default" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($app_details['phone']) ?>" title="Send This Client An SMS"><b style="font-size: medium"><i class="glyphicon glyphicon-phone"></i></b> Send SMS</a>
                                             </p>
                                         <?php } ?>
                                     </div>
@@ -228,9 +230,17 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                                         <?php if(!empty($value)){ ?>
                                                     <tr>
                                                         <td><?php echo $key; ?></td>
-                                                        <td><?php echo $value['title'].'<br/>'.$value['desc']; ?></td>
+                                                        <td>
+                                                            <?php echo $value['title'].'<br/>'.$value['desc']; ?>
+                                                            <br/>
+                                                            <?php
+                                                                $package_metas = $bonus_operations->get_single_package_meta_by_code($bonus_code, $key);
+                                                                foreach ($package_metas as $package_meta){
+                                                                    echo $package_meta['meta_name']." : ".$package_meta['meta_value']."<br/>";
+                                                                }
+                                                            ?>
+                                                        </td>
                                                         <td class="nowrap">
-
                                                             <?php $cond_feedback = $bonus_conditions->{$value['api']}($app_details['bonus_account_id']) ?>
                                                             <!--<input class="checkbox" type="checkbox" <?php /*if($cond_feedback['status']== true){echo "checked";} */?> name="">-->
                                                             <?php if($cond_feedback['status']== false){echo '<p style="font-size: larger" class="text-center text-danger"><b>&times;</b></p>';} ?>
