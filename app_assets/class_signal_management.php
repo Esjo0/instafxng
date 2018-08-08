@@ -495,6 +495,14 @@ WHERE SD.trigger_date = '$date'";
         foreach ($symbols as $key => $value) {
             $symbol_array['symbols'][count($symbol_array['symbols'])] = array('title' => $value['symbol'], 'proName' => str_replace('/', '', $value['symbol']));
         }
+        if(empty($symbol_array)){
+            $query = "SELECT symbol FROM signal_symbol";
+            $symbols = $db_handle->fetchAssoc($db_handle->runQuery($query));
+            $symbol_array = array();
+            foreach ($symbols as $key => $value) {
+                $symbol_array['symbols'][count($symbol_array['symbols'])] = array('title' => $value['symbol'], 'proName' => str_replace('/', '', $value['symbol']));
+            }
+            }
         $symbol_array['locale'] = 'en';
 
         echo "<div class='tradingview-widget-container'>";
