@@ -91,6 +91,14 @@ class Signal_Management
         }
     }
 
+    public function round_price_to_4_dp($price)
+    {
+//        $price = round($price,4);
+//        $dec = strpos($price, ".");
+        $price = substr($price, 0, -1);
+        return $price;
+    }
+
     public function UI_get_news_for_page($currency_pair)
     {
         $date = date('Y-m-d');
@@ -125,136 +133,136 @@ MAIL;
                 //$row['symbol'] = str_replace('/', '', $row['symbol']);
                 $posted_date = datetime_to_text($row['created']);
                 $output = <<<MAIL
-<div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
-                                        <div class="thumbnail">
-                                            <div class="caption">
-                                                <div class="row">
+                <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
+                     <div class="thumbnail">
+                          <div class="caption">
+                               <div class="row">
                                                     <!--.....................................-->
-                                                    <div id="signal_{$row['signal_id']}_main" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <div class="row">
-                                                            <div class="col-sm-2"><p style="font-size: xxx-large">{$this->UI_signal_trend_msg($row['order_type'])}</p></div>
-                                                            <div class="col-sm-7">
-                                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']}</b>
-                                                                <br/>
-                                                                <span>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</span>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <b class="pull-right">{$this->UI_order_type_status_msg($row['order_type'])}</b>
-                                                            </div>
-                                                        </div>
+                                   <div id="signal_{$row['signal_id']}_main" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                       <div class="row">
+                                            <div class="col-sm-2"><p style="font-size: xxx-large">{$this->UI_signal_trend_msg($row['order_type'])}</p></div>
+                                            <div class="col-sm-7">
+                                                <b class="thumbnail-label pull-left"><span class="currency_pair" id="signal_{$row['signal_id']}_currency_pair">{$row['symbol']}</b>
+                                                    <br/>
+                                                <span>{$this->UI_get_signal_trigger_status_msg($row['trigger_status'])}</span>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                 <b class="pull-right">{$this->UI_order_type_status_msg($row['order_type'])}</b>
+                                            </div>
+                                       </div>
                                                         <hr>
-                                                        <div class="well text-center"><b>ENTRY PRICE: {$row['price']}</b></div>
-                                                        <div class="row">
-                                                            <div class="col-sm-6"><div class="well text-center"><span>{$row['stop_loss']}<br/>Stop Loss</span></div></div>
-                                                            <div class="col-sm-6"><div class="well text-center"><span>{$row['take_profit']}<br/>Take Profit</span></div></div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
-                                                        </div>
-<h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted on </span>$posted_date</span></strong></h6>
-                                                    
-                                                    </div>
+                                        <div class="well text-center"><b>ENTRY PRICE: {$this->round_price_to_4_dp($row['price'])}</b></div>
+                                        <div class="row">
+                                            <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_4_dp($row['stop_loss'])}<br/>Stop Loss</span></div></div>
+                                            <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_4_dp($row['take_profit'])}<br/>Take Profit</span></div></div>
+                                        </div>
+                                        <div class="row">
+                                             <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                        <h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted on </span>$posted_date</span></strong></h6>
+
+                                        <button class="pull-right" type="button" id="signal_{$row['signal_id']}_trigger" onclick="signal.show_extra_analysis('{$row['signal_id']}')"><b>VIEW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b></button>
+                                        </div>
+                                       </div>
                                                     <!--............................................-->
                                                     <!--............................................-->
-                                                    <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                                                        <div class="row">
-                                                            <div  class="col-sm-5 col-xs-12">
-                                    <li class="list-group-item d-flex justify-content-between lh-condensed" >
-                                        <div>
-                                            <h6 style="font-size: 15px" class="my-0 pull-right"><strong>Difference Between Live Market Price and Entry Price</strong></h6>
+                                       <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                                            <div class="row">
+                                                 <div  class="col-sm-5 col-xs-12">
+                                                        <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                            <div>
+                                            <h6 style="font-size: 15px" class="my-0 pull-right"><strong>Highest Pips Gained</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                             <small class="text-muted">
-                                                
                                             </small>
 
                                         </div>
                                         <span class="text-muted"><span id="signal_currency_diff_{$row['signal_id']}">0</span> Pips</span>   <small id="signal_pl_{$row['signal_id']}" class="text-muted pull-right"></small>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                        </li>
+                                       <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                         <div>
-                                            <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Know how much you can gain from taking this trade.</strong></h6>
-                                            <h6 class="my-0"></h6>
+                                        <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Know how much you can gain from taking this trade.</strong></h6>
+                                        <h6 class="my-0"></h6>
 
-                                              <center> 
-                                              <form class="form form-validate" role="form" method="post" action="">
-                                               <div class="input-group">
+                                       <center>
+                                        <form class="form form-validate" role="form" method="post" action="">
+                                            <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-dollar fa-fw"></i></span>
                                                         <input name="name" type="text" id="signal_equity_{$row['signal_id']}" value="" class="form-control" placeholder="Enter Your Equity" required/>
-                                                </div>
-                                                <div class="input-group">
+                                            </div>
+                                            <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-circle fa-fw"></i></span>
                                                         <input name="name" type="text" id="signal_lots_{$row['signal_id']}" value="" class="form-control" placeholder="Enter Desired Lots" required/>
-                                                </div>
-                                                <div class="input-group" >
+                                            </div>
+                                            <div class="input-group" >
                                                         <input style="display:none" name="name" type="text" id="signal_gain_{$row['signal_id']}" value="" class="form-control" placeholder="Enter Desired Lots"/>
-                                                </div>
-                                                <div>
+                                            </div>
+                                            <div>
                                                     <button onclick="cal_gain({$row['signal_id']})" type="button" class="btn btn-success">Calculate</button>                                              </div>
-                                                </div>
-                                            </form>
-                                            </center>
+                                            </div>
+                                        </form>
+                                       </center>
                                         </div>
                                         <span class="text-muted"></span>
-                                    </li>
-                                                            <div style="" class="col-sm-7 col-xs-12">
+                                        </li>
+                                       <div style="" class="col-sm-7 col-xs-12">
                                                                 <!-- TradingView Widget BEGIN -->
                                                                 <!-- TradingView Widget BEGIN -->
 
-<!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container" style="pointer-events: none;">
-  <div class="tradingview-widget-container__widget"></div>
-  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/currencies/" rel="noopener" target="_blank"><span class="blue-text">Forex</span></a> by TradingView</div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-  {
-  "width": 335,
-  "height": 250,
-  "showChart": true,
-  "locale": "en",
-  "largeChartUrl": "",
-  "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
-  "plotLineColorFalling": "rgba(255, 74, 104, 1)",
-  "gridLineColor": "rgba(233, 233, 234, 1)",
-  "scaleFontColor": "rgba(214, 216, 224, 1)",
-  "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
-  "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
-  "symbolActiveColor": "rgba(242, 250, 254, 1)",
-  "tabs": [
-    {
-      "symbols": [
-        {
-          "s": "FX:{$row['symbol']}"
-        }
-      ]
-    }
-  ]
-}
-  </script>
-</div>
-<!-- TradingView Widget END -->
-                            <!-- TradingView Widget END--->
-                            <div>
-                            <small style="font-size: x-small">Your use of the signals means you have read and accepted our
-        <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
-        Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
-            signal guide</a> to learn how to use the signals.
-    </small>
-    <li class="list-group-item d-flex justify-content-between lh-condensed" >
-                                        <div>     
-                                            <small class="text-muted">
-                                               KeyNote: {$row['note']}
-                                            </small>
-                                        </div>
-                                        <h6 style="font-size: 10px" class="my-0 pull-right"><strong><span class="text-muted"><span>Posted for </span>$posted_date</span></strong></h6>
-                                    </li>
-</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                              <!-- TradingView Widget BEGIN -->
+                                            <div class="tradingview-widget-container" style="pointer-events: none;">
+                                            <div class="tradingview-widget-container__widget"></div>
+                                            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/currencies/" rel="noopener" target="_blank"><span class="blue-text">Forex</span></a> by TradingView</div>
+                                                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                                                                                      {
+                                                                                     "width": 335,
+                                                                                     "height": 250,
+                                                                                     "showChart": true,
+                                                                                     "locale": "en",
+                                                                                     "largeChartUrl": "",
+                                                                                     "plotLineColorGrowing": "rgba(60, 188, 152, 1)",
+                                                                                     "plotLineColorFalling": "rgba(255, 74, 104, 1)",
+                                                                                     "gridLineColor": "rgba(233, 233, 234, 1)",
+                                                                                     "scaleFontColor": "rgba(214, 216, 224, 1)",
+                                                                                     "belowLineFillColorGrowing": "rgba(60, 188, 152, 0.05)",
+                                                                                     "belowLineFillColorFalling": "rgba(255, 74, 104, 0.05)",
+                                                                                     "symbolActiveColor": "rgba(242, 250, 254, 1)",
+                                                                                     "tabs": [
+                                                                                      {
+                                                                                       "symbols": [
+                                                                                      {
+                                                                                      "s": "FX:{$row['symbol']}"
+                                                                                      }
+                                                                                                   ]
+                                                                                      }
+                                                                                              ]
+                                                                                      }
+                                                    </script>
                                             </div>
-                                        </div>
-                                    </div>
+
+                                            <div>
+                                            <small style="font-size: x-small">Your use of the signals means you have read and accepted our
+                                                 <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
+                                                 Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
+                                                 signal guide</a> to learn how to use the signals.
+                                            </small>
+                                            <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                                  <div>
+                                                     <small class="text-muted">
+                                                        KeyNote: {$row['note']}
+                                                     </small>
+                                                  </div>
+                                            </li>
+                                       </div>
+                                   </div>
+                               </div>
+                          </div>
+                     </div>
+                </div>
+            </div>
+        </div>
 MAIL;
                 echo $output;
             }
@@ -362,7 +370,7 @@ MAIL;
     {
         global $db_handle;
         $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.price, SD.take_profit,
-SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol 
+SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol, SD.pips
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE SD.trigger_date = '$date'";
@@ -371,8 +379,8 @@ WHERE SD.trigger_date = '$date'";
 
     public function update_signal_daily_FILE($signal_array)
     {
-       file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-   //      file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+           file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+        // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
@@ -444,11 +452,11 @@ WHERE SD.trigger_date = '$date'";
         return $result;
     }
 
-    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '')
+    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '', $admin_code, $market_price)
     {
         global $db_handle;
-        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views) 
-                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0)";
+        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views, created_by, market_price, pips)
+                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0, '$admin_code', $market_price, 0)";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));

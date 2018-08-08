@@ -97,10 +97,21 @@ $prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
 $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
+$_query = $query;
 $query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $new_leads = $db_handle->fetchAssoc($result);
 $client_operation = new clientOperation();
+
+function bulk_sms_url($query){
+    global $db_handle;
+    $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
+    $nos = array();
+    foreach ($result as $row) {$nos[count($nos)] = $row['phone'];}
+    $phone_nos = implode(',', $nos);
+    $url = "campaign_sms_single.php?lead_phone=".encrypt_ssl($phone_nos);
+    return $url;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -142,8 +153,11 @@ $client_operation = new clientOperation();
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                    <button id="file_upload" data-target="#upload_confirm" data-toggle="modal"  type="button" class="btn btn-sm btn-success">Upload File</button>
+                                <p class="pull-right"><a href="<?php echo bulk_sms_url($_query) ?>" class="btn btn-sm btn-default">Send Bulk SMS To <?php if($_SESSION['cat'] == '1'){echo 'All Leads';}elseif($_SESSION['cat'] == '2'){echo 'All Training Leads';}elseif($_SESSION['cat'] == '3'){echo 'All ILPR Leads';} ?>  <i class="glyphicon glyphicon-arrow-right"></i></a></p>
+
+                                <p class="pull_left"><a id="file_upload" data-target="#upload_confirm" data-toggle="modal" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-upload"></i>   Upload File</a></p>
                             </div>
+
                             <form data-toggle="validator" class="form-horizontal" role="form" method="post" enctype="multipart/form-data" action="">
                                 <!-- Modal - confirmation boxes -->
                                 <div id="upload_confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -170,20 +184,34 @@ $client_operation = new clientOperation();
 
                             <div class="col-sm-12">
                                 <p>Below is the list of <?php echo $msg; ?>.</p>
+
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                     <center>
                                         <div class="input-group-sm">
-                                    <button class="btn btn-sm <?php if($_SESSION['cat'] == '1'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="1">All Leads</button>
-                                    <button class="btn btn-sm <?php if($_SESSION['cat'] == '2'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="2">All Training Leads</button>
-                                    <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All ILPR Leads</button>
-                                            <input type="text" class="input" name="search" placeholder="Enter email address"/>
-                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '4'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="4">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                    </div>
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '1'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="1">All Leads</button>
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '2'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="2">All Training Leads</button>
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All ILPR Leads</button>
+                                        </div>
                                     </center>
-                                    <br/><br/>
+                                    <br/>
+                                    <center>
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="search" placeholder="Enter email address"/>
+                                                <span class="input-group-btn">
+                                                    <button class="btn <?php if($_SESSION['cat'] == '4'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="4">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4"></div>
+                                    </center>
                                 </form>
+
+                                <br/><br/><br/><br/>
+
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>

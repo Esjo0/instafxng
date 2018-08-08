@@ -5,17 +5,10 @@ if (!$session_partner->is_logged_in()) {
 }
 
 $partner_details = $_SESSION['partner_details'];
-$partner_code = "BBLR";//$partner_details['partner_code'];
-
-//print_r($partner_details);
-
-//echo $partner_code;
+$partner_details['partner_code'];
 
 $fin_comm = $partner_object->view_financial_commission($partner_code);
-
 $trading_comm = $partner_object->view_trading_commission($partner_code);
-
-//print_r($trading_comm[0]);
 
 ?>
 <!DOCTYPE html>
@@ -35,17 +28,37 @@ $trading_comm = $partner_object->view_trading_commission($partner_code);
 <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
 <div id="main-body" class="container-fluid">
     <div class="row no-gutter">
-        <?php require_once 'layouts/sidebar.php'; ?>
+        <?php require_once 'layouts/navbar.php'; ?>
         <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
         <div id="main-body-content-area" class="col-md-12">
 
             <!-- Unique Page Content Starts Here
             ================================================== -->
             <div class="row">
-                <div class="col-sm-12">
-                    <img src="images/partner_pc.png" alt="" class="img-responsive center-block" width="668px" height="226px" />
+                <div class="col-xs-6 col-sm-3">
+                    <div class="dashboard-stats">
+                        <header>Account Balance</header>
+                        <footer>&dollar; 500.00</footer>
+                    </div>
                 </div>
-
+                <div class="col-xs-6 col-sm-3">
+                    <div class="dashboard-stats">
+                        <header>Earnings Yesterday</header>
+                        <footer>&dollar; 50.00</footer>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-3">
+                    <div class="dashboard-stats">
+                        <header>Total Referral</header>
+                        <footer>50</footer>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-3">
+                    <div class="dashboard-stats">
+                        <header>Active Referral</header>
+                        <footer>22</footer>
+                    </div>
+                </div>
             </div>
 
             <div class="section-tint super-shadow">
