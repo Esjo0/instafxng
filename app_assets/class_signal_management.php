@@ -130,7 +130,7 @@ MAIL;
             for ($i = 0; $i < count($signals); $i++) {
                 $row = (array)$signals[$i];
                 $this->viewCount($row['signal_id']);
-                //$row['symbol'] = str_replace('/', '', $row['symbol']);
+                $symbol = str_replace('/', '', $row['symbol']);
                 $posted_date = datetime_to_text($row['created']);
                 $output = <<<MAIL
                 <div id="signal_{$row['signal_id']}" class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item main">
@@ -233,7 +233,7 @@ MAIL;
                                                                                       {
                                                                                        "symbols": [
                                                                                       {
-                                                                                      "s": "FX:{$row['symbol']}"
+                                                                                      "s": "FX:{$symbol}"
                                                                                       }
                                                                                                    ]
                                                                                       }
