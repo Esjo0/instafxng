@@ -4,8 +4,8 @@ set_include_path('/home/tboy9/public_html/init/');
 require_once 'initialize_general.php';
 $signal_object = new Signal_Management();
 
-$scheduled_signals = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
-//$scheduled_signals = (array)json_decode(file_get_contents('../../models/signal_daily.json'));
+//$scheduled_signals = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
+$scheduled_signals = (array)json_decode(file_get_contents('../../models/signal_daily.json'));
 
 if (!empty($scheduled_signals)) {
     for ($i = 0; $i < count($scheduled_signals); $i++) {
@@ -17,17 +17,23 @@ if (!empty($scheduled_signals)) {
         $response = (array)json_decode($get_data, true);
 		$entry_price = $response[0]['price'];
         //Trigger Sell Order
-        if (($response[0]['price'] <= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2) && !empty($response[0][price])) {
-            if ($row['trigger_status'] != 1) {
+        if (($response[0]['price'] <= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2) && !empty($response[0][price]) && ($response[0][price] != 0)) {
+            if ($row['trigger_status'] != 1 && ($response[0]['price'] >= ($row['price'] + 0.0020))) {
                 $entry_price = $response[0]['price'];
                 $entry_time = date('Y-m-d h:i:s');
-				echo $entry_price;
                 $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '');
-
+                $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+                if($pips > $row['pips']){
+                        $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                    }
                 if ($row['order_type'] == 2) {
                     trigger_sell_order($row);
                 }
             } else {
+                $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+                if($pips > $row['pips']){
+                    $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                }
                 if ($row['order_type'] == 2) {
                     trigger_sell_order($row);
                 }
@@ -36,15 +42,24 @@ if (!empty($scheduled_signals)) {
 
         //Trigger Buy Order
         if (($response[0]['price'] >= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 1) && !empty($response[0][price])) {
-            if ($row['trigger_status'] != 1) {
+            if ($row['trigger_status'] != 1 && ($response[0]['price'] <= ($row['price'] + 0.0020))) {
                 $entry_price = $response[0]['price'];
-				echo $entry_price;
                 $entry_time = date('Y-m-d h:i:s');
                 $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '');
+
+                $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+                if($pips > $row['pips']){
+                    $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                }
+
                 if ($row['order_type'] == 1) {
                     trigger_buy_order($row);
                 }
             } else {
+                $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+                if($pips > $row['pips']){
+                    $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                }
                 if ($row['order_type'] == 1) {
                     trigger_buy_order($row);
                 }

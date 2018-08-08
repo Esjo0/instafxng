@@ -70,10 +70,10 @@ function Signal()
 
     ////fine
     this.show_extra_analysis = function(div_id){
-        signal_div = document.getElementById(div_id);
-        signal_main = document.getElementById(div_id+'_main');
-        signal_extra = document.getElementById(div_id+'_extra');
-        signal_trigger = document.getElementById(div_id+'_trigger');
+        signal_div = document.getElementById('signal_'+div_id);
+        signal_main = document.getElementById('signal_'+div_id+'_main');
+        signal_extra = document.getElementById('signal_'+div_id+'_extra');
+        signal_trigger = document.getElementById('signal_'+div_id+'_trigger');
         if (signal_extra.style.display === 'none'){
             //Make div big
             signal_div.classList = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 card grid-item';
@@ -84,7 +84,7 @@ function Signal()
             //Make div small
             signal_div.classList = 'col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 card grid-item';
             signal_main.classList = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12';
-            signal_trigger.innerHTML = '<b>SHOW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b>';
+            signal_trigger.innerHTML = '<b>VIEW EXTRA ANALYSIS <i class="glyphicon glyphicon-arrow-right"></i></b>';
             signal_extra.style.display = 'none';
         }
     };
@@ -224,7 +224,7 @@ function Signal()
             // document.getElementById('signal_currency_diff_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['price'];
             // document.getElementById('signal_pl_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['pl'];
             //signal_{$row['signal_id']}_currency_price
-            document.getElementById('signal_'+quotes_array[x]['symbol']+'_currency_price').innerHTML = quotes_array[x]['price'];
+            document.getElementById('signal_currency_diff_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['pips'];
         }
         //setInterval(function(){signal.getQuotes();}, 60000);//TODO: Fix this back to 5000
     };

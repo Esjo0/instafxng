@@ -95,7 +95,7 @@ if(isset($_POST['create_symbol'])){
 
 if(isset($_POST['new_signal'])){
 	$options = $db_handle->sanitizePost($_POST['options']);
-    $symbol = $db_handle->sanitizePost($_POST['symbol']);
+    $symbol_id = $db_handle->sanitizePost($_POST['symbol']);
     $buy_price = $db_handle->sanitizePost($_POST['buy_price']);
     $buy_price_tp = $db_handle->sanitizePost($_POST['buy_price_tp']);
     $buy_price_sl = $db_handle->sanitizePost($_POST['buy_price_sl']);
@@ -106,15 +106,33 @@ if(isset($_POST['new_signal'])){
 	$signal_date = $db_handle->sanitizePost($_POST['signal_date']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
 
+    $query = "SELECT symbol FROM signal_symbol WHERE symbol_id = '$symbol_id' ";
+    $result = $db_handle->runQuery($query);
+    $result = $db_handle->fetchAssoc($result);
+    foreach ($result as $row3) {
+        extract($row3);
+    }
+    give_me_my_key:
+    $key = $signal_object->quotes_api_key();
+
+    if (!empty($key)) {
+        goto give_me_my_key;
+    };
+    $symbol = str_replace('/', '', $symbol);
+    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$key;
+    $get_data = file_get_contents($url);
+    $response = (array) json_decode($get_data, true);
+    $market_price = $response[0]['price'];
+
     $buy_option = 1;
     $sell_option = 2;
 
 
 	if(!empty($buy_price) && !empty($buy_price_tp) && !empty($buy_price_sl)){
-        $new_schedule1 = $signal_object->new_signal_schedule($symbol, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code);
+        $new_schedule1 = $signal_object->new_signal_schedule($symbol_id, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price);
     }
     if(!empty($sell_price) && !empty($sell_price_tp) && !empty($sell_price_sl)){
-        $new_schedule2 = $signal_object->new_signal_schedule($symbol, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code);
+        $new_schedule2 = $signal_object->new_signal_schedule($symbol_id, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price);
     }
     if($new_schedule1 || $new_schedule2){
         $message_success = "Signal Successfully created for " . datetime_to_text($signal_time);
