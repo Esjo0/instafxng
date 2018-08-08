@@ -86,7 +86,7 @@ class Partner {
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
 
-                                <p>Dear $first_name;</p>
+                                <p>Dear $first_name,</p>
 
                                 <p>You have shown interest in the Instafxng Partnership Program (IPP), an administrator is
                                 moderating your application and you should get a response shortly.</p>
@@ -110,7 +110,7 @@ class Partner {
                             <hr />
                             <div style="background-color: #EBDEE9;">
                                 <div style="font-size: 11px !important; padding: 15px;">
-                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
                                         <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
                                         <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                                         <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
@@ -156,7 +156,7 @@ MAIL;
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
 
-                                <p>Dear $first_name;</p>
+                                <p>Dear $first_name,</p>
 
                                 <p>Your Instafxng Partnership Program Application has been approved.</p>
                                 <p>You are now almost set to start making money.</p>
@@ -177,7 +177,7 @@ MAIL;
                             <hr />
                             <div style="background-color: #EBDEE9;">
                                 <div style="font-size: 11px !important; padding: 15px;">
-                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
                                         <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
                                         <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                                         <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
@@ -205,7 +205,7 @@ MAIL;
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
 
-                                <p>Dear $first_name;</p>
+                                <p>Dear $first_name,</p>
 
                                 <p>We regret to inform you that your Instafxng Partnership Program Application was
                                 not approved at this time. This may be because you provided fictitious information during
@@ -223,7 +223,7 @@ MAIL;
                             <hr />
                             <div style="background-color: #EBDEE9;">
                                 <div style="font-size: 11px !important; padding: 15px;">
-                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
                                         <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
                                         <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                                         <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
