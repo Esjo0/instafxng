@@ -115,7 +115,7 @@ if(isset($_POST['new_signal'])){
     give_me_my_key:
     $key = $signal_object->quotes_api_key();
 
-    if (!empty($key)) {
+    if (empty($key)) {
         goto give_me_my_key;
     };
     $symbol = str_replace('/', '', $symbol);
