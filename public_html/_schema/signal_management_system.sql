@@ -1,3 +1,5 @@
+ALTER TABLE `signal_daily` ADD `market_price` DECIMAL(10,4) NOT NULL AFTER `created_by`;
+
 ALTER TABLE `signal_daily` ADD `created_by` VARCHAR(100) NOT NULL AFTER `exit_price`;
 
 ALTER TABLE `signal_daily` ADD `exit_price` DECIMAL(10,5) NULL DEFAULT NULL AFTER `exit_type`;
