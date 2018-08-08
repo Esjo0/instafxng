@@ -17,8 +17,8 @@ if (!empty($scheduled_signals)) {
         $response = (array)json_decode($get_data, true);
 		$entry_price = $response[0]['price'];
         //Trigger Sell Order
-        if (($response[0]['price'] <= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2) && !empty($response[0][price]) && ($response[0][price] != 0)) {
-            if ($row['trigger_status'] != 1 && ($response[0]['price'] <= ($row['price'] - 0.0020))) {
+        if (($response[0]['price'] <= ($row['price'] - 0.0020)) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2) && !empty($response[0][price]) && ($response[0][price] != 0)) {
+            if ($row['trigger_status'] != 1) {
                 $entry_price = $response[0]['price'];
                 $entry_time = date('Y-m-d h:i:s');
                 $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '');
@@ -41,8 +41,8 @@ if (!empty($scheduled_signals)) {
         }
 
         //Trigger Buy Order
-        if (($response[0]['price'] >= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 1) && !empty($response[0][price])) {
-            if ($row['trigger_status'] != 1 && ($response[0]['price'] >= ($row['price'] + 0.0020))) {
+        if (($response[0]['price'] >= ($row['price'] + 0.0020)) && ($row['trigger_status'] != 2) && ($row['order_type'] == 1) && !empty($response[0][price])) {
+            if ($row['trigger_status'] != 1 ) {
                 $entry_price = $response[0]['price'];
                 $entry_time = date('Y-m-d h:i:s');
                 $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '');
