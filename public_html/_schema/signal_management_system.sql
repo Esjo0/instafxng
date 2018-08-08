@@ -1,3 +1,6 @@
+UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '75'
+UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '78'
+
 ALTER TABLE `signal_daily` ADD `market_price` DECIMAL(10,4) NOT NULL AFTER `created_by`;
 
 ALTER TABLE `signal_daily` ADD `created_by` VARCHAR(100) NOT NULL AFTER `exit_price`;
