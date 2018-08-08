@@ -35,12 +35,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['process'])){
 $app_detail = $bonus_obj->get_app_by_id($app_id);
 
 if(empty($app_detail)) {
-    //redirect_to("bonus_allocation.php");
-    //exit;
+    redirect_to("bonus_allocation.php");
+    exit;
 }
 
 $all_comments = $bonus_obj->get_all_comments($app_id);
-//var_dump($app_detail);
 /*$transaction_access = allow_transaction_review($trans_id, $_SESSION['admin_unique_code']);
 if(!empty($transaction_access['holder'])){
     $message_error = "This transaction is currently being reviewed by {$transaction_access['holder']}";
@@ -134,7 +133,7 @@ if(!empty($transaction_access['holder'])){
                                 <p><a href="bonus_allocation.php" class="btn btn-sm btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Manage Bonus Allocation</a></p>
                                 <p>Fill the actual amount allocated to this bonus account.</p>
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-7">
                                         <div class="trans_item">
                                             <div class="trans_item_content">
                                                 <div class="row">
@@ -176,26 +175,42 @@ if(!empty($transaction_access['holder'])){
                                 </span>
                                                             </div>
                                                         </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 trans_item_bio">
+                                                                <span><strong>Bonus Amount:</strong> &dollar; <?php echo number_format($app_detail['bonus_type_value'], 2); ?> </span>
+                                                                <span><strong>Date Of Review: </strong><?php echo datetime_to_text($app_detail['updated']); ?></span>
+                                                                <span><strong>Allocate Bonus To:</strong> <?php echo $app_detail['ifx_acct_no']; ?></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-sm-6">
-                                        <div class="trans_item">
-                                            <div class="trans_item_content">
+                                    <div class="col-sm-5">
+                                        <h5>Admin Remarks</h5>
+                                        <div style="word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
+                                            <?php if(isset($all_comments) && !empty($all_comments)) { foreach ($all_comments as $row) {?>
                                                 <div class="row">
-                                                    <div class="col-sm-12 ">
-                                                        <span><strong>Bonus Amount:</strong> &dollar; <?php echo number_format($app_detail['bonus_type_value'], 2); ?> </span>
-                                                        <span><strong>Date Of Review: </strong><?php echo datetime_to_text($app_detail['updated']); ?></span>
-                                                        <span><strong>Account:</strong> <?php echo $app_detail['ifx_acct_no']; ?></span>
+                                                    <div class="col-sm-12">
+                                                        <div class="transaction-remarks">
+                                                            <span id="trans_remark_author"><?php echo $row['admin_name']; ?></span>
+                                                            <span id="trans_remark"><?php echo $row['comment'];?></span>
+                                                            <span id="trans_remark_date"><?php echo $row['created']; ?></span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            <?php } } else { ?>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="transaction-remarks">
+                                                            <span class="text-danger"><em>There is no remark to display.</em></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <hr/>
@@ -236,31 +251,6 @@ if(!empty($transaction_access['holder'])){
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        <h5>Admin Remarks</h5>
-                                        <div style="word-break:break-all; max-height: 550px; overflow-y: scroll; overflow-x: hidden">
-                                            <?php if(isset($all_comments) && !empty($all_comments)) { foreach ($all_comments as $row) {?>
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="transaction-remarks">
-                                                            <span id="trans_remark_author"><?php echo $row['admin_name']; ?></span>
-                                                            <span id="trans_remark"><?php echo $row['comment'];?></span>
-                                                            <span id="trans_remark_date"><?php echo $row['created']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <?php } } else { ?>
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="transaction-remarks">
-                                                            <span class="text-danger"><em>There is no remark to display.</em></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <?php } ?>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

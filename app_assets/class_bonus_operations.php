@@ -1,6 +1,39 @@
 <?php
 class Bonus_Operations {
 
+    public function successful_bonus($admin_code, $remark, $bonus_account_id){
+        global $db_handle;
+        $remark =  "BONUS ACCOUNT RECYCLE PHASE : ".$remark;
+        $query = "INSERT INTO bonus_acc_comments (comment, bonus_account_id, type, admin_code) VALUES ('$remark', $bonus_account_id, '3', '$admin_code')";
+
+        $db_handle->runQuery($query);
+        $this->recycle_bonus_acc($bonus_account_id);
+
+        return $db_handle->runQuery($query);
+    }
+
+    public function retrieve_bonus($admin_code, $remark, $trans_ref, $amount, $bonus_account_id){
+        global $db_handle;
+        $remark =  "BONUS RETRIEVAL PHASE : ".$remark;
+        $query = "INSERT INTO bonus_acc_comments (comment, bonus_account_id, type, admin_code) VALUES ('$remark', $bonus_account_id, '3', '$admin_code')";
+
+        $db_handle->runQuery($query);
+        $this->recycle_bonus_acc($bonus_account_id);
+        $query = "UPDATE bonus_accounts SET retreived_transfer_reference = '$trans_ref', retrieved_amount = $amount, retrieved_admin_code = '$admin_code', retrieved_date = now() 
+WHERE bonus_account_id = $bonus_account_id";
+
+        return $db_handle->runQuery($query);
+    }
+
+    public function recycle_bonus_acc($bonus_account_id){
+        global $db_handle;
+        $query = "UPDATE bonus_accounts AS BA, user_ifxaccount AS UI 
+SET BA.bonus_status = '2' UI.is_bonus_account = '2', BA.updated = now(), UI.updated = now() 
+WHERE BA.bonus_account_id = $bonus_account_id AND UI.ifxaccount_id = BA.ifx_account_id ";
+
+        return $db_handle->runQuery($query);
+    }
+
     public function get_all_comments($bonus_account_id){
         global $db_handle;
         $all_comments = array();
@@ -10,15 +43,15 @@ class Bonus_Operations {
         WHERE BAC.bonus_account_id = $bonus_account_id ";
         $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
         foreach ($result as $row){
-
+            $index = count($all_comments);
             switch ((int) $row['type']){
                 case 1: $x = "Application Phase"; break;
                 case 2: $x = "Allocation Phase"; break;
             }
 
-            $all_comments[count($all_comments)]['comment'] = strtoupper($x)." : ".$row['comment'];
-            $all_comments[count($all_comments)]['admin_name'] = $row['admin_name'];
-            $all_comments[count($all_comments)]['created'] = datetime_to_text($row['created']);
+            $all_comments[$index]['comment'] = strtoupper($x)." : ".$row['comment'];
+            $all_comments[$index]['admin_name'] = $row['admin_name'];
+            $all_comments[$index]['created'] = datetime_to_text($row['created']);
         }
 
         return $all_comments;
@@ -203,8 +236,14 @@ MAIL;
 
     public function allocate_bonus($app_id, $amount, $comment, $trans_ref, $admin_code){
         global $db_handle;
-        $query = "UPDATE bonus_accounts SET allocation_admin_code = '$admin_code', allocation_status = '1', allocation_date = now(), allocated_amount = $amount, allocation_transfer_refference = '$trans_ref' WHERE bonus_account_id = $app_id ; 
-                  INSERT INTO bonus_accounts_comments (comment, bonus_account_id, type, admin_code) VALUES ('$comment', $app_id, '2', '$admin_code'); ";
+        $query = "UPDATE bonus_accounts SET allocation_admin_code = '$admin_code', allocation_status = '1', allocation_date = now(), allocated_amount = $amount, allocation_transfer_reference = '$trans_ref' WHERE bonus_account_id = $app_id ";
+        $this->add_bonus_acc_comment($app_id, $comment, $admin_code);
+        return $db_handle->runQuery($query);
+    }
+
+    public function add_bonus_acc_comment($app_id, $comment, $admin_code){
+        global $db_handle;
+        $query = "INSERT INTO bonus_acc_comments (comment, bonus_account_id, type, admin_code) VALUES ('$comment', $app_id, '2', '$admin_code'); ";
         return $db_handle->runQuery($query);
     }
     
@@ -287,10 +326,10 @@ FROM bonus_accounts AS BA
 INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id
 INNER JOIN user AS U ON UI.user_code = U.user_code
 WHERE BA.bonus_code = '$bonus_code'
-AND BA.enrolment_status = '2'
-AND BA.allocation_status = '1'
-AND BA.bonus_status IN ('2', '3') 
-ORDER BY updated DESC";
+AND BA.enrolment_status = '2' 
+AND BA.allocation_status = '1' 
+AND BA.bonus_status IN '2'  
+ORDER BY updated DESC ";
         $return_value['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
         $return_value['sum'] = $db_handle->numRows($query);
         return $return_value;
@@ -298,17 +337,12 @@ ORDER BY updated DESC";
 
     public function get_total_bonus_package_payouts($bonus_code){
         global $db_handle;
-        $query = "SELECT CONCAT(U.first_name, SPACE(1), UPPER(U.last_name)) AS fullname, BA.updated AS updated, U.phone, U.email, UI.ifx_acct_no  
-FROM bonus_accounts AS BA 
-INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id
-INNER JOIN user AS U ON UI.user_code = U.user_code
+        $query = "SELECT SUM(allocated_amount) AS total FROM bonus_accounts AS BA 
 WHERE BA.bonus_code = '$bonus_code'
 AND BA.enrolment_status = '2'
-AND BA.allocation_status = '1'
-AND BA.bonus_status IN ('2', '3') 
-ORDER BY updated DESC";
-        $return_value['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
-        $return_value['sum'] = '0.00';
+AND BA.allocation_status = '1' ";
+        //$return_value['details'] = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        $return_value['sum'] = number_format($db_handle->fetchAssoc($db_handle->runQuery($query))[0]['total'], 2);
         return $return_value;
     }
 
@@ -339,6 +373,14 @@ ORDER BY updated DESC";
         $query = "SELECT * FROM bonus_package_meta WHERE bonus_code = '$bonus_code' ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query));
     }
+
+    public function get_single_package_meta_by_code($bonus_code, $condition_id){
+        global $db_handle;
+        $query = "SELECT * FROM bonus_package_meta WHERE bonus_code = '$bonus_code' AND condition_id = $condition_id";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query));
+    }
+
+
 
     public function get_single_condition_by_id($condition_id){
         $bonus_conditions = new Bonus_Condition();
@@ -436,9 +478,21 @@ AND BA.enrolment_status = '1' ";
         return $conditions;
     }
 
-    public function update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $extra = '', $type_value){
+    public function update_bonus_package($bonus_code, $bonus_title, $bonus_desc, $bonus_details, $bonus_image, $condition_id, $status, $type, $extra = '', $type_value){
         global $db_handle;
-        $query = "UPDATE bonus_packages SET bonus_title = '$bonus_title', bonus_desc = '$bonus_desc', condition_id = '$condition_id', status = '$status', type = $type, updated = now(), bonus_type_value = $type_value WHERE bonus_code = '$bonus_code' ";
+        $query = "UPDATE bonus_packages 
+SET 
+bonus_title = '$bonus_title', 
+bonus_desc = '$bonus_desc', 
+condition_id = '$condition_id', 
+status = '$status', 
+bonus_details = '$bonus_details', 
+bonus_img = '$bonus_image',
+type = $type, 
+updated = now(), 
+bonus_type_value = $type_value 
+WHERE bonus_code = '$bonus_code' ";
+
         $result = $db_handle->runQuery($query);
         $db_handle->runQuery("DELETE FROM bonus_package_meta WHERE bonus_code = '$bonus_code' ");
         if($extra && !empty($extra) && is_array($extra)) {
@@ -457,7 +511,6 @@ AND BA.enrolment_status = '1' ";
         $db_handle->runQuery("UPDATE user_ifxaccount SET is_bonus_account = '2' WHERE ifx_acct_no = '$account_no' ");
         $ifx_account_id = $db_handle->fetchAssoc($db_handle->runQuery("SELECT ifxaccount_id FROM user_ifxaccount WHERE ifx_acct_no = '$account_no' "))[0]['ifxaccount_id'];
         return $db_handle->runQuery("INSERT INTO bonus_accounts (ifx_account_id, bonus_code) VALUES ($ifx_account_id, '$bonus_code')");
-
     }
 
     public function get_pending_applications(){
@@ -489,7 +542,8 @@ AND BA.enrolment_status = '1' ";
                 INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
                 INNER JOIN user AS U ON UI.user_code = U.user_code 
                 INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
-                WHERE BA.enrolment_status = '1' 
+                WHERE BA.recommendation = '1' 
+                AND BA.bonus_status = '1'
                 ORDER BY created DESC ";
         $result_list = $db_handle->fetchAssoc($db_handle->runQuery($query));
         foreach ($result_list as $bonus_acc_key => $row){
@@ -517,7 +571,8 @@ AND BA.enrolment_status = '1' ";
                 INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id 
                 INNER JOIN user AS U ON UI.user_code = U.user_code 
                 INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
-                WHERE BA.enrolment_status = '1' 
+                WHERE BA.recommendation = '2' 
+                AND BA.bonus_status = '1'
                 ORDER BY created DESC ";
         $result_list = $db_handle->fetchAssoc($db_handle->runQuery($query));
         foreach ($result_list as $bonus_acc_key => $row){
@@ -546,6 +601,7 @@ AND BA.enrolment_status = '1' ";
                 INNER JOIN user AS U ON UI.user_code = U.user_code 
                 INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
                 WHERE BA.enrolment_status = '2' 
+                AND BA.allocation_status = '2'
                 ORDER BY created DESC ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query));
     }
@@ -563,6 +619,8 @@ AND BA.enrolment_status = '1' ";
                   INNER JOIN user AS U ON UI.user_code = U.user_code 
                   INNER JOIN bonus_packages AS BP ON BA.bonus_code = BP.bonus_code 
                   WHERE BA.enrolment_status = '2' 
+                  AND BA.allocation_status = '1'
+                  AND BA.bonus_status = '1'
                   ORDER BY created DESC ";
         return $db_handle->fetchAssoc($db_handle->runQuery($query));
     }

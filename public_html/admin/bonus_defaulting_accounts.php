@@ -73,7 +73,7 @@ $pending_moderation = paginate_array($offset, $pending_moderation, $rowsperpage)
                                                 <td><?php echo $email ?> </td>
                                                 <td><?php echo $bonus_title ?> </td>
                                                 <td><?php echo datetime_to_text($created); ?></td>
-                                                <td class="nowrap"><a class="btn-xs btn btn-default" href="bonus_app_view.php?app_id=<?php echo encrypt_ssl($row['app_id']);?>"><i class="glyphicon glyphicon-arrow-right"></i></a></td>
+                                                <td class="nowrap"><a class="btn-xs btn btn-default" href="bonus_defaulting_view.php?app_id=<?php echo encrypt_ssl($row['app_id']);?>"><i class="glyphicon glyphicon-arrow-right"></i></a></td>
                                             </tr>
                                         <?php } ?>
                                     <?php }else{ ?>
