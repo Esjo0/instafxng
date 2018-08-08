@@ -1,6 +1,6 @@
 <?php
 
-//this class handles handles activities pertaining to a partner
+//this class handles activities pertaining to a partner
 class Partner {
     
     public function email_phone_is_duplicate($email, $phone) {
@@ -18,7 +18,7 @@ class Partner {
     public function authenticate($email = "", $password = "") {
         global $db_handle;
 
-        $username = $db_handle->sanitizePost($email);
+        $email = $db_handle->sanitizePost($email);
 
         $query = "SELECT * FROM partner WHERE email_address = '$email' LIMIT 1";
         $result = $db_handle->runQuery($query);
@@ -71,32 +71,33 @@ class Partner {
         global $system_object;
 
         $partner_code = $this->generate_partner_code();
-        $new_password = random_password();
-        $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
         $phone_code = generate_sms_code();
 
-        $query  = "INSERT INTO partner (partner_code, password, first_name, middle_name, last_name, email_address, phone_number, full_address, city, state_id, phone_code) VALUES
-                  ('$partner_code', '$password_hash', '$first_name', '$middle_name', '$last_name', '$email', '$phone', '$address', '$city', $state_id, '$phone_code')";
+        $query  = "INSERT INTO partner (partner_code, first_name, middle_name, last_name, email_address, phone_number, full_address, city, state_id, phone_code) VALUES
+                  ('$partner_code', '$first_name', '$middle_name', '$last_name', '$email', '$phone', '$address', '$city', $state_id, '$phone_code')";
 
         $result = $db_handle->runQuery($query);
 
         if($result) {
-            $subject = 'Welcome to the Instafxng Partner System';
+            $subject = 'Instafxng Partner Registration';
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>Hello $first_name;</p>
-                                <p>Welcome to the Instafxng Partnership system, your partner code is <strong>
-                                $partner_code</strong></p>
-                                <p>Login in at https://instafxng.com/partner/login.php</p>
-                                <p>Password: $new_password</p>
+
+                                <p>Dear $first_name;</p>
+
+                                <p>You have shown interest in the Instafxng Partnership System, an administrator is
+                                moderating your application and you should get a response shortly.</p>
+
+                                <p></p>
 
 
                                 <p>InstaFxNg Team,<br />
                                    www.instafxng.com</p>
+
                                 <br /><br />
                             </div>
                             <hr />
@@ -137,10 +138,25 @@ MAIL;
         return $found_application ? $found_application : false;
     }
 
-    public function modify_partner_application($partner_id, $partner_status) {
+    public function modify_partner_application($partner_code, $partner_status) {
         global $db_handle;
 
-        $query = "UPDATE partner SET status = '$partner_status' WHERE partner_code = '$partner_id' LIMIT 1";
+        if($partner_status == '2') { // Partner is approved, send password and welcome email
+            // Generate password
+            $new_password = random_password();
+            $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+            $query = "UPDATE partner SET status = '$partner_status', password = '$password_hash' WHERE partner_code = '$partner_code' LIMIT 1";
+
+            // Send welcome email
+
+        } elseif($partner_status == '3') {
+            // Partner is not approved, send decline email
+            $query = "UPDATE partner SET status = '$partner_status' WHERE partner_code = '$partner_code' LIMIT 1";
+
+            // Send disapproval email
+
+        }
+
         $db_handle->runQuery($query);
 
         if($db_handle->affectedRows() == 1) {
