@@ -27,7 +27,7 @@ $get_params = allowed_get_params(['id']);
 $partner_code_encrypted = $get_params['id'];
 
 $partner_code = decrypt_ssl(str_replace(" ", "+", $partner_code_encrypted));
-$partner_application = $partner_object->get_selected_pending_application($partner_code);
+$partner_application = $partner_object->get_partner_by_code($partner_code);
 
 if(!$partner_application) {
     redirect_to("partner_new.php");
