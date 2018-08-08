@@ -38,9 +38,10 @@
     <?php } ?>
 
     <?php if(((isset($client_meta_status)) && $client_meta_status != '2') || !isset($client_meta_status)) { ?>
+        <div class="col-sm-12"><p>Kindly Ensure to Fill Your Full residential address which includes your house number, street name, nearest b/stop, village, town, LGA and state.<p></div>
     <div class="form-group">
         <label class="control-label">Address:</label>
-        <textarea name="address" class="form-control" rows="3" id="address" placeholder="Kindly Ensure Your Fill Your Full residential address which includes your house number, street name, nearest b/stop, village, town, LGA and state." required></textarea>
+        <textarea name="address" class="form-control" rows="3" id="address" required></textarea>
     </div>
     <div class="form-group">
         <label class="control-label" for="city">City:</label>
