@@ -24,7 +24,7 @@ if (!empty($scheduled_signals)) {
                 $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '');
                 $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
                 if($pips > $row['pips']){
-                        $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                        $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
                     }
                 if ($row['order_type'] == 2) {
                     trigger_sell_order($row);
@@ -32,7 +32,7 @@ if (!empty($scheduled_signals)) {
             } else {
                 $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
                 if($pips > $row['pips']){
-                    $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
                 }
                 if ($row['order_type'] == 2) {
                     trigger_sell_order($row);
@@ -41,7 +41,7 @@ if (!empty($scheduled_signals)) {
         }else if(($row['trigger_status'] == 1) && ($row['order_type'] == 2) && ($response[0]['price'] <= $row['price'])){
             $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
             if($pips > $row['pips']){
-                $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
             }
             trigger_sell_order($row);
         }else if(($row['trigger_status'] == 1) && ($row['order_type'] == 2)){
@@ -57,7 +57,7 @@ if (!empty($scheduled_signals)) {
 
                 $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
                 if($pips > $row['pips']){
-                    $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
                 }
 
                 if ($row['order_type'] == 1) {
@@ -66,7 +66,7 @@ if (!empty($scheduled_signals)) {
             } else {
                 $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
                 if($pips > $row['pips']){
-                    $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
                 }
                 if ($row['order_type'] == 1) {
                     trigger_buy_order($row);
@@ -75,7 +75,7 @@ if (!empty($scheduled_signals)) {
         }else if(($row['trigger_status'] == 1) && ($row['order_type'] == 1) && ($response[0]['price'] >= $row['price'])){
             $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
             if($pips > $row['pips']){
-                $signal_object->trigger_signal_schedule($row['signal_id'], '', '', '', '', $pips, '', '');
+                $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
             }
             trigger_buy_order($row);
         }else if(($row['trigger_status'] == 1) && ($row['order_type'] == 1)){

@@ -170,18 +170,22 @@ MAIL;
                                        <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                             <div class="row">
                                                  <div  class="col-sm-5 col-xs-12">
-                                                        <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                       <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:none" >
                                             <div>
-                                            <h6 style="font-size: 15px" class="my-0 pull-right"><strong>Highest Pips Gained</strong></h6>
+                                            <h6 style="font-size: 15px" class="my-0">
+                                            <strong>This Trade is {$this->UI_pips_msg($row['trigger_status'])} and has a high of <span id="signal_currency_diff_{$row['signal_id']}">-</span> Pips</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                             <small class="text-muted">
                                             </small>
 
                                         </div>
-                                        <span class="text-muted"><span id="signal_currency_diff_{$row['signal_id']}">0</span> Pips</span>   <small id="signal_pl_{$row['signal_id']}" class="text-muted pull-right"></small>
+                                        <span class="text-muted"></span>   <small id="signal_pl_{$row['signal_id']}" class="text-muted pull-right"></small>
                                         </li>
-                                       <li class="list-group-item d-flex justify-content-between lh-condensed" >
+
+
+
+                                       <li class="list-group-item d-flex justify-content-between lh-condensed"  style="display:none;">
                                         <div>
                                         <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Know how much you can gain from taking this trade.</strong></h6>
                                         <h6 class="my-0"></h6>
@@ -218,7 +222,7 @@ MAIL;
                                                     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
                                                                                       {
                                                                                      "width": 335,
-                                                                                     "height": 250,
+                                                                                     "height": 290,
                                                                                      "showChart": true,
                                                                                      "locale": "en",
                                                                                      "largeChartUrl": "",
@@ -245,7 +249,7 @@ MAIL;
                                             <div>
                                             <small style="font-size: x-small">Your use of the signals means you have read and accepted our
                                                  <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
-                                                 Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
+                                                 Download the <a href="downloads/Signals_Guide.txt" target="_blank" title="Download signal guide">
                                                  signal guide</a> to learn how to use the signals.
                                             </small>
                                             <li class="list-group-item d-flex justify-content-between lh-condensed" >
@@ -323,6 +327,47 @@ MAIL;
         return $msg;
     }
 
+    public function UI_pips_msg($trigger_stat)
+    {
+        $trigger_stat = (int)$trigger_stat;
+        switch ($trigger_stat) {
+            case 0:
+                $msg = 'Pending';
+                break;
+            case 1:
+                $msg = 'Active';
+                break;
+            case 2:
+                $msg = 'Closed';
+                break;
+        }
+        return $msg;
+    }
+
+//    public function UI_pips_display($signal_id)
+//    {
+//        global $db_handle;
+//        $query = "SELECT pips, exit_type, trigger_status FROM signal_daily WHERE signal_id = '$signal_id'";
+//        $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
+//
+//        foreach($result as $row){
+//            $pips_msg = "and has ".$row['pips']."at"
+//        }
+//        $trigger_stat = (int)$trigger_stat;
+//        switch ($trigger_stat) {
+//            case 0:
+//                $msg = 'Pending and has';
+//                break;
+//            case 1:
+//                $msg = '<i class="fa fa-spinner fa-spin"></i> Active';
+//                break;
+//            case 2:
+//                $msg = '<i class="fa fa-circle"></i> Closed';
+//                break;
+//        }
+//        return $msg;
+//    }
+
     public function UI_order_type_status_msg($order_type)
     {
         $order_type = (int)$order_type;
@@ -384,6 +429,20 @@ WHERE SD.trigger_date = '$date'";
 
     }
 
+    /**
+     * @param $price - Send as a string
+     * @param $decimal - length of figure to return, same as standard decimal for currency pairs
+     * @return int
+     */
+    function quote_splitter($price, $decimal) {
+        intval($price);
+        $value = explode('.', $price)[1];
+        $return = substr($value, 0, $decimal);
+        $return = (int) $return;
+
+        return $return;
+    }
+
     public function get_pips($market_price, $price)
     {
         $dec = strpos($market_price, ".");
@@ -407,17 +466,17 @@ WHERE SD.trigger_date = '$date'";
                 case 3:
                     $diff2 = $diff2 . '0';
                     break;
+                case 4:
+                    $diff2 = $diff2 . '0';
+                    break;
             }
         } else {
             $diff2 = substr(strrchr($price, "."), 1, $dec2);
         }
-
         $diff = (integer)$diff1 - (integer)$diff2;
-        $dec3 = strlen($diff);
-        $diff = substr($diff, $dec3 - 3, 3);
-		$diff = (integer)$diff;
-		$diff = $diff * 0.1;
-		$diff = (string)$diff;
+        $diff = (integer)$diff;
+        $diff = round($diff);
+        $diff = (string)$diff;
         return $diff;
     }
 
