@@ -1,8 +1,6 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in()) {
-    redirect_to("login.php");
-}
+if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
@@ -25,19 +23,13 @@ $numrows = $db_handle->numRows($query);
 
 // For search, make rows per page equal total rows found, meaning, no pagination
 // for search results
-if (isset($_POST['search_text'])) {
-    $rowsperpage = $numrows;
-} else {
-    $rowsperpage = 20;
-}
+if (isset($_POST['search_text'])) {$rowsperpage = $numrows;}
+else {    $rowsperpage = 20;}
 
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
-if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
-   $currentpage = (int) $_GET['pg'];
-} else {
-   $currentpage = 1;
-}
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {$currentpage = (int) $_GET['pg'];}
+else {$currentpage = 1;}
 if ($currentpage > $totalpages) { $currentpage = $totalpages; }
 if ($currentpage < 1) { $currentpage = 1; }
 
@@ -46,7 +38,7 @@ $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
 $offset = ($currentpage - 1) * $rowsperpage;
-$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $unverified_clients = $db_handle->fetchAssoc($result);
 ?>
@@ -77,21 +69,7 @@ $unverified_clients = $db_handle->fetchAssoc($result);
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    <div class="search-section">
-                        <div class="row">    
-                            <div class="col-xs-12">
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
-                                    <div class="input-group">
-                                        <input type="hidden" name="search_param" value="all" id="search_param">         
-                                        <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                                        </span>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+
                     
                     <div class="row">
                         <div class="col-sm-12 text-danger">
@@ -104,11 +82,57 @@ $unverified_clients = $db_handle->fetchAssoc($result);
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
-                                <p>Below is a table of unverified clients. These clients have not done any form of transaction since the last quarter of year 2014.</p>
+                                <div class="col-sm-12"></div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group multiple-form-group input-group">
+                                            <input id="filter_val" readonly type="text" name="filter_val" class="form-control">
+                                            <div class="input-group-btn input-group-select">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="concept">Filter</span>  <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a onclick="document.getElementById('filter_val').value = 'Phone';" href="javascript:void(0);">Phone</a></li>
+                                                </ul>
+                                                <input type="hidden" class="input-group-select-val" name="contacts['type'][]" value="phone">
+                                            </div>
+                                            <input type="submit">
 
-                                <?php if(isset($numrows)) { ?>
-                                    <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
-                                <?php } ?>
+                                            <!--<span class="input-group-btn">
+                                                <button type="button" class="btn btn-success btn-add">+</button>
+                                            </span>-->
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-5">
+                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
+                                            <div class="input-group input-group-sm">
+                                                <input type="hidden" name="search_param" value="all" id="search_param">
+                                                <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <br/>
+
+
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        Below is a table of unverified clients. <br/>
+                                            These clients have not done any form of
+                                            transaction since the last quarter of year 2014.
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group input-group-sm <?php if(number_format($numrows) == 0){echo 'has-danger';}elseif(number_format($numrows) > 0){echo 'has-success';} ?> ">
+                                            <span class="input-group-addon">Results Found</span>
+                                            <input value="<?php echo number_format($numrows); ?>" class="form-control" disabled/>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <?php if(isset($unverified_clients) && !empty($unverified_clients)) { require 'layouts/pagination_links.php'; } ?>
 
@@ -124,9 +148,7 @@ $unverified_clients = $db_handle->fetchAssoc($result);
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php
-                                    if(isset($unverified_clients) && !empty($unverified_clients)) { foreach ($unverified_clients as $row) {
-                                        ?>
+                                    <?php if(isset($unverified_clients) && !empty($unverified_clients)) { foreach ($unverified_clients as $row) {?>
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['email']; ?></td>
@@ -134,8 +156,8 @@ $unverified_clients = $db_handle->fetchAssoc($result);
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
-                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_unverified'; ?>&c=<?php echo encrypt('UNVERIFIED CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_unverified'; ?>&c=<?php echo encrypt('UNVERIFIED CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
@@ -147,7 +169,7 @@ $unverified_clients = $db_handle->fetchAssoc($result);
                                     <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                 </div>
                                 <?php } ?>
-                            </div>
+                            </br>
                         </div>
                         
                         <?php if(isset($unverified_clients) && !empty($unverified_clients)) { require 'layouts/pagination_links.php'; } ?>
