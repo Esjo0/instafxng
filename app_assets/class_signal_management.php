@@ -173,7 +173,7 @@ MAIL;
                                        <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                             <div>
                                             <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Signal has reached a high of <span id="signal_currency_diff_{$row['signal_id']}">-</span> Pips</strong></h6>
+                                            <strong>This Trade is {$this->UI_pips_msg($row['trigger_status'])} and has <span id="signal_currency_diff_{$row['signal_id']}">-</span> Pips</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                             <small class="text-muted">
@@ -249,7 +249,7 @@ MAIL;
                                             <div>
                                             <small style="font-size: x-small">Your use of the signals means you have read and accepted our
                                                  <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
-                                                 Download the <a href="downloads/Signals Guide.txt" target="_blank" title="Download signal guide">
+                                                 Download the <a href="downloads/Signals_Guide.txt" target="_blank" title="Download signal guide">
                                                  signal guide</a> to learn how to use the signals.
                                             </small>
                                             <li class="list-group-item d-flex justify-content-between lh-condensed" >
@@ -326,6 +326,47 @@ MAIL;
         }
         return $msg;
     }
+
+    public function UI_pips_msg($trigger_stat)
+    {
+        $trigger_stat = (int)$trigger_stat;
+        switch ($trigger_stat) {
+            case 0:
+                $msg = 'Pending';
+                break;
+            case 1:
+                $msg = 'Active';
+                break;
+            case 2:
+                $msg = 'Closed';
+                break;
+        }
+        return $msg;
+    }
+
+//    public function UI_pips_display($signal_id)
+//    {
+//        global $db_handle;
+//        $query = "SELECT pips, exit_type, trigger_status FROM signal_daily WHERE signal_id = '$signal_id'";
+//        $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
+//
+//        foreach($result as $row){
+//            $pips_msg = "and has ".$row['pips']."at"
+//        }
+//        $trigger_stat = (int)$trigger_stat;
+//        switch ($trigger_stat) {
+//            case 0:
+//                $msg = 'Pending and has';
+//                break;
+//            case 1:
+//                $msg = '<i class="fa fa-spinner fa-spin"></i> Active';
+//                break;
+//            case 2:
+//                $msg = '<i class="fa fa-circle"></i> Closed';
+//                break;
+//        }
+//        return $msg;
+//    }
 
     public function UI_order_type_status_msg($order_type)
     {
@@ -409,6 +450,9 @@ WHERE SD.trigger_date = '$date'";
                     $diff2 = $diff2 . '00';
                     break;
                 case 3:
+                    $diff2 = $diff2 . '0';
+                    break;
+                case 4:
                     $diff2 = $diff2 . '0';
                     break;
             }
