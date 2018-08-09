@@ -429,6 +429,20 @@ WHERE SD.trigger_date = '$date'";
 
     }
 
+    /**
+     * @param $price - Send as a string
+     * @param $decimal - length of figure to return, same as standard decimal for currency pairs
+     * @return int
+     */
+    function quote_splitter($price, $decimal) {
+        intval($price);
+        $value = explode('.', $price)[1];
+        $return = substr($value, 0, $decimal);
+        $return = (int) $return;
+
+        return $return;
+    }
+
     public function get_pips($market_price, $price)
     {
         $dec = strpos($market_price, ".");
