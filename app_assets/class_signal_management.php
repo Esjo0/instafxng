@@ -60,6 +60,81 @@ class Signal_Management
         }
     }
 
+    public function get_live_pips($trigger_status, $symbol_id, $symbol, $price, $order_type, $pips, $exit_time, $entry_time, $exit_type, $signal_id)
+    {
+        //$pairs = $this->get_scheduled_pairs(date('Y-m-d'));
+        if($trigger_status == 1){
+            $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=Zvdxqp6hpbbqWu27n6SSQ7zo4G6sK0rz";
+            $get_data = file_get_contents($url);
+            $response = json_decode($get_data, true);
+            $market_price = $response[0]['price'];
+            if(!empty($market_price)){
+            $diff = $this->get_pips($symbol_id, $market_price, $price);
+            $display = $this->get_pips_display($order_type, $diff);
+            }else{$display = 0;}
+            $open_date = datetime_to_text($entry_time);
+            $display = $display." as at ".date('h:i:s a');
+            $display = <<<MAIL
+            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
+                                            <div>
+                                            <h6 style="font-size: 15px" class="my-0">
+                                            <strong>This Trade is {$this->UI_pips_msg($trigger_status)} and has a high of <span id="signal_currency_diff_{$signal_id}" >0</span></strong></h6>
+                                            <h6 class="my-0"></h6>
+
+                                            <small class="text-muted">
+                                            </small>
+
+                                        </div>
+                                        </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
+                                            <div>
+                                            <h6 style="font-size: 15px" class="my-0">
+                                            <strong>This Trade is at {$display} it Opened on {$open_date} </strong></h6>
+                                            <h6 class="my-0"></h6>
+
+                                            <small class="text-muted">
+                                            </small>
+
+                                        </div>
+                                        </li>
+MAIL;
+        }elseif($trigger_status == 2){
+            $closed_date = datetime_to_text($exit_time);
+            $display = $this->get_pips_display($order_type, $pips);
+            $display = <<<MAIL
+            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
+                                            <div>
+                                            <h6 style="font-size: 15px" class="my-0">
+                                            <strong>This Trade Closed on {$closed_date} and made {$display}</strong></h6>
+                                            <h6 class="my-0"></h6>
+
+                                            <small class="text-muted">
+                                            Trade Closure Type : {$exit_type}
+                                            </small>
+
+                                        </div>
+                                        </li>
+MAIL;
+
+        }elseif($trigger_status == 0){
+            $display = <<<MAIL
+            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
+                                            <div>
+                                            <h6 style="font-size: 15px" class="my-0">
+                                            <strong>This Trade is {$this->UI_pips_msg($trigger_status)} Kindly Place a pending Order.</strong></h6>
+                                            <h6 class="my-0"></h6>
+
+                                            <small class="text-muted">
+                                            </small>
+
+                                        </div>
+                                        </li>
+MAIL;
+
+        }
+        return $display;
+    }
+
     public function get_scheduled_pairs($date)
     {
         global $db_handle;
@@ -170,18 +245,8 @@ MAIL;
                                        <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                             <div class="row">
                                                  <div  class="col-sm-5 col-xs-12">
-                                       <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:none" >
-                                            <div>
-                                            <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade is {$this->UI_pips_msg($row['trigger_status'])} and has a high of <span id="signal_currency_diff_{$row['signal_id']}">-</span> Pips</strong></h6>
-                                            <h6 class="my-0"></h6>
 
-                                            <small class="text-muted">
-                                            </small>
-
-                                        </div>
-                                        <span class="text-muted"></span>   <small id="signal_pl_{$row['signal_id']}" class="text-muted pull-right"></small>
-                                        </li>
+{$this->get_live_pips($row['trigger_status'], $row['symbol_id'], $row['symbol'], $row['price'], $row['order_type'], $row['pips'], $row['exit_time'], $row['entry_time'], $row['exit_type'], $row['signal_id'])}
 
 
 
@@ -344,30 +409,6 @@ MAIL;
         return $msg;
     }
 
-//    public function UI_pips_display($signal_id)
-//    {
-//        global $db_handle;
-//        $query = "SELECT pips, exit_type, trigger_status FROM signal_daily WHERE signal_id = '$signal_id'";
-//        $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
-//
-//        foreach($result as $row){
-//            $pips_msg = "and has ".$row['pips']."at"
-//        }
-//        $trigger_stat = (int)$trigger_stat;
-//        switch ($trigger_stat) {
-//            case 0:
-//                $msg = 'Pending and has';
-//                break;
-//            case 1:
-//                $msg = '<i class="fa fa-spinner fa-spin"></i> Active';
-//                break;
-//            case 2:
-//                $msg = '<i class="fa fa-circle"></i> Closed';
-//                break;
-//        }
-//        return $msg;
-//    }
-
     public function UI_order_type_status_msg($order_type)
     {
         $order_type = (int)$order_type;
@@ -390,7 +431,7 @@ MAIL;
                 $msg = 'PLACE PENDING ORDER';
                 break;
             case 1:
-                $msg = 'TRADE NOW';
+                $msg = 'TAKE TRADE NOW';
                 break;
             case 2:
                 $msg = 'CHECK MARKET HISTORY';
@@ -414,8 +455,8 @@ MAIL;
     public function get_scheduled_signals($date)
     {
         global $db_handle;
-        $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.price, SD.take_profit,
-SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol, SD.pips
+        $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.take_profit,
+SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol, SD.pips, SD.entry_time, SD.exit_time, SD.exit_type, SD.pips_time
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE SD.trigger_date = '$date'";
@@ -424,7 +465,7 @@ WHERE SD.trigger_date = '$date'";
 
     public function update_signal_daily_FILE($signal_array)
     {
-           file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+          file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
         // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
@@ -451,12 +492,46 @@ WHERE SD.trigger_date = '$date'";
         foreach($result as $row){
             $decimal = $row['decimal_place'];
         }
-        $diff = $this->quote_splitter($market_price, $decimal) - $this->quote_splitter($price, $decimal);
+
+        $market_price = $this->quote_splitter("$market_price", $decimal);
+        $price = $this->quote_splitter("$price", $decimal);
+        $diff = $market_price - $price;
 
         return $diff;
     }
 
-    public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips, $exit_type, $exit_price)
+    public function get_pips_display($order_type, $pips)
+{
+    switch ($order_type) {
+        case 1:
+            if($pips > 0){
+                $pips_msg = <<<MAIL
+                 <span style="color:green !important;">{$pips} pips Profit</span>
+MAIL;
+            }elseif($pips < 0){
+                $pips_msg = <<<MAIL
+                 <span style="color:red !important;">{$pips} pips Loss</span>
+MAIL;
+            }
+            break;
+        case 2:
+            if($pips < 0){
+                $pips = $pips*-1;
+                $pips_msg = <<<MAIL
+                {$pips} pips <span style="color:green !important;">Profit</span>
+MAIL;
+            }elseif($pips < 0){
+                $pips = $pips*-1;
+                $pips_msg = <<<MAIL
+                {$pips} pips <span style="color:red !important;">Loss</span>
+MAIL;
+            }
+            break;
+    }
+    return "$pips_msg";
+}
+
+    public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips, $exit_type, $exit_price, $pips_time)
     {
         global $db_handle;
         $query = "UPDATE signal_daily SET trigger_status = '$trigger_status' ";
@@ -477,6 +552,9 @@ WHERE SD.trigger_date = '$date'";
         }
 		if (!empty($exit_price)) {
             $query .= ", exit_price = '$exit_price'";
+        }
+        if (!empty($pips_time) && ($pips_time == 1)) {
+            $query .= ", pips_time = now()";
         }
         $query .= " WHERE signal_id = $signal_id ";
         $result = $db_handle->runQuery($query);

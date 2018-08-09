@@ -197,8 +197,8 @@ function table_context($trigger_status){
                                             <span><b>Entry Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['entry_price']); ?></span><br/>
                                             <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text3($row['entry_time']);} ?></span><br/>
                                             <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text3($row['exit_time']);} ?></span><br/>
-                                            <span><b>Pips:</b> <?php echo $row['pips']; ?></span><br/>
-											<span><b>Exit Type:</b> <?php echo $signal_object->round_price_to_4_dp($row['exit_type']); ?></span><br/>
+                                            <span><b>Pips:</b> <?php echo $signal_object->get_pips_display($row['order_type'],$row['pips']); ?></span><br/>
+											<span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
 											<span><b>Exit Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['exit_price']); ?></span>
                                         </td>
                                     </tr>

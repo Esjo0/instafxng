@@ -14,7 +14,9 @@ $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'))
 foreach ($signals as $row1) {
     $row1 = (array)$row1;
     if (!empty($row1)) {
-        $pips = (string)$row1['pips'];
+        $pips = $signal_object->get_pips_display($row1['order_type'], $row1['pips']);
+        $pips_time = datetime_to_text($row1['pips_time']);
+        $pips = $pips." on ".$pips_time;
         $id = (string)$row1['signal_id'];
         $quotes[count($quotes)] = array( symbol=>$id, pips=>$pips);
     }
