@@ -12,55 +12,47 @@ $package_code = decrypt_ssl(str_replace(" ", "+", $package_code_encrypted));
 if(isset($_POST['process'])) {
     $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));
     $bonus_desc = $db_handle->sanitizePost(trim($_POST['bonus_desc']));
-    $bonus_details = $db_handle->sanitizePost($_POST['bonus_details']);
+    $bonus_details = $db_handle->sanitizePost(trim($_POST['bonus_details']));
 
     $condition_id = $db_handle->sanitizePost(trim(implode(',', $_POST['condition_id'])));
     $status = $db_handle->sanitizePost(trim($_POST['status']));
     $type = $db_handle->sanitizePost(trim($_POST['type']));
     $type_value = $db_handle->sanitizePost(trim($_POST['bonus_type_value']));
 
-    if(!empty($_FILES['bonus_img'])){
-        $package_img = str_replace(' ', '-', $db_handle->sanitizePost(trim($_FILES["bonus_img"]["name"])));
+    if(!empty($_FILES['bonus_img']['name'])){
+        $package_img = $db_handle->sanitizePost(time().'.'.explode('.',$_FILES['bonus_img']['name'])[1]);
         $img_upload_feedback = upload_file("bonus_img", "../images/bonus_packages/", $package_img);
 
         if($img_upload_feedback['status']){
-            $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $bonus_details, $img_upload_feedback['filename'], $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra'], $type_value);
+            $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $bonus_details, $img_upload_feedback['file_properties']['filename'], $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra'], $type_value);
         }
         $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
     }else{
         $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $bonus_details, '', $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra'], $type_value);
         $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
     }
-
 }
 
 if(isset($_POST['update'])) {
-
     $bonus_code = $db_handle->sanitizePost(trim($_POST['bonus_code']));
     $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));
     $bonus_desc = $db_handle->sanitizePost(trim($_POST['bonus_desc']));
-    $bonus_details = $db_handle->sanitizePost($_POST['bonus_details']);
+    $bonus_details = $db_handle->sanitizePost(trim($_POST['bonus_details']));
 
     $condition_id = $db_handle->sanitizePost(trim(implode(',', $_POST['condition_id'])));
     $status = $db_handle->sanitizePost(trim($_POST['status']));
     $type = $db_handle->sanitizePost(trim($_POST['type']));
     $type_value = $db_handle->sanitizePost(trim($_POST['bonus_type_value']));
 
-    $package_img = str_replace(' ', '-', $db_handle->sanitizePost(trim($_FILES["bonus_img"]["name"])));
-    $img_upload_feedback = upload_file("bonus_img", "../images/bonus_packages/", $package_img);
-
     if(isset($_FILES['bonus_img']['name']) && !empty($_FILES['bonus_img']['name'])){
-
-        $package_img = str_replace(' ', '-', $db_handle->sanitizePost(trim($_FILES["bonus_img"]["name"]).time()));
+        $package_img = $db_handle->sanitizePost(time().'.'.explode('.',$_FILES['bonus_img']['name'])[1]);
         $img_upload_feedback = upload_file("bonus_img", "../images/bonus_packages/", $package_img);
 
         if ($img_upload_feedback['status']) {
-            #($bonus_code, $bonus_title, $bonus_desc, $bonus_details, $bonus_image, $condition_id, $status, $type, $extra = '', $type_value)
-            $update_package = $bonus_operations->update_bonus_package($bonus_code, $bonus_title, $bonus_desc, $bonus_details, filename, $condition_id, $status, $type, $_POST['extra'], $type_value);
+            $update_package = $bonus_operations->update_bonus_package($bonus_code, $bonus_title, $bonus_desc, $bonus_details, $img_upload_feedback['file_properties']['filename'], $condition_id, $status, $type, $_POST['extra'], $type_value);
         }
         $update_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
     }else{
-
         $update_package = $bonus_operations->update_bonus_package($bonus_code, $bonus_title, $bonus_desc, $bonus_details, '', $condition_id, $status, $type, $_POST['extra'], $type_value);
         $update_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
     }
@@ -172,7 +164,7 @@ if(!empty($package_code)){$package_details = $bonus_operations->get_package_by_c
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="bonus_desc">Package Description:</label>
                                         <div class="col-sm-9">
-                                            <textarea maxlength="255" id="bonus_desc" name="bonus_desc" class="form-control" rows="7" required><?php if(!empty($package_details)){echo $package_details['bonus_desc'];}?></textarea>
+                                            <textarea maxlength="255" id="bonus_desc" name="bonus_desc" class="form-control" rows="4" required><?php if(!empty($package_details)){echo $package_details['bonus_desc'];}?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -206,7 +198,7 @@ if(!empty($package_code)){$package_details = $bonus_operations->get_package_by_c
                                                         </td>
                                                         <td>
                                                             <?php foreach ($value['extra'] as $pin){ ?>
-                                                                <input value="<?php echo $bonus_operations->get_condition_extras($package_details['bonus_code'],$key)[0]['meta_value'] ?>" placeholder="<?php echo $pin; ?>" type="text" name="extra[<?php echo $key; ?>][<?php echo $pin; ?>]" class="form-control" <?php if(!in_array_r($key,explode(',',$package_details['condition_id']))){echo 'disabled';} ?> />
+                                                                <input value="<?php if(!empty($package_details)){ echo $bonus_operations->get_condition_extras($package_details['bonus_code'],$key)[0]['meta_value'];} ?>" placeholder="<?php echo $pin; ?>" type="text" name="extra[<?php echo $key; ?>][<?php echo $pin; ?>]" class="form-control" <?php if(!in_array_r($key,explode(',',$package_details['condition_id']))){echo 'disabled';} ?> />
                                                             <?php } ?>
                                                         </td>
                                                     </tr>

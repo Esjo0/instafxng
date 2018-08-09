@@ -39,11 +39,12 @@ class Bonus_Condition{
         ),
         4 => array(
             'title' => 'Bonus Expiry Condition (Case 2)',
-            'desc' => 'Allocated bonuses will be withdrawn from any participating instaforex account that has not traded for the number of days stated below at a stretch.',
+            'desc' => 'Allocated bonuses will be withdrawn from any participating Instaforex account that have not traded 
+            for the number of days stated below after the accounts last trade date.',
             'type' => 0,
             'extra' => array('Days'),
             'api' => 'bonus_expiry_case_2_cond',
-            'args' => array('bonus_account_id', 'max_num_days'),
+            'args' => array('bonus_account_id'),
             'returns' => array('status', 'last_trade_date', 'days_diff')
         ),
         5 => array(
@@ -52,7 +53,7 @@ class Bonus_Condition{
             'type' => 0,
             'extra' => array('Days'),
             'api' => 'bonus_expiry_case_1_cond',
-            'args' => array('bonus_account_id', 'max_num_days'),
+            'args' => array('bonus_account_id'),
             'returns' => array('status', 'last_trade_date', 'days_diff')
         ),
         6 => array(
@@ -166,11 +167,12 @@ WHERE BA.bonus_account_id = $bonus_account_id";
         return $result;
     }
 
+    //TODO: Recheck this...
     public function bonus_expiry_case_1_cond($bonus_account_id){
         $cond_key = 5;
         $cond_extra = 'Days';
         $client_operation = new clientOperation;
-        //array('status', 'last_trade_date', 'days_diff')
+
         global $db_handle;
         $query = "SELECT BA.bonus_code, UI.user_code FROM bonus_accounts AS BA INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id WHERE bonus_account_id = $bonus_account_id ";
         $result = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
@@ -192,24 +194,30 @@ WHERE BA.bonus_account_id = $bonus_account_id";
         return $result;
     }
 
+    //TODO: Recheck this...
     public function bonus_expiry_case_2_cond($bonus_account_id){
+        //Allocated bonuses will be withdrawn from any participating Instaforex account that have not traded
+        //for the number of days stated below after the accounts last trade date.
+        $cond_key = 4;
+        $cond_extra = 'Days';
         $client_operation = new clientOperation;
-        //array('status', 'last_trade_date', 'days_diff')
         global $db_handle;
-        $query = "SELECT U.user_code FROM bonus_accounts AS BA 
-INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id
-INNER JOIN user AS U ON UI.user_code = U.user_code
-WHERE BA.bonus_account_id = $bonus_account_id";
-        $user_code = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['user_code'];
-        if(!empty($user_code)){
-            $last_trade_detail = $client_operation->get_last_trade_detail($user_code);
-            $result['status'] = true;
+        $query = "SELECT BA.bonus_code, UI.user_code FROM bonus_accounts AS BA INNER JOIN user_ifxaccount AS UI ON BA.ifx_account_id = UI.ifxaccount_id WHERE bonus_account_id = $bonus_account_id ";
+        $result = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
+        $bonus_code = $result['bonus_code'];
+        $user_code = $result['user_code'];
+        $query = "SELECT meta_value FROM bonus_package_meta WHERE bonus_code = '$bonus_code' AND condition_id = $cond_key AND meta_name = '$cond_extra'";
+        $meta_value = (int) $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['meta_value'];
+        $last_trade_detail = $client_operation->get_last_trade_detail($user_code);
+        $days_diff = count(date_range($last_trade_detail['date_earned'], date('Y-m-d')));
+        if($days_diff >= $meta_value){
+            $result['status'] = false;
             $result['last_trade_date'] = $last_trade_detail['date_earned'];
             $result['days_diff'] = count(date_range($last_trade_detail['date_earned'], date('Y-m-d')));
         }else{
-            $result['status'] = false;
-            $result['last_trade_date'] = null;
-            $result['days_diff'] = 0;
+            $result['status'] = true;
+            $result['last_trade_date'] = $last_trade_detail['date_earned'];
+            $result['days_diff'] = count(date_range($last_trade_detail['date_earned'], date('Y-m-d')));
         }
         return $result;
     }
