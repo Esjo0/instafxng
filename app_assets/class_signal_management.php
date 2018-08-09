@@ -434,7 +434,7 @@ WHERE SD.trigger_date = '$date'";
      * @param $decimal - length of figure to return, same as standard decimal for currency pairs
      * @return int
      */
-    function quote_splitter($price, $decimal) {
+    public function quote_splitter($price, $decimal) {
         intval($price);
         $value = explode('.', $price)[1];
         $return = substr($value, 0, $decimal);
@@ -443,40 +443,16 @@ WHERE SD.trigger_date = '$date'";
         return $return;
     }
 
-    public function get_pips($market_price, $price)
+    public function get_pips($symbol_id, $market_price, $price)
     {
-        $dec = strpos($market_price, ".");
-        $diff1 = substr($market_price, $dec + 1);
-        $dec = strlen($diff1);
-        $dec2 = strlen(substr(strrchr($price, "."), 1));
-        if ($dec2 > $dec) {
-            $diff2 = substr(strrchr($price, "."), 1, $dec);
-        } elseif ($dec2 < $dec) {
-            $diff2 = substr(strrchr($price, "."), 1, $dec2);
-            switch ($dec2) {
-                case 0:
-                    $diff2 = $diff2 . '0000';
-                    break;
-                case 1:
-                    $diff2 = $diff2 . '000';
-                    break;
-                case 2:
-                    $diff2 = $diff2 . '00';
-                    break;
-                case 3:
-                    $diff2 = $diff2 . '0';
-                    break;
-                case 4:
-                    $diff2 = $diff2 . '0';
-                    break;
-            }
-        } else {
-            $diff2 = substr(strrchr($price, "."), 1, $dec2);
+        global $db_handle;
+        $query = "SELECT decimal_place FROM signal_symbol WHERE symbol_id = '$symbol_id'";
+        $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
+        foreach($result as $row){
+            $decimal = $row['decimal_place'];
         }
-        $diff = (integer)$diff1 - (integer)$diff2;
-        $diff = (integer)$diff;
-        $diff = round($diff);
-        $diff = (string)$diff;
+        $diff = $this->quote_splitter($market_price, $decimal) - $this->quote_splitter($price, $decimal);
+
         return $diff;
     }
 
