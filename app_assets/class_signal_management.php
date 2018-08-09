@@ -170,7 +170,7 @@ MAIL;
                                        <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                             <div class="row">
                                                  <div  class="col-sm-5 col-xs-12">
-                                       <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                       <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:none" >
                                             <div>
                                             <h6 style="font-size: 15px" class="my-0">
                                             <strong>This Trade is {$this->UI_pips_msg($row['trigger_status'])} and has a high of <span id="signal_currency_diff_{$row['signal_id']}">-</span> Pips</strong></h6>
