@@ -459,14 +459,12 @@ WHERE SD.trigger_date = '$date'";
         } else {
             $diff2 = substr(strrchr($price, "."), 1, $dec2);
         }
-
         $diff = (integer)$diff1 - (integer)$diff2;
         $dec3 = strlen($diff);
         $diff = substr($diff, $dec3 - 3, 3);
-		$diff = (integer)$diff;
-		$diff = $diff * 0.1;
+        $diff = (integer)$diff;
         $diff = round($diff);
-		$diff = (string)$diff;
+        $diff = (string)$diff;
         return $diff;
     }
 
