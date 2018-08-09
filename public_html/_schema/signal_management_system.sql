@@ -1,3 +1,7 @@
+UPDATE signal_daily SET pips = '0' WHERE trigger_date = '2018-08-09' AND trigger_status = '1';
+
+ALTER TABLE `signal_daily` CHANGE `pips` `pips` INT(100) NULL DEFAULT NULL;
+
 UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '75'
 UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '78'
 

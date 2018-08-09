@@ -1,0 +1,89 @@
+
+FREE SIGNALS USER GUIDE
+
+This manual is written as a guide on how to correctly use InstaForex Nigeria free forex trading signals.
+
+Note: if you are newd to forex trading, master the use of these signals on your demo trading account before using them on your live account.
+The Signals are also posted on our facebook page http://www.facebook.com/InstaForexNigeria every trading day beginning any time from 9:00 am till 5.00pm daily.
+
+Trade Signals Colour Code
+Green = Pending Order; signals is yet to trigger on entry price
+Yellow = Running Order; signal has triggered & is currently running
+Red = Closed Trade; signal has closed & hit Take-Profit or Stop-Loss
+[Green & Yellow signals are market orders to be traded. Red signals are deemed to have expired.]
+
+
+Method of Use
+While the signals are released for "Instant Execution Orders", an alternative way to use and profit from the free signals is by using "pending order" system i.e.
+
+1. Enter trade signal on desired lot-size/volume as signal is released. Entry is still valid even if signal is 5pips into profit/loss.
+
+Otherwise, if signal has moved over 5pips in profit & you still consider entering, do the following;
+
+2(a). Enter half of desired lot-size @ current market price with trade signal Take-Profit & Stop-Loss
+2(b). Place pending order with the other half lot-size at signal entry price with Take-Profit & Stop-Loss
+
+3. Trades can be closed viz:
+(a) outright closing manually
+(b) by Take Profits targets
+(c) by use of Trailing Stop
+
+Peradventure, you are a new trader who doesn't understand how use or set pending orders, kindly follow the instructions below.
+
+What are pending orders?
+
+Pending orders are useful for traders to automate the trading process, ensuring that we remain in the forex
+market, and at the same time, while not in front of their trade platform. Basically, there are 4 types of pending orders and there are 2 derived types which are quite well-known.
+
+BUY LIMIT:
+This is used for buying a currency pair (opening a long position) at a price level "lower than the current market price". For instance, EUR/USD is presently trading at 1.3978, and you forecast that price may fall as low as 1.3900 before it rises. If you would like to have a buy order which is automatically triggered at 1.3900, you should place a BUY LIMIT pending order.
+
+SELL LIMIT:
+This is used for selling a currency pair (opening a short position) at a level which is "higher than the current market price". For instance, GBP/USD is presently trading at 1.6050, and you predict that if the currency pair becomes 1.6100, it certainly will fall afterwards. If you expect your broker to open a short position at 1.6100, then you ought to place a SELL LIMIT pending order.
+
+BUY STOP:
+This is used for buying a currency pair (opening a long position) at a level which is "higher than the current market price". For instance, EUR/USD is presently trading at 1.3590, and you predict that if the pair rises to 1.3630, it will start an upward trend. If you would like to open a long position at 1.3630 automatically, then you had better place a BUY STOP pending order.
+
+SELL STOP:
+This is used for selling a currency pair (opening a short position) at a level which is "lower than the current market price". For instance, EUR/JPY is presently trading at 105.28, and
+you are sure that if the currency pair goes down to 100.40, then it will start a strong bearish movement. If you would like to open a short position automatically at 100.40, then you are advised to place a Sell Stop pending order.
+
+Derived Order Types
+
+STOP LOSS: is used for preventing an excess loss of funds in a losing position. Whenever the price gets to the designated price level, it triggers automatically.
+You can only set it to a level lower than the open price for long positions [BUY], and conversely, to a level higher than the open price for short positions [SELL].
+Nearly all forex brokers have trading platforms have settings for Stop Loss as a Trade Order parameter.
+
+TAKE PROFIT: is used for closing a position at a desired amount of profit. It triggers automatically, just like stop-loss, at a certain market price level.
+You can only set it to a level higher than the open price for the long positions [BUY] and conversely, to a level lower than the open price for the short positions [SELL].
+
+TRAILING STOP
+This is a useful tool for forex traders as it helps reduce losses and protect potential profits by avoiding further loss of profit potential when exiting at a preset Take-Profit price level.
+If you set 15pips as your Trailing Stop, once a trade moves into 15pips profit, the system automically activates your stop loss & will continue to follow at 15pips away from current market price as long as it continues to make more profit. If eventually price reverses against the trade, it would meet Stop Loss at 15pips away & close the trade thereby protecting majority of your profits.
+
+There are three important things to remember when using a trailing stop in forex trading with MetaTrader platform:
+- It is triggered only if your position moves into profit by at least the amount of pips you set as your trailing stop
+
+- Once it is triggered, it moves the stop-loss price, which trails the market price, by the same amount of pips as defined originally, as long as the profit increases. So in a buy position, once the trailing stop is triggered, the stop loss value will always go up as the market price moves up and in a sell position the stop loss value will go down as long as the market price goes down.
+- If price moves against your position after the trailing stop function has been triggered, the stop-loss will not change and if the exchange rate continues to move against you, it will continue until the stop-loss is reached wherein the trade will close at the latest stop-loss price position.
+
+To further explain this, let's assume that we have a Buy position of EUR/USD at 1.5000 and that we determine a stop-loss value at 30 pips from the entry price. Thus, we use a stop-value of:
+Stop-Loss Price = Entry Price 30 pips = 1.4970
+If this was a Sell position then the Stop-Loss would be:
+Stop Loss value = Entry Value + 30 pips = 1.5030
+
+This can be done easily in Meta Trader by right-clicking on the currently running order for which you want to edit and select the "Trailing Stop" sub-menu. Once you do that you will be able to either choose a preset amount of pips or enter a custom number by clicking on the "custom" option at the bottom of the sub-menu.
+
+I hope that the above guide will help you in using our daily trade signals accurately and profitably too. Happy Trading!
+
+
+Terms of Use
+These signals are provided "as is" by InstaForex Nigeria (www.InstaFxNg.com) and though we have taken utmost care and used the best available tools to generate these signals, by using it you agree to release us from every liability arising directly or indirectly from the use of same signals.
+
+Although the source of the signals has been producing about 85% accurate signals, we will advise that you should try it on your demo account before you use them on your live account.
+
+Remember that online Forex Trading is a highly leveraged service and carries a degree of risk so do not use borrowed capital or money you cannot afford to lose to trade Forex. Always make sure you apply sound money management as high lot-size (volume) can be unforgiving. Never enter a trade with more than 10% of your account size as careless trading can result in the loss of your entire capital. Also, trading the Forex Markets may not be suitable for you.
+
+Please ensure you fully understand the risks involved. Always read our Risk Disclosure Statement and our User Agreement Policy before using our services.
+
+www.instafxng.com 
