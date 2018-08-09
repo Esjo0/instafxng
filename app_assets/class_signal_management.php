@@ -173,7 +173,7 @@ MAIL;
                                        <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                             <div>
                                             <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade is {$this->UI_pips_msg($row['trigger_status'])} and has <span id="signal_currency_diff_{$row['signal_id']}">-</span> Pips</strong></h6>
+                                            <strong>This Trade is {$this->UI_pips_msg($row['trigger_status'])} and has a high of <span id="signal_currency_diff_{$row['signal_id']}">-</span> Pips</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                             <small class="text-muted">
@@ -460,8 +460,6 @@ WHERE SD.trigger_date = '$date'";
             $diff2 = substr(strrchr($price, "."), 1, $dec2);
         }
         $diff = (integer)$diff1 - (integer)$diff2;
-        $dec3 = strlen($diff);
-        $diff = substr($diff, $dec3 - 3, 3);
         $diff = (integer)$diff;
         $diff = round($diff);
         $diff = (string)$diff;
