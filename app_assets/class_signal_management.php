@@ -170,18 +170,22 @@ MAIL;
                                        <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                             <div class="row">
                                                  <div  class="col-sm-5 col-xs-12">
-                                                        <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                       <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                             <div>
-                                            <h6 style="font-size: 15px" class="my-0 pull-right"><strong>Highest Pips Gained</strong></h6>
+                                            <h6 style="font-size: 15px" class="my-0">
+                                            <strong>This Signal has reached a high of <span id="signal_currency_diff_{$row['signal_id']}">-</span> Pips</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                             <small class="text-muted">
                                             </small>
 
                                         </div>
-                                        <span class="text-muted"><span id="signal_currency_diff_{$row['signal_id']}">0</span> Pips</span>   <small id="signal_pl_{$row['signal_id']}" class="text-muted pull-right"></small>
+                                        <span class="text-muted"></span>   <small id="signal_pl_{$row['signal_id']}" class="text-muted pull-right"></small>
                                         </li>
-                                       <li class="list-group-item d-flex justify-content-between lh-condensed" >
+
+
+
+                                       <li class="list-group-item d-flex justify-content-between lh-condensed"  style="display:none;">
                                         <div>
                                         <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Know how much you can gain from taking this trade.</strong></h6>
                                         <h6 class="my-0"></h6>
@@ -218,7 +222,7 @@ MAIL;
                                                     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
                                                                                       {
                                                                                      "width": 335,
-                                                                                     "height": 250,
+                                                                                     "height": 290,
                                                                                      "showChart": true,
                                                                                      "locale": "en",
                                                                                      "largeChartUrl": "",
@@ -245,7 +249,7 @@ MAIL;
                                             <div>
                                             <small style="font-size: x-small">Your use of the signals means you have read and accepted our
                                                  <a href="signal_terms_of_use.php" title="Forex Signal Terms of Use">terms of use</a>.
-                                                 Download the <a href="downloads/signalguide.pdf" target="_blank" title="Download signal guide">
+                                                 Download the <a href="downloads/Signals Guide.txt" target="_blank" title="Download signal guide">
                                                  signal guide</a> to learn how to use the signals.
                                             </small>
                                             <li class="list-group-item d-flex justify-content-between lh-condensed" >
@@ -417,6 +421,7 @@ WHERE SD.trigger_date = '$date'";
         $diff = substr($diff, $dec3 - 3, 3);
 		$diff = (integer)$diff;
 		$diff = $diff * 0.1;
+        $diff = round($diff);
 		$diff = (string)$diff;
         return $diff;
     }
