@@ -35,14 +35,16 @@ $thisPage = "Signal Terms of Use";
                         
                         <div class="row">
                             <div class="col-sm-12">
-                                <p>This signal is provided as is by InstaForex Nigeria (www.InstaFxNg.com) and though we have taken 
-                                utmost care and used the best available tools to generate these signals, by using it you agree 
-                                to release us from every liability arising directly or indirectly from the use of same signals.</p>
-                                <p>Although the source of the signals has been producing about 85% accurate signals, we will advice 
-                                that you should try it on your demo account before you use them on your live account.</p>
-                                <p>Remember Online Forex carries a degree of risk so do not use borrowed or money you cannot afford 
-                                to lose to trade Forex. Always make sure you apply money management, high lot (volume) can be 
-                                dangerous. Never enter a trade with more than 10% of your account size.</p>
+
+                                <p>These signals are provided "as is" by InstaForex Nigeria (www.InstaFxNg.com) and though we have taken utmost care and used the best available tools to generate these signals, by using it you agree to release us from every liability arising directly or indirectly from the use of same signals.</p>
+
+                                <p>Although the source of the signals has been producing about 85% accurate signals, we will advise that you should try it on your demo account before you use them on your live account.</p>
+
+                                <p>Remember Online Forex Trading is a highly leveraged service and carries a degree of risk so do not use borrowed capital or money you cannot afford to lose to trade Forex. Always make sure you apply sound money management as high lot-size (volume) can be unforgiving. Never enter a trade with more than 10% of your account size as careless trading can result in the loss of your entire capital. Also, trading the Forex Markets may not be suitable for you.</p>
+
+                                <p>Please ensure you fully understand the risks involved. Always read our Risk Disclosure Statement and our User Agreement Policy before using our services.</p>
+
+                                <p>InstaFxNg.com Analysis Team</p>
                             </div>
                         </div>
 
