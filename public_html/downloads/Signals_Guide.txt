@@ -28,7 +28,7 @@ Otherwise, if signal has moved over 5pips in profit & you still consider enterin
 (b) by Take Profits targets
 (c) by use of Trailing Stop
 
-Peradventure, you are a new trader who doesn’t understand how use or set pending orders, kindly follow the instructions below.
+Peradventure, you are a new trader who doesn't understand how use or set pending orders, kindly follow the instructions below.
 
 What are pending orders?
 
@@ -62,13 +62,13 @@ This is a useful tool for forex traders as it helps reduce losses and protect po
 If you set 15pips as your Trailing Stop, once a trade moves into 15pips profit, the system automically activates your stop loss & will continue to follow at 15pips away from current market price as long as it continues to make more profit. If eventually price reverses against the trade, it would meet Stop Loss at 15pips away & close the trade thereby protecting majority of your profits.
 
 There are three important things to remember when using a trailing stop in forex trading with MetaTrader platform:
-• It is triggered only if your position moves into profit by at least the amount of pips you set as your trailing stop 
+- It is triggered only if your position moves into profit by at least the amount of pips you set as your trailing stop
 
-• Once it is triggered, it moves the stop-loss price, which trails the market price, by the same amount of pips as defined originally, as long as the profit increases. So in a buy position, once the trailing stop is triggered, the stop loss value will always go up as the market price moves up and in a sell position the stop loss value will go down as long as the market price goes down.
-• If price moves against your position after the trailing stop function has been triggered, the stop-loss will not change and if the exchange rate continues to move against you, it will continue until the stop-loss is reached wherein the trade will close at the latest stop-loss price position.
+- Once it is triggered, it moves the stop-loss price, which trails the market price, by the same amount of pips as defined originally, as long as the profit increases. So in a buy position, once the trailing stop is triggered, the stop loss value will always go up as the market price moves up and in a sell position the stop loss value will go down as long as the market price goes down.
+- If price moves against your position after the trailing stop function has been triggered, the stop-loss will not change and if the exchange rate continues to move against you, it will continue until the stop-loss is reached wherein the trade will close at the latest stop-loss price position.
 
 To further explain this, let's assume that we have a Buy position of EUR/USD at 1.5000 and that we determine a stop-loss value at 30 pips from the entry price. Thus, we use a stop-value of:
-Stop-Loss Price = Entry Price – 30 pips = 1.4970
+Stop-Loss Price = Entry Price 30 pips = 1.4970
 If this was a Sell position then the Stop-Loss would be:
 Stop Loss value = Entry Value + 30 pips = 1.5030
 
