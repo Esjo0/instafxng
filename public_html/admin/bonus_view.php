@@ -96,7 +96,7 @@ $package_details = $bonus_operations->get_package_by_code($package_code);
                                         </tr>
                                         <tr>
                                             <td><b>Total Bonus Payouts:</b></td>
-                                            <td><span class="text-justify"> &dollar;<?php echo $bonus_operations->get_total_bonus_package_payouts($package_code)['sum']; ?></span></td>
+                                            <td><b><span class="text-justify"> &dollar;<?php echo $bonus_operations->get_total_bonus_package_payouts($package_code)['sum']; ?></span></b></td>
                                         </tr>
                                         <tr>
                                             <td><b>Total Bonus Withdrawn:</b></td>

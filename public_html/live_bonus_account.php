@@ -31,9 +31,10 @@ if(isset($_POST['live_account_ilpr_reg'])) {
     $phone_number = $db_handle->sanitizePost(trim($_POST['phone']));
     $bonus_code = $db_handle->sanitizePost(trim($_POST['bonus_code']));
 
-    /*if(!$responseData->success) {
+    //ToDo: Reverse this...
+    if(!$responseData->success) {
         $message_error = "You did not pass the robot verification, please try again.";
-    } else*/if(empty($full_name) || empty($email_address) || empty($phone_number) || empty($account_no) || empty($bonus_code)) {
+    } elseif(empty($full_name) || empty($email_address) || empty($phone_number) || empty($account_no) || empty($bonus_code)) {
         $message_error = "All fields must be filled.";
     } elseif (!check_email($email_address)) {
         $message_error = "You have provided an invalid email address. Please try again.";

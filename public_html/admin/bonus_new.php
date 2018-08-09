@@ -8,9 +8,35 @@ $all_conditions = $bonus_conditions->BONUS_CONDITIONS;
 $get_params = allowed_get_params(['package_code']);
 $package_code_encrypted = $get_params['package_code'];
 $package_code = decrypt_ssl(str_replace(" ", "+", $package_code_encrypted));
-if(!empty($package_code)){$package_details = $bonus_operations->get_package_by_code($package_code);}
 
 if(isset($_POST['process'])) {
+    $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));
+    $bonus_desc = $db_handle->sanitizePost(trim($_POST['bonus_desc']));
+    $bonus_details = $db_handle->sanitizePost($_POST['bonus_details']);
+
+    $condition_id = $db_handle->sanitizePost(trim(implode(',', $_POST['condition_id'])));
+    $status = $db_handle->sanitizePost(trim($_POST['status']));
+    $type = $db_handle->sanitizePost(trim($_POST['type']));
+    $type_value = $db_handle->sanitizePost(trim($_POST['bonus_type_value']));
+
+    if(!empty($_FILES['bonus_img'])){
+        $package_img = str_replace(' ', '-', $db_handle->sanitizePost(trim($_FILES["bonus_img"]["name"])));
+        $img_upload_feedback = upload_file("bonus_img", "../images/bonus_packages/", $package_img);
+
+        if($img_upload_feedback['status']){
+            $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $bonus_details, $img_upload_feedback['filename'], $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra'], $type_value);
+        }
+        $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
+    }else{
+        $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $bonus_details, '', $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra'], $type_value);
+        $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
+    }
+
+}
+
+if(isset($_POST['update'])) {
+
+    $bonus_code = $db_handle->sanitizePost(trim($_POST['bonus_code']));
     $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));
     $bonus_desc = $db_handle->sanitizePost(trim($_POST['bonus_desc']));
     $bonus_details = $db_handle->sanitizePost($_POST['bonus_details']);
@@ -23,40 +49,26 @@ if(isset($_POST['process'])) {
     $package_img = str_replace(' ', '-', $db_handle->sanitizePost(trim($_FILES["bonus_img"]["name"])));
     $img_upload_feedback = upload_file("bonus_img", "../images/bonus_packages/", $package_img);
 
-    if($img_upload_feedback['status']){
-        $new_package = $bonus_operations->create_new_package($bonus_title, $bonus_desc, $bonus_details, $img_upload_feedback['filename'], $condition_id, $status, $type, $_SESSION['admin_unique_code'], $_POST['extra'], $type_value);
-    }
-    $new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
-}
+    if(isset($_FILES['bonus_img']['name']) && !empty($_FILES['bonus_img']['name'])){
 
-if(isset($_POST['update'])) {
-    $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));
-    $bonus_desc = $db_handle->sanitizePost(trim($_POST['bonus_desc']));
-    $condition_id = $db_handle->sanitizePost(trim(implode(',', $_POST['condition_id'])));
-    $status = $db_handle->sanitizePost(trim($_POST['status']));
-    $type = $db_handle->sanitizePost(trim($_POST['type']));
-    $bonus_code = $db_handle->sanitizePost(trim($_POST['bonus_code']));
-    $type_value = $db_handle->sanitizePost(trim($_POST['bonus_type_value']));
+        $package_img = str_replace(' ', '-', $db_handle->sanitizePost(trim($_FILES["bonus_img"]["name"]).time()));
+        $img_upload_feedback = upload_file("bonus_img", "../images/bonus_packages/", $package_img);
 
-    //$feedback = upload_file("bonus_img", $upload_path, $desired_file_name, $allowed_file_types = array(), $max_file_size = 5 * 1024 * 1024)
-
-    /*if($_FILES["bonus_img"]["error"] == UPLOAD_ERR_OK) {
-        if(isset($_FILES["bonus_img"]["name"])) {
-            $tmp_name = $_FILES["bonus_img"]["tmp_name"];
-            $name = strtolower($_FILES["bonus_img"]["name"]);
-            $extension = explode(".", $name);
-            new_file_name:
-            $name_string = rand_string(25);
-            $newfilename = $name_string . '.' . end($extension);
-            $display_picture = strtolower($newfilename);
-            if(file_exists("../images/bonus_packages/$display_picture")) { goto new_file_name;}
-            move_uploaded_file($tmp_name, "../images/blog/$display_picture");
+        if ($img_upload_feedback['status']) {
+            #($bonus_code, $bonus_title, $bonus_desc, $bonus_details, $bonus_image, $condition_id, $status, $type, $extra = '', $type_value)
+            $update_package = $bonus_operations->update_bonus_package($bonus_code, $bonus_title, $bonus_desc, $bonus_details, filename, $condition_id, $status, $type, $_POST['extra'], $type_value);
         }
-    }*/
+        $update_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
+    }else{
 
-    //$new_package = $bonus_operations->update_package($bonus_code, $bonus_title, $bonus_desc, $condition_id, $status, $type, $_POST['extra'], $type_value);
-    //$new_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
+        $update_package = $bonus_operations->update_bonus_package($bonus_code, $bonus_title, $bonus_desc, $bonus_details, '', $condition_id, $status, $type, $_POST['extra'], $type_value);
+        $update_package ? $message_success = "Operation Successful.": $message_error = "Operation Failed.";
+    }
 }
+
+if(!empty($package_code)){$package_details = $bonus_operations->get_package_by_code($package_code);}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -183,7 +195,7 @@ if(isset($_POST['update'])) {
                                         <div class="col-sm-9">
                                             <table class="table table-responsive table-bordered">
                                                 <tbody>
-                                                <?php foreach ($all_conditions as $key => $value){ ?>
+                                                <?php foreach ($all_conditions as $key => $value){?>
                                                     <tr id="cond_<?php echo $key; ?>">
                                                         <td>
                                                             <input class="checkbox" <?php if(in_array_r($key,explode(',',$package_details['condition_id']))){echo 'checked';} ?> type="checkbox" onclick="select_row('cond_<?php echo $key; ?>','_<?php echo $key; ?>')" name="condition_id[]" value="<?php echo $key; ?>" id="_<?php echo $key; ?>" />
@@ -225,7 +237,7 @@ if(isset($_POST['update'])) {
                                                     </tr>-->
                                                     <tr>
                                                         <td>
-                                                            <input onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" type="radio" name="type" value="2" id="type_2" required />
+                                                            <input checked onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" type="radio" name="type" value="2" id="type_2" required />
                                                         </td>
                                                         <td>
                                                             <label onclick="document.getElementById('bonus_type_value_2').disabled = false; document.getElementById('bonus_type_value_1').disabled = true;" for="type_2">
@@ -234,7 +246,7 @@ if(isset($_POST['update'])) {
                                                         <td>
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">&dollar;</span>
-                                                                <input id="bonus_type_value_2" placeholder="0.00" type="text" name="bonus_type_value" class="form-control" disabled />
+                                                                <input value="<?php if(!empty($package_details)){echo $package_details['bonus_type_value'];}?>" id="bonus_type_value_2" placeholder="0.00" type="text" name="bonus_type_value" class="form-control" />
                                                             </div>
                                                         </td>
                                                     </tr>

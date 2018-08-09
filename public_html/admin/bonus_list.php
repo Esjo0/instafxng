@@ -62,6 +62,7 @@ $packages = $db_handle->fetchAssoc($result);
                                     <thead>
                                         <tr>
                                             <th>Package Name</th>
+                                            <th>Status</th>
                                             <th>Package Application URL</th>
                                             <th>Created</th>
                                             <th></th>
@@ -87,7 +88,12 @@ $packages = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td><a href="../live_bonus_account.php?pc=<?php echo encrypt_ssl($row['bonus_code']);?>">https://instafxng.com/live_bonus_account.php?pc=<?php echo encrypt_ssl($row['bonus_code']);?></a></td>
+                                            <td><?php echo $bonus_operations->bonus_package_status($row['status']); ?></td>
+                                            <td>
+                                            <?php if($row['status'] == '2'): ?>
+                                                <a href="../live_bonus_account.php?pc=<?php echo encrypt_ssl($row['bonus_code']);?>">https://instafxng.com/live_bonus_account.php?pc=<?php echo encrypt_ssl($row['bonus_code']);?></a>
+                                            <?php endif; ?>
+                                            </td>
                                             <td><?php echo datetime_to_text($row['created'])?></td>
                                             <td class="nowrap"><a class="btn-xs btn btn-default" href="bonus_view.php?pc=<?php echo encrypt_ssl($row['bonus_code']);?>"><i class="glyphicon glyphicon-arrow-right"></i></a></td>
                                         </tr>

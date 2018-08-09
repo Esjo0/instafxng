@@ -14,7 +14,7 @@ class Bonus_Condition{
             'title' => 'New Account',
             'desc' => 'All participating Instaforex accounts must be new accounts.',
             'type' => 0,
-            'extra' => '',
+            'extra' => array(),
             'api' => 'new_account_cond',
             'args' => array('bonus_account_id'),
             'returns' => array('status')
@@ -23,7 +23,7 @@ class Bonus_Condition{
             'title' => 'ILPR Account',
             'desc' => 'All participating Instaforex accounts must have been enrolled into the InstaFxNg Loyalty Rewards Program (ILPR).',
             'type' => 0,
-            'extra' => '',
+            'extra' => array(),
             'api' => 'valid_ilpr_account_cond',
             'args' => array('bonus_account_id'),
             'returns' => array('status')
@@ -32,8 +32,8 @@ class Bonus_Condition{
             'title' => 'Verified Clients Only',
             'desc' => 'All participating Instaforex account holders must have completed the verification process on Instafxng.com.',
             'type' => 0,
-            'extra' => '',
-            'api' => 'valid_ilpr_account_cond',
+            'extra' => array(),
+            'api' => 'verified_client_cond',
             'args' => array('bonus_account_id'),
             'returns' => array('status', 'docs')
         ),
@@ -41,7 +41,7 @@ class Bonus_Condition{
             'title' => 'Bonus Expiry Condition (Case 2)',
             'desc' => 'Allocated bonuses will be withdrawn from any participating instaforex account that has not traded for the number of days stated below at a stretch.',
             'type' => 0,
-            'extra' => 'Days',
+            'extra' => array('Days'),
             'api' => 'bonus_expiry_case_2_cond',
             'args' => array('bonus_account_id', 'max_num_days'),
             'returns' => array('status', 'last_trade_date', 'days_diff')
@@ -50,7 +50,7 @@ class Bonus_Condition{
             'title' => 'Bonus Expiry Condition (Case 1)',
             'desc' => 'Allocated bonuses will be withdrawn from any participating Instaforex account that has not traded for the number of days stated below at a stretch.',
             'type' => 0,
-            'extra' => 'Days',
+            'extra' => array('Days'),
             'api' => 'bonus_expiry_case_1_cond',
             'args' => array('bonus_account_id', 'max_num_days'),
             'returns' => array('status', 'last_trade_date', 'days_diff')
@@ -59,7 +59,7 @@ class Bonus_Condition{
             'title' => 'Bonus Withdrawal Condition (Case 1)',
             'desc' => 'Funds can be withdrawn from participating instaforex accounts if the stated volume or more has been traded on the account.',
             'type' => 0,
-            'extra' => 'Volume',
+            'extra' => array('Volume'),
             'api' => 'bonus_withdrawal_case_1_cond',
             'args' => array('bonus_account_id', 'min_trade_volume'),
             'returns' => array('status', 'total_volume')
@@ -68,16 +68,16 @@ class Bonus_Condition{
             'title' => 'Bonus Withdrawal Condition (Case 2)',
             'desc' => 'Only the stated percentage of the accounts equity balance can be withdrawn from participating Instaforex accounts.',
             'type' => 1,
-            'extra' => 'Percentage',
+            'extra' => array('Percentage'),
             'api' => 'bonus_withdrawal_case_2_cond',
-            'args' => array('bonus_account_id', 'min_percent'),
+            'args' => array('min_percent'),
             'returns' => array('status', 'msg')
         ),
         8 => array(
             'title' => 'Profit Withdrawal Condition (Case 3)',
             'desc' => 'Profits can be only be withdrawn from only participating instaforex accounts which have no open trade.',
             'type' => 1,
-            'extra' => '',
+            'extra' => array(),
             'api' => 'profit_withdrawal_case_3_cond',
             'args' => array(),
             'returns' => array('status')
@@ -86,18 +86,18 @@ class Bonus_Condition{
             'title' => 'Profit Withdrawal Condition (Case 2)',
             'desc' => 'Participating Instaforex accounts must have a minimum of the stated equity balance after a withdrawal is deducted before its withdrawal orders can be approved.',
             'type' => 1,
-            'extra' => '',
+            'extra' => array('Minimum_Amount'),
             'api' => 'profit_withdrawal_case_2_cond',
-            'args' => array('bonus_account_id'),
+            'args' => array('min_amount'),
             'returns' => array('status', 'msg')
         ),
         10 => array(
             'title' => 'Profit Withdrawal Condition (Case 1)',
             'desc' => 'Only the stated percentage of the accounts equity balance can be withdrawn from participating Instaforex accounts.',
             'type' => 1,
-            'extra' => 'Percentage',
+            'extra' => array('Percentage'),
             'api' => 'profit_withdrawal_case_1_cond',
-            'args' => array('bonus_account_id', 'min_percent'),
+            'args' => array('min_percent'),
             'returns' => array('status', 'msg')
         )
     );
@@ -128,7 +128,7 @@ AND BA.ifx_account_id NOT IN (
 )
 AND BA.ifx_account_id = $bonus_account_id ";
         $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
-        !empty($result) ? $result['status'] = true : $result['status'] = false ;
+        empty($result) ? $result['status'] = true : $result['status'] = false ;
         return $result;
     }
 
@@ -153,14 +153,19 @@ WHERE BA.bonus_account_id = $bonus_account_id";
         $user_code = $db_handle->fetchAssoc($db_handle->runQuery($query))[0]['user_code'];
         if(!empty($user_code)){
             $result['docs'] = $client_operation->get_user_docs_by_code($user_code);
-            $result['status'] = true;
+            if($result['docs'] && !empty($result['docs'])){
+                $result['status'] = true;
+            }else{
+                $result['status'] = false;
+                $result['docs'] = null;
+            }
         }else{
             $result['status'] = false;
             $result['docs'] = null;
         }
         return $result;
     }
-    //TODO Pend this until after you have finished the bonus allocation part
+
     public function bonus_expiry_case_1_cond($bonus_account_id){
         $cond_key = 5;
         $cond_extra = 'Days';
@@ -186,7 +191,7 @@ WHERE BA.bonus_account_id = $bonus_account_id";
         }
         return $result;
     }
-    //TODO Revisit
+
     public function bonus_expiry_case_2_cond($bonus_account_id){
         $client_operation = new clientOperation;
         //array('status', 'last_trade_date', 'days_diff')
@@ -227,27 +232,27 @@ WHERE BA.bonus_account_id = $bonus_account_id ";
         return $result;
     }
 
-    public function bonus_withdrawal_case_2_cond($bonus_account_id, $min_percent){
+    public function bonus_withdrawal_case_2_cond($min_percent){
         $min_percent = (float) $min_percent;
         $result['msg'] = "Only $min_percent% of the equity balance can be withdrawn.";
         $result['status'] = true;
         return $result;
     }
 
-    public function profit_withdrawal_case_3_cond($bonus_account_id){
+    public function profit_withdrawal_case_3_cond(){
         $result['msg'] = 'All trades MUST be closed.';
         $result['status'] = true;
         return $result;
     }
 
-    public function profit_withdrawal_case_2_cond($bonus_account_id, $min_amount){
+    public function profit_withdrawal_case_2_cond($min_amount){
         $min_amount = (float) $min_amount;
         $result['msg'] = "Equity balance on this account MUST be a minimum of &dollar; $min_amount .";
         $result['status'] = true;
         return $result;
     }
 
-    public function profit_withdrawal_case_1_cond($bonus_account_id, $min_percent){
+    public function profit_withdrawal_case_1_cond($min_percent){
         $min_percent = (float) $min_percent;
         $result['msg'] = "Only $min_percent% of the equity balance can be withdrawn.";
         $result['status'] = true;

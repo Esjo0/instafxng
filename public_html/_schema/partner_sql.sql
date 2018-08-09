@@ -3,7 +3,7 @@ DROP TABLE `partner`, `partner_balance`, `partner_financial_activity_commission`
 CREATE TABLE IF NOT EXISTS `partner` (
  `partner_id` INT(11) NOT NULL AUTO_INCREMENT,
  `partner_code` VARCHAR(5) NOT NULL,
- `password` VARCHAR(255) NOT NULL,
+ `password` VARCHAR(255) NULL DEFAULT NULL,
  `partner_code_alias` VARCHAR(15) NULL,
  `earning_balance` DECIMAL(10,2) NOT NULL DEFAULT 0,
  `first_name` VARCHAR(45) NOT NULL,
@@ -163,3 +163,6 @@ CREATE TABLE IF NOT EXISTS `partner_credential` (
   ON DELETE NO ACTION
   ON UPDATE NO ACTION)
  ENGINE = InnoDB;
+
+
+ALTER TABLE `partner` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
