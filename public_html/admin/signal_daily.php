@@ -124,7 +124,7 @@ if(isset($_POST['new_signal'])){
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
     $market_price = $response[0]['price'];
-
+if(empty($market_price)){$market_price = 0;}
     $buy_option = 1;
     $sell_option = 2;
 

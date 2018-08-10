@@ -63,17 +63,19 @@ class Signal_Management
     public function get_live_pips($trigger_status, $symbol_id, $symbol, $price, $order_type, $pips, $exit_time, $entry_time, $exit_type, $signal_id)
     {
         //$pairs = $this->get_scheduled_pairs(date('Y-m-d'));
-        if($trigger_status == 1){
+        if ($trigger_status == 1) {
             $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=Zvdxqp6hpbbqWu27n6SSQ7zo4G6sK0rz";
             $get_data = file_get_contents($url);
             $response = json_decode($get_data, true);
             $market_price = $response[0]['price'];
-            if(!empty($market_price)){
-            $diff = $this->get_pips($symbol_id, $market_price, $price);
-            $display = $this->get_pips_display($order_type, $diff);
-            }else{$display = 0;}
+            if (!empty($market_price)) {
+                $diff = $this->get_pips($symbol_id, $market_price, $price);
+                $display = $this->get_pips_display($order_type, $diff);
+            } else {
+                $display = 0;
+            }
             $open_date = datetime_to_text($entry_time);
-            $display = $display." as at ".date('h:i:s a');
+            $display = $display . " as at " . date('h:i:s a');
             $display = <<<MAIL
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
@@ -98,7 +100,7 @@ class Signal_Management
                                         </div>
                                         </li>
 MAIL;
-        }elseif($trigger_status == 2){
+        } elseif ($trigger_status == 2) {
             $closed_date = datetime_to_text($exit_time);
             $display = $this->get_pips_display($order_type, $pips);
             $display = <<<MAIL
@@ -116,7 +118,7 @@ MAIL;
                                         </li>
 MAIL;
 
-        }elseif($trigger_status == 0){
+        } elseif ($trigger_status == 0) {
             $display = <<<MAIL
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
@@ -465,7 +467,7 @@ WHERE SD.trigger_date = '$date'";
 
     public function update_signal_daily_FILE($signal_array)
     {
-          file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
         // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
@@ -475,11 +477,12 @@ WHERE SD.trigger_date = '$date'";
      * @param $decimal - length of figure to return, same as standard decimal for currency pairs
      * @return int
      */
-    public function quote_splitter($price, $decimal) {
+    public function quote_splitter($price, $decimal)
+    {
         intval($price);
         $value = explode('.', $price)[1];
         $return = substr($value, 0, $decimal);
-        $return = (int) $return;
+        $return = (int)$return;
 
         return $return;
     }
@@ -489,7 +492,7 @@ WHERE SD.trigger_date = '$date'";
         global $db_handle;
         $query = "SELECT decimal_place FROM signal_symbol WHERE symbol_id = '$symbol_id'";
         $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
-        foreach($result as $row){
+        foreach ($result as $row) {
             $decimal = $row['decimal_place'];
         }
 
@@ -501,35 +504,43 @@ WHERE SD.trigger_date = '$date'";
     }
 
     public function get_pips_display($order_type, $pips)
-{
-    switch ($order_type) {
-        case 1:
-            if($pips > 0){
-                $pips_msg = <<<MAIL
-                 <span style="color:green !important;">{$pips} pips Profit</span>
-MAIL;
-            }elseif($pips < 0){
-                $pips_msg = <<<MAIL
-                 <span style="color:red !important;">{$pips} pips Loss</span>
-MAIL;
-            }
-            break;
-        case 2:
-            if($pips < 0){
-                $pips = $pips*-1;
-                $pips_msg = <<<MAIL
-                {$pips} pips <span style="color:green !important;">Profit</span>
-MAIL;
-            }elseif($pips < 0){
-                $pips = $pips*-1;
-                $pips_msg = <<<MAIL
-                {$pips} pips <span style="color:red !important;">Loss</span>
-MAIL;
-            }
-            break;
+    {
+        switch ($order_type) {
+            case 1:
+                if ($pips > 0) {
+                    $pips_msg = <<<MSG
+                    <span style="color:green !important;">{$pips} pips Profit</span>
+MSG;
+                } elseif ($pips < 0) {
+                    $pips_msg = <<<MSG
+                    <span style="color:red !important;">{$pips} pips Loss</span>
+MSG;
+                } else {
+                    $pips_msg = <<<MSG
+                    <span>0 pip</span>
+MSG;
+                }
+                break;
+            case 2:
+                if ($pips > 0) {
+                    $pips = $pips * -1;
+                    $pips_msg = <<<MSG
+                    <span style="color:red !important;">{$pips} pips Loss</span>
+MSG;
+                } elseif ($pips < 0) {
+                    $pips = $pips * -1;
+                    $pips_msg = <<<MSG
+                    <span style="color:green !important;">{$pips} pips Profit</span>
+MSG;
+                } else {
+                    $pips_msg = <<<MSG
+                    <span>0 pip</span>
+MSG;
+                }
+                break;
+        }
+        return "$pips_msg";
     }
-    return "$pips_msg";
-}
 
     public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips, $exit_type, $exit_price, $pips_time)
     {
@@ -547,10 +558,10 @@ MAIL;
         if (!empty($pips)) {
             $query .= ", pips = $pips";
         }
-		if (!empty($exit_type)) {
+        if (!empty($exit_type)) {
             $query .= ", exit_type = '$exit_type'";
         }
-		if (!empty($exit_price)) {
+        if (!empty($exit_price)) {
             $query .= ", exit_price = '$exit_price'";
         }
         if (!empty($pips_time) && ($pips_time == 1)) {
@@ -569,7 +580,7 @@ MAIL;
     {
         global $db_handle;
         $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views, created_by, market_price, pips)
-                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0, '$admin_code', $market_price, 0)";
+                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0, '$admin_code', '$market_price', 0)";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
@@ -608,14 +619,14 @@ MAIL;
         foreach ($symbols as $key => $value) {
             $symbol_array['symbols'][count($symbol_array['symbols'])] = array('title' => $value['symbol'], 'proName' => str_replace('/', '', $value['symbol']));
         }
-        if(empty($symbol_array)){
+        if (empty($symbol_array)) {
             $query = "SELECT symbol FROM signal_symbol";
             $symbols = $db_handle->fetchAssoc($db_handle->runQuery($query));
             $symbol_array = array();
             foreach ($symbols as $key => $value) {
                 $symbol_array['symbols'][count($symbol_array['symbols'])] = array('title' => $value['symbol'], 'proName' => str_replace('/', '', $value['symbol']));
             }
-            }
+        }
         $symbol_array['locale'] = 'en';
 
         echo "<div class='tradingview-widget-container'>";

@@ -1,5 +1,4 @@
 <?php
-/*header("Access-Control-Allow-Origin: *");*/
 require_once("init/initialize_general.php");
 $signal_object = new Signal_Management();
 
@@ -24,4 +23,3 @@ foreach ($signals as $row1) {
 
 $result = json_encode($quotes);
 echo $result;
-?>
