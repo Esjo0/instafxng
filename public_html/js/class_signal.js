@@ -219,7 +219,6 @@ function Signal()
     this.showQuotes = function(json)
     {
         var quotes_array = JSON.parse(json);
-        console.log(quotes_array);
         for(var x in quotes_array){
             // document.getElementById('signal_currency_diff_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['price'];
             // document.getElementById('signal_pl_'+quotes_array[x]['symbol']).innerHTML = quotes_array[x]['pl'];

@@ -666,10 +666,38 @@ function str_replace_nth($search, $replace, $subject, $nth) {
  * $input_name = (string) Name of the markup form field
  * $upload_path = (string) Directory path for the uploaded file.
  * $desired_file_name = (string) Desired name of the uploaded file.
- *  $allowed_file_types = (array) Array of allowed file types for the upload
  *  $max_file_size = (int) Maximum file size
  * */
-function upload_file($input_name, $upload_path, $desired_file_name, $allowed_file_types = array('image/jpeg', 'image/png'), $max_file_size = 5 * 1024 * 1024){
+function upload_file($input_name, $upload_path, $desired_file_name, $max_file_size = 5 * 1024 * 1024){
+    $allowed_file_types = array(
+        'application/javascript',
+        'application/json',
+        'application/x-www-form-urlencoded',
+        'application/xml',
+        'application/zip',
+        'application/pdf',
+        'application/sql',
+        'application/graphql',
+        'application/ld+json',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-powerpoint',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'application/vnd.oasis.opendocument.text',
+        'audio/mpeg',
+        'audio/vorbis',
+        'multipart/form-data',
+        'text/css',
+        'text/html',
+        'text/csv',
+        'text/plain',
+        'image/png',
+        'image/jpeg',
+        'image/gif'
+    );
+
     $feedback = array();
     if(isset($_FILES[$input_name]) && $_FILES[$input_name]["error"] == UPLOAD_ERR_OK){
 
@@ -681,12 +709,6 @@ function upload_file($input_name, $upload_path, $desired_file_name, $allowed_fil
         extract($feedback['file_properties']);
 
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-        if(!array_key_exists($ext, $allowed_file_types)){
-            $feedback['status'] = false;
-            $feedback['status_msg'] = "Error: Please select a valid file format.";
-            //exit();
-        }
 
         if($filesize > $max_file_size){
             $feedback['status'] = false;

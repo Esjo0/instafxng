@@ -1,3 +1,23 @@
+UPDATE `signal_symbol` SET `decimal_place` = '4' WHERE `signal_symbol`.`symbol` = 'AUD/NZD'
+UPDATE `signal_symbol` SET `decimal_place` = '4' WHERE `signal_symbol`.`symbol` = 'EUR/GBP'
+UPDATE `signal_symbol` SET `decimal_place` = '4' WHERE `signal_symbol`.`symbol` = 'EUR/USD'
+UPDATE `signal_symbol` SET `decimal_place` = '4' WHERE `signal_symbol`.`symbol` = 'GBP/USD'
+UPDATE `signal_symbol` SET `decimal_place` = '4' WHERE `signal_symbol`.`symbol` = 'USD/CHF'
+UPDATE `signal_symbol` SET `decimal_place` = '4' WHERE `signal_symbol`.`symbol` = 'USD/CAD'
+UPDATE `signal_symbol` SET `decimal_place` = '2' WHERE `signal_symbol`.`symbol` = 'USD/JPY'
+UPDATE `signal_symbol` SET `decimal_place` = '4' WHERE `signal_symbol`.`symbol` ='AUD/USD'
+UPDATE `signal_symbol` SET `decimal_place` = '2' WHERE `signal_symbol`.`symbol` = 'GBP/JPY'
+UPDATE `signal_symbol` SET `decimal_place` = '2' WHERE `signal_symbol`.`symbol` = 'EUR/JPY'
+UPDATE `signal_symbol` SET `decimal_place` = '4' WHERE `signal_symbol`.`symbol` = 'NZD/USD'
+
+ALTER TABLE `signal_symbol` ADD `decimal_place` INT(10) NOT NULL AFTER `symbol`;
+
+ALTER TABLE `signal_daily` ADD `pips_time` DATETIME(6) NULL AFTER `market_price`, ADD `display_status` INT(10) NULL COMMENT '0-unhide, 1-hide' AFTER `pips_time`;
+
+UPDATE signal_daily SET pips = '0' WHERE trigger_date = '2018-08-09' AND trigger_status = '1';
+
+ALTER TABLE `signal_daily` CHANGE `pips` `pips` INT(100) NULL DEFAULT NULL;
+
 UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '75'
 UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '78'
 

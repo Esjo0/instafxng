@@ -21,27 +21,27 @@ if (!empty($scheduled_signals)) {
             if ($row['trigger_status'] != 1) {
                 $entry_price = $response[0]['price'];
                 $entry_time = date('Y-m-d h:i:s');
-                $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '');
-                $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+                $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '', '');
+                $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
                 if($pips > $row['pips']){
-                        $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
+                        $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '', 1);
                     }
                 if ($row['order_type'] == 2) {
                     trigger_sell_order($row);
                 }
             } else {
-                $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+                $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
                 if($pips > $row['pips']){
-                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
+                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '', 1);
                 }
                 if ($row['order_type'] == 2) {
                     trigger_sell_order($row);
                 }
             }
         }else if(($row['trigger_status'] == 1) && ($row['order_type'] == 2) && ($response[0]['price'] <= $row['price'])){
-            $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+            $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
             if($pips > $row['pips']){
-                $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
+                $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '', 1);
             }
             trigger_sell_order($row);
         }else if(($row['trigger_status'] == 1) && ($row['order_type'] == 2)){
@@ -53,29 +53,29 @@ if (!empty($scheduled_signals)) {
             if ($row['trigger_status'] != 1 ) {
                 $entry_price = $response[0]['price'];
                 $entry_time = date('Y-m-d h:i:s');
-                $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '');
+                $signal_object->trigger_signal_schedule($signal_id, 1, $entry_price, $entry_time, '', '', '', '', '');
 
-                $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+                $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
                 if($pips > $row['pips']){
-                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
+                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '', 1);
                 }
 
                 if ($row['order_type'] == 1) {
                     trigger_buy_order($row);
                 }
             } else {
-                $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+                $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
                 if($pips > $row['pips']){
-                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
+                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '', 1);
                 }
                 if ($row['order_type'] == 1) {
                     trigger_buy_order($row);
                 }
             }
         }else if(($row['trigger_status'] == 1) && ($row['order_type'] == 1) && ($response[0]['price'] >= $row['price'])){
-            $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+            $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
             if($pips > $row['pips']){
-                $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '');
+                $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', $pips, '', '', 1);
             }
             trigger_buy_order($row);
         }else if(($row['trigger_status'] == 1) && ($row['order_type'] == 1)){
@@ -96,16 +96,16 @@ function trigger_sell_order($row)
     if (($response[0]['price'] <= $row['take_profit']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
 		$exit_type = "Take Profit";
-        $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
+        $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
 		$exit_price = $response[0]['price'];
-        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '');
     }
     if (($response[0]['price'] >= $row['stop_loss']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
 		$exit_type = "Stop Loss";
 		$exit_price = $response[0]['price'];
-        $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
+        $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '');
     }
 }
 
@@ -122,14 +122,14 @@ function trigger_buy_order($row)
         $exit_time = date('Y-m-d h:i:s');
 		$exit_type = "Take Profit";
 		$exit_price = $response[0]['price'];
-        $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
+        $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '');
     }
     if (($response[0]['price'] <= $row['stop_loss']) && !empty($response[0][price])) {
         $exit_time = date('Y-m-d h:i:s');
 		$exit_type = "Stop Loss";
 		$exit_price = $response[0]['price'];
-        $pips = $signal_object->get_pips($response[0]['price'], $row['price']);
-        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price);
+        $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '');
     }
 }
