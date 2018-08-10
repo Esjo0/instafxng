@@ -1,4 +1,4 @@
-UPDATE signal_daily SET exit_time = '2018-08-10 14:58:00' WHERE trigger_date = '2018-08-10' AND trigger_status = '2';
+UPDATE signal_daily SET exit_time = '2018-08-10 14:58:00', entry_time = '2018-08-10 13:35:00' WHERE trigger_date = '2018-08-10' AND trigger_status = '2';
 
 UPDATE signal_daily SET entry_time = '2018-08-10 14:15:00' WHERE trigger_date = '2018-08-10' AND trigger_status = '1';
 
