@@ -37,7 +37,7 @@ if (isset($_POST['partner_signup'])) {
                 $new_partner = $partner_object->new_partner($your_first_name, $your_last_name, $your_email, $your_phone_number, $your_address, $your_city, $your_state, $your_email_address);
 
                 if($new_partner) {
-                    $message_success = $new_partner . " You have successfully registered, please check your email for further instructions.";
+                    $message_success = "You have successfully registered, please check your email for further instructions.";
                 } else {
                     $message_error = "An error occurred, your registration failed, please try again.";
                 }

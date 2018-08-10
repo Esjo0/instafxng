@@ -4,11 +4,11 @@ if (!$session_partner->is_logged_in()) {
     redirect_to("../login.php");
 }
 
-$partner_details = $_SESSION['partner_details'];
-$partner_details['partner_code'];
+$partner_details = $_SESSION;
+$partner_code = $partner_details['partner_code'];
 
-$fin_comm = $partner_object->view_financial_commission($partner_code);
-$trading_comm = $partner_object->view_trading_commission($partner_code);
+// GET TOTAL  REFERRAL
+$total_referral = $partner_object->count_partner_referral($partner_code);
 
 ?>
 <!DOCTYPE html>
@@ -38,25 +38,25 @@ $trading_comm = $partner_object->view_trading_commission($partner_code);
                 <div class="col-xs-6 col-sm-3">
                     <div class="dashboard-stats">
                         <header>Account Balance</header>
-                        <footer>&dollar; 500.00</footer>
+                        <footer>&dollar; 0.00</footer>
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3">
                     <div class="dashboard-stats">
                         <header>Earnings Yesterday</header>
-                        <footer>&dollar; 50.00</footer>
+                        <footer>&dollar; 0.00</footer>
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3">
                     <div class="dashboard-stats">
                         <header>Total Referral</header>
-                        <footer>50</footer>
+                        <footer><?php echo number_format($total_referral); ?></footer>
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3">
                     <div class="dashboard-stats">
                         <header>Active Referral</header>
-                        <footer>22</footer>
+                        <footer>0</footer>
                     </div>
                 </div>
             </div>
