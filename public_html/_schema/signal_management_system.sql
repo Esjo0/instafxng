@@ -1,5 +1,7 @@
 UPDATE signal_daily SET exit_time = '2018-08-10 14:58:00' WHERE trigger_date = '2018-08-10' AND trigger_status = '2';
 
+UPDATE signal_daily SET entry_time = '2018-08-10 14:15:00' WHERE trigger_date = '2018-08-10' AND trigger_status = '1';
+
 
 
 UPDATE `signal_symbol` SET `decimal_place` = '4' WHERE `signal_symbol`.`symbol` = 'AUD/NZD'
