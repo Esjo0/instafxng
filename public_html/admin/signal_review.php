@@ -22,8 +22,8 @@ WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
 
 $total_Signals_Posted = $db_handle->numRows($query);
 $total_Signals_triggered = $db_handle->numRows($query."AND SD.entry_price IS NOT NULL OR SD.entry_time IS NOT NULL ");
-$total_Signals_triggered_tp = $db_handle->numRows($query."AND SD.exit_type = '0' ");
-$total_Signals_triggered_sl = $db_handle->numRows($query."AND SD.exit_type = '1' ");
+$total_Signals_triggered_tp = $db_handle->numRows($query."AND SD.exit_type = 'Take Profit' ");
+$total_Signals_triggered_sl = $db_handle->numRows($query."AND SD.exit_type = 'Stop Loss' ");
 $total_Signals_pending = $db_handle->numRows($query."AND SD.trigger_status = '0' ");
 $total_Signals_users = $db_handle->numRows("SELECT email FROM signal_users");
 
@@ -178,8 +178,8 @@ function table_context($trigger_status){
                                 <?php foreach ($all_signals as $row) {?>
                                 <table  class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
-                                    <tr class="<?php table_context($row['trigger_status']) ?>">
-                                        <td rowspan="2"> <p style="font-size: xx-large">
+                                    <tr>
+                                        <td rowspan="2" class="<?php table_context($row['trigger_status']) ?>"> <p style="font-size: xx-large">
                                                 <?php if($row['order_type'] == 1){echo "<b style='font-size: large' class='text-success'><i class='glyphicon glyphicon-arrow-up'></i></b>";}
                                                 if($row['order_type'] == 2){echo "<b style='font-size: large' class='text-danger'><i class='glyphicon glyphicon-arrow-down'></i></b>";}
                                                 ?></p></td>
@@ -195,8 +195,8 @@ function table_context($trigger_status){
                                         <td>
                                             <span><b>Market Price when order was place:</b> <?php echo $row['market_price']; ?></span></br>
                                             <span><b>Entry Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['entry_price']); ?></span><br/>
-                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text3($row['entry_time']);} ?></span><br/>
-                                            <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text3($row['exit_time']);} ?></span><br/>
+                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);} ?></span><br/>
+                                            <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text($row['exit_time']);} ?></span><br/>
                                             <span><b>Pips:</b> <?php echo $signal_object->get_pips_display($row['order_type'],$row['pips']); ?></span><br/>
 											<span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
 											<span><b>Exit Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['exit_price']); ?></span>
