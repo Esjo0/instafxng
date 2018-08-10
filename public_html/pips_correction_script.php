@@ -7,11 +7,12 @@ $signal_object = new Signal_Management();
 /*
  * Pips correction script please kindly run once
  */
-$query = "SELECT symbol_id, price, exit_price FROM signal_daily WHERE trigger_date = '2018-08-09' AND trigger_status = '2'";
+$query = "SELECT signal_id, symbol_id, price, exit_price FROM signal_daily";
 $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
 foreach($result AS $row){
     $pips = $signal_object->get_pips($row['symbol_id'],$row['price'],$row['exit_price']);
-    $query = "UPDATE signal_daily SET pips = 'pips'";
+    $id = $row['signal_id'];
+    $query = "UPDATE signal_daily SET pips = '$pips' WHERE signal_id = '$id'";
     $result = $db_handle->runQuery($query);
     if($result){
         echo "Thank You";
