@@ -284,12 +284,7 @@ MAIL;
                 $ilpr_enrolment = $ifxaccount_type == '1' ? false : true; //don't log enrolment when already ILPR
 
             } else {
-                if(isset($my_refferer) && !empty($my_refferer)) {
-                    $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no, partner_code) VALUES ('$user_code', '$account_no', '$my_refferer')";
-                } else {
-                    $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$user_code', '$account_no')";
-                }
-
+                $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$user_code', '$account_no')";
                 $db_handle->runQuery($query);
 
                 // get returned ifxaccount_id generated
@@ -308,7 +303,11 @@ MAIL;
             }
             
             if(empty($middle_name)) {
-                $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
+                if(isset($my_refferer) && !empty($my_refferer)) {
+                    $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone, partner_code) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number', '$my_refferer')";
+                } else {
+                    $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number')";
+                }
                 $db_handle->runQuery($query);
                 if(empty($source) || $source != "lp") {
                     $this->send_welcome_email($last_name, $email_address);
@@ -375,7 +374,11 @@ MAIL;
                 }
 
             } else {
-                $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
+                if(isset($my_refferer) && !empty($my_refferer)) {
+                    $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone, partner_code) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number', '$my_refferer')";
+                } else {
+                    $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, middle_name, last_name, phone) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$middle_name', '$last_name', '$phone_number')";
+                }
                 $db_handle->runQuery($query);
                 if(empty($source) || $source != "lp") {
                     //This client came in through the landing page
@@ -443,11 +446,7 @@ MAIL;
                 }
             }
 
-            if(isset($my_refferer) && !empty($my_refferer)) {
-                $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no, partner_code) VALUES ('$user_code', '$account_no', '$my_refferer')";
-            } else {
-                $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$user_code', '$account_no')";
-            }
+            $query = "INSERT INTO user_ifxaccount (user_code, ifx_acct_no) VALUES ('$user_code', '$account_no')";
             $db_handle->runQuery($query);
 
             // get returned ifxaccount_id generated
