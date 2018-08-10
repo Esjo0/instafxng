@@ -10,7 +10,9 @@ $signal_object = new Signal_Management();
 $query = "SELECT signal_id, symbol_id, price, exit_price FROM signal_daily";
 $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
 foreach($result AS $row){
-    $pips = $signal_object->get_pips($row['symbol_id'],$row['price'],$row['exit_price']);
+    if(!empty($row['exit_price'])){
+    $pips = $signal_object->get_pips($row['symbol_id'],$row['exit_price'],$row['price']);
+    }else{$pips = 0;}
     $id = $row['signal_id'];
     $query = "UPDATE signal_daily SET pips = '$pips' WHERE signal_id = '$id'";
     $result = $db_handle->runQuery($query);
