@@ -1,8 +1,104 @@
 <?php
 require_once("../init/initialize_admin.php");
+
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
-if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
+if(empty($_SESSION['selected_cat'])){ $_SESSION['selected_cat'] = 'all';}
+
+if(isset($_POST['filter'])){
+    foreach ($_POST as $key => $value){$_POST[$key] = $db_handle->sanitizePost(trim($value));}
+    $_SESSION['selected_cat'] = $_POST['filter_value'];
+}
+
+$base_query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, 
+            u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM user AS u
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            WHERE (u.password IS NULL OR u.password = '')
+            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+$db_handle->runQuery("CREATE TEMPORARY TABLE unverified_clients AS ".$base_query);
+
+switch ($_SESSION['selected_cat']){
+    case 'all':
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients ";
+        $filter_category = "All Unverified Clients";
+        $display_msg = "Below is a table listing all unverified clients.";
+        break;
+
+    case 'ilpr':
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
+WHERE user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '1')";
+        $filter_category = "Clients With ILPR Accounts";
+        $display_msg = "Below is a table listing all unverified clients with ILPR account numbers.";
+        break;
+
+    //TODO... Revisit this algorithm
+    case 'nonilpr':
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
+WHERE (user_code NOT IN (SELECT user_code FROM user_ifxaccount)) OR (user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '2'))";
+        $filter_category = "Clients Without ILPR Accounts";
+        $display_msg = "Below is a table listing all unverified clients without ILPR account numbers.";
+        break;
+
+    case 'training':
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients 
+WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)";
+        $filter_category = "Training Clients";
+        $display_msg = "Below is a table listing all unverified clients that have enrolled in the FxAcademy.";
+        break;
+
+    default:
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients ";
+        $filter_category = "All Unverified Clients";
+        $display_msg = "Below is a table listing all unverified clients.";
+        break;
+}
+
+if(isset($_POST['search'])){
+    $search_text = $db_handle->sanitizePost(trim($_POST['search_text']));
+    switch ($_SESSION['selected_cat']){
+        case 'all':
+            $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients 
+                      WHERE full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' ";
+            $filter_category = "All Unverified Clients";
+            $display_msg = "Below is a table listing all unverified clients.";
+            break;
+
+        case 'ilpr':
+            $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
+                      WHERE (user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '1')) 
+                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
+            $filter_category = "Clients With ILPR Accounts";
+            $display_msg = "Below is a table listing all unverified clients with ILPR account numbers.";
+            break;
+
+        //TODO... Revisit this algorithm
+        case 'nonilpr':
+            $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
+WHERE ((user_code NOT IN (SELECT user_code FROM user_ifxaccount)) OR (user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '2')))
+AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%')";
+            $filter_category = "Clients Without ILPR Accounts";
+            $display_msg = "Below is a table listing all unverified clients without ILPR account numbers.";
+            break;
+
+        case 'training':
+            $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients 
+                      WHERE (user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)) 
+                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
+            $filter_category = "Training Clients";
+            $display_msg = "Below is a table listing all unverified clients that have enrolled in the FxAcademy.";
+            break;
+
+        default:
+            $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients 
+                      WHERE full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' ";
+            $filter_category = "All Unverified Clients";
+            $display_msg = "Below is a table listing all unverified clients.";
+            break;
+    }
+}
+/*if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
             FROM user AS u
@@ -18,13 +114,10 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE (u.password IS NULL OR u.password = '')
             GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
-}
+}*/
 $numrows = $db_handle->numRows($query);
 
-// For search, make rows per page equal total rows found, meaning, no pagination
-// for search results
-if (isset($_POST['search_text'])) {$rowsperpage = $numrows;}
-else {    $rowsperpage = 20;}
+if (isset($_POST['search_text'])) {$rowsperpage = $numrows;} else {$rowsperpage = 20;}
 
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
@@ -41,6 +134,9 @@ $offset = ($currentpage - 1) * $rowsperpage;
 $query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $unverified_clients = $db_handle->fetchAssoc($result);
+
+$db_handle->closeDB();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,6 +149,13 @@ $unverified_clients = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script>
+            function filter(value, heading) {
+                document.getElementById('filter_display').value = heading;
+                document.getElementById('filter_value').value = value;
+                document.getElementById('filter_trigger').click();
+            }
+            </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -69,8 +172,6 @@ $unverified_clients = $db_handle->fetchAssoc($result);
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-
-                    
                     <div class="row">
                         <div class="col-sm-12 text-danger">
                             <h4><strong>UNVERIFIED CLIENTS</strong></h4>
@@ -81,36 +182,35 @@ $unverified_clients = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-
                                 <div class="col-sm-12"></div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group multiple-form-group input-group">
-                                            <input id="filter_val" readonly type="text" name="filter_val" class="form-control">
-                                            <div class="input-group-btn input-group-select">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                    <span class="concept">Filter</span>  <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a onclick="document.getElementById('filter_val').value = 'Phone';" href="javascript:void(0);">Phone</a></li>
-                                                </ul>
-                                                <input type="hidden" class="input-group-select-val" name="contacts['type'][]" value="phone">
+                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
+                                            <div class="input-group input-group-sm">
+                                                <input value="<?php echo $filter_category; ?>" id="filter_display" readonly type="text" name="filter_val" class="form-control">
+                                                <div class="input-group-btn input-group-select">
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="concept">Filter</span>  <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a onclick="filter('all', 'All Unverified Clients')" href="javascript:void(0);">All Unverified Clients</a></li>
+                                                        <li><a onclick="filter('ilpr', 'Clients With ILPR Accounts')" href="javascript:void(0);">Clients With ILPR Accounts</a></li>
+                                                        <li><a onclick="filter('nonilpr', 'Clients Without ILPR Accounts')" href="javascript:void(0);">Clients Without ILPR Accounts</a></li>
+                                                        <li><a onclick="filter('training', 'Training Clients')" href="javascript:void(0);">Training Clients</a></li>
+                                                    </ul>
+                                                    <input id="filter_trigger" style="display: none" name="filter" type="submit">
+                                                    <input id="filter_value" name="filter_value" type="hidden">
+                                                </div>
                                             </div>
-                                            <input type="submit">
-
-                                            <!--<span class="input-group-btn">
-                                                <button type="button" class="btn btn-success btn-add">+</button>
-                                            </span>-->
-                                        </div>
+                                        </form>
                                     </div>
                                     <div class="col-sm-1"></div>
                                     <div class="col-sm-5">
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
                                             <div class="input-group input-group-sm">
-                                                <input type="hidden" name="search_param" value="all" id="search_param">
-                                                <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
+                                                <input minlength="3" type="text" class="form-control" value="<?php echo $search_text ?>" name="search_text" placeholder="Search term..." required>
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                                    <button name="search" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                                                 </span>
                                             </div>
                                         </form>
@@ -121,7 +221,7 @@ $unverified_clients = $db_handle->fetchAssoc($result);
 
                                 <div class="row">
                                     <div class="col-sm-9">
-                                        Below is a table of unverified clients. <br/>
+                                        <?php echo $display_msg; ?> <br/>
                                             These clients have not done any form of
                                             transaction since the last quarter of year 2014.
                                     </div>
