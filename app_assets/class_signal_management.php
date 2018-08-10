@@ -503,7 +503,7 @@ WHERE SD.trigger_date = '$date'";
     public function get_pips_display($order_type, $pips)
 {
     switch ($order_type) {
-        case 2:
+        case 1:
             if($pips > 0){
                 $pips_msg = <<<MAIL
                  <span style="color:green !important;">{$pips} pips Profit</span>
@@ -514,16 +514,16 @@ MAIL;
 MAIL;
             }
             break;
-        case 1:
+        case 2:
             if($pips < 0){
                 $pips = $pips*-1;
                 $pips_msg = <<<MAIL
-                {$pips} pips <span style="color:green !important;">Profit</span>
+                 <span style="color:green !important;">{$pips} pips Profit</span>
 MAIL;
-            }elseif($pips < 0){
+            }elseif($pips > 0){
                 $pips = $pips*-1;
                 $pips_msg = <<<MAIL
-                {$pips} pips <span style="color:red !important;">Loss</span>
+                <span style="color:red !important;">{$pips} pips Loss</span>
 MAIL;
             }
             break;
