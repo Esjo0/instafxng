@@ -78,10 +78,11 @@ $exit_price = $response[0]['price'];
 
 if(isset($_POST['create_symbol'])){
    $pair = $db_handle->sanitizePost($_POST['pair']);
+   $decimal = $db_handle->sanitizePost($_POST['decimal']);
    $query = "SELECT * FROM signal_symbol WHERE symbol = '$pair'";
    $result = $db_handle->numRows($query);
    if($result == 0){
-   $query = "INSERT INTO signal_symbol (symbol) VALUE('$pair')";
+   $query = "INSERT INTO signal_symbol (symbol, decimal_place) VALUE('$pair', '$decimal')";
    $result2 =$db_handle->runQuery($query);
     if($result2) {
         $message_success = "You have successfully created a new Currency Symbol";
@@ -334,8 +335,8 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                         <div class="input-group date">
                                                             <select name="trend" id="trend" class="form-control" >
                                                                 <option value=""></option>
-                                                                <option value="0">Buying(Bullish)</option>
-                                                                <option value="1">Selling(Bearish)</option>
+                                                                <option value="0">Bullish</option>
+                                                                <option value="1">Bearish</option>
                                                             </select>
                                                             <span class="input-group-addon"><span class="fa fa-arrows-v"></span></span>
                                                         </div>
@@ -540,7 +541,9 @@ $all_signals = $db_handle->fetchAssoc($result);
                             <center>
                             <p>Create Currency Pair</p>
                             <div class="input-group">
-                                <input name="pair" type="text" class="form-control" placeholder="Enter Currency Pair Symbol" required>
+                                <input name="pair" type="text" class="form-control" placeholder="Enter Currency Pair" required>
+                                <br/>
+                                <input name="decimal" type="text" class="form-control" placeholder="No. of Decimal Places" required>
                             </div>
                                 <button name="create_symbol" type="submit" class="btn btn-secondary"><strong>Create</strong></button>
                             </center>
