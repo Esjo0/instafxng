@@ -31,7 +31,7 @@ if(isset($_POST['trigger'])){
     $response = (array) json_decode($get_data, true);
 
     $entry_price = $response[0]['price'];
-    $entry_time = date('Y-m-d h:i:s');
+    $entry_time = date('Y-m-d H:i:s');
     $signal_object->trigger_signal_schedule($id, 1, $entry_price, $entry_time, '', '', '', '');
     $query = "UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '$id'";
     $result =$db_handle->runQuery($query);
@@ -60,7 +60,7 @@ if(isset($_POST['close'])){
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
 $exit_price = $response[0]['price'];
-    $exit_time = date('Y-m-d h:i:s');
+    $exit_time = date('Y-m-d H:i:s');
     $pips = $signal_object->get_pips($response[0]['price'], $entry_price);
 	$exit_type = "Manual";
     $signal_object->trigger_signal_schedule($id, 2, '', '', $exit_time, $pips, $exit_type, $entry, $exit_price);
@@ -78,10 +78,11 @@ $exit_price = $response[0]['price'];
 
 if(isset($_POST['create_symbol'])){
    $pair = $db_handle->sanitizePost($_POST['pair']);
+   $decimal = $db_handle->sanitizePost($_POST['decimal']);
    $query = "SELECT * FROM signal_symbol WHERE symbol = '$pair'";
    $result = $db_handle->numRows($query);
    if($result == 0){
-   $query = "INSERT INTO signal_symbol (symbol) VALUE('$pair')";
+   $query = "INSERT INTO signal_symbol (symbol, decimal_place) VALUE('$pair', '$decimal')";
    $result2 =$db_handle->runQuery($query);
     if($result2) {
         $message_success = "You have successfully created a new Currency Symbol";
@@ -112,18 +113,13 @@ if(isset($_POST['new_signal'])){
     foreach ($result as $row3) {
         extract($row3);
     }
-    give_me_my_key:
-    $key = $signal_object->quotes_api_key();
 
-    if (empty($key)) {
-        goto give_me_my_key;
-    };
     $symbol = str_replace('/', '', $symbol);
-    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$key;
+    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=Zvdxqp6hpbbqWu27n6SSQ7zo4G6sK0rz";
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
     $market_price = $response[0]['price'];
-
+//if(empty($market_price)){$market_price = 0;}
     $buy_option = 1;
     $sell_option = 2;
 
@@ -334,8 +330,8 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                         <div class="input-group date">
                                                             <select name="trend" id="trend" class="form-control" >
                                                                 <option value=""></option>
-                                                                <option value="0">Buying(Bullish)</option>
-                                                                <option value="1">Selling(Bearish)</option>
+                                                                <option value="0">Bullish</option>
+                                                                <option value="1">Bearish</option>
                                                             </select>
                                                             <span class="input-group-addon"><span class="fa fa-arrows-v"></span></span>
                                                         </div>
@@ -540,7 +536,9 @@ $all_signals = $db_handle->fetchAssoc($result);
                             <center>
                             <p>Create Currency Pair</p>
                             <div class="input-group">
-                                <input name="pair" type="text" class="form-control" placeholder="Enter Currency Pair Symbol" required>
+                                <input name="pair" type="text" class="form-control" placeholder="Enter Currency Pair" required>
+                                <br/>
+                                <input name="decimal" type="text" class="form-control" placeholder="No. of Decimal Places" required>
                             </div>
                                 <button name="create_symbol" type="submit" class="btn btn-secondary"><strong>Create</strong></button>
                             </center>

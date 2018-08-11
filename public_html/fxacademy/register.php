@@ -9,67 +9,80 @@ if(isset($email_forward)) {
 }
 
 if (isset($_POST['submit'])) {
-    foreach($_POST as $key => $value) {
-        $_POST[$key] = $db_handle->sanitizePost(trim($value));
-    }
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+        $responseData = json_decode($verifyResponse);
 
-    extract($_POST);
+        if ($responseData->success) {
 
-    if(empty($full_name) || empty($email_address) || empty($phone_number)) {
-        $message_error = "All fields must be filled, please try again";
-    } elseif (!check_email($email_address)) {
-        $message_error = "You have supplied an invalid email address, please try again.";
-    } elseif (check_number($phone_number) != 5) {
-        $message_error = "The supplied phone number is invalid.";
-    } else {
-
-        $client_full_name = $full_name;
-        $full_name = str_replace(".", "", $full_name);
-        $full_name = ucwords(strtolower(trim($full_name)));
-        $full_name = explode(" ", $full_name);
-
-        if(count($full_name) == 3) {
-            $last_name = trim($full_name[0]);
-
-            if(strlen($full_name[2]) < 3) {
-                $middle_name = trim($full_name[2]);
-                $first_name = trim($full_name[1]);
-            } else {
-                $middle_name = trim($full_name[1]);
-                $first_name = trim($full_name[2]);
+            foreach($_POST as $key => $value) {
+                $_POST[$key] = $db_handle->sanitizePost(trim($value));
             }
 
+            extract($_POST);
+
+            if(empty($full_name) || empty($email_address) || empty($phone_number)) {
+                $message_error = "All fields must be filled, please try again";
+            } elseif (!check_email($email_address)) {
+                $message_error = "You have supplied an invalid email address, please try again.";
+            } elseif (check_number($phone_number) != 5) {
+                $message_error = "The supplied phone number is invalid.";
+            } else {
+
+                $client_full_name = $full_name;
+                $full_name = str_replace(".", "", $full_name);
+                $full_name = ucwords(strtolower(trim($full_name)));
+                $full_name = explode(" ", $full_name);
+
+                if(count($full_name) == 3) {
+                    $last_name = trim($full_name[0]);
+
+                    if(strlen($full_name[2]) < 3) {
+                        $middle_name = trim($full_name[2]);
+                        $first_name = trim($full_name[1]);
+                    } else {
+                        $middle_name = trim($full_name[1]);
+                        $first_name = trim($full_name[2]);
+                    }
+
+                } else {
+                    $last_name = trim($full_name[0]);
+                    $middle_name = "";
+                    $first_name = trim($full_name[1]);
+                }
+
+                if(empty($first_name)) {
+                    $first_name = $last_name;
+                    $last_name = "";
+                }
+
+                $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, campaign_period) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '2')";
+                $result = $db_handle->runQuery($query);
+                $inserted_id = $db_handle->insertedId();
+
+                if($result) {
+
+                    $assigned_account_officer = $system_object->next_account_officer();
+
+                    $query = "UPDATE free_training_campaign SET attendant = $assigned_account_officer WHERE free_training_campaign_id = $inserted_id LIMIT 1";
+                    $db_handle->runQuery($query);
+
+                    // create profile for this client
+                    $client_operation = new clientOperation();
+                    $log_new_client = $client_operation->new_user_ordinary($client_full_name, $email_address, $phone_number, $assigned_account_officer);
+                    //...//
+
+                    redirect_to('https://instafxng.com/forex-income/thank-you/thank-you.php');
+                } else {
+                    $message_error = "An error occurred, please try again.";
+                }
+            }
         } else {
-            $last_name = trim($full_name[0]);
-            $middle_name = "";
-            $first_name = trim($full_name[1]);
+            $message_error = "You did not pass the robot verification check, please try again.";
         }
-
-        if(empty($first_name)) {
-            $first_name = $last_name;
-            $last_name = "";
-        }
-
-        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, campaign_period) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '2')";
-        $result = $db_handle->runQuery($query);
-        $inserted_id = $db_handle->insertedId();
-
-        if($result) {
-
-            $assigned_account_officer = $system_object->next_account_officer();
-
-            $query = "UPDATE free_training_campaign SET attendant = $assigned_account_officer WHERE free_training_campaign_id = $inserted_id LIMIT 1";
-            $db_handle->runQuery($query);
-
-            // create profile for this client
-            $client_operation = new clientOperation();
-            $log_new_client = $client_operation->new_user_ordinary($client_full_name, $email_address, $phone_number, $assigned_account_officer);
-            //...//
-
-            redirect_to('https://instafxng.com/forex-income/thank-you/thank-you.php');
-        } else {
-            $message_error = "An error occurred, please try again.";
-        }
+    } else {
+        $message_error = "Kindly take the robot verification test. Try again.";
     }
 }
 
@@ -147,6 +160,8 @@ if (isset($_POST['submit'])) {
                                             <div class="help-block">Example - 08031234567</div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group"><div class="col-sm-offset-3 col-sm-9 g-recaptcha" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div></div>
 
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">

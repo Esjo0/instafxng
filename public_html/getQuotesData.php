@@ -1,5 +1,4 @@
 <?php
-/*header("Access-Control-Allow-Origin: *");*/
 require_once("init/initialize_general.php");
 $signal_object = new Signal_Management();
 
@@ -14,7 +13,9 @@ $signals = (array) json_decode(file_get_contents('../models/signal_daily.json'))
 foreach ($signals as $row1) {
     $row1 = (array)$row1;
     if (!empty($row1)) {
-        $pips = (string)$row1['pips'];
+        $pips = $signal_object->get_pips_display($row1['order_type'], $row1['pips']);
+        if(!empty($row['pips_time'])){$pips_time = datetime_to_text($row1['pips_time']);}
+        $pips = $pips." on ".$pips_time;
         $id = (string)$row1['signal_id'];
         $quotes[count($quotes)] = array( symbol=>$id, pips=>$pips);
     }
@@ -22,4 +23,3 @@ foreach ($signals as $row1) {
 
 $result = json_encode($quotes);
 echo $result;
-?>
