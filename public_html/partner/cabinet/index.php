@@ -63,6 +63,13 @@ $total_referral = $partner_object->count_partner_referral($partner_code);
 
             <div class="section-tint super-shadow">
                 <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <div class="alert alert-success">
+                            Referral Link: <strong><a href="https://instafxng.com/?q=<?php echo $partner_code; ?>" target="_blank"> <?php echo "https://instafxng.com/?q=" . $partner_code; ?></a></strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-sm-12">
                         <h3>Partner Dashboard</h3>
                         <p>Follow the links in the navigation bar to get to other parts of the portal.</p>
