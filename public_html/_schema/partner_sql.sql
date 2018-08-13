@@ -166,3 +166,5 @@ CREATE TABLE IF NOT EXISTS `partner_credential` (
 
 
 ALTER TABLE `partner` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `user` ADD `partner_code` VARCHAR(5) NOT NULL DEFAULT 'BBLR' AFTER `user_code`;
