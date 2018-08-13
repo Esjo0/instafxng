@@ -7,6 +7,7 @@ $signal_object = new Signal_Management();
 $scheduled_signals = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
 //$scheduled_signals = (array)json_decode(file_get_contents('../../models/signal_daily.json'));
 
+for($x=0; $x<=3; $x++){
 if (!empty($scheduled_signals)) {
     for ($i = 0; $i < count($scheduled_signals); $i++) {
         $row = (array)$scheduled_signals[$i];
@@ -106,6 +107,8 @@ if (!empty($scheduled_signals)) {
 
     }
 }
+    sleep(10);
+}
 
 // Close Sell Order
 function trigger_sell_order($row)
@@ -157,5 +160,4 @@ function trigger_buy_order($row)
 }
 
 
-sleep(30);
 
