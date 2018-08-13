@@ -204,7 +204,7 @@ MAIL;
         if($decimal_place == 4){
            $price = substr($price, 0, -1);
         }elseif($decimal_place == 2){
-            $price = substr($price, 0, -2);
+            $price = substr($price, 0, -3);
         }
         return $price;
     }
@@ -261,7 +261,7 @@ MAIL;
                                             </div>
                                        </div>
                                                         <hr>
-                                        <div class="well text-center"><b>ENTRY PRICE: {$this->round_price_to_dp($row['price'], $row['decimal_place'], $row['decimal_place'])}</b></div>
+                                        <div class="well text-center"><b>ENTRY PRICE: {$this->round_price_to_dp($row['price'], $row['decimal_place'])}</b></div>
                                         <div class="row">
                                             <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_dp($row['stop_loss'], $row['decimal_place'])}<br/>Stop Loss</span></div></div>
                                             <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_dp($row['take_profit'], $row['decimal_place'])}<br/>Take Profit</span></div></div>
