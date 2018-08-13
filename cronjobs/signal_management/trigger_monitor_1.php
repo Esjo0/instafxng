@@ -19,6 +19,7 @@ if (!empty($scheduled_signals)) {
         $decimal_place = $row['decimal_place'];
         if($decimal_place == 4){$decimal_place = 0.0005;}
         if($decimal_place == 2){$decimal_place = 0.05;}
+
         //Trigger Sell Order
         if (($response[0]['price'] >= ($row['price'] - $decimal_place)) && ($response[0]['price'] <= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2) && !empty($response[0][price]) && ($response[0][price] != 0)) {
             if ($row['trigger_status'] != 1) {
@@ -154,6 +155,7 @@ function trigger_buy_order($row)
         $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '','');
     }
 }
+
 
 sleep(30);
 
