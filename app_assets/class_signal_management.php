@@ -184,7 +184,7 @@ MAIL;
 
     public function quotes_api_key()
     {
-        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 28)];
+        return Signal_Management::QUOTES_API_KEY[mt_rand(1, 40)];
     }
 
     public function new_signal_listener()
