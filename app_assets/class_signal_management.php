@@ -197,11 +197,15 @@ MAIL;
         }
     }
 
-    public function round_price_to_4_dp($price)
+    public function round_price_to_dp($price, $decimal_place)
     {
 //        $price = round($price,4);
 //        $dec = strpos($price, ".");
-        $price = substr($price, 0, -1);
+        if($decimal_place == 4){
+           $price = substr($price, 0, -1);
+        }elseif($decimal_place == 2){
+            $price = substr($price, 0, -3);
+        }
         return $price;
     }
 
@@ -257,10 +261,10 @@ MAIL;
                                             </div>
                                        </div>
                                                         <hr>
-                                        <div class="well text-center"><b>ENTRY PRICE: {$this->round_price_to_4_dp($row['price'])}</b></div>
+                                        <div class="well text-center"><b>ENTRY PRICE: {$this->round_price_to_dp($row['price'], $row['decimal_place'])}</b></div>
                                         <div class="row">
-                                            <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_4_dp($row['stop_loss'])}<br/>Stop Loss</span></div></div>
-                                            <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_4_dp($row['take_profit'])}<br/>Take Profit</span></div></div>
+                                            <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_dp($row['stop_loss'], $row['decimal_place'])}<br/>Stop Loss</span></div></div>
+                                            <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_dp($row['take_profit'], $row['decimal_place'])}<br/>Take Profit</span></div></div>
                                         </div>
                                         <div class="row">
                                              <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
@@ -497,8 +501,8 @@ WHERE SD.trigger_date = '$date'";
 
     public function update_signal_daily_FILE($signal_array)
     {
-        //file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-        file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+        //file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
