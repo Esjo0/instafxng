@@ -1,3 +1,9 @@
+ALTER TABLE `signal_daily` ADD `lowest_pips_time` DATETIME(6) NULL DEFAULT NULL AFTER `highest_pips_time`,
+ ADD `highest_pips` INT(100) NULL DEFAULT NULL AFTER `lowest_pips_time`,
+ ADD `lowest_pips` INT(100) NULL DEFAULT NULL AFTER `highest_pips`;
+
+ALTER TABLE `signal_daily` CHANGE `pips_time` `highest_pips_time` DATETIME(6) NULL DEFAULT NULL;
+
 UPDATE signal_daily SET exit_time = '2018-08-10 14:58:00', entry_time = '2018-08-10 13:35:00' WHERE trigger_date = '2018-08-10' AND trigger_status = '2';
 
 UPDATE signal_daily SET entry_time = '2018-08-10 14:15:00' WHERE trigger_date = '2018-08-10' AND trigger_status = '1';

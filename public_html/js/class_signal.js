@@ -90,14 +90,30 @@ function Signal()
     };
 
     ///fine
-    this.ajax_call = function (url, method,call_back_func) {
+    this.ajax_call = function (url, method,call_back_func, type) {
         if(window.XMLHttpRequest){ xmlhttp=new XMLHttpRequest();}
         else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
         xmlhttp.onreadystatechange = function(){
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
-                if(call_back_func){
-                    if(xmlhttp.responseText) {
+                if(type == '1') {
+                    if (call_back_func) {
+                        if (xmlhttp.responseText) {
+                            signal[call_back_func](xmlhttp.responseText);
+                        }
+                    }
+                }
+                if(type == '2'){
+                    if(call_back_func){
+                        if(xmlhttp.responseText) {
                         signal[call_back_func](xmlhttp.responseText);
+                        }
+                    }
+                }
+                if(type == '3'){
+                    if(call_back_func){
+                        if(xmlhttp.responseText) {
+                            signal[call_back_func](xmlhttp.responseText);
+                        }
                     }
                 }
             }
@@ -205,7 +221,7 @@ function Signal()
         }
         id_list = id_list.join('-');
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=new_signal_listener&method_args="+id_list;
-        this.ajax_call(url, 'GET', 'update_signal_page');
+        this.ajax_call(url, 'GET', 'update_signal_page', '1');
     };
 
     ///fine
@@ -230,8 +246,8 @@ function Signal()
 
     this.getQuotes = function ()
     {
-        var url = "getQuotesData.php";
-        this.ajax_call(url,'GET','showQuotes');
+        var url = "../../models/getQuotesData.php";
+        this.ajax_call(url,'GET','showQuotes', '2');
 
     };
 
@@ -249,7 +265,7 @@ function Signal()
     this.get_sidebar_signal = function ()
     {
         var url = this.BASE_URL+"views/signal_management/signal_server.php?method_name=UI_get_signals_for_sidebar";
-        this.ajax_call(url,'GET','show_sidebar_signal');
+        this.ajax_call(url,'GET','show_sidebar_signal', '3');
 
     };
 
