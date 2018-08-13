@@ -82,6 +82,7 @@ $all_partners = $db_handle->fetchAssoc($result);
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Partner Code</th>
+                                        <th>Referral</th>
                                         <th>Status</th>
                                         <th>Date Created</th>
                                         <th>Action</th>
@@ -96,6 +97,7 @@ $all_partners = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['email_address']; ?></td>
                                             <td><?php echo $row['phone_number']; ?></td>
                                             <td><?php echo $row['partner_code']; ?></td>
+                                            <td><?php echo number_format($partner_object->count_partner_referral($row['partner_code'])); ?></td>
                                             <td><?php echo partner_status($row['status']); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>

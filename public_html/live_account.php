@@ -37,7 +37,7 @@ if(isset($_POST['live_account_ilpr_reg'])) {
     } else {
 
         $client_operation = new clientOperation();
-        $log_new_ifxaccount = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2);
+        $log_new_ifxaccount = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2, $my_refferer);
 
         if($log_new_ifxaccount) {
             $page_requested = "live_account_completed_php";

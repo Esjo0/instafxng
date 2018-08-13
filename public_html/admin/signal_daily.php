@@ -31,7 +31,7 @@ if(isset($_POST['trigger'])){
     $response = (array) json_decode($get_data, true);
 
     $entry_price = $response[0]['price'];
-    $entry_time = date('Y-m-d h:i:s');
+    $entry_time = date('Y-m-d H:i:s');
     $signal_object->trigger_signal_schedule($id, 1, $entry_price, $entry_time, '', '', '', '');
     $query = "UPDATE signal_daily SET trigger_status = '1' WHERE signal_id = '$id'";
     $result =$db_handle->runQuery($query);
@@ -60,7 +60,7 @@ if(isset($_POST['close'])){
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
 $exit_price = $response[0]['price'];
-    $exit_time = date('Y-m-d h:i:s');
+    $exit_time = date('Y-m-d H:i:s');
     $pips = $signal_object->get_pips($response[0]['price'], $entry_price);
 	$exit_type = "Manual";
     $signal_object->trigger_signal_schedule($id, 2, '', '', $exit_time, $pips, $exit_type, $entry, $exit_price);
@@ -113,18 +113,13 @@ if(isset($_POST['new_signal'])){
     foreach ($result as $row3) {
         extract($row3);
     }
-    give_me_my_key:
-    $key = $signal_object->quotes_api_key();
 
-    if (empty($key)) {
-        goto give_me_my_key;
-    };
     $symbol = str_replace('/', '', $symbol);
-    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$key;
+    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=Zvdxqp6hpbbqWu27n6SSQ7zo4G6sK0rz";
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
     $market_price = $response[0]['price'];
-if(empty($market_price)){$market_price = 0;}
+//if(empty($market_price)){$market_price = 0;}
     $buy_option = 1;
     $sell_option = 2;
 

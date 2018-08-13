@@ -18,6 +18,8 @@ if (isset($_POST['process'])&& $_POST['process'] == 'Proceed') {
     
     if($application_modified) {
         $message_success = "The admin profile has been updated.";
+        redirect_to("partner_new.php");
+        exit;
     } else {
         $message_error = "Something went wrong, the application could not be updated.";
     }

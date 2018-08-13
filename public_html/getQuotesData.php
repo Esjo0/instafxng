@@ -14,7 +14,7 @@ foreach ($signals as $row1) {
     $row1 = (array)$row1;
     if (!empty($row1)) {
         $pips = $signal_object->get_pips_display($row1['order_type'], $row1['pips']);
-        $pips_time = datetime_to_text($row1['pips_time']);
+        if(!empty($row['pips_time'])){$pips_time = datetime_to_text($row1['pips_time']);}
         $pips = $pips." on ".$pips_time;
         $id = (string)$row1['signal_id'];
         $quotes[count($quotes)] = array( symbol=>$id, pips=>$pips);
