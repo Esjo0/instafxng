@@ -10,6 +10,7 @@ class Signal_Management
         3 => 'OADrX7UGJesDhvH5lDJ5NK93HZ3uSmxe',
         4 => 'Q0byrL4ELAk5jS8k11gyBq4i7dIL1PE6',
         5 => 'Oa9r9zco2Twqdw6vS0P9wDQXHj8qzbup',
+        6 => 'itAOIeH3HY9JNn5K0Bc86Vbc7LJ1GIw9',
         7 => 'MVirptGI9kaHg78rzH2d2Ol8AvG5wJ9V',
         8 => 'CI2becFW2E4R2f6OAgBQow3VoNJuDWjm',
         9 => 'I7eLZvjx9cZZLMWJr4NdzDG20mMAC3uf',
@@ -30,9 +31,23 @@ class Signal_Management
         25 => 'QHIlTNDwNcd3S12TadYisGvxNB5bckqj',
         26 => 'n2HgTqLpTNSfWszd0FeBVim31xcSCwLF',
         27 => 'pdXalhZVQbekguYqAWO4PKz9crA5V8yV',
-        28 => '5dmrvBzakweeiq9qRsgDmDzlsnnxOBqu'
+        28 => '5dmrvBzakweeiq9qRsgDmDzlsnnxOBqu',
+        29 => 'zyWyE4JKKzrMpJ4yw2IcBvXfJ89WdoZ0',
+        30 => 'TgHTt313hAk5LpHO3BgcNbBFoKEIpcLP',
+        31 => 'ubrVu0e2al42XK1mXKULgdEjCWlIGVZK',
+        32 => 'XfMunc3YC4NNTMbXKcCEJAkiMb15md92',
+        33 => 'Tsqs23KWuXnszaMWMiUZOAz3tVznjBB1',
+        34 => '3hk4A2ewQ8DDmVpruDeXOj4iJztJHKB6',
+        35 => 'pSpqowJntDfuDjbCkog6evtbP6Tvpvh',
+        36 => 'AryJXGUQIW6cl6mpgQ3nczovspaftrFs',
+        37 => 'qtZeOnKU9WhaWXl0y5AiWp0kkfGZwMam',
+        38 => 'LxuPQisDtf392Dk3JjIGW8FHsUKbVK7R',
+        39 => 'v5DUQaPgYJv49iKktlMQNKON4zDSoHXY',
+        40 => '6FTtxpD5ONkki3GnA6M3ogUaOebFn8Qq'
     );
-
+/*
+ * get the ID of a signal_symbol_pair
+ */
     public function get_symbol_id($pair_str)
     {
         global $db_handle;
@@ -60,7 +75,7 @@ class Signal_Management
         }
     }
 
-    public function get_live_pips($trigger_status, $symbol_id, $symbol, $price, $order_type, $pips, $exit_time, $entry_time, $exit_type, $signal_id)
+    public function get_live_pips($trigger_status, $symbol_id, $symbol, $price, $order_type, $pips, $exit_time, $entry_time, $exit_type, $signal_id, $highest_pips, $lowest_pips, $highest_pips_time, $lowest_pips_time)
     {
         //$pairs = $this->get_scheduled_pairs(date('Y-m-d'));
         if ($trigger_status == 1) {
@@ -75,12 +90,14 @@ class Signal_Management
                 $display = 0;
             }
             $open_date = datetime_to_text($entry_time);
-            $display = $display . " as at " . date('h:i:s a');
+            $highest_pips_time = datetime_to_text($highest_pips_time);
+            $display2 = $this->get_pips_display($order_type, $highest_pips);
+            $display = $display . " as at " . date('H:i:s a');
             $display = <<<MAIL
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
                                             <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade is {$this->UI_pips_msg($trigger_status)} and has a high of <span id="signal_currency_diff_{$signal_id}" >0</span></strong></h6>
+                                            <strong>This Trade is {$this->UI_pips_msg($trigger_status)} and has a high of {$display2} on {$highest_pips_time}</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                             <small class="text-muted">
@@ -102,7 +119,11 @@ class Signal_Management
 MAIL;
         } elseif ($trigger_status == 2) {
             $closed_date = datetime_to_text($exit_time);
+            $highest_pips_time = datetime_to_text($highest_pips_time);
+            $lowest_pips_time = datetime_to_text($lowest_pips_time);
             $display = $this->get_pips_display($order_type, $pips);
+            $display2 = $this->get_pips_display($order_type, $highest_pips);
+            $display3 = $this->get_pips_display($order_type, $lowest_pips);
             $display = <<<MAIL
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
@@ -116,6 +137,14 @@ MAIL;
 
                                         </div>
                                         </li>
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
+                                            <div>
+                                            <h6 style="font-size: 15px" class="my-0">
+                                            <strong>This Trade had a high of {$display2} as at {$highest_pips_time} and a low of {$display3} as at {$lowest_pips_time}</strong></h6>
+                                            <h6 class="my-0"></h6>
+
+                                        </div>
+                                        </li>
 MAIL;
 
         } elseif ($trigger_status == 0) {
@@ -123,7 +152,7 @@ MAIL;
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
                                             <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade is {$this->UI_pips_msg($trigger_status)} Kindly Place a pending Order.</strong></h6>
+                                            <strong>This Trade is {$this->UI_pips_msg($trigger_status)} Kindly Place a pending Order, Ensure to use all signal parameters.</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                             <small class="text-muted">
@@ -248,7 +277,7 @@ MAIL;
                                             <div class="row">
                                                  <div  class="col-sm-5 col-xs-12">
 
-{$this->get_live_pips($row['trigger_status'], $row['symbol_id'], $row['symbol'], $row['price'], $row['order_type'], $row['pips'], $row['exit_time'], $row['entry_time'], $row['exit_type'], $row['signal_id'])}
+{$this->get_live_pips($row['trigger_status'], $row['symbol_id'], $row['symbol'], $row['price'], $row['order_type'], $row['pips'], $row['exit_time'], $row['entry_time'], $row['exit_type'], $row['signal_id'], $row['highest_pips'], $row['lowest_pips'], $row['highest_pips_time'], $row['lowest_pips_time'])}
 
 
 
@@ -458,7 +487,8 @@ MAIL;
     {
         global $db_handle;
         $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.take_profit,
-SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol, SD.pips, SD.entry_time, SD.exit_time, SD.exit_type, SD.pips_time
+SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol,
+ SD.pips, SD.entry_time, SD.exit_time, SD.exit_type, SD.highest_pips_time, SD.lowest_pips_time, SD.highest_pips, SD.lowest_pips, SS.decimal_place
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE SD.trigger_date = '$date'";
@@ -467,8 +497,8 @@ WHERE SD.trigger_date = '$date'";
 
     public function update_signal_daily_FILE($signal_array)
     {
-        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-        // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+        //file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+        file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
@@ -542,7 +572,7 @@ MSG;
         return "$pips_msg";
     }
 
-    public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips, $exit_type, $exit_price, $pips_time)
+    public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips, $exit_type, $exit_price, $highest_pips_time, $lowest_pips_time, $highest_pips, $lowest_pips)
     {
         global $db_handle;
         $query = "UPDATE signal_daily SET trigger_status = '$trigger_status' ";
@@ -564,8 +594,17 @@ MSG;
         if (!empty($exit_price)) {
             $query .= ", exit_price = '$exit_price'";
         }
-        if (!empty($pips_time) && ($pips_time == 1)) {
-            $query .= ", pips_time = now()";
+        if (!empty($highest_pips_time) && ($highest_pips_time == 1)) {
+            $query .= ", highest_pips_time = now()";
+        }
+        if (!empty($lowest_pips_time) && ($lowest_pips_time == 1)) {
+            $query .= ", lowest_pips_time = now()";
+        }
+        if (!empty($highest_pips)) {
+            $query .= ", highest_pips = $highest_pips";
+        }
+        if (!empty($lowest_pips)) {
+            $query .= ", lowest_pips = $lowest_pips";
         }
         $query .= " WHERE signal_id = $signal_id ";
         $result = $db_handle->runQuery($query);
