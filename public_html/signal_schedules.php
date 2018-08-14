@@ -161,8 +161,8 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
             Login Form Scripting-->
             <?php if (!isset($_COOKIE['ifxng_signals'])) { ?>
                 <!--Modal - confirmation boxes-->
-                <div data-keyboard="false" data-backdrop="static" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                <div id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+<!--                <div  data-backdrop="static" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">-->
+                <div data-backdrop="static" data-keyboard="false" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                     <form class="form-horizontal" role="form" method="post" action="">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -217,7 +217,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 
             <!-- Unique Page Content Ends Here
             ================================================== -->
-        </div>
+
         <!-- Main Body - Side Bar  -->
     </div>
 </div>
