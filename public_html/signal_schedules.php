@@ -208,6 +208,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
                         </div>
                     </form>
                 </div>
+                </div>
                 <script>$(document).ready(function () {
                         $('#confirm-add-admin').modal("show");
                     });</script>
@@ -217,7 +218,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 
             <!-- Unique Page Content Ends Here
             ================================================== -->
-        </div>
+
         <!-- Main Body - Side Bar  -->
     </div>
 </div>
