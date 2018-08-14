@@ -12,10 +12,12 @@ if (isset($_POST['signal_report'])){
     $to_date = date('Y-m-d');
 }
 
-$query = "SELECT SS.symbol AS pair, SD.price, SD.take_profit, SD.stop_loss, SD.created, SD.views, SD.entry_price,
-SD.entry_time, SD.exit_time, SD.exit_type, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note, SD.created_by, SD.market_price, SD.decimal_place
-FROM signal_daily AS SD
-INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id
+$date1=date_create($from_date);
+$date2=date_create($to_date);
+$diff=date_diff($date1,$date2);
+echo $diff->format("%R%a");
+$query = "SELECT ifx_account_no, commissions, volume FROM trading_commissions AS tc
+INNER JOIN user AS u.ifx_account_no = tc.ifx_account_no
 WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  ";
 
 
