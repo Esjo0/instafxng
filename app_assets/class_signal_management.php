@@ -527,7 +527,7 @@ WHERE SD.trigger_date = '$date'";
     public function get_pips($symbol_id, $market_price, $price)
     {
         global $db_handle;
-        $query = "SELECT decimal_place FROM signal_symbol WHERE symbol_id = '$symbol_id'";
+        $query = "SELECT decimal_place FROM signal_symbol WHERE symbol_id = '$symbol_id' LIMIT 1";
         $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
         foreach ($result as $row) {
             $decimal = $row['decimal_place'];
