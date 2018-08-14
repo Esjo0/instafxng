@@ -79,10 +79,18 @@ class Signal_Management
     {
         //$pairs = $this->get_scheduled_pairs(date('Y-m-d'));
         if ($trigger_status == 1) {
-            $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=Zvdxqp6hpbbqWu27n6SSQ7zo4G6sK0rz";
+            $symbol = str_replace('/', '', $symbol);
+            get_key:
+            $key = $this->quotes_api_key();
+
+            $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=$key";
             $get_data = file_get_contents($url);
             $response = json_decode($get_data, true);
             $market_price = $response[0]['price'];
+            if (empty($market_price)) {
+                goto get_key;
+            };
+
             if (!empty($market_price) && !empty($price)) {
                 $diff = $this->get_pips($symbol_id, $market_price, $price);
                 $display = $this->get_pips_display($order_type, $diff);
@@ -505,7 +513,7 @@ WHERE SD.trigger_date = '$date'";
     public function update_signal_daily_FILE($signal_array)
     {
         file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-        //file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+        // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
