@@ -15,10 +15,16 @@ if (isset($_POST['signal_report'])){
 $date1=date_create($from_date);
 $date2=date_create($to_date);
 $diff=date_diff($date1,$date2);
-echo $diff->format("%R%a");
+$diff = $diff->format("%R%a days");
+echo $diff;
+echo $from_date;
+$from_date = date_create($from_date);
+date_sub($from_date, date_interval_create_from_date_string($diff));
+$new_from_date = date_format($from_date, 'Y-m-d');
+
 $query = "SELECT ifx_account_no, commissions, volume FROM trading_commissions AS tc
 INNER JOIN user AS u.ifx_account_no = tc.ifx_account_no
-WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  ";
+WHERE (STR_TO_DATE(date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  ";
 
 
 $numrows = $db_handle->numRows($query);
@@ -34,7 +40,7 @@ if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= ' ORDER BY created DESC LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$all_signals = $db_handle->fetchAssoc($result);
+$all_retentions = $db_handle->fetchAssoc($result);
 ?>
 
 <!DOCTYPE html>
