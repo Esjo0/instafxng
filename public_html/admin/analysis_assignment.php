@@ -81,11 +81,8 @@ $all_signals = $db_handle->fetchAssoc($result);
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                             <div class="modal-dialog modal-md">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                        <h4 class="modal-title">Apply Search Filter</h4></div>
                                                     <div class="modal-body">
-                                                        <p>Select signals posted within a date range using the form below.</p>
+                                                        <p>Select the range you want to compare</p>
 
                                                         <div class="input-group date">
                                                             <input placeholder="Select start date" name="from_date" type="text" class="form-control" id="datetimepicker" required>
