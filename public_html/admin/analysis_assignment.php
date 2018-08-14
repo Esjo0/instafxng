@@ -77,6 +77,39 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                         
                             <div class="section-tint super-shadow">
                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                            <div class="modal-dialog modal-md">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
+                                                        <h4 class="modal-title">Apply Search Filter</h4></div>
+                                                    <div class="modal-body">
+                                                        <p>Select signals posted within a date range using the form below.</p>
+
+                                                        <div class="input-group date">
+                                                            <input placeholder="Select start date" name="from_date" type="text" class="form-control" id="datetimepicker" required>
+                                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                        </div>
+
+                                                        <br/>
+
+                                                        <div class="input-group date">
+                                                            <input placeholder="Select end date" name="to_date" type="text" class="form-control" id="datetimepicker2" required>
+                                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                        </div>
+                                                        <script type="text/javascript">
+                                                            $(function () {$('#datetimepicker, #datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});});
+                                                        </script>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input name="signal_report" type="submit" class="btn btn-sm btn-success" value="Proceed">
+                                                        <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                     <div class="col-sm-12">
                                         <h5></h5>
                                         <ul class="nav nav-tabs">
