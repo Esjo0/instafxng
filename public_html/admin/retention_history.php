@@ -1,0 +1,176 @@
+<?php
+require_once("../init/initialize_admin.php");
+if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
+
+$periods = array( 
+    'M1' => array('start' => '2016-10-01', 'end' => '2016-10-31', 'title' => 'Month1 October 2016'),
+    'M2' => array('start' => '2016-11-01', 'end' => '2016-11-31', 'title' => 'Month2 November 2016'),
+    'M3' => array('start' => '2016-12-01', 'end' => '2016-12-31', 'title' => 'Month3 December 2016'),
+    'M4' => array('start' => '2017-01-01', 'end' => '2017-01-31', 'title' => 'Month4 January 2017'),
+    'M5' => array('start' => '2017-02-01', 'end' => '2017-02-31', 'title' => 'Month5 February 2017'),
+    'M6' => array('start' => '2017-03-01', 'end' => '2017-03-31', 'title' => 'Month6 March 2017'),
+    'M7' => array('start' => '2017-04-01', 'end' => '2017-04-31', 'title' => 'Month7 April 2017'),
+    'M8' => array('start' => '2017-05-01', 'end' => '2017-05-31', 'title' => 'Month8 May 2017'),
+    'M9' => array('start' => '2017-06-01', 'end' => '2017-06-31', 'title' => 'Month9 June 2017'),
+    'M10' => array('start' => '2017-07-01', 'end' => '2017-07-31', 'title' => 'Month10 July 2017'),
+    'M11' => array('start' => '2017-08-01', 'end' => '2017-08-31', 'title' => 'Month11 August 2017'),
+    'M12' => array('start' => '2017-09-01', 'end' => '2017-09-31', 'title' => 'Month12 September 2017'),
+    'M13' => array('start' => '2017-10-01', 'end' => '2017-10-31', 'title' => 'Month13 October 2017'),
+    'M14' => array('start' => '2017-11-01', 'end' => '2017-11-31', 'title' => 'Month14 November 2017'),
+    'M15' => array('start' => '2017-12-01', 'end' => '2017-12-31', 'title' => 'Month15 December 2017'),
+    'M16' => array('start' => '2018-01-01', 'end' => '2018-01-31', 'title' => 'Month16 January 2018'),
+    'M17' => array('start' => '2018-02-01', 'end' => '2018-02-31', 'title' => 'Month17 February 2018'),
+    'M18' => array('start' => '2018-03-01', 'end' => '2018-03-31', 'title' => 'Month18 March 2018'),
+    'M19' => array('start' => '2018-04-01', 'end' => '2018-04-31', 'title' => 'Month19 April 2018'),
+    'M20' => array('start' => '2018-05-01', 'end' => '2018-05-31', 'title' => 'Month20 May 2018'),
+    'M21' => array('start' => '2018-06-01', 'end' => '2018-06-31', 'title' => 'Month21 June 2018'),
+    'M22' => array('start' => '2018-07-01', 'end' => '2018-07-31', 'title' => 'Month22 July 2018'),
+    'Q1' => array('start' => '2016-10-01', 'end' => '2016-12-31', 'title' => 'Fourth Quarter (October 2016 - December 2016)'),
+    'Q2' => array('start' => '2017-01-01', 'end' => '2017-03-31', 'title' => 'First Quarter (January 2017 - March 2017)'),
+    'Q3' => array('start' => '2017-04-01', 'end' => '2017-06-31', 'title' => 'Second Quarter (April 2017 - June 2017)'),
+    'Q4' => array('start' => '2017-07-01', 'end' => '2017-09-31', 'title' => 'Third Quarter (July 2017 - September 2017)'),
+    'Q5' => array('start' => '2017-10-01', 'end' => '2017-12-31', 'title' => 'Fourth Quarter (October 2017 - December 2017)'),
+    'Q6' => array('start' => '2018-01-01', 'end' => '2018-03-31', 'title' => 'First Quarter (January 2018 - March 2018)'),
+    'Q7' => array('start' => '2018-04-01', 'end' => '2018-06-31', 'title' => 'Second Quarter (April 2018 - June 2018)'),
+    'H1' => array('start' => '2016-10-01', 'end' => '2017-03-31', 'title' => 'First Half (October 2016 - March 2017)'),
+    'H2' => array('start' => '2017-04-01', 'end' => '2017-09-31', 'title' => 'Second Half (April 2017 - September 2017)'),
+    'H3' => array('start' => '2017-10-01', 'end' => '2018-03-31', 'title' => 'Third Quarter (October 2018 - March 2018)'),
+    'Y1' => array('start' => '2016-10-01', 'end' => '2017-09-31', 'title' => 'Year1 (October 2016 - September 2017)'),
+);
+
+function process ($SESSION2){
+    global $db_handle;
+    $feedback = array();
+    $num_days = count(date_range($SESSION2['start'], $SESSION2['end'])) - 1;
+    $SESSION1['start'] = date('Y-m-d', strtotime('-'.$num_days.' days', strtotime($SESSION2['start'])));
+    $SESSION1['end'] = date('Y-m-d', strtotime('-1 day', strtotime($SESSION2['start'])));
+
+    //RETENTION PERCENTAGE
+    $query1 = "SELECT u.user_code
+              FROM trading_commission AS td
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE td.date_earned BETWEEN '{$SESSION1['start']}' AND '{$SESSION1['end']}' 
+              AND u.user_code IN (SELECT u.user_code
+              FROM trading_commission AS td
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE date_earned BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' ) GROUP BY u.user_code ";
+    $query2 = "SELECT u.user_code
+              FROM trading_commission AS td
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+              INNER JOIN user AS u ON ui.user_code = u.user_code
+              WHERE date_earned BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' GROUP BY u.user_code ";
+    $x1 = $db_handle->numRows($query1);//$db_handle->numOfRows($db_handle->fetchAssoc($db_handle->runQuery($query1)));
+    $x2 = $db_handle->numRows($query2);//$db_handle->numOfRows($db_handle->fetchAssoc($db_handle->runQuery($query2))); //$db_handle->numRows($query2);
+    $feedback['retention_percentage'] = number_format(($x1 / $x2) * 100, 2)."%";
+
+    //COMMISSIONS
+    $query4 = "SELECT SUM(td.commission) AS total_commissions
+              FROM trading_commission AS td 
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
+              WHERE td.date_earned BETWEEN '{$SESSION1['start']}' AND '{$SESSION1['end']}' 
+              AND td.ifx_acct_no IN (SELECT td.ifx_acct_no 
+              FROM trading_commission AS td 
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
+              WHERE date_earned BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' ) ";
+    $commissions = $db_handle->fetchAssoc($db_handle->runQuery($query4))[0]['total_commissions'];
+    $feedback['commissions'] = '&dollar; '.number_format($commissions, 2);
+
+    //PERCENTAGE OF COMMISSIONS
+    $query5 = "SELECT SUM(td.commission) AS total_commissions
+              FROM trading_commission AS td 
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
+              WHERE td.date_earned BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' ";
+    $all_commissions = $db_handle->fetchAssoc($db_handle->runQuery($query5))[0]['total_commissions'];
+    $feedback['commissions_percentage'] = number_format(($commissions / $all_commissions) * 100, 2).'%';
+
+    //ACCOUNTS RETAINED
+    $query3 = "SELECT td.ifx_acct_no
+              FROM trading_commission AS td
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
+              WHERE td.date_earned BETWEEN '{$SESSION1['start']}' AND '{$SESSION1['end']}' 
+              AND td.ifx_acct_no IN (SELECT td.ifx_acct_no 
+              FROM trading_commission AS td 
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
+              WHERE date_earned BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' ) GROUP BY td.ifx_acct_no ";
+    $feedback['accounts_retained'] = number_format($db_handle->numRows($query3));
+
+    //PERIOD
+    $feedback['period'] = date_to_text($SESSION2['start'])." to ".date_to_text($SESSION2['end']);
+    return $feedback;
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <base target="_self">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Instaforex Nigeria | Admin - Client Retention History</title>
+        <meta name="title" content="Instaforex Nigeria | Admin - Client Retention History" />
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <?php require_once 'layouts/head_meta.php'; ?>
+    </head>
+<body>
+<?php require_once 'layouts/header.php'; ?>
+<!-- Main Body: The is the main content area of the web site, contains a side bar  -->
+<div id="main-body" class="container-fluid">
+    <div class="row no-gutter">
+        <!-- Main Body - Side Bar  -->
+        <div id="main-body-side-bar" class="col-md-4 col-lg-3 left-nav">
+            <?php require_once 'layouts/sidebar.php'; ?>
+        </div>
+        <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
+        <div id="main-body-content-area" class="col-md-8 col-lg-9">
+            <!-- Unique Page Content Starts Here
+            ================================================== -->
+            <div class="row">
+                <div class="col-sm-12 text-danger">
+                    <h4><strong>CLIENT RETENTION HISTORY</strong></h4>
+                </div>
+            </div>
+
+            <div class="section-tint super-shadow">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-responsive table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Period</th>
+                                    <th>Retention Percentage</th>
+                                    <th>Accounts Retained</th>
+                                    <th>Commissions</th>
+                                    <th>Percentage Commissions From Retained Accounts</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            <?php foreach ($periods as $key => $period){ ?>
+                                <?php $excludes = array('M1', 'Q1', 'H1', 'Y1'); ?>
+                                <?php //if(!in_array($key, $excludes)): ?>
+                                <?php $output = process($period); ?>
+                                <tr>
+                                    <td><b><?php echo $period['title'] ?></b>  <br/>(<?php echo $output['period'] ?>)</td>
+                                    <td><?php echo $output['retention_percentage'] ?></td>
+                                    <td><?php echo $output['accounts_retained'] ?></td>
+                                    <td><?php echo $output['commissions'] ?></td>
+                                    <td><?php echo $output['commissions_percentage'] ?></td>
+                                </tr>
+                                <?php //endif; ?>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Unique Page Content Ends Here
+            ================================================== -->
+        </div>
+    </div>
+</div>
+<?php require_once 'layouts/footer.php'; ?>
+</body>
+</html>
