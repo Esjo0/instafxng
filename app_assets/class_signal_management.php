@@ -83,14 +83,15 @@ class Signal_Management
             $get_data = file_get_contents($url);
             $response = json_decode($get_data, true);
             $market_price = $response[0]['price'];
-            if (!empty($market_price)) {
+            if (!empty($market_price) && !empty($price)) {
                 $diff = $this->get_pips($symbol_id, $market_price, $price);
                 $display = $this->get_pips_display($order_type, $diff);
             } else {
                 $display = 0;
             }
             $open_date = datetime_to_text($entry_time);
-            $highest_pips_time = datetime_to_text($highest_pips_time);
+            if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
+            $highest_pips_time = datetime_to_text($highest_pips_time);}
             $display2 = $this->get_pips_display($order_type, $highest_pips);
             $display = $display . " as at " . date('H:i:s a');
             $display = <<<MAIL
@@ -119,8 +120,10 @@ class Signal_Management
 MAIL;
         } elseif ($trigger_status == 2) {
             $closed_date = datetime_to_text($exit_time);
-            $highest_pips_time = datetime_to_text($highest_pips_time);
-            $lowest_pips_time = datetime_to_text($lowest_pips_time);
+            if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
+                $highest_pips_time = datetime_to_text($highest_pips_time);}
+            if(!empty($row1['lowest_pips_time']) && ($row1['lowest_pips_time'] != 0)){
+                $lowest_pips_time = datetime_to_text($lowest_pips_time);}
             $display = $this->get_pips_display($order_type, $pips);
             $display2 = $this->get_pips_display($order_type, $highest_pips);
             $display3 = $this->get_pips_display($order_type, $lowest_pips);
@@ -524,7 +527,7 @@ WHERE SD.trigger_date = '$date'";
     public function get_pips($symbol_id, $market_price, $price)
     {
         global $db_handle;
-        $query = "SELECT decimal_place FROM signal_symbol WHERE symbol_id = '$symbol_id'";
+        $query = "SELECT decimal_place FROM signal_symbol WHERE symbol_id = '$symbol_id' LIMIT 1";
         $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
         foreach ($result as $row) {
             $decimal = $row['decimal_place'];

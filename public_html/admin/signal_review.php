@@ -15,7 +15,7 @@ if (isset($_POST['signal_report'])){
 
 
 $query = "SELECT SS.symbol AS pair, SD.price, SD.take_profit, SD.stop_loss, SD.created, SD.views, SD.entry_price, 
-SD.entry_time, SD.exit_time, SD.exit_type, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note, SD.created_by, SD.market_price
+SD.entry_time, SD.exit_time, SD.exit_type, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note, SD.created_by, SD.market_price, SD.decimal_place
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  ";
@@ -185,21 +185,21 @@ function table_context($trigger_status){
                                                 ?></p></td>
                                         <td>
                                             <span><b>Currency Pair:</b> <?php echo $row['pair']; ?></span><br/>
-                                            <span><b>Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['price']); ?></span><br/>
-                                            <span><b>Take Profit:</b> <?php echo $signal_object->round_price_to_4_dp($row['take_profit']); ?></span><br/>
-                                            <span><b>Stop Loss:</b> <?php echo $signal_object->round_price_to_4_dp($row['stop_loss']); ?></span><br/>
+                                            <span><b>Price:</b> <?php echo $signal_object->round_price_to_dp($row['price'], $row['decimal_place']); ?></span><br/>
+                                            <span><b>Take Profit:</b> <?php echo $signal_object->round_price_to_dp($row['take_profit'], $row['decimal_place']); ?></span><br/>
+                                            <span><b>Stop Loss:</b> <?php echo $signal_object->round_price_to_dp($row['stop_loss'], $row['decimal_place']); ?></span><br/>
                                             <span><b>Date Created:</b> <?php echo datetime_to_text($row['created']); ?></span><br/>
 											<span><b>Keynote:</b> <?php echo $row['note']; ?><br/>
                                             <span><b>Created By:</b> <?php echo $admin_object->get_admin_name_by_code($row['created_by']);; ?>
                                         </td>
                                         <td>
                                             <span><b>Market Price when order was place:</b> <?php echo $row['market_price']; ?></span></br>
-                                            <span><b>Entry Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['entry_price']); ?></span><br/>
+                                            <span><b>Entry Price:</b> <?php echo $signal_object->round_price_to_dp($row['entry_price'], $row['decimal_place']); ?></span><br/>
                                             <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);} ?></span><br/>
                                             <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text($row['exit_time']);} ?></span><br/>
                                             <span><b>Pips:</b> <?php echo $signal_object->get_pips_display($row['order_type'],$row['pips']); ?></span><br/>
 											<span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
-											<span><b>Exit Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['exit_price']); ?></span>
+											<span><b>Exit Price:</b> <?php echo $signal_object->round_price_to_dp($row['exit_price'], $row['decimal_place']); ?></span>
                                         </td>
                                     </tr>
                                     <tr class="table-warning">
