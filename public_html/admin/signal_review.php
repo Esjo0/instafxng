@@ -20,7 +20,6 @@ FROM signal_daily AS SD
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  ";
 
-var_dump($query);
 $total_Signals_Posted = $db_handle->numRows($query);
 $total_Signals_triggered = $db_handle->numRows($query."AND SD.entry_price IS NOT NULL OR SD.entry_time IS NOT NULL ");
 $total_Signals_triggered_tp = $db_handle->numRows($query."AND SD.exit_type = 'Take Profit' ");
