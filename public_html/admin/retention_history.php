@@ -100,6 +100,11 @@ function process ($SESSION2){
     $feedback['period'] = date_to_text($SESSION2['start'])." to ".date_to_text($SESSION2['end']);
     return $feedback;
 }
+if(isset($_POST['filter_value'])){
+    $filter_category = $periods[$_POST['filter_value']]['title'];
+    $output = process($periods[$_POST['filter_value']]);
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -112,6 +117,13 @@ function process ($SESSION2){
         <meta name="title" content="Instaforex Nigeria | Admin - Client Retention History" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
+        <script>
+            function filter(value, heading) {
+                document.getElementById('filter_display').value = heading;
+                document.getElementById('filter_value').value = value;
+                document.getElementById('filter_trigger').click();
+            }
+        </script>
         <?php require_once 'layouts/head_meta.php'; ?>
     </head>
 <body>
@@ -136,6 +148,39 @@ function process ($SESSION2){
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
+                        <p>Select a period below.</p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
+                                    <div class="input-group input-group-sm">
+                                        <input value="<?php echo $filter_category; ?>" id="filter_display" readonly type="text" name="filter_val" class="form-control">
+                                        <div class="input-group-btn input-group-select">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                <span class="concept">Filter</span>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <?php foreach ($periods as $key => $period){ ?>
+                                                    <li><a onclick="filter('<?php echo $key; ?>', '<?php echo $period['title']; ?>')" href="javascript:void(0);"><?php echo $period['title']; ?></a></li>
+                                                <?php } ?>
+                                                <!--<li><a onclick="filter('all', 'All Unverified Clients')" href="javascript:void(0);">All Unverified Clients</a></li>
+                                                <li><a onclick="filter('ilpr', 'Clients With ILPR Accounts')" href="javascript:void(0);">Clients With ILPR Accounts</a></li>
+                                                <li><a onclick="filter('nonilpr', 'Clients Without ILPR Accounts')" href="javascript:void(0);">Clients Without ILPR Accounts</a></li>
+                                                <li><a onclick="filter('training', 'Training Clients')" href="javascript:void(0);">Training Clients</a></li>-->
+                                            </ul>
+                                            <input id="filter_trigger" style="display: none" name="filter" type="submit">
+                                            <input id="filter_value" name="filter_value" type="hidden">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <?php if(isset($output) && !empty($output)): ?>
+                        <h5>Retention History For <?php echo $periods[$_POST['filter_value']]['title'] ?></h5>
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -147,22 +192,16 @@ function process ($SESSION2){
                                 </tr>
                             </thead>
                             <tbody>
-
-                            <?php foreach ($periods as $key => $period){ ?>
-                                <?php $excludes = array('M1', 'Q1', 'H1', 'Y1'); ?>
-                                <?php //if(!in_array($key, $excludes)): ?>
-                                <?php $output = process($period); ?>
                                 <tr>
-                                    <td><b><?php echo $period['title'] ?></b>  <br/>(<?php echo $output['period'] ?>)</td>
+                                    <td><b><?php echo $periods[$_POST['filter_value']]['title'] ?></b>  <br/>(<?php echo $output['period'] ?>)</td>
                                     <td><?php echo $output['retention_percentage'] ?></td>
                                     <td><?php echo $output['accounts_retained'] ?></td>
                                     <td><?php echo $output['commissions'] ?></td>
                                     <td><?php echo $output['commissions_percentage'] ?></td>
                                 </tr>
-                                <?php //endif; ?>
-                            <?php } ?>
                             </tbody>
                         </table>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
