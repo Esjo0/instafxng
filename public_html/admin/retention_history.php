@@ -2,7 +2,7 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
-$periods = array( 
+$periods = array(
     'M1' => array('start' => '2016-10-01', 'end' => '2016-10-31', 'title' => 'Month1 October 2016'),
     'M2' => array('start' => '2016-11-01', 'end' => '2016-11-31', 'title' => 'Month2 November 2016'),
     'M3' => array('start' => '2016-12-01', 'end' => '2016-12-31', 'title' => 'Month3 December 2016'),
