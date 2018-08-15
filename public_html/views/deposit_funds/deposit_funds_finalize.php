@@ -6,6 +6,8 @@
 </ul>
 
 <p style="color: red">NOTE: Kindly make sure you pay into the account details specified on the payment invoice.</p>
+<p style="color: red">When making your payment via internet banking, mobile transfer or filling your teller for cash deposit include your
+    transaction ID and account number in the REMARK column E.g (D151112268 - 123456)</p>
 
 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI . '?p=fnz'; ?>">
     <input name="transaction_no" type="hidden" value="<?php if(isset($trans_id_encrypted)) { echo $trans_id_encrypted; } ?>">
