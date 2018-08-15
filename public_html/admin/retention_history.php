@@ -41,56 +41,61 @@ $periods = array(
 function process ($SESSION2){
     global $db_handle;
     $feedback = array();
-    $num_days = count(date_range($SESSION2['start'], $SESSION2['end'])) - 1;
+    $num_days = count(date_range($SESSION2['start'], $SESSION2['end']));
     $SESSION1['start'] = date('Y-m-d', strtotime('-'.$num_days.' days', strtotime($SESSION2['start'])));
     $SESSION1['end'] = date('Y-m-d', strtotime('-1 day', strtotime($SESSION2['start'])));
 
     //RETENTION PERCENTAGE
-    $query1 = "SELECT u.user_code FROM trading_commission AS td
-              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-              INNER JOIN user AS u ON ui.user_code = u.user_code
-              WHERE (STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION1['start']}' AND '{$SESSION1['end']}')
-              AND (u.user_code IN (SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-              INNER JOIN user AS u ON ui.user_code = u.user_code
-              WHERE STR_TO_DATE(date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}')) GROUP BY u.user_code ;";
-    $query2 = "SELECT u.user_code
-              FROM trading_commission AS td
-              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-              INNER JOIN user AS u ON ui.user_code = u.user_code
-              WHERE STR_TO_DATE(date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' GROUP BY u.user_code ";
-    $x1 = $db_handle->numRows($query1);//$db_handle->numOfRows($db_handle->fetchAssoc($db_handle->runQuery($query1)));
-    $x2 = $db_handle->numRows($query2);//$db_handle->numOfRows($db_handle->fetchAssoc($db_handle->runQuery($query2))); //$db_handle->numRows($query2);
-    $feedback['retention_percentage'] = number_format(($x1 / $x2) * 100, 2)."%";
+    $query1 = "SELECT td.ifx_acct_no AS acc_no
+FROM trading_commission AS td
+INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+WHERE
+  (STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION1['start']}' AND '{$SESSION1['end']}')
+AND
+  (td.ifx_acct_no IN (
+    SELECT _td.ifx_acct_no FROM trading_commission AS _td
+      INNER JOIN user_ifxaccount AS _ui ON _td.ifx_acct_no = _ui.ifx_acct_no
+      WHERE STR_TO_DATE(_td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}')
+  ) GROUP BY td.ifx_acct_no;";
+    $query2 = "SELECT td.ifx_acct_no FROM trading_commission AS td
+INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}'
+GROUP BY td.ifx_acct_no; ";
+    $retained_accounts = $db_handle->numRows($query1);
+    $current_accounts = $db_handle->numRows($query2);
+    $feedback['retention_percentage'] = number_format(($retained_accounts / $current_accounts) * 100, 2)."%";
 
     //COMMISSIONS
     $query4 = "SELECT SUM(td.commission) AS total_commissions
-              FROM trading_commission AS td 
-              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
-              WHERE (STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION1['start']}' AND '{$SESSION1['end']}') 
-              AND (td.ifx_acct_no IN (SELECT td.ifx_acct_no 
-              FROM trading_commission AS td 
-              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
-              WHERE STR_TO_DATE(date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' )) ";
+              FROM trading_commission AS td
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+              WHERE (STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}')
+              AND (ui.ifx_acct_no IN (
+                SELECT _ui.ifx_acct_no FROM user_ifxaccount AS _ui
+                INNER JOIN trading_commission AS _td ON _ui.ifx_acct_no = _td.ifx_acct_no 
+                WHERE STR_TO_DATE(_td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION1['start']}' AND '{$SESSION1['end']}')
+              );";
     $commissions = $db_handle->fetchAssoc($db_handle->runQuery($query4))[0]['total_commissions'];
-    $feedback['commissions'] = '&dollar;'.number_format($commissions, 2);
+    $feedback['commissions_retained_accounts'] = '&dollar;'.number_format($commissions, 2);
 
     //PERCENTAGE OF COMMISSIONS
     $query5 = "SELECT SUM(td.commission) AS total_commissions
-              FROM trading_commission AS td 
-              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
-              WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' ";
+              FROM trading_commission AS td
+              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+              WHERE (STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}')";
     $all_commissions = $db_handle->fetchAssoc($db_handle->runQuery($query5))[0]['total_commissions'];
     $feedback['commissions_percentage'] = number_format(($commissions / $all_commissions) * 100, 2).'%';
+    $feedback['total_commissions'] = '&dollar;'.number_format($all_commissions, 2);
 
     //ACCOUNTS RETAINED
-    $query3 = "SELECT td.ifx_acct_no
-              FROM trading_commission AS td
-              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
-              WHERE (STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION1['start']}' AND '{$SESSION1['end']}') 
-              AND (td.ifx_acct_no IN (SELECT td.ifx_acct_no 
-              FROM trading_commission AS td 
-              INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
-              WHERE STR_TO_DATE(date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' )) GROUP BY td.ifx_acct_no ";
+    $query3 = "SELECT td.ifx_acct_no FROM trading_commission AS td
+INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no 
+WHERE (STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION1['start']}' AND '{$SESSION1['end']}') 
+AND (td.ifx_acct_no IN (
+  SELECT _td.ifx_acct_no FROM trading_commission AS _td
+  INNER JOIN user_ifxaccount AS _ui ON _td.ifx_acct_no = _ui.ifx_acct_no
+  WHERE STR_TO_DATE(_td.date_earned, '%Y-%m-%d') BETWEEN '{$SESSION2['start']}' AND '{$SESSION2['end']}' )
+) GROUP BY td.ifx_acct_no ";
     $feedback['accounts_retained'] = number_format($db_handle->numRows($query3));
 
     //PERIOD
@@ -185,7 +190,8 @@ if(isset($_POST['filter_value'])){
                                     <th>Period</th>
                                     <th>Retention Percentage</th>
                                     <th>Accounts Retained</th>
-                                    <th>Commissions</th>
+                                    <th>Total Commissions</th>
+                                    <th>Commissions From <br/>Retained Accounts</th>
                                     <th>Percentage Commissions <br/>From Retained Accounts</th>
                                 </tr>
                             </thead>
@@ -194,7 +200,8 @@ if(isset($_POST['filter_value'])){
                                     <td><b><?php echo $periods[$_POST['filter_value']]['title'] ?></b>  <br/>(<?php echo $output['period'] ?>)</td>
                                     <td><?php echo $output['retention_percentage'] ?></td>
                                     <td><?php echo $output['accounts_retained'] ?></td>
-                                    <td><?php echo $output['commissions'] ?></td>
+                                    <td><?php echo $output['total_commissions'] ?></td>
+                                    <td><?php echo $output['commissions_retained_accounts'] ?></td>
                                     <td><?php echo $output['commissions_percentage'] ?></td>
                                 </tr>
                             </tbody>
