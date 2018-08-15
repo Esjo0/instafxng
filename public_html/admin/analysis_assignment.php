@@ -13,34 +13,45 @@ if (isset($_POST['signal_report'])){
 }
 
 $date1=date_create($from_date);
+$date1 = $date1->modify('-1 day');
 $date2=date_create($to_date);
+$date2 = $date2->modify('-1 day');
 $diff=date_diff($date1,$date2);
 $diff = $diff->format("%R%a days");
-echo $diff;
-echo $from_date;
-$from_date = date_create($from_date);
-date_sub($from_date, date_interval_create_from_date_string($diff));
-$new_from_date = date_format($from_date, 'Y-m-d');
 
-$query = "SELECT ifx_account_no, commissions, volume FROM trading_commissions AS tc
-INNER JOIN user AS u.ifx_account_no = tc.ifx_account_no
-WHERE (STR_TO_DATE(date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  ";
+$new_from_date = date_create($from_date);
+date_sub($new_from_date, date_interval_create_from_date_string($diff));
+$new_from_date = date_format($new_from_date, 'Y-m-d');
+$new_to_date = date_format($date1, 'Y-m-d');
 
+$query = "SELECT tc.ifx_acct_no, SUM(tc.commission) AS total_commissions, tc.volume, tc.date_earned FROM trading_commission AS tc
+INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = tc.ifx_acct_no
+WHERE (STR_TO_DATE(tc.date_earned, '%Y-%m-%d') BETWEEN '$new_from_date' AND '$new_to_date') AND tc.ifx_acct_no IN
+(SELECT tc.ifx_acct_no FROM trading_commission AS tc
+INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
+WHERE (STR_TO_DATE(tc.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'))";
 
 $numrows = $db_handle->numRows($query);
-//$total_untriggered = $numrows - $total_triggered;
-$rowsperpage = 10;
-$totalpages = ceil($numrows / $rowsperpage);
-if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {    $currentpage = (int) $_GET['pg'];} else {    $currentpage = 1;}
-if ($currentpage > $totalpages) { $currentpage = $totalpages; }
-if ($currentpage < 1) { $currentpage = 1; }
-$prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
-$prespagehigh = $currentpage * $rowsperpage;
-if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
-$offset = ($currentpage - 1) * $rowsperpage;
-$query .= ' ORDER BY created DESC LIMIT ' . $offset . ',' . $rowsperpage;
+$query2 = "SELECT * FROM trading_commission WHERE (STR_TO_DATE(date_earned, '%Y-%m-%d') BETWEEN '$new_from_date' AND '$to_date')";
+$numrows2 = $db_handle->numRows($query2);
+$rate = ($numrows/$numrows) * 100;
 $result = $db_handle->runQuery($query);
 $all_retentions = $db_handle->fetchAssoc($result);
+foreach($all_retentions AS $row){extract ($row);}
+$total_commissions = $total_commissions;
+
+$query_new = "SELECT tc.ifx_acct_no, SUM(tc.commission) AS total_commissions_new, tc.volume, tc.date_earned FROM trading_commission AS tc
+INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
+WHERE (STR_TO_DATE(tc.date_earned, '%Y-%m-%d') BETWEEN 'from_date' AND '$to_date') AND tc.ifx_acct_no NOT IN
+(SELECT tc.ifx_acct_no FROM trading_commission AS tc
+INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
+WHERE (STR_TO_DATE(tc.date_earned, '%Y-%m-%d') BETWEEN '$new_from_date' AND '$new_to_date'))";
+
+$numrows_new = $db_handle->numRows($query_new);
+$result_new = $db_handle->runQuery($query_new);
+$all_new = $db_handle->fetchAssoc($result_new);
+foreach($all_new AS $row){extract ($row);}
+$total_commissions_new = $total_commissions_new;
 ?>
 
 <!DOCTYPE html>
@@ -123,10 +134,36 @@ $all_retentions = $db_handle->fetchAssoc($result);
                                         </ul>
                                         <div class="tab-content">
                                             <div id="latest_funding" class="tab-pane fade in active">
-
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <th scope="row">Total Number of Retained Accounts</th>
+                                                        <td><?php echo $numrows?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Retention rate</th>
+                                                        <td><?php echo $rate?>%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Sum of Commisions</th>
+                                                        <td colspan="2"><?php echo $total_commissions?></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                             <div id="latest_withdrawal" class="tab-pane fade">
-
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <th scope="row">Total Number of New Accounts</th>
+                                                        <td><?php echo $numrows_new?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Sum of Commisions</th>
+                                                        <td colspan="2"><?php echo $total_commissions_new?></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
 
