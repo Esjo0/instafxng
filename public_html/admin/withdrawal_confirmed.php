@@ -6,6 +6,19 @@ if (!$session_admin->is_logged_in()) {
 
 $client_operation = new clientOperation();
 
+// SUM OF TRANSACTIONS:
+$sum_query = "SELECT SUM(uw.dollar_withdraw) AS sum_dollar_withdraw, SUM(uw.naira_total_withdrawable) AS sum_naira_total_withdrawable
+        FROM user_withdrawal AS uw
+        INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
+        WHERE uw.status = '4' OR uw.status = '5' ORDER BY uw.created DESC ";
+$sum_result = $db_handle->runQuery($sum_query);
+$sum_data = $db_handle->fetchAssoc($sum_result);
+$sum_dollar_withdraw = $sum_data[0]['sum_dollar_withdraw'];
+$sum_naira_total_withdrawable = $sum_data[0]['sum_naira_total_withdrawable'];
+// END: SUM OF TRANSACTIONS //
+
 $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.created, uw.naira_total_withdrawable,
         uw.client_phone_password, uw.status AS withdrawal_status,
         CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.user_code,
@@ -84,6 +97,9 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 
                                 <p>Below is the list of all confirmed withdrawal requests.</p>
+
+                                <p class="text-success"><strong>Total Value of Transactions: &dollar; <?php echo number_format($sum_dollar_withdraw, 2, ".", ","); ?> - &#8358; <?php echo number_format($sum_naira_total_withdrawable, 2, ".", ","); ?></strong></p>
+                                <hr /><br />
                                 
                                 <div class="row">
                                     

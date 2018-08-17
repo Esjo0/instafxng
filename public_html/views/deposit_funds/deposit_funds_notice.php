@@ -15,6 +15,9 @@ $user_code_encrypted = encrypt($client_user_code);
     <li>Delay may take up to 6 months or more.</li>
     <li>We do not accept third party transfers. Failure to heed to this will delay your funding for up to
     6 months.</li>
+    <li>When making your payment via internet banking, mobile transfer or filling your teller for cash
+        deposit include your transaction ID and account number in the REMARK column
+        E.g (D151112268 - 123456)</li>
 </ol>
 
 <hr />

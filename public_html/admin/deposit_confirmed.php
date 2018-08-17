@@ -6,6 +6,19 @@ if (!$session_admin->is_logged_in()) {
 
 $client_operation = new clientOperation();
 
+// SUM OF TRANSACTIONS:
+$sum_query = "SELECT SUM(ud.dollar_ordered) AS sum_dollar_ordered, SUM(ud.naira_total_payable) AS sum_naira_total_payable
+        FROM user_deposit AS ud
+        INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
+        WHERE ud.status = '5' OR ud.status = '6' ORDER BY ud.client_notified_date DESC ";
+$sum_result = $db_handle->runQuery($sum_query);
+$sum_data = $db_handle->fetchAssoc($sum_result);
+$sum_dollar_ordered = $sum_data[0]['sum_dollar_ordered'];
+$sum_naira_total_payable = $sum_data[0]['sum_naira_total_payable'];
+// END: SUM OF TRANSACTIONS //
+
 $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_payable, ud.real_dollar_equivalent, ud.real_naira_confirmed,
         ud.client_naira_notified, ud.client_pay_date, ud.client_reference, ud.client_pay_method,
         ud.client_notified_date, ud.status AS deposit_status, u.user_code,
@@ -85,6 +98,9 @@ $confirmed_deposit_requests = $db_handle->fetchAssoc($result);
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 
                                 <p>Below is the list of all deposit requests that have been confirmed.</p>
+
+                                <p class="text-success"><strong>Total Value of Transactions: &dollar; <?php echo number_format($sum_dollar_ordered, 2, ".", ","); ?> - &#8358; <?php echo number_format($sum_naira_total_payable, 2, ".", ","); ?></strong></p>
+                                <hr /><br />
                                 
                                 <div class="row">
                                     
