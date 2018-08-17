@@ -41,7 +41,7 @@ $total_earnings = $partner_object->sum_partner_earnings($partner_code);
                 <div class="col-xs-6 col-sm-3">
                     <div class="dashboard-stats">
                         <header>Account Balance</header>
-                        <footer>&dollar; <?php echo number_format($total_earnings); ?></footer>
+                        <footer>&dollar; <?php echo number_format($total_earnings, 2, ".", ","); ?></footer>
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3">
