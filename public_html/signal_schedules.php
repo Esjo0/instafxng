@@ -15,8 +15,7 @@ if (isset($_POST['login'])) {
                 $ifxngsignals = "ifxng_signals";
                 $cookie_value = $email;
                 setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-                $message_success = "Welcome Thanks for Subscribing to InstaFxNg Signals <a href='signal_schedules.php'>Click Here To Continue</a>";
-            } else {
+                header('Location: https:instafxng.com/signal_schedules.php');            } else {
                 $user_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT phone, CONCAT(first_name, SPACE(1), last_name) AS name FROM user WHERE email = '$email'"));//[0];
                 if (!empty($user_details)) {
                     foreach ($user_details AS $row) {
@@ -45,7 +44,7 @@ if (isset($_POST['login'])) {
                 $ifxngsignals = "ifxng_signals";
                 $cookie_value = $email;
                 setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-                $message_success = "Welcome Thanks for Subscribing to InstaFxNg Signals <a href='signal_schedules.php'>Click Here To Continue</a>";
+                header('Location: https:instafxng.com/signal_schedules.php');
             } else {
                 $message_error = "Sorry the operation failed, please try again.";
             }
@@ -266,11 +265,11 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 </script>
 
     <div id="advert"  style="display: block; position: fixed; bottom: 10px; right: 5px; " class="alert alert-info pull-right">
-        <i class="fa fa-paw"> <a class="alert-link" href="https://instafxng.com/loyalty.php">Click here to Enjoy our ILPR Promo</a><br>
-            <i class="fa fa-paw"> <a class="alert-link" href="https://instafxng.com/fxacademy">Click here to Enjoy our Free forex training</a><br>
+        <i class="fa fa-paw"></i> <a class="alert-link" href="https://instafxng.com/loyalty.php">Click here to Enjoy our ILPR Promo</a><br>
+            <i class="fa fa-paw"></i> <a class="alert-link" href="https://instafxng.com/fxacademy">Click here to Enjoy our Free forex training</a><br>
     </div>
     <script>
-        setTimeout(advert, 60000);//closes after 2mins
+        setTimeout(advert, 120000);//closes after 2mins
         function advert(){
         document.getElementById('advert').style.display = 'none';
         }
