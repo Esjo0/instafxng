@@ -2053,11 +2053,12 @@ MAIL;
     }
 
     public function deposit_transaction_completion($transaction_id, $transaction_reference, $status, $remarks, $admin_code) {
-        global $db_handle;
+        global $db_handle, $partner_object;
 
         if($status == '8') {
             $query = "UPDATE user_deposit SET order_complete_time = NOW(), status = '$status', transfer_reference = '$transaction_reference' "
                 . "WHERE trans_id = '$transaction_id' LIMIT 1";
+            $partner_object->set_partner_commission($transaction_id, $type = "FC");
         } else {
             $query = "UPDATE user_deposit SET status = '$status', transfer_reference = '$transaction_reference' "
                 . "WHERE trans_id = '$transaction_id' LIMIT 1";
