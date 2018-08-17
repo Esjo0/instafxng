@@ -102,124 +102,123 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 
 </head>
 <body>
-<!--.............................-->
-<!--        <div id="page_preloader" class="se-pre-con"></div>-->
-<!--......................-->
 <?php require_once 'layouts/header.php'; ?>
 <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
 <div id="main-body" class="container-fluid">
     <div class="row no-gutter">
         <?php require_once 'layouts/topnav.php'; ?>
+        <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
+        <section id="signals_div">
+            <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
+                <!-- Unique Page Content Starts Here
+                ================================================== -->
+                <div class="super-shadow page-top-section">
+                    <div class="row ">
+                        <div class="col-sm-12">
+                            <h3 class="text-center"><strong>FOREX TRADING SIGNALS</strong></h3>
+                            <p class="text-center">
+                                <b>Trade the markets by following the best free trading signals!</b><br/>
+                                InstaFxNg's trading analysts spot market opportunities and provide
+                                you with profitable, easy to follow trading signals.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-        <div id="main-body-side-bar" class="col-md-4 col-lg-3 ">
+                <div class="section-tint super-shadow">
+
+                    <?php include 'layouts/feedback_message.php'; ?>
+                    <p>
+                    <div id="page_reloader" style="display: none;" class="alert alert-success">
+                        <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
+                        <strong>New Updates Availabe!</strong> <a href="signal_schedules.php">Click here to view these
+                            updates.</a>
+                    </div>
+                    </p>
+                    <div class="row">
+                        <div id="sig" class="col-sm-12" style="pointer-events: none">
+                            <!-- TradingView Widget BEGIN -->
+                            <?php $signal_object->UI_show_live_quotes(); ?>
+                            <!-- TradingView Widget END -->
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div id="signals-grid" class="row grid">
+                                <?php echo $signal_object->UI_get_signals_for_page(); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--///////////////////////////////
+                Login Form Scripting-->
+                <?php if (!isset($_COOKIE['ifxng_signals'])) { ?>
+                    <!--Modal - confirmation boxes-->
+                    <!--                <div  data-backdrop="static" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">-->
+                    <div data-backdrop="static" data-keyboard="false" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                        <form class="form-horizontal" role="form" method="post" action="">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <?php include 'layouts/feedback_message.php'; ?>
+                                        <center>
+                                            <h3 class="text-center"><strong>FOREX TRADING SIGNALS</strong></h3>
+                                            <p class="text-center">
+                                                <b>Trade the markets by following the best free trading signals!</b><br/>
+                                                InstaFxNg's trading analysts spot market opportunities and provide
+                                                you with profitable, easy to follow trading signals.
+                                            </p>
+                                        </center>
+                                        <p class="text-justify">To use this service, please enter your email below.</p>
+                                        <div class="form-group">
+                                            <div class="col-sm-12 col-lg-12">
+                                                <input maxlength="100" value="<?php echo $email ?>"
+                                                       placeholder="Email Address" name="email" type="text"
+                                                       class="form-control" id="email" required>
+                                            </div>
+                                        </div>
+                                        <?php if ($get_phone_and_name) { ?>
+                                            <div class="form-group">
+                                                <div class="col-sm-12 col-lg-12">
+                                                    <input maxlength="100" value="<?php echo $name ?>"
+                                                           placeholder="Full Name" name="name" type="text"
+                                                           class="form-control" id="name" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-12 col-lg-12">
+                                                    <input maxlength="20" value="<?php echo $phone ?>"
+                                                           placeholder="Phone Number" name="phone" type="text"
+                                                           class="form-control" id="phone" required>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="login" class="btn btn-success">Proceed!</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <script>$(document).ready(function () {
+                            $('#confirm-add-admin').modal("show");
+                        });</script>
+                <?php } ?>
+                <!--//////////////////////////////-->
+
+
+                <!-- Unique Page Content Ends Here
+                ================================================== -->
+
+                <!-- Main Body - Side Bar  -->
+            </div>
+        </section>
+        <div id="main-body-side-bar"  class="col-md-4 col-md-pull-8 col-lg-3 col-lg-pull-9 left-nav">
             <?php require_once 'layouts/sidebar.php'; ?>
         </div>
 
-        <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-        <div id="main-body-content-area" class="col-md-8 col-lg-9 right-nav">
-            <!-- Unique Page Content Starts Here
-            ================================================== -->
-            <div class="super-shadow page-top-section">
-                <div class="row ">
-                    <div class="col-sm-12">
-                        <h3 class="text-center"><strong>FOREX TRADING SIGNALS</strong></h3>
-                        <p class="text-center">
-                            <b>Trade the markets by following the best free trading signals!</b><br/>
-                            InstaFxNg's trading analysts spot market opportunities and provide
-                            you with profitable, easy to follow trading signals.
-                        </p>
-                    </div>
-                </div>
-            </div>
 
-            <div class="section-tint super-shadow">
-
-                <?php include 'layouts/feedback_message.php'; ?>
-                <p>
-                <div id="page_reloader" style="display: none;" class="alert alert-success">
-                    <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
-                    <strong>New Updates Availabe!</strong> <a href="signal_schedules.php">Click here to view these
-                        updates.</a>
-                </div>
-                </p>
-                <div class="row">
-                    <div id="sig" class="col-sm-12" style="pointer-events: none">
-                        <!-- TradingView Widget BEGIN -->
-                        <?php $signal_object->UI_show_live_quotes(); ?>
-                        <!-- TradingView Widget END -->
-                    </div>
-
-                    <div class="col-sm-12">
-                        <div id="signals-grid" class="row grid">
-                            <?php echo $signal_object->UI_get_signals_for_page(); ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--///////////////////////////////
-            Login Form Scripting-->
-            <?php if (!isset($_COOKIE['ifxng_signals'])) { ?>
-                <!--Modal - confirmation boxes-->
-<!--                <div  data-backdrop="static" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">-->
-                <div data-backdrop="static" data-keyboard="false" id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                    <form class="form-horizontal" role="form" method="post" action="">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <?php include 'layouts/feedback_message.php'; ?>
-                                    <center>
-                                        <h3 class="text-center"><strong>FOREX TRADING SIGNALS</strong></h3>
-                                        <p class="text-center">
-                                            <b>Trade the markets by following the best free trading signals!</b><br/>
-                                            InstaFxNg's trading analysts spot market opportunities and provide
-                                            you with profitable, easy to follow trading signals.
-                                        </p>
-                                    </center>
-                                    <p class="text-justify">To use this service, please enter your email below.</p>
-                                    <div class="form-group">
-                                        <div class="col-sm-12 col-lg-12">
-                                            <input maxlength="100" value="<?php echo $email ?>"
-                                                   placeholder="Email Address" name="email" type="text"
-                                                   class="form-control" id="email" required>
-                                        </div>
-                                    </div>
-                                    <?php if ($get_phone_and_name) { ?>
-                                        <div class="form-group">
-                                            <div class="col-sm-12 col-lg-12">
-                                                <input maxlength="100" value="<?php echo $name ?>"
-                                                       placeholder="Full Name" name="name" type="text"
-                                                       class="form-control" id="name" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-12 col-lg-12">
-                                                <input maxlength="20" value="<?php echo $phone ?>"
-                                                       placeholder="Phone Number" name="phone" type="text"
-                                                       class="form-control" id="phone" required>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" name="login" class="btn btn-success">Proceed!</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <script>$(document).ready(function () {
-                        $('#confirm-add-admin').modal("show");
-                    });</script>
-            <?php } ?>
-            <!--//////////////////////////////-->
-
-
-            <!-- Unique Page Content Ends Here
-            ================================================== -->
-
-        <!-- Main Body - Side Bar  -->
-    </div>
 </div>
 <?php require_once 'layouts/footer.php'; ?>
 
@@ -265,5 +264,16 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         }
     }
 </script>
+
+    <div id="advert"  style="display: block; position: fixed; bottom: 10px; right: 5px; " class="alert alert-info pull-right">
+        <i class="fa fa-paw"> <a class="alert-link" href="https://instafxng.com/loyalty.php">Click here to Enjoy our ILPR Promo</a><br>
+            <i class="fa fa-paw"> <a class="alert-link" href="https://instafxng.com/fxacademy">Click here to Enjoy our Free forex training</a><br>
+    </div>
+    <script>
+        setTimeout(advert, 60000);//closes after 2mins
+        function advert(){
+        document.getElementById('advert').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
