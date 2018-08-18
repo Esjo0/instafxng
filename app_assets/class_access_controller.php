@@ -159,6 +159,7 @@ define("PAGE_CODE", json_encode(array(
     259 => "client_life.php||",
     260 => "client_update.php||",
     261 => "locked_transactions.php||",
+    269 => "client_retention_review.php||",
     )));
 class Access_Controller
 {
