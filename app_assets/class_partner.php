@@ -275,6 +275,64 @@ MAIL;
         return $total ? $total : false;
     }
 
+    public function sum_partner_earnings($partner_code) {
+        global $db_handle;
+
+        $query = "SELECT SUM(amount) AS total_earnings FROM partner_commission WHERE partner_code = '$partner_code'";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $total_earnings = $fetched_data[0]['total_earnings'];
+
+        return $total_earnings ? $total_earnings : false;
+    }
+
+    /**
+     * Calculate and log partner commission
+     *
+     * @param $reference
+     * @param $type
+     * @return bool
+     */
+    public function set_partner_commission($reference, $type) {
+        global $db_handle;
+
+        switch ($type) {
+            // Financial Commission
+            case 'FC':
+                $trans_type = '2';
+
+                // select the partner_code, transaction amount
+                $select_query = "SELECT ud.user_deposit_id, ud.real_dollar_equivalent, u.partner_code FROM
+                    user_deposit AS ud
+                    INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE ud.trans_id = '$reference' LIMIT 1";
+                $select_result = $db_handle->runQuery($select_query);
+                $fetched_data = $db_handle->fetchAssoc($select_result);
+
+                $deposit_id = $fetched_data[0]['user_deposit_id'];
+                $deposit_amount = $fetched_data[0]['real_dollar_equivalent'];
+                $partner_code = $fetched_data[0]['partner_code'];
+
+                $commission_amount = $deposit_amount * (PARTNER_FINANCIAL_COMMISSION / 100);
+
+                $query = "INSERT INTO partner_commission (partner_code, amount, reference_id, trans_type, created)
+                    VALUES ('$partner_code', $commission_amount, $deposit_id, '$trans_type', NOW())";
+                break;
+
+            // Trading Commission
+            case 'TC':
+                $trans_type = '1';
+
+                $query = '';
+                break;
+        }
+
+        $db_handle->runQuery($query);
+
+        return true;
+    }
+
 }
 
 $partner_object = new Partner();
