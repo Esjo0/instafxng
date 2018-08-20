@@ -107,8 +107,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
     <div class="row no-gutter">
         <?php require_once 'layouts/topnav.php'; ?>
         <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-        <section id="signals_div">
-            <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
+            <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3"]>
                 <!-- Unique Page Content Starts Here
                 ================================================== -->
                 <div class="super-shadow page-top-section">
@@ -128,14 +127,10 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 
                     <?php include 'layouts/feedback_message.php'; ?>
                     <p>
-                    <div id="page_reloader" style="display: none;" class="alert alert-success">
-                        <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
-                        <strong>New Updates Availabe!</strong> <a href="signal_schedules.php">Click here to view these
-                            updates.</a>
-                    </div>
+
                     </p>
                     <div class="row">
-                        <div id="sig" class="col-sm-12" style="pointer-events: none">
+                        <div class="col-sm-12" style="pointer-events: none">
                             <!-- TradingView Widget BEGIN -->
                             <?php $signal_object->UI_show_live_quotes(); ?>
                             <!-- TradingView Widget END -->
@@ -212,14 +207,16 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 
                 <!-- Main Body - Side Bar  -->
             </div>
-        </section>
         <div id="main-body-side-bar"  class="col-md-4 col-md-pull-8 col-lg-3 col-lg-pull-9 left-nav">
             <?php require_once 'layouts/sidebar.php'; ?>
         </div>
-
+        <div id="advert"  style="display: block; position: fixed; bottom: 10px; right: 5px; z-index: +5; " class="alert alert-info pull-right">
+            <i class="fa fa-paw"></i> <a class="alert-link" href="https://instafxng.com/loyalty.php">Click here to Enjoy our ILPR Promo</a><br>
+            <i class="fa fa-paw"></i> <a class="alert-link" href="https://instafxng.com/fxacademy">Click here to Enjoy our Free forex training</a><br>
+        </div>
 
 </div>
-<?php require_once 'layouts/footer.php'; ?>
+
 
 <!--    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>-->
 <!--    <!-- Firebase App is always required and must be first -->
@@ -263,16 +260,12 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         }
     }
 </script>
-
-    <div id="advert"  style="display: block; position: fixed; bottom: 10px; right: 5px; " class="alert alert-info pull-right">
-        <i class="fa fa-paw"></i> <a class="alert-link" href="https://instafxng.com/loyalty.php">Click here to Enjoy our ILPR Promo</a><br>
-            <i class="fa fa-paw"></i> <a class="alert-link" href="https://instafxng.com/fxacademy">Click here to Enjoy our Free forex training</a><br>
-    </div>
     <script>
         setTimeout(advert, 120000);//closes after 2mins
         function advert(){
         document.getElementById('advert').style.display = 'none';
         }
     </script>
+    <?php require_once 'layouts/footer.php'; ?>
 </body>
 </html>
