@@ -146,7 +146,7 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
                             </div>
 
                             <div class="row">
-                                <div id="sig" class="col-sm-12" style="pointer-events: none">
+                                <div class="col-sm-12" style="pointer-events: none">
                                     <!-- TradingView Widget BEGIN -->
                                     <?php $signal_object->UI_show_live_quotes(); ?>
                                     <!-- TradingView Widget END -->
