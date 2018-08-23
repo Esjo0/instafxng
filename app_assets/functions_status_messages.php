@@ -72,6 +72,7 @@ function status_edu_deposit($status) {
         case '3': $message = "Confirmed"; break;
         case '4': $message = "Declined"; break;
         case '5': $message = "Failed"; break;
+        case '6': $message = "Pending"; break;
         default: $message = "Status Unknown"; break;
     }
     return $message;

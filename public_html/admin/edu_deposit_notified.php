@@ -11,14 +11,14 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             ued.trans_id, ued.pay_method, ued.deposit_origin, ued.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
             FROM user_edu_deposits AS ued
             INNER JOIN user AS u ON ued.user_code = u.user_code
-            WHERE ued.status = '2'
+            WHERE ued.status = '2' OR ued.status = '6'
             ORDER BY ued.created DESC ";
 } else {
     $query = "SELECT ued.status, ued.amount, ued.stamp_duty, ued.gateway_charge,
             ued.trans_id, ued.pay_method, ued.deposit_origin, ued.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
             FROM user_edu_deposits AS ued
             INNER JOIN user AS u ON ued.user_code = u.user_code
-            WHERE ued.status = '2'
+            WHERE ued.status = '2' OR ued.status = '6'
             ORDER BY ued.created DESC ";
 }
 $numrows = $db_handle->numRows($query);
