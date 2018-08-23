@@ -1,7 +1,7 @@
 <?php
 
 $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
-//$total_point_earned = $client_operation->get_loyalty_point($client_user_code);
+
 $client_point_details = $obj_loyalty_point->get_user_point_details($client_user_code);
 $total_point_balance = $client_point_details['point_balance'];
 
@@ -36,10 +36,9 @@ $total_point_balance = $client_point_details['point_balance'];
         <div class="col-sm-9"><input name="deposit_funds_qty_ilpr" type="submit" class="btn btn-success" value="Calculate" /> <a href="deposit_funds.php" class="btn btn-danger">Cancel</a></div>
     </div>
 </form>
-<!--<p><strong>Note:</strong> Available Payment METHODS includes:</p>-->
 <p>Available Payment METHODS includes:</p>
 <ul class="fa-ul">
-<!--    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Instant Card Payments (MasterCard / Visa / Verve)</li>-->
+    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Instant Card Payments (MasterCard / Visa / Verve)</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Internet Banking Transfer</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>ATM Transfer</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Bank Transfer i.e. transferring over the counter at your bank</li>

@@ -43,8 +43,8 @@
     <div class="form-group">
         <label class="control-label col-sm-3" for="payment_method">Choose Payment Method:</label>
         <div class="col-sm-9 col-lg-5">
-<!--            <div class="radio"><label><input name="pay_type" type="radio" value="1" checked="checked"> Instant Card Payments (MasterCard / Visa / Verve)-->
-<!--                    <br /><strong>(+ Card Processing: &#8358; --><?php //echo number_format($card_processing, 2, ".", ","); ?><!--)</strong></label></div>-->
+            <div class="radio"><label><input name="pay_type" type="radio" value="1" checked="checked"> Instant Card Payments (MasterCard / Visa / Verve)
+                    <br /><strong>(+ Card Processing: &#8358; <?php echo number_format($card_processing, 2, ".", ","); ?>)</strong></label></div>
             <div class="radio"><label><input name="pay_type" type="radio" value="2"> Internet Banking Transfer</label></div>
             <div class="radio"><label><input name="pay_type" type="radio" value="3"> ATM Transfer</label></div>
             <div class="radio"><label><input name="pay_type" type="radio" value="4"> Bank Transfer</label></div>
