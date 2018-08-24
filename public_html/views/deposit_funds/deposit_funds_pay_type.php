@@ -22,6 +22,11 @@ $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
 
     <div class="radio">
         <label>
+            <input name="pay_type" type="radio" value="1" checked="checked"> Instant Card Payments (MasterCard / Visa / Verve)
+        </label>
+    </div>
+    <div class="radio">
+        <label>
             <input name="pay_type" type="radio" value="2"> Internet Banking Transfer
         </label>
     </div>
@@ -54,4 +59,5 @@ $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
         <input name="deposit_funds_pay_type" type="submit" class="btn btn-success" value="Make Payment" /> <a href="deposit_funds.php" class="btn btn-danger">Cancel Process</a>
     </div>
     <br/>
+    <p><img src="images/interswitch-logo.png" alt="" class="img-responsive"/></p>
 </form>
