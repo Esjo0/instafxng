@@ -1,23 +1,15 @@
 <?php
 $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
 ?>
+<span>
+    <h4>ATTENTION!!!</h4>
 
-<?php
-    if(isset($special_msg) && !empty($special_msg))
-    {
-        if($special_msg === "page")
-        {
-            include_once $special_msg_url;
-        }
-        else
-        {
-            echo $special_msg; // this is defined in deposit.php
-        }
-    }
-    else
-    {?>
-        <p>Account funding is very fast and simple</p>
-<?php } ?>
+<p>Instant Card Payment is Back!</p>
+
+<p>With Instant card payment method, your transactions are fast, easy and secured. No waiting, No mistakes!
+
+Make your instant deposit now and get credited immediately.</p>
+</span>
 <span id="acct_num"></span>
 <ul class="fa-ul">
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter your Instaforex Account Number and click the submit button</li>
@@ -34,3 +26,21 @@ $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
         <div class="col-sm-offset-3 col-sm-9"><input name="deposit_funds_ifx_acct" type="submit" class="btn btn-success" value="Submit" /></div>
     </div>
 </form>
+<hr>
+<br>
+<?php
+if(isset($special_msg) && !empty($special_msg))
+{
+    if($special_msg === "page")
+    {
+        include_once $special_msg_url;
+    }
+    else
+    {
+        echo $special_msg; // this is defined in deposit.php
+    }
+}
+else
+{?>
+    <p>Account funding is very fast and simple</p>
+<?php } ?>
