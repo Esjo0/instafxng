@@ -5,7 +5,7 @@
  * Date: 23/08/2018
  * Time: 3:51 PM
  */
-$query = "SELECT content FROM advert_div WHERE status = 1";
+$query = "SELECT content FROM advert_div WHERE status = 1 LIMIT 1";
 $result = $db_handle->runQuery($query);
 $notification = $db_handle->fetchAssoc($result);
 ?>
