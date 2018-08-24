@@ -159,13 +159,13 @@ $updates = $db_handle->fetchAssoc($result);
                     <h4><strong>Notification Schedule</strong></h4>
                 </div>
             </div>
-            <?php require_once 'layouts/feedback_message.php'; ?>
             <div class="row">
                 <div class="col-lg-12">
-                    <?php require_once 'layouts/feedback_message.php'; ?>
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-md-8">
+
+                                <?php require_once 'layouts/feedback_message.php'; ?>
                                 <form data-toggle="validator" class="form-vertical" role="form" method="post" action="" enctype="multipart/form-data">
                                     <div class="form-group row">
                                         <label for="inputHeading3" class="col-sm-2 col-form-label">Notification Title</label>
@@ -180,8 +180,8 @@ $updates = $db_handle->fetchAssoc($result);
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <div class="col-sm-4">
-                                            <button name="create" type="submit" class="btn btn-primary">Create</button>
+                                        <div class="col-sm-12">
+                                            <center><button name="create" type="submit" class="btn btn-primary">Create</button></center>
                                         </div>
                                     </div>
                                 </form>
