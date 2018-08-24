@@ -37,8 +37,7 @@ if (isset($_POST['login'])) {
                         $ifxngsignals = "ifxng_signals";
                         $cookie_value = $email;
                         setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-                        $message_success = "Welcome, thank you for subscribing to the InstaFxNg Signals, <a href='signal_schedules.php'>click here to continue</a>";
-
+                        redirect_to("signal_schedules.php");
                     } else {
                         $message_error = "Something went wrong, please try again.";
                         $get_phone_and_name = true;
