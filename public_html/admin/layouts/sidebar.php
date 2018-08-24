@@ -264,6 +264,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(89, $my_pages_sidebar)) { ?><li><a href="campaign_email_view.php">Email Campaign</a></li><?php } ?>
                         <?php if (in_array(90, $my_pages_sidebar)) { ?><li><a href="campaign_sms_view.php">SMS Campaign</a></li><?php } ?>
                         <?php if (in_array(91, $my_pages_sidebar)) { ?><li><a href="campaign_sales.php">Sales Management</a></li><?php } ?>
+                        <?php if (in_array(270, $my_pages_sidebar)) { ?><li><a href="notification_manage.php">Manage Notification</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
