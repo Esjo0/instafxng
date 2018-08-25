@@ -189,7 +189,7 @@ $updates = $db_handle->fetchAssoc($result);
                             <div class="col-md-4">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h5><strong>Update Previous Schedules</strong></h5>
+                                        <h5><strong>Previous Notifications</strong></h5>
                                         <?php if(isset($updates) && !empty($updates)):?>
                                             <table  class="table table-responsive table-striped table-bordered table-hover">
                                                 <thead>
@@ -282,7 +282,7 @@ $updates = $db_handle->fetchAssoc($result);
                                                 </tbody>
                                             </table>
                                         <?php endif; ?>
-                                        <?php require 'layouts/pagination_links.php'; ?>
+                                        <?php if(empty($updates)){echo "No Previous Notification";}else{ require 'layouts/pagination_links.php'; }?>
                                     </div>
 
 

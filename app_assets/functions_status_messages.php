@@ -390,6 +390,7 @@ function client_group_campaign_category($status) {
 		case '54': $message = "All clients who made withdrawals last month"; break;
         case '55': $message = "All inactive clients before May 1 2018."; break;
         case '56': $message = "All who have used WebPay for Deposit."; break;
+        case '57': $message = "All signal user."; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -478,6 +479,7 @@ function client_group_query($client_group, $campaign_type) {
             case '54': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'  GROUP BY u.user_code "; break;
             case '55': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE u.user_code NOT IN ( SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '2018-07-20' AND '2018-07-20' ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '2018-07-20' GROUP BY u.user_code ORDER BY last_trade_date DESC LIMIT 0,600"; break;
             case '56': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.client_pay_method = '1' GROUP BY u.user_code"; break;
+            case '57': $query = "SELECT su.name, su.email, su.phone FROM signal_users AS su GROUP BY su.phone"; break;
             default: $query = false; break;
         }
 
@@ -541,7 +543,8 @@ function client_group_query($client_group, $campaign_type) {
             case '53': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' AND u.user_code NOT IN (SELECT u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.user_code "; break;
             case '54': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' GROUP BY u.user_code "; break;
             case '55': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE u.user_code NOT IN ( SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '2018-07-20' AND '2018-07-20' ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '2018-07-20' GROUP BY u.phone ORDER BY last_trade_date DESC LIMIT 0,600"; break;
-            case '33': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.client_pay_method = '1' GROUP BY u.user_code"; break;
+            case '56': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.client_pay_method = '1' GROUP BY u.user_code"; break;
+            case '57': $query = "SELECT su.name, su.phone, su.email FROM signal_users AS su GROUP BY su.phone"; break;
             default: $query = false; break;
         }
 
