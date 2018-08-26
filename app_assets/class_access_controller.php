@@ -160,6 +160,7 @@ define("PAGE_CODE", json_encode(array(
     260 => "client_update.php||",
     261 => "locked_transactions.php||",
     269 => "client_retention_review.php||",
+    270 => "notification_manage.php||",
     )));
 class Access_Controller
 {

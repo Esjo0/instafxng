@@ -12,7 +12,7 @@ if(isset($_POST['delete'])) {
     $query = "DELETE FROM advert_div WHERE advert_id = $advert_id";
     $result = $db_handle->runQuery($query);
     if($result) {
-        $message_success = "You have successfully Deleted this notification";
+        $message_success = "You have successfully deleted this notification";
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
@@ -26,7 +26,7 @@ if(isset($_POST['create'])){
     $query = "INSERT into advert_div(title,content,status,created_by) VALUES('$title','$content',2,'$admin_code')";
     $result = $db_handle->runQuery($query);
     if($result) {
-        $message_success = "You have successfully Created a new Notification";
+        $message_success = "You have successfully created a new notification";
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
@@ -40,7 +40,7 @@ if(isset($_POST['update'])){
     $query = "UPDATE advert_div SET content = '$content' WHERE advert_id = '$advert_id'";
     $result = $db_handle->runQuery($query);
     if($result) {
-        $message_success = "You have successfully Updates this notification";
+        $message_success = "You have successfully updated this notification";
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
@@ -52,7 +52,7 @@ if(isset($_POST['status_display'])){
     $query = "UPDATE advert_div SET status = 1 WHERE advert_id = '$advert_id'";
     $result = $db_handle->runQuery($query);
     if($result) {
-        $message_success = "You have successfully Updates this notification view status";
+        $message_success = "You have successfully updated this notification view status";
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
@@ -64,7 +64,7 @@ if(isset($_POST['status_hide'])){
     $query = "UPDATE advert_div SET status = 2 WHERE advert_id = '$advert_id'";
     $result = $db_handle->runQuery($query);
     if($result) {
-        $message_success = "You have successfully Updates this notification view status";
+        $message_success = "You have successfully updated this notification view status";
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
@@ -112,7 +112,6 @@ $updates = $db_handle->fetchAssoc($result);
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <?php require_once 'layouts/head_meta.php'; ?>
-    <?php require_once 'hr_attendance_system.php'; ?>
     <script src="tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
         tinyMCE.init({
@@ -123,19 +122,14 @@ $updates = $db_handle->fetchAssoc($result);
             remove_script_host: false,
             convert_urls: true,
             plugins: [
-                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                "advlist autolink lists link preview",
                 "searchreplace wordcount visualblocks visualchars code fullscreen",
-                "insertdatetime media nonbreaking save table contextmenu directionality",
-                "emoticons template paste textcolor colorpicker textpattern responsivefilemanager"
+                "insertdatetime nonbreaking save contextmenu directionality",
+                "paste textcolor colorpicker textpattern"
             ],
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-            toolbar2: "| responsivefilemanager print preview media | forecolor backcolor emoticons",
+            toolbar1: "undo redo | bold italic | link",
             image_advtab: true,
-            external_filemanager_path: "../filemanager/",
-            filemanager_title: "Instafxng Filemanager",
-            browser_spellcheck: true,
-//                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
-
+            browser_spellcheck: true
         });
     </script>
 </head>
@@ -162,26 +156,28 @@ $updates = $db_handle->fetchAssoc($result);
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-tint super-shadow">
+                        <?php require_once 'layouts/feedback_message.php'; ?>
+
                         <div class="row">
                             <div class="col-md-8">
+                                <p>Fill the form below to add a new notification.</p>
 
-                                <?php require_once 'layouts/feedback_message.php'; ?>
                                 <form data-toggle="validator" class="form-vertical" role="form" method="post" action="" enctype="multipart/form-data">
                                     <div class="form-group row">
-                                        <label for="inputHeading3" class="col-sm-2 col-form-label">Notification Title</label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-12">
+                                            <label for="inputHeading3" class="col-form-label">Notification Title:</label>
                                             <input name="title" type="text" class="form-control" id="forum_title" placeholder="Enter Forum title">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputSubtile3" class="col-sm-2 col-form-label">Content</label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-12">
+                                            <label for="inputSubtile3" class="col-form-label">Content:</label>
                                             <textarea name="content" class="form-control" id="content"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-12">
-                                            <center><button name="create" type="submit" class="btn btn-primary">Create</button></center>
+                                            <button name="create" type="submit" class="btn btn-primary">Create</button>
                                         </div>
                                     </div>
                                 </form>
