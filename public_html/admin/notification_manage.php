@@ -166,7 +166,7 @@ $updates = $db_handle->fetchAssoc($result);
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <label for="inputHeading3" class="col-form-label">Notification Title:</label>
-                                            <input name="title" type="text" class="form-control" id="forum_title" placeholder="Enter Forum title">
+                                            <input name="title" type="text" class="form-control" id="forum_title" placeholder="Enter Notification title or Identifier">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -195,6 +195,7 @@ $updates = $db_handle->fetchAssoc($result);
                                                 </tr>
                                                 </thead>
                                                 <tbody>
+                                                <p><i class="fa fa-info-circle"></i> Click Each Notification row to Update or Delete Notification</p>
                                                 <?php
                                                 foreach ($updates as $row) {
                                                 ?>
