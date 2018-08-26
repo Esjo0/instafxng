@@ -166,7 +166,7 @@ $updates = $db_handle->fetchAssoc($result);
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <label for="inputHeading3" class="col-form-label">Notification Title:</label>
-                                            <input name="title" type="text" class="form-control" id="forum_title" placeholder="Enter Forum title">
+                                            <input name="title" type="text" class="form-control" id="forum_title" placeholder="Enter Notification title or Identifier">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -195,11 +195,12 @@ $updates = $db_handle->fetchAssoc($result);
                                                 </tr>
                                                 </thead>
                                                 <tbody>
+                                                <p><i class="fa fa-info-circle"></i> Click Each Notification row to Update or Delete Notification</p>
                                                 <?php
                                                 foreach ($updates as $row) {
                                                 ?>
                                                 <tr>
-                                                    <td data-target="#update<?php echo $row['advert_id']; ?>" data-toggle="modal"><?php echo $row['title']; ?></td>
+                                                    <td data-target="#update<?php echo $row['advert_id']; ?>" data-toggle="modal" title="Click Here to Update or Delete this notification."><?php echo $row['title']; ?></td>
                                                     <td>
                                                         <form data-toggle="validator"
                                                               class="form-vertical" role="form"
@@ -208,10 +209,10 @@ $updates = $db_handle->fetchAssoc($result);
                                                                    class="form-control" type="hidden"
                                                                    value="<?php echo $row['advert_id']; ?>" >
                                                             <?php if($row['status'] == 2){?>
-                                                            <button type="submit" name="status_display" class="btn btn-success" >
+                                                            <button title="Click Here to Make this notification visible to Users" type="submit" name="status_display" class="btn btn-success" >
                                                                 <span class="glyphicon glyphicon-eye-open"></span></button>
                                                         <?php }elseif($row['status'] == 1){?>
-                                                            <button type="submit" name="status_hide" class="btn btn-success" >
+                                                            <button title="Click Here to Hide this notification from Users" type="submit" name="status_hide" class="btn btn-success" >
                                                                 <span class="glyphicon glyphicon-eye-close"></span></button>
                                                         <?php }?></form>
                                                     </td>
