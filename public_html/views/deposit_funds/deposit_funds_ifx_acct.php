@@ -1,15 +1,6 @@
 <?php
 $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
 ?>
-<span>
-    <h4>ATTENTION!!!</h4>
-
-<p>Instant Card Payment is Back!</p>
-
-<p>With Instant card payment method, your transactions are fast, easy and secured. No waiting, No mistakes!
-
-Make your instant deposit now and get credited immediately.</p>
-</span>
 <span id="acct_num"></span>
 <ul class="fa-ul">
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter your Instaforex Account Number and click the submit button</li>
