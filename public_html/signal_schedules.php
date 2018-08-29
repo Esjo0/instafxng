@@ -273,15 +273,18 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
             }
         </script>
 
-        <div id="advert" style="display: block; position: fixed; bottom: 10px; right: 5px;" class="alert alert-info pull-right">
+        <div id="advert_signals" style="z-index: 5; display: none; position: fixed; bottom: 10px; right: 5px;" class="alert alert-info pull-right">
             <i class="fa fa-paw"></i> <a href="https://instafxng.com/loyalty.php" target="_blank" class="alert-link">Win big in the ILPR Promo, Click Here!</a><br>
             <i class="fa fa-paw"></i> <a href="https://instafxng.com/fxacademy" target="_blank" class="alert-link">Learn Forex Trading for FREE, Click Here.</a><br>
         </div>
 
         <script>
+            //poopup after 3mins
+            setTimeout(advert_signals, 180000);
+            function advert_signals() { document.getElementById('advert_signals').style.display = 'block'; }
             //closes after 2mins
-            setTimeout(advert, 120000);
-            function advert() { document.getElementById('advert').style.display = 'none'; }
+            setTimeout(advert_signals_hide, 120000);
+            function advert_signals_hide() { document.getElementById('advert_signals').style.display = 'none'; }
         </script>
 
     </body>

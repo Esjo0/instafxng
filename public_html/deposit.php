@@ -383,9 +383,7 @@ switch($page_requested) {
 
 <p>Instant Card Payment is Back!</p>
 
-<p>With Instant card payment method, your transactions are fast, easy and secured. No waiting, No mistakes!
-
-    Make your instant deposit now and get credited immediately.</p>
+<p>Enjoy a more convenient and swifter experience funding your account!  With Instant card payment, your transactions are now fast, easy, and more secured!</p>
 </span>
                             </div>
                             <?php if($additional_msg != 'msg_new'): ?>
