@@ -11,7 +11,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
         FROM user_ifxaccount AS ui
         LEFT JOIN user AS u ON ui.user_code = u.user_code
-        WHERE WHERE u.status = '1' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ";
+        WHERE u.status = '1' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ";
     $rowsperpage = 500;
 } else {
     $query = "SELECT user_code, CONCAT(last_name, SPACE(1), first_name) AS full_name, email, phone, created FROM user WHERE status = '1' ORDER BY created DESC ";

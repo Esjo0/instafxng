@@ -69,9 +69,9 @@ $client_group_DEFAULT = array(
     "52" => "April 2018 ILPR campaign leads",
 	"53" => "All clients who funded their accounts last month",
 	"54" => "All clients who withdrew from the accounts last month",
-    "55" => "All inactive clients before May 1 2018."
-	
-	
+    "55" => "All inactive clients before May 1 2018.",
+	"56" => "All Clients Who have used WebPay for Deposit Transaction",
+	"57" => "All signal user"
 	
 );
 $client_group_DESC = array(
@@ -129,5 +129,7 @@ $client_group_DESC = array(
     "52" => "*Campaign leads who came into our system in April 2018",
 	"53" => "All clients who made deposit in the Just concluded month",
 	"54" => "All clients who made withdrawals in the Just concluded month",
-    "55" => "All inactive clients before May 1 2018."
+    "55" => "All inactive clients before May 1 2018.",
+	"56" => "Clients who have funded their forex accounts with instant card transfer using their ATM cards",
+	"57" => "Consists of all individuals who have ever used the signals before"
     );

@@ -31,7 +31,7 @@
     
     <?php if(!$expired) { // allow to notify if transaction has not expired ?>
     <div class="form-group">
-        <label class="control-label col-sm-3" for="pay_method">Payment Method:</label>
+        <label class="control-label col-sm-3" for="pay_method">Payment Method <span class="text-danger">*</span>:</label>
         <div class="col-sm-9 col-lg-5">
             <select name="pay_method" class="form-control" id="pay_method" required>
                 <option value="">---Select Type---</option>
@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-3" for="pay_date">Payment Date:</label>
+        <label class="control-label col-sm-3" for="pay_date">Payment Date <span class="text-danger">*</span>:</label>
         <div class="col-sm-9 col-lg-5">
             <div class='input-group date' id='datetimepicker'>
                 <input name="pay_date" type="text" class="form-control" id='datetimepicker2' required>
@@ -70,7 +70,7 @@
         <div class="col-sm-9 col-lg-5"><input name="teller_no" type="text" class="form-control" id="teller_no"></div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-3" for="naira_amount">Amount Paid in Naira (&#8358;):</label>
+        <label class="control-label col-sm-3" for="naira_amount">Amount Paid in Naira (&#8358;) <span class="text-danger">*</span>:</label>
         <div class="col-sm-9 col-lg-5"><input name="naira_amount" type="text" class="form-control" id="naira_amount" required></div>
     </div>
     <div class="form-group">
@@ -79,6 +79,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9"><input name="deposit_notify_detail_form" type="submit" class="btn btn-success" value="Submit" /></div>
+        <div class="col-sm-offset-3 col-sm-9"><p>Fields marked <span class="text-danger">*</span> are compulsory.</p></div>
     </div>
     <?php } ?>
     

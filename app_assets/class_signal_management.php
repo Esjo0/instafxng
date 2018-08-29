@@ -131,16 +131,19 @@ MAIL;
             if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
                 $highest_pips_time = datetime_to_text($highest_pips_time);}
             if(!empty($row1['lowest_pips_time']) && ($row1['lowest_pips_time'] != 0)){
-                $lowest_pips_time = datetime_to_text($lowest_pips_time);}
+                $lowest_pips_time = "as at".datetime_to_text($lowest_pips_time);}
             $display = $this->get_pips_display($order_type, $pips);
-            $display2 = $this->get_pips_display($order_type, $highest_pips);
-            $display3 = $this->get_pips_display($order_type, $lowest_pips);
+            //$display2 = $this->get_pips_display($order_type, $highest_pips);
+            //$display3 = $this->get_pips_display($order_type, $lowest_pips);
+            if(($highest_pips > 5) && ($exit_type == "Stop Loss")){
+              $display_break_even = "Kindly Note that if You Used Your trailing Stop This Trade is a Break-Even-Trade!!!";
+            }else{$display_break_even = "";}
             $display = <<<MAIL
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
                                             <h6 style="font-size: 15px" class="my-0">
                                             <strong>This Trade Closed on {$closed_date} and made {$display}</strong></h6>
-                                            <h6 class="my-0"></h6>
+                                            <h6 class="my-0">{$display_break_even}</h6>
 
                                             <small class="text-muted">
                                             Trade Closure Type : {$exit_type}
@@ -151,7 +154,7 @@ MAIL;
                                         <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
                                             <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade had a high of {$display2} as at {$highest_pips_time} and a low of {$display3} as at {$lowest_pips_time}</strong></h6>
+                                            <strong>This Trade had a Drawdown of <span style="color:red !important;"> {$lowest_pips} pips Loss</span> {$lowest_pips_time} and a High of <span style="color:red !important;"> {$highest_pips} pips Profit</span> {$highest_pips_time}</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                         </div>

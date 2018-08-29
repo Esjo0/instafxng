@@ -1396,7 +1396,10 @@ MAIL;
                     <tr><td>Bank Account Number</td><td>$client_acct_no</td></tr>
                 </tbody>
             </table>
+<p>Update Alert!<br/>
 
+You can make your next deposit directly from your debit card! This method is faster, easier and smoother!
+click <a href="http://bit.ly/2xT1Mbg" title="Deposit Now">here</a> to make your deposit with your card now.</p>
             <br /><br />
             <p>Best Regards,</p>
             <p>Instafxng Support,<br />
@@ -2150,8 +2153,11 @@ MAIL;
                 </tbody>
             </table>
 
-            <p>Do you know you can win up to $4,200 and 1 million Naira from our point based
-            loyalty program and rewards this year? <a href="https://instafxng.com/loyalty.php">Click here</a> for details</p>
+            <p>Instant Payment is Back!<br/> You can now fund your Instaforex account directly from your debit card! This method is faster, easier and smoother!
+            click <a href="http://bit.ly/2xT1Mbg">here</a> to make your deposit with your card now.</p>
+
+            <p><strong>Do you know you can win up to $4,200 and 1 million Naira from our point based
+            loyalty program and rewards this year? <a href="https://instafxng.com/loyalty.php">Click here</a> for details</strong></p>
 
             <p>Thank you for choosing Instafxng.</p>
 

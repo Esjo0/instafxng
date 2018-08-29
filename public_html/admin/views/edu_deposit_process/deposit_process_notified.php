@@ -84,6 +84,7 @@
                     Status:</label>
                 <div class="col-sm-8">
                     <div class="radio"><label><input name="deposit_status" type="radio" value="3"> Confirmed</label></div>
+                    <div class="radio"><label><input name="deposit_status" type="radio" value="6"> Pending</label></div>
                     <div class="radio"><label><input name="deposit_status" type="radio" value="4"> Declined</label></div>
                 </div>
             </div>
