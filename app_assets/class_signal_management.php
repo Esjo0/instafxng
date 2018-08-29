@@ -135,6 +135,8 @@ MAIL;
             $display = $this->get_pips_display($order_type, $pips);
             //$display2 = $this->get_pips_display($order_type, $highest_pips);
             //$display3 = $this->get_pips_display($order_type, $lowest_pips);
+            if(empty($lowest_pips) || ($lowest_pips == null)){$lowest_pips = 0;}
+            if(empty($highest_pips) || ($highest_pips == null)){$highest_pips = 0;}
             if(($highest_pips > 5) && ($exit_type == "Stop Loss")){
               $display_break_even = "Kindly Note that if You Used Your trailing Stop This Trade is a Break-Even-Trade!!!";
             }else{$display_break_even = "";}
@@ -154,7 +156,7 @@ MAIL;
                                         <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
                                             <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade had a Drawdown of <span style="color:red !important;"> {$lowest_pips} pips Loss</span> {$lowest_pips_time} and a High of <span style="color:red !important;"> {$highest_pips} pips Profit</span> {$highest_pips_time}</strong></h6>
+                                            <strong>This Trade had a Drawdown of <span style="color:red !important;"> {$lowest_pips} pips Loss</span> {$lowest_pips_time} and a High of <span style="color:green !important;"> {$highest_pips} pips Profit</span> {$highest_pips_time}</strong></h6>
                                             <h6 class="my-0"></h6>
 
                                         </div>

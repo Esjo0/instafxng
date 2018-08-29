@@ -111,7 +111,7 @@ if (isset($_POST['login'])) {
         <div class="row h-100">
             <div class="col-12 my-auto">
                 <div class="masthead-content text-white py-5 py-md-0">
-                    <img src="ifxlogo.png">
+                    <img src="../images/ifxlogo.png">
                     <h1 class="mb-3">WELCOME!</h1>
 
                     <p class="mb-5"><b>Trade the markets by following the best free trading signals! From InstaFxNg</b><br/>
