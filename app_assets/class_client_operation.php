@@ -1399,7 +1399,7 @@ MAIL;
 <p>Update Alert!<br/>
 
 You can make your next deposit directly from your debit card! This method is faster, easier and smoother!
-click <a href="http://bit.ly/2xT1Mbg" title="Deposit Now">here</a> to make your deposit with your now.</p>
+click <a href="http://bit.ly/2xT1Mbg" title="Deposit Now">here</a> to make your deposit with your card now.</p>
             <br /><br />
             <p>Best Regards,</p>
             <p>Instafxng Support,<br />
