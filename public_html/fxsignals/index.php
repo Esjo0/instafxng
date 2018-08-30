@@ -4,7 +4,7 @@ $thisPage = "Home";
 $date = date('Y-m-d H:i:s');
 $cook = $_COOKIE[$ifxngsignals];
 echo $_COOKIE[$ifxngsignals];
-$signal_object = new Signal_Management();
+//$signal_object = new Signal_Management();
 if (isset($_POST['login'])) {
     $email = $db_handle->sanitizePost($_POST['email']);
     $name = $db_handle->sanitizePost($_POST['name']);
@@ -24,7 +24,7 @@ if (isset($_POST['login'])) {
                 if (!empty($user_details)) {
                     foreach ($user_details AS $row) {
                         extract($row);
-                        $signal_object->add_lead($name, $email, $phone, 3, $interest, $date);
+                        //$signal_object->add_lead($name, $email, $phone, 3, $interest, $date);
                         $query = "INSERT IGNORE INTO signal_users (name, phone, email) VALUES ('$name', '$phone', '$email') ";
                         if ($db_handle->runQuery($query)) {
                             //$_SESSION['signal_schedule_user'] = $email;
@@ -43,7 +43,7 @@ if (isset($_POST['login'])) {
                 }
             }
         } else {
-            $signal_object->add_lead($name, $email, $phone, 3, $interest, $date);
+            //$signal_object->add_lead($name, $email, $phone, 3, $interest, $date);
             $query = "INSERT IGNORE INTO signal_users (name, phone, email) VALUES ('$name', '$phone', '$email') ";
             if ($db_handle->runQuery($query)) {
                 //$_SESSION['signal_schedule_user'] = $email;
