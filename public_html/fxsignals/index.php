@@ -101,7 +101,7 @@ if (isset($_POST['login'])) {
 
 <body>
 
-<div class="overlay"><img height="100%" width="100%" class="img img-responsive" src="signal_bg.png"></div>
+<div class="overlay"><img height="100%" width="100%" class="img img-responsive" src="../images/signal_bg.png"></div>
 <!--<video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">-->
 <!--    <source src="mp4/bg.mp4" type="video/mp4">-->
 <!--</video>-->
@@ -147,17 +147,17 @@ if (isset($_POST['login'])) {
 <div class="social-icons">
     <ul class="list-unstyled text-center mb-0">
         <li class="list-unstyled-item" >
-            <a href="#">
+            <a href="https://twitter.com/instafxng">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
         <li class="list-unstyled-item" >
-            <a href="#">
+            <a href="https://facebook.com/InstaForexNigeria">
                 <i class="fa fa-facebook"></i>
             </a>
         </li>
         <li class="list-unstyled-item" >
-            <a href="#">
+            <a href="https://www.instagram.com/instafxng/">
                 <i class="fa fa-instagram"></i>
             </a>
         </li>
