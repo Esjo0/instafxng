@@ -383,7 +383,7 @@ switch($page_requested) {
 
 <p>Instant Card Payment is Back!</p>
 
-<p>Enjoy a more convenient and swifter experience funding your account!  With Instant card payment, your transactions are now fast, easy, and more secured!</p>
+<p>Enjoy a more convenient and swift experience funding your account!  With Instant card payment, your transactions are now fast, easy, and more secured!</p>
 </span>
                             </div>
                             <?php if($additional_msg != 'msg_new'): ?>
