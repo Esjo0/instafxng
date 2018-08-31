@@ -4,7 +4,7 @@ $thisPage = "Home";
 $date = date('Y-m-d H:i:s');
 $cook = $_COOKIE[$ifxngsignals];
 echo $_COOKIE[$ifxngsignals];
-//$signal_object = new Signal_Management();
+$signal_object = new Signal_Management();
 if (isset($_POST['login'])) {
     $email = $db_handle->sanitizePost($_POST['email']);
     $name = $db_handle->sanitizePost($_POST['name']);
@@ -24,7 +24,7 @@ if (isset($_POST['login'])) {
                 if (!empty($user_details)) {
                     foreach ($user_details AS $row) {
                         extract($row);
-                        //$signal_object->add_lead($name, $email, $phone, 3, $interest, $date);
+                        $signal_object->add_lead($name, $email, $phone, 3, $interest, $date);
                         $query = "INSERT IGNORE INTO signal_users (name, phone, email) VALUES ('$name', '$phone', '$email') ";
                         if ($db_handle->runQuery($query)) {
                             //$_SESSION['signal_schedule_user'] = $email;
@@ -43,7 +43,7 @@ if (isset($_POST['login'])) {
                 }
             }
         } else {
-            //$signal_object->add_lead($name, $email, $phone, 3, $interest, $date);
+            $signal_object->add_lead($name, $email, $phone, 3, $interest, $date);
             $query = "INSERT IGNORE INTO signal_users (name, phone, email) VALUES ('$name', '$phone', '$email') ";
             if ($db_handle->runQuery($query)) {
                 //$_SESSION['signal_schedule_user'] = $email;
@@ -79,24 +79,20 @@ if (isset($_POST['login'])) {
     <meta property="og:title" content="Instaforex Nigeria | Online Instant Forex Trading Services"/>
     <meta property="og:description"
           content="Instaforex, a multiple award winning international forex broker is the leading Forex broker in Nigeria, open account and enjoy forex trading with us."/>
-    <meta property="og:image" content="images/instaforex-100bonus.jpg"/>
+    <meta property="og:image" content="../images/instaforex-100bonus.jpg"/>
     <meta property="og:url" content="https://instafxng.com/"/>
     <meta property="og:type" content="website"/>
 
     <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.png">
-    <link rel="stylesheet" href="font-awesome-animation.min.css">
-
-    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../css/font-awesome_4.6.3.min.css">
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 <!--    <!-- Custom fonts for this template -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!---->
 <!--    <!-- Custom styles for this template -->
-    <link href="css/coming-soon.min.css" rel="stylesheet">
-
+    <link href="../css/fxsignals.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -164,12 +160,11 @@ if (isset($_POST['login'])) {
     </ul>
 </div>
 
-<!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Custom scripts for this template -->
-<script src="js/coming-soon.min.js"></script>
+<script src="../js/fxsignals.min.js"></script>
 
 </body>
 
