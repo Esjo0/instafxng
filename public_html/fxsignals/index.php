@@ -79,24 +79,20 @@ if (isset($_POST['login'])) {
     <meta property="og:title" content="Instaforex Nigeria | Online Instant Forex Trading Services"/>
     <meta property="og:description"
           content="Instaforex, a multiple award winning international forex broker is the leading Forex broker in Nigeria, open account and enjoy forex trading with us."/>
-    <meta property="og:image" content="images/instaforex-100bonus.jpg"/>
+    <meta property="og:image" content="../images/instaforex-100bonus.jpg"/>
     <meta property="og:url" content="https://instafxng.com/"/>
     <meta property="og:type" content="website"/>
 
     <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.png">
-    <link rel="stylesheet" href="font-awesome-animation.min.css">
-
-    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../css/font-awesome_4.6.3.min.css">
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 <!--    <!-- Custom fonts for this template -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!---->
 <!--    <!-- Custom styles for this template -->
-    <link href="css/coming-soon.min.css" rel="stylesheet">
-
+    <link href="../css/fxsignals.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -164,12 +160,11 @@ if (isset($_POST['login'])) {
     </ul>
 </div>
 
-<!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Custom scripts for this template -->
-<script src="js/coming-soon.min.js"></script>
+<script src="../js/fxsignals.min.js"></script>
 
 </body>
 

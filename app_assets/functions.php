@@ -96,7 +96,7 @@ function log_action($action, $message="") {
 
 function datetime_to_text3($datetime="") {
     $unixdatetime = strtotime($datetime);
-    return strftime("%b %d, %Y at %I:%M", $unixdatetime);
+    return strftime("%I:%M %p", $unixdatetime);
 }
 
 
