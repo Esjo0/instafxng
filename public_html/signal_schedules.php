@@ -274,8 +274,9 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         </script>
 
         <div id="advert_signals" style="z-index: 5; display: none; position: fixed; bottom: 10px; right: 5px;" class="alert alert-info pull-right">
-            <i class="fa fa-paw"></i> <a href="https://instafxng.com/notification_links/_ilpr_link.php" target="_blank" class="alert-link">Win big in the ILPR Promo, Click Here!</a><br>
-            <i class="fa fa-paw"></i> <a href="https://instafxng.com/notification_links/_fxacademy_link.php" target="_blank" class="alert-link">Learn Forex Trading for FREE, Click Here.</a><br>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <i class="fa fa-paw"></i> <a href="http://bit.ly/2wBKzob" target="_blank" class="alert-link">Win big in the ILPR Promo, Click Here!</a><br>
+            <i class="fa fa-paw"></i> <a href="http://bit.ly/2N4RTD5" target="_blank" class="alert-link">Learn Forex Trading for FREE, Click Here.</a><br>
         </div>
 
         <script>

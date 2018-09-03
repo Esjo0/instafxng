@@ -106,6 +106,7 @@ if(isset($_POST['new_signal'])){
     $signal_time = $db_handle->sanitizePost($_POST['signal_time']);
 	$signal_date = $db_handle->sanitizePost($_POST['signal_date']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
+    $status = $db_handle->sanitizePost($_POST['status']);
 
     $query = "SELECT symbol FROM signal_symbol WHERE symbol_id = '$symbol_id' ";
     $result = $db_handle->runQuery($query);
@@ -123,12 +124,14 @@ if(isset($_POST['new_signal'])){
     $buy_option = 1;
     $sell_option = 2;
 
+    if(empty($status)){$status = 1;}
+
 
 	if(!empty($buy_price) && !empty($buy_price_tp) && !empty($buy_price_sl)){
-        $new_schedule1 = $signal_object->new_signal_schedule($symbol_id, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price);
+        $new_schedule1 = $signal_object->new_signal_schedule($symbol_id, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price, $status);
     }
     if(!empty($sell_price) && !empty($sell_price_tp) && !empty($sell_price_sl)){
-        $new_schedule2 = $signal_object->new_signal_schedule($symbol_id, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price);
+        $new_schedule2 = $signal_object->new_signal_schedule($symbol_id, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price, $status);
     }
     if($new_schedule1 || $new_schedule2){
         $message_success = "Signal Successfully created for " . datetime_to_text($signal_time);
@@ -241,6 +244,9 @@ $all_signals = $db_handle->fetchAssoc($result);
                                         <br />
                                         <div class="col-md-12 order-md-1">
                                             <form class="needs-validation" role="form" method="post" action="">
+                                                <div class="checkbox form-group row">
+                                                    <label class="col-sm-12 text-center"><input type="checkbox" value="0" name="status"><strong>Tick this Box for Pending Orders</strong></label>
+                                                </div>
                                                 <div class="form-group row">
                                                     <label class="control-label col-sm-3" for="location">Currency Pair </label>
                                                     <div class="col-sm-9 col-lg-5">
