@@ -125,39 +125,7 @@ if ($withdraw_process_ifx_debited && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_
         case 'Decline Payment': $status = '9'; break;
         
         // Withdrawal In Progress
-        case 'Pend Payment':
-            $status = '8';
-            $subject = "Withdrwal IFX Debited";
-            $message_final = <<<MAIL
-                    <div style="background-color: #F3F1F2">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
-                            <img src="https://instafxng.com/images/ifxlogo.png" />
-                            <hr />
-                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>Author Name: $_author_name</p>
-                                <p>Author Remark: $ip_address</p>
-                                <br/>
-                                <p>Client Name: $_full_name</p>
-                                <p>Client Phone Number: $_phone</p>
-                                <p>Client Email: $_email</p>
-                                <br/>
-                                <p>Transaction ID: $transaction_id</p>
-                                <p>Withdraw: $$_dollar_withdraw - &#8358;$_naira_total_withdrawable</p>
-                                <p>Date: $_withdrawal_created</p>
-                                <p>Account: $_ifx_acct_no</p>
-                                <br/>
-                                <p>Bank Name: $_client_bank_name</p>
-                                <p>Account Name: $_client_acct_name</p>
-                                <p>Account Number: $_client_acct_no</p>
-                                <p>Amount To Pay: &#8358;$_naira_total_withdrawable</p>
-                            </div>      
-                        </div>
-                    </div>
-MAIL;
-            $system_object->send_email($subject, $message_final, "Demola@instafxng.com", $admin_name);
-
-            $status = '8';
-            break;
+        case 'Pend Payment': $status = '8'; break;
     }
 
     $client_operation->withdrawal_transaction_completed($transaction_id, $status, $remarks, $_SESSION['admin_unique_code']);
