@@ -136,7 +136,6 @@ $result = $db_handle->runQuery($query);
 $unverified_clients = $db_handle->fetchAssoc($result);
 
 $db_handle->closeDB();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -258,12 +257,53 @@ $db_handle->closeDB();
                                             <td nowrap="nowrap">
                                                 <a title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_unverified'; ?>&c=<?php echo encrypt('UNVERIFIED CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <button title="Viem Email Campaign" data-target="#maildetails<?php echo $row['phone']?>" data-toggle="modal" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-envelope icon-white"></i></button>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
-                                
+
+                                <!--                                        Modal - confirmation boxes-->
+                                <div id="maildetails<?php echo $row['phone'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                        class="close">&times;</button>
+                                                <h4 class="modal-title">View Campaign Mail Details</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="table table-responsive">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Mail Recieved</th>
+                                                        <th>Date Recieved</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php
+                                                    $mail_details = $obj_customer_care_log->get_email_log($row['email']);
+                                                    if(!empty($mail_details) && $mail_details != 0){
+                                                        foreach($mail_details AS $row_email){?>
+                                                            <tr>
+                                                            <td><?php echo $row_email['email_flag']?></td>
+                                                            <td><?php echo datetime_to_text($row_email['created'])?></td>
+                                                            </tr>
+                                                        <?php } }else{?>
+                                                        <tr> <td>No Mails recieved yet</td></tr>
+                                                    <?php }?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                                 <?php if(isset($unverified_clients) && !empty($unverified_clients)) { ?>
                                 <div class="tool-footer text-right">
                                     <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
