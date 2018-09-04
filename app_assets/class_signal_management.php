@@ -75,7 +75,7 @@ class Signal_Management
         }
     }
 
-    public function get_live_pips($trigger_status, $symbol_id, $symbol, $price, $order_type, $pips, $exit_time, $entry_time, $exit_type, $signal_id, $highest_pips, $lowest_pips, $highest_pips_time, $lowest_pips_time)
+    public function get_live_pips($trigger_status, $symbol_id, $symbol, $price, $order_type, $pips, $exit_time, $entry_time, $exit_type, $signal_id, $highest_pips, $lowest_pips, $highest_pips_time, $lowest_pips_time, $created)
     {
         //$pairs = $this->get_scheduled_pairs(date('Y-m-d'))
         if ($trigger_status == 1) {
@@ -96,6 +96,7 @@ class Signal_Management
                 $display = 0;
             }
             $open_date = datetime_to_text3($entry_time);
+            if(empty($entry_time)){$open_date = datetime_to_text3($created);}
             if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
             $highest_pips_time = datetime_to_text($highest_pips_time);}
             $display2 = $this->get_pips_display($order_type, $highest_pips);
@@ -122,6 +123,7 @@ analysis;
         } elseif ($trigger_status == 2) {
 
             $open_date = datetime_to_text3($entry_time);
+            if(empty($entry_time)){$open_date = datetime_to_text3($created);}
             $closed_date = datetime_to_text3($exit_time);
             if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
                 $highest_pips_time = datetime_to_texthour($highest_pips_time);}
@@ -315,7 +317,7 @@ MAIL;
                                             <div class="row">
                                                  <div  class="col-sm-5 col-xs-12">
 
-{$this->get_live_pips($row['trigger_status'], $row['symbol_id'], $row['symbol'], $row['price'], $row['order_type'], $row['pips'], $row['exit_time'], $row['entry_time'], $row['exit_type'], $row['signal_id'], $row['highest_pips'], $row['lowest_pips'], $row['highest_pips_time'], $row['lowest_pips_time'])}
+{$this->get_live_pips($row['trigger_status'], $row['symbol_id'], $row['symbol'], $row['price'], $row['order_type'], $row['pips'], $row['exit_time'], $row['entry_time'], $row['exit_type'], $row['signal_id'], $row['highest_pips'], $row['lowest_pips'], $row['highest_pips_time'], $row['lowest_pips_time'], $row['created'])}
 
 
 
