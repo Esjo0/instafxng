@@ -108,7 +108,7 @@ class Signal_Management
                                             <small>
 <table class="table table-hover table-sm ">
                                         <tr>
-                                            <td>Max Pips Gained {$display2}</td>
+                                            <td>Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} pips </span></td>
                                         </tr>
                                         <tr>
                                             <td>Triggered @ {$open_date}</td>
@@ -117,7 +117,7 @@ class Signal_Management
                                             <td>Pips at current market price {$display}</td>
                                         </tr>
                                         <tr>
-                                            <td>Max Draw-down {$display3}</td>
+                                            <td>Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} pips </span></td>
                                         </tr>
                                     </table>
                                     </small>
@@ -146,7 +146,7 @@ analysis;
                                         </tr>";
             }elseif($exit_type == "Stop Loss"){
                 $high = "<tr>
-                          <td>This Trade Had a High of {$display2}</td>
+                          <td>This Trade Had a High of <span style=\"color:green !important;\"> {$highest_pips} pips </span></td>
                          </tr>";
             }
             $display = <<<analysis
