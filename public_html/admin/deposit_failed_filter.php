@@ -68,7 +68,7 @@ if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
     $result = $db_handle->runQuery($query);
     $failed_deposit_requests_filter = $db_handle->fetchAssoc($result);
 
-    $query = "SELECT SUM(ud.dollar_ordered) AS total_dollar_ordered,
+    $query = "SELECT SUM(ud.dollar_ordered) AS total_dollar_ordered, SUM(ud.naira_total_payable) AS total_naira_total_payable
             FROM user_deposit AS ud
             INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
             INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -269,9 +269,12 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
 
                         <?php if(isset($failed_deposit_requests_filter) && !empty($failed_deposit_requests_filter)) { ?>
 
-                            <h5>Deposit transactions between <strong><?php echo $from_date . " and " . $to_date; ?> </strong></h5>
+                            <h5>Failed Deposit transactions between <strong><?php echo date('d-M-Y', strtotime($from_date)) . " and " . date('d-M-Y', strtotime($to_date)); ?> </strong></h5>
 
-                            <p><strong>Amount Ordered: </strong>$ <?php echo number_format($stats['total_dollar_ordered'], 2, ".", ","); ?></p>
+                            <p><strong>Total Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_dollar_ordered'], 2, ".", ","); ?> <br />
+                                <strong>Total Naira Payable: </strong>&#8358; <?php echo number_format($stats['total_naira_total_payable'], 2, ".", ","); ?> <br />
+                                <strong>Total Transaction: </strong> <?php echo $numrows; ?>
+                            </p>
 
                             <div>
                                 <p>Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
@@ -316,15 +319,17 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                             </tbody>
                         </table>
 
-
-
                         <?php
                         if(isset($failed_deposit_requests_filter_export) && !empty($failed_deposit_requests_filter_export)) :
                             ?>
                             <div id="output" style="display: none">
                                 <?php if(isset($failed_deposit_requests_filter_export) && !empty($failed_deposit_requests_filter_export)) { ?>
-                                    <h5>Failed Deposit transactions between <strong><?php echo $from_date." and ".$to_date; ?> </strong></h5>
-                                    <p><strong>Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_dollar_ordered'], 2, ".", ","); ?></p>
+                                    <h5>Failed Deposit transactions between <strong><?php echo date('d-M-Y', strtotime($from_date)) . " and " . date('d-M-Y', strtotime($to_date)); ?> </strong></h5>
+
+                                    <p><strong>Total Amount Ordered: </strong>&dollar; <?php echo number_format($stats['total_dollar_ordered'], 2, ".", ","); ?> <br />
+                                        <strong>Total Naira Payable: </strong>&#8358; <?php echo number_format($stats['total_naira_total_payable'], 2, ".", ","); ?> <br />
+                                        <strong>Total Transaction: </strong> <?php echo $numrows; ?>
+                                    </p>
 
                                     <div class="tool-footer text-right">
                                         <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
@@ -366,7 +371,7 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                         <script>
                             window.exportExcel =     function exportExcel()
                             {
-                                var filename = 'deposit_completed_filter'+Math.floor(Date.now() / 1000);
+                                var filename = 'deposit_failed_filter'+Math.floor(Date.now() / 1000);
                                 alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#outputTable",{headers:true})');
                             }
                         </script>
