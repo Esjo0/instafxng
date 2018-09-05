@@ -100,6 +100,7 @@ class Signal_Management
             if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
             $highest_pips_time = datetime_to_text($highest_pips_time);}
             $display2 = $this->get_pips_display($order_type, $highest_pips);
+            $display3 = $this->get_pips_display($order_type, $lowest_pips);
             $display = $display . " as at " . date('H:i a');
             $display = <<<analysis
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
@@ -114,6 +115,9 @@ class Signal_Management
                                         </tr>
                                         <tr>
                                             <td>Pips at current market price {$display}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Max Draw-down {$display3}</td>
                                         </tr>
                                     </table>
                                     </small>
@@ -130,7 +134,7 @@ analysis;
             if(!empty($row1['lowest_pips_time']) && ($row1['lowest_pips_time'] != 0)){
                 $lowest_pips_time = "as at".datetime_to_text3($lowest_pips_time);}
             $display1 = $this->get_pips_display($order_type, $pips);
-            //$display2 = $this->get_pips_display($order_type, $highest_pips);
+            $display2 = $this->get_pips_display($order_type, $highest_pips);
             //$display3 = $this->get_pips_display($order_type, $lowest_pips);
             if(empty($lowest_pips) || ($lowest_pips == null)){$lowest_pips = 0;}
             if(empty($highest_pips) || ($highest_pips == null)){$highest_pips = 0;}
@@ -139,7 +143,12 @@ analysis;
                 $display1 = $this->get_pips_display($order_type, $highest_pips);
             }elseif($exit_type == "Take Profit"){ $draw_down = " <tr>
                                             <td>Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} pips </span></td>
-                                        </tr>";}
+                                        </tr>";
+            }elseif($exit_type == "Stop Loss"){
+                $high = "<tr>
+                          <td>This Trade Had a High of {$display2}</td>
+                         </tr>";
+            }
             $display = <<<analysis
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
@@ -155,7 +164,7 @@ analysis;
                                             <td>{$display1} at {$closed_date}</td>
                                         </tr>
                                        $draw_down
-
+                                       $high
                                     </table>
                                     </small>
                                         </div>
