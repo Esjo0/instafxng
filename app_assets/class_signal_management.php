@@ -104,10 +104,10 @@ class Signal_Management
             if(!empty($lowest_pips_time) && ($lowest_pips_time != 0)){
                 $lowest_pips_time = "@ ".datetime_to_text3($lowest_pips_time);}
             $display2 = " <tr>
-                                            <td>Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} pips </span>$highest_pips_time</td>
+                                            <td>Max Pips Gained <span style=\"color:green !important;\"> {$this->get_pips_display($order_type, $highest_pips)} </span>$highest_pips_time</td>
                                         </tr>";
             $display3 = "<tr>
-                                            <td>Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} pips </span>$lowest_pips_time</td>
+                                            <td>Max Draw-down <span style=\"color:red !important;\"> {$this->get_pips_display($order_type, $lowest_pips)} </span>$lowest_pips_time</td>
                                         </tr>";
             $display = $display . " as at " . date('H:i a');
             $display = <<<analysis
@@ -147,11 +147,11 @@ analysis;
               $exit_type = "Break Even";
                 $display1 = $this->get_pips_display($order_type, $highest_pips);
             }elseif($exit_type == "Take Profit"){ $draw_down = " <tr>
-                                            <td>Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} pips </span>$highest_pips_time</td>
+                                            <td>Draw Down of <span style=\"color:red !important;\"> {$this->get_pips_display($order_type, $lowest_pips)} </span>$highest_pips_time</td>
                                         </tr>";
             }elseif($exit_type == "Stop Loss"){
                 $high = "<tr>
-                          <td>A High of <span style=\"color:green !important;\"> {$highest_pips} pips </span>$lowest_pips_time</td>
+                          <td>A High of <span style=\"color:green !important;\"> {$this->get_pips_display($order_type, $highest_pips)} </span>$lowest_pips_time</td>
                          </tr>";
             }
             $display = <<<analysis
