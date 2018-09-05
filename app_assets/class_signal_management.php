@@ -97,28 +97,32 @@ class Signal_Management
             }
             $open_date = datetime_to_text3($entry_time);
             if(empty($entry_time)){$open_date = datetime_to_text3($created);}
-            if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
-            $highest_pips_time = datetime_to_text($highest_pips_time);}
-            $display2 = $this->get_pips_display($order_type, $highest_pips);
-            $display3 = $this->get_pips_display($order_type, $lowest_pips);
+            if(empty($lowest_pips) || ($lowest_pips == null)){$lowest_pips = 0;}
+            if(empty($highest_pips) || ($highest_pips == null)){$highest_pips = 0;}
+            if(!empty($highest_pips_time) && ($highest_pips_time != 0)){
+                $highest_pips_time = "@ ".datetime_to_text3($highest_pips_time);}
+            if(!empty($lowest_pips_time) && ($lowest_pips_time != 0)){
+                $lowest_pips_time = "@ ".datetime_to_text3($lowest_pips_time);}
+            $display2 = " <tr>
+                                            <td>Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} pips </span>$highest_pips_time</td>
+                                        </tr>";
+            $display3 = "<tr>
+                                            <td>Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} pips </span>$lowest_pips_time</td>
+                                        </tr>";
             $display = $display . " as at " . date('H:i a');
             $display = <<<analysis
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
                                             <small>
 <table class="table table-hover table-sm ">
-                                        <tr>
-                                            <td>Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} pips </span></td>
-                                        </tr>
+                                        $display2
                                         <tr>
                                             <td>Triggered @ {$open_date}</td>
                                         </tr>
                                         <tr>
                                             <td>Pips at current market price {$display}</td>
                                         </tr>
-                                        <tr>
-                                            <td>Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} pips </span></td>
-                                        </tr>
+                                        $display3
                                     </table>
                                     </small>
                                         </div>
@@ -129,10 +133,11 @@ analysis;
             $open_date = datetime_to_text3($entry_time);
             if(empty($entry_time)){$open_date = datetime_to_text3($created);}
             $closed_date = datetime_to_text3($exit_time);
-            if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
-                $highest_pips_time = datetime_to_texthour($highest_pips_time);}
-            if(!empty($row1['lowest_pips_time']) && ($row1['lowest_pips_time'] != 0)){
-                $lowest_pips_time = "as at".datetime_to_text3($lowest_pips_time);}
+
+            if(!empty($highest_pips_time) && ($highest_pips_time != 0)){
+                $highest_pips_time = "@ ".datetime_to_text3($highest_pips_time);}
+            if(!empty($lowest_pips_time) && ($lowest_pips_time != 0)){
+                $lowest_pips_time = "@ ".datetime_to_text3($lowest_pips_time);}
             $display1 = $this->get_pips_display($order_type, $pips);
             $display2 = $this->get_pips_display($order_type, $highest_pips);
             //$display3 = $this->get_pips_display($order_type, $lowest_pips);
@@ -142,11 +147,11 @@ analysis;
               $exit_type = "Break Even";
                 $display1 = $this->get_pips_display($order_type, $highest_pips);
             }elseif($exit_type == "Take Profit"){ $draw_down = " <tr>
-                                            <td>Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} pips </span></td>
+                                            <td>Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} pips </span>$highest_pips_time</td>
                                         </tr>";
             }elseif($exit_type == "Stop Loss"){
                 $high = "<tr>
-                          <td>This Trade Had a High of <span style=\"color:green !important;\"> {$highest_pips} pips </span></td>
+                          <td>A High of <span style=\"color:green !important;\"> {$highest_pips} pips </span>$lowest_pips_time</td>
                          </tr>";
             }
             $display = <<<analysis
@@ -546,7 +551,7 @@ ORDER BY SD.signal_id DESC ";
     public function update_signal_daily_FILE($signal_array)
     {
         file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-        //file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+        // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
