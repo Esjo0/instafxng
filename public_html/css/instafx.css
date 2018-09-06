@@ -16,8 +16,8 @@ body {
     line-height: 1.7;
     color: #303030;
     font-weight: 300;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     background: url("../images/bg.gif") repeat;
 }
 
@@ -245,6 +245,12 @@ p, h1 {
     font-weight: bold;
 }
 
+.awaiting-approval-watermark {
+    background: url("../images/awaiting-approval.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
 .news_list {
     padding: 5px;
     border-bottom: 1px dotted #DA231B;
@@ -257,7 +263,7 @@ a.title_link:hover { color: #A94442; }
 a.title_link:active { color: #A94442; }
 
 .nav-tabs {
-    margin-bottom: 0px !important;
+    margin-bottom: 0 !important;
     bottom: 10px;
     clear: both;
     border-bottom: 1px solid transparent;

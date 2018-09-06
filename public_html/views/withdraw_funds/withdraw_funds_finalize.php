@@ -1,11 +1,24 @@
 <?php
     $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
 ?>
+
+<div class="alert alert-success">
+    <p>See the summary of your withdrawal below. Your Withdrawal will
+        be processed and payment made within one business day.</p>
+    <p>In a few cases some requests fall outside the category of withdrawals we can process from
+        our office and has to be sent to InstaForex office. Withdrawal requests in this category can take
+        up to 3 Business days.</p>
+    <p>If your withdrawal request falls within this category, we will inform you immediately.</p>
+    <p>Thank you for choosing InstaForex.</p>
+    <p class='text-danger' style='font-size: 1.3em'><strong>NOTE: </strong>Your payment will be made based on the rate as at the time the fund
+        is debited from your Instaforex account.</p>
+</div>
+
 <hr />
 <ul class="fa-ul">
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>ORDER SUMMARY</li>
 </ul>
-<table class="table table-responsive table-striped table-bordered table-hover">
+<table class="table table-responsive table-bordered awaiting-approval-watermark">
     <thead>
         <tr><th> </th><th> </th></tr>
     </thead>
