@@ -74,8 +74,8 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $failed_deposit_requests = $db_handle->fetchAssoc($result);
 
-// Admin Allowed: Toye, Lekan, Demola, Bunmi
-$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6");
+// Admin Allowed: Toye, Lekan, Demola, Bunmi, Joshua
+$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6", "Vi1DW");
 $allowed_requery_button = in_array($_SESSION['admin_unique_code'], $update_allowed) ? true : false;
 
 ?>
