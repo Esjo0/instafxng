@@ -1,11 +1,11 @@
 <?php
-set_include_path('/home/tboy9/public_html/init/');
-//set_include_path('../../public_html/init/');
+//set_include_path('/home/tboy9/public_html/init/');
+set_include_path('../../public_html/init/');
 require_once 'initialize_general.php';
 $signal_object = new Signal_Management();
 
-$scheduled_signals = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
-//$scheduled_signals = (array)json_decode(file_get_contents('../../models/signal_daily.json'));
+//$scheduled_signals = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
+$scheduled_signals = (array)json_decode(file_get_contents('../../models/signal_daily.json'));
 
 for($x=0; $x<=3; $x++){
 if (!empty($scheduled_signals)) {
@@ -17,12 +17,12 @@ if (!empty($scheduled_signals)) {
         $get_data = file_get_contents($url);
         $response = (array)json_decode($get_data, true);
         $entry_price = $response[0]['price'];
-        $decimal_place = $row['decimal_place'];
+    $decimal_place = $row['decimal_place'];
         if($decimal_place == 4){$decimal_place = 0.0005;}
         if($decimal_place == 2){$decimal_place = 0.05;}
 
         //Get High and low for sell
-        if($row['trigger_status'] == 1 && ($row['order_type'] == 2)){
+        if($row['trigger_status'] == 1 && ($row['order_type'] == 2) && ($response[0]['price'] <= $row['stop_loss']) && ($response[0]['price'] >= $row['take_profit'])){
             $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
             if($pips < $row['highest_pips']){
                 $pips = $pips * -1;
@@ -30,16 +30,19 @@ if (!empty($scheduled_signals)) {
             }
             if($pips > $row['lowest_pips']){
                 $pips = $pips * -1;
+                var_dump($pips);
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', '', 1, '', $pips);
             }
         }
         //Get High and low for buy
-        if($row['trigger_status'] == 1 && ($row['order_type'] == 1)){
+        if($row['trigger_status'] == 1 && ($row['order_type'] == 1) && ($response[0]['price'] <= $row['take_profit']) && ($response[0]['price'] >= $row['stop_loss'])){
             $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
             if($pips > $row['highest_pips']){
+                var_dump($pips);
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1, '', $pips, '');
             }
             if($pips < $row['lowest_pips']){
+                var_dump($pips);
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', '', 1, '', $pips);
             }
         }

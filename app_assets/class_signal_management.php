@@ -75,6 +75,25 @@ class Signal_Management
         }
     }
 
+//    public function buy_high_low($symbol, $signal_id, $symbol_id, $price, $highest_pips, $lowest_pips){
+//        $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=Zvdxqp6hpbbqWu27n6SSQ7zo4G6sK0rz";
+//        $get_data = file_get_contents($url);
+//        $response = (array) json_decode($get_data, true);
+//
+//        $pips = $this->get_pips($symbol_id, $response[0]['price'], $price);
+//        if($pips > $highest_pips){
+//            var_dump($pips);
+//            $this->trigger_signal_schedule($signal_id, 1, '', '', '', '', '', '', 1, '', $pips, '');
+//        }
+//        if($pips < $lowest_pips){
+//            var_dump($pips);
+//            $this->trigger_signal_schedule($signal_id, 1, '', '', '', '', '', '', '', 1, '', $pips);
+//        }
+//    }
+//
+//    public function sell_high_low{}
+
+
     public function get_scheduled_pairs($date)
     {
         global $db_handle;
