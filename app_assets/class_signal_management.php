@@ -439,7 +439,8 @@ analysis;
             if(empty($highest_pips) || ($highest_pips == null)){$highest_pips = 0;}
             if(($highest_pips > 5) && ($exit_type == "Stop Loss")){
               $exit_type = "Break Even";
-                $display1 = $this->get_pips_display($order_type, $highest_pips);
+                $display1 = "<span style=\"color:green !important;\"> {$highest_pips} </span>pips";
+                $closed_date = datetime_to_text3($highest_pips_time);
             }elseif(($exit_type == "Take Profit") && !empty($lowest_pips) && ($lowest_pips != 0)){
                 $draw_down = " <tr>
                                   <td>Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
