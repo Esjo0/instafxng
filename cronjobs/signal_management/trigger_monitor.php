@@ -22,19 +22,18 @@ if (!empty($scheduled_signals)) {
         if($decimal_place == 2){$decimal_place = 0.05;}
 
         //Get High and low for sell
-        if($row['trigger_status'] == 1 && ($row['order_type'] == 2) && ($response[0]['price'] <= $row['stop_loss']) && ($response[0]['price'] >= $row['take_profit'])){
+        if($row['trigger_status'] == 1 && ($row['order_type'] == 2) && !empty($response[0]['price']) && ($response[0]['price'] != 0)){
             $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
-            if($pips < $row['highest_pips']){
-                $pips = $pips * -1;
-                $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1,'', $pips, '');
+            $pips = $pips * -1;
+            if($pips > $row['highest_pips']) {
+                    $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1, '', $pips, '');
             }
-            if($pips > $row['lowest_pips']){
-                $pips = $pips * -1;
+            if($pips < $row['lowest_pips']){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', '', 1, '', $pips);
             }
         }
         //Get High and low for buy
-        if($row['trigger_status'] == 1 && ($row['order_type'] == 1) && ($response[0]['price'] <= $row['take_profit']) && ($response[0]['price'] >= $row['stop_loss'])){
+        if($row['trigger_status'] == 1 && ($row['order_type'] == 1) && !empty($response[0]['price']) && ($response[0]['price'] != 0)){
             $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
             if($pips > $row['highest_pips']){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1, '', $pips, '');
@@ -44,7 +43,7 @@ if (!empty($scheduled_signals)) {
             }
         }
         //Trigger Sell Order
-        if (($response[0]['price'] >= ($row['price'] - $decimal_place)) && ($response[0]['price'] <= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2) && !empty($response[0][price]) && ($response[0][price] != 0)) {
+        if (($response[0]['price'] >= ($row['price'] - $decimal_place)) && ($response[0]['price'] <= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 2) && !empty($response[0]['price']) && ($response[0]['price'] != 0)) {
             if ($row['trigger_status'] != 1) {
                 $entry_price = $response[0]['price'];
                 $entry_time = date('Y-m-d H:i:s');
@@ -66,7 +65,7 @@ if (!empty($scheduled_signals)) {
         }
 
         //Trigger Buy Order
-        if (($response[0]['price'] <= ($row['price'] + $decimal_place)) && ($response[0]['price'] >= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 1) && !empty($response[0][price])) {
+        if (($response[0]['price'] <= ($row['price'] + $decimal_place)) && ($response[0]['price'] >= $row['price']) && ($row['trigger_status'] != 2) && ($row['order_type'] == 1) && !empty($response[0]['price']) && ($response[0]['price'] != 0)) {
             if ($row['trigger_status'] != 1 ) {
                 $entry_price = $response[0]['price'];
                 $entry_time = date('Y-m-d H:i:s');
