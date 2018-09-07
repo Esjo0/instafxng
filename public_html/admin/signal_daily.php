@@ -276,8 +276,8 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                         <div class="row">
                                                             <label class="control-label col-sm-3" for="">BUY ORDER </label>
                                                             <div class="col-sm-3"><strong>EP</strong><input id="buy_price" name="buy_price" type="text" class="form-control" placeholder="Price"  required/></div>
-                                                            <div class="col-sm-3"><strong>TP</strong><input id="buy_price_tp" name="buy_price_tp" type="text" class="form-control" placeholder="TP" required/></div>
-                                                            <div class="col-sm-3"><strong>SL</strong><input id="buy_price_sl" name="buy_price_sl" type="text" class="form-control" placeholder="SL" required/></div>
+                                                            <div class="col-sm-3"><strong>TP</strong><input id="buy_price_tp" name="buy_price_tp" type="text" class="form-control" placeholder="Take Profit" required/></div>
+                                                            <div class="col-sm-3"><strong>SL</strong><input id="buy_price_sl" name="buy_price_sl" type="text" class="form-control" placeholder="Stop Loss" required/></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -288,8 +288,8 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                         <div class="row">
                                                             <label class="control-label col-sm-3" for="">SELL ORDER </label>
                                                             <div class="col-sm-3"><strong>EP</strong><input id="sell_price" name="sell_price" type="text" value="<?php if(isset($eur_usd_sell_price)) { echo $eur_usd_sell_price; } ?>" class="form-control" placeholder="Price"  required/></div>
-                                                            <div class="col-sm-3"><strong>TP</strong><input id="sell_price_tp" name="sell_price_tp" type="text" value="<?php if(isset($eur_usd_sell_tp)) { echo $eur_usd_sell_tp; } ?>" class="form-control" placeholder="TP" required/></div>
-                                                            <div class="col-sm-3"><strong>SL</strong><input id="sell_price_sl" name="sell_price_sl" type="text" value="<?php if(isset($eur_usd_sell_sl)) { echo $eur_usd_sell_sl; } ?>" class="form-control" placeholder="SL" required/></div>
+                                                            <div class="col-sm-3"><strong>TP</strong><input id="sell_price_tp" name="sell_price_tp" type="text" value="<?php if(isset($eur_usd_sell_tp)) { echo $eur_usd_sell_tp; } ?>" class="form-control" placeholder="Take Profit" required/></div>
+                                                            <div class="col-sm-3"><strong>SL</strong><input id="sell_price_sl" name="sell_price_sl" type="text" value="<?php if(isset($eur_usd_sell_sl)) { echo $eur_usd_sell_sl; } ?>" class="form-control" placeholder="Stop Loss" required/></div>
                                                         </div>
                                                         <hr/><br/>
                                                     </div>
