@@ -60,6 +60,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(202, $my_pages_sidebar)) { ?><li><a href="client_failed_sms_code.php" title="Failed SMS Code">Failed SMS Code</a></li><?php } ?>
                         <?php if (in_array(16, $my_pages_sidebar)) { ?><li><a href="client_bank_verify.php" title="Moderate Bank Account">Moderate Bank Account</a></li><?php } ?>
                         <?php if (in_array(259, $my_pages_sidebar)) { ?><li><a href="client_life.php" title="Download Client Information">Download Client Information</a></li><?php } ?>
+                        <?php if (in_array(269, $my_pages_sidebar)) { ?><li><a href="client_retention_review.php" title="Client Retention Review">Client Retention Review</a></li><?php } ?>
                     </ul>
                 </li>
 
@@ -263,6 +264,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(89, $my_pages_sidebar)) { ?><li><a href="campaign_email_view.php">Email Campaign</a></li><?php } ?>
                         <?php if (in_array(90, $my_pages_sidebar)) { ?><li><a href="campaign_sms_view.php">SMS Campaign</a></li><?php } ?>
                         <?php if (in_array(91, $my_pages_sidebar)) { ?><li><a href="campaign_sales.php">Sales Management</a></li><?php } ?>
+                        <?php if (in_array(270, $my_pages_sidebar)) { ?><li><a href="notification_manage.php">Manage Notification</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">

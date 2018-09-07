@@ -375,14 +375,24 @@ switch($page_requested) {
                     ================================================== -->
                     
                     <div class="section-tint super-shadow">
+
                         <div class="row">
+                            <div class="col-sm-12">
+                                <span>
+    <h4>ATTENTION!!!</h4>
+
+<p>Instant Card Payment is Back!</p>
+
+<p>Enjoy a more convenient and swift experience funding your account!  With Instant card payment, your transactions are now fast, easy, and more secured!</p>
+</span>
+                            </div>
                             <?php if($additional_msg != 'msg_new'): ?>
                                 <div class="col-sm-12 text-danger">
 
                                     <?php if(!$special_msg) { ?>
                                         <h4><strong>Fund Your Instaforex Account</strong></h4>
                                     <?php } else { ?>
-                                        <h4><strong>Make Over 2000 pips on your Trades this August</strong></h4>
+                                        <h4><strong>Make Over 2000 pips on your Trades Starting from this Month.</strong></h4>
                                     <?php } ?>
 
                                 </div>

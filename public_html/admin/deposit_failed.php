@@ -74,8 +74,8 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $failed_deposit_requests = $db_handle->fetchAssoc($result);
 
-// Admin Allowed: Toye, Lekan, Demola, Bunmi
-$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6");
+// Admin Allowed: Toye, Lekan, Demola, Bunmi, Joshua
+$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6", "Vi1DW");
 $allowed_requery_button = in_array($_SESSION['admin_unique_code'], $update_allowed) ? true : false;
 
 ?>
@@ -132,6 +132,8 @@ $allowed_requery_button = in_array($_SESSION['admin_unique_code'], $update_allow
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
+                                <p class="text-right"><a href="deposit_failed_filter.php"  class="btn btn-default" title="Deposit Failed - Filter"><i class="fa fa-arrow-circle-right"></i> Deposit Failed - Filter</a></p>
+
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 
                                 <p>Below is the list of all failed deposit requests.</p>

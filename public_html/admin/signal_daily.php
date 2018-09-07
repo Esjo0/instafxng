@@ -106,6 +106,7 @@ if(isset($_POST['new_signal'])){
     $signal_time = $db_handle->sanitizePost($_POST['signal_time']);
 	$signal_date = $db_handle->sanitizePost($_POST['signal_date']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
+    $status = $db_handle->sanitizePost($_POST['status']);
 
     $query = "SELECT symbol FROM signal_symbol WHERE symbol_id = '$symbol_id' ";
     $result = $db_handle->runQuery($query);
@@ -124,16 +125,16 @@ if(isset($_POST['new_signal'])){
     $sell_option = 2;
 
 
-	if(!empty($buy_price) && !empty($buy_price_tp) && !empty($buy_price_sl)){
-        $new_schedule1 = $signal_object->new_signal_schedule($symbol_id, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price);
+	if(!empty($buy_price) && !empty($buy_price_tp) && !empty($buy_price_sl) && ($buy_price_tp > $buy_price) && ($buy_price_sl < $buy_price)){
+        $new_schedule1 = $signal_object->new_signal_schedule($symbol_id, $buy_option, $buy_price, $buy_price_tp, $buy_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price, $status);
     }
-    if(!empty($sell_price) && !empty($sell_price_tp) && !empty($sell_price_sl)){
-        $new_schedule2 = $signal_object->new_signal_schedule($symbol_id, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price);
+    if(!empty($sell_price) && !empty($sell_price_tp) && !empty($sell_price_sl) && ($sell_price_sl > $sell_price) && ($sell_price_tp < $sell_price)){
+        $new_schedule2 = $signal_object->new_signal_schedule($symbol_id, $sell_option, $sell_price, $sell_price_tp, $sell_price_sl, $signal_date, $signal_time, $trend, $comment, $admin_code, $market_price, $status);
     }
     if($new_schedule1 || $new_schedule2){
         $message_success = "Signal Successfully created for " . datetime_to_text($signal_time);
     } else {
-        $message_error = "Something went wrong. Please try again.";
+        $message_error = "Something went wrong. Please try again. <br> Ensure You tick the order type, or Kindly Cross check Signal values";
     }
 }
 
@@ -153,7 +154,7 @@ if(isset($_POST['update_signal'])){
     if($result) {
         $message_success = "Signal Updated Successfully created for " . datetime_to_text($signal_time);
     } else {
-        $message_error = "Something went wrong. Please try again.";
+        $message_error = "Something went wrong. ";
     }
 
 }
@@ -237,10 +238,14 @@ $all_signals = $db_handle->fetchAssoc($result);
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <?php require_once 'layouts/feedback_message.php'; ?>
-                                        <p>Modify the form below to update the daily signal. Choose the date you are posting the signal for.</p>
+                                        <p>Modify the form below to update the daily signal. Choose the date you are posting the signal for. Please cross check all values before posting</p>
                                         <br />
                                         <div class="col-md-12 order-md-1">
                                             <form class="needs-validation" role="form" method="post" action="">
+                                                <div class="checkbox form-group row">
+                                                    <label class="col-sm-6 text-center"><input type="checkbox" value="0" name="status"><strong>Tick this Box for Pending Orders</strong></label>
+                                                    <label class="col-sm-6 text-center"><input type="checkbox" value="1" name="status"><strong>Tick this Box for Instant Execution</strong></label>
+                                                </div>
                                                 <div class="form-group row">
                                                     <label class="control-label col-sm-3" for="location">Currency Pair </label>
                                                     <div class="col-sm-9 col-lg-5">
@@ -269,10 +274,10 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                 <div class="form-group row" style="display:none;" id="buy">
                                                     <div class="col-sm-12">
                                                         <div class="row">
-                                                            <label class="control-label col-sm-3" for="">BUY PRICE </label>
-                                                            <div class="col-sm-3"><input id="buy_price" name="buy_price" type="text" class="form-control" placeholder="Price"  required/></div>
-                                                            <div class="col-sm-3"><input id="buy_price_tp" name="buy_price_tp" type="text" class="form-control" placeholder="TP" required/></div>
-                                                            <div class="col-sm-3"><input id="buy_price_sl" name="buy_price_sl" type="text" class="form-control" placeholder="SL" required/></div>
+                                                            <label class="control-label col-sm-3" for="">BUY ORDER </label>
+                                                            <div class="col-sm-3"><strong>EP</strong><input id="buy_price" name="buy_price" type="text" class="form-control" placeholder="Price"  required/></div>
+                                                            <div class="col-sm-3"><strong>TP</strong><input id="buy_price_tp" name="buy_price_tp" type="text" class="form-control" placeholder="TP" required/></div>
+                                                            <div class="col-sm-3"><strong>SL</strong><input id="buy_price_sl" name="buy_price_sl" type="text" class="form-control" placeholder="SL" required/></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -281,10 +286,10 @@ $all_signals = $db_handle->fetchAssoc($result);
 
                                                     <div class="col-sm-12" >
                                                         <div class="row">
-                                                            <label class="control-label col-sm-3" for="">SELL PRICE </label>
-                                                            <div class="col-sm-3"><input id="sell_price" name="sell_price" type="text" value="<?php if(isset($eur_usd_sell_price)) { echo $eur_usd_sell_price; } ?>" class="form-control" placeholder="Price"  required/></div>
-                                                            <div class="col-sm-3"><input id="sell_price_tp" name="sell_price_tp" type="text" value="<?php if(isset($eur_usd_sell_tp)) { echo $eur_usd_sell_tp; } ?>" class="form-control" placeholder="TP" required/></div>
-                                                            <div class="col-sm-3"><input id="sell_price_sl" name="sell_price_sl" type="text" value="<?php if(isset($eur_usd_sell_sl)) { echo $eur_usd_sell_sl; } ?>" class="form-control" placeholder="SL" required/></div>
+                                                            <label class="control-label col-sm-3" for="">SELL ORDER </label>
+                                                            <div class="col-sm-3"><strong>EP</strong><input id="sell_price" name="sell_price" type="text" value="<?php if(isset($eur_usd_sell_price)) { echo $eur_usd_sell_price; } ?>" class="form-control" placeholder="Price"  required/></div>
+                                                            <div class="col-sm-3"><strong>TP</strong><input id="sell_price_tp" name="sell_price_tp" type="text" value="<?php if(isset($eur_usd_sell_tp)) { echo $eur_usd_sell_tp; } ?>" class="form-control" placeholder="TP" required/></div>
+                                                            <div class="col-sm-3"><strong>SL</strong><input id="sell_price_sl" name="sell_price_sl" type="text" value="<?php if(isset($eur_usd_sell_sl)) { echo $eur_usd_sell_sl; } ?>" class="form-control" placeholder="SL" required/></div>
                                                         </div>
                                                         <hr/><br/>
                                                     </div>
@@ -325,32 +330,19 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="control-label col-sm-3" for="location">Trend</label>
-                                                    <div class="col-sm-9 col-lg-5">
-                                                        <div class="input-group date">
-                                                            <select name="trend" id="trend" class="form-control" >
-                                                                <option value=""></option>
-                                                                <option value="0">Bullish</option>
-                                                                <option value="1">Bearish</option>
-                                                            </select>
-                                                            <span class="input-group-addon"><span class="fa fa-arrows-v"></span></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
                                                     <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter Comments"></textarea>
                                                 </div>
 
                                                 <br>
                                                 <hr class="mb-4">
-                                                <center><button name="new_signal" class="btn btn-success btn-sm bottom" type="submit"> Upload Signals</button><center>
+                                                <center><button name="new_signal" data-toggle="modal" data-target=".bd-example-modal-sm" class="btn btn-success btn-sm bottom" type="submit"> Upload Signal </button><center>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-4">
                             <div class="col-md-12 order-md-2 mb-4 section-tint super-shadow">
                                 <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -482,18 +474,6 @@ $all_signals = $db_handle->fetchAssoc($result);
                                             });
                                         </script>
                                     </div>
-
-                                                        <div class="form-group row">
-                                                            <label class="control-label col-sm-3" for="location">Trend</label>
-                                                            <div class="col-sm-9 col-lg-5">
-                                                                    <div class="input-group date">
-                                                <select name="trend" id="trend" class="form-control" >
-                                                    <option value="0" <?php if($row['trend'] == 0){echo "selected";}?>>Buying(Bullish)</option>
-                                                    <option value="1" <?php if($row['trend'] == 1){echo "selected";}?>>Selling(Bearish)</option>
-                                                </select>
-                                                <span class="input-group-addon"><span class="fa fa-arrows-v"></span></span>
-                                            </div>                                                              </div>
-                                                        </div>
 
                                                     <div class="form-group">
                                                             <center><label class="col-sm-12" for="exampleFormControlTextarea1">Comment</label></center>

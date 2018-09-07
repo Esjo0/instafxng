@@ -1,3 +1,6 @@
+ALTER TABLE `user_edu_deposits` CHANGE `status` `status` ENUM('1','2','3','4','5','6') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '1 - Deposit Initiated2 - Notified3 - Confirmed4 - Declined5 - Failed6 - Pending';
+
+
 CREATE TABLE `edu_sales_tracker` (
   `edu_sale_tracker_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_code` varchar(50) NOT NULL,

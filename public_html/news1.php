@@ -377,6 +377,12 @@ function print_reply($replies)
                                 <p><strong><?php if(isset($description)) { echo stripslashes($description); } ?></strong></p>
                                 <?php if(isset($content)) { echo htmlspecialchars_decode(stripslashes(trim($content))); } ?>
 
+                                <hr />
+                                <?php if($news_id != 604){?>
+                                    <div class="col-sm-12"><div class="addthis_sharing_toolbox">Share on social media: </div></div>
+                                <?php } ?>
+                                <hr />
+
                                 <h5>Leave a comment</h5>
                                 <!--<div class="fb-comments" data-href="https://instafxng.com/news1/id/<?php /*echo $article_id . '/u/' . $url . '/'; */?>" data-numposts="10" data-mobile="1" data-width="100%"></div>-->
                                 <form data-toggle="validator" class="form-horizontal " role="form" method="post"

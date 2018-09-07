@@ -207,6 +207,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="244" id="" <?php if (in_array(244, $my_pages)) { echo 'checked="checked"'; } ?>/> Active Trading Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="245" id="" <?php if (in_array(245, $my_pages)) { echo 'checked="checked"'; } ?>/> Inactive Trading Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="259" id="" <?php if (in_array(259, $my_pages)) { echo 'checked="checked"'; } ?>/> Download Client Information</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="269" id="" <?php if (in_array(269, $my_pages)) { echo 'checked="checked"'; } ?>/> Client Retention Review</label></div></div>
                                     </div>
                                     <hr/>
 
@@ -375,6 +376,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="89" id="" <?php if (in_array(89, $my_pages)) { echo 'checked="checked"'; } ?>/> Email Campaign</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="90" id="" <?php if (in_array(90, $my_pages)) { echo 'checked="checked"'; } ?>/> SMS Campaign</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="91" id="" <?php if (in_array(91, $my_pages)) { echo 'checked="checked"'; } ?>/> Sales Management</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="270" id="" <?php if (in_array(270, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Notification</label></div></div>
                                     </div>
                                     <hr/>
 

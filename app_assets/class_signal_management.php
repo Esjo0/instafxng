@@ -75,113 +75,11 @@ class Signal_Management
         }
     }
 
-    public function get_live_pips($trigger_status, $symbol_id, $symbol, $price, $order_type, $pips, $exit_time, $entry_time, $exit_type, $signal_id, $highest_pips, $lowest_pips, $highest_pips_time, $lowest_pips_time)
-    {
-        //$pairs = $this->get_scheduled_pairs(date('Y-m-d'));
-        if ($trigger_status == 1) {
-            $symbol = str_replace('/', '', $symbol);
-            get_key:
-            $key = $this->quotes_api_key();
-
-            $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=$key";
-            $get_data = file_get_contents($url);
-            $response = json_decode($get_data, true);
-            $market_price = $response[0]['price'];
-            if (empty($market_price)) {
-                goto get_key;
-            };
-
-            if (!empty($market_price) && !empty($price)) {
-                $diff = $this->get_pips($symbol_id, $market_price, $price);
-                $display = $this->get_pips_display($order_type, $diff);
-            } else {
-                $display = 0;
-            }
-            $open_date = datetime_to_text($entry_time);
-            if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
-            $highest_pips_time = datetime_to_text($highest_pips_time);}
-            $display2 = $this->get_pips_display($order_type, $highest_pips);
-            $display = $display . " as at " . date('H:i:s a');
-            $display = <<<MAIL
-            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
-                                            <div>
-                                            <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade is {$this->UI_pips_msg($trigger_status)} and has a high of {$display2} on {$highest_pips_time}</strong></h6>
-                                            <h6 class="my-0"></h6>
-
-                                            <small class="text-muted">
-                                            </small>
-
-                                        </div>
-                                        </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
-                                            <div>
-                                            <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade is at {$display} it Opened on {$open_date} </strong></h6>
-                                            <h6 class="my-0"></h6>
-
-                                            <small class="text-muted">
-                                            </small>
-
-                                        </div>
-                                        </li>
-MAIL;
-        } elseif ($trigger_status == 2) {
-            $closed_date = datetime_to_text($exit_time);
-            if(!empty($row1['highest_pips_time']) && ($row1['highest_pips_time'] != 0)){
-                $highest_pips_time = datetime_to_text($highest_pips_time);}
-            if(!empty($row1['lowest_pips_time']) && ($row1['lowest_pips_time'] != 0)){
-                $lowest_pips_time = datetime_to_text($lowest_pips_time);}
-            $display = $this->get_pips_display($order_type, $pips);
-            $display2 = $this->get_pips_display($order_type, $highest_pips);
-            $display3 = $this->get_pips_display($order_type, $lowest_pips);
-            $display = <<<MAIL
-            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
-                                            <div>
-                                            <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade Closed on {$closed_date} and made {$display}</strong></h6>
-                                            <h6 class="my-0"></h6>
-
-                                            <small class="text-muted">
-                                            Trade Closure Type : {$exit_type}
-                                            </small>
-
-                                        </div>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
-                                            <div>
-                                            <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade had a high of {$display2} as at {$highest_pips_time} and a low of {$display3} as at {$lowest_pips_time}</strong></h6>
-                                            <h6 class="my-0"></h6>
-
-                                        </div>
-                                        </li>
-MAIL;
-
-        } elseif ($trigger_status == 0) {
-            $display = <<<MAIL
-            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
-                                            <div>
-                                            <h6 style="font-size: 15px" class="my-0">
-                                            <strong>This Trade is {$this->UI_pips_msg($trigger_status)} Kindly Place a pending Order, Ensure to use all signal parameters.</strong></h6>
-                                            <h6 class="my-0"></h6>
-
-                                            <small class="text-muted">
-                                            </small>
-
-                                        </div>
-                                        </li>
-MAIL;
-
-        }
-        return $display;
-    }
-
     public function get_scheduled_pairs($date)
     {
         global $db_handle;
-        $query = "SELECT DISTINCT SS.symbol 
-                  FROM signal_daily AS SD 
+        $query = "SELECT DISTINCT SS.symbol
+                  FROM signal_daily AS SD
                   INNER JOIN signal_symbol AS SS ON SD.symbol_id
                   WHERE SD.trigger_date = '$date' AND SD.symbol_id = SS.symbol_id ";
         $result = $db_handle->fetchAssoc($db_handle->runQuery($query));
@@ -206,18 +104,6 @@ MAIL;
             echo 'new-signals-found';
             file_put_contents('../../../models/signal_daily_bookmark.json', $file_current_property);
         }
-    }
-
-    public function round_price_to_dp($price, $decimal_place)
-    {
-//        $price = round($price,4);
-//        $dec = strpos($price, ".");
-        if($decimal_place == 4){
-           $price = substr($price, 0, -1);
-        }elseif($decimal_place == 2){
-            $price = substr($price, 0, -3);
-        }
-        return $price;
     }
 
     public function UI_get_news_for_page($currency_pair)
@@ -270,6 +156,12 @@ MAIL;
                                             <div class="col-sm-3">
                                                  <b class="pull-right">{$this->UI_order_type_status_msg($row['order_type'])}</b>
                                             </div>
+                                            <br>
+                                            <div class="row">
+                                            <small class="text-muted col-sm-12 text-center">
+                                            <i class="fa fa-info-circle"></i> Recommended Trailing Stop : 5 Pips(50 Points)
+                                            </small>
+                                            </div>
                                        </div>
                                                         <hr>
                                         <div class="well text-center"><b>ENTRY PRICE: {$this->round_price_to_dp($row['price'], $row['decimal_place'])}</b></div>
@@ -277,6 +169,7 @@ MAIL;
                                             <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_dp($row['stop_loss'], $row['decimal_place'])}<br/>Stop Loss</span></div></div>
                                             <div class="col-sm-6"><div class="well text-center"><span>{$this->round_price_to_dp($row['take_profit'], $row['decimal_place'])}<br/>Take Profit</span></div></div>
                                         </div>
+
                                         <div class="row">
                                              <div class="col-sm-12"><a target="_blank" href="https://webtrader.instaforex.com/login" class="btn btn-sm btn-success btn-group-justified">{$this->UI_signal_call_to_action_msg($row['trigger_status'])}</a><br/></div>
                                         </div>
@@ -292,9 +185,15 @@ MAIL;
                                             <div class="row">
                                                  <div  class="col-sm-5 col-xs-12">
 
-{$this->get_live_pips($row['trigger_status'], $row['symbol_id'], $row['symbol'], $row['price'], $row['order_type'], $row['pips'], $row['exit_time'], $row['entry_time'], $row['exit_type'], $row['signal_id'], $row['highest_pips'], $row['lowest_pips'], $row['highest_pips_time'], $row['lowest_pips_time'])}
+{$this->get_live_pips($row['trigger_status'], $row['symbol_id'], $row['symbol'], $row['price'], $row['order_type'], $row['pips'], $row['exit_time'], $row['entry_time'], $row['exit_type'], $row['signal_id'], $row['highest_pips'], $row['lowest_pips'], $row['highest_pips_time'], $row['lowest_pips_time'], $row['created'])}
 
-
+                                            <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                                  <div>
+                                                     <small class="text-muted">
+                                                        <strong>KeyNote </strong> {$row['note']}
+                                                     </small>
+                                                  </div>
+                                            </li>
 
                                        <li class="list-group-item d-flex justify-content-between lh-condensed"  style="display:none;">
                                         <div>
@@ -363,13 +262,7 @@ MAIL;
                                                  Download the <a href="downloads/Signals_Guide.txt" target="_blank" title="Download signal guide">
                                                  signal guide</a> to learn how to use the signals.
                                             </small>
-                                            <li class="list-group-item d-flex justify-content-between lh-condensed" >
-                                                  <div>
-                                                     <small class="text-muted">
-                                                        KeyNote: {$row['note']}
-                                                     </small>
-                                                  </div>
-                                            </li>
+
                                        </div>
                                    </div>
                                </div>
@@ -412,15 +305,6 @@ MAIL;
         return $msg;
     }
 
-    public function UI_get_symbol_current_price($symbol)
-    {
-        $symbol = str_replace('/', '', $symbol);
-        $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=" . $this->quotes_api_key();
-        $get_data = file_get_contents($url);
-        $response = (array)json_decode($get_data, true);
-        return $response[0]['price'];
-    }
-
     public function UI_get_signal_trigger_status_msg($trigger_stat)
     {
         $trigger_stat = (int)$trigger_stat;
@@ -433,23 +317,6 @@ MAIL;
                 break;
             case 2:
                 $msg = '<i class="fa fa-circle"></i> Closed';
-                break;
-        }
-        return $msg;
-    }
-
-    public function UI_pips_msg($trigger_stat)
-    {
-        $trigger_stat = (int)$trigger_stat;
-        switch ($trigger_stat) {
-            case 0:
-                $msg = 'Pending';
-                break;
-            case 1:
-                $msg = 'Active';
-                break;
-            case 2:
-                $msg = 'Closed';
                 break;
         }
         return $msg;
@@ -469,6 +336,18 @@ MAIL;
         return $msg;
     }
 
+    public function round_price_to_dp($price, $decimal_place)
+    {
+//        $price = round($price,4);
+//        $dec = strpos($price, ".");
+        if($decimal_place == 4){
+           $price = substr($price, 0, -1);
+        }elseif($decimal_place == 2){
+            $price = substr($price, 0, -3);
+        }
+        return $price;
+    }
+
     public function UI_signal_call_to_action_msg($trigger_stat)
     {
         $trigger_stat = (int)$trigger_stat;
@@ -486,50 +365,143 @@ MAIL;
         return $msg;
     }
 
-    public function update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type)
+    public function get_live_pips($trigger_status, $symbol_id, $symbol, $price, $order_type, $pips, $exit_time, $entry_time, $exit_type, $signal_id, $highest_pips, $lowest_pips, $highest_pips_time, $lowest_pips_time, $created)
     {
-        global $db_handle;
-        $query = "UPDATE signal_daily SET symbol_id = '$symbol', order_type = '$type', price = '$price', take_profit = '$take_profit', stop_loss = '$stop_loss', trigger_date = '$signal_date', trigger_time = '$signal_time', note = '$comment' WHERE signal_id = '$id'";
-        $result = $db_handle->runQuery($query);
-        if ($result) {
-            $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
-            $this->update_signal_daily_FILE($signal_array);
+        //$pairs = $this->get_scheduled_pairs(date('Y-m-d'))
+        if ($trigger_status == 1) {
+            $symbol = str_replace('/', '', $symbol);
+            get_key:
+            $key = $this->quotes_api_key();
+            $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=$key";
+            $get_data = file_get_contents($url);
+            $response = json_decode($get_data, true);
+            $market_price = $response[0]['price'];
+            if (empty($market_price)) {
+                goto get_key;
+            };
+            if (!empty($market_price) && !empty($price)) {
+                $diff = $this->get_pips($symbol_id, $market_price, $price);
+                $display = $this->get_pips_display($order_type, $diff);
+            } else {
+                $display = 0;
+            }
+            $open_date = datetime_to_text3($entry_time);
+            if(empty($entry_time)){$open_date = datetime_to_text3($created);}
+            if(empty($lowest_pips) || ($lowest_pips == null)){$lowest_pips = 0;}
+            if(empty($highest_pips) || ($highest_pips == null)){$highest_pips = 0;}
+            if(!empty($highest_pips_time) && ($highest_pips_time != 0) && ($highest_pips != 0)){
+                $highest_pips_time = "@ ".datetime_to_text3($highest_pips_time);
+                $display2 = " <tr>
+                                <td>Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
+                              </tr>";
+            }
+            if(!empty($lowest_pips_time) && ($lowest_pips_time != 0) && ($lowest_pips != 0)){
+                $lowest_pips_time = "@ ".datetime_to_text3($lowest_pips_time);
+                $display3 = "<tr>
+                              <td>Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
+                             </tr>";
+            }
+
+
+            $display = $display . " as at " . date('H:i a');
+            $display = <<<analysis
+            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
+                                            <div>
+                                            <small>
+<table class="table table-hover table-sm ">
+                                        $display2
+                                        <tr>
+                                            <td>Triggered @ {$open_date}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pips at current market price {$display}</td>
+                                        </tr>
+                                        $display3
+                                    </table>
+                                    </small>
+                                        </div>
+                                        </li>
+analysis;
+        } elseif ($trigger_status == 2) {
+
+            $open_date = datetime_to_text3($entry_time);
+            if(empty($entry_time)){$open_date = datetime_to_text3($created);}
+            $closed_date = datetime_to_text3($exit_time);
+
+            if(!empty($highest_pips_time) && ($highest_pips_time != 0)){
+                $highest_pips_time = "@ ".datetime_to_text3($highest_pips_time);}
+            if(!empty($lowest_pips_time) && ($lowest_pips_time != 0)){
+                $lowest_pips_time = "@ ".datetime_to_text3($lowest_pips_time);}
+            $display1 = $this->get_pips_display($order_type, $pips);
+            $display2 = $this->get_pips_display($order_type, $highest_pips);
+            //$display3 = $this->get_pips_display($order_type, $lowest_pips);
+            if(empty($lowest_pips) || ($lowest_pips == null)){$lowest_pips = 0;}
+            if(empty($highest_pips) || ($highest_pips == null)){$highest_pips = 0;}
+            if(($highest_pips > 5) && ($exit_type == "Stop Loss")){
+              $exit_type = "Break Even";
+                $display1 = $this->get_pips_display($order_type, $highest_pips);
+            }elseif(($exit_type == "Take Profit") && !empty($lowest_pips) && ($lowest_pips != 0)){
+                $draw_down = " <tr>
+                                  <td>Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
+                               </tr>";
+            }elseif(($exit_type == "Stop Loss") && !empty($highest_pips) && ($highest_pips != 0)){
+                $high = "<tr>
+                          <td>A High of <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
+                         </tr>";
+            }
+            $display = <<<analysis
+            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
+                                            <div>
+                                            <small class="text-muted">
+                                            Trade Closed @ {$exit_type}
+                                            </small>
+                                            <small>
+                                    <table class="table table-hover table-sm">
+                                        <tr>
+                                            <td>Triggered @ {$open_date}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{$display1} at {$closed_date}</td>
+                                        </tr>
+                                       $draw_down
+                                       $high
+                                    </table>
+                                    </small>
+                                        </div>
+                                        </li>
+analysis;
+
+        } elseif ($trigger_status == 0) {
+            $symbol = str_replace('/', '', $symbol);
+            get_keyp:
+            $key = $this->quotes_api_key();
+            $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=$key";
+            $get_data = file_get_contents($url);
+            $response = json_decode($get_data, true);
+            $market_price = $response[0]['price'];
+            if (empty($market_price)) {
+                goto get_keyp;
+            };
+            if(($price < $market_price) && ($order_type == 1)){$pending_type = "BUY LIMIT";}
+            elseif(($price > $market_price) && ($order_type == 1)){$pending_type = "BUY STOP";}
+            elseif(($price < $market_price) && ($order_type == 2)){$pending_type = "SELL STOP";}
+            elseif(($price > $market_price) && ($order_type == 2)){$pending_type = "SELL LIMIT";}
+            $display = <<<analysis
+            <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
+                                            <div>
+                                    <table class="table table-hover table-sm text-small">
+                                        <tr>
+                                            <td>
+                                            <strong>{$this->UI_pips_msg($trigger_status)} Order = $pending_type. Ensure to use all signal parameters.</strong></h6>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                        </div>
+                                        </li>
+analysis;
+
         }
-        return $result;
-    }
-
-    public function get_scheduled_signals($date)
-    {
-        global $db_handle;
-        $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.take_profit,
-SD.stop_loss, SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol,
- SD.pips, SD.entry_time, SD.exit_time, SD.exit_type, SD.highest_pips_time, SD.lowest_pips_time, SD.highest_pips, SD.lowest_pips, SS.decimal_place
-FROM signal_daily AS SD 
-INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
-WHERE SD.trigger_date = '$date'";
-        return $db_handle->fetchAssoc($db_handle->runQuery($query));
-    }
-
-    public function update_signal_daily_FILE($signal_array)
-    {
-        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-        // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
-
-    }
-
-    /**
-     * @param $price - Send as a string
-     * @param $decimal - length of figure to return, same as standard decimal for currency pairs
-     * @return int
-     */
-    public function quote_splitter($price, $decimal)
-    {
-        intval($price);
-        $value = explode('.', $price)[1];
-        $return = substr($value, 0, $decimal);
-        $return = (int)$return;
-
-        return $return;
+        return $display;
     }
 
     public function get_pips($symbol_id, $market_price, $price)
@@ -546,6 +518,21 @@ WHERE SD.trigger_date = '$date'";
         $diff = $market_price - $price;
 
         return $diff;
+    }
+
+    /**
+     * @param $price - Send as a string
+     * @param $decimal - length of figure to return, same as standard decimal for currency pairs
+     * @return int
+     */
+    public function quote_splitter($price, $decimal)
+    {
+        intval($price);
+        $value = explode('.', $price)[1];
+        $return = substr($value, 0, $decimal);
+        $return = (int)$return;
+
+        return $return;
     }
 
     public function get_pips_display($order_type, $pips)
@@ -585,6 +572,62 @@ MSG;
                 break;
         }
         return "$pips_msg";
+    }
+
+    public function UI_pips_msg($trigger_stat)
+    {
+        $trigger_stat = (int)$trigger_stat;
+        switch ($trigger_stat) {
+            case 0:
+                $msg = 'Pending';
+                break;
+            case 1:
+                $msg = 'Active';
+                break;
+            case 2:
+                $msg = 'Closed';
+                break;
+        }
+        return $msg;
+    }
+
+    public function UI_get_symbol_current_price($symbol)
+    {
+        $symbol = str_replace('/', '', $symbol);
+        $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=" . $this->quotes_api_key();
+        $get_data = file_get_contents($url);
+        $response = (array)json_decode($get_data, true);
+        return $response[0]['price'];
+    }
+
+    public function update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type)
+    {
+        global $db_handle;
+        $query = "UPDATE signal_daily SET symbol_id = '$symbol', order_type = '$type', price = '$price', take_profit = '$take_profit', stop_loss = '$stop_loss', trigger_date = '$signal_date', trigger_time = '$signal_time', note = '$comment' WHERE signal_id = '$id'";
+        $result = $db_handle->runQuery($query);
+        if ($result) {
+            $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
+            $this->update_signal_daily_FILE($signal_array);
+        }
+        return $result;
+    }
+
+    public function get_scheduled_signals($date)
+    {
+        global $db_handle;
+        $query = "SELECT SD.symbol_id, SD.signal_id, SD.order_type, SD.price, SD.take_profit, SD.stop_loss,
+SD.created, SD.trigger_date, SD.trigger_time, SD.note, SD.trigger_status, SS.symbol, SD.pips, SD.entry_time,
+SD.exit_time, SD.exit_type, SD.highest_pips_time, SD.lowest_pips_time, SD.highest_pips, SD.lowest_pips, SS.decimal_place
+FROM signal_daily AS SD INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id WHERE SD.trigger_date = '$date'
+ORDER BY SD.signal_id DESC ";
+        return $db_handle->fetchAssoc($db_handle->runQuery($query));
+    }
+
+    public function update_signal_daily_FILE($signal_array)
+    {
+        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+        // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+
     }
 
     public function trigger_signal_schedule($signal_id, $trigger_status, $entry_price, $entry_time, $exit_time, $pips, $exit_type, $exit_price, $highest_pips_time, $lowest_pips_time, $highest_pips, $lowest_pips)
@@ -630,11 +673,11 @@ MSG;
         return $result;
     }
 
-    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '', $admin_code, $market_price)
+    public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '', $admin_code, $market_price, $status)
     {
         global $db_handle;
-        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views, created_by, market_price, pips)
-                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0, '$admin_code', '$market_price', 0)";
+        $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views, created_by, market_price, pips, trigger_status)
+                  VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0, '$admin_code', '$market_price', 0, '$status')";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
@@ -713,6 +756,90 @@ MAIL;
             echo $output_side;
         }
 
+    }
+
+    public function add_lead($name, $email_address, $phone_number, $source, $interest, $created, $state_id = '')
+    {
+        global $db_handle;
+        global $system_object;
+        $name = split_name($name);
+        $first_name = $name['first_name'];
+        $last_name = $name['last_name'];
+        $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source, interest, created) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', $source, $interest, '$created')";
+        $result = $db_handle->runQuery($query);
+
+                $text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
+                $subject = "Welcome to InstaFxNg $first_name";
+                $message = <<<MAIL
+    <div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Hello $first_name,</p>
+            <p>Welcome on board!</p>
+            <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
+            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
+            <p>To start your journey to earning more money from Forex trading, you need to gain adequate knowledge of the Forex market.</p>
+
+            <p>We have a Free online training that you can take advantage of to learn more about how to trade Forex profitably.</p>
+            <p>The training is simple and easy to follow and you can take it from your house, office or even on your bed.</p>
+
+            <p>Within the next hour, you will be placing informed trades and increase your chances of taking your slice of the 5.3 Billion Dollars from the Forex market.</p>
+            <p>Guess what! It is free (at least for now).</p>
+            <p><a href="https://instafxng.com/fxacademy/">Click Here to Start the Training Now.</a></p>
+            <p>$first_name, we are taking in just 50 people at this time, for the brand new Forex Money Maker course.</p>
+            <p>35 spots have been taken already and we have 15 left.
+            The slots are filling up very fast.
+            <a href="https://instafxng.com/fxacademy/">Go here now to start the free training.</a></p>
+            <p>Please don’t miss this. Go ahead and login to the training immediately to secure your spot.</p>
+            <p>This will be your best shot at generating a healthy side income from forex trading. Go ahead and make the move now.</p>
+            <p>Start the Forex Money Maker Course now so you can launch your Forex trading entry with a big bang.</p>
+            <p>See you on the other side. Secure your spot now. Only 15 spots are up for grabs. Don’t wait till it will be too late.</p>
+            <p><a href="https://instafxng.com/fxacademy/">Here is the link to the online training again.</a></p>
+            <br/><br/>
+            <p>Best Regards,</p>
+            <p>Mercy,</p>
+            <p>Client Relations Manager,</p>
+            <p>InstaForex Nigeria</p>
+            <p>www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+        if($result) {
+            //$system_object->send_sms($phone_number, $text_message);
+            //$system_object->send_email($subject, $message, $email_address, $first_name);
+            $assigned_account_officer = $system_object->next_account_officer();
+            $client_operation = new clientOperation();
+            $client_operation->new_user_ordinary($first_name." ".$last_name, $email_address, $phone_number, $assigned_account_officer);
+            return true;}
+        else{return false;}
     }
 
 }
