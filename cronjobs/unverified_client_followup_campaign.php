@@ -15,7 +15,7 @@ $my_message_1 =
 <p>I’m ready to work with you to make this journey a very profitable one so let’s consider it our little project.</p>
 <p>Have you ever encountered any challenge trading Forex? Are you skeptical about this Forex trading thing and you don’t even know how to start?</p>
 <p>Whatever it is, I’m right here waiting patiently to take your hands and walk you through this journey to the point of profitable trading.</p>
-<p>To make this work, please share your experience and challenges with me by <a href="mailto:support@instafxng.com?subject=Challenges%20Faced%20Trading%20%20on%20InstaForex%20Platform%20&body=Hello%20%25Mercy,%0A%0AHere%20are%20the%20Challenges%20%20Faced.%0A%0A%20Please%20type%20your%20challenges%20below.%0A%0AThanks!">clicking here</a></p>
+<p>To make this work, please share your experience and challenges with me by <a href="mailto:support@instafxng.com?subject=Challenges%20Faced%20Trading%20%20on%20InstaForex%20Platform%20&body=Hello%20Mercy,%0A%0AHere%20are%20the%20Challenges%20%20Faced.%0A%0A%20Please%20type%20your%20challenges%20below.%0A%0AThanks!">clicking here</a></p>
 <p>As agreed earlier, I’m ready to attend to you and assist you on the journey to making consistent income from Forex trading so don’t delay.</p>
 <p>There are 40 slots available for this month and they are filled on a first come first served basis.</p>
 <p>As soon as I get the 40th response, this session will be closed and you might have to wait till December to get another chance.</p>
@@ -53,9 +53,9 @@ $my_message_3 =
 <p>When starting out a business, it’s important that you plan, research and take action immediately.</p>
 <p>What has been holding you back [NAME]?</p>
 <p>You were ready to start earning in dollars when you signed up with us, don’t be stuck there! Houses are not left in an architect’s plan, so start building.</p>
-<p>Are you totally new to Forex and you haven’t had any education on how to trade Forex profitably, this is for you! Click here (http://bit.ly/2iExTpN) to start learning how to trade Forex for Free.</p>
+<p>Are you totally new to Forex and you haven’t had any education on how to trade Forex profitably, this is for you! Click <a href="http://bit.ly/2iExTpN">here</a> to start learning how to trade Forex for Free.</p>
 <p>Are you way you are way past the learning stage, take action now. </p>
-<p>All the tools you need to trade profitably have been provided, click here to top up your account and here (http://bit.ly/2KEWxWQ) to subscribe to a profit making strategy designed to book you up to 30-100 pips daily.</p>
+<p>All the tools you need to trade profitably have been provided, click here to top up your account and <a href="http://bit.ly/2KEWxWQ">here</a> to subscribe to a profit making strategy designed to book you up to 30-100 pips daily.</p>
 <p>Don’t be like me! There is nothing such as overnight success, you have to make the move now!</p>
 <p>I’ll love to guide you further, feel free to right me back.</p>
 MAIL;
@@ -221,28 +221,33 @@ $interval_1 = 0;
 
 $query_1 = mail_query(1, $interval_1);
 $get_mail_1 = mail_template($my_message_1);
+echo $get_mail_1;
 $send_message_1a = auto_mail_send($query_1, $my_subject_1, $get_mail_1, 1);
 
 $interval_2 = 7;
 
 $query_2 = mail_query(2, $interval_2);
 $get_mail_2 = mail_template($my_message_2);
+echo $get_mail_2;
 $send_message_2 = auto_mail_send($query_2, $my_subject_2, $get_mail_2, 2);
 
 $interval_3 = 14;
 
 $query_3 = mail_query(2, $interval_3);
 $get_mail_3 = mail_template($my_message_3);
+echo $get_mail_3;
 $send_message_3 = auto_mail_send($query_3, $my_subject_3, $get_mail_3, 3);
 
 $interval_4 = 21;
 
 $query_4 = mail_query(2, $interval_4);
 $get_mail_4 = mail_template($my_message_4);
+echo $get_mail_4;
 $send_message_4 = auto_mail_send($query_4, $my_subject_4, $get_mail_4, 4);
 
 $interval_5 = 28;
 
 $query_5 = mail_query(2, $interval_5);
 $get_mail_5 = mail_template($my_message_5);
+echo $get_mail_5;
 $send_message_5 = auto_mail_send($query_5, $my_subject_5, $get_mail_5, 5);
