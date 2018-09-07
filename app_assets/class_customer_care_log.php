@@ -86,10 +86,13 @@ class Customer_Care
     public function get_email_log($email)
     {
         global $db_handle;
-        $query = "SELECT * FROM unverified_campaign_mail_log WHERE email = '$email' ORDER BY email_flag DESC ";
-        $result = $db_handle->runQuery($query);
-        $mail_details = $db_handle->fetchAssoc($result);
-        return $mail_details;
+        $querys = "SELECT email_flag, created FROM unverified_campaign_mail_log WHERE email = '$email'";
+        var_dump($querys);
+        $results = $db_handle->runQuery($querys);
+        var_dump($results);
+        $mail_detailss = $db_handle->fetchAssoc($results);
+        var_dump($mail_detailss);
+        return $mail_detailss;
     }
 }
 $obj_customer_care_log = new Customer_Care();

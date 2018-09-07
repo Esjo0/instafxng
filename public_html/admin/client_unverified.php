@@ -48,6 +48,15 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
         $display_msg = "Below is a table listing all unverified clients that have enrolled in the FxAcademy.";
         break;
 
+    case 'profile':
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
+                      WHERE (user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL))
+                      AND (user_code NOT IN (SELECT user_code FROM user_ifxaccount))
+                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
+        $filter_category = "Unverified Clients with Profile only";
+        $display_msg = "Below is a table listing all unverified clients that have profile only.";
+        break;
+
     default:
         $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients ";
         $filter_category = "All Unverified Clients";
@@ -88,6 +97,15 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
                       AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
             $filter_category = "Training Clients";
             $display_msg = "Below is a table listing all unverified clients that have enrolled in the FxAcademy.";
+            break;
+
+        case 'profile':
+            $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
+                      WHERE (user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL))
+                      AND (user_code NOT IN (SELECT user_code FROM user_ifxaccount))
+                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
+            $filter_category = "Unverified Clients with Profile only";
+            $display_msg = "Below is a table listing all unverified clients that have profile only.";
             break;
 
         default:
@@ -196,6 +214,7 @@ $db_handle->closeDB();
                                                         <li><a onclick="filter('ilpr', 'Clients With ILPR Accounts')" href="javascript:void(0);">Clients With ILPR Accounts</a></li>
                                                         <li><a onclick="filter('nonilpr', 'Clients Without ILPR Accounts')" href="javascript:void(0);">Clients Without ILPR Accounts</a></li>
                                                         <li><a onclick="filter('training', 'Training Clients')" href="javascript:void(0);">Training Clients</a></li>
+                                                        <li><a onclick="filter('profile', 'Unverified clients with profile only')" href="javascript:void(0);">Profile only</a></li>
                                                     </ul>
                                                     <input id="filter_trigger" style="display: none" name="filter" type="submit">
                                                     <input id="filter_value" name="filter_value" type="hidden">
@@ -257,51 +276,13 @@ $db_handle->closeDB();
                                             <td nowrap="nowrap">
                                                 <a title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_unverified'; ?>&c=<?php echo encrypt('UNVERIFIED CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                                <button title="Viem Email Campaign" data-target="#maildetails<?php echo $row['phone']?>" data-toggle="modal" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-envelope icon-white"></i></button>
+                                                <a target="_blank" title="View Campaign Mail Status" class="btn btn-xs btn-primary" href="email_log_details.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-envelope icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
 
-                                <!--                                        Modal - confirmation boxes-->
-                                <div id="maildetails<?php echo $row['phone'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                        class="close">&times;</button>
-                                                <h4 class="modal-title">View Campaign Mail Details</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <table class="table table-responsive">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Mail Recieved</th>
-                                                        <th>Date Recieved</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <?php
-                                                    $mail_details = $obj_customer_care_log->get_email_log($row['email']);
-                                                    if(!empty($mail_details) && $mail_details != 0){
-                                                        foreach($mail_details AS $row_email){?>
-                                                            <tr>
-                                                            <td><?php echo $row_email['email_flag']?></td>
-                                                            <td><?php echo datetime_to_text($row_email['created'])?></td>
-                                                            </tr>
-                                                        <?php } }else{?>
-                                                        <tr> <td>No Mails recieved yet</td></tr>
-                                                    <?php }?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
 
                                 <?php if(isset($unverified_clients) && !empty($unverified_clients)) { ?>

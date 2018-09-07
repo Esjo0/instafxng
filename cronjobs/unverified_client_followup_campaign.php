@@ -1,89 +1,110 @@
 <?php
-set_include_path('/home/tboy9/public_html/init/');
+//set_include_path('/home/tboy9/public_html/init/');
+set_include_path('../public_html/init/');
 require_once 'initialize_general.php';
 //Paid for the Forex optimizer Course but have not started
-$my_subject_1 = "Your Forex Profit Optimizer course is on…";
+$my_subject_1 = "Anything for You [NAME]…";
 $my_message_1 =
     <<<MAIL
-<p>Dear [Name]</p>
-<p>Trust you are doing well.</p>
-<p>Your optimizer course has begun and you are late for class!!!</p>
-<p>Your payment for the optimizer class has been long approved but you are yet to start the lessons.</p>
-<p>Where have you been?</p>
-<p>    I quite understand that you have been very busy, however, I’d like to encourage you to take out time to begin your training so you can start earning extra money.
-Your training portal awaits and all you need to do is begin now.</p>
-<p>Rest assured, after the training, you will be fully equipped to trade profitably and optimally.</p>
-<p>Start taking your lessons now <a href="https://bit.ly/2iExTpN">here</a></p>
-<p>Hurry Now! I can’t wait to for you to join our league of profitable traders</p>
+<p>Hello [NAME]</p>
+<p>How are you today?</p>
+<p>Been a while I heard from you</p>
+<p>This is Mercy, from InstaForex Nigeria I thought to check up on you since I haven’t seen you lately.</p>
+<p>Hope you’re doing really great.</p>
+<p>As you know, there are endless opportunities to earn from the Forex market and I would want you to take the best of these opportunities as they come</p>
+<p>I’m ready to work with you to make this journey a very profitable one so let’s consider it our little project.</p>
+<p>Have you ever encountered any challenge trading Forex? Are you skeptical about this Forex trading thing and you don’t even know how to start?</p>
+<p>Whatever it is, I’m right here waiting patiently to take your hands and walk you through this journey to the point of profitable trading.</p>
+<p>To make this work, please share your experience and challenges with me by <a href="mailto:support@instafxng.com?subject=Challenges%20Faced%20Trading%20%20on%20InstaForex%20Platform%20&body=Hello%20%25Mercy,%0A%0AHere%20are%20the%20Challenges%20%20Faced.%0A%0A%20Please%20type%20your%20challenges%20below.%0A%0AThanks!">clicking here</a></p>
+<p>As agreed earlier, I’m ready to attend to you and assist you on the journey to making consistent income from Forex trading so don’t delay.</p>
+<p>There are 40 slots available for this month and they are filled on a first come first served basis.</p>
+<p>As soon as I get the 40th response, this session will be closed and you might have to wait till December to get another chance.</p>
+<p>Do ensure to share it with me <a href="mailto:support@instafxng.com?subject=Challenges%20Faced%20Trading%20%20on%20InstaForex%20Platform%20&body=Hello%20Mercy,%0A%0AHere%20are%20the%20Challenges%20%20Faced.%0A%0A%20Please%20type%20your%20challenges%20below.%0A%0AThanks!">here</a>.</p>
+<p>I’ll be on the other side waiting to hear from you.</p>
 MAIL;
 
-$my_subject_2 = " You’ve Paid Your Dues [NAME], you deserve…";
+$my_subject_2 = "You are the Next Target!";
 $my_message_2 =
     <<<MAIL
-<p>Hello [Name]</p>
-<p>How are you doing?</p>
-<p>    I noticed that you have paid for your optimizer course and you are yet to start the training.</p>
-<p>If this is about not having enough time to take the course, I perfectly understand, because time seems to be very limited and there is so much to achieve every day.</p>
-<p>The secret to time and harnessing it value is simply starting and completing all you need to do immediately.</p>
-<p>That way you can be sure to get the expected results and move on to other tasks.</p>
-<p>Easy and efficient right?</p>
-<p>    Tag along [Name], you have paid your dues and you sure deserve to get your money’s worth.</p>
-<p>Why not start your course this weekend? That way you can lay comfortably on your bed on a Saturday morning, take the course on your phone and practice your newly acquired skill.</p>
-<p>Click <a href="https://bit.ly/2iExTpN">here</a> to begin your profit optimizer course now.</p>
-<p>I would love for you to start and complete your optimizer course as soon as possible because it will equip you to be prepared to trade profitably.</p>
-<p>If you have any concern, please feel free share with me</p>
-<p>I am eager to read and respond to your email.</p>
+<p>Dear [NAME],</p>
+<p>How are you today?</p>
+<p>A lot of amazing things have been happening and you sure have been MIA (missing in action)!</p>
+<p>Over the last 2 months, we have produced about a thousand profitable InstaForex traders who are consistently making profits from their trades and are gainfully increasing their take home cash every day.</p>
+<p>We would like to get you there too as our pride lies in your success as Forex traders so let’s pick it up from where you stopped because you are long overdue for back to back profits.</p>
+<p>We are ready to catapult you to the top.</p>
+<p>To make this happen, we are going to increase whatever you deposit into your InstaForex account this month!</p>
+<p>Grab a deposit bonus! Certainly, you are eligible for 30-130% bonus on your deposits only if you take action right now.</p>
+<p>This offer is open for 3 weeks only and we’re not sure we’ll let out this offer again anytime soon.</p>
+<p><a href="mailto:support@instafxng.com?subject=What%20Bonus%20can%20I%20Claim%20&body=Hi%20Mercy,%20kindly%20%20advice%20me%20on%20the%20best%20bonus%20available.%0A%0AThanks!">
+Click here to find out the bonus applicable to you</a> and we’ll guide you through immediately.</p>
+<p> [NAME], you are the next profitable trader to emerge and I won’t let you do this alone!</p>
+<p><a href="http://bit.ly/2hnVw7d">Click here to make your deposit now and claim your deposit right away!</a></p>
 MAIL;
 
-$my_subject_3 = "Your Training Portal Awaits you";
+$my_subject_3 = "Take This Opportunity Now";
 $my_message_3 =
     <<<MAIL
-<p>Hello [Name],</p>
-<p>Just checking on you.</p>
-<p>How have you been?</p>
-<p>    You are yet to start your Forex Profit Optimizer course, and I just want to remind you that your payment for this course has been long approved and you can access your training now.</p>
-<p>I am eager for you to begin this course because I am quite confident that after taking it, you will have a good start at trading and it would be easy for you to develop winning trading strategies and make good profits from trading Forex.</p>
-<p>The Loyalty Reward Program for this year has begun and you are missing out!</p>
-<p>The sooner you begin and conclude the Forex Profit Optimizer course, the earlier you start trading and making money from your trades.</p>
-<p>[Name], you can still hit this year’s financial target and become a millionaire!</p>
-<p>Complete your course and get equipped now! Click <a href="https://bit.ly/2iExTpN">here</a> to begin now.</p>
-<p>I look forward to seeing you in class.</p>
-<p>Please feel free to reach out to me if you need any assistance. I’ll always be here.</p>
+<p>Dear [NAME],</p>
+<p>I thought to share this experience with you.	</p>
+<p>Around 2010, my friend was invited to buy bitcoin at a rate far lesser than 50 cent, but the understanding was not so clear, so he MISSED IT.</p>
+<p>Another friend took the risk and made his decision, he invested just $100 and became wealthy when bitcoins became a hit. </p>
+<p>I missed the opportunity and now bitcoins cost more to invest in. I learnt my lesson the hard way.</p>
+<p>If Bitcoin had become a failed project, he would have lost $100 (N36,100) and nobody would have probably heard of this loss, but Bitcoin is a success, so he became a millionaire and everyone celebrates him.</p>
+<p>When starting out a business, it’s important that you plan, research and take action immediately.</p>
+<p>What has been holding you back [NAME]?</p>
+<p>You were ready to start earning in dollars when you signed up with us, don’t be stuck there! Houses are not left in an architect’s plan, so start building.</p>
+<p>Are you totally new to Forex and you haven’t had any education on how to trade Forex profitably, this is for you! Click here (http://bit.ly/2iExTpN) to start learning how to trade Forex for Free.</p>
+<p>Are you way you are way past the learning stage, take action now. </p>
+<p>All the tools you need to trade profitably have been provided, click here to top up your account and here (http://bit.ly/2KEWxWQ) to subscribe to a profit making strategy designed to book you up to 30-100 pips daily.</p>
+<p>Don’t be like me! There is nothing such as overnight success, you have to make the move now!</p>
+<p>I’ll love to guide you further, feel free to right me back.</p>
 MAIL;
 
-$my_subject_4 = "All you Need to build a Successful Side Business is in here";
+$my_subject_4 = "[NAME], The Next Step Leads to 30-50 pips daily";
 $my_message_4 =
     <<<MAIL
-<p>Dear [Name],</p>
-            <p>I hope you are doing well?</p>
-            <p>    You have been off your training for a very long time, are you experiencing any difficulty? If yes, please click here to send me a mail so I can get in on it and assist you with it right away.</p>
-            <p>Do you know that with the right knowledge, you can make millions of dollars while trading Forex? I bet you do!</p>
-            <p>I would like to encourage you to take your Forex Profit optimizer course today as I want to see you make more money and see the result of signing up from the start.</p>
-            <p>A lot of other traders who started the training with you have begun to cash out hundreds and thousands of dollars.</p>
-            <p>Don’t wait a day more! Click here to start your Forex Profit Optimizer course so you can finish it in good time.</p>
-            <p>I’m earnestly rooting for you [NAME] and I can’t wait for you to become a pro at this and start making money with ease.</p>
-            <p>
-                <center><a href="http://bit.ly/2iExTpN" target="_blank"><button style="background: #2f88bc; border-radius: 15px; height: 35px;text-decoration: none; text-align: center; color: white;"><strong>Get me Started</strong>
-        </button></a></center></p>
+<p>Dear [NAME],</p>
+<p>If I told you, you could make a steady profit of $30 -$50 daily, would you believe that?</p>
+<p>Well, it's true!</p>
+<p>We recently launched our high precision trading signals that has 85% accuracy and is sure to deliver 30-50 green pips to your account on a daily basis.</p>
+<p>Imagine waking every day with a lot of enthusiasm…looking forward to making the day’s profit right on your bed… the possibility of making $30 every working day for a month…</p>
+<p>Wow! This means that you’d be making up to N53 000 weekly and an average of N212 000 every month! Can you dig that?</p>
+<p>Trust me, this is the reality for some traders right now and you can make it happen for you too.</p>
+<p> Check out the result of our signals between Friday 29th June till today 4th July on very small lot sizes.</p>
+<p><center><img class="img img-responsive" src="https://instafxng.com/imgsource/Trade%20Results.png"></center></p>
+<p>Now it's the time to go ahead to get your trading account ready by depositing some funds and clicking here to sign up to receive notifications as soon as the signals are posted.</p>
+<p>Have you claimed your 100% bonus yet? If you can afford to start with $50, $100 or $150, you are sure to get an extra 100% bonus on your first deposit.</p>
+<p><a href="mailto:support@instafxng.com?subject=100%25%20Bonus%20&body=Hello%20Mercy,%0A%0AI%20am%20interested%20in%20getting%20the%20100%25%20bonus.%0A%0AThanks!">Click here to claim your 100% bonus now!</a></p>
+<p><strong>Can't afford $50 yet?</strong> Not to worry! You can start with as low as $5 or $10 and start making profit on your trade.</p>
+<p>I have your best interest at heart and I can't wait for you to join me.</p>
+<p>Don’t leave money on the table [NAME]! Click <a href="http://bit.ly/2zd3gmH">here</a> to proceed to fund your account here and let's get you started!</p>
+<p>The signals are always posted daily on our website and all you need to do is bookmark the page and check daily.</p>
+<p>NO TIME?</p>
+<p>If you will be busy and won’t have time to keep up with the site opt in for the daily alerts and I will be sure to update you on Facebook messenger as soon as the signals are posted, <a href="http://bit.ly/2KoYHe6">click here to subscribe to our signals channel now!</a></p>
+<p>Should you need further assistance with this, feel free to send me a response to this mail. I'll be on hand waiting to receive your reply.</p>
 MAIL;
 
-$my_subject_5 = "All you Need to build a Successful Side Business is in here";
+$my_subject_5 = "Make up to $4200 and N1 Million Naira While you take your normal trades";
 $my_message_5 =
     <<<MAIL
-<p>Dear [Name],</p>
-            <p>I hope you are doing well?</p>
-            <p>    You have been off your training for a very long time, are you experiencing any difficulty? If yes, please click here to send me a mail so I can get in on it and assist you with it right away.</p>
-            <p>Do you know that with the right knowledge, you can make millions of dollars while trading Forex? I bet you do!</p>
-            <p>I would like to encourage you to take your Forex Profit optimizer course today as I want to see you make more money and see the result of signing up from the start.</p>
-            <p>A lot of other traders who started the training with you have begun to cash out hundreds and thousands of dollars.</p>
-            <p>Don’t wait a day more! Click here to start your Forex Profit Optimizer course so you can finish it in good time.</p>
-            <p>I’m earnestly rooting for you [NAME] and I can’t wait for you to become a pro at this and start making money with ease.</p>
-            <p>
-                <center><a href="http://bit.ly/2iExTpN" target="_blank"><button style="background: #2f88bc; border-radius: 15px; height: 35px;text-decoration: none; text-align: center; color: white;"><strong>Get me Started</strong>
-        </button></a></center></p>
+<p>Have you heard about our Loyalty Points Promo?</p>
+<p>This mind-blowing unified reward program rewards every single one of our loyal clients daily, monthly and annually.</p>
+<p>With this programme, everyone is a winner!</p>
+<p>During the last round of the promotion, a total of 4.390 Million Naira was paid out to clients in rewards and this doesn’t even include the thousands of dollars withdrawn as loyalty points!</p>
+<p>Excited already? Here is how it works…</p>
+<p>You don’t need to do anything extra other than make deposit into your trading account and trade.</p>
+<p>You earn point commensurate to your trading activities and these points help you to rank on a monthly and yearly rank scale where only you can get up to $4200 and N1 000 000 every month.</p>
+<p>You’re very eligible to earn this cash prizes and I would really encourage you to dive in right now!</p>
+<p>Three Easy Steps to Get Started</p>
+<p>1.Fund your trading account.</p>
+<p>2.Trade with our 85% high-precision trading signals.</p>
+<p>3.Earn Loyalty Points.</p>
+<p>That’s it [NAME], in three easy steps you would get a chance to get more rewards for making money!</p>
+<p>Don’t wait it out! Start earning on your trades now!</p>
+<p><a href="http://bit.ly/2gvoIEU" title="Click to know more about our ILPR Promo">Here’s where to go to get more information on the loyalty points program.</a></p>
 MAIL;
 
-function student_auto_mail_template($core_msg) {
+function mail_template($core_msg) {
 
     $my_message_template =
         <<<MAIL
@@ -135,10 +156,9 @@ MAIL;
     return $my_message_template;
 }
 
-function student_auto_mail_query($query_type, $day_value) {
+function mail_query($query_type, $day_value) {
 
     $today = date('Y-m-d');
-
     switch($query_type) {
         case 1:
             $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
@@ -146,51 +166,21 @@ function student_auto_mail_query($query_type, $day_value) {
             FROM user AS u
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE (u.password IS NULL OR u.password = '')
-            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+            WHERE (u.password IS NULL OR u.password = '') AND u.email NOT IN (SELECT email FROM unverified_campaign_mail_log)
+            AND u.user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
+            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC";
             break;
         case 2:
-            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel
-INNER JOIN user AS u ON ueel.user_code = u.user_code
-LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value')
-AND u.user_code = ueel.user_code
-AND (ueel.lesson_id BETWEEN '1' AND '6')
-AND uefp.user_code = u.user_code
-GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
-            break;
-        case 3:
-            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel
-INNER JOIN user AS u ON ueel.user_code = u.user_code
-LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value')
-AND u.user_code = ueel.user_code
-AND (ueel.lesson_id BETWEEN '7' AND '13')
-AND uefp.user_code = u.user_code
-GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
-            break;
-        case 4:
-            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel
-INNER JOIN user AS u ON ueel.user_code = u.user_code
-LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value' )
-AND u.user_code = ueel.user_code
-AND ueel.lesson_id = '13'
-AND ui.user_code <> u.user_code
-AND uefp.user_code = u.user_code
-GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
-            break;
-        case 5:
-            $query = "SELECT u.first_name, u.email
-                FROM user_edu_exercise_log AS ueel
-                INNER JOIN user AS u ON ueel.user_code = u.user_code
-                LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value' )
-                AND ueel.lesson_id = '5'
-                AND uefp.user_code <> u.user_code
-                GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
+            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+            u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM user AS u
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            WHERE (u.password IS NULL OR u.password = '') AND u.email
+            IN (SELECT email FROM unverified_campaign_mail_log AS ucml
+            WHERE (DATEDIFF('$today', STR_TO_DATE(ucml.created, '%Y-%m-%d')) = '$day_value'))
+            AND u.user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
+            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC";
             break;
         default:
             $query = "";
@@ -199,7 +189,7 @@ GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
     return $query;
 }
 
-function student_auto_mail_send($query, $my_subject_raw, $my_message_raw) {
+function auto_mail_send($query, $my_subject_raw, $my_message_raw, $flag) {
     global $db_handle;
     global $system_object;
 
@@ -218,6 +208,8 @@ function student_auto_mail_send($query, $my_subject_raw, $my_message_raw) {
         $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
 
         $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name);
+        $system_object->unverified_email_campaign_log($client_email, $flag);
+
     }
 
     return true;
@@ -225,130 +217,32 @@ function student_auto_mail_send($query, $my_subject_raw, $my_message_raw) {
 
 //TODO: Refactor and make it dynamic
 
-// Clients who have paid for Foerex Optimizer Course but hav't started
-$interval_1a = 7;
+$interval_1 = 0;
 
-$query_1a = student_auto_mail_query(1, $interval_1a);
-$get_mail_1a = student_auto_mail_template($my_message_1a);
-$send_message_1a = student_auto_mail_send($query_1a, $my_subject_1a, $get_mail_1a);
+$query_1 = mail_query(1, $interval_1);
+$get_mail_1 = mail_template($my_message_1);
+$send_message_1a = auto_mail_send($query_1, $my_subject_1, $get_mail_1, 1);
 
-$interval_1b = 14;
+$interval_2 = 7;
 
-$query_1b = student_auto_mail_query(1, $interval_1b);
-$get_mail_1b = student_auto_mail_template($my_message_1b);
-$send_message_1b = student_auto_mail_send($query_1b, $my_subject_1b, $get_mail_1b);
+$query_2 = mail_query(2, $interval_2);
+$get_mail_2 = mail_template($my_message_2);
+$send_message_2 = auto_mail_send($query_2, $my_subject_2, $get_mail_2, 2);
 
-$interval_1c = 21;
+$interval_3 = 14;
 
-$query_1c = student_auto_mail_query(1, $interval_1c);
-$get_mail_1c = student_auto_mail_template($my_message_1c);
-$send_message_1c = student_auto_mail_send($query_1c, $my_subject_1c, $get_mail_1c);
+$query_3 = mail_query(2, $interval_3);
+$get_mail_3 = mail_template($my_message_3);
+$send_message_3 = auto_mail_send($query_3, $my_subject_3, $get_mail_3, 3);
 
-$interval_1d = 28;
+$interval_4 = 21;
 
-$query_1d = student_auto_mail_query(1, $interval_1d);
-$get_mail_1d = student_auto_mail_template($my_message_1d);
-$send_message_1d = student_auto_mail_send($query_1d, $my_subject_1d, $get_mail_1d);
+$query_4 = mail_query(2, $interval_4);
+$get_mail_4 = mail_template($my_message_4);
+$send_message_4 = auto_mail_send($query_4, $my_subject_4, $get_mail_4, 4);
 
-// Clients who are between Lesson 1-6 of the forex money maker course
-$interval_2a = 14;
+$interval_5 = 28;
 
-$query_2a = student_auto_mail_query(2, $interval_2a);
-$get_mail_2a = student_auto_mail_template($my_message_2a);
-$send_message_2a = student_auto_mail_send($query_2a, $my_subject_2a, $get_mail_2a);
-
-$interval_2b = 28;
-
-$query_2b = student_auto_mail_query(2, $interval_2b);
-$get_mail_2b = student_auto_mail_template($my_message_2b);
-$send_message_2b = student_auto_mail_send($query_2b, $my_subject_2b, $get_mail_2b);
-
-$interval_2c = 32;
-
-$query_2c = student_auto_mail_query(2, $interval_2c);
-$get_mail_2c = student_auto_mail_template($my_message_2c);
-$send_message_2c = student_auto_mail_send($query_2c, $my_subject_2c, $get_mail_2c);
-
-$interval_2d = 46;
-
-$query_2d = student_auto_mail_query(2, $interval_2d);
-$get_mail_2d = student_auto_mail_template($my_message_2d);
-$send_message_2d = student_auto_mail_send($query_2d, $my_subject_2d, $get_mail_2d);
-
-//Clients who have completed course two but have not Funded their accounts
-$interval_3a = 7;
-
-$query_3a = student_auto_mail_query(3, $interval_3a);
-$get_mail_3a = student_auto_mail_template($my_message_3a);
-$send_message_3a = student_auto_mail_send($query_3a, $my_subject_3a, $get_mail_3a);
-
-
-$interval_3b = 14;
-
-$query_3b = student_auto_mail_query(3, $interval_3b);
-$get_mail_3b = student_auto_mail_template($my_message_3b);
-$send_message_3b = student_auto_mail_send($query_3b, $my_subject_3b, $get_mail_3b);
-
-$interval_3c = 21;
-
-$query_3c = student_auto_mail_query(3, $interval_3c);
-$get_mail_3c = student_auto_mail_template($my_message_3c);
-$send_message_3c = student_auto_mail_send($query_3c, $my_subject_3c, $get_mail_3c);
-
-$interval_3d =28;
-
-$query_3d = student_auto_mail_query(3, $interval_3d);
-$get_mail_3d = student_auto_mail_template($my_message_3d);
-$send_message_3d = student_auto_mail_send($query_3d, $my_subject_3d, $get_mail_3d);
-
-//Clients who have completed course two but have not Funded their accounts
-$interval_4a = 15;
-
-$query_4a = student_auto_mail_query(4, $interval_4a);
-$get_mail_4a = student_auto_mail_template($my_message_4a);
-$send_message_4a = student_auto_mail_send($query_4a, $my_subject_4a, $get_mail_4a);
-
-
-$interval_4b = 30;
-
-$query_4b = student_auto_mail_query(4, $interval_4b);
-$get_mail_4b = student_auto_mail_template($my_message_4b);
-$send_message_4b = student_auto_mail_send($query_4b, $my_subject_4b, $get_mail_4b);
-
-$interval_4c = 45;
-
-$query_4c = student_auto_mail_query(4, $interval_4c);
-$get_mail_4c = student_auto_mail_template($my_message_4c);
-$send_message_4c = student_auto_mail_send($query_4c, $my_subject_4c, $get_mail_4c);
-
-$interval_4d = 60;
-
-$query_4d = student_auto_mail_query(4, $interval_4d);
-$get_mail_4d = student_auto_mail_template($my_message_4d);
-$send_message_4d = student_auto_mail_send($query_4d, $my_subject_4d, $get_mail_4d);
-
-//people who have reached lesson 5 of the Forex money maker course.
-$interval_5a = 5;
-
-$query_5a = student_auto_mail_query(5, $interval_5a);
-$get_mail_5a = student_auto_mail_template($my_message_5a);
-$send_message_5a = student_auto_mail_send($query_5a, $my_subject_5a, $get_mail_5a);
-
-
-$interval_5b = 12;
-
-$query_5b = student_auto_mail_query(5, $interval_5b);
-$get_mail_5b = student_auto_mail_template($my_message_5b);
-$send_message_5b = student_auto_mail_send($query_5b, $my_subject_5b, $get_mail_5b);
-
-$interval_5c = 19;
-
-$query_5c = student_auto_mail_query(5, $interval_5c);
-$get_mail_5c = student_auto_mail_template($my_message_5c);
-$send_message_5c = student_auto_mail_send($query_5c, $my_subject_5c, $get_mail_5c);
-
-$interval_5d = 26;
-
-$query_5d = student_auto_mail_query(5, $interval_5d);
-$get_mail_5d = student_auto_mail_template($my_message_5d);
-$send_message_5d = student_auto_mail_send($query_5d, $my_subject_5d, $get_mail_5d);
+$query_5 = mail_query(2, $interval_5);
+$get_mail_5 = mail_template($my_message_5);
+$send_message_5 = auto_mail_send($query_5, $my_subject_5, $get_mail_5, 5);
