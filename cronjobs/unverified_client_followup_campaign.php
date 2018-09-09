@@ -222,7 +222,7 @@ $interval_1 = 0;
 $query_1 = mail_query(1, $interval_1);
 $get_mail_1 = mail_template($my_message_1);
 echo $get_mail_1;
-$send_message_1a = auto_mail_send($query_1, $my_subject_1, $get_mail_1, 1);
+$send_message_1 = auto_mail_send($query_1, $my_subject_1, $get_mail_1, 1);
 
 $interval_2 = 7;
 
