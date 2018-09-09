@@ -87,12 +87,9 @@ class Customer_Care
     {
         global $db_handle;
         $querys = "SELECT email_flag, created FROM unverified_campaign_mail_log WHERE email = '$email'";
-        var_dump($querys);
         $results = $db_handle->runQuery($querys);
-        var_dump($results);
-        $mail_detailss = $db_handle->fetchAssoc($results);
-        var_dump($mail_detailss);
-        return $mail_detailss;
+        $mail_details = $db_handle->fetchAssoc($results);
+        return $mail_details;
     }
 }
 $obj_customer_care_log = new Customer_Care();
