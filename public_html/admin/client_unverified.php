@@ -48,6 +48,15 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
         $display_msg = "Below is a table listing all unverified clients that have enrolled in the FxAcademy.";
         break;
 
+    case 'profile':
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
+                      WHERE (user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL))
+                      AND (user_code NOT IN (SELECT user_code FROM user_ifxaccount))
+                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
+        $filter_category = "Unverified Clients with Profile only";
+        $display_msg = "Below is a table listing all unverified clients that have profile only.";
+        break;
+
     default:
         $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients ";
         $filter_category = "All Unverified Clients";
@@ -88,6 +97,15 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
                       AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
             $filter_category = "Training Clients";
             $display_msg = "Below is a table listing all unverified clients that have enrolled in the FxAcademy.";
+            break;
+
+        case 'profile':
+            $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
+                      WHERE (user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL))
+                      AND (user_code NOT IN (SELECT user_code FROM user_ifxaccount))
+                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
+            $filter_category = "Unverified Clients with Profile only";
+            $display_msg = "Below is a table listing all unverified clients that have profile only.";
             break;
 
         default:
@@ -136,7 +154,6 @@ $result = $db_handle->runQuery($query);
 $unverified_clients = $db_handle->fetchAssoc($result);
 
 $db_handle->closeDB();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -197,6 +214,7 @@ $db_handle->closeDB();
                                                         <li><a onclick="filter('ilpr', 'Clients With ILPR Accounts')" href="javascript:void(0);">Clients With ILPR Accounts</a></li>
                                                         <li><a onclick="filter('nonilpr', 'Clients Without ILPR Accounts')" href="javascript:void(0);">Clients Without ILPR Accounts</a></li>
                                                         <li><a onclick="filter('training', 'Training Clients')" href="javascript:void(0);">Training Clients</a></li>
+                                                        <li><a onclick="filter('profile', 'Unverified clients with profile only')" href="javascript:void(0);">Profile only</a></li>
                                                     </ul>
                                                     <input id="filter_trigger" style="display: none" name="filter" type="submit">
                                                     <input id="filter_value" name="filter_value" type="hidden">
@@ -258,12 +276,15 @@ $db_handle->closeDB();
                                             <td nowrap="nowrap">
                                                 <a title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_unverified'; ?>&c=<?php echo encrypt('UNVERIFIED CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a target="_blank" title="View Campaign Mail Status" class="btn btn-xs btn-primary" href="email_log_details.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-envelope icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
-                                
+
+
+
                                 <?php if(isset($unverified_clients) && !empty($unverified_clients)) { ?>
                                 <div class="tool-footer text-right">
                                     <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>

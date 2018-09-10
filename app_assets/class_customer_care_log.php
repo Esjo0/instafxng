@@ -83,5 +83,13 @@ class Customer_Care
         $db_handle->runQuery($query);
         return $db_handle->affectedRows() > 0 ? true : false;
     }
+    public function get_email_log($email)
+    {
+        global $db_handle;
+        $querys = "SELECT email_flag, created FROM unverified_campaign_mail_log WHERE email = '$email'";
+        $results = $db_handle->runQuery($querys);
+        $mail_details = $db_handle->fetchAssoc($results);
+        return $mail_details;
+    }
 }
 $obj_customer_care_log = new Customer_Care();

@@ -4,6 +4,19 @@
 * Table: partner
 * Column: status
 */
+
+function position_status($number) {
+    switch ($number) {
+        case '1': $position = "1st"; break;
+        case '2': $position = "2nd"; break;
+        case '3': $position = "3rd"; break;
+        case '4': $position = "4th"; break;
+        case '5': $position = "5th"; break;
+        default: $position = "$number"; break;
+    }
+    return $position;
+}
+
 function partner_status($status) {
     switch ($status) {
         case '1': $message = "New"; break;
