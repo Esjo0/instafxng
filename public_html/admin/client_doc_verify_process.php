@@ -179,6 +179,7 @@ if($get_params['x'] == 'edit') {
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
                                             <button type="button" data-target="#document-verification-confirm" data-toggle="modal" class="btn btn-success"><i class="fa fa-save fa-fw"></i> Save</button>
+                                            <input name="pending" type="submit" class="btn btn-primary" value="Pending">
                                         </div>
                                     </div>
 
