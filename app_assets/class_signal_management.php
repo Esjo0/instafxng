@@ -458,10 +458,10 @@ analysis;
                                             <small>
                                     <table class="table table-hover table-sm">
                                         <tr>
-                                            <td>Triggered @ {$open_date}</td>
+                                            <td>{$display1} at {$closed_date}</td>
                                         </tr>
                                         <tr>
-                                            <td>{$display1} at {$closed_date}</td>
+                                            <td>Triggered @ {$open_date}</td>
                                         </tr>
                                        $draw_down
                                        $high
