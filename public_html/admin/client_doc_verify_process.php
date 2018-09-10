@@ -42,6 +42,7 @@ if (isset($_POST['process'])) {
 if($get_params['x'] == 'edit') {
     if(!empty($user_credential_id)) {
         $selected_user_docs = $client_operation->get_user_verification_docs($user_credential_id);
+        $verification_remark = $client_operation->get_verification_remark($user_credential_id);
     }
 }
 
@@ -82,7 +83,7 @@ if($get_params['x'] == 'edit') {
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-8">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <p><a href="client_doc_verify.php" class="btn btn-default" title="Verify Documents"><i class="fa fa-arrow-circle-left"></i> Verify Documents</a></p>
 
@@ -202,6 +203,33 @@ if($get_params['x'] == 'edit') {
                                     </div>
                                 </form>
                                 
+                            </div>
+                            <div class="col-sm-4">
+                                <h5>Verification Remarks</h5>
+                                <div style="max-height: 550px; overflow: scroll;">
+                                    <?php
+                                    if(isset($trans_remark) && !empty($trans_remark)) {
+                                        foreach ($trans_remark as $row) {
+                                            ?>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="transaction-remarks">
+                                                        <span id="trans_remark_author"><?php echo $row['admin_full_name']; ?></span>
+                                                        <span id="trans_remark"><?php echo $row['comment']; ?></span>
+                                                        <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } } else { ?>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="transaction-remarks">
+                                                    <span class="text-danger"><em>There is no remark to display.</em></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
                             </div>
                         </div>
                     </div>

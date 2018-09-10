@@ -2,7 +2,20 @@
 
 class clientOperation {
     private $client_data;
-    
+
+    public function get_verification_remark($user_credential_id) {
+        global $db_handle;
+
+        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, uedc.comment, uedc.created
+                FROM user_edu_deposits_comment AS uedc
+                INNER JOIN admin AS a ON uedc.admin_code = a.admin_code
+                WHERE uedc.trans_id = '$trans_id' ORDER BY uedc.created DESC";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+
+    }
     public function __construct($ifx_account = '', $email_address = '') {
         if(isset($ifx_account) && !empty($ifx_account)) {
             $this->client_data = $this->set_client_data($ifx_account);
