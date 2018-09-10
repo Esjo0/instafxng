@@ -1,6 +1,10 @@
-UPDATE `signal_daily` SET `pips` = '7' WHERE `signal_daily`.`signal_id` = 175
+UPDATE `signal_daily` SET `highest_pips` = '7' WHERE `signal_daily`.`signal_id` = 175
 
-UPDATE `signal_daily` SET `pips` = '8' WHERE `signal_daily`.`signal_id` = 176
+UPDATE `signal_daily` SET `highest_pips` = '8' WHERE `signal_daily`.`signal_id` = 176
+
+UPDATE `signal_daily` SET `pips` = '0' WHERE `signal_daily`.`signal_id` = 175
+
+UPDATE `signal_daily` SET `pips` = '0' WHERE `signal_daily`.`signal_id` = 176
 
 ALTER TABLE `signal_daily` CHANGE `highest_pips` `highest_pips` INT(100) NULL DEFAULT '0', CHANGE `lowest_pips` `lowest_pips` INT(100) NULL DEFAULT '0';
 
