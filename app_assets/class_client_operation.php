@@ -6,10 +6,10 @@ class clientOperation {
     public function get_verification_remark($user_credential_id) {
         global $db_handle;
 
-        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, uedc.comment, uedc.created
-                FROM user_edu_deposits_comment AS uedc
-                INNER JOIN admin AS a ON uedc.admin_code = a.admin_code
-                WHERE uedc.trans_id = '$trans_id' ORDER BY uedc.created DESC";
+        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, ucr.remark, ucr.created
+                FROM user_credential_remark AS ucr
+                INNER JOIN admin AS a ON ucr.admin = a.admin_code
+                WHERE ucr.credential_id = '$user_credential_id' ORDER BY ucr.created DESC";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -703,6 +703,15 @@ MAIL;
         return $db_handle->numOfRows($result) > 0 ? $fetched_data[0] : false;
     }
 
+    public function update_verification_remark($id, $admin_code, $remark ) {
+        global $db_handle;
+        $query = "INSERT INTO user_credential_remark(credential_id, remark, admin) VALUES
+            ('$id', '$remark', '$admin_code')";
+        $db_handle->runQuery($query);
+
+        return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
     public function update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks) {
         global $db_handle;
         global $system_object;
@@ -715,7 +724,7 @@ MAIL;
         $fetched_data = $db_handle->fetchAssoc($result);
         extract($fetched_data[0]);
 
-        $query = "UPDATE user_credential SET status = '2', doc_status = '$doc_status', remark = '$remarks' WHERE user_credential_id = $credential_id LIMIT 1";
+        $query = "UPDATE user_credential SET status = '2', doc_status = '$doc_status', WHERE user_credential_id = $credential_id LIMIT 1";
         $db_handle->runQuery($query);
 
         $query = "UPDATE user_meta SET status = '$address_status' WHERE user_meta_id = $meta_id LIMIT 1";

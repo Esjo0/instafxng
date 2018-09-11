@@ -4,12 +4,30 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$admin_code = $_SESSION['admin_unique_code'];
+
 $get_params = allowed_get_params(['x', 'id']);
 $user_credential_id_encrypted = $get_params['id'];
 $user_credential_id = decrypt(str_replace(" ", "+", $user_credential_id_encrypted));
 $user_credential_id = preg_replace("/[^A-Za-z0-9 ]/", '', $user_credential_id);
-
+$credential_remark_id = encrypt($user_credential_id);
 $client_operation = new clientOperation();
+
+if (isset($_POST['pending'])) {
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+    extract($_POST);
+    $update_remark = $client_operation->update_verification_remark($credential_remark_id, $admin_code, $remarks);
+    $query = "UPDATE user_credential SET status = 3 WHERE user_credential_id = $user_credential_id";
+    $result = $db_handle->runQuery($query);
+    if($update_remark && $result) {
+        $message_success = "You have successfully pend this verification and updated this comment";
+        //redirect_to("client_doc_verify.php");
+    } else {
+        $message_error = "Looks like something went wrong or you didn't make any change.Its me";
+    }
+}
 
 if (isset($_POST['process'])) {
     foreach($_POST as $key => $value) {
@@ -29,7 +47,7 @@ if (isset($_POST['process'])) {
     } else {
         $doc_status = $id_card_status . $passport_status . $signature_status;
         $update_verification = $client_operation->update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks);
-
+        $update_remark = $client_operation->update_verification_remark($credential_remark_id, $admin_code, $remarks);
         if($update_verification) {
             $message_success = "You have successfully updated the account";
             redirect_to("client_doc_verify.php");
@@ -42,7 +60,8 @@ if (isset($_POST['process'])) {
 if($get_params['x'] == 'edit') {
     if(!empty($user_credential_id)) {
         $selected_user_docs = $client_operation->get_user_verification_docs($user_credential_id);
-        $verification_remark = $client_operation->get_verification_remark($user_credential_id);
+        $credential_remark_id = encrypt($user_credential_id);
+        $verification_remark = $client_operation->get_verification_remark($credential_remark_id);
     }
 }
 
@@ -128,7 +147,7 @@ if($get_params['x'] == 'edit') {
                                             <div class="row">
                                                 <div class="col-sm-4">
                                                     <span class="text-danger text-center">Passport</span>
-                                                    <a href="../userfiles/<?php echo $selected_user_docs['passport']; ?>" title="click to enlarge" target="_blank"><img src="../userfiles/<?php echo $selected_user_docs['passport']; ?>" width="180px" height="180px"/></a>
+                                                    <a href="../userfiles/<?php echo $selected_user_docs['passport']; ?>" title="click to enlarge" target="_blank"><img src="../userfiles/<?php echo $selected_user_docs['passport']; ?>" width="120px" height="120px"/></a>
                                                     <div class="radio">
                                                         <label><input type="radio" name="passport_status" value="1" required>Approve</label>
                                                     </div>
@@ -138,7 +157,7 @@ if($get_params['x'] == 'edit') {
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <span class="text-danger text-center">ID Card</span>
-                                                    <a href="../userfiles/<?php echo $selected_user_docs['idcard']; ?>" title="click to enlarge" target="_blank"><img src="../userfiles/<?php echo $selected_user_docs['idcard']; ?>" width="180px" height="180px"/></a>
+                                                    <a href="../userfiles/<?php echo $selected_user_docs['idcard']; ?>" title="click to enlarge" target="_blank"><img src="../userfiles/<?php echo $selected_user_docs['idcard']; ?>" width="120px" height="120px"/></a>
                                                     <div class="radio">
                                                         <label><input type="radio" name="id_card_status" value="1" required>Approve</label>
                                                     </div>
@@ -148,7 +167,7 @@ if($get_params['x'] == 'edit') {
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <span class="text-danger text-center">Signature</span>
-                                                    <a href="../userfiles/<?php echo $selected_user_docs['signature']; ?>" title="click to enlarge" target="_blank"><img src="../userfiles/<?php echo $selected_user_docs['signature']; ?>" width="180px" height="180px"/></a>
+                                                    <a href="../userfiles/<?php echo $selected_user_docs['signature']; ?>" title="click to enlarge" target="_blank"><img src="../userfiles/<?php echo $selected_user_docs['signature']; ?>" width="120px" height="120px"/></a>
                                                     <div class="radio">
                                                         <label><input type="radio" name="signature_status" value="1" required>Approve</label>
                                                     </div>
@@ -174,7 +193,7 @@ if($get_params['x'] == 'edit') {
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="remarks">Your Remark:</label>
                                         <div class="col-sm-10 col-lg-8">
-                                            <textarea name="remarks" id="remarks" rows="3" class="form-control" required><?php if(isset($selected_user_docs['remark'])) { echo $selected_user_docs['remark']; } ?></textarea>
+                                            <textarea name="remarks" id="remarks" rows="3" class="form-control"><?php if(isset($selected_user_docs['remark'])) { echo $selected_user_docs['remark']; } ?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -208,14 +227,14 @@ if($get_params['x'] == 'edit') {
                                 <h5>Verification Remarks</h5>
                                 <div style="max-height: 550px; overflow: scroll;">
                                     <?php
-                                    if(isset($trans_remark) && !empty($trans_remark)) {
-                                        foreach ($trans_remark as $row) {
+                                    if(isset($verification_remark) && !empty($verification_remark)) {
+                                        foreach ($verification_remark as $row) {
                                             ?>
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="transaction-remarks">
                                                         <span id="trans_remark_author"><?php echo $row['admin_full_name']; ?></span>
-                                                        <span id="trans_remark"><?php echo $row['comment']; ?></span>
+                                                        <span id="trans_remark"><?php echo $row['remark']; ?></span>
                                                         <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
                                                     </div>
                                                 </div>
