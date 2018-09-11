@@ -3,13 +3,14 @@
 class clientOperation {
     private $client_data;
 
-    public function get_verification_remark($user_credential_id) {
+    public function get_verification_remark($user_code) {
         global $db_handle;
-
-        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, ucr.remark, ucr.created
-                FROM user_credential_remark AS ucr
-                INNER JOIN admin AS a ON ucr.admin = a.admin_code
-                WHERE ucr.credential_id = '$user_credential_id' ORDER BY ucr.created DESC";
+        $pointer = "user_credential";
+        $pointer = $pointer . ": ";
+        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, scc.comment, scc.created
+                FROM sales_contact_comment AS scc
+                INNER JOIN admin AS a ON scc.admin_code = a.admin_code
+                WHERE scc.user_code = '$user_code' AND scc.comment LIKE '%$pointer%' ORDER BY scc.created DESC";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -677,7 +678,7 @@ MAIL;
     public function get_user_verification_docs($user_credential_id) {
         global $db_handle;
 
-        $query = "SELECT uc.user_credential_id, uc.idcard, uc.passport, uc.signature, uc.doc_status,
+        $query = "SELECT uc.user_code, uc.user_credential_id, uc.idcard, uc.passport, uc.signature, uc.doc_status,
                 CONCAT(um.address, SPACE(1), um.city, SPACE(1), s.state) AS full_address, um.user_meta_id,
                 GROUP_CONCAT(DISTINCT ui.ifx_acct_no) AS ifx_accounts,
                 u.phone, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code
@@ -703,11 +704,11 @@ MAIL;
         return $db_handle->numOfRows($result) > 0 ? $fetched_data[0] : false;
     }
 
-    public function update_verification_remark($id, $admin_code, $remark ) {
+    public function update_verification_remark($user_code, $admin_code, $remark ) {
         global $db_handle;
-        $referral_title = "user_credential";
-        $comment = $referral_title . ": " . $remark;
-        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$id', '$admin_code', '$comment')";
+        $pointer = "user_credential";
+        $comment = $pointer . ": " . $remark;
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$comment')";
         $result = $db_handle->runQuery($query);
         return $result;
     }
