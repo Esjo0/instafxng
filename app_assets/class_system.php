@@ -1103,7 +1103,20 @@ class InstafxngSystem {
 
         return $current_position ? $current_position : false;
     }
-    
+
+    public function unverified_email_campaign_log($email, $flag)
+    {
+        global $db_handle;
+        $query = "INSERT INTO unverified_campaign_mail_log (email, email_flag) VALUES('$email', '$flag')";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
 
 $system_object = new InstafxngSystem();

@@ -381,7 +381,7 @@ MAIL;
             };
             if (!empty($market_price) && !empty($price)) {
                 $diff = $this->get_pips($symbol_id, $market_price, $price);
-                $display = $this->get_pips_display($order_type, $diff);
+                if(($diff >= 0) && ($diff <= 100)){$display = $this->get_pips_display($order_type, $diff);}else{$display = 0;}
             } else {
                 $display = 0;
             }
@@ -458,10 +458,10 @@ analysis;
                                             <small>
                                     <table class="table table-hover table-sm">
                                         <tr>
-                                            <td>Triggered @ {$open_date}</td>
+                                            <td>{$display1} at {$closed_date}</td>
                                         </tr>
                                         <tr>
-                                            <td>{$display1} at {$closed_date}</td>
+                                            <td>Triggered @ {$open_date}</td>
                                         </tr>
                                        $draw_down
                                        $high

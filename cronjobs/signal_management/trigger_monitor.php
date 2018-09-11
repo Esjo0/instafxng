@@ -22,20 +22,20 @@ if (!empty($scheduled_signals)) {
         if($decimal_place == 2){$decimal_place = 0.05;}
 
         //Get High and low for sell
-        if($row['trigger_status'] == 1 && ($row['order_type'] == 2) && !empty($response[0]['price']) && ($response[0]['price'] != 0)){
+        if(($row['trigger_status'] == 1) && ($row['order_type'] == 2) && !empty($response[0]['price']) && ($response[0]['price'] != 0)){
             $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
             $pips = $pips * -1;
-            if(($pips > $row['highest_pips']) && ($pips > 1)) {
+            if(($pips > $row['highest_pips']) && ($pips >= 1) && ($pips <= 100)) {
                     $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1, '', $pips, '');
             }
-            if(($pips < $row['lowest_pips']) && ($pips < -1)){
+            if(($pips < $row['lowest_pips']) && ($pips < -1) ){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', '', 1, '', $pips);
             }
         }
         //Get High and low for buy
-        if($row['trigger_status'] == 1 && ($row['order_type'] == 1) && !empty($response[0]['price']) && ($response[0]['price'] != 0)){
+        if(($row['trigger_status'] == 1) && ($row['order_type'] == 1) && !empty($response[0]['price']) && ($response[0]['price'] != 0)){
             $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
-            if(($pips > $row['highest_pips']) && ($pips > 1)){
+            if(($pips > $row['highest_pips']) && ($pips >= 1) && ($pips <= 100)){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1, '', $pips, '');
             }
             if(($pips < $row['lowest_pips']) && ($pips < -1)){
