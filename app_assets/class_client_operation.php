@@ -705,11 +705,11 @@ MAIL;
 
     public function update_verification_remark($id, $admin_code, $remark ) {
         global $db_handle;
-        $query = "INSERT INTO user_credential_remark(credential_id, remark, admin) VALUES
-            ('$id', '$remark', '$admin_code')";
-        $db_handle->runQuery($query);
-
-        return $db_handle->affectedRows() > 0 ? true : false;
+        $referral_title = "user_credential";
+        $comment = $referral_title . ": " . $remark;
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$id', '$admin_code', '$comment')";
+        $result = $db_handle->runQuery($query);
+        return $result;
     }
 
     public function update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks) {
