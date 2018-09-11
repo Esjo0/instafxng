@@ -11,6 +11,32 @@ $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
 
 $client_operation = new clientOperation();
+// get date for each level of verification cliengt has gotten to.
+$query = "SELECT created FROM user_verification WHERE phone_status = '2' AND user_code = '$user_code' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$level_1 = $db_handle->fetchAssoc($result);
+    foreach($level_1 AS $row){
+        extract($row);
+        $level_1_date = $created;
+    }
+
+$query = "SELECT uc.created FROM user_credential AS uc
+            LEFT JOIN user_meta AS um ON uc.user_code = um.user_code
+            WHERE uc.doc_status = '111' AND um.status = '2' AND uc.user_code = '$user_code' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$level_2 = $db_handle->fetchAssoc($result);
+foreach($level_2 AS $row){
+    extract($row);
+    $level_2_date = $created;
+}
+
+$query = "SELECT created FROM user_bank WHERE is_active = '1' AND status = '2' AND user_code = '$user_code' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$level_3 = $db_handle->fetchAssoc($result);
+foreach($level_3 AS $row){
+    extract($row);
+    $level_3_date = $created;
+}
 
 if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
     redirect_to("./"); // page cannot display anything without the id
@@ -117,6 +143,28 @@ $mail_detailss = $db_handle->fetchAssoc($results);
                                 <!------------- Contact Section --->
                                 <div class="row">
                                     <div class="col-sm-6">
+                                        <span class="span-title">Client Name</span>
+                                        <p class="text-right"><em><?php echo $account_officer_full_name; ?></em></p>
+                                        <span class="span-title">Current Verification Status</span>
+                                        <p><?php echo $verification_level; ?></p>
+                                        <span class="span-title">Verification Status with date</span>
+                                        <table class="table table-hover table-responsive">
+                                            <tr>
+                                                <th>Status</th>
+                                                <th>Date</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Level 1</td><td><?php if(!empty($level_1_date)){echo datetime_to_text($level_1_date);}else{ echo "No Action Yet";} ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Level 2</td><td><?php if(!empty($level_2_date)){echo datetime_to_text($level_2_date);}else{ echo "No Action Yet";} ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Level 3</td><td><?php if(!empty($level_3_date)){echo datetime_to_text($level_3_date);}else{ echo "No Action Yet";} ?></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-6">
 
                                         <span class="span-title">Email Campaign Details</span>
                                         <table class="table table-responsive">
@@ -137,13 +185,6 @@ $mail_detailss = $db_handle->fetchAssoc($results);
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <span class="span-title">Client Name</span>
-                                        <p class="text-right"><em><?php echo $account_officer_full_name; ?></em></p>
-                                        <span class="span-title">Verification Status</span>
-                                        <p><?php echo $verification_level; ?></p>
-                                        </div>
-                                
                                 <hr />
                                         <div class="col-sm-12">
                                         <h5>Recent Transactions</h5>
