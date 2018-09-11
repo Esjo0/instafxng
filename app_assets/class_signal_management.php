@@ -381,7 +381,7 @@ MAIL;
             };
             if (!empty($market_price) && !empty($price)) {
                 $diff = $this->get_pips($symbol_id, $market_price, $price);
-                $display = $this->get_pips_display($order_type, $diff);
+                if(($diff >= 0) && ($diff <= 100)){$display = $this->get_pips_display($order_type, $diff);}else{$display = 0;}
             } else {
                 $display = 0;
             }
