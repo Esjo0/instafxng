@@ -106,13 +106,14 @@ if (isset($_POST['login'])) {
         });
         </script>
     <style>
-    @media only screen and (max-width: 1000px) {
-    #img_div {
-    display: none;
-    }
-    }
-    @media only screen and (min-width: 1000px) {
+    @media (min-width: 1300px){
         #img_div_2 {
+            display: none;
+        }
+    }
+
+    @media (max-width: 1280px){
+        #img_div {
             display: none;
         }
     }
