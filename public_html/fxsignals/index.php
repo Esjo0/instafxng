@@ -93,21 +93,45 @@ if (isset($_POST['login'])) {
 <!---->
 <!--    <!-- Custom styles for this template -->
     <link href="../css/fxsignals.min.css" rel="stylesheet">
+    <script>
+        $(document).ready(function () {
+
+            if (screen.width < 1024) {
+                document.getElementById('img_div').style.display = 'none';
+            }
+            else {
+                document.getElementById('img_div').style.display = 'block';
+            }
+
+        });
+        </script>
+    <style>
+    @media only screen and (max-width: 1000px) {
+    #img_div {
+    display: none;
+    }
+    }
+    @media only screen and (min-width: 1000px) {
+        #img_div_2 {
+            display: none;
+        }
+    }
+    </style>
 </head>
 
-<body>
-
-<div class="overlay"><img height="100%" width="100%" class="img img-responsive" src="../images/signal_bg.png"></div>
-<!--<video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">-->
-<!--    <source src="mp4/bg.mp4" type="video/mp4">-->
-<!--</video>-->
+<body style="background: white" >
+                    <div  id="img_div" class="col-sm-5 pull-right" style="margin-right:120px; margin-top:150px;" >
+                        <img height="100%" width="100%" class="img img-responsive img-thumbnail" src="../images/signal_img.jpg" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                    </div>
 <div class="masthead">
-<div class="masthead-bg" style="background-color: rgba(202, 45, 37, 0.73)"></div>
-    <div class="container h-100">
+<div class="masthead-bg" style="background-color: #e74c3c"></div>
+     <div class="container h-100">
         <div class="row h-100">
             <div class="col-12 my-auto">
                 <div class="masthead-content text-white py-5 py-md-0">
-                    <img src="../images/ifxlogo.png">
+                    <div style="margin-bottom: 20px">
+                        <img style="background: white" class="img img-responsive" src="../images/ifxlogo.png">
+                    </div>
                     <h1 class="mb-3">WELCOME!</h1>
 
                     <p class="mb-5"><b>Trade the markets by following the best free trading signals! From InstaFxNg</b><br/>
@@ -117,7 +141,7 @@ if (isset($_POST['login'])) {
                     <div class="input-group input-group-newsletter">
                         <input value="<?php echo $email ?>" type="email" maxlength="50" name="email" class="form-control" placeholder="Enter email..." aria-label="Enter email..." aria-describedby="basic-addon">
                         <div class="input-group-append">
-                            <button class="btn btn-secondary" type="submit" name="login">Proceed!</button>
+                            <button class="btn btn-danger" type="submit" name="login">Proceed!</button>
                         </div>
                     </div>
                     <?php if ($get_phone_and_name) { ?>
@@ -134,9 +158,12 @@ if (isset($_POST['login'])) {
                             </div>
                     <?php } ?>
                     </form>
+                    <img id="img_div_2" height="100%" width="100%" class="img img-responsive img-thumbnail" src="../images/signal_img.jpg" style="margin-top: 50px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+
                 </div>
+
             </div>
-        </div>
+            </div>
     </div>
 </div>
 
