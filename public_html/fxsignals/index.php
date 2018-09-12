@@ -121,7 +121,7 @@ if (isset($_POST['login'])) {
 
 <body style="background: white" >
                     <div  id="img_div" class="col-sm-5 pull-right" style="margin-right:120px; margin-top:150px;" >
-                        <img height="100%" width="100%" class="img img-responsive img-thumbnail" src="../images/signal_img.png" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                        <img height="100%" width="100%" class="img img-responsive img-thumbnail" src="../images/signal_img.jpg" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
                     </div>
 <div class="masthead">
 <div class="masthead-bg" style="background-color: #e74c3c"></div>
@@ -158,7 +158,7 @@ if (isset($_POST['login'])) {
                             </div>
                     <?php } ?>
                     </form>
-                    <img id="img_div_2" height="100%" width="100%" class="img img-responsive img-thumbnail" src="../images/signal_img.png" style="margin-top: 50px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                    <img id="img_div_2" height="100%" width="100%" class="img img-responsive img-thumbnail" src="../images/signal_img.jpg" style="margin-top: 50px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
 
                 </div>
 
