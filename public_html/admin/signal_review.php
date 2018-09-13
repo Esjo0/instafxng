@@ -34,7 +34,7 @@ $result_profit = $db_handle->fetchAssoc($result_profit);
 foreach($result_profit AS $row){
     extract($row);
     $Total_profit = abs($Total_profit);
-    $Total_profit = $Total_profit++;
+    $Total_profit = $Total_profit + $Total_profit;
 }
 
 $query_loss = "SELECT pips AS Total_loss FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Stop Loss')";
@@ -43,7 +43,7 @@ $result_loss = $db_handle->fetchAssoc($result_loss);
 foreach($result_loss AS $row){
     extract($row);
     $Total_loss = abs($Total_loss);
-    $Total_loss = $Total_loss++;
+    $Total_loss = $Total_loss + $Total_loss;
 }
 
 //$query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
