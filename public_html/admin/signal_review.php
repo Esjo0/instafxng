@@ -31,19 +31,22 @@ $total_Signals_users = $db_handle->numRows("SELECT email FROM signal_users");
 $query_profit = "SELECT pips AS Total_profit FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Take Profit')";
 $result_profit = $db_handle->runQuery($query_profit);
 $result_profit = $db_handle->fetchAssoc($result_profit);
+
+$sum_of_profit = 0;
 foreach($result_profit AS $row){
     extract($row);
     $Total_profit = abs($Total_profit);
-    $Total_profit = $Total_profit + $Total_profit;
+    $sum_of_profit += $Total_profit;
 }
 
 $query_loss = "SELECT pips AS Total_loss FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Stop Loss')";
 $result_loss= $db_handle->runQuery($query_loss);
 $result_loss = $db_handle->fetchAssoc($result_loss);
+$sum_of_loss = 0;
 foreach($result_loss AS $row){
     extract($row);
     $Total_loss = abs($Total_loss);
-    $Total_loss = $Total_loss + $Total_loss;
+    $sum_of_loss += $Total_loss;
 }
 
 //$query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
