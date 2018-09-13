@@ -161,25 +161,19 @@ function mail_query($query_type, $day_value) {
     $today = date('Y-m-d');
     switch($query_type) {
         case 1:
-            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
-            u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            $query = "SELECT u.user_code, u.first_name,u.email
             FROM user AS u
-            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE (u.password IS NULL OR u.password = '') AND u.email NOT IN (SELECT email FROM unverified_campaign_mail_log)
-            AND u.user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
+            AND u.user_code NOT IN (SELECT U.user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
             GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC";
             break;
         case 2:
-            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
-            u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            $query = "SELECT u.user_code, u.first_name,u.email
             FROM user AS u
-            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE (u.password IS NULL OR u.password = '') AND u.email
             IN (SELECT email FROM unverified_campaign_mail_log AS ucml
             WHERE (DATEDIFF('$today', STR_TO_DATE(ucml.created, '%Y-%m-%d')) = '$day_value'))
-            AND u.user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
+            AND u.user_code NOT IN (SELECT U.user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
             GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC";
             break;
         default:
