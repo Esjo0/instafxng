@@ -206,7 +206,7 @@ function table_context($trigger_status){
                             </div>
                             <div class="col-sm-6">
                                 <div id="donutchart" ></div>
-                                <p class="text-center">Total Profit : <span style="color:green !important;"><?php echo $Total_profit;?></span>pips || Total Loss : <span style="color:red !important;">-<?php echo $Total_loss;?></span>pips</p>
+                                <p class="text-center">Total Profit : <span style="color:green !important;"><?php echo $sum_of_profit;?></span>pips || Total Loss : <span style="color:red !important;">-<?php echo $sum_of_loss;?></span>pips</p>
                             </div>
                         </div>
 
