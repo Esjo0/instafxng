@@ -143,8 +143,10 @@ $mail_detailss = $db_handle->fetchAssoc($results);
                                 <!------------- Contact Section --->
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <span class="span-title">Client Name</span>
+                                        <span class="span-title">Account Officer</span>
                                         <p class="text-right"><em><?php echo $account_officer_full_name; ?></em></p>
+                                        <span class="span-title">Client Name</span>
+                                        <p><em><?php echo $full_name; ?></em></p>
                                         <span class="span-title">Current Verification Status</span>
                                         <p><?php echo $verification_level; ?></p>
                                         <span class="span-title">Verification Status with date</span>
