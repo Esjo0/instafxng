@@ -3,24 +3,24 @@ set_include_path('/home/tboy9/public_html/init/');
 //set_include_path('../public_html/init/');
 require_once 'initialize_general.php';
 //Paid for the Forex optimizer Course but have not started
-$my_subject_1 = "Anything for You [NAME]…";
+$my_subject_1 = "Anything for You [NAME]";
 $my_message_1 =
     <<<MAIL
 <p>Hello [NAME]</p>
 <p>How are you today?</p>
 <p>Been a while I heard from you</p>
-<p>This is Mercy, from InstaForex Nigeria I thought to check up on you since I haven’t seen you lately.</p>
-<p>Hope you’re doing really great.</p>
+<p>This is Mercy, from InstaForex Nigeria I thought to check up on you since I haven't seen you lately.</p>
+<p>Hope you're doing really great.</p>
 <p>As you know, there are endless opportunities to earn from the Forex market and I would want you to take the best of these opportunities as they come</p>
-<p>I’m ready to work with you to make this journey a very profitable one so let’s consider it our little project.</p>
-<p>Have you ever encountered any challenge trading Forex? Are you skeptical about this Forex trading thing and you don’t even know how to start?</p>
-<p>Whatever it is, I’m right here waiting patiently to take your hands and walk you through this journey to the point of profitable trading.</p>
+<p>I'm ready to work with you to make this journey a very profitable one so let's consider it our little project.</p>
+<p>Have you ever encountered any challenge trading Forex? Are you skeptical about this Forex trading thing and you don't even know how to start?</p>
+<p>Whatever it is, I'm right here waiting patiently to take your hands and walk you through this journey to the point of profitable trading.</p>
 <p>To make this work, please share your experience and challenges with me by <a href="mailto:support@instafxng.com?subject=Challenges%20Faced%20Trading%20%20on%20InstaForex%20Platform%20&body=Hello%20Mercy,%0A%0AHere%20are%20the%20Challenges%20%20Faced.%0A%0A%20Please%20type%20your%20challenges%20below.%0A%0AThanks!">clicking here</a></p>
-<p>As agreed earlier, I’m ready to attend to you and assist you on the journey to making consistent income from Forex trading so don’t delay.</p>
+<p>As agreed earlier, I'm ready to attend to you and assist you on the journey to making consistent income from Forex trading so don't delay.</p>
 <p>There are 40 slots available for this month and they are filled on a first come first served basis.</p>
 <p>As soon as I get the 40th response, this session will be closed and you might have to wait till December to get another chance.</p>
 <p>Do ensure to share it with me <a href="mailto:support@instafxng.com?subject=Challenges%20Faced%20Trading%20%20on%20InstaForex%20Platform%20&body=Hello%20Mercy,%0A%0AHere%20are%20the%20Challenges%20%20Faced.%0A%0A%20Please%20type%20your%20challenges%20below.%0A%0AThanks!">here</a>.</p>
-<p>I’ll be on the other side waiting to hear from you.</p>
+<p>I'll be on the other side waiting to hear from you.</p>
 MAIL;
 
 $my_subject_2 = "You are the Next Target!";
@@ -30,14 +30,14 @@ $my_message_2 =
 <p>How are you today?</p>
 <p>A lot of amazing things have been happening and you sure have been MIA (missing in action)!</p>
 <p>Over the last 2 months, we have produced about a thousand profitable InstaForex traders who are consistently making profits from their trades and are gainfully increasing their take home cash every day.</p>
-<p>We would like to get you there too as our pride lies in your success as Forex traders so let’s pick it up from where you stopped because you are long overdue for back to back profits.</p>
+<p>We would like to get you there too as our pride lies in your success as Forex traders so let's pick it up from where you stopped because you are long overdue for back to back profits.</p>
 <p>We are ready to catapult you to the top.</p>
 <p>To make this happen, we are going to increase whatever you deposit into your InstaForex account this month!</p>
 <p>Grab a deposit bonus! Certainly, you are eligible for 30-130% bonus on your deposits only if you take action right now.</p>
-<p>This offer is open for 3 weeks only and we’re not sure we’ll let out this offer again anytime soon.</p>
+<p>This offer is open for 3 weeks only and we're not sure we'll let out this offer again anytime soon.</p>
 <p><a href="mailto:support@instafxng.com?subject=What%20Bonus%20can%20I%20Claim%20&body=Hi%20Mercy,%20kindly%20%20advice%20me%20on%20the%20best%20bonus%20available.%0A%0AThanks!">
-Click here to find out the bonus applicable to you</a> and we’ll guide you through immediately.</p>
-<p> [NAME], you are the next profitable trader to emerge and I won’t let you do this alone!</p>
+Click here to find out the bonus applicable to you</a> and we'll guide you through immediately.</p>
+<p> [NAME], you are the next profitable trader to emerge and I won't let you do this alone!</p>
 <p><a href="http://bit.ly/2hnVw7d">Click here to make your deposit now and claim your deposit right away!</a></p>
 MAIL;
 
@@ -50,14 +50,14 @@ $my_message_3 =
 <p>Another friend took the risk and made his decision, he invested just $100 and became wealthy when bitcoins became a hit. </p>
 <p>I missed the opportunity and now bitcoins cost more to invest in. I learnt my lesson the hard way.</p>
 <p>If Bitcoin had become a failed project, he would have lost $100 (N36,100) and nobody would have probably heard of this loss, but Bitcoin is a success, so he became a millionaire and everyone celebrates him.</p>
-<p>When starting out a business, it’s important that you plan, research and take action immediately.</p>
+<p>When starting out a business, it's important that you plan, research and take action immediately.</p>
 <p>What has been holding you back [NAME]?</p>
-<p>You were ready to start earning in dollars when you signed up with us, don’t be stuck there! Houses are not left in an architect’s plan, so start building.</p>
-<p>Are you totally new to Forex and you haven’t had any education on how to trade Forex profitably, this is for you! Click <a href="http://bit.ly/2iExTpN">here</a> to start learning how to trade Forex for Free.</p>
+<p>You were ready to start earning in dollars when you signed up with us, don't be stuck there! Houses are not left in an architect's plan, so start building.</p>
+<p>Are you totally new to Forex and you haven't had any education on how to trade Forex profitably, this is for you! Click <a href="http://bit.ly/2iExTpN">here</a> to start learning how to trade Forex for Free.</p>
 <p>Are you way you are way past the learning stage, take action now. </p>
 <p>All the tools you need to trade profitably have been provided, click here to top up your account and <a href="http://bit.ly/2KEWxWQ">here</a> to subscribe to a profit making strategy designed to book you up to 30-100 pips daily.</p>
-<p>Don’t be like me! There is nothing such as overnight success, you have to make the move now!</p>
-<p>I’ll love to guide you further, feel free to right me back.</p>
+<p>Don't be like me! There is nothing such as overnight success, you have to make the move now!</p>
+<p>I'll love to guide you further, feel free to right me back.</p>
 MAIL;
 
 $my_subject_4 = "[NAME], The Next Step Leads to 30-50 pips daily";
@@ -67,8 +67,8 @@ $my_message_4 =
 <p>If I told you, you could make a steady profit of $30 -$50 daily, would you believe that?</p>
 <p>Well, it's true!</p>
 <p>We recently launched our high precision trading signals that has 85% accuracy and is sure to deliver 30-50 green pips to your account on a daily basis.</p>
-<p>Imagine waking every day with a lot of enthusiasm…looking forward to making the day’s profit right on your bed… the possibility of making $30 every working day for a month…</p>
-<p>Wow! This means that you’d be making up to N53 000 weekly and an average of N212 000 every month! Can you dig that?</p>
+<p>Imagine waking every day with a lot of enthusiasm…looking forward to making the day's profit right on your bed… the possibility of making $30 every working day for a month…</p>
+<p>Wow! This means that you'd be making up to N53 000 weekly and an average of N212 000 every month! Can you dig that?</p>
 <p>Trust me, this is the reality for some traders right now and you can make it happen for you too.</p>
 <p> Check out the result of our signals between Friday 29th June till today 4th July on very small lot sizes.</p>
 <p><center><img class="img img-responsive" src="https://instafxng.com/imgsource/Trade%20Results.png"></center></p>
@@ -77,10 +77,10 @@ $my_message_4 =
 <p><a href="mailto:support@instafxng.com?subject=100%25%20Bonus%20&body=Hello%20Mercy,%0A%0AI%20am%20interested%20in%20getting%20the%20100%25%20bonus.%0A%0AThanks!">Click here to claim your 100% bonus now!</a></p>
 <p><strong>Can't afford $50 yet?</strong> Not to worry! You can start with as low as $5 or $10 and start making profit on your trade.</p>
 <p>I have your best interest at heart and I can't wait for you to join me.</p>
-<p>Don’t leave money on the table [NAME]! Click <a href="http://bit.ly/2zd3gmH">here</a> to proceed to fund your account here and let's get you started!</p>
+<p>Don't leave money on the table [NAME]! Click <a href="http://bit.ly/2zd3gmH">here</a> to proceed to fund your account here and let's get you started!</p>
 <p>The signals are always posted daily on our website and all you need to do is bookmark the page and check daily.</p>
 <p>NO TIME?</p>
-<p>If you will be busy and won’t have time to keep up with the site opt in for the daily alerts and I will be sure to update you on Facebook messenger as soon as the signals are posted, <a href="http://bit.ly/2KoYHe6">click here to subscribe to our signals channel now!</a></p>
+<p>If you will be busy and won't have time to keep up with the site opt in for the daily alerts and I will be sure to update you on Facebook messenger as soon as the signals are posted, <a href="http://bit.ly/2KoYHe6">click here to subscribe to our signals channel now!</a></p>
 <p>Should you need further assistance with this, feel free to send me a response to this mail. I'll be on hand waiting to receive your reply.</p>
 MAIL;
 
@@ -90,18 +90,18 @@ $my_message_5 =
 <p>Have you heard about our Loyalty Points Promo?</p>
 <p>This mind-blowing unified reward program rewards every single one of our loyal clients daily, monthly and annually.</p>
 <p>With this programme, everyone is a winner!</p>
-<p>During the last round of the promotion, a total of 4.390 Million Naira was paid out to clients in rewards and this doesn’t even include the thousands of dollars withdrawn as loyalty points!</p>
+<p>During the last round of the promotion, a total of 4.390 Million Naira was paid out to clients in rewards and this doesn't even include the thousands of dollars withdrawn as loyalty points!</p>
 <p>Excited already? Here is how it works…</p>
-<p>You don’t need to do anything extra other than make deposit into your trading account and trade.</p>
+<p>You don't need to do anything extra other than make deposit into your trading account and trade.</p>
 <p>You earn point commensurate to your trading activities and these points help you to rank on a monthly and yearly rank scale where only you can get up to $4200 and N1 000 000 every month.</p>
-<p>You’re very eligible to earn this cash prizes and I would really encourage you to dive in right now!</p>
+<p>You're very eligible to earn this cash prizes and I would really encourage you to dive in right now!</p>
 <p>Three Easy Steps to Get Started</p>
 <p>1.Fund your trading account.</p>
 <p>2.Trade with our 85% high-precision trading signals.</p>
 <p>3.Earn Loyalty Points.</p>
-<p>That’s it [NAME], in three easy steps you would get a chance to get more rewards for making money!</p>
-<p>Don’t wait it out! Start earning on your trades now!</p>
-<p><a href="http://bit.ly/2gvoIEU" title="Click to know more about our ILPR Promo">Here’s where to go to get more information on the loyalty points program.</a></p>
+<p>That's it [NAME], in three easy steps you would get a chance to get more rewards for making money!</p>
+<p>Don't wait it out! Start earning on your trades now!</p>
+<p><a href="http://bit.ly/2gvoIEU" title="Click to know more about our ILPR Promo">Here's where to go to get more information on the loyalty points program.</a></p>
 MAIL;
 
 function mail_template($core_msg) {
