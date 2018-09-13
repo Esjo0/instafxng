@@ -18,7 +18,7 @@ if (isset($_POST['login'])) {
                 $ifxngsignals = "ifxng_signals";
                 $cookie_value = $email;
                 setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-                header('Location: https:instafxng.com/signal_schedules.php');
+                header('Location: https://instafxng.com/signal_schedules.php');
                 } else {
                 $user_details = $db_handle->fetchAssoc($db_handle->runQuery("SELECT phone, CONCAT(first_name, SPACE(1), last_name) AS name FROM user WHERE email = '$email'"));//[0];
                 if (!empty($user_details)) {
@@ -31,7 +31,7 @@ if (isset($_POST['login'])) {
                             $ifxngsignals = "ifxng_signals";
                             $cookie_value = $email;
                             setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-                            header('Location: https:instafxng.com/signal_schedules.php');
+                            header('Location: https://instafxng.com/signal_schedules.php');
                         } else {
                             $message_error = "Sorry the operation failed, please try again.";
                             $get_phone_and_name = true;
@@ -50,7 +50,7 @@ if (isset($_POST['login'])) {
                 $ifxngsignals = "ifxng_signals";
                 $cookie_value = $email;
                 setcookie($ifxngsignals, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-                header('Location: https:instafxng.com/signal_schedules.php');
+                header('Location: https://instafxng.com/signal_schedules.php');
             } else {
                 $message_error = "Sorry the operation failed, please try again.";
             }
