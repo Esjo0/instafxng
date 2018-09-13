@@ -195,10 +195,10 @@ MAIL;
                                                   </div>
                                             </li>
 
-                                       <li class="list-group-item d-flex justify-content-between lh-condensed"  style="display:none;">
+                                       <li class="list-group-item d-flex justify-content-between lh-condensed">
                                         <div>
-                                        <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Know how much you can gain from taking this trade.</strong></h6>
-                                        <h6 class="my-0"></h6>
+                                        <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Money Management</strong></h6>
+                                        <h6 class="my-0">Get Suitable Trading Volume </h6>
 
                                        <center>
                                         <form class="form form-validate" role="form" method="post" action="">
@@ -206,15 +206,11 @@ MAIL;
                                                         <span class="input-group-addon"><i class="fa fa-dollar fa-fw"></i></span>
                                                         <input name="name" type="text" id="signal_equity_{$row['signal_id']}" value="" class="form-control" placeholder="Enter Your Equity" required/>
                                             </div>
-                                            <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-circle fa-fw"></i></span>
-                                                        <input name="name" type="text" id="signal_lots_{$row['signal_id']}" value="" class="form-control" placeholder="Enter Desired Lots" required/>
-                                            </div>
                                             <div class="input-group" >
                                                         <input style="display:none" name="name" type="text" id="signal_gain_{$row['signal_id']}" value="" class="form-control" placeholder="Enter Desired Lots"/>
                                             </div>
                                             <div>
-                                                    <button onclick="cal_gain({$row['signal_id']})" type="button" class="btn btn-success">Calculate</button>                                              </div>
+                                                    <button onclick="cal_gain({$row['signal_id']})" type="button" class="btn btn-success">Get Volume</button>                                              </div>
                                             </div>
                                         </form>
                                        </center>
