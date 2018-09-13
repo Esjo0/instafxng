@@ -130,8 +130,8 @@ if (isset($_POST['login'])) {
         <div class="row h-100">
             <div class="col-12 my-auto">
                 <div class="masthead-content text-white py-5 py-md-0">
-                    <div style="margin-bottom: 20px">
-                        <img style="background: white" class="img img-responsive" src="../images/ifxlogo.png">
+                    <div style="margin-bottom: 20px; border-radius: 22px; background: white; padding: 8px;">
+                        <a href="https://instafxng.com" target="_blank"><img class="img img-responsive" src="../images/ifxlogo.png"></a>
                     </div>
                     <h1 class="mb-3">WELCOME!</h1>
 
@@ -171,17 +171,17 @@ if (isset($_POST['login'])) {
 <div class="social-icons">
     <ul class="list-unstyled text-center mb-0">
         <li class="list-unstyled-item" >
-            <a href="https://twitter.com/instafxng">
+            <a href="https://twitter.com/instafxng" target="_blank">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
         <li class="list-unstyled-item" >
-            <a href="https://facebook.com/InstaForexNigeria">
+            <a href="https://facebook.com/InstaForexNigeria" target="_blank">
                 <i class="fa fa-facebook"></i>
             </a>
         </li>
         <li class="list-unstyled-item" >
-            <a href="https://www.instagram.com/instafxng/">
+            <a href="https://www.instagram.com/instafxng/" target="_blank">
                 <i class="fa fa-instagram"></i>
             </a>
         </li>
