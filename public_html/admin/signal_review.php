@@ -14,8 +14,8 @@ if (isset($_POST['signal_report'])){
 }
 
 
-$query = "SELECT SS.symbol AS pair, SD.price, SD.take_profit, SD.stop_loss, SD.created, SD.views, SD.entry_price, 
-SD.entry_time, SD.exit_time, SD.exit_type, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note, SD.created_by, SD.market_price, SS.decimal_place
+$query = "SELECT SS.symbol AS pair, SD.price, SD.take_profit, SD.stop_loss, SD.created, SD.views, SD.entry_price,
+SD.entry_time, SD.exit_time, SD.exit_type,SD.highest_pips, SD.lowest_pips, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note, SD.created_by, SD.market_price, SS.decimal_place
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  ";
@@ -28,8 +28,26 @@ $total_Signals_pending = $db_handle->numRows($query."AND SD.trigger_status = '0'
 $total_Signals_users = $db_handle->numRows("SELECT email FROM signal_users");
 
 
-//$query = "SELECT SUM(views) AS Total FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date'";
-//$result_view = $db_handle->runQuery($query);
+$query_profit = "SELECT pips AS Total_profit FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Take Profit')";
+$result_profit = $db_handle->runQuery($query_profit);
+$result_profit = $db_handle->fetchAssoc($result_profit);
+
+$sum_of_profit = 0;
+foreach($result_profit AS $row){
+    extract($row);
+    $Total_profit = abs($Total_profit);
+    $sum_of_profit += $Total_profit;
+}
+
+$query_loss = "SELECT pips AS Total_loss FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Stop Loss')";
+$result_loss= $db_handle->runQuery($query_loss);
+$result_loss = $db_handle->fetchAssoc($result_loss);
+$sum_of_loss = 0;
+foreach($result_loss AS $row){
+    extract($row);
+    $Total_loss = abs($Total_loss);
+    $sum_of_loss += $Total_loss;
+}
 
 //$query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
 //$total_triggered = $db_handle->numRows($query);
@@ -85,6 +103,28 @@ function table_context($trigger_status){
             }
         </script>
         <link rel="stylesheet" href="../css/signal_table_context.css">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load("current", {packages:["corechart"]});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var profit = <?php echo $Total_profit;?>;
+                var loss =  <?php echo $Total_loss;?>;
+                var data = google.visualization.arrayToDataTable([
+                    ['Type', 'Pips'],
+                    ['Profit', profit],
+                    ['Loss',    loss]
+                ]);
+
+                var options = {
+                    title: 'Pips Analysis',
+                    pieHole: 0.4,
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+                chart.draw(data, options);
+            }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -164,6 +204,10 @@ function table_context($trigger_status){
                                         </thead>
                                     </table>
                             </div>
+                            <div class="col-sm-6">
+                                <div id="donutchart" ></div>
+                                <p class="text-center">Total Profit : <span style="color:green !important;"><?php echo $sum_of_profit;?></span>pips || Total Loss : <span style="color:red !important;">-<?php echo $sum_of_loss;?></span>pips</p>
+                            </div>
                         </div>
 
                         <div class="row">
@@ -194,11 +238,13 @@ function table_context($trigger_status){
                                         </td>
                                         <td>
                                             <span><b>Market Price when order was place:</b> <?php echo $row['market_price']; ?></span></br>
-                                            <span><b>Entry Price:</b> <?php echo $signal_object->round_price_to_dp($row['entry_price'], $row['decimal_place']); ?></span><br/>
-                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);} ?></span><br/>
+                                            <span><b>Entry Price:</b> <?php if(!empty($row['entry_price'])){echo $signal_object->round_price_to_dp($row['entry_price'], $row['decimal_place']);}else{echo $row['market_price']; } ?></span><br/>
+                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);}else{echo datetime_to_text($row['created']);} ?></span><br/>
                                             <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text($row['exit_time']);} ?></span><br/>
+                                            <span><b>Highest Pips:</b><span style="color:green !important;"> <?php echo $row['highest_pips']; ?></span>pips</span><br/>
                                             <span><b>Pips:</b> <?php echo $signal_object->get_pips_display($row['order_type'],$row['pips']); ?></span><br/>
-											<span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
+                                            <span><b>Lowest Pips:</b> <span style="color:red !important;"><?php echo $row['lowest_pips']; ?></span>pips</span><br/>
+                                            <span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
 											<span><b>Exit Price:</b> <?php echo $signal_object->round_price_to_dp($row['exit_price'], $row['decimal_place']); ?></span>
                                         </td>
                                     </tr>
@@ -226,5 +272,6 @@ function table_context($trigger_status){
         <?php require_once 'layouts/footer.php'; ?>
         <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
         <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
-    </body>
+
+        </body>
 </html>
