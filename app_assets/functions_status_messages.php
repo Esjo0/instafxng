@@ -1,10 +1,10 @@
 <?php
 
-/*
-* Table: partner
-* Column: status
-*/
 
+/*
+* Table: unverified_campaign_mail_log
+* Column: email_flag position
+*/
 function position_status($number) {
     switch ($number) {
         case '1': $position = "1st"; break;
@@ -17,6 +17,10 @@ function position_status($number) {
     return $position;
 }
 
+/*
+* Table: partner
+* Column: status
+*/
 function partner_status($status) {
     switch ($status) {
         case '1': $message = "New"; break;
