@@ -42,6 +42,7 @@ $total_point_balance = $client_point_details['point_balance'];
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Bank Transfer i.e. transferring over the counter at your bank</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Mobile Money Transfer</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Cash Deposit</li>
+    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>USSD Transfer</li>
 </ul>
 
 
