@@ -16,3 +16,6 @@ CREATE TABLE `unverified_campaign_mail_log` (
  `email` varchar(100) NOT NULL,
  UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=latin1
+
+//verification pending
+ALTER TABLE `user_credential` CHANGE `status` `status` ENUM('1','2','3') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '1 - Awaiting Moderation2 - Moderated3 - Pending';
