@@ -797,7 +797,7 @@ MAIL;
     </div>
 </div>
 MAIL;
-            $system_object->send_email($subject, $body, $email, $full_name);
+            //$system_object->send_email($subject, $body, $email, $full_name);
 
         } else { // Send success message
             $subject = "Instafxng Verification Status";
@@ -847,7 +847,7 @@ MAIL;
     </div>
 </div>
 MAIL;
-            $system_object->send_email($subject, $body, $email, $full_name);
+            //$system_object->send_email($subject, $body, $email, $full_name);
 
         }
 
