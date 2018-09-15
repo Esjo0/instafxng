@@ -3,7 +3,6 @@ require_once '../init/initialize_general.php';
 $thisPage = "Home";
 $date = date('Y-m-d H:i:s');
 $cook = $_COOKIE[$ifxngsignals];
-echo $_COOKIE[$ifxngsignals];
 $signal_object = new Signal_Management();
 if (isset($_POST['login'])) {
     $email = $db_handle->sanitizePost($_POST['email']);
