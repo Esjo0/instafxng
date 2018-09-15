@@ -27,7 +27,7 @@ $thisPage = "Home";
             document.getElementById("open").click();
         };
         //modal closes in 5sec
-        setTimeout(modal_hide, 5000);
+        setTimeout(modal_hide, 8000);
         function modal_hide() { document.getElementById('open').click(); }
 
         $(document).ready(function () {
