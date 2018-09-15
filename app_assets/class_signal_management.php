@@ -830,7 +830,7 @@ MAIL;
 
         if($result) {
             //$system_object->send_sms($phone_number, $text_message);
-            //$system_object->send_email($subject, $message, $email_address, $first_name);
+            $system_object->send_email($subject, $message, $email_address, $first_name);
             $assigned_account_officer = $system_object->next_account_officer();
             $client_operation = new clientOperation();
             $client_operation->new_user_ordinary($first_name." ".$last_name, $email_address, $phone_number, $assigned_account_officer);
