@@ -84,6 +84,7 @@ $thisPage = "Home";
     <!-- End Facebook Pixel Code -->
 </head>
 <body>
+<?php require_once 'layouts/header.php'; ?>
 <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
 <div id="main-body" class="container-fluid">
     <div class="row ">
@@ -142,6 +143,13 @@ $thisPage = "Home";
 <div id="btn_div">
 <a id="old" href="#old_div" class="btn btn-default" style="display:none; width:100%; position: fixed; bottom: 10px;">Click Here if You have Traded forex before</a>
 <a id="new" href="#new_div" class="btn btn-default" style="display:none; width:100%; position: fixed; bottom: 10px;">Click Here if You are new to forex</a>
+</div>
+<div class="wthree_copy_right">
+    <div class="container">
+        <p class="text-center">© 2018 Instant Web Net Technologies. All rights reserved <a href="http://Instafxng.com/">Instafxng.com</a>
+            Contact us on 08028281192.
+        </p>
+    </div>
 </div>
 </body>
 </html>
