@@ -1,3 +1,7 @@
+UPDATE signal_daily SET lowest_pips = -8 WHERE signal_id = 185;
+
+UPDATE signal_daily SET lowest_pips = 0 WHERE signal_id = 181;
+
 ALTER TABLE `signal_daily` CHANGE `highest_pips` `highest_pips` INT(100) NULL DEFAULT '0', CHANGE `lowest_pips` `lowest_pips` INT(100) NULL DEFAULT '0';
 
 ALTER TABLE `campaign_leads` CHANGE `interest` `interest` ENUM('1','2','3') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '1-Training 2-ILPR 3-Signals';

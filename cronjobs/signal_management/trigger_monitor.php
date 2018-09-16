@@ -28,7 +28,7 @@ if (!empty($scheduled_signals)) {
             if(($pips > $row['highest_pips']) && ($pips >= 1) && ($pips <= 100)) {
                     $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1, '', $pips, '');
             }
-            if(($pips < $row['lowest_pips']) && ($pips < -1) ){
+            if(($pips < $row['lowest_pips']) && ($pips < -1) && ($pips >= -100)){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', '', 1, '', $pips);
             }
         }
@@ -38,7 +38,7 @@ if (!empty($scheduled_signals)) {
             if(($pips > $row['highest_pips']) && ($pips >= 1) && ($pips <= 100)){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1, '', $pips, '');
             }
-            if(($pips < $row['lowest_pips']) && ($pips < -1)){
+            if(($pips < $row['lowest_pips']) && ($pips < -1) && ($pips >= -100)){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', '', 1, '', $pips);
             }
         }
