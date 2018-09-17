@@ -19,7 +19,7 @@ if($additional_msg == 'msg')
 
         <div class="row">
             <div class="col-sm-6"><img class="img-responsive" src="images/testimony-1.png" /></div>
-            <div class="col-sm-6"><img class="img-responsive" src="images/testimony-2.jpg" /></div>
+            <div class="col-sm-6"><img class="img-responsive" src="images/testimony-2.png" /></div>
         </div>
 
         <br />

@@ -98,7 +98,7 @@ $thisPage = "Home";
                 <p class="text-center"><strong><a target="_blank" class="btn btn-info" href="http://bit.ly/2iExTpN">Click here to start training for free!</a></strong></p>
                 <p>The FXacademy is waiting to receive you right away and equip you with a structured online course that you can take right there on your device from any where in Nigeria and a no deposit required Demo account, that allows you to practice.</p>
                 <p>After this you can get access to more personalized training service with our expert team, welcome bonuses and much more!</p>
-                <p class="text-center"><strong><a target="_blank" class="btn btn-info" href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,%0A%0AI%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.%0A%0AThanks!">Click here to begin learning for free.</a></strong></p>
+                <p class="text-center"><strong><a target="_blank" class="btn btn-info" href="http://bit.ly/2iExTpN">Click here to begin learning for free.</a></strong></p>
             </div>
         </div>
         <div id="main-body-side-bar" class="col-lg-6">
