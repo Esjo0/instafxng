@@ -8,19 +8,33 @@ $additional_msg = $get_params['x'];
 if($additional_msg == 'msg')
 {
     $special_msg = <<<msg
-        <p>Our Free 85% Accurate High Precision trading signals have gone Viral!</p>
-        <p>Last week, It booked 300 pips profit to the account of traders who use them.</p>
+        <p>Our double combo <a href="http://bit.ly/2JysCvT" target="_blank">Free Daily 85% Accurate High Precision trading signals</a> +
+        <a href="http://bit.ly/2CSUjAz" target="_blank">High - Impact News Release</a> will help you hit your
+        profit target this month!</p>
 
-        <p>Today, it hit 60 pips take profit, <a href="http://bit.ly/2JysCvT" target="_blank">Check it out here</a>.</p>
-        <p>Started using the signals yet?</p>
+        <p>This duo has consistently booked traders between 100-200 pips daily.</p>
 
-        <p>This is a jaw-dropping opportunity to make consistent profit from your trades, earn more loyalty points and get a share of $500 this August!</p>
+        <p>Here's what some of our clients had to say about the signals.</p>
+        <br />
+
+        <div class="row">
+            <div class="col-sm-6"><img class="img-responsive" src="images/testimony-1.png" /></div>
+            <div class="col-sm-6"><img class="img-responsive" src="images/testimony-2.jpg" /></div>
+        </div>
+
+        <br />
+
+        <p>Are you maximizing the use of the daily signals and News release? Not yet?
+        You're missing out a lot!</p>
+
+        <p>This is a jaw-dropping opportunity to make consistent profit from your trades,
+        earn more loyalty points and get a share of $500 this month!</p>
 
         <p><strong>STEP 1: Fund your InstaForex Account</strong></p>
         <p>Funding your Instaforex account and trading actively increases your loyalty points and qualifies you for the monthly reward of $500.</p>
         <ul><li><a href="#acct_num">Click here</a> to fund account now.</li></ul>
 
-        <p><strong>STEP 2: Get Signals Alerts Daily</strong></p>
+        <p><strong>STEP 2: Get Signals and News Release Alert Daily</strong></p>
 
         <p>The trading signals are posted every day on our website, just so you do not miss any of the entry prices as they drop, we have created a channel via Facebook Messenger where you can get direct notification as soon as the signals are posted.</p>
         <p>Don’t miss any signal, <a href="http://bit.ly/2KEWxWQ" target="_blank">click here</a> to get daily notifications as soon as the signals are posted.</p>
@@ -377,15 +391,15 @@ switch($page_requested) {
                     <div class="section-tint super-shadow">
 
                         <div class="row">
-                            <div class="col-sm-12">
-                                <span>
-    <h4>ATTENTION!!!</h4>
 
-<p>Instant Card Payment is Back!</p>
+                            <?php if(!$additional_msg) { ?>
+                                <div class="col-sm-12">
+                                    <h4>ATTENTION!!!</h4>
+                                    <p>Instant Card Payment is Back!</p>
+                                    <p>Enjoy a more convenient and swift experience funding your account!  With Instant card payment, your transactions are now fast, easy, and more secured!</p>
+                                </div>
+                            <?php } ?>
 
-<p>Enjoy a more convenient and swift experience funding your account!  With Instant card payment, your transactions are now fast, easy, and more secured!</p>
-</span>
-                            </div>
                             <?php if($additional_msg != 'msg_new'): ?>
                                 <div class="col-sm-12 text-danger">
 

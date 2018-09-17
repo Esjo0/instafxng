@@ -1687,7 +1687,7 @@ MAIL;
         $user_code_encrypted = encrypt($client_user_code);
 
         $sms_code = generate_sms_code();
-        $sms_message = "Your activation code is: $sms_code A message has been sent to your email, click the activation link in it and enter this code.";
+        $sms_message = "Your activation number is: $sms_code A message has been sent to your email, click the activation link in it and enter this number.";
         
         $system_object->send_sms($client_phone_number, $sms_message);
         
