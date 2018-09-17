@@ -146,7 +146,8 @@ $thisPage = "Home";
 </div>
 <div class="wthree_copy_right">
     <div class="container">
-        <p class="text-center">© 2018 Instant Web Net Technologies. All rights reserved <a href="http://Instafxng.com/">Instafxng.com</a>
+        <hr />
+        <p class="text-center">&copy; 2018 Instant Web Net Technologies. All rights reserved <a href="http://Instafxng.com/">Instafxng.com</a>
             Contact us on 08028281192.
         </p>
     </div>
