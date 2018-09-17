@@ -4,7 +4,40 @@ $thisPage = "";
 
 $page_requested = '';
 
+if(isset($_POST['deposit_refund'])){
+    $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
+    $refund_type = $db_handle->sanitizePost($_POST['refund_type']);
+    $transaction_id = $db_handle->sanitizePost($_POST['transaction_id']);
+    $amount_paid = $db_handle->sanitizePost($_POST['amount_paid']);
+    $user_bank_name = $db_handle->sanitizePost($_POST['user_bank_name']);
+    $user_acct_name = $db_handle->sanitizePost($_POST['user_acct_name']);
+    $user_acct_no = $db_handle->sanitizePost($_POST['user_acct_no']);
+    $payment_method = $db_handle->sanitizePost($_POST['payment_method']);
+    $comp_bank_name = $db_handle->sanitizePost($_POST['comp_bank_name']);
+    $comp_acct_name = $db_handle->sanitizePost($_POST['comp_acct_name']);
+    $comp_acct_no = $db_handle->sanitizePost($_POST['comp_acct_no']);
+    $tp_name = $db_handle->sanitizePost($_POST['tp_name']);
+    $tp_email = $db_handle->sanitizePost($_POST['tp_email']);
+    $tp_phone = $db_handle->sanitizePost($_POST['tp_phone']);
+    $wrong_remark = $db_handle->sanitizePost($_POST['wrong_remark']);
 
+    $client_operation = new clientOperation($account_no);
+    $user_ifx_details = $client_operation->get_client_data();
+    if($user_ifx_details) {
+        switch ($refund_type){
+            case 1: $issue_desc = "Transaction ID: ".$transaction_id; break;
+            case 2: $issue_desc = "Third Party Details : Name: $tp_name <br> Email: $tp_email <br> Phone No.: $tp_phone";break;
+            case 3: $issue_desc = "Wrong Remark: $wrong_remark";break;
+        }
+        $request = $client_operation->deposit_refund($account_no, $refund_type, $transaction_id, $amount_paid, $user_bank_name, $user_acct_name, $user_acct_no, $payment_method, $comp_bank_name, $comp_acct_name, $comp_acct_no, $issue_desc);
+        if($request== true){$message_success = "Your Request has been submitted successfully";}
+        else{$message_error = "Your Request was not successfully submitted"; }
+        }else{
+        $message_error = "Account number not registered";
+        sleep(10000);
+        redirect_to('live_account.php');
+        }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +115,7 @@ $page_requested = '';
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="ifx_acct_no">Select Refund type:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <select class="form-control" id="refund_type" onchange="displayOptions()">
+                                            <select name="refund_type" class="form-control" id="refund_type" onchange="displayOptions()">
                                                 <option value="1">Omission of Transaction ID</option>
                                                 <option value="2">Third Party Transaction</option>
                                                 <option value="3">Wrong Remarks</option>
@@ -97,21 +130,21 @@ $page_requested = '';
                                         <div class="form-group">
                                             <label class="control-label col-sm-3" for="pass_code">Third Party's Name:</label>
                                             <div class="col-sm-9 col-lg-5">
-                                                <input name="transaction_id" type="text" class="form-control" id="tp-name" required>
+                                                <input name="tp-name" type="text" class="form-control" id="tp-name" required>
                                                 <span class="help-block"><i class="fa fa-info-circle"></i>Name of the individual you paid with his/her account</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-sm-3" for="pass_code">Third party's Email:</label>
                                             <div class="col-sm-9 col-lg-5">
-                                                <input name="transaction_id" type="text" class="form-control" id="tp_email" required>
+                                                <input name="tp_email" type="text" class="form-control" id="tp_email" required>
                                                 <span class="help-block"><i class="fa fa-info-circle"></i>Enter the Email Address of Third party</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-sm-3" for="pass_code">Third Party's Phone No.:</label>
                                             <div class="col-sm-9 col-lg-5">
-                                                <input name="transaction_id" type="text" class="form-control" id="tp_phone" required>
+                                                <input name="tp_phone" type="text" class="form-control" id="tp_phone" required>
                                                 <span class="help-block"><i class="fa fa-info-circle"></i>Enter the Phone Number of Third Party</span>
                                             </div>
                                         </div>
@@ -122,7 +155,7 @@ $page_requested = '';
                                         <div class="form-group">
                                             <label class="control-label col-sm-3" for="pass_code">Enter Previous Wrong Remark:</label>
                                             <div class="col-sm-9 col-lg-5">
-                                                <input name="transaction_id" type="text" class="form-control" id="wrong_remark" required>
+                                                <input name="wrong_remark" type="text" class="form-control" id="wrong_remark" required>
                                                 <span class="help-block"><i class="fa fa-info-circle"></i>Enter your previously wrong remark</span>
                                             </div>
                                         </div>
@@ -132,7 +165,7 @@ $page_requested = '';
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Transaction ID:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="transaction_id" type="text" class="form-control" id="" required>
+                                            <input name="transaction_id" type="text" class="form-control" id="transaction_id" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Deposit Transaction details</span>
                                         </div>
                                     </div>
@@ -149,25 +182,25 @@ $page_requested = '';
                                     <hr>
                                     <p class="text-center"><u>Enter Your Bank Details</u></p>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="pass_code">Bank Name:</label>
+                                        <label class="control-label col-sm-3" >Bank Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="bank_name" type="text" class="form-control" id="" required>
+                                            <input name="user_bank_name" type="text" class="form-control" id="" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Your Bank Name</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="pass_code">Bank Account Name:</label>
+                                        <label class="control-label col-sm-3" >Bank Account Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="bank_acct_name" type="text" class="form-control" id="" required>
+                                            <input name="user_acct_name" type="text" class="form-control" id="" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Your Bank Account Name</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="pass_code">Bank Account Number:</label>
+                                        <label class="control-label col-sm-3" >Bank Account Number:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="bank_acct_name" type="text" class="form-control" id="" required>
+                                            <input name="user_acct_no" type="text" class="form-control" id="" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Your Bank Account Number</span>
                                         </div>
                                     </div>
@@ -177,14 +210,14 @@ $page_requested = '';
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Enter Payment Type:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="company_bank_name" type="text" class="form-control" id="" required>
+                                            <input name="payment_method" type="text" class="form-control" id="" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter the payment method you selected on instafxng.com</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Bank Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="company_bank_name" type="text" class="form-control" id="" required>
+                                            <input name="comp_bank_name" type="text" class="form-control" id="" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Bank Name</span>
                                         </div>
                                     </div>
@@ -192,7 +225,7 @@ $page_requested = '';
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Bank Account Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="company_acct_name" type="text" class="form-control" id="" required>
+                                            <input name="comp_acct_name" type="text" class="form-control" id="" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Bank Account Name</span>
                                         </div>
                                     </div>
@@ -200,12 +233,12 @@ $page_requested = '';
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Bank Account Number:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="company_acct_no" type="text" class="form-control" id="" required>
+                                            <input name="comp_acct_no" type="text" class="form-control" id="" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Bank Account Number</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-9"><input name="verify_account_ifx_acct" type="submit" class="btn btn-success" value="Submit" /></div>
+                                        <div class="col-sm-offset-3 col-sm-9 "><input name="deposit_refund" type="submit" class="btn btn-success" value="Submit" /></div>
                                     </div>
                                 </form>
                             </div>

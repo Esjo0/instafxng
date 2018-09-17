@@ -3,6 +3,16 @@
 class clientOperation {
     private $client_data;
 
+    public function deposit_refund($ifx_acct_no, $refund_type, $trans_id, $amount_paid, $user_bank_name, $user_acct_name, $user_acct_no, $payment_method, $comp_bank_name, $comp_acct_name, $comp_acct_no, $issue_desc) {
+        global $db_handle;
+
+        $query = "INSERT INTO user_deposit_refund(ifx_acct_no, refund_type, transaction_id, amount_paid, user_bank_name, user_acct_name, user_acct_no, payment_method, company_bank_name, company_acct_name, company_acct_no, issue_desc)
+                  VALUES ('$ifx_acct_no', '$refund_type', '$trans_id', '$amount_paid', '$user_bank_name', '$user_acct_name', '$user_acct_no', '$payment_method', '$comp_bank_name', '$comp_acct_name', '$comp_acct_no', '$issue_desc')";
+        var_dump($query);
+        $db_handle->runQuery($query);
+        return true;
+    }
+
     public function get_verification_remark($user_code) {
         global $db_handle;
         $pointer = "user_credential";
