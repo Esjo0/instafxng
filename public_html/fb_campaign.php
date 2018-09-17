@@ -105,8 +105,8 @@ $thisPage = "Home";
             <div id="old_div" class="section-tint super-shadow" style=" margin-top: 20px; margin-bottom: 20px">
                 <h2 class="text-center">Your Next Step As a Forex Trader</h2>
                 <p class="text-center"><img src="https://instafxng.com/imgsource/ilpr_mail.jpg" alt="" class="img-responsive img-thumbnail" style="height:250px; width:250px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"/></p>
-                <p>If you are not new to the Forex business and you do not own an InstaForex Account or you haven’t enrolled into our loyalty program, here are reasons to create an account and enroll into our loyalty program right away!</p>
-                <p>Start now, <a target="_blank" href="http://bit.ly/2mpqehQ">click here to fill in the step 1 and 2 form to create and enroll your InstaForex account!</a></p>
+                <p>If you are not new to Trading Forex and you do not own an InstaForex Account or you haven’t enrolled into our loyalty program, here are reasons to create an account and enroll into our loyalty program right away!</p>
+                <p>Start now! <a target="_blank" class="btn btn-info" href="http://bit.ly/2mpqehQ">click here to fill in the step 1 and 2 form to create and enroll your InstaForex account!</a></p>
                 <ul>
                     <li>Unbeatable Discounted Funding Rate.</li>
                     <li>Fastest Deposit and Withdrawal Processing.</li>
@@ -115,11 +115,12 @@ $thisPage = "Home";
                     <li>Up to 100% Welcome Bonus </li>
                     <li>Up to $500 Monthly Loyalty Rewards</li>
                     <li>Up to N1,000,000 Yearly Loyalty Rewards (See past winners below )</li>
+                    <p class="text-center"><img src="https://instafxng.com/images/Loyalty_Points_Images/ILPR_Collage.jpg" alt="" class="img-responsive img-thumbnail" style="height:350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"/></p>
                     <li>Account Audit and Strategy Review With Experts</li>
                 </ul>
                 <p>And lots more… Your next step is to join the winning team and start enjoying premium Forex services coupled with smooth client experience.</p>
-                <p>Start now, <a target="_blank" href="http://bit.ly/2mpqehQ">click here to fill in the step 1 and 2 form to create and enroll your InstaForex account!</a></p>
-                <p><strong>NOTICE! NOTICE! NOTICE!</strong>  Only enrolled accounts can enjoy the full benefits listed above, ensure to proceed to step 2 after creating your account. <a target="_blank" class="btn btn-default" href="http://bit.ly/2mpqehQ">Click here to create an account now.</a></p>
+                <p>Start now! <a target="_blank" class="btn btn-info" href="http://bit.ly/2mpqehQ">click here to fill in the step 1 and 2 form to create and enroll your InstaForex account!</a></p>
+                <p><strong>NOTICE! NOTICE! NOTICE!</strong>  Only enrolled accounts can enjoy the full benefits listed above, ensure to proceed to step 2 after creating your account. <a target="_blank" class="btn btn-info" href="http://bit.ly/2mpqehQ">Click here to create an account now.</a></p>
                 <p>Would you need help creating an account or getting registered for the training? Call our support on 08084603182, 08028281192 or 08083956750 for help.</p>
             </div>
         </div>
