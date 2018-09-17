@@ -12,11 +12,36 @@ $page_requested = '';
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Client Document Verification</title>
+        <title>Instaforex Nigeria | Deposit refund</title>
         <meta name="title" content="Instaforex Nigeria | Client Document Verification" />
         <meta name="keywords" content=" ">
         <meta name="description" content=" ">
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script>
+            function displayOptions() {
+                var options = $("#refund_type").val();
+                if(options == 1) {
+                    document.getElementById("third_party_transaction").style.display = "none";
+                    document.getElementById("wrong_remark").style.display = "none";
+                    document.getElementById("tp_name").required = false;
+                    document.getElementById("tp_email").required = false;
+                    document.getElementById("tp_phone").required = false;
+                    document.getElementById("wrong_remark_desc").required = false;
+                }
+                else if(options == 2) {
+                    document.getElementById("third_party_transaction").style.display = "block";
+                    document.getElementById("wrong_remark").style.display = "none";
+                    document.getElementById("wrong_remark_desc").required = false;
+                }
+                else if(options == 3) {
+                    document.getElementById("third_party_transaction").style.display = "none";
+                    document.getElementById("wrong_remark").style.display = "block";
+                    document.getElementById("tp_name").required = false;
+                    document.getElementById("tp_email").required = false;
+                    document.getElementById("tp_phone").required = false;
+                }
+            }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -57,13 +82,51 @@ $page_requested = '';
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="ifx_acct_no">Select Refund type:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <select class="form-control" id="sel1" required>
-                                                <option value="1">Ommission of Transaction ID</option>
+                                            <select class="form-control" id="refund_type" onchange="displayOptions()">
+                                                <option value="1">Omission of Transaction ID</option>
                                                 <option value="2">Third Party Transaction</option>
                                                 <option value="3">Wrong Remarks</option>
                                             </select>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Select Reason for Refund</span>
                                         </div>
+                                    </div>
+
+                                    <div id="third_party_transaction" style="display:none;">
+                                        <hr>
+                                        <p class="text-center"><u>Third Party Details<u></p>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="pass_code">Third Party's Name:</label>
+                                            <div class="col-sm-9 col-lg-5">
+                                                <input name="transaction_id" type="text" class="form-control" id="tp-name" required>
+                                                <span class="help-block"><i class="fa fa-info-circle"></i>Name of the individual you paid with his/her account</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="pass_code">Third party's Email:</label>
+                                            <div class="col-sm-9 col-lg-5">
+                                                <input name="transaction_id" type="text" class="form-control" id="tp_email" required>
+                                                <span class="help-block"><i class="fa fa-info-circle"></i>Enter the Email Address of Third party</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="pass_code">Third Party's Phone No.:</label>
+                                            <div class="col-sm-9 col-lg-5">
+                                                <input name="transaction_id" type="text" class="form-control" id="tp_phone" required>
+                                                <span class="help-block"><i class="fa fa-info-circle"></i>Enter the Phone Number of Third Party</span>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                    <div id="wrong_remark" style="display:none;">
+                                        <hr>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="pass_code">Enter Previous Wrong Remark:</label>
+                                            <div class="col-sm-9 col-lg-5">
+                                                <input name="transaction_id" type="text" class="form-control" id="wrong_remark" required>
+                                                <span class="help-block"><i class="fa fa-info-circle"></i>Enter your previously wrong remark</span>
+                                            </div>
+                                        </div>
+                                        <hr>
                                     </div>
 
                                     <div class="form-group">
@@ -84,7 +147,7 @@ $page_requested = '';
                                     </div>
 
                                     <hr>
-                                    <span>Enter Your Bank Details</span>
+                                    <p class="text-center"><u>Enter Your Bank Details</u></p>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Bank Name:</label>
                                         <div class="col-sm-9 col-lg-5">
@@ -110,7 +173,14 @@ $page_requested = '';
                                     </div>
 
                                     <hr>
-                                    <span>Enter Details of the bank you paid into.</span>
+                                    <p class="text-center"><u>Enter Details of the bank you paid into.</u></p>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="pass_code">Enter Payment Type:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <input name="company_bank_name" type="text" class="form-control" id="" required>
+                                            <span class="help-block"><i class="fa fa-info-circle"></i> Enter the payment method you selected on instafxng.com</span>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Bank Name:</label>
                                         <div class="col-sm-9 col-lg-5">
