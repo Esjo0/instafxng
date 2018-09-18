@@ -37,7 +37,7 @@ if($additional_msg == 'msg')
         <p><strong>STEP 2: Get Signals and News Release Alert Daily</strong></p>
 
         <p>The trading signals are posted every day on our website, just so you do not miss any of the entry prices as they drop, we have created a channel via Facebook Messenger where you can get direct notification as soon as the signals are posted.</p>
-        <p>Don’t miss any signal, <a href="http://bit.ly/2KEWxWQ" target="_blank">click here</a> to get daily notifications as soon as the signals are posted.</p>
+        <p>Don't miss any signal, <a href="http://bit.ly/2KEWxWQ" target="_blank">click here</a> to get daily notifications as soon as the signals are posted.</p>
         <hr />
         <br />
 msg;

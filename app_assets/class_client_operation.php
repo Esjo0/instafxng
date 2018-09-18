@@ -173,6 +173,25 @@ class clientOperation {
         $my_subject_new = str_replace('[FULL_NAME]', $client_name, $my_subject_new);
 
         $system_object->send_email($my_subject_new, $my_message_new, $sendto, $client_name);
+
+        // TODO: refine this, no repetition
+        $query = "SELECT * FROM system_message WHERE constant = 'WELCOME_GUIDE' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $selected_message_welcome_guide = $fetched_data[0];
+
+        $my_subject_welcome_guide = trim($selected_message_welcome_guide['subject']);
+        $my_message_welcome_guide = stripslashes($selected_message_welcome_guide['value']);
+
+        // Replace placeholders
+        $my_message_new_welcome_guide = str_replace('[FIRST_NAME]', $client_name, $my_message_welcome_guide);
+        $my_subject_new_welcome_guide = str_replace('[FIRST_NAME]', $client_name, $my_subject_welcome_guide);
+
+        $my_message_new_welcome_guide = str_replace('[FULL_NAME]', $client_name, $my_message_new_welcome_guide);
+        $my_subject_new_welcome_guide = str_replace('[FULL_NAME]', $client_name, $my_subject_new_welcome_guide);
+        if($my_subject_new_welcome_guide) {
+            $system_object->send_email($my_subject_new_welcome_guide, $my_message_new_welcome_guide, $sendto, $client_name);
+        }
     }
 
     /**
