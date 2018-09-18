@@ -3,20 +3,6 @@
 class clientOperation {
     private $client_data;
 
-    public function get_verification_remark($user_code) {
-        global $db_handle;
-        $pointer = "user_credential";
-        $pointer = $pointer . ": ";
-        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, scc.comment, scc.created
-                FROM sales_contact_comment AS scc
-                INNER JOIN admin AS a ON scc.admin_code = a.admin_code
-                WHERE scc.user_code = '$user_code' AND scc.comment LIKE '%$pointer%' ORDER BY scc.created DESC";
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-
-        return $fetched_data ? $fetched_data : false;
-
-    }
     public function __construct($ifx_account = '', $email_address = '') {
         if(isset($ifx_account) && !empty($ifx_account)) {
             $this->client_data = $this->set_client_data($ifx_account);
@@ -725,11 +711,31 @@ MAIL;
 
     public function update_verification_remark($user_code, $admin_code, $remark ) {
         global $db_handle;
-        $pointer = "user_credential";
+        $pointer = "CLIENT DOCUMENT VERIFICATION";
         $comment = $pointer . ": " . $remark;
         $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$comment')";
         $result = $db_handle->runQuery($query);
         return $result;
+    }
+
+    public function get_verification_remark($user_code) {
+        global $db_handle;
+//        $pointer = "CLIENT DOCUMENT VERIFICATION";
+//        $pointer = $pointer . ": ";
+//        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, scc.comment, scc.created
+//                FROM sales_contact_comment AS scc
+//                INNER JOIN admin AS a ON scc.admin_code = a.admin_code
+//                WHERE scc.user_code = '$user_code' AND scc.comment LIKE '%$pointer%' ORDER BY scc.created DESC";
+
+        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, scc.comment, scc.created
+                FROM sales_contact_comment AS scc
+                INNER JOIN admin AS a ON scc.admin_code = a.admin_code
+                WHERE scc.user_code = '$user_code' ORDER BY scc.created DESC";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
     }
 
     public function update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks) {
@@ -744,7 +750,7 @@ MAIL;
         $fetched_data = $db_handle->fetchAssoc($result);
         extract($fetched_data[0]);
 
-        $query = "UPDATE user_credential SET status = '2', doc_status = '$doc_status', WHERE user_credential_id = $credential_id LIMIT 1";
+        $query = "UPDATE user_credential SET status = '2', doc_status = '$doc_status' WHERE user_credential_id = $credential_id LIMIT 1";
         $db_handle->runQuery($query);
 
         $query = "UPDATE user_meta SET status = '$address_status' WHERE user_meta_id = $meta_id LIMIT 1";
