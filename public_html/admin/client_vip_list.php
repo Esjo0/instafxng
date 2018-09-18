@@ -4,49 +4,38 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$client_operation = new clientOperation();
 
 if (isset($_POST['filter_deposit'])) {
-
     foreach ($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
 
     extract($_POST);
 
-    $query = "SELECT ud.trans_id, ud.created AS last_deposit_date, ud.real_dollar_equivalent,
-            u.user_code, u.email,
-            ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-            ui.ifxaccount_id, uw.created AS last_withdrawal_date, tc.date_earned AS last_trading_date
-          FROM user_deposit AS ud
-          INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
-          INNER JOIN user AS u ON u.user_code = ui.user_code
-          INNER JOIN user_withdrawal AS uw ON ui.ifxaccount_id = uw.ifxaccount_id
-          INNER JOIN trading_commission AS tc ON tc.ifx_acct_no = ui.ifx_acct_no
-          LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code WHERE ud.status = '8' AND uw.status = '7' AND ud.real_dollar_equivalent > 100
-          AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
-          GROUP BY ud.ifxaccount_id  ORDER BY ud.created DESC";
-
-} else {
-    $query = "SELECT ud.trans_id, ud.created AS last_deposit_date, ud.real_dollar_equivalent,
-            u.user_code, u.email,
-            ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-            ui.ifxaccount_id, uw.created AS last_withdrawal_date, tc.date_earned AS last_trading_date
-          FROM user_deposit AS ud
-          INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
-          INNER JOIN user AS u ON u.user_code = ui.user_code
-          INNER JOIN user_withdrawal AS uw ON ui.ifxaccount_id = uw.ifxaccount_id
-          INNER JOIN trading_commission AS tc ON tc.ifx_acct_no = ui.ifx_acct_no
-          LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code WHERE ud.status = '8' AND uw.status = '7' AND ud.real_dollar_equivalent > 100
-          GROUP BY ud.ifxaccount_id  ORDER BY ud.created DESC";
+    $query = "SELECT
+                ud.trans_id,
+                ud.order_complete_time,
+                ud.real_dollar_equivalent,
+                u.user_code,
+                u.email,
+                ui.ifx_acct_no,
+                CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+                u.phone,
+                ui.ifxaccount_id
+            FROM user_deposit AS ud
+            INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
+            INNER JOIN user AS u ON u.user_code = ui.user_code
+            WHERE ud.status = '8' AND ud.real_dollar_equivalent >= 1000 AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+            GROUP BY u.user_code  ORDER BY ud.order_complete_time DESC ";
 }
 
 $result = $db_handle->runQuery($query);
-$completed_deposit_requests_filter_export = $db_handle->fetchAssoc($result);
-
+$client_vip_list_filter_export = $db_handle->fetchAssoc($result);
 
 $numrows = $db_handle->numRows($query);
 
-$rowsperpage = 20;
+$rowsperpage = 100;
 
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
@@ -71,8 +60,11 @@ if ($prespagehigh > $numrows) {
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
+$client_vip_list_filter = $db_handle->fetchAssoc($result);
 
+// Admin Allowed: Toye, Lekan, Demola, Joshua
+$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "Vi1DW");
+$allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allowed) ? true : false;
 
 ?>
 <!DOCTYPE html>
@@ -81,8 +73,8 @@ $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Admin - Completed Deposit</title>
-    <meta name="title" content="Instaforex Nigeria | Admin - Completed Deposit" />
+    <title>Instaforex Nigeria | Admin - Client VIP List</title>
+    <meta name="title" content="Instaforex Nigeria | Admin - Client VIP List" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <?php require_once 'layouts/head_meta.php'; ?>
@@ -210,7 +202,7 @@ $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
 
             <div class="row">
                 <div class="col-sm-12 text-danger">
-                    <h4><strong>COMPLETED DEPOSIT</strong></h4>
+                    <h4><strong>CLIENT VIP LIST</strong></h4>
                 </div>
             </div>
 
@@ -218,9 +210,7 @@ $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <p class="text-right"><a href="deposit_completed.php"  class="btn btn-default" title="Completed Deposit"><i class="fa fa-arrow-circle-left"></i> Completed Deposit</a></p>
-                        <p>Select date range below to get deposit transactions. Please note that when you filter, the result will be saved, if you
-                            want to get a new result, simply perform another filter.</p>
+                        <p>....</p>
 
                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                             <div class="form-group">
@@ -256,7 +246,7 @@ $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
 
                         <hr /><br />
 
-                        <?php if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) { ?>
+                        <?php if(isset($client_vip_list_filter) && !empty($client_vip_list_filter)) { ?>
 
                             <h5>Deposit transactions between <strong><?php echo $from_date . " and " . $to_date; ?> </strong></h5>
                             <div>
@@ -272,84 +262,99 @@ $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
 
                         <?php } ?>
 
-                        <?php if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) { require 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($client_vip_list_filter) && !empty($client_vip_list_filter)) { require 'layouts/pagination_links.php'; } ?>
 
                         <table  class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Transaction ID</th>
-                                <th>Client Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>IFX Account</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Amount Funded</th>
-                                <th>LAST WITHDRAWAL DATE</th>
-                                <th>LAST DEPOSIT DATE</th>
-                                <th>LAST TRADING DATE</th>
+                                <th>Client Info</th>
+                                <th>Last Deposit</th>
+                                <th>Last Withdrawal</th>
+                                <th>Last Trade</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
-                            if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) {
-                                foreach ($completed_deposit_requests_filter as $row) {
+                            if(isset($client_vip_list_filter) && !empty($client_vip_list_filter)) {
+                                foreach ($client_vip_list_filter as $row) {
+                                    $last_withdrawal = $client_operation->get_last_withdrawal_detail($row['user_code']);
+                                    $last_withdrawal_date = $last_withdrawal['created'];
+                                    $last_withdrawal_amount = $last_withdrawal['dollar_withdraw'];
+
+                                    $last_deposit = $client_operation->get_last_deposit_detail($row['user_code']);
+                                    $last_deposit_date = $last_deposit['created'];
+                                    $last_deposit_amount = $last_deposit['real_dollar_equivalent'];
+
+                                    $last_trade = $client_operation->get_last_trade_detail($row['user_code']);
+                                    $last_trade_date = $last_trade['date_earned'];
+
                                     ?>
                                     <tr>
-                                        <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
-                                        <td><?php echo $row['full_name']; ?></td>
-                                        <td><?php echo $row['ifx_acct_no']; ?></td>
-                                        <td><?php echo $row['phone']; ?></td>
-                                        <td><?php echo $row['email']; ?></td>
-                                        <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
-                                        <td><?php echo datetime_to_text($row['last_withdrawal_date']); ?></td>
-                                        <td><?php echo datetime_to_text($row['last_deposit_date']); ?></td>
-                                        <td><?php echo datetime_to_text($row['last_trading_date']); ?></td>
+                                        <td><?php echo $row['full_name']; ?><br />
+                                            <?php echo $row['phone']; ?><br />
+                                            <?php echo $row['email']; ?>
+                                        </td>
+                                        <td class="nowrap">
+                                            <?php if(!empty($last_deposit_date)) { echo datetime_to_text($last_deposit_date); } ?><br />
+                                            &dollar; <?php echo number_format($last_deposit_amount, 2, ".", ","); ?>
+                                        </td>
+                                        <td class="nowrap">
+                                            <?php if(!empty($last_withdrawal_date)) { echo datetime_to_text($last_withdrawal_date); } ?><br />
+                                            &dollar; <?php echo number_format($last_withdrawal_amount, 2, ".", ","); ?>
+                                        </td>
+                                        <td><?php echo date_to_text($last_trade_date); ?></td>
                                     </tr>
-                                <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                             </tbody>
                         </table>
 
-
-
                         <?php
-                        if(isset($completed_deposit_requests_filter_export) && !empty($completed_deposit_requests_filter_export)) :
+                        if(isset($client_vip_list_filter_export) && !empty($client_vip_list_filter_export)) :
                             ?>
                             <div id="output" style="display: none">
                                 <div class="container-fluid" >
                                     <table id="outputTable" class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>
                                         <tr>
-                                            <th>Transaction ID</th>
                                             <th>Client Name</th>
-                                            <th>Phone</th>
-                                            <th>Email</th>
                                             <th>IFX Account</th>
                                             <th>Phone</th>
                                             <th>Email</th>
-                                            <th>Amount Funded</th>
-                                            <th>LAST WITHDRAWAL DATE</th>
-                                            <th>LAST DEPOSIT DATE</th>
-                                            <th>LAST TRADING DATE</th>
+                                            <th>Last Deposit Date</th>
+                                            <th>Last Deposit Amount</th>
+                                            <th>Last Withdrawal Date</th>
+                                            <th>Last Withdrawal Amount</th>
+                                            <th>Last Trade</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) {
-                                            foreach ($completed_deposit_requests_filter as $row) {
+                                        if(isset($client_vip_list_filter) && !empty($client_vip_list_filter)) {
+                                            foreach ($client_vip_list_filter as $row) {
+                                                $last_withdrawal = $client_operation->get_last_withdrawal_detail($row['user_code']);
+                                                $last_withdrawal_date = $last_withdrawal['created'];
+                                                $last_withdrawal_amount = $last_withdrawal['dollar_withdraw'];
+
+                                                $last_deposit = $client_operation->get_last_deposit_detail($row['user_code']);
+                                                $last_deposit_date = $last_deposit['created'];
+                                                $last_deposit_amount = $last_deposit['real_dollar_equivalent'];
+
+                                                $last_trade = $client_operation->get_last_trade_detail($row['user_code']);
+                                                $last_trade_date = $last_trade['date_earned'];
+
                                                 ?>
                                                 <tr>
-                                                    <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                                     <td><?php echo $row['full_name']; ?></td>
                                                     <td><?php echo $row['ifx_acct_no']; ?></td>
                                                     <td><?php echo $row['phone']; ?></td>
                                                     <td><?php echo $row['email']; ?></td>
-                                                    <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
-                                                    <td><?php echo datetime_to_text($row['last_withdrawal_date']); ?></td>
-                                                    <td><?php echo datetime_to_text($row['last_deposit_date']); ?></td>
-                                                    <td><?php echo datetime_to_text($row['last_trading_date']); ?></td>
+                                                    <td><?php if(!empty($last_deposit_date)) { echo datetime_to_text($last_deposit_date); } ?></td>
+                                                    <td>$ <?php echo number_format($last_deposit_amount, 2, ".", ","); ?></td>
+                                                    <td><?php if(!empty($last_withdrawal_date)) { echo datetime_to_text($last_withdrawal_date); } ?></td>
+                                                    <td>$ <?php echo number_format($last_withdrawal_amount, 2, ".", ","); ?></td>
+                                                    <td><?php echo date_to_text($last_trade_date); ?></td>
                                                 </tr>
-                                            <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                            <?php } } else { echo "<tr><td colspan='9' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -364,7 +369,7 @@ $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
                                 alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#outputTable",{headers:true})');
                             }
                         </script>
-                        <?php if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) { ?>
+                        <?php if(isset($client_vip_list_filter) && !empty($client_vip_list_filter)) { ?>
                             <div class="tool-footer text-right">
                                 <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                             </div>
@@ -372,7 +377,7 @@ $completed_deposit_requests_filter = $db_handle->fetchAssoc($result);
                     </div>
                 </div>
 
-                <?php if(isset($completed_deposit_requests_filter) && !empty($completed_deposit_requests_filter)) { require 'layouts/pagination_links.php'; } ?>
+                <?php if(isset($client_vip_list_filter) && !empty($client_vip_list_filter)) { require 'layouts/pagination_links.php'; } ?>
             </div>
 
             <!-- Unique Page Content Ends Here

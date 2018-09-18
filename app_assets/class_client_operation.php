@@ -2668,6 +2668,38 @@ MAIL;
         return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
     }
 
+    public function get_last_deposit_detail($user_code) {
+        global $db_handle;
+
+        $query = "SELECT ud.created, ud.real_dollar_equivalent
+            FROM user_deposit AS ud
+            INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE ud.status = '8' AND u.user_code = '$user_code' ORDER BY ud.created DESC LIMIT 1";
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $last_deposit_detail = $fetched_data[0];
+
+        return $last_deposit_detail ? $last_deposit_detail : false;
+    }
+
+    public function get_last_withdrawal_detail($user_code) {
+        global $db_handle;
+
+        $query = "SELECT uw.created, uw.dollar_withdraw
+            FROM user_withdrawal AS uw
+            INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE uw.status = '10' AND u.user_code = '$user_code' ORDER BY uw.created DESC LIMIT 1";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $last_withdrawal_detail = $fetched_data[0];
+
+        return $last_withdrawal_detail ? $last_withdrawal_detail : false;
+    }
+
     public function get_last_trade_detail($user_code) {
         global $db_handle;
 
