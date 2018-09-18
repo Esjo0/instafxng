@@ -764,38 +764,36 @@ MAIL;
         $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source, interest, created) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', $source, $interest, '$created')";
         $result = $db_handle->runQuery($query);
 
-                $text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
-                $subject = "Welcome to InstaFxNg $first_name";
+                //$text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
+
+        if($interest == 2 || $interest == 3 ){
+
+        }elseif($interest == 3){
+
+        }
+        $subject = "Welcome to InstaFxNg $first_name";
                 $message = <<<MAIL
     <div style="background-color: #F3F1F2">
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Hello $first_name,</p>
-            <p>Welcome on board!</p>
-            <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
-            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
-            <p>To start your journey to earning more money from Forex trading, you need to gain adequate knowledge of the Forex market.</p>
-
-            <p>We have a Free online training that you can take advantage of to learn more about how to trade Forex profitably.</p>
-            <p>The training is simple and easy to follow and you can take it from your house, office or even on your bed.</p>
-
-            <p>Within the next hour, you will be placing informed trades and increase your chances of taking your slice of the 5.3 Billion Dollars from the Forex market.</p>
-            <p>Guess what! It is free (at least for now).</p>
-            <p><a href="https://instafxng.com/fxacademy/">Click Here to Start the Training Now.</a></p>
-            <p>$first_name, we are taking in just 50 people at this time, for the brand new Forex Money Maker course.</p>
-            <p>35 spots have been taken already and we have 15 left.
-            The slots are filling up very fast.
-            <a href="https://instafxng.com/fxacademy/">Go here now to start the free training.</a></p>
-            <p>Please don’t miss this. Go ahead and login to the training immediately to secure your spot.</p>
-            <p>This will be your best shot at generating a healthy side income from forex trading. Go ahead and make the move now.</p>
-            <p>Start the Forex Money Maker Course now so you can launch your Forex trading entry with a big bang.</p>
-            <p>See you on the other side. Secure your spot now. Only 15 spots are up for grabs. Don’t wait till it will be too late.</p>
-            <p><a href="https://instafxng.com/fxacademy/">Here is the link to the online training again.</a></p>
+            <p>Dear [NAME],</p>
+<p>Welcome! I am glad that you are here.</p>
+<p>You registered on the signal page as a beginner (newbie) to Forex trading.</p>
+<p>To use these signals, you need know how to trade and I will like to guide you into making money from the Forex market.</p>
+<p>A successful Forex trader is one with knowledge and experience!</p>
+<p>Online Forex trading simply means exchange of foreign currencies online with the sole aim of making consistent daily profits.</p>
+<p>You can emerge in this business only by getting educated on how to trade, analyze the market trends and position yourself in the most profitable positions daily.</p>
+<p>An informed trader has a higher chance of making profit faster than a trader with no training. He also understands the risk involved in the business and knows how to navigate the market to reduce risks and maximize rewards.</p>
+<p>Our Fxacademy is built to increase the number of informed traders in Nigeria and we'll be happy to guide you into profitable Forex trading.</p>
+<p>Click here to join to the army now and get equipped to trade profitably</p>
+<p>Don’t stay uninformed! Knowledge is key in Forex trading.</p>
+<p>Click here to start your training now and find out how to get up to $150 welcome bonus at the end of your training.</p>
+<p>Once again, welcome on board!</p>
             <br/><br/>
-            <p>Best Regards,</p>
-            <p>Mercy,</p>
+            <p>Regards,</p>
+            <p>Bukola,</p>
             <p>Client Relations Manager,</p>
             <p>InstaForex Nigeria</p>
             <p>www.instafxng.com</p>
