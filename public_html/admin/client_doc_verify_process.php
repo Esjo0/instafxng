@@ -252,7 +252,7 @@ if (isset($_POST['process'])) {
                                                 <div class="col-sm-12">
                                                     <div class="transaction-remarks">
                                                         <span id="trans_remark_author"><?php echo $row['admin_full_name']; ?></span>
-                                                        <span id="trans_remark"><?php echo substr($row['comment'], 17); ?></span>
+                                                        <span id="trans_remark"><?php echo $row['comment']; ?></span>
                                                         <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
                                                     </div>
                                                 </div>
