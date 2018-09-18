@@ -21,8 +21,8 @@ if($get_params['x'] == 'edit') {
         $verification_remark = $client_operation->get_verification_remark($user_code);
     }
 }
-
-if (isset($_POST['pending'])) {
+// Pend verifification and send email
+if (isset($_POST['pending_with_mail'])) {
     foreach ($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
@@ -40,6 +40,36 @@ if (isset($_POST['pending'])) {
         $doc_status = $id_card_status . $passport_status . $signature_status;
         $update_verification = $client_operation->update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks);
         $update_remark = $client_operation->update_verification_remark($user_code, $admin_code, $remarks);
+
+        // Set the status to pending
+        $query = "UPDATE user_credential SET status = '3' WHERE user_credential_id = $credential_id LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
+        if($update_verification && $result) {
+            $message_success = "You have successfully pend this verification and updated comments";
+            redirect_to("client_doc_verify.php");
+        } else {
+            $message_error = "Looks like something went wrong or you didn't make any change.";
+        }
+    }
+}
+
+if (isset($_POST['pending'])) {
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+    extract($_POST);
+
+    $credential_id = decrypt(str_replace(" ", "+", $credential_id));
+    $credential_id = preg_replace("/[^A-Za-z0-9 ]/", '', $credential_id);
+
+    $meta_id = decrypt(str_replace(" ", "+", $meta_id));
+    $meta_id = preg_replace("/[^A-Za-z0-9 ]/", '', $meta_id);
+
+    if(is_null($passport_status) || is_null($id_card_status) || is_null($signature_status) || is_null($address_status) || is_null($remarks)) {
+        $message_error = "All fields must be filled, please try again";
+    } else {
+       $update_remark = $client_operation->update_verification_remark($user_code, $admin_code, $remarks);
 
         // Set the status to pending
         $query = "UPDATE user_credential SET status = '3' WHERE user_credential_id = $credential_id LIMIT 1";
@@ -216,8 +246,9 @@ if (isset($_POST['process'])) {
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
-                                            <button type="button" data-target="#document-verification-confirm" data-toggle="modal" class="btn btn-success"><i class="fa fa-save fa-fw"></i> Save</button>
-                                            <input name="pending" type="submit" class="btn btn-primary" value="Pending">
+                                            <button type="button" data-target="#document-verification-confirm" data-toggle="modal" class="btn btn-success"><i class="fa fa-save fa-fw"></i> Approve Verification</button>
+                                            <input name="pending_with_mail" type="submit" class="btn btn-warning" value="Pend and Send Email">
+                                            <input name="pending" type="submit" class="btn btn-primary" value="Pend Verification">
                                         </div>
                                     </div>
 
