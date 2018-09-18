@@ -242,7 +242,7 @@ if (isset($_POST['process'])) {
                                 
                             </div>
                             <div class="col-sm-4">
-                                <h5>Verification Remarks</h5>
+                                <h5>Remarks</h5>
                                 <div style="max-height: 550px; overflow: scroll;">
                                     <?php
                                     if(isset($verification_remark) && !empty($verification_remark)) {
