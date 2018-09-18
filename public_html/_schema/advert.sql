@@ -19,3 +19,24 @@ CREATE TABLE `unverified_campaign_mail_log` (
 
 //verification pending
 ALTER TABLE `user_credential` CHANGE `status` `status` ENUM('1','2','3') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '1 - Awaiting Moderation2 - Moderated3 - Pending';
+
+
+-- //User deposit refund table
+CREATE TABLE `user_deposit_refund` (
+ `refund_id` int(11) NOT NULL AUTO_INCREMENT,
+ `ifx_acct_no` varchar(100) NOT NULL,
+ `refund_type` enum('1','2','3') NOT NULL,
+ `transaction_id` varchar(100) NOT NULL,
+ `amount_paid` int(11) NOT NULL,
+ `user_bank_name` varchar(100) NOT NULL,
+ `user_acct_name` varchar(100) NOT NULL,
+ `user_acct_no` int(11) NOT NULL,
+ `payment_method` varchar(100) NOT NULL,
+ `company_bank_name` varchar(100) NOT NULL,
+ `company_acct_name` varchar(100) NOT NULL,
+ `company_acct_no` int(11) NOT NULL,
+ `issue_desc` text NOT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ `refund_status` enum('1','2') NOT NULL DEFAULT '1' COMMENT '1-Pending 2-Completed',
+ UNIQUE KEY `refund_id` (`refund_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1

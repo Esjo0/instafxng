@@ -18,6 +18,7 @@ switch($get_params['x']) {
     case 'inspect': $deposit_process_inspect = true; $page_title = '- INSPECT'; break;
     case 'notified': $deposit_process_notified = true; $page_title = '- NOTIFIED'; break;
     case 'view': $deposit_process_view = true; $page_title = '- VIEW'; break;
+    case 'refund': $deposit_process_refund = true; $page_title = '- REFUND'; break;
     default: $no_valid_page = true; break;
 }
 
@@ -157,6 +158,40 @@ if ($deposit_process_pending && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST[
     exit;
 }
 
+//Pend deposit refund
+if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['pending_refund'] == true)) {
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    $transaction_id = $_POST['transaction_id'];
+    $remarks = $_POST['remarks'];
+
+    $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
+
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
+    header("Location: deposit_refund.php");
+    exit;
+}
+
+//complete deposit refund
+if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['complete_refund'] == true)) {
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    $transaction_id = $_POST['transaction_id'];
+    $remarks = $_POST['remarks'];
+
+    $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
+    $query = "UPDATE user_deposit_refund SET refund_status = 2 WHERE transaction_id = '$transaction_id'";
+    $result = $db_handle->runQuery($query);
+
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
+    header("Location: deposit_refund.php");
+    exit;
+}
+
 $trans_detail = $client_operation->get_deposit_by_id_full($trans_id);
 
 if(empty($trans_detail)) {
@@ -277,6 +312,7 @@ if(!empty($transaction_access['holder'])){
                                     if($deposit_process_inspect) { include_once 'views/deposit_process/deposit_process_inspect.php'; }
                                     if($deposit_process_notified) { include_once 'views/deposit_process/deposit_process_notified.php'; }
                                     if($deposit_process_view) { include_once 'views/deposit_process/deposit_process_view.php'; }
+                                if($deposit_process_refund) { include_once 'views/deposit_process/deposit_process_refund.php'; }
                                 ?>
                                 
                             </div>
