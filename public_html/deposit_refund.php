@@ -23,19 +23,20 @@ if(isset($_POST['deposit_refund'])){
 
     $client_operation = new clientOperation($account_no);
     $user_ifx_details = $client_operation->get_client_data();
-    if($user_ifx_details) {
+    $query = "SELECT * FROM user_deposit WHERE trans_id = '$transaction_id'";
+    $result = $db_handle->numRows($query);
+
+    if($user_ifx_details && $result == 1) {
         switch ($refund_type){
             case 1: $issue_desc = "Transaction ID: ".$transaction_id; break;
-            case 2: $issue_desc = "Third Party Details : Name: $tp_name <br> Email: $tp_email <br> Phone No.: $tp_phone";break;
-            case 3: $issue_desc = "Wrong Remark: $wrong_remark";break;
+            case 2: $issue_desc = "Third Party Details : Name: $tp_name <br> Email: $tp_email <br> Phone No.: $tp_phone <br>Transaction ID: $transaction_id";break;
+            case 3: $issue_desc = "Wrong Remark: $wrong_remark <br>Transaction ID: $transaction_id";break;
         }
         $request = $client_operation->deposit_refund($account_no, $refund_type, $transaction_id, $amount_paid, $user_bank_name, $user_acct_name, $user_acct_no, $payment_method, $comp_bank_name, $comp_acct_name, $comp_acct_no, $issue_desc);
         if($request== true){$message_success = "Your Request has been submitted successfully";}
         else{$message_error = "Your Request was not successfully submitted"; }
         }else{
-        $message_error = "Account number not registered";
-        sleep(10000);
-        redirect_to('live_account.php');
+        $message_error = "Account number not registered or Transaction ID is incorrect";
         }
 }
 ?>

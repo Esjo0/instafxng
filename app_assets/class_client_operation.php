@@ -3,6 +3,17 @@
 class clientOperation {
     private $client_data;
 
+    // get refund details for this transaction
+    public function get_refund_details($trans_id) {
+        global $db_handle;
+
+        $query = "SELECT ifx_acct_no AS refund_acct, transaction_id AS refund_trans_id, amount_paid AS refund_amount, refund_type, user_bank_name, user_acct_name, user_acct_no, payment_method, company_bank_name,company_acct_name, company_acct_no, issue_desc, created AS request_date FROM user_deposit_refund WHERE transaction_id = '$trans_id'";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
     public function deposit_refund($ifx_acct_no, $refund_type, $trans_id, $amount_paid, $user_bank_name, $user_acct_name, $user_acct_no, $payment_method, $comp_bank_name, $comp_acct_name, $comp_acct_no, $issue_desc) {
         global $db_handle;
 
