@@ -706,7 +706,7 @@ MAIL;
 
     public function update_verification_remark($user_code, $admin_code, $remark ) {
         global $db_handle;
-        $pointer = "user_credential";
+        $pointer = "Document Verification";
         $comment = $pointer . ": " . $remark;
         $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$comment')";
         $result = $db_handle->runQuery($query);
