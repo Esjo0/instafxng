@@ -767,26 +767,36 @@ MAIL;
                 //$text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
 
         if($interest == 2 || $interest == 3 ){
-            $subject = "Welcome to The Signal Page: Here is a Guide to Optimizing the Signals!";
+            $subject = "$first_name, Welcome to Our Free Signal Page, Would You Love a 100% Trading Bonus?";
             $message = <<<MAIL
     <div style="background-color: #F3F1F2">
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear [NAME],</p>
-            <p>Welcome! I am glad that you are here.</p>
-            <p>You registered on the signal page as a beginner (newbie) to Forex trading.</p>
-            <p>To use these signals, you need know how to trade and I will like to guide you into making money from the Forex market.</p>
-            <p>A successful Forex trader is one with knowledge and experience!</p>
-            <p>Online Forex trading simply means exchange of foreign currencies online with the sole aim of making consistent daily profits.</p>
-            <p>You can emerge in this business only by getting educated on how to trade, analyze the market trends and position yourself in the most profitable positions daily.</p>
-            <p>An informed trader has a higher chance of making profit faster than a trader with no training. He also understands the risk involved in the business and knows how to navigate the market to reduce risks and maximize rewards.</p>
-            <p>Our Fxacademy is built to increase the number of informed traders in Nigeria and we'll be happy to guide you into profitable Forex trading.</p>
-            <p>Click here to join to the army now and get equipped to trade profitably</p>
-            <p>Don’t stay uninformed! Knowledge is key in Forex trading.</p>
-            <p><a href="http://bit.ly/2iExTpN">Click here to start your training now</a> and find out how to get up to $150 welcome bonus at the end of your training.</p>
-            <p>Once again, welcome on board!</p>
+            <p>Dear $first_name,</p>
+<p>Welcome to InstaFxNg, the representative of InstaForex in Nigeria.</p>
+<p>My name is Bukola and I am excited to have you here.</p>
+<p>The free signal service is one of the ways we ensure that InstaForex traders on our platform trade profitably and seamlessly.</p>
+<p>For us, we want to be a part of your success story and direct you into making the most profits daily!</p>
+<p>With 85% accuracy, our signals boast of 50-70 pips daily and have gained a large pool of users all over Nigeria!</p>
+<p>But That Isn’t All We Got to Offer You!</p>
+<p>Like I mentioned earlier, the trading signal is only one of the benefits you get for having an InstaForex Account with us, you can also get;</p>
+<ul>
+<ol>Inexhaustible training and trading mentor-ship from beginner to advance level. If you're a beginner, <a href="http://bit.ly/2iExTpN">Click here</a> to enroll in our Fxacademy now!</ol>
+<ol>Heavily discounted deposit rates.</ol>
+<ol>Instant deposits and withdrawals in Naira.</ol>
+<ol>Up to 100% welcome bonus on $50, $100, $150.</ol>
+<ol>30% bonus on all subsequent deposits (Irrespective of your deposit amount)</ol>
+<ol>VVIP support services.</ol>
+</ul>
+<p>You Haven’t Heard It All!</p>
+<p>You Can Win Up to $150 Monthly and N1 Million every year on your Enrolled InstaForex Account.</p>
+<p>All these are right at your service, so what are you waiting for?</p>
+<p>There is no better platform to carry out your Forex transactions In Nigeria, so join the winning team now!</p>
+<p>To enjoy these offers, all you need is an InstaFxNg enrolled account.</p>
+<p><a href="http://bit.ly/2mpqehQ">Fill in step 1 and 2 here to open and enroll your account now!</a></p>
+<p>I am right here to guide you through the process, feel free to write me back if you need my assistance.</p>
             <br/><br/>
             <p>Regards,</p>
             <p>Bukola,</p>
@@ -821,38 +831,27 @@ MAIL;
     </div>
 </div>
 MAIL;
-
         }elseif($interest == 1){
-            $subject = "$first_name, Welcome to Our Free Signal Page, Would You Love a 100% Trading Bonus?";
+            $subject = "Welcome to The Signal Page: Here is a Guide to Optimizing the Signals!";
             $message = <<<MAIL
     <div style="background-color: #F3F1F2">
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear [NAME],</p>
-<p>Welcome to InstaFxNg, the representative of InstaForex in Nigeria.</p>
-<p>My name is Bukola and I am excited to have you here.</p>
-<p>The free signal service is one of the ways we ensure that InstaForex traders on our platform trade profitably and seamlessly.</p>
-<p>For us, we want to be a part of your success story and direct you into making the most profits daily!</p>
-<p>With 85% accuracy, our signals boast of 50-70 pips daily and have gained a large pool of users all over Nigeria!</p>
-<p>But That Isn’t All We Got to Offer You!</p>
-<p>Like I mentioned earlier, the trading signal is only one of the benefits you get for having an InstaForex Account with us, you can also get;</p>
-<ul>
-<ol>Inexhaustible training and trading mentor-ship from beginner to advance level. If you're a beginner, <a href="http://bit.ly/2iExTpN">Click here</a> to enroll in our Fxacademy now!</ol>
-<ol>Heavily discounted deposit rates.</ol>
-<ol>Instant deposits and withdrawals in Naira.</ol>
-<ol>Up to 100% welcome bonus on $50, $100, $150.</ol>
-<ol>30% bonus on all subsequent deposits (Irrespective of your deposit amount)</ol>
-<ol>VVIP support services.</ol>
-</ul>
-<p>You Haven’t Heard It All!</p>
-<p>You Can Win Up to $150 Monthly and N1 Million every year on your Enrolled InstaForex Account.</p>
-<p>All these are right at your service, so what are you waiting for?</p>
-<p>There is no better platform to carry out your Forex transactions In Nigeria, so join the winning team now!</p>
-<p>To enjoy these offers, all you need is an InstaFxNg enrolled account.</p>
-<p><a href="http://bit.ly/2mpqehQ">Fill in step 1 and 2 here to open and enroll your account now!</a></p>
-<p>I am right here to guide you through the process, feel free to write me back if you need my assistance.</p>
+            <p>Dear $first_name,</p>
+            <p>Welcome! I am glad that you are here.</p>
+            <p>You registered on the signal page as a beginner (newbie) to Forex trading.</p>
+            <p>To use these signals, you need know how to trade and I will like to guide you into making money from the Forex market.</p>
+            <p>A successful Forex trader is one with knowledge and experience!</p>
+            <p>Online Forex trading simply means exchange of foreign currencies online with the sole aim of making consistent daily profits.</p>
+            <p>You can emerge in this business only by getting educated on how to trade, analyze the market trends and position yourself in the most profitable positions daily.</p>
+            <p>An informed trader has a higher chance of making profit faster than a trader with no training. He also understands the risk involved in the business and knows how to navigate the market to reduce risks and maximize rewards.</p>
+            <p>Our Fxacademy is built to increase the number of informed traders in Nigeria and we'll be happy to guide you into profitable Forex trading.</p>
+            <p><a href="http://bit.ly/2iExTpN">Click here to join to the army</a> now and get equipped to trade profitably</p>
+            <p>Don’t stay uninformed! Knowledge is key in Forex trading.</p>
+            <p><a href="http://bit.ly/2iExTpN">Click here to start your training now</a> and find out how to get up to $150 welcome bonus at the end of your training.</p>
+            <p>Once again, welcome on board!</p>
             <br/><br/>
             <p>Regards,</p>
             <p>Bukola,</p>
