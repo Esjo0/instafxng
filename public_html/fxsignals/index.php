@@ -3,7 +3,6 @@ require_once '../init/initialize_general.php';
 $thisPage = "Home";
 $date = date('Y-m-d H:i:s');
 $cook = $_COOKIE[$ifxngsignals];
-echo $_COOKIE[$ifxngsignals];
 $signal_object = new Signal_Management();
 if (isset($_POST['login'])) {
     $email = $db_handle->sanitizePost($_POST['email']);
@@ -118,6 +117,29 @@ if (isset($_POST['login'])) {
         }
     }
     </style>
+<!--    This section helps facbook to track those that finally got to this page from facebook advert and it also
+heelps to build facebook adds retargetting
+
+Please sir kindly review this sir-->
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window,document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '177357696206919');
+        fbq('track', 'CompleteRegistration');
+    </script>
+    <noscript>
+        <img height="1" width="1"
+             src="https://www.facebook.com/tr?id=177357696206919&ev=PageView
+&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
 </head>
 
 <body style="background: white" >
@@ -155,7 +177,7 @@ if (isset($_POST['login'])) {
                         <div class="input-group">
                         <label><input type="radio" name="interest" value="3"><b>I trade with Instaforex.</b></label>
                             <label><input type="radio" name="interest" value="2"><b>I trade with Other brokers.</b></label><br/>
-                            <label><input type="radio" name="interest" value="1"><b>I trade Not Traded Forex Before.</b></label>
+                            <label><input type="radio" name="interest" value="1"><b>I am new to forex.</b></label>
                             </div>
                     <?php } ?>
                     </form>

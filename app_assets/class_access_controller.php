@@ -2,7 +2,7 @@
 //Define an array of the majour pages and its code
 define("PAGE_CODE", json_encode(array(
     1 => "admin_add.php||account_officers.php||",
-    2 => "admin_view.php||admin_manage.php||",
+    2 => "admin_view.php||",
     3 => "bulletin_add.php||",
     4 => "bulletin_view.php||",
     5 => "bulletin_centre.php||",

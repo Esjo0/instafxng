@@ -27,9 +27,6 @@ if (isset($_POST['pending'])) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
     extract($_POST);
-    $update_remark = $client_operation->update_verification_remark($user_code, $admin_code, $remarks);
-    $query = "UPDATE user_credential SET status = 3 WHERE user_credential_id = $user_credential_id";
-    $result = $db_handle->runQuery($query);
 
     $credential_id = decrypt(str_replace(" ", "+", $credential_id));
     $credential_id = preg_replace("/[^A-Za-z0-9 ]/", '', $credential_id);
@@ -43,6 +40,11 @@ if (isset($_POST['pending'])) {
         $doc_status = $id_card_status . $passport_status . $signature_status;
         $update_verification = $client_operation->update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks);
         $update_remark = $client_operation->update_verification_remark($user_code, $admin_code, $remarks);
+
+        // Set the status to pending
+        $query = "UPDATE user_credential SET status = '3' WHERE user_credential_id = $credential_id LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
         if($update_verification && $result) {
             $message_success = "You have successfully pend this verification and updated comments";
             redirect_to("client_doc_verify.php");
@@ -240,7 +242,7 @@ if (isset($_POST['process'])) {
                                 
                             </div>
                             <div class="col-sm-4">
-                                <h5>Verification Remarks</h5>
+                                <h5>Admin Remark</h5>
                                 <div style="max-height: 550px; overflow: scroll;">
                                     <?php
                                     if(isset($verification_remark) && !empty($verification_remark)) {

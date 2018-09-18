@@ -26,6 +26,7 @@ $total_Signals_triggered_tp = $db_handle->numRows($query."AND SD.exit_type = 'Ta
 $total_Signals_triggered_sl = $db_handle->numRows($query."AND SD.exit_type = 'Stop Loss' ");
 $total_Signals_pending = $db_handle->numRows($query."AND SD.trigger_status = '0' ");
 $total_Signals_users = $db_handle->numRows("SELECT email FROM signal_users");
+$total_Signals_breakeven = $db_handle->numRows($query."AND SD.highest_pips > 5 AND  SD.exit_type = 'Stop Loss' ");
 
 
 $query_profit = "SELECT pips AS Total_profit FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Take Profit')";
@@ -108,8 +109,8 @@ function table_context($trigger_status){
             google.charts.load("current", {packages:["corechart"]});
             google.charts.setOnLoadCallback(drawChart);
             function drawChart() {
-                var profit = <?php echo $Total_profit;?>;
-                var loss =  <?php echo $Total_loss;?>;
+                var profit = <?php echo $sum_of_profit;?>;
+                var loss =  <?php echo $sum_of_loss;?>;
                 var data = google.visualization.arrayToDataTable([
                     ['Type', 'Pips'],
                     ['Profit', profit],
@@ -199,6 +200,7 @@ function table_context($trigger_status){
                                             <tr><th>Total Triggered Signals (All)</th> <th><?php echo $total_Signals_triggered;?></th></tr>
                                             <tr><th>Total Triggered Signals (Take Profit)</th> <th><?php echo $total_Signals_triggered_tp;?></th></tr>
                                             <tr><th>Total Triggered Signals (Stop Loss)</th> <th><?php echo $total_Signals_triggered_sl;?></th></tr>
+                                            <tr><th>Total Triggered Signals (Break Even)</th> <th><?php echo $total_Signals_breakeven;?></th></tr>
                                             <tr><th>Total Pending Signals</th> <th><?php echo $total_Signals_pending;?></th></tr>
                                             <tr><th>Total Signal Users</th> <th><?php echo $total_Signals_users;?></th></tr>
                                         </thead>
@@ -206,7 +208,9 @@ function table_context($trigger_status){
                             </div>
                             <div class="col-sm-6">
                                 <div id="donutchart" ></div>
-                                <p class="text-center">Total Profit : <span style="color:green !important;"><?php echo $sum_of_profit;?></span>pips || Total Loss : <span style="color:red !important;">-<?php echo $sum_of_loss;?></span>pips</p>
+                                <p class="text-center">Total Profit : <span style="color:green !important;"><?php echo number_format($sum_of_profit);?></span> pips || Total Loss : <span style="color:red !important;">-<?php echo number_format($sum_of_loss);?></span> pips<br>
+                                    Total Pips From Break even Trades : <span style="color:green !important;"><?php echo number_format($total_Signals_breakeven * 5);?></span> pips
+                                </p>
                             </div>
                         </div>
 
@@ -241,9 +245,9 @@ function table_context($trigger_status){
                                             <span><b>Entry Price:</b> <?php if(!empty($row['entry_price'])){echo $signal_object->round_price_to_dp($row['entry_price'], $row['decimal_place']);}else{echo $row['market_price']; } ?></span><br/>
                                             <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);}else{echo datetime_to_text($row['created']);} ?></span><br/>
                                             <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text($row['exit_time']);} ?></span><br/>
-                                            <span><b>Highest Pips:</b><span style="color:green !important;"> <?php echo $row['highest_pips']; ?></span>pips</span><br/>
+                                            <span><b>Highest Pips:</b><span style="color:green !important;"> <?php echo $row['highest_pips']; ?></span> pips</span><br/>
                                             <span><b>Pips:</b> <?php echo $signal_object->get_pips_display($row['order_type'],$row['pips']); ?></span><br/>
-                                            <span><b>Lowest Pips:</b> <span style="color:red !important;"><?php echo $row['lowest_pips']; ?></span>pips</span><br/>
+                                            <span><b>Lowest Pips:</b> <span style="color:red !important;"><?php echo $row['lowest_pips']; ?></span> pips</span><br/>
                                             <span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
 											<span><b>Exit Price:</b> <?php echo $signal_object->round_price_to_dp($row['exit_price'], $row['decimal_place']); ?></span>
                                         </td>

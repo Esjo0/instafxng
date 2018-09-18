@@ -764,38 +764,32 @@ MAIL;
         $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source, interest, created) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', $source, $interest, '$created')";
         $result = $db_handle->runQuery($query);
 
-                $text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
-                $subject = "Welcome to InstaFxNg $first_name";
-                $message = <<<MAIL
+                //$text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
+
+        if($interest == 2 || $interest == 3 ){
+            $subject = "Welcome to The Signal Page: Here is a Guide to Optimizing the Signals!";
+            $message = <<<MAIL
     <div style="background-color: #F3F1F2">
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Hello $first_name,</p>
-            <p>Welcome on board!</p>
-            <p>I would like to take this opportunity to let you know how pleased and excited I am that you have chosen to trade with InstaForex Nigeria (www.InstaFxNg.com).</p>
-            <p>You have joined over 14,000 Nigerians who make consistent income from the Forex market using the InstaForex platform and also earn more money just for trading.</p>
-            <p>To start your journey to earning more money from Forex trading, you need to gain adequate knowledge of the Forex market.</p>
-
-            <p>We have a Free online training that you can take advantage of to learn more about how to trade Forex profitably.</p>
-            <p>The training is simple and easy to follow and you can take it from your house, office or even on your bed.</p>
-
-            <p>Within the next hour, you will be placing informed trades and increase your chances of taking your slice of the 5.3 Billion Dollars from the Forex market.</p>
-            <p>Guess what! It is free (at least for now).</p>
-            <p><a href="https://instafxng.com/fxacademy/">Click Here to Start the Training Now.</a></p>
-            <p>$first_name, we are taking in just 50 people at this time, for the brand new Forex Money Maker course.</p>
-            <p>35 spots have been taken already and we have 15 left.
-            The slots are filling up very fast.
-            <a href="https://instafxng.com/fxacademy/">Go here now to start the free training.</a></p>
-            <p>Please don’t miss this. Go ahead and login to the training immediately to secure your spot.</p>
-            <p>This will be your best shot at generating a healthy side income from forex trading. Go ahead and make the move now.</p>
-            <p>Start the Forex Money Maker Course now so you can launch your Forex trading entry with a big bang.</p>
-            <p>See you on the other side. Secure your spot now. Only 15 spots are up for grabs. Don’t wait till it will be too late.</p>
-            <p><a href="https://instafxng.com/fxacademy/">Here is the link to the online training again.</a></p>
+            <p>Dear [NAME],</p>
+            <p>Welcome! I am glad that you are here.</p>
+            <p>You registered on the signal page as a beginner (newbie) to Forex trading.</p>
+            <p>To use these signals, you need know how to trade and I will like to guide you into making money from the Forex market.</p>
+            <p>A successful Forex trader is one with knowledge and experience!</p>
+            <p>Online Forex trading simply means exchange of foreign currencies online with the sole aim of making consistent daily profits.</p>
+            <p>You can emerge in this business only by getting educated on how to trade, analyze the market trends and position yourself in the most profitable positions daily.</p>
+            <p>An informed trader has a higher chance of making profit faster than a trader with no training. He also understands the risk involved in the business and knows how to navigate the market to reduce risks and maximize rewards.</p>
+            <p>Our Fxacademy is built to increase the number of informed traders in Nigeria and we'll be happy to guide you into profitable Forex trading.</p>
+            <p>Click here to join to the army now and get equipped to trade profitably</p>
+            <p>Don’t stay uninformed! Knowledge is key in Forex trading.</p>
+            <p><a href="http://bit.ly/2iExTpN">Click here to start your training now</a> and find out how to get up to $150 welcome bonus at the end of your training.</p>
+            <p>Once again, welcome on board!</p>
             <br/><br/>
-            <p>Best Regards,</p>
-            <p>Mercy,</p>
+            <p>Regards,</p>
+            <p>Bukola,</p>
             <p>Client Relations Manager,</p>
             <p>InstaForex Nigeria</p>
             <p>www.instafxng.com</p>
@@ -828,9 +822,76 @@ MAIL;
 </div>
 MAIL;
 
+        }elseif($interest == 1){
+            $subject = "$first_name, Welcome to Our Free Signal Page, Would You Love a 100% Trading Bonus?";
+            $message = <<<MAIL
+    <div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Dear [NAME],</p>
+<p>Welcome to InstaFxNg, the representative of InstaForex in Nigeria.</p>
+<p>My name is Bukola and I am excited to have you here.</p>
+<p>The free signal service is one of the ways we ensure that InstaForex traders on our platform trade profitably and seamlessly.</p>
+<p>For us, we want to be a part of your success story and direct you into making the most profits daily!</p>
+<p>With 85% accuracy, our signals boast of 50-70 pips daily and have gained a large pool of users all over Nigeria!</p>
+<p>But That Isn’t All We Got to Offer You!</p>
+<p>Like I mentioned earlier, the trading signal is only one of the benefits you get for having an InstaForex Account with us, you can also get;</p>
+<ul>
+<ol>Inexhaustible training and trading mentor-ship from beginner to advance level. If you're a beginner, <a href="http://bit.ly/2iExTpN">Click here</a> to enroll in our Fxacademy now!</ol>
+<ol>Heavily discounted deposit rates.</ol>
+<ol>Instant deposits and withdrawals in Naira.</ol>
+<ol>Up to 100% welcome bonus on $50, $100, $150.</ol>
+<ol>30% bonus on all subsequent deposits (Irrespective of your deposit amount)</ol>
+<ol>VVIP support services.</ol>
+</ul>
+<p>You Haven’t Heard It All!</p>
+<p>You Can Win Up to $150 Monthly and N1 Million every year on your Enrolled InstaForex Account.</p>
+<p>All these are right at your service, so what are you waiting for?</p>
+<p>There is no better platform to carry out your Forex transactions In Nigeria, so join the winning team now!</p>
+<p>To enjoy these offers, all you need is an InstaFxNg enrolled account.</p>
+<p><a href="http://bit.ly/2mpqehQ">Fill in step 1 and 2 here to open and enroll your account now!</a></p>
+<p>I am right here to guide you through the process, feel free to write me back if you need my assistance.</p>
+            <br/><br/>
+            <p>Regards,</p>
+            <p>Bukola,</p>
+            <p>Client Relations Manager,</p>
+            <p>InstaForex Nigeria</p>
+            <p>www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos. </p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+        }
+
         if($result) {
             //$system_object->send_sms($phone_number, $text_message);
-            //$system_object->send_email($subject, $message, $email_address, $first_name);
+            $system_object->send_email($subject, $message, $email_address, $first_name);
             $assigned_account_officer = $system_object->next_account_officer();
             $client_operation = new clientOperation();
             $client_operation->new_user_ordinary($first_name." ".$last_name, $email_address, $phone_number, $assigned_account_officer);

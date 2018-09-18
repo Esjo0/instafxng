@@ -1,5 +1,18 @@
 <?php
 
+/*
+* Table: user_deposit_refund_type
+* Column: issue_type
+*/
+function refund_type($refund_type) {
+    switch ($refund_type) {
+        case '1': $type = "Ommission of Transaction Id"; break;
+        case '2': $type = "Third Party Transaction"; break;
+        case '3': $type = "Wrong remark"; break;
+        default: $type = "Unknown"; break;
+    }
+    return $type;
+}
 
 /*
 * Table: unverified_campaign_mail_log
