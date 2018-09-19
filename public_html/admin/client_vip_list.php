@@ -6,14 +6,16 @@ if (!$session_admin->is_logged_in()) {
 
 $client_operation = new clientOperation();
 
-if (isset($_POST['filter_deposit'])) {
-    foreach ($_POST as $key => $value) {
-        $_POST[$key] = $db_handle->sanitizePost(trim($value));
-    }
+if (isset($_POST['filter_deposit']) || isset($_GET['pg'])) {
 
-    extract($_POST);
+    if (isset($_POST['filter_deposit'])) {
+        foreach ($_POST as $key => $value) {
+            $_POST[$key] = $db_handle->sanitizePost(trim($value));
+        }
 
-    $query = "SELECT
+        extract($_POST);
+
+        $query = "SELECT
                 ud.trans_id,
                 ud.order_complete_time,
                 ud.real_dollar_equivalent,
@@ -28,6 +30,11 @@ if (isset($_POST['filter_deposit'])) {
             INNER JOIN user AS u ON u.user_code = ui.user_code
             WHERE ud.status = '8' AND ud.real_dollar_equivalent >= 1000 AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
             GROUP BY u.user_code  ORDER BY ud.order_complete_time DESC ";
+
+        $_SESSION['search_client_query'] = $query;
+    } else {
+        $query = $_SESSION['search_client_query'];
+    }
 }
 
 $result = $db_handle->runQuery($query);
@@ -35,7 +42,7 @@ $client_vip_list_filter_export = $db_handle->fetchAssoc($result);
 
 $numrows = $db_handle->numRows($query);
 
-$rowsperpage = 100;
+$rowsperpage = 20;
 
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
@@ -210,7 +217,8 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <p>....</p>
+                        <p>Select clients that have ever made at least one deposit transaction worth $1000 or above. The
+                        table displayed will have more details of their last activities and the export to Excel feature.</p>
 
                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                             <div class="form-group">
