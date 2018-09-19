@@ -784,12 +784,12 @@ MAIL;
 <p>But That Isn’t All We Got to Offer You!</p>
 <p>Like I mentioned earlier, the trading signal is only one of the benefits you get for having an InstaForex Account with us, you can also get;</p>
 <ul>
-<ol>Inexhaustible training and trading mentor-ship from beginner to advance level. If you're a beginner, <a href="http://bit.ly/2iExTpN">Click here</a> to enroll in our Fxacademy now!</ol>
-<ol>Heavily discounted deposit rates.</ol>
-<ol>Instant deposits and withdrawals in Naira.</ol>
-<ol>Up to 100% welcome bonus on $50, $100, $150.</ol>
-<ol>30% bonus on all subsequent deposits (Irrespective of your deposit amount)</ol>
-<ol>VVIP support services.</ol>
+<li>Inexhaustible training and trading mentor-ship from beginner to advance level. If you're a beginner, <a href="http://bit.ly/2iExTpN">Click here</a> to enroll in our Fxacademy now!</li>
+<li>Heavily discounted deposit rates.</li>
+<li>Instant deposits and withdrawals in Naira.</li>
+<li>Up to 100% welcome bonus on $50, $100, $150.</li>
+<li>30% bonus on all subsequent deposits (Irrespective of your deposit amount)</li>
+<li>VVIP support services.</li>
 </ul>
 <p>You Haven’t Heard It All!</p>
 <p>You Can Win Up to $150 Monthly and N1 Million every year on your Enrolled InstaForex Account.</p>
