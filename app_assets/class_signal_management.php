@@ -199,7 +199,7 @@ MAIL;
                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
                                         <div>
                                         <h6 class="my-0 text-center"><strong>Money Management</strong></h6>
-                                        <h6 class="my-0 text-center">Get Suitable Trading Volume </h6>
+                                        <h6 class="my-0 text-center">Get Suggested Trading Volume </h6>
 
                                        <center>
                                         <form class="form form-validate" role="form" method="post" action="">
@@ -537,10 +537,12 @@ analysis;
         switch ($order_type) {
             case 1:
                 if ($pips > 0) {
+                    $pips = number_format($pips);
                     $pips_msg = <<<MSG
                     <span style="color:green !important;">{$pips} pips Profit</span>
 MSG;
                 } elseif ($pips < 0) {
+                    $pips = number_format($pips);
                     $pips_msg = <<<MSG
                     <span style="color:red !important;">{$pips} pips Loss</span>
 MSG;
@@ -553,11 +555,13 @@ MSG;
             case 2:
                 if ($pips > 0) {
                     $pips = $pips * -1;
+                    $pips = number_format($pips);
                     $pips_msg = <<<MSG
                     <span style="color:red !important;">{$pips} pips Loss</span>
 MSG;
                 } elseif ($pips < 0) {
                     $pips = $pips * -1;
+                    $pips = number_format($pips);
                     $pips_msg = <<<MSG
                     <span style="color:green !important;">{$pips} pips Profit</span>
 MSG;
