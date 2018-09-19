@@ -40,7 +40,7 @@ foreach($result_profit AS $row){
     $sum_of_profit += $Total_profit;
 }
 
-$query_loss = "SELECT pips AS Total_loss FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Stop Loss')";
+$query_loss = "SELECT pips AS Total_loss FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Stop Loss') AND ((highest_pips < 5) OR (highest_pips IS NULL))";
 $result_loss= $db_handle->runQuery($query_loss);
 $result_loss = $db_handle->fetchAssoc($result_loss);
 $sum_of_loss = 0;
@@ -50,6 +50,7 @@ foreach($result_loss AS $row){
     $sum_of_loss += $Total_loss;
 }
 
+$net_pips = $sum_of_profit - $sum_of_loss;
 //$query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
 //$total_triggered = $db_handle->numRows($query);
 
@@ -209,7 +210,7 @@ function table_context($trigger_status){
                             <div class="col-sm-6">
                                 <div id="donutchart" ></div>
                                 <p class="text-center">Total Profit : <span style="color:green !important;"><?php echo number_format($sum_of_profit);?></span> pips || Total Loss : <span style="color:red !important;">-<?php echo number_format($sum_of_loss);?></span> pips<br>
-                                    Total Pips From Break even Trades : <span style="color:green !important;"><?php echo number_format($total_Signals_breakeven * 5);?></span> pips
+                                    NET PIPS : <?php echo ($signal_object->get_pips_display(1,$net_pips));?>
                                 </p>
                             </div>
                         </div>
