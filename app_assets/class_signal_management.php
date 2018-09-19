@@ -183,22 +183,23 @@ MAIL;
                                                     <!--............................................-->
                                        <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                             <div class="row">
-                                                 <div  class="col-sm-5 col-xs-12">
+                                                 <div  class="col-sm-6 col-xs-12">
 
 {$this->get_live_pips($row['trigger_status'], $row['symbol_id'], $row['symbol'], $row['price'], $row['order_type'], $row['pips'], $row['exit_time'], $row['entry_time'], $row['exit_type'], $row['signal_id'], $row['highest_pips'], $row['lowest_pips'], $row['highest_pips_time'], $row['lowest_pips_time'], $row['created'])}
 
                                             <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                                   <div>
-                                                     <small class="text-muted">
-                                                        <strong>KeyNote </strong> {$row['note']}
+                                                  <h6 class="text-center"><strong>KeyNote </strong></h6>
+                                                     <small class="text-muted" style="overflow:auto; height:80px">
+                                                         {$row['note']}
                                                      </small>
                                                   </div>
                                             </li>
 
                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
                                         <div>
-                                        <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Money Management</strong></h6>
-                                        <h6 class="my-0">Get Suitable Trading Volume </h6>
+                                        <h6 class="my-0 text-center"><strong>Money Management</strong></h6>
+                                        <h6 class="my-0 text-center">Get Suitable Trading Volume </h6>
 
                                        <center>
                                         <form class="form form-validate" role="form" method="post" action="">
@@ -217,7 +218,7 @@ MAIL;
                                         </div>
                                         <span class="text-muted"></span>
                                         </li>
-                                       <div style="" class="col-sm-7 col-xs-12">
+                                       <div style="" class="col-sm-6 col-xs-12">
                                                                 <!-- TradingView Widget BEGIN -->
                                                                 <!-- TradingView Widget BEGIN -->
 
@@ -227,7 +228,7 @@ MAIL;
                                             <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/currencies/" rel="noopener" target="_blank"><span class="blue-text">Forex</span></a> by TradingView</div>
                                                     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
                                                                                       {
-                                                                                     "width": 335,
+                                                                                     "width": 290,
                                                                                      "height": 290,
                                                                                      "showChart": true,
                                                                                      "locale": "en",
@@ -388,13 +389,13 @@ MAIL;
             if(!empty($highest_pips_time) && ($highest_pips_time != 0) && ($highest_pips != 0)){
                 $highest_pips_time = "@ ".datetime_to_text3($highest_pips_time);
                 $display2 = " <tr>
-                                <td>Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
+                                <td class=\"text-center\">Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
                               </tr>";
             }
             if(!empty($lowest_pips_time) && ($lowest_pips_time != 0) && ($lowest_pips != 0)){
                 $lowest_pips_time = "@ ".datetime_to_text3($lowest_pips_time);
                 $display3 = "<tr>
-                              <td>Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
+                              <td class=\"text-center\">Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
                              </tr>";
             }
 
@@ -407,10 +408,10 @@ MAIL;
 <table class="table table-hover table-sm ">
                                         $display2
                                         <tr>
-                                            <td>Triggered @ {$open_date}</td>
+                                            <td class="text-center">Triggered @ {$open_date}</td>
                                         </tr>
                                         <tr>
-                                            <td>Pips at current market price {$display}</td>
+                                            <td class="text-center">Pips at current market price <br>{$display}</td>
                                         </tr>
                                         $display3
                                     </table>
@@ -438,11 +439,11 @@ analysis;
                 $display1 = "<span style=\"color:green !important;\"> {$highest_pips} </span>pips";
             }elseif(($exit_type == "Take Profit") && !empty($lowest_pips) && ($lowest_pips != 0)){
                 $draw_down = " <tr>
-                                  <td>Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
+                                  <td class=\"text-center\">Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
                                </tr>";
             }elseif(($exit_type == "Stop Loss") && !empty($highest_pips) && ($highest_pips != 0)){
                 $high = "<tr>
-                          <td>A High of <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
+                          <td class=\"text-center\">A High of <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
                          </tr>";
             }
             $display = <<<analysis
@@ -454,10 +455,10 @@ analysis;
                                             <small>
                                     <table class="table table-hover table-sm">
                                         <tr>
-                                            <td>{$display1} at {$closed_date}</td>
+                                            <td class="text-center">{$display1} at {$closed_date}</td>
                                         </tr>
                                         <tr>
-                                            <td>Triggered @ {$open_date}</td>
+                                            <td class="text-center">Triggered @ {$open_date}</td>
                                         </tr>
                                        $draw_down
                                        $high
@@ -487,7 +488,7 @@ analysis;
                                             <div>
                                     <table class="table table-hover table-sm text-small">
                                         <tr>
-                                            <td>
+                                            <td class="text-center">
                                             <strong>{$this->UI_pips_msg($trigger_status)} Order = $pending_type. Ensure to use all signal parameters.</strong></h6>
                                             </td>
                                         </tr>
@@ -621,8 +622,8 @@ ORDER BY SD.signal_id DESC ";
 
     public function update_signal_daily_FILE($signal_array)
     {
-        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-        // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+        //file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+         file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
@@ -783,12 +784,12 @@ MAIL;
 <p>But That Isn’t All We Got to Offer You!</p>
 <p>Like I mentioned earlier, the trading signal is only one of the benefits you get for having an InstaForex Account with us, you can also get;</p>
 <ul>
-<ol>Inexhaustible training and trading mentor-ship from beginner to advance level. If you're a beginner, <a href="http://bit.ly/2iExTpN">Click here</a> to enroll in our Fxacademy now!</ol>
-<ol>Heavily discounted deposit rates.</ol>
-<ol>Instant deposits and withdrawals in Naira.</ol>
-<ol>Up to 100% welcome bonus on $50, $100, $150.</ol>
-<ol>30% bonus on all subsequent deposits (Irrespective of your deposit amount)</ol>
-<ol>VVIP support services.</ol>
+<li>Inexhaustible training and trading mentor-ship from beginner to advance level. If you're a beginner, <a href="http://bit.ly/2iExTpN">Click here</a> to enroll in our Fxacademy now!</li>
+<li>Heavily discounted deposit rates.</li>
+<li>Instant deposits and withdrawals in Naira.</li>
+<li>Up to 100% welcome bonus on $50, $100, $150.</li>
+<li>30% bonus on all subsequent deposits (Irrespective of your deposit amount)</li>
+<li>VVIP support services.</li>
 </ul>
 <p>You Haven’t Heard It All!</p>
 <p>You Can Win Up to $150 Monthly and N1 Million every year on your Enrolled InstaForex Account.</p>
