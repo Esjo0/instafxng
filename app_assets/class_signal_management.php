@@ -389,13 +389,13 @@ MAIL;
             if(!empty($highest_pips_time) && ($highest_pips_time != 0) && ($highest_pips != 0)){
                 $highest_pips_time = "@ ".datetime_to_text3($highest_pips_time);
                 $display2 = " <tr>
-                                <td>Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
+                                <td class=\"text-center\">Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
                               </tr>";
             }
             if(!empty($lowest_pips_time) && ($lowest_pips_time != 0) && ($lowest_pips != 0)){
                 $lowest_pips_time = "@ ".datetime_to_text3($lowest_pips_time);
                 $display3 = "<tr>
-                              <td>Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
+                              <td class=\"text-center\">Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
                              </tr>";
             }
 
@@ -408,10 +408,10 @@ MAIL;
 <table class="table table-hover table-sm ">
                                         $display2
                                         <tr>
-                                            <td>Triggered @ {$open_date}</td>
+                                            <td class="text-center">Triggered @ {$open_date}</td>
                                         </tr>
                                         <tr>
-                                            <td>Pips at current market price <br>{$display}</td>
+                                            <td class="text-center">Pips at current market price <br>{$display}</td>
                                         </tr>
                                         $display3
                                     </table>
@@ -439,11 +439,11 @@ analysis;
                 $display1 = "<span style=\"color:green !important;\"> {$highest_pips} </span>pips";
             }elseif(($exit_type == "Take Profit") && !empty($lowest_pips) && ($lowest_pips != 0)){
                 $draw_down = " <tr>
-                                  <td>Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
+                                  <td class=\"text-center\">Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
                                </tr>";
             }elseif(($exit_type == "Stop Loss") && !empty($highest_pips) && ($highest_pips != 0)){
                 $high = "<tr>
-                          <td>A High of <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
+                          <td class=\"text-center\">A High of <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
                          </tr>";
             }
             $display = <<<analysis
@@ -455,10 +455,10 @@ analysis;
                                             <small>
                                     <table class="table table-hover table-sm">
                                         <tr>
-                                            <td>{$display1} at {$closed_date}</td>
+                                            <td class="text-center">{$display1} at {$closed_date}</td>
                                         </tr>
                                         <tr>
-                                            <td>Triggered @ {$open_date}</td>
+                                            <td class="text-center">Triggered @ {$open_date}</td>
                                         </tr>
                                        $draw_down
                                        $high
@@ -488,7 +488,7 @@ analysis;
                                             <div>
                                     <table class="table table-hover table-sm text-small">
                                         <tr>
-                                            <td>
+                                            <td class="text-center">
                                             <strong>{$this->UI_pips_msg($trigger_status)} Order = $pending_type. Ensure to use all signal parameters.</strong></h6>
                                             </td>
                                         </tr>
@@ -622,8 +622,8 @@ ORDER BY SD.signal_id DESC ";
 
     public function update_signal_daily_FILE($signal_array)
     {
-        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-        // file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+        //file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+         file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
