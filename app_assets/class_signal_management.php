@@ -183,22 +183,23 @@ MAIL;
                                                     <!--............................................-->
                                        <div id="signal_{$row['signal_id']}_extra" style="display: none" class="col-xs-12 col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                             <div class="row">
-                                                 <div  class="col-sm-5 col-xs-12">
+                                                 <div  class="col-sm-6 col-xs-12">
 
 {$this->get_live_pips($row['trigger_status'], $row['symbol_id'], $row['symbol'], $row['price'], $row['order_type'], $row['pips'], $row['exit_time'], $row['entry_time'], $row['exit_type'], $row['signal_id'], $row['highest_pips'], $row['lowest_pips'], $row['highest_pips_time'], $row['lowest_pips_time'], $row['created'])}
 
                                             <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                                   <div>
-                                                     <small class="text-muted">
-                                                        <strong>KeyNote </strong> {$row['note']}
+                                                  <h6 class="text-center"><strong>KeyNote </strong></h6>
+                                                     <small class="text-muted" style="overflow:auto; height:80px">
+                                                         {$row['note']}
                                                      </small>
                                                   </div>
                                             </li>
 
                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
                                         <div>
-                                        <h6 style="font-size: 12px" class="my-0 pull-right"><strong>Money Management</strong></h6>
-                                        <h6 class="my-0">Get Suitable Trading Volume </h6>
+                                        <h6 class="my-0 text-center"><strong>Money Management</strong></h6>
+                                        <h6 class="my-0 text-center">Get Suitable Trading Volume </h6>
 
                                        <center>
                                         <form class="form form-validate" role="form" method="post" action="">
@@ -217,7 +218,7 @@ MAIL;
                                         </div>
                                         <span class="text-muted"></span>
                                         </li>
-                                       <div style="" class="col-sm-7 col-xs-12">
+                                       <div style="" class="col-sm-6 col-xs-12">
                                                                 <!-- TradingView Widget BEGIN -->
                                                                 <!-- TradingView Widget BEGIN -->
 
@@ -227,7 +228,7 @@ MAIL;
                                             <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/currencies/" rel="noopener" target="_blank"><span class="blue-text">Forex</span></a> by TradingView</div>
                                                     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
                                                                                       {
-                                                                                     "width": 335,
+                                                                                     "width": 290,
                                                                                      "height": 290,
                                                                                      "showChart": true,
                                                                                      "locale": "en",
@@ -410,7 +411,7 @@ MAIL;
                                             <td>Triggered @ {$open_date}</td>
                                         </tr>
                                         <tr>
-                                            <td>Pips at current market price {$display}</td>
+                                            <td>Pips at current market price <br>{$display}</td>
                                         </tr>
                                         $display3
                                     </table>
