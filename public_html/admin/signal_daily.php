@@ -56,14 +56,16 @@ if(isset($_POST['close'])){
         extract($row3);
     }
     $symbol = str_replace('/', '', $symbol);
-    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=".$signal_object->quotes_api_key();
+    $url = Signal_Management::QUOTES_API."?pairs=$symbol&api_key=Zvdxqp6hpbbqWu27n6SSQ7zo4G6sK0rz";
     $get_data = file_get_contents($url);
     $response = (array) json_decode($get_data, true);
-$exit_price = $response[0]['price'];
+    $market_price = $response[0]['price'];
+
+    $exit_price = $market_price;
     $exit_time = date('Y-m-d H:i:s');
-    $pips = $signal_object->get_pips($response[0]['price'], $entry_price);
+    $pips = $signal_object->get_pips($symbol_id, $market_price, $entry_price);
 	$exit_type = "Manual";
-    $signal_object->trigger_signal_schedule($id, 2, '', '', $exit_time, $pips, $exit_type, $entry, $exit_price);
+    $signal_object->trigger_signal_schedule($id, 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '', '');
 
     $query = "UPDATE signal_daily SET trigger_status = '2' WHERE signal_id = '$id'";
     $signal_array = $signal_object->get_scheduled_signals(date('Y-m-d'));
@@ -391,7 +393,8 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                 </div>
                                                 <div class="modal-body">
                                                     <center><?php if($row['trigger_status'] == 1){?><form method="post" action=""><input name="symbol_id" type="hidden" value="<?php echo $row['symbol_id'];?>"><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><input name="entry_price" type="hidden" value="<?php echo $row['entry_price'];?>"><button name="close" type="submit" class="btn btn-success btn-sm">Confirm Trade Close</button></form><?php }?></center>
-                                                    <br><hr> <form  role="form" method="post" action="">
+                                                    <br><hr>
+                                                    <form  role="form" method="post" action="">
                                                         <div class="form-group row">
                                                             <label class="control-label col-sm-3" for="location">Currency Pair </label>
                                                             <div class="col-sm-9 col-lg-5">

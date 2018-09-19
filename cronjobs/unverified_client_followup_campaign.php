@@ -169,6 +169,7 @@ function mail_query($query_type, $day_value) {
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE (u.password IS NULL OR u.password = '') AND u.email NOT IN (SELECT email FROM unverified_campaign_mail_log)
             AND u.user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
+            AND (DATEDIFF('$today', STR_TO_DATE(u.created, '%Y-%m-%d')) = '$day_value'))
             GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC LIMIT 600";
             break;
 
@@ -218,13 +219,14 @@ function auto_mail_send($query, $my_subject_raw, $my_message_raw, $flag) {
 }
 
 //TODO: Refactor and make it dynamic
-
-$interval_1 = 0;
+//14 days after  newe client remains unverified
+$interval_1 = 14;
 
 $query_1 = mail_query(1, $interval_1);
 $get_mail_1 = mail_template($my_message_1);
 $send_message_1 = auto_mail_send($query_1, $my_subject_1, $get_mail_1, 1);
 
+// After recieving the first mail.
 $interval_2 = 7;
 
 $query_2 = mail_query(2, $interval_2);
