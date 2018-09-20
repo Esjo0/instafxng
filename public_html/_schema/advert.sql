@@ -1,3 +1,7 @@
+--Campaign Leads correction
+
+DELETE FROM campaign_leads WHERE email LIKE '%"%' OR f_name LIKE '%"%' OR phone LIKE '%"%'
+
 CREATE TABLE `advert_div` (
  `advert_id` int(10) NOT NULL AUTO_INCREMENT,
  `title` varchar(50) NOT NULL,
