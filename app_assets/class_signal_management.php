@@ -627,7 +627,7 @@ ORDER BY SD.signal_id DESC ";
     public function update_signal_daily_FILE($signal_array)
     {
         //file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-        file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+         file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
