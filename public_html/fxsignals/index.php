@@ -10,7 +10,7 @@ if (isset($_POST['login'])) {
     $name = $db_handle->sanitizePost($_POST['name']);
     $phone = $db_handle->sanitizePost($_POST['phone']);
     $interest = $db_handle->sanitizePost($_POST['interest']);
-    if (!empty($intrest)){
+    if (!empty($interest)){
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         if (empty($name) || empty($phone)) {
             $query = "SELECT name, phone, email FROM signal_users WHERE email = '$email' ";
