@@ -4,6 +4,7 @@ $thisPage = "Home";
 $date = date('Y-m-d H:i:s');
 $cook = $_COOKIE[$ifxngsignals];
 $signal_object = new Signal_Management();
+$get_phone_and_name = true;
 if (isset($_POST['login'])) {
     $email = $db_handle->sanitizePost($_POST['email']);
     $name = $db_handle->sanitizePost($_POST['name']);
@@ -163,9 +164,7 @@ Please sir kindly review this sir-->
                         <?php include '../layouts/feedback_message.php'; ?>
                     <div class="input-group input-group-newsletter">
                         <input value="<?php echo $email ?>" type="email" maxlength="50" name="email" class="form-control" placeholder="Enter email..." aria-label="Enter email..." aria-describedby="basic-addon">
-                        <div class="input-group-append">
-                            <button class="btn btn-danger" type="submit" name="login">Proceed!</button>
-                        </div>
+
                     </div>
                     <?php if ($get_phone_and_name) { ?>
                     <div class="input-group">
@@ -179,6 +178,9 @@ Please sir kindly review this sir-->
                             <label><input type="radio" name="interest" value="2"><b>I trade with Other brokers.</b></label><br/>
                             <label><input type="radio" name="interest" value="1"><b>I am new to forex.</b></label>
                             </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-success" type="submit" name="login">Proceed!</button>
+                        </div>
                     <?php } ?>
                     </form>
                     <img id="img_div_2" height="100%" width="100%" class="img img-responsive img-thumbnail" src="../images/signal_img.jpg" style="margin-top: 50px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
