@@ -392,13 +392,13 @@ switch($page_requested) {
 
                         <div class="row">
 
-                            <?php if(!$additional_msg) { ?>
-                                <div class="col-sm-12">
-                                    <h4>ATTENTION!!!</h4>
-                                    <p>Instant Card Payment is Back!</p>
-                                    <p>Enjoy a more convenient and swift experience funding your account!  With Instant card payment, your transactions are now fast, easy, and more secured!</p>
-                                </div>
-                            <?php } ?>
+<!--                            --><?php //if(!$additional_msg) { ?>
+<!--                                <div class="col-sm-12">-->
+<!--                                    <h4>ATTENTION!!!</h4>-->
+<!--                                    <p>Instant Card Payment is Back!</p>-->
+<!--                                    <p>Enjoy a more convenient and swift experience funding your account!  With Instant card payment, your transactions are now fast, easy, and more secured!</p>-->
+<!--                                </div>-->
+<!--                            --><?php //} ?>
 
                             <?php if($additional_msg != 'msg_new'): ?>
                                 <div class="col-sm-12 text-danger">
