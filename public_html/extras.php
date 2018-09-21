@@ -2,7 +2,7 @@
 require_once 'init/initialize_general.php';
 $thisPage = "Articles";
 
-$query = "SELECT * FROM article WHERE status = 1 ORDER BY created DESC ";
+$query = "SELECT * FROM article WHERE status = 1 AND type = 3 ORDER BY created DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 10;
@@ -58,13 +58,13 @@ $all_news_items = $db_handle->fetchAssoc($result);
                                 <div class="panel panel-default col-sm-3" style="background-color: floralwhite">
                                     <a href="blog.php"><div class="panel-body btn-default" title="Click to View All Blog post"><strong>All BLOG POSTS</strong></div></a>
                                 </div>
-                                <div class="panel panel-default col-sm-3" style="background-color: floralwhite">
+                                <div class="panel panel-default col-sm-3" >
                                     <a href="articles.php"><div class="panel-body btn-default" title="Click to View All Ariticles"><strong>ARTICLES</strong></div></a>
                                 </div>
                                 <div class="panel panel-default col-sm-3">
                                     <a href="fxcalendar.php"><div class="panel-body btn-default" title="Click to View All Forex News"><strong>NEWS CALENDAR</strong></div></a>
                                 </div>
-                                <div class="panel panel-default col-sm-3" >
+                                <div class="panel panel-default col-sm-3" style="background-color: floralwhite">
                                     <a href="extras.php"><div class="panel-body btn-default" title="Click to View Extras"><strong>EXTRAS</strong></div></a>
                                 </div>
                             </div>

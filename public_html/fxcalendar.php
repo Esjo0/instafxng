@@ -2,7 +2,13 @@
 require_once 'init/initialize_general.php';
 $thisPage = "Articles";
 
-$query = "SELECT * FROM article WHERE status = 1 ORDER BY created DESC ";
+$today = date('Y-m-d');
+
+$query_today = "SELECT * FROM article WHERE status = 1 AND type = 2 AND scheduled_date = '$today'";
+$result_today = $db_handle->runQuery($query_today);
+$all_news_items_today = $db_handle->fetchAssoc($result_today);
+
+$query = "SELECT * FROM article WHERE status = 1 AND type = 2 AND NOT scheduled_date = '$today' ORDER BY scheduled_date ASC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 10;
@@ -58,20 +64,42 @@ $all_news_items = $db_handle->fetchAssoc($result);
                                 <div class="panel panel-default col-sm-3" style="background-color: floralwhite">
                                     <a href="blog.php"><div class="panel-body btn-default" title="Click to View All Blog post"><strong>All BLOG POSTS</strong></div></a>
                                 </div>
-                                <div class="panel panel-default col-sm-3" style="background-color: floralwhite">
+                                <div class="panel panel-default col-sm-3" >
                                     <a href="articles.php"><div class="panel-body btn-default" title="Click to View All Ariticles"><strong>ARTICLES</strong></div></a>
                                 </div>
-                                <div class="panel panel-default col-sm-3">
+                                <div class="panel panel-default col-sm-3"style="background-color: floralwhite">
                                     <a href="fxcalendar.php"><div class="panel-body btn-default" title="Click to View All Forex News"><strong>NEWS CALENDAR</strong></div></a>
                                 </div>
-                                <div class="panel panel-default col-sm-3" >
-                                    <a href="extras.php"><div class="panel-body btn-default" title="Click to View Extras"><strong>EXTRAS</strong></div></a>
+                                <div class="panel panel-default col-sm-3">
+                                    <a href="extras.php"><div class="panel-body" title="Click to View Extras"><strong>EXTRAS</strong></div></a>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="row">
                             <div class="col-sm-8">
+                                <?php foreach ($all_news_items_today as $row1) { extract($row1); ?>
+                                    <div class="row news_list">
+                                        <div class="col-sm-12"><h4><strong><a title="Click to read" class="title_link" href="news1/id/<?php echo $article_id . '/u/' . $url . '/'; ?>"><?php echo $title; ?></a></strong></h4></div>
+                                        <div class="col-sm-5">
+                                            <?php if(file_exists("images/blog/$display_image")) { ?>
+                                                <img class="img-responsive center-block" alt="" src="https://instafxng.com/images/blog/<?php echo $display_image; ?>" />
+                                            <?php } else { ?>
+                                                <img class="img-responsive center-block" alt="" src="https://instafxng.com/images/placeholder2.jpg" />
+                                            <?php } ?>
+                                        </div>
+
+                                        <div class="col-sm-7">
+                                            <section>
+                                                <p>
+                                                    <?php echo $description; ?>
+                                                    &nbsp;<span><a href="news1/id/<?php echo $article_id . '/u/' . $url . '/'; ?>">Read On!</a></span>
+                                                </p>
+                                                <small><em><strong>Posted:</strong> <?php echo datetime_to_text($created); ?> &nbsp;&nbsp; <strong>Views:</strong> <?php if( isset($view_count) ) { echo $view_count; } else { echo 0; } ?></em></small>
+                                            </section>
+                                        </div>
+                                    </div>
+                                <?php } ?>
 
                                 <?php foreach ($all_news_items as $row) { extract($row); ?>
                                 <div class="row news_list">
