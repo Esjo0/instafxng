@@ -166,6 +166,7 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                     <tr>
                                         <th>Client Name</th>
                                         <th>Client Phone</th>
+                                        <th>Email</th>
                                         <th>First Login</th>
                                         <th>Officer</th>
                                         <th>Action</th>
@@ -176,6 +177,7 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
+                                            <td><?php echo $row['email']; ?></td>
                                             <td><?php echo datetime_to_text($row['academy_signup']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
