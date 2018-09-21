@@ -4,6 +4,26 @@ $thisPage = "About";
 
 $news_id = $_GET['id'];
 
+if (isset($_POST['register'])){
+    $name = $db_handle->sanitizePost($_POST['name']);
+    $email = $db_handle->sanitizePost($_POST['email']);
+
+    if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+    $query = "SELECT * FROM article_vistors WHERE email = '$email'";
+    $result = $db_handle->numRows($query);
+    if($result == 0){
+        $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('$email', '$name')");
+        $cookie_name = "ifxng_articles";
+        $cookie_value = $email;
+        setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+    }else{
+        $cookie_name = "ifxng_articles";
+        $cookie_value = $email;
+        setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+    }
+    }
+}
+
 if (isset($_POST['post_comment'])){
 
 if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
@@ -89,9 +109,9 @@ if ($responseData->success) {
     $message_error = "Kindly take the robot test.";
 }
 }
-if(strlen($news_id) > 4) {
-    header("Location: view_news.php");
-} else {
+//if(strlen($news_id) > 4) {
+//    header("Location: view_news.php");
+//} else {
     $query = "SELECT * FROM article WHERE article_id = $news_id LIMIT 1";
     $result = $db_handle->runQuery($query);
     $selected_news = $db_handle->fetchAssoc($result);
@@ -108,9 +128,9 @@ if(strlen($news_id) > 4) {
         $result = $db_handle->runQuery("SELECT * FROM article WHERE status = 1 ORDER BY article_id DESC LIMIT  1, 6");
         $latest_news = $db_handle->fetchAssoc($result);
     } else {
-        header("Location: view_news.php");
+        //header("Location: view_news.php");
     }
-}
+//}
 
 function print_reply($replies)
 {
@@ -561,7 +581,22 @@ function print_reply($replies)
                             </div>
                         </div>
                     </div>
-
+                    <div id="register" class="modal" data-easein="perspectiveDownIn"  tabindex="-1" role="dialog" aria-labelledby="costumModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" style="background-color:rgba(198, 198, 198, 0.07);">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <p>
+                                        <img src="images/blog_bg.png" alt="" class="img-responsive" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            $('#register').modal("show");
+                        });
+                    </script>
                     <!-- Unique Page Content Ends Here
                     ================================================== -->
                     
