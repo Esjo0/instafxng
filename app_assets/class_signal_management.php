@@ -449,7 +449,7 @@ analysis;
             $display = <<<analysis
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
-                                            <small class="text-muted">
+                                            <small class="text-muted text-center">
                                             Trade Closed @ {$exit_type}
                                             </small>
                                             <small>

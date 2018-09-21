@@ -410,6 +410,7 @@ MAIL;
         {
             case "1" : $x = "FxAcademy"; break;
             case "2" : $x = "ILPR"; break;
+            case "3" : $x = "Signals"; break;
             default: $x = "Unknown"; break;
         }
         return $x;
