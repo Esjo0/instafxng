@@ -170,7 +170,7 @@ function mail_query($query_type, $day_value, $email_flag) {
             WHERE (u.password IS NULL OR u.password = '') AND u.email NOT IN (SELECT email FROM unverified_campaign_mail_log)
             AND u.user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
             AND (DATEDIFF('$today', STR_TO_DATE(u.created, '%Y-%m-%d')) = '$day_value')
-            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC LIMIT 600";
+            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC LIMIT 200";
             break;
 
         // All unverified clients, with consideration of when the last email was received
@@ -184,7 +184,7 @@ function mail_query($query_type, $day_value, $email_flag) {
             WHERE (DATEDIFF('$today', STR_TO_DATE(ucml.created, '%Y-%m-%d')) = '$day_value'))
             AND u.user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
             AND u.email NOT IN(SELECT email FROM unverified_campaign_mail_log AS ucml WHERE ucml.email_flag = '$email_flag')
-            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC LIMIT 600";
+            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC LIMIT 200";
             break;
         default:
             $query = "";
@@ -222,7 +222,7 @@ function auto_mail_send($query, $my_subject_raw, $my_message_raw, $flag) {
 //14 days after  newe client remains unverified
 $interval_1 = 14;
 
-$query_1 = mail_query(1, $interval_1);
+$query_1 = mail_query(1, $interval_1, 1);
 $get_mail_1 = mail_template($my_message_1);
 $send_message_1 = auto_mail_send($query_1, $my_subject_1, $get_mail_1, 1);
 
@@ -250,22 +250,3 @@ $interval_5 = 28;
 $query_5 = mail_query(2, $interval_5, 5);
 $get_mail_5 = mail_template($my_message_5);
 $send_message_5 = auto_mail_send($query_5, $my_subject_5, $get_mail_5, 5);
-
-
-
-
-
-// Optional Apology Mail run once
-// I dnt know if this will be neccsary
-
-/////////////////////////////////////////////////////////
-/*$today = date('Y-m-d');
-$query_apl = "SELECT email FROM unverified_campaign_mail_log WHERE email_flag = '2' AND STR_TO_DATE(created, '%Y-%m-%d') = '$today' LIMIT 600";
-$subject_apl = "Apology";
-$apology_message =
-    <<<MAIL
-    <p>We Sincerly Apologise for clouging your mail with this mail earlier today </p>
-MAIL;
-$get_apl_mail = mail_template($apology_message);
-$send_apl_message = auto_mail_send($query_apl, $subject_apl, $get_apl_mail, 2);*/
-////////////////////////////////////////////////
