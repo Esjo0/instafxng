@@ -406,7 +406,7 @@ switch($page_requested) {
                                     <?php if(!$special_msg) { ?>
                                         <h4><strong>Fund Your Instaforex Account</strong></h4>
                                     <?php } else { ?>
-                                        <h4><strong>Make Over 2000 pips on your Trades Starting from this Month.</strong></h4>
+                                        <h4><strong>Make Over 1000 pips more before September runs out!!!</strong></h4>
                                     <?php } ?>
 
                                 </div>
@@ -417,7 +417,7 @@ switch($page_requested) {
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                                                 
-                                <?php 
+                                <?php
                                     if($deposit_funds_ifx_acct_php) { include_once 'views/deposit_funds/deposit_funds_ifx_acct.php'; }
                                     if($deposit_funds_pcode_php) { include_once 'views/deposit_funds/deposit_funds_pcode.php'; }
                                     if($deposit_funds_notice_php) { include_once 'views/deposit_funds/deposit_funds_notice.php'; }
