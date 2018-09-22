@@ -15,6 +15,8 @@ if (isset($_POST['process'])) {
     }
     
     $title = $_POST['title'];
+    $type = $_POST['type'];
+    $date = $_POST['date'];
     $description = $_POST['description'];
     $tags = $_POST['content_tags'];
     $content = str_replace('â€™', "'", $_POST['content']);
@@ -46,7 +48,7 @@ if (isset($_POST['process'])) {
     if(empty($title) || empty($description) || empty($content) || empty($tags)) {
         $message_error = "All fields must be filled, please try again";
     } else {
-        $new_article = $admin_object->add_new_article($article_no, $title, $description, $tags, $display_picture, $url, $content, $article_status, $_SESSION['admin_unique_code']);
+        $new_article = $admin_object->add_new_article($article_no, $title, $type, $description, $tags, $display_picture, $url, $content, $article_status, $_SESSION['admin_unique_code'], $date);
 
         if($new_article) {
             $message_success = "You have successfully saved the article";
@@ -128,6 +130,39 @@ if($get_params['x'] == 'edit') {
                 }
             }
         </script>
+        <script>
+            $(document).ready(function () { displayOptionsEdit();});
+        </script>
+        <script>
+            function displayOptionsEdit() {
+                var edit_option = '<?php $edit_option = $selected_article['type']; echo $edit_option;?>';
+
+                if(edit_option == 2){
+                    document.getElementById("date").style.display = "block";
+                    document.getElementById("date").required = true;
+                }
+            }
+
+        </script>
+        <script>
+        function displayOptions() {
+            var options = $("#options").val();
+        if(options == 1) {
+            document.getElementById("date").style.display = "none";
+            document.getElementById("date").required = false;
+            } else if ((options == 2)) {
+            document.getElementById("date").style.display = "block";
+            document.getElementById("date").required = true;
+            } else if (options == 3) {
+            document.getElementById("date").style.display = "none";
+            document.getElementById("date").required = false;
+            }else{
+            document.getElementById("date").style.display = "none";
+            document.getElementById("date").required = false;
+            }
+        }
+
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -170,6 +205,34 @@ if($get_params['x'] == 'edit') {
                                         <div class="col-sm-10">
                                             <input type="text" name="title" class="form-control" id="title" value="<?php if(isset($selected_article['title'])) { echo $selected_article['title']; } ?>" required/>
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="title">Blog Type:</label>
+                                        <div class="col-sm-5">
+                                            <select onchange="displayOptions()" name="type" id="options" class="form-control" placeholder="Kindly select a blog type" required>
+                                                <option value=""></option>
+                                                <option value="1" <?php if(($selected_article['type']) == 1) { echo "SELECTED"; } ?>>Article</option>
+                                                <option value="2" <?php if(($selected_article['type']) == 2) { echo "SELECTED"; } ?>>News Calendar</option>
+                                                <option value="3" <?php if(($selected_article['type']) == 3) { echo "SELECTED"; } ?>>Extras</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="date" style="display:none;">
+                                        <label class="control-label col-sm-2" for="pay_date">Schedule Display Date:</label>
+                                        <div class="col-sm-5">
+                                            <div class='input-group date' id='datetimepicker'>
+                                                <input name="date" type="text" class="form-control" id='datetimepicker2' value="<?php if(isset($selected_article['scheduled_date'])) { echo $selected_article['scheduled_date']; } ?>" required>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </div>
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                $('#datetimepicker2').datetimepicker({
+                                                    format: 'YYYY-MM-DD'
+                                                });
+                                            });
+                                        </script>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="description">Description/Email Excerpt:</label>
@@ -254,4 +317,6 @@ if($get_params['x'] == 'edit') {
         </div>
         <?php require_once 'layouts/footer.php'; ?>
     </body>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 </html>

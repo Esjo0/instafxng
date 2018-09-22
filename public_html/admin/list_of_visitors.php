@@ -10,8 +10,20 @@ if(isset($_POST['email_search']))
     $_POST['email_search'] = $db_handle->sanitizePost(trim($_POST['email_search']));
     redirect_to("visitors_results.php?data=".$_POST['email_search']);
 }
+if(isset($_POST['filter'])){
+    $filter = $db_handle->sanitizePost($_POST['filter']);
+    $query = "SELECT * FROM article_visitors WHERE entry_point = '$filter'";
+}else{
+    $query = "SELECT * FROM article_visitors ";
+}
 
-$query = "SELECT * FROM article_visitors ";
+
+$query_article = $query. "WHERE entry_point = '1'";
+$all_article = $db_handle->numRows($query_article);
+$query_calendar = $query. "WHERE entry_point = '2'";
+$all_calendar = $db_handle->numRows($query_calendar);
+$query_extras = $query. "WHERE entry_point = '3'";
+$all_extras = $db_handle->numRows($query_extras);
 
 $numrows = $db_handle->numRows($query);
 
@@ -82,7 +94,22 @@ $all_comments_items = $db_handle->fetchAssoc($result);
 
             <div class="search-section">
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-xs-6">
+                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                            <div class="input-group">
+                                <select name="filter" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="1" >Article</option>
+                                    <option value="2" >News Calendar</option>
+                                    <option value="3" >Extras</option>
+                                </select>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" name="filter" type="submit">FILTER</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xs-6">
                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="email_search" value="" placeholder="Search By Email" required>
@@ -104,7 +131,13 @@ $all_comments_items = $db_handle->fetchAssoc($result);
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
-
+                        <table class="table table-hover table-responsive table-bordered">
+                            </tr>
+                            <tr><td>Total Visitors</td> <td><?php echo $numrows?></td></tr>
+                            <tr><td>Total Visitors Article</td> <td><?php echo $all_article?></td></tr>
+                            <tr><td>Total Visitors Calendar</td> <td><?php echo $all_calendar?></td></tr>
+                            <tr><td>Total Visitors Extras</td> <td><?php echo $all_extras?></td></tr>
+                        </table>
                         <p>Below is the list of all the visitors that have commented on your articles.</p>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
