@@ -4,133 +4,127 @@ $thisPage = "About";
 
 $news_id = $_GET['id'];
 
-if (isset($_POST['post_comment'])){
-
-if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-$secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
-$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-$responseData = json_decode($verifyResponse);
-
-    if ($responseData->success) {
-        $name = $db_handle->sanitizePost($_POST['name']);
-        $email = $db_handle->sanitizePost($_POST['email']);
-        $comment = $db_handle->sanitizePost($_POST['comment']);
-        $article_id = $db_handle->sanitizePost($_POST['article_id']);
-
-        if (empty($name) || empty($email) || empty($comment)) {
-            $message_error = "All fields are compulsory, please try again.";
-        } elseif (!check_email($email)) {
-            $message_error = "You have provided an invalid email address. Please try again.";
-        } else {
-            $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('$email', '$name')");
-            $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '$email'");
-            $block_status = $db_handle->fetchAssoc($block_status);
-            $block_status = $block_status[0];
-            $block_status = $block_status['block_status'];
-
-            if ($block_status == 'OFF') {
-                $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery("SELECT visitor_id FROM article_visitors WHERE email = '$email'"));
-                $visitor_id = $fetched_data[0]['visitor_id'];
-
-                $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment) VALUES ($visitor_id, '$article_id', '$comment')");
-
-                if ($db_handle->affectedRows() > 0) {
-                    $message_success = "You have successfully added a new comment.";
-                } else {
-                    $message_error = "An error occurred, your comment could not be saved.";
-                }
-            } else {
-                $message_error = "An error occurred, you do not have permission to submit comments.";
-            }
-
-        }
-    }
-
-} else {
-    $message_error = "Kindly take the robot test.";
-}
-}
-
-if (isset($_POST['register'])){
-
-if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+if (isset($_POST['post_comment'])) {
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
     $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
     $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
     $responseData = json_decode($verifyResponse);
 
-    if ($responseData->success) {
+        if ($responseData->success) {
+            $name = $db_handle->sanitizePost($_POST['name']);
+            $email = $db_handle->sanitizePost($_POST['email']);
+            $comment = $db_handle->sanitizePost($_POST['comment']);
+            $article_id = $db_handle->sanitizePost($_POST['article_id']);
 
-        $name = $db_handle->sanitizePost($_POST['name']);
-        $email = $db_handle->sanitizePost($_POST['email']);
-
-
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $query = "SELECT * FROM article_vistors WHERE email = '$email'";
-            $result = $db_handle->numRows($query);
-            if ($result == 0) {
-                $query = "SELECT type FROM article WHERE article_id = $news_id";
-                $result = $db_handle->runQuery($query);
-                $type = $db_handle->fetchArray($result);
-                foreach($type AS $row){
-                    extract($row);
-                }
-                $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name, entry_point) VALUES ('$email', '$name', '$type')");
-                $cookie_name = "ifxng_articles";
-                $cookie_value = $email;
-                setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+            if (empty($name) || empty($email) || empty($comment)) {
+                $message_error = "All fields are compulsory, please try again.";
+            } elseif (!check_email($email)) {
+                $message_error = "You have provided an invalid email address. Please try again.";
             } else {
-                $cookie_name = "ifxng_articles";
-                $cookie_value = $email;
-                setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+                $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('$email', '$name')");
+                $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '$email'");
+                $block_status = $db_handle->fetchAssoc($block_status);
+                $block_status = $block_status[0];
+                $block_status = $block_status['block_status'];
+
+                if ($block_status == 'OFF') {
+                    $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery("SELECT visitor_id FROM article_visitors WHERE email = '$email'"));
+                    $visitor_id = $fetched_data[0]['visitor_id'];
+
+                    $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment) VALUES ($visitor_id, '$article_id', '$comment')");
+
+                    if ($db_handle->affectedRows() > 0) {
+                        $message_success = "You have successfully added a new comment.";
+                    } else {
+                        $message_error = "An error occurred, your comment could not be saved.";
+                    }
+                } else {
+                    $message_error = "An error occurred, you do not have permission to submit comments.";
+                }
             }
         }
     } else {
         $message_error = "Kindly take the robot test.";
     }
 }
-}
 
-if (isset($_POST['reply_comment']))
-{
-if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-    $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
-    $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-    $responseData = json_decode($verifyResponse);
+if (isset($_POST['register'])) {
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+        $responseData = json_decode($verifyResponse);
 
-if ($responseData->success) {
-    $name = $db_handle->sanitizePost($_POST['name']);
-    $email = $db_handle->sanitizePost($_POST['email']);
-    $comment = $db_handle->sanitizePost($_POST['comment']);
-    $article_id = $db_handle->sanitizePost($_POST['article_id']);
-    $comment_id = $db_handle->sanitizePost($_POST['comment_id']);
+        if ($responseData->success) {
+            $name = $db_handle->sanitizePost($_POST['name']);
+            $email = $db_handle->sanitizePost($_POST['email']);
 
-    if(empty($name) || empty($email) || empty($comment)) {
-        $message_error = "All fields are compulsory, please try again.";
-    } elseif (!check_email($email)) {
-        $message_error = "You have provided an invalid email address. Please try again.";
-    }  else
-    {
-        $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('".$email."', '".$name."')");
-        $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '".$email."';");
-        $block_status = $db_handle->fetchAssoc($block_status);
-        $block_status = $block_status[0];
-        $block_status = $block_status['block_status'];
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $query = "SELECT * FROM article_vistors WHERE email = '$email'";
+                $result = $db_handle->numRows($query);
+                if ($result == 0) {
+                    $query = "SELECT type FROM article WHERE article_id = $news_id";
+                    $result = $db_handle->runQuery($query);
+                    $type = $db_handle->fetchArray($result);
 
-        if ($block_status == 'OFF')
-        {
-            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_visitors WHERE email = '".$email."';");
-            $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment, reply_to) VALUES(@v_id, '".$article_id."', '".$comment."', '".$comment_id."')");
+                    foreach($type AS $row) {
+                        extract($row);
+                    }
+
+                    $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name, entry_point) VALUES ('$email', '$name', '$type')");
+                    $cookie_name = "ifxng_articles";
+                    $cookie_value = $email;
+                    setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+                } else {
+                    $cookie_name = "ifxng_articles";
+                    $cookie_value = $email;
+                    setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+                }
+            }
+        } else {
+            $message_error = "Kindly take the robot test.";
         }
-        $message_success = "You have successfully added a reply.";
     }
 }
 
-} else {
-    $message_error = "Kindly take the robot test.";
+if (isset($_POST['reply_comment'])) {
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+        $responseData = json_decode($verifyResponse);
+
+        if ($responseData->success) {
+            $name = $db_handle->sanitizePost($_POST['name']);
+            $email = $db_handle->sanitizePost($_POST['email']);
+            $comment = $db_handle->sanitizePost($_POST['comment']);
+            $article_id = $db_handle->sanitizePost($_POST['article_id']);
+            $comment_id = $db_handle->sanitizePost($_POST['comment_id']);
+
+            if(empty($name) || empty($email) || empty($comment)) {
+                $message_error = "All fields are compulsory, please try again.";
+            } elseif (!check_email($email)) {
+                $message_error = "You have provided an invalid email address. Please try again.";
+            }  else {
+                $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('".$email."', '".$name."')");
+                $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '".$email."';");
+                $block_status = $db_handle->fetchAssoc($block_status);
+                $block_status = $block_status[0];
+                $block_status = $block_status['block_status'];
+
+                if ($block_status == 'OFF') {
+                    $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_visitors WHERE email = '".$email."';");
+                    $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment, reply_to) VALUES(@v_id, '".$article_id."', '".$comment."', '".$comment_id."')");
+                }
+
+                $message_success = "You have successfully added a reply.";
+            }
+        }
+    } else {
+        $message_error = "Kindly take the robot test.";
+    }
 }
-}
+
 if(strlen($news_id) > 4) {
-    header("Location: view_news.php");
+    header("Location: blog.php");
 } else {
     $query = "SELECT * FROM article WHERE article_id = $news_id LIMIT 1";
     $result = $db_handle->runQuery($query);
@@ -148,18 +142,16 @@ if(strlen($news_id) > 4) {
         $result = $db_handle->runQuery("SELECT * FROM article WHERE status = 1 ORDER BY article_id DESC LIMIT  1, 6");
         $latest_news = $db_handle->fetchAssoc($result);
     } else {
-        header("Location: view_news.php");
+        header("Location: blog.php");
     }
 }
 
-function print_reply($replies)
-{
+function print_reply($replies) {
     global $db_handle, $title, $news_id;
-    if(isset($replies) && !empty($replies))
-    {?>
+    if(isset($replies) && !empty($replies)) {
+        ?>
         <div id="<?php echo $replies[0]['comment_id'];?>" style="padding-left: 2%; display: none;">
-       <?php foreach($replies as $key)
-        {
+       <?php foreach($replies as $key) {
             ?>
 
                 <li class="media" style="font-size:small;">
@@ -257,11 +249,9 @@ function print_reply($replies)
                 </div>
                 <?php print_reply($replies); ?>
 
-        <?php }?>
+        <?php } ?>
         </div>
-                <?php }
-}
-?>
+<?php } } ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>

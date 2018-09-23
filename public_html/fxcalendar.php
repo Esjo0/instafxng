@@ -101,7 +101,7 @@ $all_news_items = $db_handle->fetchAssoc($result);
                                     </div>
                                 <?php } ?>
 
-                                <?php foreach ($all_news_items as $row) { extract($row); ?>
+                                <?php if(isset($all_news_items) && !empty($all_news_items)) { foreach ($all_news_items as $row) { extract($row); ?>
                                 <div class="row news_list">
                                     <div class="col-sm-12"><h4><strong><a title="Click to read" class="title_link" href="news1/id/<?php echo $article_id . '/u/' . $url . '/'; ?>"><?php echo $title; ?></a></strong></h4></div>
                                     <div class="col-sm-5">
@@ -122,9 +122,9 @@ $all_news_items = $db_handle->fetchAssoc($result);
                                         </section>
                                     </div>
                                 </div>
-                                <?php } ?>
+                                <?php } } else { echo "<p><em>No results to display</em></p>"; } ?>
 
-                                <?php require 'layouts/pagination_links.php'; ?>
+                                <?php if(isset($all_news_items) && !empty($all_news_items)) { require_once 'layouts/pagination_links.php'; } ?>
                             </div>
 
                             <div class="col-sm-4"></div>
