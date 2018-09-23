@@ -1,3 +1,9 @@
+ALTER TABLE `article` ADD `type` ENUM('1','2','3') NOT NULL COMMENT '1- Article, 2-Calendar, 3-Extras' AFTER `title`
+
+ALTER TABLE `article_visitors` ADD `entry_point` ENUM('1','2','3') NOT NULL COMMENT '1- Article, 2-Calendar, 3-Extras' AFTER `block_status`;
+
+ALTER TABLE `article` ADD `scheduled_date` DATE NULL AFTER `updated`;
+
 --Campaign Leads correction
 
 DELETE FROM campaign_leads WHERE email LIKE '%"%' OR f_name LIKE '%"%' OR phone LIKE '%"%'
