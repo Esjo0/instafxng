@@ -21,7 +21,6 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             WHERE ued.status = '3'
             ORDER BY ued.created DESC ";
 }
-var_dump($query);
 $numrows = $db_handle->numRows($query);
 
 // For search, make rows per page equal total rows found, meaning, no pagination
