@@ -1336,6 +1336,41 @@ MAIL;
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
+    public function requery_paystack_deposit($trans_id) {
+        global $db_handle;
+        global $obj_paystack;
+
+        $paystack_response = $obj_paystack->verify($trans_id);
+        $paystack_response_amount = $paystack_response['data']['amount'] / 100;
+
+        if($paystack_response['data']['status'] == 'success') {
+            // Update the transaction
+            $client_naira_notified = $paystack_response_amount;
+
+            $query = "UPDATE user_deposit SET client_naira_notified = '$client_naira_notified', client_pay_date = NOW(), client_pay_method = '10', client_notified_date = NOW(), status = '2' WHERE trans_id = '$trans_id' LIMIT 1";
+            $db_handle->runQuery($query);
+
+            $message_success = "The transaction ID: $trans_id was SUCCESSFUL on the PayStack platform and has been moved to Notified Deposit.";
+            $return_msg = array(
+                'type' => 1,
+                'resp' => $message_success
+            );
+
+            return $return_msg;
+        } else {
+            $query = "UPDATE user_deposit SET status = '9' WHERE trans_id = '$trans_id' LIMIT 1";
+            $db_handle->runQuery($query);
+
+            $message_error = "The transaction ID: $trans_id was NOT SUCCESSFUL on the PayStack platform and would remain in Deposit Failed. <strong>PayStack Response: " . $paystack_response['data']['gateway_response'] . "</strong>";
+            $return_msg = array(
+                'type' => 2,
+                'resp' => $message_error
+            );
+
+            return $return_msg;
+        }
+    }
+
     public function requery_webpay_deposit($trans_id) {
         global $db_handle;
 
