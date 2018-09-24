@@ -1,6 +1,6 @@
 <?php
-set_include_path('/home/tboy9/public_html/init/');
-//set_include_path('../public_html/init/');
+//set_include_path('/home/tboy9/public_html/init/');
+set_include_path('../public_html/init/');
 require_once 'initialize_general.php';
 //Paid for the Forex optimizer Course but have not started
 $my_subject_1 = "Anything for You [NAME]";
@@ -156,7 +156,7 @@ MAIL;
     return $my_message_template;
 }
 
-function mail_query($query_type, $day_value) {
+function mail_query($query_type, $day_value, $email_flag) {
 
     $today = date('Y-m-d');
     switch($query_type) {
@@ -169,8 +169,8 @@ function mail_query($query_type, $day_value) {
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE (u.password IS NULL OR u.password = '') AND u.email NOT IN (SELECT email FROM unverified_campaign_mail_log)
             AND u.user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
-            AND (DATEDIFF('$today', STR_TO_DATE(u.created, '%Y-%m-%d')) = '$day_value'))
-            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC LIMIT 600";
+            AND (DATEDIFF('$today', STR_TO_DATE(u.created, '%Y-%m-%d')) = '$day_value')
+            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC LIMIT 200";
             break;
 
         // All unverified clients, with consideration of when the last email was received
@@ -183,12 +183,12 @@ function mail_query($query_type, $day_value) {
             IN (SELECT email FROM unverified_campaign_mail_log AS ucml
             WHERE (DATEDIFF('$today', STR_TO_DATE(ucml.created, '%Y-%m-%d')) = '$day_value'))
             AND u.user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
-            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC LIMIT 600";
+            AND u.email NOT IN(SELECT email FROM unverified_campaign_mail_log AS ucml WHERE ucml.email_flag = '$email_flag')
+            GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC LIMIT 200";
             break;
         default:
             $query = "";
     }
-
     return $query;
 }
 
@@ -222,31 +222,31 @@ function auto_mail_send($query, $my_subject_raw, $my_message_raw, $flag) {
 //14 days after  newe client remains unverified
 $interval_1 = 14;
 
-$query_1 = mail_query(1, $interval_1);
+$query_1 = mail_query(1, $interval_1, 1);
 $get_mail_1 = mail_template($my_message_1);
 $send_message_1 = auto_mail_send($query_1, $my_subject_1, $get_mail_1, 1);
 
 // After recieving the first mail.
 $interval_2 = 7;
 
-$query_2 = mail_query(2, $interval_2);
+$query_2 = mail_query(2, $interval_2, 2);
 $get_mail_2 = mail_template($my_message_2);
 $send_message_2 = auto_mail_send($query_2, $my_subject_2, $get_mail_2, 2);
 
 $interval_3 = 14;
 
-$query_3 = mail_query(2, $interval_3);
+$query_3 = mail_query(2, $interval_3, 3);
 $get_mail_3 = mail_template($my_message_3);
 $send_message_3 = auto_mail_send($query_3, $my_subject_3, $get_mail_3, 3);
 
 $interval_4 = 21;
 
-$query_4 = mail_query(2, $interval_4);
+$query_4 = mail_query(2, $interval_4, 4);
 $get_mail_4 = mail_template($my_message_4);
 $send_message_4 = auto_mail_send($query_4, $my_subject_4, $get_mail_4, 4);
 
 $interval_5 = 28;
 
-$query_5 = mail_query(2, $interval_5);
+$query_5 = mail_query(2, $interval_5, 5);
 $get_mail_5 = mail_template($my_message_5);
 $send_message_5 = auto_mail_send($query_5, $my_subject_5, $get_mail_5, 5);

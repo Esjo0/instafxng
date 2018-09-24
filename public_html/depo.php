@@ -328,7 +328,17 @@ if(isset($_POST['deposit_funds_pay_type'])) {
     
     switch ($pay_type) {
         case '1':
-            $page_requested = "deposit_funds_pay_type_card_php";
+            //commented gtpay integration
+            //$page_requested = "deposit_funds_pay_type_card_php";
+
+            //Initiate paystack
+            $callback_url = "https://instafxng.com/paystackcomplete.php?trans_id=" . $trans_id;
+            $initialize_msg = $obj_paystack->initialize($trans_id, $client_first_name, $client_last_name, $client_email, $client_dollar, $client_naira_total, $callback_url);
+
+            if($initialize_msg == 'failed') {
+                $message_error = "Something went wrong, we could not redirect you to the payment gateway, please try again.";
+            }
+
             break;
         default :
             $invoice_msg = $client_operation->send_order_invoice($client_full_name, $client_email, $client_trans_id, $client_account, $client_dollar, $formated_client_naira_total, $pay_type);
@@ -426,7 +436,7 @@ switch($page_requested) {
                                     if($deposit_funds_qty_ilpr_php) { include_once 'views/deposit_funds/deposit_funds_qty_ilpr.php'; }
                                     if($deposit_funds_qty_nonilpr_php) { include_once 'views/deposit_funds/deposit_funds_qty_nonilpr.php'; }
                                     if($deposit_funds_finalize_php) { include_once 'views/deposit_funds/deposit_funds_finalize.php'; }
-                                    if($deposit_funds_pay_type_php) { include_once 'views/deposit_funds/deposit_funds_pay_type.php'; }
+                                    if($deposit_funds_pay_type_php) { include_once 'views/deposit_funds/deposit_funds_pay_type2.php'; }
                                     if($deposit_funds_pay_type_bank_php) { include_once 'views/deposit_funds/deposit_funds_pay_type_bank.php'; }
                                     if($deposit_funds_pay_type_card_php) { include_once 'views/deposit_funds/deposit_funds_pay_type_card.php'; }
                                 ?>

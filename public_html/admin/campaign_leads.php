@@ -28,7 +28,7 @@ if(isset($_POST['file_upload']))
             $_interest = $row_contents[1];
             $created = str_replace('T', ' ', $row_contents[0]);
             $created = str_replace('+01:00', '', $created);
-            $obj_loyalty_training->add_lead($_full_name['first_name'], $_full_name['last_name'], $_email, $_phone, $_interest, 2, $created);
+            $obj_loyalty_training->add_lead($_full_name['first_name'], $_full_name['last_name'], $_email, $_phone, 2, $_interest, $created);
         }
     }
     //Delete the uploaded file

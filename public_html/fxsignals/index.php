@@ -160,32 +160,29 @@ Please sir kindly review this sir-->
                     <div style="margin-bottom: 20px; border-radius: 22px; background: white; padding: 8px;">
                         <a href="https://instafxng.com" target="_blank"><img class="img img-responsive" src="../images/ifxlogo.png"></a>
                     </div>
-                    <h1 class="mb-3">WELCOME!</h1>
-
-                    <p class="mb-5"><b>Trade the markets by following the best free trading signals! From InstaFxNg</b><br/>
-                       </p>
+                    <h1 class="mb-2">WELCOME!</h1>
+                    <p class="mb-2"><b>Trade the markets by following the best free trading signals! From InstaFxNg</b></p>
                     <form class="form-horizontal" role="form" method="post" action="">
                         <?php include '../layouts/feedback_message.php'; ?>
-                    <div class="input-group input-group-newsletter">
-                        <input value="<?php echo $email ?>" type="email" maxlength="50" name="email" class="form-control" placeholder="Enter email..." aria-label="Enter email..." aria-describedby="basic-addon">
-
-                    </div>
-                    <?php if ($get_phone_and_name) { ?>
-                    <div class="input-group">
-                        <input value="<?php echo $name ?>" type="text" maxlength="100" name="name" class="form-control" placeholder="Enter Your Full Name" aria-label="Enter email..." aria-describedby="basic-addon">
-                    </div>
-                    <div class="input-group">
-                        <input value="<?php echo $phone ?>" type="text" maxlength="15" name="phone" class="form-control" placeholder="Enter Your Phone Number" aria-label="Enter email..." aria-describedby="basic-addon">
-                    </div>
-                        <div class="input-group">
-                        <label><input type="radio" name="interest" value="3"><b>I trade with Instaforex.</b></label>
-                            <label><input type="radio" name="interest" value="2"><b>I trade with Other brokers.</b></label><br/>
-                            <label><input type="radio" name="interest" value="1"><b>I am new to forex.</b></label>
-                            </div>
-                        <div class="input-group-append">
-                            <button class="btn btn-success" type="submit" name="login">Proceed!</button>
+                        <div class="form-group">
+                            <input value="<?php echo $email ?>" type="email" maxlength="50" name="email" class="form-control" placeholder="Enter email..." aria-label="Enter email..." aria-describedby="basic-addon" required>
                         </div>
-                    <?php } ?>
+                        <?php if ($get_phone_and_name) { ?>
+                            <div class="form-group">
+                                <input value="<?php echo $name ?>" type="text" maxlength="100" name="name" class="form-control" placeholder="Enter Your Full Name" aria-label="Enter email..." aria-describedby="basic-addon" required>
+                            </div>
+                            <div class="form-group">
+                                <input value="<?php echo $phone ?>" type="text" maxlength="15" name="phone" class="form-control" placeholder="Enter Your Phone Number" aria-label="Enter email..." aria-describedby="basic-addon" required>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="radio" name="interest" value="3" required> <b>I trade with Instaforex.</b></label><br />
+                                <label><input type="radio" name="interest" value="2" required> <b>I trade with Other brokers.</b></label><br/>
+                                <label><input type="radio" name="interest" value="1" required> <b>I am new to forex.</b></label>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-success" type="submit" name="login">Proceed!</button>
+                            </div>
+                        <?php } ?>
                     </form>
                     <img id="img_div_2" height="100%" width="100%" class="img img-responsive img-thumbnail" src="../images/signal_img.jpg" style="margin-top: 50px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
 

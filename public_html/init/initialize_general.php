@@ -37,6 +37,7 @@ require_once(LIB_PATH.DS."class_loyalty_training_campaign.php");
 require_once(LIB_PATH.DS."class_bonus_operations.php");
 require_once(LIB_PATH.DS."class_bonus_conditions.php");
 require_once(LIB_PATH.DS."class_signal_management.php");
+require_once(LIB_PATH.DS."class_paystack.php");
 
 /*
  * TRACK CLIENTS THAT PARTNERS REFER

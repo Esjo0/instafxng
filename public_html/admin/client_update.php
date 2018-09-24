@@ -109,7 +109,7 @@ if(isset($_POST['document_update'])) {
             move_uploaded_file($tmp_name, "../userfiles/$idcard");
 
             if($db_handle->numRows("SELECT user_code FROM user_credential WHERE user_code = '$user_code' LIMIT 1") > 0) {
-                $query = "UPDATE user_credential SET idcard = '$idcard', status = '1' WHERE user_code = '$user_code_value' LIMIT 1";
+                $query = "UPDATE user_credential SET idcard = '$idcard' WHERE user_code = '$user_code_value' LIMIT 1";
                 $db_handle->runQuery($query);
             } else {
                 $query = "INSERT INTO user_credential (user_code, idcard, status) VALUES ('$user_code_value', '$idcard', '1')";
@@ -138,7 +138,7 @@ if(isset($_POST['document_update'])) {
             move_uploaded_file($tmp_name, "../userfiles/$passport");
 
             if($db_handle->numRows("SELECT user_code FROM user_credential WHERE user_code = '$user_code' LIMIT 1") > 0) {
-                $query = "UPDATE user_credential SET passport = '$passport', status = '1' WHERE user_code = '$user_code_value' LIMIT 1";
+                $query = "UPDATE user_credential SET passport = '$passport' WHERE user_code = '$user_code_value' LIMIT 1";
                 $db_handle->runQuery($query);
             } else {
                 $query = "INSERT INTO user_credential (user_code, passport, status) VALUES ('$user_code_value', '$passport', '1')";
@@ -168,7 +168,7 @@ if(isset($_POST['document_update'])) {
             move_uploaded_file($tmp_name, "../userfiles/$signature");
 
             if($db_handle->numRows("SELECT user_code FROM user_credential WHERE user_code = '$user_code' LIMIT 1") > 0) {
-                $query = "UPDATE user_credential SET signature = '$signature', status = '1' WHERE user_code = '$user_code_value' LIMIT 1";
+                $query = "UPDATE user_credential SET signature = '$signature' WHERE user_code = '$user_code_value' LIMIT 1";
                 $db_handle->runQuery($query);
             } else {
                 $query = "INSERT INTO user_credential (user_code, signature, status) VALUES ('$user_code_value', '$signature', '1')";

@@ -115,6 +115,24 @@ function trigger_sell_order($row)
         $pips = $signal_object->get_pips($row['symbol_id'], $row['stop_loss'], $row['price']);
         $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '', '');
     }
+    $tp = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
+    $tp = $tp * -1;
+    if ( $row['highest_pips'] > $tp && $row['highest_pips'] < 100) {
+        $exit_time = date('Y-m-d H:i:s');
+        $exit_type = "Take Profit";
+        $exit_price = $response[0]['price'];
+        $pips = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '', '');
+    }
+    $sl = $signal_object->get_pips($row['symbol_id'], $row['stop_loss'], $row['price']);
+    $sl = $sl * -1;
+    if ($row['lowest_pips'] < $sl && $row['lowest_pips'] > -50) {
+        $exit_time = date('Y-m-d H:i:s');
+        $exit_type = "Stop Loss";
+        $exit_price = $response[0]['price'];
+        $pips = $signal_object->get_pips($row['symbol_id'], $row['stop_loss'], $row['price']);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '','');
+    }
 }
 
 // Close Buy Order
@@ -134,6 +152,22 @@ function trigger_buy_order($row)
         $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '', '');
     }
     if (($response[0]['price'] <= $row['stop_loss']) && !empty($response[0]['price'])) {
+        $exit_time = date('Y-m-d H:i:s');
+        $exit_type = "Stop Loss";
+        $exit_price = $response[0]['price'];
+        $pips = $signal_object->get_pips($row['symbol_id'], $row['stop_loss'], $row['price']);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '','');
+    }
+    $tp = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
+    if ( $row['highest_pips'] > $tp && $row['highest_pips'] < 100) {
+        $exit_time = date('Y-m-d H:i:s');
+        $exit_type = "Take Profit";
+        $exit_price = $response[0]['price'];
+        $pips = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
+        $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '', '');
+    }
+    $sl = $signal_object->get_pips($row['symbol_id'], $row['stop_loss'], $row['price']);
+    if ($row['lowest_pips'] < $sl && $row['lowest_pips'] > -50) {
         $exit_time = date('Y-m-d H:i:s');
         $exit_type = "Stop Loss";
         $exit_price = $response[0]['price'];
