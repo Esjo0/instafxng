@@ -2458,6 +2458,20 @@ MAIL;
         }
     }
 
+    public function log_paystack_meta($id, $tranx_status_code, $tranx_status_msg, $tranx_amt, $tranx_curr, $gway_name) {
+        global $db_handle;
+
+        $query = "INSERT INTO user_deposit_meta (user_deposit_id, trans_status_code, trans_status_message, trans_amount, trans_currency, gateway_name) "
+            . "VALUES ($id, '$tranx_status_code', '$tranx_status_msg', '$tranx_amt', '$tranx_curr', '$gway_name')";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @param $user_code
      * @param string $interest_training
