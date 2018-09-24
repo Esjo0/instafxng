@@ -385,7 +385,7 @@ function print_reply($replies) {
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <?php if (!isset($_COOKIE['ifxng_signals'])) { ?>
+                            <?php if (!isset($_COOKIE['ifxng_articles'])) { ?>
                             <div id="register" class="modal" data-easein="perspectiveDownIn"  tabindex="-1" role="dialog" aria-labelledby="costumModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-md" style="background-color:rgba(198, 198, 198, 0.07);">
                                     <div class="modal-content" style="background-color: ghostwhite">
@@ -394,13 +394,13 @@ function print_reply($replies) {
                                             <div style="margin-bottom: 30px; border-radius: 22px; background: rgba(255, 170, 159, 1); padding: 8px;">
                                                 <p class="text-center" style="color:#000000;">
                                                     <strong>
-                                                    Don't miss out on any high impact news, article or offer! <br>Get subscribed to receive every update as soon as they are up!
+                                                    Don't miss out on any high impact news, article or offer! <br>Subscribe to receive every update as soon as they are up!
                                                     </strong>
                                                 </p>
                                             </div>
                                             <?php include '../layouts/feedback_message.php'; ?>
                                             <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
-                                                <div class="form-group" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                                                <div class="form-group" >
                                                     <label class="control-label col-sm-3" for="name">Full Name:</label>
                                                     <div class="col-sm-9">
                                                         <div class="input-group">
@@ -409,7 +409,7 @@ function print_reply($replies) {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                                                <div class="form-group" >
                                                     <label class="control-label col-sm-3" for="email">Email Address:</label>
                                                     <div class="col-sm-9">
                                                         <div class="input-group">
@@ -419,11 +419,11 @@ function print_reply($replies) {
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                                                <div class="form-group" >
                                                     <label class="control-label col-sm-3" for=""></label>
                                                     <div class="g-recaptcha col-sm-7" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div>
                                                 </div>
-                                                <div class="form-group" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                                                <div class="form-group">
                                                     <div class="col-sm-offset-4 col-sm-8">
                                                         <input type="submit" name="register" class="btn btn-success" value="SUBSCRIBE"/>
                                                     </div>
