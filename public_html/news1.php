@@ -389,12 +389,16 @@ function print_reply($replies) {
                             <div id="register" class="modal" data-easein="perspectiveDownIn"  tabindex="-1" role="dialog" aria-labelledby="costumModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-md" style="background-color:rgba(198, 198, 198, 0.07);">
                                     <div class="modal-content" style="background-color: ghostwhite">
-
+                                        <div class="modal-header">
+                                            <button type="button" class="close btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
                                         <div class="modal-body">
                                             <div style="margin-bottom: 30px; border-radius: 22px; background: rgba(255, 170, 159, 1); padding: 8px;">
                                                 <p class="text-center" style="color:#000000;">
                                                     <strong>
-                                                    Don't miss out on any high impact news, article or offer! <br>Subscribe to receive every update as soon as they are up!
+                                                    Don't miss out on any high impact news, article or special offers! <br>Subscribe to receive every update as soon as they are up!
                                                     </strong>
                                                 </p>
                                             </div>
