@@ -11,7 +11,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             ued.trans_id, ued.pay_method, ued.deposit_origin, ued.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
             FROM user_edu_deposits AS ued
             INNER JOIN user AS u ON ued.user_code = u.user_code
-            WHERE ued.status = '3'
+            WHERE ued.status = '3' AND (ued.trans_id LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
             ORDER BY ued.created DESC ";
 } else {
     $query = "SELECT ued.status, ued.amount, ued.stamp_duty, ued.gateway_charge,
@@ -21,6 +21,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             WHERE ued.status = '3'
             ORDER BY ued.created DESC ";
 }
+var_dump($query);
 $numrows = $db_handle->numRows($query);
 
 // For search, make rows per page equal total rows found, meaning, no pagination
@@ -82,6 +83,21 @@ $education_deposit = $db_handle->fetchAssoc($result);
             <div class="row">
                 <div class="col-sm-12 text-danger">
                     <h4><strong>EDUCATION - DEPOSIT COMPLETED</strong></h4>
+                </div>
+            </div>
+            <div class="search-section">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
+                            <div class="input-group">
+                                <input type="hidden" name="search_param" value="all" id="search_param">
+                                <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                        </span>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
