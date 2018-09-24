@@ -527,6 +527,7 @@ analysis;
         intval($price);
         $value = explode('.', $price)[1];
         $return = substr($value, 0, $decimal);
+        $return = str_pad($return, $decimal, "0", STR_PAD_RIGHT);
         $return = (int)$return;
 
         return $return;
