@@ -10,7 +10,8 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
             FROM user_edu_deposits AS ued
             INNER JOIN user AS u ON ued.user_code = u.user_code
-            WHERE ued.status = '1' GROUP BY ued.user_code
+            WHERE ued.status = '1' AND (ued.trans_id LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
+            GROUP BY ued.user_code
             ORDER BY ued.created DESC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, MAX(ued.created) AS created
@@ -82,7 +83,21 @@ $education_deposit = $db_handle->fetchAssoc($result);
                             <h4><strong>EDUCATION - DEPOSIT INITIATED</strong></h4>
                         </div>
                     </div>
-
+                    <div class="search-section">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
+                                    <div class="input-group">
+                                        <input type="hidden" name="search_param" value="all" id="search_param">
+                                        <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
