@@ -51,7 +51,7 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
     case 'profile':
         $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
                       WHERE (user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL))
-                      AND (user_code NOT IN (SELECT user_code FROM user_ifxaccount)) ";
+                      AND (user_code NOT IN (SELECT user_code FROM user_ifxaccount))";
         $filter_category = "Unverified Clients with Profile only";
         $display_msg = "Below is a table listing all unverified clients that have profile only.";
         break;
@@ -65,7 +65,9 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
             LEFT JOIN user_credential AS uc ON u.user_code = uc.user_code
-            WHERE (uv.phone_status = '2') AND (uc.doc_status != '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.email IN(SELECT email FROM unverified_campaign_mail_log) ";
+            WHERE (uv.phone_status = '2') AND (uc.doc_status != '111')
+            AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC";
         $filter_category = "Unverified to Level1";
         $display_msg = "Unverified clients who moved to the Level 1 Through the scheduled mail campaign.";
         break;
@@ -77,7 +79,9 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
-            WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+            WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL)
+            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC";
         $filter_category = "Unverified to Level2";
         $display_msg = "Unverified clients who moved to the Level 2 Through the scheduled mail campaign.";
         break;
@@ -88,9 +92,36 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
             INNER JOIN user AS u ON ub.user_code = u.user_code
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE (ub.is_active = '1' AND ub.status = '2') AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+            WHERE (ub.is_active = '1' AND ub.status = '2') AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC";
         $filter_category = "Unverified to Level3";
         $display_msg = "Unverified clients who moved to the Level 3 Through the scheduled mail campaign";
+        break;
+
+    case 'deposit':
+        $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM user_deposit AS ud
+            INNER JOIN user_ifxaccount as ui ON ud.ifxaccount_id =ui.ifxaccount_id
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            WHERE u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC";
+        $filter_category = "Unverfied Campaign - Funded";
+        $display_msg = "Unverified clients who have funded their accounts after receiving the scheduled mail campaign";
+        break;
+
+    case 'trading':
+        $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount as ui ON td.ifx_acct_no =ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            WHERE u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC";
+        $filter_category = "Unverfied Campaign - Trading";
+        $display_msg = "Unverified clients who have started trading activity after receiving the scheduled mail campaign";
         break;
 
     default:
@@ -152,8 +183,12 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
             LEFT JOIN user_ifxaccount AS ui ON uv.user_code = ui.user_code
             LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
             LEFT JOIN user_credential AS uc ON u.user_code = uc.user_code
-            WHERE (uv.phone_status = '2') AND (uc.doc_status != '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
-             AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+            WHERE (uv.phone_status = '2') AND (uc.doc_status != '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL)
+            AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%'
+            OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%'
+            OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
+             AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+             GROUP BY u.email ORDER BY u.created DESC";
             $filter_category = "Unverified to Level1";
             $display_msg = "Unverified clients who moved to the Level 1 Through the scheduled mail campaign.";
             break;
@@ -166,8 +201,12 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             LEFT JOIN user_ifxaccount AS ui ON uc.user_code = ui.user_code
             LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
-            WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC \";
-            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+            WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL)
+            AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%'
+            OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%'
+            OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
+            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC";
             $filter_category = "Unverified to Level2";
             $display_msg = "Unverified clients who moved to the Level 2 Through the scheduled mail campaign.";
             break;
@@ -179,10 +218,47 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             LEFT JOIN user_ifxaccount AS ui ON ub.user_code = ui.user_code
-            WHERE (ub.is_active = '1' AND ub.status = '2') AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC \";
-            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+            WHERE (ub.is_active = '1' AND ub.status = '2') AND (ui.ifx_acct_no LIKE '%$search_text%'
+            OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%'
+            OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
+            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC";
             $filter_category = "Unverified to Level3";
             $display_msg = "Unverified clients who moved to the Level 3 Through the scheduled mail campaign";
+            break;
+
+        case 'deposit':
+            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM user_deposit AS ud
+            INNER JOIN user_ifxaccount as ui ON ud.ifxaccount_id =ui.ifxaccount_id
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            WHERE (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%'
+            OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%'
+            OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%'
+            OR u.created LIKE '$search_text%')
+            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC";
+            $filter_category = "Unverfied Campaign - Funded";
+            $display_msg = "Unverified clients who have funded their accounts after recieving the scheduled mail campaign";
+            break;
+
+        case 'trading':
+            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount as ui ON td.ifx_acct_no =ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            WHERE u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%'
+            OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%'
+            OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%'
+            OR u.created LIKE '$search_text%')
+            GROUP BY u.email ORDER BY u.created DESC";
+            $filter_category = "Unverfied Campaign - Trading";
+            $display_msg = "Unverified clients who have started trading activity after receiving the scheduled mail campaign";
             break;
 
         default:
@@ -295,6 +371,8 @@ $db_handle->closeDB();
                                                         <li><a onclick="filter('level1', 'Unverified to Level1')" href="javascript:void(0);">Unverified to Level 1 from Campaign</a></li>
                                                         <li><a onclick="filter('level2', 'Unverified to level2')" href="javascript:void(0);">Unverified to Level 2 from Campaign</a></li>
                                                         <li><a onclick="filter('level3', 'Unverified to level3')" href="javascript:void(0);">Unverified to Level 3 from Campaign</a></li>
+                                                        <li><a onclick="filter('deposit', 'Unverfied Campaign - Funded')" href="javascript:void(0);">Unverfied Campaign - Funded</a></li>
+                                                        <li><a onclick="filter('trading', 'Unverfied Campaign - Trading')" href="javascript:void(0);">Unverfied Campaign - Trading Clients</a></li>
                                                     </ul>
                                                     <input id="filter_trigger" style="display: none" name="filter" type="submit">
                                                     <input id="filter_value" name="filter_value" type="hidden">
