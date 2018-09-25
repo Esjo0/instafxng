@@ -1,3 +1,8 @@
+UPDATE signal_daily SET pips = 70 WHERE signal_id = 200;
+UPDATE signal_daily SET pips = 0 WHERE signal_id = 199;
+UPDATE signal_daily SET pips = 0 WHERE signal_id = 198;
+UPDATE signal_daily SET pips = 0 WHERE signal_id = 197;
+
 UPDATE signal_daily SET lowest_pips = -8 WHERE signal_id = 185;
 
 UPDATE signal_daily SET lowest_pips = 0 WHERE signal_id = 181;
