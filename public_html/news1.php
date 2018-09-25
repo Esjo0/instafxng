@@ -74,10 +74,12 @@ if (isset($_POST['register'])) {
                     $cookie_name = "ifxng_articles";
                     $cookie_value = $email;
                     setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+                    header('Location: '.$_SERVER['REQUEST_URI']);
                 } else {
                     $cookie_name = "ifxng_articles";
                     $cookie_value = $email;
                     setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+                    header('Location: '.$_SERVER['REQUEST_URI']);
                 }
             }
         } else {
