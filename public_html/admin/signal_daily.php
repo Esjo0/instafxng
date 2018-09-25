@@ -47,7 +47,7 @@ if(isset($_POST['trigger'])){
 if(isset($_POST['close'])){
     $id = $db_handle->sanitizePost($_POST['id']);
     $symbol_id = $db_handle->sanitizePost($_POST['symbol_id']);
-    $entry_price = $db_handle->sanitizePost($_POST['entry_price']);
+    $price = $db_handle->sanitizePost($_POST['price']);
 
     $query = "SELECT symbol FROM signal_symbol WHERE symbol_id = '$symbol_id' ";
     $result = $db_handle->runQuery($query);
@@ -63,7 +63,7 @@ if(isset($_POST['close'])){
 
     $exit_price = $market_price;
     $exit_time = date('Y-m-d H:i:s');
-    $pips = $signal_object->get_pips($symbol_id, $market_price, $entry_price);
+    $pips = $signal_object->get_pips($symbol_id, $market_price, $price);
 	$exit_type = "Manual";
     $signal_object->trigger_signal_schedule($id, 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '', '');
 
@@ -392,7 +392,7 @@ $all_signals = $db_handle->fetchAssoc($result);
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <center><?php if($row['trigger_status'] == 1){?><form method="post" action=""><input name="symbol_id" type="hidden" value="<?php echo $row['symbol_id'];?>"><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><input name="entry_price" type="hidden" value="<?php echo $row['entry_price'];?>"><button name="close" type="submit" class="btn btn-success btn-sm">Confirm Trade Close</button></form><?php }?></center>
+                                                    <center><?php if($row['trigger_status'] == 1){?><form method="post" action=""><input name="symbol_id" type="hidden" value="<?php echo $row['symbol_id'];?>"><input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"><input name="price" type="hidden" value="<?php echo $row['price'];?>"><button name="close" type="submit" class="btn btn-success btn-sm">Confirm Trade Close</button></form><?php }?></center>
                                                     <br><hr>
                                                     <form  role="form" method="post" action="">
                                                         <div class="form-group row">
