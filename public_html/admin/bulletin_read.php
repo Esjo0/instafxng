@@ -153,6 +153,16 @@ $latest_comments = $db_handle->fetchAssoc($result);
                                 <p><i class="fa fa-arrow-circle-left"></i> <a href="bulletin_centre.php" title="Bulletin Centre">Go Back To Bulletin Centre</a></p>
                                 <p><em>Posted on <?php echo datetime_to_text2($selected_bulletin['created']); ?></em></p>
                                 <p><strong>Author: </strong><?php echo $admin_object->get_admin_name_by_code($selected_bulletin['admin_code']); ?></p>
+                                <p>
+                                <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
+                                <strong>Copied Admin :</strong>
+                                    <?php $allowed_admin = explode(",", $selected_bulletin['allowed_admin']);
+                                    foreach($allowed_admin AS $row){
+                                        echo $admin_object->get_admin_name_by_code($row)."  :|:  ";
+                                    }
+                                    ?>
+                                </li>
+                                </p>
                                 <hr/>
                             </div>
                         </div>
