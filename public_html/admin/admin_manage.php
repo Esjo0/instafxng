@@ -312,6 +312,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="61" id="" <?php if (in_array(61, $my_pages)) { echo 'checked="checked"'; } ?>/> Loyalty Rank Archive</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="62" id="" <?php if (in_array(62, $my_pages)) { echo 'checked="checked"'; } ?>/> Loyalty Point Claimed</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="233" id="" <?php if (in_array(233, $my_pages)) { echo 'checked="checked"'; } ?>/> Expired Loyalty Points</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="262" id="" <?php if (in_array(262, $my_pages)) { echo 'checked="checked"'; } ?>/> Loyalty Current Rank</label></div></div>
                                     </div>
                                     <hr/>
                                     

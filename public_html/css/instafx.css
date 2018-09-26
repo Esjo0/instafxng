@@ -84,9 +84,15 @@ p, h1 {
     margin-bottom: 10px;
 }
 
+.home-page-top-section {
+    margin-bottom: 10px;
+    border-bottom: solid thin #DA231B;
+    background-color: #FCEBED;
+}
+
 .page-top-section {
     margin-bottom: 10px;
-    /*padding: 20px 20px 0 20px;*/
+    padding: 20px 20px 0 20px;
     border-bottom: solid thin #DA231B;
     background-color: #FCEBED;
 }

@@ -1,3 +1,7 @@
+ALTER TABLE `user_deposit` CHANGE `client_pay_method` `client_pay_method` ENUM('1','2','3','4','5','6','7','8','9','10') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '1 - WebPay 2 - Internet Transfer 3 - ATM Transfer 4 - Bank Transfer 5 - Mobile Money Transfer 6 - Cash Deposit 7 - Office Funding 8 - Not Listed 9 - USSD 10 - Paystack';
+
+
+
 ALTER TABLE `article` ADD `type` ENUM('1','2','3') NOT NULL COMMENT '1- Article, 2-Calendar, 3-Extras' AFTER `title`
 
 ALTER TABLE `article_visitors` ADD `entry_point` ENUM('1','2','3') NOT NULL COMMENT '1- Article, 2-Calendar, 3-Extras' AFTER `block_status`;

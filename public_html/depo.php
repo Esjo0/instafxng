@@ -328,17 +328,17 @@ if(isset($_POST['deposit_funds_pay_type'])) {
     
     switch ($pay_type) {
         case '1':
-            //commented gtpay integration
-            //$page_requested = "deposit_funds_pay_type_card_php";
-
-            //Initiate paystack
+            // Initiate WebPay / GTPay
+            $page_requested = "deposit_funds_pay_type_card_php";
+            break;
+        case '10':
+            // Initiate PayStack
             $callback_url = "https://instafxng.com/paystackcomplete.php?trans_id=" . $trans_id;
-            $initialize_msg = $obj_paystack->initialize($trans_id, $client_first_name, $client_last_name, $client_email, $client_dollar, $client_naira_total, $callback_url);
+            $initialize_msg = $obj_paystack->initialize($trans_id, $client_first_name, $client_last_name, $client_email, $client_naira_total, $callback_url);
 
             if($initialize_msg == 'failed') {
                 $message_error = "Something went wrong, we could not redirect you to the payment gateway, please try again.";
             }
-
             break;
         default :
             $invoice_msg = $client_operation->send_order_invoice($client_full_name, $client_email, $client_trans_id, $client_account, $client_dollar, $formated_client_naira_total, $pay_type);

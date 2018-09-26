@@ -430,7 +430,7 @@ function print_reply($replies) {
                                                     <div class="g-recaptcha col-sm-7" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <div class="col-sm-offset-4 col-sm-8">
+                                                    <div class="col-sm-offset-3 col-sm-9">
                                                         <input type="submit" name="register" class="btn btn-success" value="SUBSCRIBE"/>
                                                     </div>
                                                 </div>

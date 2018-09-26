@@ -10,6 +10,7 @@ if (isset($_POST['login'])) {
     $name = $db_handle->sanitizePost($_POST['name']);
     $phone = $db_handle->sanitizePost($_POST['phone']);
     $interest = $db_handle->sanitizePost($_POST['interest']);
+    if (!empty($interest)){
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         if (empty($name) || empty($phone)) {
             $query = "SELECT name, phone, email FROM signal_users WHERE email = '$email' ";
@@ -57,6 +58,9 @@ if (isset($_POST['login'])) {
         }
     } else {
         $message_error = "You entered an invalid email address, please try again.";
+    }
+    }else{
+        $message_error = "You didn't select your interest";
     }
 }
 ?>

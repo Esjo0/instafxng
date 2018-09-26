@@ -2,9 +2,7 @@
 
 class Paystack {
 
-    function initialize($trans_id, $client_first_name, $client_last_name, $client_email, $client_dollar, $client_naira_total, $callback_url) {
-        global $db_handle;
-
+    function initialize($trans_id, $client_first_name, $client_last_name, $client_email, $client_naira_total, $callback_url) {
         $url    = "https://api.paystack.co/transaction/initialize";
 
         if($client_email == 'esanolalekan@gmail.com') {
@@ -12,19 +10,17 @@ class Paystack {
         }
 
         $body = array(
-            "firstname" => $client_first_name,
-            "lastname" => $client_last_name,
-            "ref" => $trans_id,
+            "first_name" => $client_first_name,
+            "last_name" => $client_last_name,
+            "reference" => $trans_id,
             "email" => $client_email,
-            "amount"    => $client_naira_total * 100,
-            "callback_url" =>  $callback_url
+            "amount" => $client_naira_total * 100,
+            "callback_url" => $callback_url
         );
 
         $response = self::curlFunction($url, $body);
 
         if ($response['status'] == 1) {
-            // TODO: We need to save the transaction reference below.
-            $trans_ref = $db_handle->sanitizePost($response['data']['reference']);
             redirect_to($response['data']['authorization_url']);
         } else {
             return 'failed';
@@ -32,33 +28,14 @@ class Paystack {
     }
 
     function verify($ref) {
-        global $db_handle;
-
-        $url    = "https://api.paystack.co/transaction/verify/".rawurlencode($ref);
-
+        $url = "https://api.paystack.co/transaction/verify/".rawurlencode($ref);
         $response = self::curlFunction($url);
 
         if($response['data']['status'] == 'success') {
             // Payment successful, update transaction
-            $query = "UPDATE user_transactions SET status = 'SUCCESS' WHERE transaction_ref = '$ref' LIMIT 1";
-            $db_handle->runQuery($query);
-
-            // Update status and trans ref on the user reg table
-            $query = "SELECT email FROM user_transactions WHERE transaction_ref = '$ref' LIMIT 1";
-            $result = $db_handle->runQuery($query);
-            $fetch_data = $db_handle->fetchAssoc($result);
-            $email = $fetch_data[0]['email'];
-
-            $query = "UPDATE user_reg SET txn_ref = '$ref', status = '1' WHERE email = '$email' LIMIT 1";
-            $db_handle->runQuery($query);
-
-            return true;
-
+            return $response;
         } else {
             // Payment failed, update transaction
-            $query = "UPDATE user_transactions SET status = 'FAIL' WHERE transaction_ref = '$ref' LIMIT 1";
-            $db_handle->runQuery($query);
-
             return false;
         }
     }
