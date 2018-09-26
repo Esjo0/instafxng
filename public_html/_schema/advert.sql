@@ -1,6 +1,6 @@
 --Campaign Leads correction
 
-DELETE FROM campaign_leads WHERE f_name in (Ayobami, IpayeShittaAdesina, mayowa, AbbasAbdulmalik, YomadeAyinla, NdidiOjei, AgbebakuWilson, UtojiubasSignature, RomeoFaithIbiso, KufreOffiong, IsraelTundeFayeun, DosunmuToheebAdemola, AkinsanmiAyomide, ESIAYOENTVARTISTEPRO, AbiodunAkinduro, JoshuaJerry, AhmadUsmanAhmad, AdamsAl-Danjuma, AmychichiPrincewill, SalisuInusa, OlubukolaOpeyemiOgunsanmi)
+DELETE FROM campaign_leads WHERE f_name IN ('Ayobami', 'IpayeShittaAdesina', 'mayowa', 'AbbasAbdulmalik', 'YomadeAyinla', 'NdidiOjei', 'AgbebakuWilson', 'UtojiubasSignature', 'RomeoFaithIbiso', 'KufreOffiong', 'IsraelTundeFayeun', 'DosunmuToheebAdemola', 'AkinsanmiAyomide', 'ESIAYOENTVARTISTEPRO', 'AbiodunAkinduro', 'JoshuaJerry', 'AhmadUsmanAhmad', 'AdamsAl-Danjuma', 'AmychichiPrincewill', 'SalisuInusa', 'OlubukolaOpeyemiOgunsanmi')
 
 
 
