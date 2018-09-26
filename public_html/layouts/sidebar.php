@@ -1,7 +1,8 @@
 <?php
 
 $date_today = date('Y-m-d');
-$featured_news = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM article WHERE status = '1' ORDER BY created DESC LIMIT 1"));
+$featured_news = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM article WHERE status = '1' AND type = 1 ORDER BY created DESC LIMIT 1"));
+$featured_calendar_news = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM article WHERE status = 1 AND type = 2 AND scheduled_date = '$today'"));
 $featured_signal = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM signal_daily INNER JOIN signal_symbol ON signal_symbol.signal_symbol_id = signal_daily.symbol_id WHERE signal_date LIKE '$date_today'"));
 $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT created FROM signal_daily ORDER BY created DESC LIMIT 1"));
 ?>
@@ -80,6 +81,50 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
         </div>
     </div>
 </div>
+
+<div class="row ">
+    <div class="col-sm-6 col-md-12">
+        <div class="nav-display super-shadow">
+            <header><i class="fa fa-bars fa-fw"></i> Latest Forex Calendar News </header>
+
+            <?php if(isset($featured_calendar_news)) { foreach($featured_calendar_news as $row) { ?>
+                <article>
+                    <div class="blog-featured">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <p><a href="news1/id/<?php echo $row['article_id'] . '/u/' . $row['url'] . '/'; ?>" title="Click to read"><?php echo $row['title']; ?></a></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <?php if(file_exists("images/blog/{$row['display_image']}")) { ?>
+                                    <img style="max-height: 130px" class="img-responsive center-block" alt="" src="https://instafxng.com/images/blog/<?php echo $row['display_image']; ?>" />
+                                <?php } else { ?>
+                                    <img  class="img-responsive center-block" alt="" src="https://instafxng.com/images/placeholder2.jpg" />
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <br/>
+                        <small><?php echo time_since($row['created']); ?></small>
+                        <hr/>
+                        <div class="row blog-featured-foot">
+                            <div class="col-sm-12">
+                                <i class="fa fa-eye fa-fw"></i> <?php echo $row['view_count']; ?> &nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            <?php } } else { echo "<em>No news to display</em>"; } ?>
+            <article>
+                <div class="text-center">
+                    <a class="btn btn-default" href="fxcalendar.php" title="Click to visit our blog">More Calendar News</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+
 <section id="signals">
 <div class="row ">
     <div class="col-sm-6 col-md-12">

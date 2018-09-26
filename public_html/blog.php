@@ -2,7 +2,7 @@
 require_once 'init/initialize_general.php';
 $thisPage = "Articles";
 
-$query = "SELECT * FROM article WHERE status = 1 ORDER BY created DESC ";
+$query = "SELECT * FROM article WHERE status = 1 ORDER BY type ASC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 10;
