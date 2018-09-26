@@ -102,10 +102,9 @@ if(isset($_POST['selector']))
             $query = "SELECT DISTINCT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
                 FROM user AS u
                 LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-                LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+                LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id <> ud.ifxaccount_id
                 WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
                 AND u.user_code = ui.user_code
-                AND ui.ifxaccount_id <> ud.ifxaccount_id
                 GROUP BY u.email ";
             $display_msg = "Details of unique clients that joined the system last month, But have not yet funded.";
             break;
@@ -118,6 +117,7 @@ if(isset($_POST['selector']))
             break;
     }
 }
+echo $query;
 $numrows = $db_handle->numRows($query);
 $rowsperpage = 20;
 $totalpages = ceil($numrows / $rowsperpage);
