@@ -16,7 +16,17 @@ if(isset($_POST['edu_sale_track'])){
     edu_sale_track($user_code, $category);
 }
 
+if(isset($_POST['filter_lesson'])){
+    $lesson = $_POST['lesson'];
+    if($lesson > 0){
+        $filter = "AND ueel.lesson_id = '$lesson'";
+    }else{
+        $filter = "";
+    }
+}
+
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
+
     $search_text = $_POST['search_text'];
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
           u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name,
@@ -37,7 +47,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
-          WHERE ued.status = '3'
+          WHERE ued.status = '3' $filter
           GROUP BY u.user_code ORDER BY ued.created DESC, u.last_name ASC ";
 }
 
@@ -157,8 +167,32 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="input-group">
+                                                <select name="lesson" id="options" class="form-control" >
+                                                    <option value="">Select Lesson</option>
+                                                    <option value="0">All</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                    <option value="13">13</option>
+                                                </select>
+                                                <span class="input-group-btn">
+                                                <button name="filter_lesson" class="btn btn-info" type="submit">FILTER</button>
+                                                    </span>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-3">
+
+                                        </div>
                                     </center>
                                 </form>
 
