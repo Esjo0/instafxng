@@ -10,7 +10,9 @@ ALTER TABLE `article` ADD `scheduled_date` DATE NULL AFTER `updated`;
 
 --Campaign Leads correction
 
-DELETE FROM campaign_leads WHERE email LIKE '%"%' OR f_name LIKE '%"%' OR phone LIKE '%"%'
+DELETE FROM campaign_leads WHERE f_name IN ('Ayobami', 'IpayeShittaAdesina', 'mayowa', 'AbbasAbdulmalik', 'YomadeAyinla', 'NdidiOjei', 'AgbebakuWilson', 'UtojiubasSignature', 'RomeoFaithIbiso', 'KufreOffiong', 'IsraelTundeFayeun', 'DosunmuToheebAdemola', 'AkinsanmiAyomide', 'ESIAYOENTVARTISTEPRO', 'AbiodunAkinduro', 'JoshuaJerry', 'AhmadUsmanAhmad', 'AdamsAl-Danjuma', 'AmychichiPrincewill', 'SalisuInusa', 'OlubukolaOpeyemiOgunsanmi')
+
+
 
 CREATE TABLE `advert_div` (
  `advert_id` int(10) NOT NULL AUTO_INCREMENT,
