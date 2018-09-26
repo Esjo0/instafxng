@@ -117,7 +117,6 @@ if(isset($_POST['selector']))
             break;
     }
 }
-echo $query;
 $numrows = $db_handle->numRows($query);
 $rowsperpage = 20;
 $totalpages = ceil($numrows / $rowsperpage);
