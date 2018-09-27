@@ -464,6 +464,17 @@ analysis;
                 $high = "<tr>
                           <td class=\"text-center\">A High of <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
                          </tr>";
+            }elseif($exit_type == "Manual"){
+                if(!empty($lowest_pips) && ($lowest_pips != 0)){
+                    $draw_down = " <tr>
+                                  <td class=\"text-center\">Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
+                               </tr>";
+                }
+                if(!empty($highest_pips) && ($highest_pips != 0)){
+                    $high = "<tr>
+                          <td class=\"text-center\">A High of <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
+                         </tr>";
+                }
             }
             $display = <<<analysis
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >

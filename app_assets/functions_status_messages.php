@@ -165,6 +165,7 @@ function status_user_deposit_pay_method($status) {
         case '7': $message = "Office Funding"; break;
         case '8': $message = "Not Listed"; break;
         case '9': $message = "USSD"; break;
+        case '10': $message = "PayStack"; break;
         default: $message = "Payment Method Unknown"; break;
     }
     return $message;

@@ -1,7 +1,7 @@
 <?php
 
 $date_today = date('Y-m-d');
-$featured_news = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM article WHERE status = '1' ORDER BY created DESC LIMIT 1"));
+$featured_news = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM article WHERE status = '1' ORDER BY created DESC LIMIT 3"));
 $featured_signal = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM signal_daily INNER JOIN signal_symbol ON signal_symbol.signal_symbol_id = signal_daily.symbol_id WHERE signal_date LIKE '$date_today'"));
 $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT created FROM signal_daily ORDER BY created DESC LIMIT 1"));
 ?>
@@ -42,36 +42,63 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
     <div class="col-sm-6 col-md-12">
         <div class="nav-display super-shadow">
             <header><i class="fa fa-bars fa-fw"></i> Latest Blog</header>
+            <div class="">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                </ol>
 
-            <?php if(isset($featured_news)) { foreach($featured_news as $row) { ?>
-            <article>
-                <div class="blog-featured">
-                    <div class="row">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+
+                    <div class="item active">
+                        <img src="images/blog_img.png" class="img img-responsive"  alt="" style="width:100%;height:100%">
+                    </div>
+
+                <?php if(isset($featured_news)) { foreach($featured_news as $row) { ?>
+                    <div class="item blog-featured">
+                        <article>
                         <div class="col-sm-12 text-center">
                             <p><a href="news1/id/<?php echo $row['article_id'] . '/u/' . $row['url'] . '/'; ?>" title="Click to read"><?php echo $row['title']; ?></a></p>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <?php if(file_exists("images/blog/{$row['display_image']}")) { ?>
-                                <img style="max-height: 130px" class="img-responsive center-block" alt="" src="https://instafxng.com/images/blog/<?php echo $row['display_image']; ?>" />
-                            <?php } else { ?>
-                                <img  class="img-responsive center-block" alt="" src="https://instafxng.com/images/placeholder2.jpg" />
-                            <?php } ?>
-                        </div>
-                    </div>
+                        <?php if(file_exists("images/blog/{$row['display_image']}")) { ?>
+                            <img style="max-height: 130px" class="img-responsive center-block" alt="" src="https://instafxng.com/images/blog/<?php echo $row['display_image']; ?>" />
+                        <?php } else { ?>
+                            <img  class="img-responsive center-block" alt="" src="https://instafxng.com/images/placeholder2.jpg" />
+                        <?php } ?>
+                        <div class="carousel-caption">
+                            <div class="row">
 
-                    <br/>
-                    <small><?php echo time_since($row['created']); ?></small>
-                    <hr/>
-                    <div class="row blog-featured-foot">
-                        <div class="col-sm-12">
-                            <i class="fa fa-eye fa-fw"></i> <?php echo $row['view_count']; ?> &nbsp;&nbsp;
+                            </div>
                         </div>
+                        <div class=" blog-featured-foot">
+                            <hr>
+                            <small class="pull-left"><?php echo time_since($row['created']); ?></small>
+
+                            <div class="pull-right">
+                                <i class="fa fa-eye fa-fw"></i> <?php echo $row['view_count']; ?>
+                            </div>
+                            <hr>
+                        </div>
+                        </article>
                     </div>
+                <?php } } else { echo "<em>No news to display</em>"; } ?>
                 </div>
-            </article>
-            <?php } } else { echo "<em>No news to display</em>"; } ?>
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
             <article>
                 <div class="text-center">
                     <a class="btn btn-default" href="blog.php" title="Click to visit our blog">More Blog Post</a>
@@ -80,6 +107,8 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
         </div>
     </div>
 </div>
+    </div>
+
 <section id="signals">
 <div class="row ">
     <div class="col-sm-6 col-md-12">

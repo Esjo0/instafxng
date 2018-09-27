@@ -86,6 +86,28 @@ if(isset($_POST['selector']))
                 GROUP BY u.email ";
             $display_msg = "Details of unique clients that joined the system last month New Clients not yet funded above $50.";
             break;
+        case 7:
+            $query = "SELECT DISTINCT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+                FROM user AS u
+                LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+                WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                AND u.user_code = ui.user_code
+                AND ui.ifxaccount_id = ud.ifxaccount_id
+                AND ud.real_dollar_equivalent >= 50.00
+                GROUP BY u.email ";
+            $display_msg = "Details of unique clients that joined the system last month New Clients funded above $50.";
+            break;
+        case 8:
+            $query = "SELECT DISTINCT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone
+                FROM user AS u
+                LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id <> ud.ifxaccount_id
+                WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                AND u.user_code = ui.user_code
+                GROUP BY u.email ";
+            $display_msg = "Details of unique clients that joined the system last month, But have not yet funded.";
+            break;
         default:
             $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone 
                 FROM user AS u
@@ -156,6 +178,8 @@ $clients = $db_handle->fetchAssoc($result);
                                                     <option <?php if($filter == 4){echo "selected";} ?> value="4">Last Months New Clients without Accounts and have Training</option>
                                                     <option <?php if($filter == 5){echo "selected";} ?> value="5">Last Months New Trainee Still in course 2 in current month</option>
                                                     <option <?php if($filter == 6){echo "selected";} ?> value="6">Last Months New Clients not yet funded above $50</option>
+                                                    <option <?php if($filter == 7){echo "selected";} ?> value="7">Last Months New Clients funded above $50</option>
+                                                    <option <?php if($filter == 8){echo "selected";} ?> value="8">Last Months New Clients not yet funded</option>
                                                 </select>
                                                 <button style="display: none" id="_selector" name="selector" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                                             </div>

@@ -24,6 +24,7 @@ require_once(LIB_PATH.DS."class_system.php");
 
 // Load other assets
 require_once(LIB_PATH.DS."vendor".DS."autoload.php");
+require_once(LIB_PATH.DS."class_paystack.php");
 require_once(LIB_PATH.DS."class_client_operation.php");
 require_once(LIB_PATH.DS."config_sys.php");
 require_once(LIB_PATH.DS."class_careers.php");
@@ -37,7 +38,6 @@ require_once(LIB_PATH.DS."class_loyalty_training_campaign.php");
 require_once(LIB_PATH.DS."class_bonus_operations.php");
 require_once(LIB_PATH.DS."class_bonus_conditions.php");
 require_once(LIB_PATH.DS."class_signal_management.php");
-require_once(LIB_PATH.DS."class_paystack.php");
 
 /*
  * TRACK CLIENTS THAT PARTNERS REFER
