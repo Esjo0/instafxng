@@ -4,15 +4,16 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
-
-    if(isset($_POST['inactive_trading_client'])) {
+if (isset($_POST['reactivated_trading_client']) || isset($_GET['pg'])) {
+    if(isset($_POST['reactivated_trading_client'])) {
         foreach ($_POST as $key => $value) {
             $_POST[$key] = $db_handle->sanitizePost(trim($value));
         }
 
         $from_date = $_POST['from_date'];
         $to_date = $_POST['to_date'];
+        $from_date2 = $_POST['from_date2'];
+        $to_date2 = $_POST['to_date2'];
         $search_text = $_POST['search_text'];
         $order = $_POST['order'];
 
@@ -28,21 +29,26 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                 INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
                 INNER JOIN user AS u ON ui.user_code = u.user_code
                 WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
-            ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$to_date' ";
+            ) AND (STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date2' AND '$to_date2') ";
         if(isset($search_text) && strlen($search_text) > 3) {
             $query .= "AND (td.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR td.date_earned LIKE '$search_text%') ";
         }
         $query .= "GROUP BY u.user_code ORDER BY $order DESC ";
+        $db_handle->runQuery($query);
 
         $_SESSION['search_client_query'] = $query;
         $_SESSION['search_client_query_from_date'] = $from_date;
         $_SESSION['search_client_query_to_date'] = $to_date;
+        $_SESSION['search_client_query_from_date2'] = $from_date2;
+        $_SESSION['search_client_query_to_date2'] = $to_date2;
         $_SESSION['search_client_query_search'] = $search_text;
 
     } else {
         $query = $_SESSION['search_client_query'];
         $from_date = $_SESSION['search_client_query_from_date'];
         $to_date = $_SESSION['search_client_query_to_date'];
+        $from_date2 = $_SESSION['search_client_query_from_date2'];
+        $to_date2 = $_SESSION['search_client_query_to_date2'];
         $search_text = $_SESSION['search_client_query_search'];
     }
 
@@ -67,37 +73,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
     $offset = ($currentpage - 1) * $rowsperpage;
     $query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
     $result = $db_handle->runQuery($query);
-    $selected_inactive_clients = $db_handle->fetchAssoc($result);
-
-
-    ///
-    $query2 = "CREATE TEMPORARY TABLE inactive_client_temp
-        SELECT u.user_code
-        FROM trading_commission AS td
-        INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        WHERE u.user_code NOT IN (
-            SELECT u.user_code
-            FROM trading_commission AS td
-            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-            INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
-        ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$to_date' GROUP BY u.user_code ";
-    $db_handle->runQuery($query2);
-
-    $query3 = "SELECT COUNT(ict.user_code) AS total FROM inactive_client_temp AS ict
-        INNER JOIN user AS u ON u.user_code = ict.user_code
-        INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-        INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-        INNER JOIN trading_commission AS td ON td.ifx_acct_no = ui.ifx_acct_no
-        WHERE STR_TO_DATE(ud.created, '%Y-%m-%d') > '$to_date'
-        AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') > '$to_date'";
-    $result3 = $db_handle->runQuery($query3);
-    $selected_total = $db_handle->fetchAssoc($result3);
-    $total_active = $selected_total[0]['total'];
-//    var_dump($total_active);
-
-    $db_handle->closeDB();
+    $selected_reactivated_clients = $db_handle->fetchAssoc($result);
 }
 
 ?>
@@ -139,66 +115,108 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
-                                <p>Pick a date range below to see <strong>Reactivated Trading Clients</strong>. If you want to search for a client, enter a parameter in the search field.</p>
+                                <p>Pick a date range below to see <strong>Reactivated Trading Clients</strong>. If you want to search
+                                    for a client, enter a parameter in the search field.</p>
+                                <p>Kindly ensure that the 'To' date on the Inactive Trading Period is same as 'From' date on the
+                                Reactivated Period.</p>
 
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="from_date">From:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <div class="input-group date">
-                                                <input name="from_date" type="text" class="form-control" id="datetimepicker" required>
-                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+
+                                            <p class="text-center"><strong>Inactive Trading Period:</strong></p>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" for="from_date">From:</label>
+                                                <div class="col-sm-9 col-lg-8">
+                                                    <div class="input-group date">
+                                                        <input name="from_date" type="text" class="form-control" id="datetimepicker" required>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" for="to_date">To:</label>
+                                                <div class="col-sm-9 col-lg-8">
+                                                    <div class="input-group date">
+                                                        <input name="to_date" type="text" class="form-control" id="datetimepicker2" required>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-6">
+
+                                            <p class="text-center"><strong>Reactivated Period:</strong></p>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" for="from_date2">From:</label>
+                                                <div class="col-sm-9 col-lg-8">
+                                                    <div class="input-group date">
+                                                        <input name="from_date2" type="text" class="form-control" id="datetimepicker3" required>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" for="to_date2">To:</label>
+                                                <div class="col-sm-9 col-lg-8">
+                                                    <div class="input-group date">
+                                                        <input name="to_date2" type="text" class="form-control" id="datetimepicker4" required>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="to_date">To:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <div class="input-group date">
-                                                <input name="to_date" type="text" class="form-control" id="datetimepicker2" required>
-                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" for="search_text">Search:</label>
+                                                <div class="col-sm-9 col-lg-8">
+                                                    <div>
+                                                        <input type="text" class="form-control" name="search_text" value="" placeholder="Search term...">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="search_text">Search:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <div>
-                                                <input type="text" class="form-control" name="search_text" value="" placeholder="Search term...">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" for="search_text">Order:</label>
+                                                <div class="col-sm-9 col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-sm-6"><div class="radio"><label for="my_volume"><input type="radio" name="order" value="my_volume" id="my_volume" required/> Trade Volume</label></div></div>
+                                                        <div class="col-sm-6"><div class="radio"><label for="last_trade_date"><input type="radio" name="order" value="last_trade_date" id="last_trade_date" /> Last Trade Date</label></div></div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="search_text">Order:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <div class="row">
-                                                <div class="col-sm-6"><div class="radio"><label for="my_volume"><input type="radio" name="order" value="my_volume" id="my_volume" required/> Old Order</label></div></div>
-                                                <div class="col-sm-6"><div class="radio"><label for="last_trade_date"><input type="radio" name="order" value="last_trade_date" id="last_trade_date" /> Last Trade Date</label></div></div>
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-3 col-sm-9"><input name="reactivated_trading_client" type="submit" class="btn btn-success" value="Display Result" /></div>
                                             </div>
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    $('#datetimepicker, #datetimepicker2, #datetimepicker3, #datetimepicker4').datetimepicker({
+                                                        format: 'YYYY-MM-DD'
+                                                    });
+                                                });
+                                            </script>
                                         </div>
+                                        <div class="col-sm-6"></div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-9"><input name="inactive_trading_client" type="submit" class="btn btn-success" value="Display" /></div>
-                                    </div>
-                                    <script type="text/javascript">
-                                        $(function () {
-                                            $('#datetimepicker, #datetimepicker2').datetimepicker({
-                                                format: 'YYYY-MM-DD'
-                                            });
-                                        });
-                                    </script>
                                 </form>
 
                                 <?php if(isset($numrows)) { ?>
                                     <p>
-                                        Showing results from <?php echo date_to_text($from_date); ?> to <?php echo date_to_text($to_date); ?><br />
-                                        <strong>Result Found: </strong><?php echo number_format($numrows); ?>
+                                        Your query shows that <strong><?php echo number_format($numrows); ?></strong> clients that didn't trade between <?php echo date_to_text($from_date); ?>
+                                        and <?php echo date_to_text($to_date); ?> went ahead to trade between <?php echo date_to_text($from_date2); ?> and <?php echo date_to_text($to_date2); ?>.
                                     </p>
                                 <?php } ?>
 
                                 <hr /><br />
 
-                                <?php if(isset($selected_inactive_clients) && !empty($selected_inactive_clients)) { require 'layouts/pagination_links.php'; } ?>
+                                <?php if(isset($selected_reactivated_clients) && !empty($selected_reactivated_clients)) { require 'layouts/pagination_links.php'; } ?>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
@@ -214,7 +232,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                                     </thead>
                                     <tbody>
                                     <?php
-                                    if(isset($selected_inactive_clients) && !empty($selected_inactive_clients)) { foreach ($selected_inactive_clients as $row) {
+                                    if(isset($selected_reactivated_clients) && !empty($selected_reactivated_clients)) { foreach ($selected_reactivated_clients as $row) {
                                         ?>
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
@@ -228,11 +246,11 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                                                 <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
-                                    <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
                                 
-                                <?php if(isset($selected_inactive_clients) && !empty($selected_inactive_clients)) { ?>
+                                <?php if(isset($selected_reactivated_clients) && !empty($selected_reactivated_clients)) { ?>
                                 <div class="tool-footer text-right">
                                     <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                 </div>
@@ -240,7 +258,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                             </div>
                         </div>
                         
-                        <?php if(isset($selected_inactive_clients) && !empty($selected_inactive_clients)) { require 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($selected_reactivated_clients) && !empty($selected_reactivated_clients)) { require 'layouts/pagination_links.php'; } ?>
                     </div>
 
                     <!-- Unique Page Content Ends Here

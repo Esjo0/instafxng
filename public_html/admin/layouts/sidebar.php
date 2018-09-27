@@ -76,6 +76,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_top_traders.php" title="View Top Traders">View Top Traders</a></li><?php } ?>
                         <?php if (in_array(244, $my_pages_sidebar)) { ?><li><a href="client_active.php" title="Active Trading Clients">Active Trading Clients</a></li><?php } ?>
                         <?php if (in_array(245, $my_pages_sidebar)) { ?><li><a href="client_inactive.php" title="Inactive Trading Clients">Inactive Trading Clients</a></li><?php } ?>
+                        <?php if (in_array(245, $my_pages_sidebar)) { ?><li><a href="client_reactivated.php" title="Reactivated Trading Clients">Reactivated Trading Clients</a></li><?php } ?>
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_commission_17.php" title="Commission Clients 17">Commission Clients 17</a></li><?php } ?>
                     </ul>
                 </li>
