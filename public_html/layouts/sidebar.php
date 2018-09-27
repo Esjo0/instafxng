@@ -42,7 +42,7 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
     <div class="col-sm-6 col-md-12">
         <div class="nav-display super-shadow">
             <header><i class="fa fa-bars fa-fw"></i> Latest Blog</header>
-
+            <div class="">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
@@ -55,16 +55,16 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
 
-                    <div class="item active" style="display:none;">
-                        <img src="ny.jpg" alt="New York" style="width:100%;">
-                        <div class="carousel-caption">
-                            <h3>New York</h3>
-                            <p>We love the Big Apple!</p>
-                        </div>
+                    <div class="item active">
+                        <img src="images/blog_img.png" class="img img-responsive"  alt="" style="width:100%;height:100%">
                     </div>
 
                 <?php if(isset($featured_news)) { foreach($featured_news as $row) { ?>
-                    <div class="item">
+                    <div class="item blog-featured">
+                        <article>
+                        <div class="col-sm-12 text-center">
+                            <p><a href="news1/id/<?php echo $row['article_id'] . '/u/' . $row['url'] . '/'; ?>" title="Click to read"><?php echo $row['title']; ?></a></p>
+                        </div>
                         <?php if(file_exists("images/blog/{$row['display_image']}")) { ?>
                             <img style="max-height: 130px" class="img-responsive center-block" alt="" src="https://instafxng.com/images/blog/<?php echo $row['display_image']; ?>" />
                         <?php } else { ?>
@@ -72,22 +72,21 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
                         <?php } ?>
                         <div class="carousel-caption">
                             <div class="row">
-                                <div class="col-sm-12 text-center">
-                                    <p><a href="news1/id/<?php echo $row['article_id'] . '/u/' . $row['url'] . '/'; ?>" title="Click to read"><?php echo $row['title']; ?></a></p>
-                                </div>
+
                             </div>
                         </div>
-                        <div class="row blog-featured-foot">
+                        <div class=" blog-featured-foot">
+                            <hr>
                             <small class="pull-left"><?php echo time_since($row['created']); ?></small>
+
                             <div class="pull-right">
-                                <i class="fa fa-eye fa-fw"></i> <?php echo $row['view_count']; ?> &nbsp;&nbsp;
+                                <i class="fa fa-eye fa-fw"></i> <?php echo $row['view_count']; ?>
                             </div>
+                            <hr>
                         </div>
+                        </article>
                     </div>
                 <?php } } else { echo "<em>No news to display</em>"; } ?>
-
-
-
                 </div>
 
                 <!-- Left and right controls -->
@@ -108,6 +107,8 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
         </div>
     </div>
 </div>
+    </div>
+
 <section id="signals">
 <div class="row ">
     <div class="col-sm-6 col-md-12">
