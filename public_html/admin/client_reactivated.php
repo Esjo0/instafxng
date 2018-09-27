@@ -117,7 +117,7 @@ if (isset($_POST['reactivated_trading_client']) || isset($_GET['pg'])) {
 
                                 <p>Pick a date range below to see <strong>Reactivated Trading Clients</strong>. If you want to search
                                     for a client, enter a parameter in the search field.</p>
-                                <p>Kindly ensure that the 'To' date on the Inactive Trading Period is same as 'From' date on the
+                                <p>Kindly ensure that the 'To' date on the Inactive Trading Period is the next after the 'From' date on the
                                 Reactivated Period.</p>
 
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
