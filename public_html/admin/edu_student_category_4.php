@@ -19,17 +19,7 @@ if(isset($_POST['edu_sale_track'])){
 if(isset($_POST['filter_lesson'])){
     $lesson = $_POST['lesson'];
     if($lesson > 0){
-        $filter = "AND ueel.lesson_id = '$lesson' AND u.user_code
-        NOT IN
-                (
-                    SELECT u.user_code
-                    FROM user_edu_exercise_log AS ueel
-                    INNER JOIN user AS u ON ueel.user_code = u.user_code
-                    INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-                    INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-                    LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-                    WHERE ueel.lesson_id > '$lesson'
-                )";
+        $filter = "AND MAX(ueel.lesson_id) = '$lesson'";
     }else{
         $filter = "";
     }
