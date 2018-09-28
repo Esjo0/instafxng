@@ -152,7 +152,7 @@ if(isset($_POST['update_signal'])){
     $trend = $db_handle->sanitizePost($_POST['trend']);
     $type = $db_handle->sanitizePost($_POST['type']);
 
-    $result = $signal_object->update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type);
+    $result = $signal_object->update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type, $admin_code);
     if($result) {
         $message_success = "Signal Updated Successfully created for " . datetime_to_text($signal_time);
     } else {
@@ -477,11 +477,17 @@ $all_signals = $db_handle->fetchAssoc($result);
                                             });
                                         </script>
                                     </div>
-
-                                                    <div class="form-group">
-                                                            <center><label class="col-sm-12" for="exampleFormControlTextarea1">Comment</label></center>
+                                                        <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                                            <div>
+                                                                <h6 class="text-center"><strong>KeyNote </strong></h6>
+                                                                <div class="text-muted" title="Scroll to view more" style="overflow:auto; height:80px">
+                                                                    <?php $signal_object->get_keynotes($row['signal_id'], 1)?>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    <div class="form-group col-sm-12">
+                                                            <label class="col-sm-12" for="exampleFormControlTextarea1">Add To Key Note</label>
                                                             <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3">
-                                                                <?php echo $row['note'];?>
                                                             </textarea>
                                                         </div>
                                                     <input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"/>

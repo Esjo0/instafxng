@@ -45,9 +45,10 @@ class Signal_Management
         39 => 'v5DUQaPgYJv49iKktlMQNKON4zDSoHXY',
         40 => '6FTtxpD5ONkki3GnA6M3ogUaOebFn8Qq'
     );
-/*
- * get the ID of a signal_symbol_pair
- */
+
+    /*
+     * get the ID of a signal_symbol_pair
+     */
     public function get_symbol_id($pair_str)
     {
         global $db_handle;
@@ -190,9 +191,9 @@ MAIL;
                                             <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                                   <div>
                                                   <h6 class="text-center"><strong>KeyNote </strong></h6>
-                                                     <small class="text-muted" style="overflow:auto; height:80px">
-                                                         {$row['note']}
-                                                     </small>
+                                                     <div class="text-muted" title="Scroll to view more" style="overflow:auto; height:80px">
+                                                         {$this->get_keynotes($row['signal_id'], 2)}
+                                                     </div>
                                                   </div>
                                             </li>
 
@@ -337,9 +338,9 @@ MAIL;
     {
 //        $price = round($price,4);
 //        $dec = strpos($price, ".");
-        if($decimal_place == 4){
-           $price = substr($price, 0, -1);
-        }elseif($decimal_place == 2){
+        if ($decimal_place == 4) {
+            $price = substr($price, 0, -1);
+        } elseif ($decimal_place == 2) {
             $price = substr($price, 0, -3);
         }
         return $price;
@@ -378,22 +379,32 @@ MAIL;
             };
             if (!empty($market_price) && !empty($price)) {
                 $diff = $this->get_pips($symbol_id, $market_price, $price);
-                if(($diff >= -100) && ($diff <= 100)){$display = $this->get_pips_display($order_type, $diff);}else{$display = 0;}
+                if (($diff >= -100) && ($diff <= 100)) {
+                    $display = $this->get_pips_display($order_type, $diff);
+                } else {
+                    $display = 0;
+                }
             } else {
                 $display = 0;
             }
             $open_date = datetime_to_text3($entry_time);
-            if(empty($entry_time)){$open_date = datetime_to_text3($created);}
-            if(empty($lowest_pips) || ($lowest_pips == null)){$lowest_pips = 0;}
-            if(empty($highest_pips) || ($highest_pips == null)){$highest_pips = 0;}
-            if(!empty($highest_pips_time) && ($highest_pips_time != 0) && ($highest_pips != 0)){
-                $highest_pips_time = "@ ".datetime_to_text3($highest_pips_time);
+            if (empty($entry_time)) {
+                $open_date = datetime_to_text3($created);
+            }
+            if (empty($lowest_pips) || ($lowest_pips == null)) {
+                $lowest_pips = 0;
+            }
+            if (empty($highest_pips) || ($highest_pips == null)) {
+                $highest_pips = 0;
+            }
+            if (!empty($highest_pips_time) && ($highest_pips_time != 0) && ($highest_pips != 0)) {
+                $highest_pips_time = "@ " . datetime_to_text3($highest_pips_time);
                 $display2 = " <tr>
                                 <td class=\"text-center\">Max Pips Gained <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
                               </tr>";
             }
-            if(!empty($lowest_pips_time) && ($lowest_pips_time != 0) && ($lowest_pips != 0)){
-                $lowest_pips_time = "@ ".datetime_to_text3($lowest_pips_time);
+            if (!empty($lowest_pips_time) && ($lowest_pips_time != 0) && ($lowest_pips != 0)) {
+                $lowest_pips_time = "@ " . datetime_to_text3($lowest_pips_time);
                 $display3 = "<tr>
                               <td class=\"text-center\">Max Draw-down <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
                              </tr>";
@@ -422,26 +433,34 @@ analysis;
         } elseif ($trigger_status == 2) {
 
             $open_date = datetime_to_text3($entry_time);
-            if(empty($entry_time)){$open_date = datetime_to_text3($created);}
+            if (empty($entry_time)) {
+                $open_date = datetime_to_text3($created);
+            }
             $closed_date = datetime_to_text3($exit_time);
 
-            if(!empty($highest_pips_time) && ($highest_pips_time != 0)){
-                $highest_pips_time = "@ ".datetime_to_text3($highest_pips_time);}
-            if(!empty($lowest_pips_time) && ($lowest_pips_time != 0)){
-                $lowest_pips_time = "@ ".datetime_to_text3($lowest_pips_time);}
+            if (!empty($highest_pips_time) && ($highest_pips_time != 0)) {
+                $highest_pips_time = "@ " . datetime_to_text3($highest_pips_time);
+            }
+            if (!empty($lowest_pips_time) && ($lowest_pips_time != 0)) {
+                $lowest_pips_time = "@ " . datetime_to_text3($lowest_pips_time);
+            }
             $display1 = $this->get_pips_display($order_type, $pips);
             $display2 = $this->get_pips_display($order_type, $highest_pips);
             //$display3 = $this->get_pips_display($order_type, $lowest_pips);
-            if(empty($lowest_pips) || ($lowest_pips == null)){$lowest_pips = 0;}
-            if(empty($highest_pips) || ($highest_pips == null)){$highest_pips = 0;}
-            if(($highest_pips > 5) && ($exit_type == "Stop Loss")){
-              $exit_type = "Break Even";
+            if (empty($lowest_pips) || ($lowest_pips == null)) {
+                $lowest_pips = 0;
+            }
+            if (empty($highest_pips) || ($highest_pips == null)) {
+                $highest_pips = 0;
+            }
+            if (($highest_pips > 5) && ($exit_type == "Stop Loss")) {
+                $exit_type = "Break Even";
                 $display1 = "<span style=\"color:green !important;\"> {$highest_pips} </span>pips";
-            }elseif(($exit_type == "Take Profit") && !empty($lowest_pips) && ($lowest_pips != 0)){
+            } elseif (($exit_type == "Take Profit") && !empty($lowest_pips) && ($lowest_pips != 0)) {
                 $draw_down = " <tr>
                                   <td class=\"text-center\">Draw Down of <span style=\"color:red !important;\"> {$lowest_pips} </span>pips $lowest_pips_time</td>
                                </tr>";
-            }elseif(($exit_type == "Stop Loss") && !empty($highest_pips) && ($highest_pips != 0)){
+            } elseif (($exit_type == "Stop Loss") && !empty($highest_pips) && ($highest_pips != 0)) {
                 $high = "<tr>
                           <td class=\"text-center\">A High of <span style=\"color:green !important;\"> {$highest_pips} </span>pips $highest_pips_time</td>
                          </tr>";
@@ -490,10 +509,15 @@ analysis;
             if (empty($market_price)) {
                 goto get_keyp;
             };
-            if(($price < $market_price) && ($order_type == 1)){$pending_type = "BUY LIMIT";}
-            elseif(($price > $market_price) && ($order_type == 1)){$pending_type = "BUY STOP";}
-            elseif(($price < $market_price) && ($order_type == 2)){$pending_type = "SELL STOP";}
-            elseif(($price > $market_price) && ($order_type == 2)){$pending_type = "SELL LIMIT";}
+            if (($price < $market_price) && ($order_type == 1)) {
+                $pending_type = "BUY LIMIT";
+            } elseif (($price > $market_price) && ($order_type == 1)) {
+                $pending_type = "BUY STOP";
+            } elseif (($price < $market_price) && ($order_type == 2)) {
+                $pending_type = "SELL STOP";
+            } elseif (($price > $market_price) && ($order_type == 2)) {
+                $pending_type = "SELL LIMIT";
+            }
             $display = <<<analysis
             <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block" >
                                             <div>
@@ -613,12 +637,13 @@ MSG;
         return $response[0]['price'];
     }
 
-    public function update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment, $trend, $type)
+    public function update_signal_schedule($id, $symbol, $price, $take_profit, $stop_loss, $signal_time, $signal_date, $comment='', $trend, $type, $admin)
     {
         global $db_handle;
         $query = "UPDATE signal_daily SET symbol_id = '$symbol', order_type = '$type', price = '$price', take_profit = '$take_profit', stop_loss = '$stop_loss', trigger_date = '$signal_date', trigger_time = '$signal_time', note = '$comment' WHERE signal_id = '$id'";
         $result = $db_handle->runQuery($query);
         if ($result) {
+            if(!empty($comment)){$this->add_keynote($comment, $id, $admin);}
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
             $this->update_signal_daily_FILE($signal_array);
         }
@@ -638,8 +663,8 @@ ORDER BY SD.signal_id DESC ";
 
     public function update_signal_daily_FILE($signal_array)
     {
-        file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-         //file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+       file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+        //file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
@@ -689,10 +714,20 @@ ORDER BY SD.signal_id DESC ";
     public function new_signal_schedule($symbol_id, $order_type, $price, $take_profit, $stop_loss, $trigger_date, $trigger_time, $trend, $note = '', $admin_code, $market_price, $status)
     {
         global $db_handle;
+
         $query = "INSERT INTO signal_daily (symbol_id, order_type, price, take_profit, stop_loss, trigger_date, trigger_time, note, views, created_by, market_price, pips, trigger_status)
                   VALUES ('$symbol_id','$order_type','$price', '$take_profit', '$stop_loss', '$trigger_date', '$trigger_time', '$note', 0, '$admin_code', '$market_price', 0, '$status')";
         $result = $db_handle->runQuery($query);
         if ($result) {
+            $query = "SELECT signal_id FROM signal_daily  ORDER BY signal_id DESC LIMIT 1";
+            $result2 = $db_handle->runQuery($query);
+            $result2 = $db_handle->fetchArray($result2);
+            foreach($result2 AS $row){
+                extract($row);
+            }
+            if(!empty($note)){
+                $this->add_keynote($note, $signal_id, $admin_code);
+            }
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
             $this->update_signal_daily_FILE($signal_array);
         }
@@ -781,9 +816,9 @@ MAIL;
         $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source, interest, created) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', $source, $interest, '$created')";
         $result = $db_handle->runQuery($query);
 
-                //$text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
+        //$text_message = "Welcome on board! The key to trading Forex profitably is Knowledge, We are so excited you have chosen us to guide you through the path of making money from the Forex market, Click bit.ly/2iExTpN to begin your free training.";
 
-        if($interest == 2 || $interest == 3 ){
+        if ($interest == 2 || $interest == 3) {
             $subject = "$first_name, Welcome to Our Free Signal Page, Would You Love a 100% Trading Bonus?";
             $message = <<<MAIL
     <div style="background-color: #F3F1F2">
@@ -848,7 +883,7 @@ MAIL;
     </div>
 </div>
 MAIL;
-        }elseif($interest == 1){
+        } elseif ($interest == 1) {
             $subject = "Welcome to The Signal Page: Here is a Guide to Optimizing the Signals!";
             $message = <<<MAIL
     <div style="background-color: #F3F1F2">
@@ -905,14 +940,52 @@ MAIL;
 MAIL;
         }
 
-        if($result) {
+        if ($result) {
             //$system_object->send_sms($phone_number, $text_message);
             $system_object->send_email($subject, $message, $email_address, $first_name);
             $assigned_account_officer = $system_object->next_account_officer();
             $client_operation = new clientOperation();
-            $client_operation->new_user_ordinary($first_name." ".$last_name, $email_address, $phone_number, $assigned_account_officer);
-            return true;}
-        else{return false;}
+            $client_operation->new_user_ordinary($first_name . " " . $last_name, $email_address, $phone_number, $assigned_account_officer);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function get_keynotes($signal_id, $type){
+        global $db_handle;
+        $query = "SELECT * FROM signal_keynotes WHERE signal_id = $signal_id ORDER BY created DESC";
+        $result = $db_handle->runQuery($query);
+        $result = $db_handle->fetchArray($result);
+        $num_row = $db_handle->numRows($query);
+        $key = "";
+if($num_row > 0){
+        for($j = 0 ; $j < $num_row; $j++){
+            $row_side = (array)$result[$j];
+            extract($row_side);
+            $date = datetime_to_text($created);
+            //$author = $admin_object->get_admin_name_by_code($admin);
+            $keynote = <<<KEYNOTE
+                <div class="panel panel-warning">
+                        <div class="panel-body">
+                           <span>{$comment}</span>
+                           <small class="text-muted pull-right">{$date}</small>
+                        </div>
+                    </div>
+KEYNOTE;
+            $key = $key.$keynote;
+        }
+}else{}
+        if($type == 1){echo $key;}
+        if($type == 2){return $key;}
+
+    }
+
+    public function add_keynote($keynote, $signal_id, $admin){
+        global $db_handle;
+        $query = "INSERT INTO signal_keynotes (signal_id, comment, admin) VALUE('$signal_id', '$keynote', '$admin')";
+        $result = $db_handle->runQuery($query);
+        return $result;
     }
 
 }
