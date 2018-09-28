@@ -1,3 +1,13 @@
+CREATE TABLE `signal_keynotes` (
+ `keynote_id` int(11) NOT NULL AUTO_INCREMENT,
+ `signal_id` int(100) NOT NULL,
+ `comment` text NOT NULL,
+ `admin` varchar(10) NOT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ UNIQUE KEY `keynote_id` (`keynote_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1
+Open new phpMyAdmin window
+
 UPDATE signal_daily SET pips = 0, trigger_status = 1 WHERE signal_id = 200;
 UPDATE signal_daily SET pips = 7 WHERE signal_id = 199;
 UPDATE signal_daily SET pips = 7 WHERE signal_id = 198;

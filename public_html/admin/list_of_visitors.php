@@ -10,19 +10,20 @@ if(isset($_POST['email_search']))
     $_POST['email_search'] = $db_handle->sanitizePost(trim($_POST['email_search']));
     redirect_to("visitors_results.php?data=".$_POST['email_search']);
 }
-if(isset($_POST['filter'])){
+$query = "SELECT * FROM article_visitors ";
+
+if(isset($_POST['get_filter'])) {
     $filter = $db_handle->sanitizePost($_POST['filter']);
-    $query = "SELECT * FROM article_visitors WHERE entry_point = '$filter'";
-}else{
-    $query = "SELECT * FROM article_visitors ";
+    $query = $query." WHERE entry_point = '$filter'";
 }
 
-
-$query_article = $query. "WHERE entry_point = '1'";
+$query_blog = "SELECT * FROM article_visitors";
+$all_blog = $db_handle->numRows($query_blog);
+$query_article = "SELECT * FROM article_visitors WHERE entry_point = '1'";
 $all_article = $db_handle->numRows($query_article);
-$query_calendar = $query. "WHERE entry_point = '2'";
+$query_calendar = "SELECT * FROM article_visitors WHERE entry_point = '2'";
 $all_calendar = $db_handle->numRows($query_calendar);
-$query_extras = $query. "WHERE entry_point = '3'";
+$query_extras = "SELECT * FROM article_visitors WHERE entry_point = '3'";
 $all_extras = $db_handle->numRows($query_extras);
 
 $numrows = $db_handle->numRows($query);
@@ -104,7 +105,7 @@ $all_comments_items = $db_handle->fetchAssoc($result);
                                     <option value="3" >Extras</option>
                                 </select>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" name="filter" type="submit">FILTER</button>
+                                    <button class="btn btn-default" name="get_filter" type="submit">FILTER</button>
                                 </span>
                             </div>
                         </form>
@@ -133,7 +134,7 @@ $all_comments_items = $db_handle->fetchAssoc($result);
                     <div class="col-sm-12">
                         <table class="table table-hover table-responsive table-bordered">
                             </tr>
-                            <tr><td>Total Visitors</td> <td><?php echo $numrows?></td></tr>
+                            <tr><td>Total Visitors</td> <td><?php echo $all_blog?></td></tr>
                             <tr><td>Total Visitors Article</td> <td><?php echo $all_article?></td></tr>
                             <tr><td>Total Visitors Calendar</td> <td><?php echo $all_calendar?></td></tr>
                             <tr><td>Total Visitors Extras</td> <td><?php echo $all_extras?></td></tr>
