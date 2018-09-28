@@ -12,7 +12,15 @@ ALTER TABLE `article` ADD `scheduled_date` DATE NULL AFTER `updated`;
 
 DELETE FROM campaign_leads WHERE f_name IN ('Ayobami', 'IpayeShittaAdesina', 'mayowa', 'AbbasAbdulmalik', 'YomadeAyinla', 'NdidiOjei', 'AgbebakuWilson', 'UtojiubasSignature', 'RomeoFaithIbiso', 'KufreOffiong', 'IsraelTundeFayeun', 'DosunmuToheebAdemola', 'AkinsanmiAyomide', 'ESIAYOENTVARTISTEPRO', 'AbiodunAkinduro', 'JoshuaJerry', 'AhmadUsmanAhmad', 'AdamsAl-Danjuma', 'AmychichiPrincewill', 'SalisuInusa', 'OlubukolaOpeyemiOgunsanmi')
 
-
+CREATE TABLE `independence_promo` (
+ `promo_id` int(10) NOT NULL AUTO_INCREMENT,
+ `ifx_acct_no` varchar(100) NOT NULL,
+ `user_code` varchar(100) NOT NULL,
+ `total_points` int(100) NOT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated` datetime NOT NULL,
+ PRIMARY KEY (`promo_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1
 
 CREATE TABLE `advert_div` (
  `advert_id` int(10) NOT NULL AUTO_INCREMENT,
