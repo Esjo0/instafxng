@@ -71,7 +71,8 @@ $client_group_DEFAULT = array(
 	"54" => "All clients who withdrew from the accounts last month",
     "55" => "All inactive clients before May 1 2018.",
 	"56" => "All Clients Who have used WebPay for Deposit Transaction",
-	"57" => "All signal user"
+	"57" => "All signal user",
+    "58" => "VIP Clients"
 	
 );
 $client_group_DESC = array(
@@ -131,5 +132,6 @@ $client_group_DESC = array(
 	"54" => "All clients who made withdrawals in the Just concluded month",
     "55" => "All inactive clients before May 1 2018.",
 	"56" => "Clients who have funded their forex accounts with instant card transfer using their ATM cards",
-	"57" => "Consists of all individuals who have ever used the signals before"
+	"57" => "Consists of all individuals who have ever used the signals before",
+    "58" => "VIP Clients: clients with at least a single completed deposit transaction worth $1000 and above."
     );
