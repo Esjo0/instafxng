@@ -191,9 +191,9 @@ MAIL;
                                             <li class="list-group-item d-flex justify-content-between lh-condensed" >
                                                   <div>
                                                   <h6 class="text-center"><strong>KeyNote </strong></h6>
-                                                     <small class="text-muted" style="overflow:auto; height:80px">
-                                                         {$this->get_keynotes($row['signal_id'])}
-                                                     </small>
+                                                     <div class="text-muted" title="Scroll to view more" style="overflow:auto; height:80px">
+                                                         {$this->get_keynotes($row['signal_id'], 2)}
+                                                     </div>
                                                   </div>
                                             </li>
 
@@ -663,8 +663,8 @@ ORDER BY SD.signal_id DESC ";
 
     public function update_signal_daily_FILE($signal_array)
     {
-        //file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
-        file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
+       file_put_contents('/home/tboy9/models/signal_daily.json', json_encode($signal_array));
+        //file_put_contents('../../models/signal_daily.json', json_encode($signal_array));
 
     }
 
@@ -720,14 +720,11 @@ ORDER BY SD.signal_id DESC ";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $query = "SELECT signal_id FROM signal_daily  ORDER BY signal_id DESC LIMIT 1";
-            var_dump($query);
             $result2 = $db_handle->runQuery($query);
             $result2 = $db_handle->fetchArray($result2);
             foreach($result2 AS $row){
                 extract($row);
-                var_dump($signal_id);
             }
-            var_dump($signal_id);
             if(!empty($note)){
                 $this->add_keynote($note, $signal_id, $admin_code);
             }
@@ -955,35 +952,38 @@ MAIL;
         }
     }
 
-    public function get_keynotes($signal_id){
+    public function get_keynotes($signal_id, $type){
         global $db_handle;
-        //$admin_object = new AdminUser();
-        $query = "SELECT * FROM signal_keynotes WHERE signal_id = $signal_id ";
+        $query = "SELECT * FROM signal_keynotes WHERE signal_id = $signal_id ORDER BY created DESC";
         $result = $db_handle->runQuery($query);
         $result = $db_handle->fetchArray($result);
-
-        foreach($result AS $row){
-            extract($row);
+        $num_row = $db_handle->numRows($query);
+        $key = "";
+if($num_row > 0){
+        for($j = 0 ; $j < $num_row; $j++){
+            $row_side = (array)$result[$j];
+            extract($row_side);
             $date = datetime_to_text($created);
             //$author = $admin_object->get_admin_name_by_code($admin);
             $keynote = <<<KEYNOTE
                 <div class="panel panel-warning">
-                        <div class="panel-heading">
-                            <strong>{$admin}</strong> <span class="text-muted pull-right">{$date}</span>
-                        </div>
                         <div class="panel-body">
-                            {$comment}
+                           <span>{$comment}</span>
+                           <small class="text-muted pull-right">{$date}</small>
                         </div>
-                 </div>
+                    </div>
 KEYNOTE;
+            $key = $key.$keynote;
         }
-        return $keynote;
+}else{}
+        if($type == 1){echo $key;}
+        if($type == 2){return $key;}
+
     }
 
     public function add_keynote($keynote, $signal_id, $admin){
         global $db_handle;
         $query = "INSERT INTO signal_keynotes (signal_id, comment, admin) VALUE('$signal_id', '$keynote', '$admin')";
-        var_dump($query);
         $result = $db_handle->runQuery($query);
         return $result;
     }

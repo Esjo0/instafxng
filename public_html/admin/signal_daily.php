@@ -477,25 +477,19 @@ $all_signals = $db_handle->fetchAssoc($result);
                                             });
                                         </script>
                                     </div>
-<div class="row">
-                                                    <div class="form-group col-sm-6">
-                                                            <center><label class="col-sm-12" for="exampleFormControlTextarea1">Comment</label></center>
+                                                        <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                                                            <div>
+                                                                <h6 class="text-center"><strong>KeyNote </strong></h6>
+                                                                <div class="text-muted" title="Scroll to view more" style="overflow:auto; height:80px">
+                                                                    <?php $signal_object->get_keynotes($row['signal_id'], 1)?>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    <div class="form-group col-sm-12">
+                                                            <label class="col-sm-12" for="exampleFormControlTextarea1">Add To Key Note</label>
                                                             <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3">
                                                             </textarea>
                                                         </div>
-
-    <div class="col-sm-6">
-        <h6 class="text-center"><strong>Previous comments </strong></h6>
-        <li class=" list-group-item d-flex justify-content-between lh-condensed" >
-                                                            <div>
-                                                                <small class="text-muted" style="overflow:auto; height:80px">
-                                                                    <?php $prev_keynote = $signal_object->get_keynotes($row['signal_id']);
-                                                                    echo $prev_keynote;?>
-                                                                </small>
-                                                            </div>
-                                                        </li>
-    </div>
-    </div>
                                                     <input name="id" type="hidden" value="<?php echo $row['signal_id'];?>"/>
 
                                                     <br>

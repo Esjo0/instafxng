@@ -14,7 +14,7 @@ if (isset($_POST['signal_report'])){
 }
 
 
-$query = "SELECT SS.symbol AS pair, SD.price, SD.take_profit, SD.stop_loss, SD.created, SD.views, SD.entry_price,
+$query = "SELECT SS.symbol AS pair, SD.signal_id, SD.price, SD.take_profit, SD.stop_loss, SD.created, SD.views, SD.entry_price,
 SD.entry_time, SD.exit_time, SD.exit_type,SD.highest_pips, SD.lowest_pips, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note, SD.created_by, SD.market_price, SS.decimal_place
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
@@ -238,8 +238,15 @@ function table_context($trigger_status){
                                             <span><b>Take Profit:</b> <?php echo $signal_object->round_price_to_dp($row['take_profit'], $row['decimal_place']); ?></span><br/>
                                             <span><b>Stop Loss:</b> <?php echo $signal_object->round_price_to_dp($row['stop_loss'], $row['decimal_place']); ?></span><br/>
                                             <span><b>Date Created:</b> <?php echo datetime_to_text($row['created']); ?></span><br/>
-											<span><b>Keynote:</b> <?php echo $row['note']; ?><br/>
-                                            <span><b>Created By:</b> <?php echo $admin_object->get_admin_name_by_code($row['created_by']);; ?>
+                                            <span><b>Created By:</b> <?php echo $admin_object->get_admin_name_by_code($row['created_by']);; ?><br/>
+                                                <li class="list-group-item d-flex justify-content-between lh-condensed" style="width: 500px;">
+                                                    <div>
+                                                        <h6 class="text-center"><strong>KeyNote </strong></h6>
+                                                        <div class="text-muted" title="Scroll to view more" style="overflow:auto; ]; height:70px">
+                                                            <?php $signal_object->get_keynotes($row['signal_id'], 1)?>
+                                                        </div>
+                                                    </div>
+                                                </li>
                                         </td>
                                         <td>
                                             <span><b>Market Price when order was place:</b> <?php echo $row['market_price']; ?></span></br>
