@@ -3,7 +3,7 @@ require_once 'init/initialize_general.php';
 $thisPage = "Careers";
 
 $all_jobs = $obj_careers->get_open_jobs();
-
+$years = date('Y') - 2010;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +54,7 @@ $all_jobs = $obj_careers->get_open_jobs();
                             <h2>Careers and Job Opportunity</h2>
                             <p>If you like scaling new heights and you have the drive for excellence, you
                                 will fit into our team.</p>
-                            <p>For 7 years, we have pushed the boundaries of service delivery in the Forex
+                            <p>For <?php echo $years;?> years, we have pushed the boundaries of service delivery in the Forex
                                 Trading industry in Nigeria. Do you have what it takes to be on our team?</p>
                         </div>
 
