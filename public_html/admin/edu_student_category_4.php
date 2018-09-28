@@ -19,7 +19,7 @@ if(isset($_POST['edu_sale_track'])){
 if(isset($_POST['filter_lesson'])){
     $lesson = $_POST['lesson'];
     if($lesson > 0){
-        $filter = "AND ueel.lesson_id = '$lesson'";
+        $filter = "AND MAX(ueel.lesson_id) = '$lesson'";
     }else{
         $filter = "";
     }
@@ -50,7 +50,6 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           WHERE ued.status = '3' $filter
           GROUP BY u.user_code ORDER BY ued.created DESC, u.last_name ASC ";
 }
-
 $numrows = $db_handle->numRows($query);
 
 // For search, make rows per page equal total rows found, meaning, no pagination for search results
