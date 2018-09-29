@@ -21,18 +21,17 @@ if(isset($_POST['opt_in'])) {
         if($details) {
             foreach ($details AS $row) {
                 extract($row);
-                $query = "INSERT IGNORE INTO independence_promo (user_code,ifx_acct_no) VALUE($user_code, $acct_no)";
+                $query = "INSERT IGNORE INTO independence_promo (user_code, ifx_acct_no) VALUE('$user_code', '$acct_no')";
                 $result = $db_handle->runQuery($query);
             }
+
+            $message_success = "You have successfully registered";
         } else {
             $message_error = "This account is not an ILPR account <a target='_blank' href='https://instafxng.com/live_account.php'> Click Here to Open ILPR account</a>";
         }
     } else {
         $message_error = "Registration failed. You did not accept terms. Please try again.";
     }
-
-
-
 }
 
 // Get all contest participants
@@ -204,15 +203,6 @@ $contest_members = $db_handle->fetchAssoc($result);
                                             <?php } } else { echo "<tr><td colspan='2' class='text-danger'><em>No participant yet.</em></td></tr>"; } ?>
                                             </tbody>
                                         </table>
-
-                                        <?php if(isset($contest_members) && !empty($contest_members)) { ?>
-                                            <div class="tool-footer text-right">
-                                                <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
-                                            </div>
-                                        <?php } ?>
-
-                                        <?php if(isset($contest_members) && !empty($contest_members)) { require_once 'layouts/pagination_links.php'; } ?>
-
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +219,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                                                     <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
                                                     <p class="modal-title"><strong>Independence Trade Contest Registration</strong></p></div>
                                                 <div class="modal-body">
-
+                                                    <?php include 'layouts/feedback_message.php'; ?>
                                                     <p>Enter Your INSTAFOREX ILPR account number.</p>
                                                     <div class="form-group">
 
