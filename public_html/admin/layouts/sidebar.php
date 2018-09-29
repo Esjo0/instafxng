@@ -195,6 +195,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(62, $my_pages_sidebar)) { ?><li><a href="loyalty_point_claimed.php">Loyalty Point Claimed</a></li><?php } ?>
                         <?php if (in_array(233, $my_pages_sidebar)) { ?><li><a href="client_expired_points.php">Expired Loyalty Point</a></li><?php } ?>
                         <?php if (in_array(262, $my_pages_sidebar)) { ?><li><a href="loyalty_current_rank.php">Loyalty Current Rank</a></li><?php } ?>
+                        <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="independence_contest.php">Independence Contest 2018</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">

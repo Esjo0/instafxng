@@ -179,25 +179,6 @@ if(isset($_POST['sign_up'])) {
 
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <div class="col-sm-12"><h5>INSTAFXNG'S CELEBRATE A MILESTONE PROMO</h5></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <a href="https://instafxng.com/milestone_promo.php" title="click for full details" target="_blank">
-                                    <img src="images/Q2_Promo/Instafxng_Milestone_Celebration_lead.jpg" alt="" class="img-responsive" />
-                                </a>
-                            </div>
-                            <div class="col-sm-8">
-                                <p>Join Instafxng to celebrate a milestone.
-                                    You stand a chance to emerge one of 3 winners that will win an all-expense paid buffet at the prestigious Four Points By Sheraton.
-                                    This means that 3 lucky winners are getting this amazing experience.</p>
-                                <a class="btn btn-success" href="https://instafxng.com/milestone_promo.php" title="click for full details" target="_blank">More Details</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="section-tint super-shadow">
-                        <div class="row">
                             <div class="col-sm-12"><h5>Instaforex Who's Your Valentine Contest</h5></div>
                         </div>
                         <div class="row">
@@ -214,22 +195,6 @@ if(isset($_POST['sign_up'])) {
                             </div>
                         </div>
                     </div>
-                    
-<!--                    <div class="section-tint super-shadow">-->
-<!--                        <div class="row">-->
-<!--                            <div class="col-sm-12"><h5>$50 Monthly Cash Back</h5></div>-->
-<!--                        </div>-->
-<!--                        <div class="row">-->
-<!--                            <div class="col-sm-4">-->
-<!--                                <a href="monthly_cash_back.php" title="click for full details" target="_blank"><img src="images/monthly-cash-back.jpg" alt="" class="img-responsive" /></a>-->
-<!--                            </div>-->
-<!--                            <div class="col-sm-8">-->
-<!--                                <p>Get $50 back to your Forex Trading account every month, this is more reward for consistent Forex Traders.-->
-<!--                                InstaForex Nigeria offers a Cash Back award of $50 to each trader whose account has recorded trades of a minimum of 100 Insta lots in a calendar month.</p>-->
-<!--                                <a class="btn btn-success" href="monthly_cash_back.php" title="click for full details" target="_blank">More Details</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
                     
                     <div class="section-tint super-shadow">
                         <div class="row">

@@ -161,7 +161,8 @@ define("PAGE_CODE", json_encode(array(
     261 => "locked_transactions.php||",
     262 => "loyalty_current_rank.php||",
     269 => "client_retention_review.php||",
-    270 => "notification_manage.php||"
+    270 => "notification_manage.php||",
+    272 => "independence_contest.php||"
     )));
 class Access_Controller
 {
