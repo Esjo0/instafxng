@@ -55,6 +55,7 @@ $contest_members = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="instaforex, forex promo, forex promotion, instaforex nigeria." />
         <meta name="description" content="Win $250 in our Independence Trade Contest, let's celebrate the Independence of Nigeria together." />
         <?php require_once 'layouts/head_meta.php'; ?>
+
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -63,23 +64,24 @@ $contest_members = $db_handle->fetchAssoc($result);
             <div class="row no-gutter">
                 <?php require_once 'layouts/topnav.php'; ?>
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-                <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
+                <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3 ">
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    <div class="super-shadow page-top-section">
+                    <div  class="item super-shadow home-page-top-section">
+                        <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/250_dollsGroup%201.jpg" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                    </div>
+
+                    <div class="super-shadow page-top-section text-center">
                         <div class="row ">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <h1>Independence Trade Contest</h1>
                                 <p>
                                     Have you got all it takes to be our Independence hero?
                                     Here's your chance to prove you are a pro-trader! It's time to claim your Title and show that you
                                     are a Forex trade Champion.
                                 </p>
-                                <p><a class="btn btn-success" data-target="#contest-register" data-toggle="modal" style="cursor: pointer;">Click Here to Join the Contest.</a></p>
-                            </div>
-                            <div class="col-sm-6">
-                                <img align="middle" src="images/independence-image.png" alt="" class="img-responsive" />
+                                <a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><strong>Click Here to Join the Contest.</strong></a>
                             </div>
                         </div>
                     </div>
@@ -101,8 +103,7 @@ $contest_members = $db_handle->fetchAssoc($result);
 
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <p>To emerge one of our Independence Heroes and winners of the $250 grand prize, it is necessary to
-                                        fulfill the following conditions:</p>
+                                        <p>To emerge one of our Independence Heroes and top three winners of $120, $80 and $50 respectively, it is necessary to fulfill the following conditions:</p>
 
                                         <h5>How To Qualify For The Independence Trade Contest</h5>
 
@@ -129,8 +130,8 @@ $contest_members = $db_handle->fetchAssoc($result);
                                             </li>
                                         </ul>
                                         <p>The contest will hold from October 1, 2018 to October 5, 2018. Thus, on Monday October 8, 2018,
-                                            an hero will emerge and win the prize of $250.</p>
-                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;">Join the Contest</a></p>
+                                            three heros will emerge to share the $250.</p>
+                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><b>Join the Contest</b></a></p>
                                     </div>
                                 </div>
 
@@ -143,13 +144,13 @@ $contest_members = $db_handle->fetchAssoc($result);
                                                 </div>
                                                 <div id="collapse1" class="panel-collapse collapse">
                                                     <div class="panel-body">
-                                                        <p>The top three traders with the highest number of loyalty points will get the prize of $250
-                                                            as displayed on the contest table.</p>
-                                                        <p>1st Prize = $120<br />
-                                                            2nd Prize = $80<br />
-                                                            3rd Prize = $50<br />
-                                                        </p>
-                                                        <p>Winners will be chosen at the end of the week.</p>
+                                                        <p>The top three traders with the highest number of loyalty points will get the prize of $250 as displayed on the contest table.</p>
+
+                                                        <p>1st Prize = $120<br>
+                                                        2nd Prize = $80<br>
+                                                        3rd Prize = $50</p>
+
+                                                       <p> Winners will be chosen at the end of the week.</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -167,9 +168,9 @@ $contest_members = $db_handle->fetchAssoc($result);
                                                             <li>Participant must accrue a minimum of 5 points daily and 25 points weekly to qualify to win.</li>
                                                             <li>The rank of all qualified participants will be displayed on a daily basis.</li>
                                                             <li>The points earned by a participant in a day is automatically generated by our system and added up before 10am next day.</li>
-                                                            <li>Contest ends by 11:59pm on Friday 5th October, 2018. After the point table is updated, the winner who is the highest point earner gets the $250 prize.</li>
+                                                            <li>Contest ends by 11:59pm on Friday 5th October, 2018. The top three highest point winners, will get a prize of $120, $80 and $50 respectively</li>
                                                             <li>In a case where there is a tie for the highest point earner, there would be a draw.</li>
-                                                            <li>The winner will be announced on Monday October 8, 2018.</li>
+                                                            <li>Winners will be announced on Monday October 8, 2018.</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -240,6 +241,24 @@ $contest_members = $db_handle->fetchAssoc($result);
                                                             <input type="checkbox" name="terms" value="1" required> <b>Tick to <em>Agree</em> With Terms $ Condition</b>
                                                         </div>
 
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="well text-small">
+                                                            <small>
+                                                                <p class="text-center">All traders participating in this contest must meet the following T&Cs to win.</p>
+                                                                <ul>
+                                                                    <li>Only ILPR enrolled accounts are qualified for this contest. (click here to create an ILPR account)</li>
+                                                                    <li>Points are only acquired when participant trades (points earned on deposit will not be counted for the purpose of this contest)</li>
+                                                                    <li>Participant must accumulate a minimum of 5 points daily and 25 points weekly to qualify for win.</li>
+                                                                    <li>The rank of all qualified participants will be displayed on a daily basis..</li>
+                                                                    <li>Contest ends by 11:59pm on Friday 5th October, 2018. The top three highest point winners, will get a prize of $120, $80 and $50 respectively</li>
+                                                                    <li>The winner will be announced by 10am on Saturday 6th October, 2018.</li>
+                                                                </ul>
+                                                            </small>
+                                                            <div class="form-group text-center">
+                                                                <label><input type="radio" name="terms" required> <b>Tick to <em>Agree</em> With Terms $ Condition</b></label><br />
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                 </div>
