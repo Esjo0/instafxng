@@ -423,6 +423,7 @@ function client_group_campaign_category($status) {
         case '56': $message = "All who have used WebPay for Deposit."; break;
         case '57': $message = "All signal user."; break;
         case '58': $message = "VIP Clients"; break;
+        case '59': $message = "Independence Contest Participant"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -513,6 +514,7 @@ function client_group_query($client_group, $campaign_type) {
             case '56': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.client_pay_method = '1' GROUP BY u.user_code"; break;
             case '57': $query = "SELECT su.name AS first_name, su.email, su.phone FROM signal_users AS su GROUP BY su.phone"; break;
 			case '58': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id INNER JOIN user AS u ON u.user_code = ui.user_code WHERE ud.status = '8' AND ud.real_dollar_equivalent >= 1000 AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '2017-12-01' AND '$date_today') GROUP BY u.user_code "; break;
+            case '59': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM independence_promo AS ip INNER JOIN user AS u ON ip.user_code = u.user_code GROUP BY u.user_code"; break;
             default: $query = false; break;
         }
 
@@ -579,6 +581,7 @@ function client_group_query($client_group, $campaign_type) {
             case '56': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.client_pay_method = '1' GROUP BY u.user_code"; break;
             case '57': $query = "SELECT su.name AS first_name, su.phone, su.email FROM signal_users AS su GROUP BY su.phone"; break;
 			case '58': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id INNER JOIN user AS u ON u.user_code = ui.user_code WHERE ud.status = '8' AND ud.real_dollar_equivalent >= 1000 AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '2017-12-01' AND '$date_today') GROUP BY u.user_code "; break;
+            case '59': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM independence_promo AS ip INNER JOIN user AS u ON ip.user_code = u.user_code GROUP BY u.user_code "; break;
             default: $query = false; break;
         }
 

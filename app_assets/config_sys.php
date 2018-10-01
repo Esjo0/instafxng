@@ -72,7 +72,8 @@ $client_group_DEFAULT = array(
     "55" => "All inactive clients before May 1 2018.",
 	"56" => "All Clients Who have used WebPay for Deposit Transaction",
 	"57" => "All signal user",
-    "58" => "VIP Clients"
+    "58" => "VIP Clients",
+	"59" => "Independence Contest Participants"
 	
 );
 $client_group_DESC = array(
@@ -133,5 +134,6 @@ $client_group_DESC = array(
     "55" => "All inactive clients before May 1 2018.",
 	"56" => "Clients who have funded their forex accounts with instant card transfer using their ATM cards",
 	"57" => "Consists of all individuals who have ever used the signals before",
-    "58" => "VIP Clients: clients with at least a single completed deposit transaction worth $1000 and above."
+    "58" => "VIP Clients: clients with at least a single completed deposit transaction worth $1000 and above.",
+	"59" => "List Of all clients who opt in to participate in the independence contest."
     );
