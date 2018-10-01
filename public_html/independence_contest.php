@@ -24,7 +24,9 @@ if(isset($_POST['opt_in'])) {
                 $query = "INSERT IGNORE INTO independence_promo (user_code, ifx_acct_no) VALUE('$user_code', '$acct_no')";
                 $result = $db_handle->runQuery($query);
             }
-
+            $cookie_name = "ifxng_promo";
+            $cookie_value = $acct_no;
+            setcookie($cookie_name, $cookie_value, time() + (86400 * 10), "/"); // 86400 = 1 day
             $message_success = "You have successfully registered";
         } else {
             $message_error = "This account is not an ILPR account <a target='_blank' href='https://instafxng.com/live_account.php'> Click Here to Open ILPR account</a>";
@@ -265,6 +267,7 @@ $contest_members = $db_handle->fetchAssoc($result);
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>
+        <?php if (!isset($_COOKIE['ifxng_promo'])) { ?>
         <script>
             <?php if(!$message_success) { ?>
             $(document).ready(function () {
@@ -272,5 +275,6 @@ $contest_members = $db_handle->fetchAssoc($result);
             });
             <?php } ?>
         </script>
+    <?php }?>
     </body>
 </html>
