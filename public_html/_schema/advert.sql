@@ -12,6 +12,15 @@ ALTER TABLE `article` ADD `scheduled_date` DATE NULL AFTER `updated`;
 
 DELETE FROM campaign_leads WHERE f_name IN ('Ayobami', 'IpayeShittaAdesina', 'mayowa', 'AbbasAbdulmalik', 'YomadeAyinla', 'NdidiOjei', 'AgbebakuWilson', 'UtojiubasSignature', 'RomeoFaithIbiso', 'KufreOffiong', 'IsraelTundeFayeun', 'DosunmuToheebAdemola', 'AkinsanmiAyomide', 'ESIAYOENTVARTISTEPRO', 'AbiodunAkinduro', 'JoshuaJerry', 'AhmadUsmanAhmad', 'AdamsAl-Danjuma', 'AmychichiPrincewill', 'SalisuInusa', 'OlubukolaOpeyemiOgunsanmi')
 
+CREATE TABLE IF NOT EXISTS `independence_promo_date` (
+ `id` INT(11) NOT NULL AUTO_INCREMENT,
+ `date_earned` DATE NOT NULL,
+ `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE INDEX `date_earned_UNIQUE` (`date_earned` ASC))
+ ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `independence_promo` (
  `promo_id` INT(10) NOT NULL AUTO_INCREMENT,
  `ifx_acct_no` VARCHAR(10) NOT NULL,
