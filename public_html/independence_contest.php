@@ -4,7 +4,10 @@ $thisPage = "Promotion";
 
 if(isset($_POST['opt_in'])) {
     $acct_no = $db_handle->sanitizePost($_POST['acct_no']);
-    $query = "SELECT u.user_code
+    $terms = $db_handle->sanitizePost($_POST['terms']);
+
+    if ($terms == '1') {
+        $query = "SELECT u.user_code
             FROM user_credential AS uc
             INNER JOIN user AS u ON uc.user_code = u.user_code
             LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
@@ -12,17 +15,22 @@ if(isset($_POST['opt_in'])) {
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
             WHERE (uc.doc_status = '111') AND ui.ifx_acct_no = '$acct_no'";
-    $result = $db_handle->runQuery($query);
-    $details = $db_handle->fetchArray($result);
+        $result = $db_handle->runQuery($query);
+        $details = $db_handle->fetchArray($result);
 
-    if($details) {
-        foreach ($details AS $row) {
-            extract($row);
-            $query = "INSERT IGNORE INTO independence_promo (user_code,ifx_acct_no) VALUE($user_code, $acct_no)";
-            $result = $db_handle->runQuery($query);
+        if($details) {
+            foreach ($details AS $row) {
+                extract($row);
+                $query = "INSERT IGNORE INTO independence_promo (user_code, ifx_acct_no) VALUE('$user_code', '$acct_no')";
+                $result = $db_handle->runQuery($query);
+            }
+
+            $message_success = "You have successfully registered";
+        } else {
+            $message_error = "This account is not an ILPR account <a target='_blank' href='https://instafxng.com/live_account.php'> Click Here to Open ILPR account</a>";
         }
     } else {
-        $message_error = "This account is not an ILPR account <a target='_blank' href='https://instafxng.com/live_account.php'> Click Here to Open ILPR account</a>";
+        $message_error = "Registration failed. You did not accept terms. Please try again.";
     }
 }
 
@@ -47,6 +55,7 @@ $contest_members = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="instaforex, forex promo, forex promotion, instaforex nigeria." />
         <meta name="description" content="Win $250 in our Independence Trade Contest, let's celebrate the Independence of Nigeria together." />
         <?php require_once 'layouts/head_meta.php'; ?>
+
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -55,30 +64,32 @@ $contest_members = $db_handle->fetchAssoc($result);
             <div class="row no-gutter">
                 <?php require_once 'layouts/topnav.php'; ?>
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-                <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
+                <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3 ">
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
-                    <div class="super-shadow page-top-section">
-                        <div class="row ">
-                            <div class="col-sm-6">
-                                <h1>Independence Trade Contest</h1>
-                                <p>
-                                    Have you got all it takes to be our Independence hero?
-                                    Here's your chance to prove you are a pro-trader! It's time to claim your Title and show that you
-                                    are a Forex trade Champion. <a data-target="#contest-register" data-toggle="modal" style="cursor: pointer;">Click Here to Join the Contest.</a>
-                                </p>
-                            </div>
-                            <div class="col-sm-6">
-                                <img align="middle" src="images/independence-image.png" alt="" class="img-responsive" />
-                            </div>
-                        </div>
+                    <div  class="item super-shadow home-page-top-section">
+                        <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/250_dollsGroup%201.jpg" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
                     </div>
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php include 'layouts/feedback_message.php'; ?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <h1>Independence Trade Contest</h1>
+                                <p>
+                                    Have you got all it takes to be our Independence hero?
+                                    Here's your chance to prove you are a pro-trader! It's time to claim your Title and show that you
+                                    are a Forex trade Champion.
+                                </p>
+                                <a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><strong>Click Here to Join the Contest.</strong></a>
+                                <br />
+                                <hr />
                             </div>
                         </div>
 
@@ -92,8 +103,7 @@ $contest_members = $db_handle->fetchAssoc($result);
 
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <p>In order to become the Hero and Winner of <strong>$250</strong>, it is necessary to
-                                            fulfill several major conditions.</p>
+                                        <p>To emerge one of our Independence Heroes and top three winners of $120, $80 and $50 respectively, it is necessary to fulfill the following conditions:</p>
 
                                         <h5>How To Qualify For The Independence Trade Contest</h5>
 
@@ -120,8 +130,8 @@ $contest_members = $db_handle->fetchAssoc($result);
                                             </li>
                                         </ul>
                                         <p>The contest will hold from October 1, 2018 to October 5, 2018. Thus, on Monday October 8, 2018,
-                                            an hero will emerge and win the prize of $250.</p>
-                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;">Join the Contest</a></p>
+                                            three heros will emerge to share the $250.</p>
+                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><b>Join the Contest</b></a></p>
                                     </div>
                                 </div>
 
@@ -130,14 +140,17 @@ $contest_members = $db_handle->fetchAssoc($result);
                                         <div class="panel-group" id="accordion">
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                    <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse1">How The Winner Is Chosen</a></h5>
+                                                    <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse1">How The Winners are Chosen</a></h5>
                                                 </div>
                                                 <div id="collapse1" class="panel-collapse collapse">
                                                     <div class="panel-body">
-                                                        <p><strong>Winner of $250 prize</strong><br />
-                                                            The winner must first have a minimum of 25 points and also be the overall highest point
-                                                            earner as displayed on the contest table.
-                                                        </p>
+                                                        <p>The top three traders with the highest number of loyalty points will get the prize of $250 as displayed on the contest table.</p>
+
+                                                        <p>1st Prize = $120<br>
+                                                        2nd Prize = $80<br>
+                                                        3rd Prize = $50</p>
+
+                                                       <p> Winners will be chosen at the end of the week.</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -152,12 +165,12 @@ $contest_members = $db_handle->fetchAssoc($result);
                                                         <ul>
                                                             <li>Only ILPR enrolled accounts are qualified for this contest. <a href="live_account.php" target="_blank" title="Open A Live Trading Account">Open a qualifying account.</a></li>
                                                             <li>You earn points when you trade during the contest.</li>
-                                                            <li>Participant must accrue a minimum of 5 points daily and 25 points weekly to qualify for win.</li>
+                                                            <li>Participant must accrue a minimum of 5 points daily and 25 points weekly to qualify to win.</li>
                                                             <li>The rank of all qualified participants will be displayed on a daily basis.</li>
                                                             <li>The points earned by a participant in a day is automatically generated by our system and added up before 10am next day.</li>
-                                                            <li>Contest ends by 11:59pm on Friday 5th October, 2018. After the point table is updated, the winner who is the highest point earner gets the $250 prize.</li>
+                                                            <li>Contest ends by 11:59pm on Friday 5th October, 2018. The top three highest point winners, will get a prize of $120, $80 and $50 respectively</li>
                                                             <li>In a case where there is a tie for the highest point earner, there would be a draw.</li>
-                                                            <li>The winner will be announced on Monday October 8, 2018.</li>
+                                                            <li>Winners will be announced on Monday October 8, 2018.</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -191,15 +204,6 @@ $contest_members = $db_handle->fetchAssoc($result);
                                             <?php } } else { echo "<tr><td colspan='2' class='text-danger'><em>No participant yet.</em></td></tr>"; } ?>
                                             </tbody>
                                         </table>
-
-                                        <?php if(isset($contest_members) && !empty($contest_members)) { ?>
-                                            <div class="tool-footer text-right">
-                                                <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
-                                            </div>
-                                        <?php } ?>
-
-                                        <?php if(isset($contest_members) && !empty($contest_members)) { require_once 'layouts/pagination_links.php'; } ?>
-
                                     </div>
                                 </div>
                             </div>
@@ -208,25 +212,38 @@ $contest_members = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
                                 <!--Modal - confirmation boxes-->
-                                <form class="form-horizontal" role="form" method="post" action="">
+                                <form data-toggle="validator"  class="form-horizontal" role="form" method="post" action="">
                                     <div id="contest-register" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                    <h4 class="modal-title">Independence Trade Contest Registration</h4></div>
+                                                    <p class="modal-title"><strong>Independence Trade Contest Registration</strong></p></div>
                                                 <div class="modal-body">
-
+                                                    <?php include 'layouts/feedback_message.php'; ?>
                                                     <p>Enter Your INSTAFOREX ILPR account number.</p>
                                                     <div class="form-group">
+
                                                         <div class="col-sm-12 col-lg-12">
                                                             <input maxlength="10" value="" placeholder="Instaforex Account Number" name="acct_no" type="text" class="form-control" required>
+                                                            <p class="text-center">All traders participating in this contest must meet the following T&Cs to win.</p>
+                                                            <ul>
+                                                                <li>Only ILPR enrolled accounts are qualified for this contest. <a href="live_account.php" target="_blank" title="Open A Live Trading Account">Open a qualifying account.</a></li>
+                                                                <li>You earn points when you trade during the contest.</li>
+                                                                <li>Participant must accrue a minimum of 5 points daily and 25 points weekly to qualify to win.</li>
+                                                                <li>The rank of all qualified participants will be displayed on a daily basis.</li>
+                                                                <li>The points earned by a participant in a day is automatically generated by our system and added up before 10am next day.</li>
+                                                                <li>Contest ends by 11:59pm on Friday 5th October, 2018. The top three highest point winners, will get a prize of $120, $80 and $50 respectively</li>
+                                                                <li>In a case where there is a tie for the highest point earner, there would be a draw.</li>
+                                                                <li>Winners will be announced on Monday October 8, 2018.</li>
+                                                            </ul>
+
+                                                            <input type="checkbox" name="terms" value="1" required> <b>Tick to <em>Agree</em> With Terms $ Condition</b>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <input name="opt_in" type="submit" class="btn btn-success" value="Register Now">
+                                                    <input name="opt_in" type="submit" class="btn btn-success" value="Join Contest Now">
                                                     <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                 </div>
                                             </div>
@@ -248,5 +265,12 @@ $contest_members = $db_handle->fetchAssoc($result);
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>
+        <script>
+            <?php if(!$message_success) { ?>
+            $(document).ready(function () {
+                $('#contest-register').modal("show");
+            });
+            <?php } ?>
+        </script>
     </body>
 </html>
