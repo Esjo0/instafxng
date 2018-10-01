@@ -4,7 +4,7 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT u.first_name, ip.total_points, u.user_code
+$query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, ip.total_points, u.user_code
     FROM independence_promo AS ip
     INNER JOIN user AS u ON ip.user_code = u.user_code
     ORDER BY total_points DESC 
@@ -78,6 +78,8 @@ $independence_contest = $db_handle->fetchAssoc($result);
                                     <tr>
                                         <th>Client Name</th>
                                         <th>Total Points</th>
+                                        <th>Email Address</th>
+                                        <th>Phone Number</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -87,9 +89,16 @@ $independence_contest = $db_handle->fetchAssoc($result);
                                         foreach ($independence_contest as $row) {
                                             ?>
                                             <tr>
-                                                <td><?php echo $row['first_name']; ?></td>
+                                                <td><?php echo $row['full_name']; ?></td>
                                                 <td><?php echo $row['total_points']; ?></td>
-                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                                <td><?php echo $row['email']; ?></td>
+                                                <td><?php echo $row['phone']; ?></td>
+                                                <td>
+                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a class="btn btn-xs btn-primary" title="Send Email" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo  encrypt_ssl($name).'&email='.encrypt_ssl($row['email']);?>" ><i class="glyphicon glyphicon-envelope"></i></a>
+                                                    <a class="btn btn-xs btn-success" title="Send SMS" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+
+                                                </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
