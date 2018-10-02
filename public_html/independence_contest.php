@@ -37,9 +37,11 @@ if(isset($_POST['opt_in'])) {
 }
 
 // Get all contest participants
-$query = "SELECT u.first_name, ip.total_points
+$query = "SELECT u.first_name, SUM(pbr.point_earned) AS total_points
     FROM independence_promo AS ip
     INNER JOIN user AS u ON ip.user_code = u.user_code
+    INNER JOIN point_based_reward AS pbr ON ip.user_code = pbr.user_code
+    WHERE pbr.created = '2018-10-01' AND ip.user_code = pbr.user_code
     ORDER BY total_points DESC 
     ";
 $result = $db_handle->runQuery($query);
