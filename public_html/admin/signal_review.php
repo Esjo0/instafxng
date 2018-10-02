@@ -23,10 +23,12 @@ WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
 $total_Signals_Posted = $db_handle->numRows($query);
 $total_Signals_triggered = $db_handle->numRows($query."AND SD.entry_price IS NOT NULL OR SD.entry_time IS NOT NULL ");
 $total_Signals_triggered_tp = $db_handle->numRows($query."AND SD.exit_type = 'Take Profit' ");
-$total_Signals_triggered_sl = $db_handle->numRows($query."AND SD.exit_type = 'Stop Loss' ");
+$total_Signals_triggered_sl = $db_handle->numRows($query."AND SD.exit_type = 'Stop Loss' AND SD.highest_pips < 5");
 $total_Signals_pending = $db_handle->numRows($query."AND SD.trigger_status = '0' ");
 $total_Signals_users = $db_handle->numRows("SELECT email FROM signal_users");
-$total_Signals_breakeven = $db_handle->numRows($query."AND SD.highest_pips > 5 AND  SD.exit_type = 'Stop Loss' ");
+$total_Signals_breakeven = $db_handle->numRows($query."AND SD.highest_pips >= 5 AND  SD.exit_type = 'Stop Loss' ");
+$total_Signals_triggered_manual_tp = $db_handle->numRows($query."AND ((SD.exit_type = 'Manual' AND SD.order_type = '2' AND SD.exit_price < SD.price) OR (SD.exit_type = 'Manual' AND SD.order_type = '1' AND SD.exit_price > SD.price))");
+$total_Signals_triggered_manual_sl = $db_handle->numRows($query."AND ((SD.exit_type = 'Manual' AND SD.order_type = '2' AND SD.exit_price > SD.price) OR (SD.exit_type = 'Manual' AND SD.order_type = '1' AND SD.exit_price < SD.price))");
 
 
 $query_profit = "SELECT pips AS Total_profit FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Take Profit')";
@@ -49,6 +51,29 @@ foreach($result_loss AS $row){
     $Total_loss = abs($Total_loss);
     $sum_of_loss += $Total_loss;
 }
+
+$query_manual_profit = "SELECT pips AS Total_manual_profit FROM signal_daily AS SD WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND ((SD.exit_type = 'Manual' AND SD.order_type = '2' AND SD.exit_price < SD.price) OR (SD.exit_type = 'Manual' AND SD.order_type = '1' AND SD.exit_price > SD.price))";
+$result_manual_profit = $db_handle->runQuery($query_manual_profit);
+$result_manual_profit = $db_handle->fetchAssoc($result_manual_profit);
+
+$sum_of_manual_profit = 0;
+foreach($result_manual_profit AS $row){
+    extract($row);
+    $Total_manual_profit = abs($Total_manual_profit);
+    $sum_of_manual_profit += $Total_manual_profit;
+}
+
+$query_manual_loss = "SELECT pips AS Total_manual_loss FROM signal_daily AS SD WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND ((SD.exit_type = 'Manual' AND SD.order_type = '2' AND SD.exit_price > SD.price) OR (SD.exit_type = 'Manual' AND SD.order_type = '1' AND SD.exit_price < SD.price))";
+$result_manual_loss= $db_handle->runQuery($query_manual_loss);
+$result_manual_loss = $db_handle->fetchAssoc($result_manual_loss);
+$sum_of_manual_loss = 0;
+foreach($result_manual_loss AS $row){
+    extract($row);
+    $Total_manual_loss = abs($Total_manual_loss);
+    $sum_of_manual_loss += $Total_manual_loss;
+}
+$sum_of_profit = $sum_of_profit + $sum_of_manual_profit;
+$sum_of_loss = $sum_of_loss + $sum_of_manual_loss;
 
 $net_pips = $sum_of_profit - $sum_of_loss;
 //$query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
@@ -202,6 +227,8 @@ function table_context($trigger_status){
                                             <tr><th>Total Triggered Signals (Take Profit)</th> <th><?php echo $total_Signals_triggered_tp;?></th></tr>
                                             <tr><th>Total Triggered Signals (Stop Loss)</th> <th><?php echo $total_Signals_triggered_sl;?></th></tr>
                                             <tr><th>Total Triggered Signals (Break Even)</th> <th><?php echo $total_Signals_breakeven;?></th></tr>
+                                            <tr><th>Total Triggered Signals (Manual Take Profit)</th> <th><?php echo $total_Signals_triggered_manual_tp;?></th></tr>
+                                            <tr><th>Total Triggered Signals (Manual Stop Loss)</th> <th><?php echo $total_Signals_triggered_manual_sl;?></th></tr>
                                             <tr><th>Total Pending Signals</th> <th><?php echo $total_Signals_pending;?></th></tr>
                                             <tr><th>Total Signal Users</th> <th><?php echo $total_Signals_users;?></th></tr>
                                         </thead>
@@ -243,6 +270,12 @@ function table_context($trigger_status){
                                                     <div>
                                                         <h6 class="text-center"><strong>KeyNote </strong></h6>
                                                         <div class="text-muted" title="Scroll to view more" style="overflow:auto; ]; height:70px">
+                                                            <?php if(!empty($row['note']) && ($row['note'] != NULL)){?><div class="panel panel-warning">
+                                                                <div class="panel-body">
+                                                                    <span><?php echo $row['note']; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <?php }?>
                                                             <?php $signal_object->get_keynotes($row['signal_id'], 1)?>
                                                         </div>
                                                     </div>
