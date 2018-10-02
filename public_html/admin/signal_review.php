@@ -31,7 +31,7 @@ $total_Signals_triggered_manual_tp = $db_handle->numRows($query."AND ((SD.exit_t
 $total_Signals_triggered_manual_sl = $db_handle->numRows($query."AND ((SD.exit_type = 'Manual' AND SD.order_type = '2' AND SD.exit_price > SD.price) OR (SD.exit_type = 'Manual' AND SD.order_type = '1' AND SD.exit_price < SD.price))");
 
 
-$query_profit = "SELECT pips AS Total_profit FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND ((exit_type = 'Take Profit'))";
+$query_profit = "SELECT pips AS Total_profit FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Take Profit')";
 $result_profit = $db_handle->runQuery($query_profit);
 $result_profit = $db_handle->fetchAssoc($result_profit);
 
