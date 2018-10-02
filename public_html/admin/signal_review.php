@@ -42,7 +42,7 @@ foreach($result_profit AS $row){
     $sum_of_profit += $Total_profit;
 }
 
-$query_loss = "SELECT pips AS Total_loss FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (((exit_type = 'Stop Loss') AND ((highest_pips < 5)) OR (highest_pips IS NULL)))";
+$query_loss = "SELECT pips AS Total_loss FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Stop Loss') AND ((highest_pips < 5) OR (highest_pips IS NULL))";
 $result_loss= $db_handle->runQuery($query_loss);
 $result_loss = $db_handle->fetchAssoc($result_loss);
 $sum_of_loss = 0;
