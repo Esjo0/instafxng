@@ -453,7 +453,7 @@ analysis;
             if (empty($highest_pips) || ($highest_pips == null)) {
                 $highest_pips = 0;
             }
-            if (($highest_pips > 5) && ($exit_type == "Stop Loss")) {
+            if (($highest_pips >= 5) && ($exit_type == "Stop Loss")) {
                 $exit_type = "Break Even";
                 $display1 = "<span style=\"color:green !important;\"> {$highest_pips} </span>pips";
             } elseif (($exit_type == "Take Profit") && !empty($lowest_pips) && ($lowest_pips != 0)) {
