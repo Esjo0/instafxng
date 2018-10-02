@@ -202,7 +202,14 @@ $contest_members = $db_handle->fetchAssoc($result);
                                             <tbody>
                                             <?php if(isset($contest_members) && !empty($contest_members)) { foreach ($contest_members as $row) { ?>
                                                 <tr>
-                                                    <td><?php echo $row['first_name']; ?></td>
+                                                    <td>
+                                                        <?php if(!empty($row['first_name'])) {
+                                                            echo $row['first_name'];
+                                                        } else {
+                                                            echo $row['last_name'];
+                                                        }
+                                                        ?>
+                                                    </td>
                                                     <td><?php echo $row['total_points']; ?></td>
                                                 </tr>
                                             <?php } } else { echo "<tr><td colspan='2' class='text-danger'><em>No participant yet.</em></td></tr>"; } ?>
