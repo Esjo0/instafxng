@@ -6,14 +6,14 @@ if (!$session_admin->is_logged_in()) {
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+    $query = "SELECT ud.order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
         WHERE ud.status = '8' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
 } else {
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+    $query = "SELECT ud.order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -118,6 +118,7 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Opening Date</th>
+                                        <th>Funding Date</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -130,6 +131,7 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
+                                            <td><?php echo datetime_to_text2($row['order_complete_time']); ?></td>
                                             <td nowrap>
                                                 <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_client_training_funded'; ?>&c=<?php echo encrypt('TRAINING CLIENT FUNDED'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
