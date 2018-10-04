@@ -72,7 +72,7 @@ define("PAGE_CODE", json_encode(array(
     54 => "partner_set_commission.php||",
     55 => "partner_pending_payout.php||",
     56 => "partner_payout_history.php||",
-    57 => "upload_commission.php||val_contest.php||",
+    57 => "upload_commission.php||val_contest.php||upload_independence_contest.php",
     58 => "commission_upload_log.php||",
     59 => "commission_view.php||",
     60 => "rewards_report.php||",
@@ -162,7 +162,9 @@ define("PAGE_CODE", json_encode(array(
     262 => "loyalty_current_rank.php||",
     269 => "client_retention_review.php||",
     270 => "notification_manage.php||",
-    272 => "independence_contest.php||"
+    272 => "independence_contest.php||",
+    273 => "walk_in_client_add.php||",
+    274 => "walk_in_client_list.php||"
     )));
 class Access_Controller
 {

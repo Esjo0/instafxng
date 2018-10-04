@@ -449,7 +449,8 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="216" id="" <?php if (in_array(216, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage All Logs</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="249" id="" <?php if (in_array(249, $my_pages)) { echo 'checked="checked"'; } ?>/> Operations Issue Log</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="250" id="" <?php if (in_array(250, $my_pages)) { echo 'checked="checked"'; } ?>/> Closed Operations Issues</label></div></div>
-
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="273" id="" <?php if (in_array(273, $my_pages)) { echo 'checked="checked"'; } ?>/> Add Walk-In Client</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="274" id="" <?php if (in_array(274, $my_pages)) { echo 'checked="checked"'; } ?>/> All Walk-In Clients</label></div></div>
                                     </div>
                                     <hr/>
 

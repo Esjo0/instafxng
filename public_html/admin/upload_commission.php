@@ -140,6 +140,9 @@ $last_updated = date_to_text($last_updated[0]['date_earned']);
                                         </div>
                                     </div>
                                 </form>
+
+                                <hr />
+                                <p><a href="upload_independence_contest.php" class="btn btn-success">Generate Independence Contest Points</a> </p>
                             </div>
                         </div>
 
