@@ -3,14 +3,19 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-$filter = "";
-if (isset($_POST['filter'])){
-    foreach($_POST as $key => $value) {$_POST[$key] = $db_handle->sanitizePost(trim($value));}
+
+if (isset($_POST['filter'])) {
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
     $filter = "AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')";
 }
 
+if(!empty($filter) || ($filter != null)){$_SESSION['filter'] = $filter;}
+else{$_SESSION['filter'] = $_SESSION['filter'];}
+$filt_val = $_SESSION['filter'];
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
@@ -26,7 +31,9 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
-        WHERE ud.status = '8' $filter GROUP BY u.email ORDER BY u.created DESC ";
+        WHERE ud.status = '8'
+        $filt_val
+        GROUP BY u.email ORDER BY u.created DESC ";
 }
 $numrows = $db_handle->numRows($query);
 
