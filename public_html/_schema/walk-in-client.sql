@@ -10,10 +10,11 @@ CREATE TABLE IF NOT EXISTS `walk_in_client` (
  `time_out` TIME NOT NULL,
  `issues_record` TEXT NULL,
  `admin_comment` TEXT NULL,
+ `office_location` INT(11) NOT NULL,
  `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `updated` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
  PRIMARY KEY (`id`))
- ENGINE = InnoDB
+ ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `office_location` (
  `id` INT(11) NOT NULL AUTO_INCREMENT,

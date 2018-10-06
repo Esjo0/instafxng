@@ -28,7 +28,7 @@ if (isset($_POST['process'])) {
     $client_interest = implode(", ", $client_interest);
     $admin_code = $_SESSION['admin_unique_code'];
 
-    $query = "INSERT INTO walk_in_client (admin_code, full_name, phone, email_address, trans_type, client_feedback, admin_comment, time_in, time_out, issues_record) VALUE ('$admin_code', '$full_name', '$phone_number', '$email_address', '$client_interest', '$client_feedback', '$admin_comment', '$time_in', '$time_out', '$issues_record')";
+    $query = "INSERT INTO walk_in_client (admin_code, full_name, phone, email_address, trans_type, client_feedback, admin_comment, time_in, time_out, issues_record, office_location) VALUE ('$admin_code', '$full_name', '$phone_number', '$email_address', '$client_interest', '$client_feedback', '$admin_comment', '$time_in', '$time_out', '$issues_record', $walkin_origin)";
     $result = $db_handle->runQuery($query);
 
     if($result) {
@@ -77,7 +77,7 @@ if (isset($_POST['process'])) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-
+                                <p class="text-right"><a href="walk_in_client_list.php" class="btn btn-default" title="View Walk-in Clients">View Walk-in Clients <i class="fa fa-arrow-circle-right"></i></a></p>
                                 <p>Fill the form below to log walk-in client, please fill all necessary fields.</p>
 
                                 <div class="row">
@@ -161,11 +161,15 @@ if (isset($_POST['process'])) {
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="control-label col-sm-3" for="walkin_origin">Status:</label>
+                                                <label class="control-label col-sm-3" for="walkin_origin">Office Location:</label>
                                                 <div class="col-sm-9 col-lg-5">
                                                     <div class="radio">
-
-                                                        <label><input type="radio" name="walkin_origin" value="1" required> </label>
+                                                        <select name="walkin_origin" class="form-control" id="walkin_origin" required>
+                                                            <option value="">---Select Office---</option>
+                                                            <?php foreach ($office_locations as $row) { ?>
+                                                                <option value="<?php echo $row['id']; ?>"><?php echo $row['location']; ?></option>
+                                                            <?php } ?>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
