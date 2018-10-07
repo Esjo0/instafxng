@@ -19,14 +19,14 @@ $filt_val = $_SESSION['filter'];
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
-    $query = "SELECT ud.order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+    $query = "SELECT MIN(ud.order_complete_time) AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
         WHERE ud.status = '8' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
 } else {
-    $query = "SELECT ud.order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+    $query = "SELECT MIN(ud.order_complete_time) AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -168,7 +168,7 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Opening Date</th>
-                                        <th>Funding Date</th>
+                                        <th>1st. Funding Date</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
