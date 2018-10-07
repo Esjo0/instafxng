@@ -25,6 +25,10 @@ if(isset($_POST['filter_lesson'])){
     }
 }
 
+if(!empty($filter) || ($filter != null)){$_SESSION['filter'] = $filter;}
+else{$_SESSION['filter'] = $_SESSION['filter'];}
+$filt_val = $_SESSION['filter'];
+
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 
     $search_text = $_POST['search_text'];
@@ -51,7 +55,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
-          WHERE ued.status = '3' $filter
+          WHERE ued.status = '3' $filt_val
           GROUP BY u.user_code ORDER BY ued.created DESC, u.last_name ASC ";
 }
 $numrows = $db_handle->numRows($query);
