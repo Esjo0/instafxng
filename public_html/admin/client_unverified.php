@@ -21,29 +21,31 @@ $db_handle->runQuery("CREATE TEMPORARY TABLE unverified_clients AS ".$base_query
 
 switch ($_SESSION['selected_cat']){
     case 'all':
-        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients ";
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients GROUP BY email ORDER BY created DESC ";
         $filter_category = "All Unverified Clients";
         $display_msg = "Below is a table listing all unverified clients.";
         break;
 
     case 'ilpr':
         $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
-WHERE user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '1')";
+WHERE user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '1')
+GROUP BY email ORDER BY created DESC ";
         $filter_category = "Clients With ILPR Accounts";
         $display_msg = "Below is a table listing all unverified clients with ILPR account numbers.";
         break;
 
-    //TODO... Revisit this algorithm
     case 'nonilpr':
         $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
-WHERE (user_code NOT IN (SELECT user_code FROM user_ifxaccount)) OR (user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '2'))";
+WHERE (user_code NOT IN (SELECT user_code FROM user_ifxaccount)) OR (user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '2')
+GROUP BY email ORDER BY created DESC ) ";
         $filter_category = "Clients Without ILPR Accounts";
         $display_msg = "Below is a table listing all unverified clients without ILPR account numbers.";
         break;
 
     case 'training':
         $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients 
-WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)";
+WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
+GROUP BY email ORDER BY created DESC ";
         $filter_category = "Training Clients";
         $display_msg = "Below is a table listing all unverified clients that have enrolled in the FxAcademy.";
         break;
@@ -51,7 +53,8 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
     case 'profile':
         $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
                       WHERE (user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL))
-                      AND (user_code NOT IN (SELECT user_code FROM user_ifxaccount)) ";
+                      AND (user_code NOT IN (SELECT user_code FROM user_ifxaccount))
+                      GROUP BY email ORDER BY created DESC ";
         $filter_category = "Unverified Clients with Profile only";
         $display_msg = "Below is a table listing all unverified clients that have profile only.";
         break;
@@ -65,7 +68,8 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
             LEFT JOIN user_credential AS uc ON u.user_code = uc.user_code
-            WHERE (uv.phone_status = '2') AND (uc.doc_status != '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.email IN(SELECT email FROM unverified_campaign_mail_log) ";
+            WHERE (uv.phone_status = '2') AND (uc.doc_status != '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC ";
         $filter_category = "Unverified to Level1";
         $display_msg = "Unverified clients who moved to the Level 1 Through the scheduled mail campaign.";
         break;
@@ -77,7 +81,8 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
-            WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+            WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC ";
         $filter_category = "Unverified to Level2";
         $display_msg = "Unverified clients who moved to the Level 2 Through the scheduled mail campaign.";
         break;
@@ -88,13 +93,14 @@ WHERE user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NO
             INNER JOIN user AS u ON ub.user_code = u.user_code
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE (ub.is_active = '1' AND ub.status = '2') AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+            WHERE (ub.is_active = '1' AND ub.status = '2') AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC ";
         $filter_category = "Unverified to Level3";
         $display_msg = "Unverified clients who moved to the Level 3 Through the scheduled mail campaign";
         break;
 
     default:
-        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients ";
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients GROUP BY email ORDER BY created DESC ";
         $filter_category = "All Unverified Clients";
         $display_msg = "Below is a table listing all unverified clients.";
         break;
@@ -105,7 +111,8 @@ if(isset($_POST['search'])){
     switch ($_SESSION['selected_cat']){
         case 'all':
             $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients 
-                      WHERE full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' ";
+                      WHERE full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%'
+                      GROUP BY email ORDER BY created DESC ";
             $filter_category = "All Unverified Clients";
             $display_msg = "Below is a table listing all unverified clients.";
             break;
@@ -113,7 +120,8 @@ if(isset($_POST['search'])){
         case 'ilpr':
             $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
                       WHERE (user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '1')) 
-                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
+                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%')
+                      GROUP BY email ORDER BY created DESC ";
             $filter_category = "Clients With ILPR Accounts";
             $display_msg = "Below is a table listing all unverified clients with ILPR account numbers.";
             break;
@@ -121,7 +129,8 @@ if(isset($_POST['search'])){
         case 'nonilpr':
             $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
 WHERE ((user_code NOT IN (SELECT user_code FROM user_ifxaccount)) OR (user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '2')))
-AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%')";
+AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%')
+GROUP BY email ORDER BY created DESC ";
             $filter_category = "Clients Without ILPR Accounts";
             $display_msg = "Below is a table listing all unverified clients without ILPR account numbers.";
             break;
@@ -129,7 +138,8 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
         case 'training':
             $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients 
                       WHERE (user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)) 
-                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
+                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%')
+                      GROUP BY email ORDER BY created DESC ";
             $filter_category = "Training Clients";
             $display_msg = "Below is a table listing all unverified clients that have enrolled in the FxAcademy.";
             break;
@@ -138,7 +148,8 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
             $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients
                       WHERE (user_code NOT IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL))
                       AND (user_code NOT IN (SELECT user_code FROM user_ifxaccount))
-                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%') ";
+                      AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%')
+                      GROUP BY email ORDER BY created DESC ";
             $filter_category = "Unverified Clients with Profile only";
             $display_msg = "Below is a table listing all unverified clients that have profile only.";
             break;
@@ -153,7 +164,8 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
             LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
             LEFT JOIN user_credential AS uc ON u.user_code = uc.user_code
             WHERE (uv.phone_status = '2') AND (uc.doc_status != '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
-             AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+             AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+             GROUP BY u.email ORDER BY u.created DESC ";
             $filter_category = "Unverified to Level1";
             $display_msg = "Unverified clients who moved to the Level 1 Through the scheduled mail campaign.";
             break;
@@ -167,7 +179,8 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
             LEFT JOIN user_ifxaccount AS ui ON uc.user_code = ui.user_code
             LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
             WHERE (uc.doc_status = '111') AND (ub.status != '2' OR ub.bank_acct_no IS NULL) AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC \";
-            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC ";
             $filter_category = "Unverified to Level2";
             $display_msg = "Unverified clients who moved to the Level 2 Through the scheduled mail campaign.";
             break;
@@ -180,14 +193,16 @@ AND (full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIK
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             LEFT JOIN user_ifxaccount AS ui ON ub.user_code = ui.user_code
             WHERE (ub.is_active = '1' AND ub.status = '2') AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC \";
-            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)";
+            AND u.email IN(SELECT email FROM unverified_campaign_mail_log)
+            GROUP BY u.email ORDER BY u.created DESC ";
             $filter_category = "Unverified to Level3";
             $display_msg = "Unverified clients who moved to the Level 3 Through the scheduled mail campaign";
             break;
 
         default:
             $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients 
-                      WHERE full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' ";
+                      WHERE full_name LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%'
+                      GROUP BY email ORDER BY created DESC ";
             $filter_category = "All Unverified Clients";
             $display_msg = "Below is a table listing all unverified clients.";
             break;

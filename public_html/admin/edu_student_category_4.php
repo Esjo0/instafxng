@@ -19,11 +19,15 @@ if(isset($_POST['edu_sale_track'])){
 if(isset($_POST['filter_lesson'])){
     $lesson = $_POST['lesson'];
     if($lesson > 0){
-        $filter = "AND MAX(ueel.lesson_id) = '$lesson'";
+        $filter = "AND ueel.lesson_id = 6 AND u.user_code NOT IN (SELECT user_code FROM user_edu_exercise_log WHERE lesson_id > 6)";
     }else{
         $filter = "";
     }
 }
+
+if(!empty($filter) || ($filter != null)){$_SESSION['filter'] = $filter;}
+else{$_SESSION['filter'] = $_SESSION['filter'];}
+$filt_val = $_SESSION['filter'];
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 
@@ -51,7 +55,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
-          WHERE ued.status = '3' $filter
+          WHERE ued.status = '3' $filt_val
           GROUP BY u.user_code ORDER BY ued.created DESC, u.last_name ASC ";
 }
 $numrows = $db_handle->numRows($query);

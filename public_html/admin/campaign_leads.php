@@ -25,6 +25,7 @@ if(isset($_POST['file_upload']))
             $_full_name = split_name(trim($row_contents[3]));
             $_email = strtolower(trim($row_contents[2]));
             $_phone = strtolower(trim(str_replace('p:', '', $row_contents[4]))) ;
+            $_phone = strtolower(trim(str_replace('p+', '+', $_phone))) ;
             $_interest = $row_contents[1];
             $created = str_replace('T', ' ', $row_contents[0]);
             $created = str_replace('+01:00', '', $created);
