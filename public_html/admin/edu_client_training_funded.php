@@ -168,7 +168,7 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Opening Date</th>
-                                        <th>Funding Date</th>
+                                        <th>1st. Funding Date</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
