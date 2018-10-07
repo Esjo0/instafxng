@@ -7,7 +7,7 @@
  */
 
 require_once("../init/initialize_admin.php");
-
+//correction for user table
 $query = "SELECT phone FROM user WHERE phone LIKE '%p+%' ";
 $result = $db_handle->runQuery($query);
 $phone_nos = $db_handle->fetchArray($result);
@@ -18,7 +18,7 @@ foreach($phone_nos AS $row){
     $result = $db_handle->runQuery($query);
 }
 
-
+//correction for campaign_leads_table
 $query = "SELECT phone FROM campaign_leads WHERE phone LIKE '%p+%' ";
 $result = $db_handle->runQuery($query);
 $phone_nos = $db_handle->fetchArray($result);
@@ -27,6 +27,7 @@ foreach($phone_nos AS $row){
     $phone_new = strtolower(trim(str_replace('p+', '+', $phone))) ;
     $query = "UPDATE user SET phone = $phone_new WHERE phone = '$phone'";
     $result = $db_handle->runQuery($query);
+
 }
 
 ?>
