@@ -40,8 +40,7 @@ if(isset($_POST['opt_in'])) {
 $query = "SELECT u.first_name, u.last_name, ip.total_points
     FROM independence_promo AS ip
     INNER JOIN user AS u ON ip.user_code = u.user_code
-    ORDER BY total_points DESC 
-    ";
+    ORDER BY total_points DESC LIMIT 20";
 $result = $db_handle->runQuery($query);
 $contest_members = $db_handle->fetchAssoc($result);
 
@@ -185,7 +184,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                             </div>
 
                             <div class="col-sm-5">
-                                <h5>Contest Participants</h5>
+                                <h5>Top 20 Contest Participants</h5>
 
                                 <div class="row">
                                     <div class="col-sm-12" style="max-height: 600px; overflow: scroll;">

@@ -50,7 +50,7 @@ if(isset($_POST['selector']))
                 LEFT JOIN free_training_campaign AS ftc ON u.email = ftc.email
                 WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
                 AND ui.user_code IS NULL
-                AND ftc.email IS NULL GROUP BY u.email";
+                AND ftc.email IS NULL GROUP BY u.email ";
             $display_msg = "Details of unique clients that joined the system last month New Clients with NO Accounts and NO training.";
             break;
         case 4:
@@ -60,7 +60,7 @@ if(isset($_POST['selector']))
                 LEFT JOIN free_training_campaign AS ftc ON u.email = ftc.email
                 WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
                 AND ui.user_code IS NULL
-                AND ftc.email IS NOT NULL GROUP BY u.email";
+                AND ftc.email IS NOT NULL GROUP BY u.email ";
             $display_msg = "Details of unique clients that joined the system last month New Clients without Accounts and have Training.";
             break;
         case 5:
