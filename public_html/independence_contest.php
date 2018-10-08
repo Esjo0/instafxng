@@ -92,7 +92,8 @@ $contest_members = $db_handle->fetchAssoc($result);
                                     Here's your chance to prove you are a pro-trader! It's time to claim your Title and show that you
                                     are a Forex trade Champion.
                                 </p>
-                                <a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><strong>Click Here to Join the Contest.</strong></a>
+                                <p class="text-danger">This contest ended on October 5, 2018.</p>
+<!--                                <a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><strong>Click Here to Join the Contest.</strong></a>-->
                                 <br />
                                 <hr />
                             </div>
@@ -136,7 +137,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                                         </ul>
                                         <p>The contest will hold from October 1, 2018 to October 5, 2018. Thus, on Monday October 8, 2018,
                                             three heros will emerge to share the $250.</p>
-                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><b>Join the Contest</b></a></p>
+<!--                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><b>Join the Contest</b></a></p>-->
                                     </div>
                                 </div>
 
@@ -280,9 +281,9 @@ $contest_members = $db_handle->fetchAssoc($result);
         <?php if (!isset($_COOKIE['ifxng_promo'])) { ?>
         <script>
             <?php if(!$message_success) { ?>
-            $(document).ready(function () {
-                $('#contest-register').modal("show");
-            });
+            // $(document).ready(function () {
+            //     $('#contest-register').modal("show");
+            // });
             <?php } ?>
         </script>
     <?php }?>
