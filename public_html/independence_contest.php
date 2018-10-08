@@ -56,7 +56,11 @@ $contest_members = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="instaforex, forex promo, forex promotion, instaforex nigeria." />
         <meta name="description" content="Win $250 in our Independence Trade Contest, let's celebrate the Independence of Nigeria together." />
         <?php require_once 'layouts/head_meta.php'; ?>
-
+        <script>
+        function contest_ended() {
+        alert("Promo Ended Watch Out for More!!!!!!!!!");
+        }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -251,7 +255,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <input name="opt_in" type="submit" class="btn btn-success" value="Join Contest Now">
+                                                    <input onclick="contest_ended()" name="" type="submit" class="btn btn-success" value="Join Contest Now">
                                                     <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                 </div>
                                             </div>

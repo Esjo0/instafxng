@@ -179,6 +179,24 @@ if(isset($_POST['sign_up'])) {
 
                     <div class="section-tint super-shadow">
                         <div class="row">
+                            <div class="col-sm-12"><h5>INSTAFXNG INDEPENDENCE TRADE CONTEST</h5></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <a href="https://instafxng.com/independence_contest.php" title="click for full details" target="_blank"><img src="https://instafxng.com/imgsource/250_dollsGroup%201.jpg" alt="" class="img-responsive" /></a>
+                            </div>
+                            <div class="col-sm-8">
+                                <p>Happy Independence 58th Independence Nigeria</p>
+                                <p>Have you got all it takes to be our Independence hero?
+                                    Here's your chance to prove you are a pro-trader! It's time to claim your Title and show that you
+                                    are a Forex trade Champion.</p>
+                                <a class="btn btn-success" href="https://instafxng.com/independence_contest.php" title="click for full details" target="_blank">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-tint super-shadow">
+                        <div class="row">
                             <div class="col-sm-12"><h5>Instaforex Who's Your Valentine Contest</h5></div>
                         </div>
                         <div class="row">
