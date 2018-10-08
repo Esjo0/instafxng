@@ -164,7 +164,11 @@ define("PAGE_CODE", json_encode(array(
     270 => "notification_manage.php||",
     272 => "independence_contest.php||",
     273 => "walk_in_client_add.php||",
-    274 => "walk_in_client_list.php||"
+    274 => "walk_in_client_list.php||",
+    275 => "client_comm_platinum.php||",
+    276 => "client_comm_gold.php||",
+    277 => "client_comm_silver.php||",
+    278 => "client_comm_bronze.php||"
     )));
 class Access_Controller
 {

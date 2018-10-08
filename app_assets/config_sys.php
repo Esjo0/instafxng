@@ -73,7 +73,11 @@ $client_group_DEFAULT = array(
 	"56" => "All Clients Who have used WebPay for Deposit Transaction",
 	"57" => "All signal user",
     "58" => "VIP Clients",
-	"59" => "Independence Contest Participants"
+	"59" => "Independence Contest Participants",
+    "60" => "Platinum Commission Clients",
+    "61" => "Gold Commission Clients",
+    "62" => "Silver Commission Clients",
+    "63" => "Bronze Commission Clients"
 	
 );
 $client_group_DESC = array(
@@ -135,5 +139,9 @@ $client_group_DESC = array(
 	"56" => "Clients who have funded their forex accounts with instant card transfer using their ATM cards",
 	"57" => "Consists of all individuals who have ever used the signals before",
     "58" => "VIP Clients: clients with at least a single completed deposit transaction worth $1000 and above.",
-	"59" => "List Of all clients who opt in to participate in the independence contest."
+	"59" => "List Of all clients who opt in to participate in the independence contest.",
+    "60" => "Clients that produced $1k commission and above between December 1, 2017 to September 30, 2018",
+    "61" => "Clients that produced between $500 and $999 commission and above between December 1, 2017 to September 30, 2018",
+    "62" => "Clients that produced between $300 and $499 commission and above between December 1, 2017 to September 30, 2018",
+    "63" => "Clients that produced less than $300 commission and above between December 1, 2017 to September 30, 2018"
     );

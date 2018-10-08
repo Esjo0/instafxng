@@ -424,6 +424,10 @@ function client_group_campaign_category($status) {
         case '57': $message = "All signal user."; break;
         case '58': $message = "VIP Clients"; break;
         case '59': $message = "Independence Contest Participant"; break;
+        case '60': $message = "Platinum Commission Clients"; break;
+        case '61': $message = "Gold Commission Clients"; break;
+        case '62': $message = "Silver Commission Clients"; break;
+        case '63': $message = "Bronze Commission Clients"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -515,6 +519,10 @@ function client_group_query($client_group, $campaign_type) {
             case '57': $query = "SELECT su.name AS first_name, su.email, su.phone FROM signal_users AS su GROUP BY su.phone"; break;
 			case '58': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id INNER JOIN user AS u ON u.user_code = ui.user_code WHERE ud.status = '8' AND ud.real_dollar_equivalent >= 1000 AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '2017-12-01' AND '$date_today') GROUP BY u.user_code "; break;
             case '59': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM independence_promo AS ip INNER JOIN user AS u ON ip.user_code = u.user_code GROUP BY u.user_code "; break;
+            case '60': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission >= 1000 "; break;
+            case '61': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 500 AND 999 "; break;
+            case '62': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 300 AND 499 "; break;
+            case '63': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission < 300 "; break;
             default: $query = false; break;
         }
 
@@ -582,6 +590,10 @@ function client_group_query($client_group, $campaign_type) {
             case '57': $query = "SELECT su.name AS first_name, su.phone, su.email FROM signal_users AS su GROUP BY su.phone"; break;
 			case '58': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id INNER JOIN user AS u ON u.user_code = ui.user_code WHERE ud.status = '8' AND ud.real_dollar_equivalent >= 1000 AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '2017-12-01' AND '$date_today') GROUP BY u.user_code "; break;
             case '59': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM independence_promo AS ip INNER JOIN user AS u ON ip.user_code = u.user_code GROUP BY u.user_code "; break;
+            case '60': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission >= 1000 "; break;
+            case '61': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 500 AND 999 "; break;
+            case '62': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 300 AND 499 "; break;
+            case '63': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission < 300 "; break;
             default: $query = false; break;
         }
 
