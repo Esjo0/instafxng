@@ -4,7 +4,10 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_name, wic.full_name, wic.email_address, wic.phone, wic.time_in, wic.time_out 
+$office_locations = $system_object->get_office_locations();
+
+$query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_name, wic.id, wic.full_name, wic.email_address, wic.phone, wic.time_in, wic.time_out, wic.created,
+      wic.trans_type, wic.client_feedback, wic.admin_comment, wic.issues_record, wic.office_location
       FROM walk_in_client AS wic 
       INNER JOIN admin AS a ON wic.admin_code = a.admin_code
       ORDER BY id DESC ";
@@ -78,10 +81,10 @@ $walkin_clients = $db_handle->fetchAssoc($result);
                                     <tr>
                                         <th>Author</th>
                                         <th>Full Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
+                                        <th>Contact</th>
                                         <th>Time in</th>
                                         <th>Time out</th>
+                                        <th>Created</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -90,12 +93,47 @@ $walkin_clients = $db_handle->fetchAssoc($result);
                                         <tr>
                                             <td><?php echo $row['admin_name']; ?></td>
                                             <td><?php echo $row['full_name']; ?></td>
-                                            <td><?php echo $row['email_address']; ?></td>
-                                            <td><?php echo $row['phone']; ?></td>
+                                            <td><?php echo $row['email_address']; ?><br /><?php echo $row['phone']; ?></td>
                                             <td><?php echo $row['time_in']; ?></td>
                                             <td><?php echo $row['time_out']; ?></td>
+                                            <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a title="View" class="btn btn-info" href="#"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <button type="button" data-toggle="modal" data-target="#view-detail-<?php echo $row['id']; ?>" class="btn btn-info" title="View"><i class="glyphicon glyphicon-eye-open icon-white"></i></button>
+
+                                                <div id="view-detail-<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                                                <h4 class="modal-title">Walk-in Client Log Detail</h4></div>
+                                                            <div class="modal-body">
+                                                                <table class="table table-responsive table-striped table-bordered table-hover">
+                                                                    <thead>
+                                                                        <tr><th> </th><th> </th></tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr><td>Office Location</td><td><?php echo office_location_walkin_client($row['office_location']); ?></td></tr>
+                                                                        <tr><td>Client Name</td><td><?php echo $row['full_name']; ?></td></tr>
+                                                                        <tr><td>Email</td><td><?php echo $row['email_address']; ?></td></tr>
+                                                                        <tr><td>Phone Number</td><td><?php echo $row['phone']; ?></td></tr>
+                                                                        <tr><td>Time in</td><td><?php echo $row['time_in']; ?></td></tr>
+                                                                        <tr><td>Time out</td><td><?php echo $row['time_out']; ?></td></tr>
+                                                                        <tr><td>Transaction</td><td><?php echo $row['trans_type']; ?></td></tr>
+                                                                        <tr><td>Client Feedback</td><td><?php echo $row['client_feedback']; ?></td></tr>
+                                                                        <tr><td>Issues</td><td><?php echo $row['issues_record']; ?></td></tr>
+                                                                        <tr><td>Admin Comment</td><td><?php echo $row['admin_comment']; ?></td></tr>
+                                                                        <tr><td>Admin</td><td><?php echo $row['admin_name']; ?></td></tr>
+                                                                        <tr><td>Created</td><td><?php echo datetime_to_text($row['created']); ?></td></tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" name="close" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

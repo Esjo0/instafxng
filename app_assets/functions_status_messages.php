@@ -796,6 +796,15 @@ function forum_reg_venue($status) {
     }
     return $message;
 }
+//TODO: regularize office location numbers
+function office_location_walkin_client($status) {
+    switch ($status) {
+        case '1': $message = "Diamond Estate"; break;
+        case '2': $message = "Eastline Complex"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
 
 function career_application_status($status) {
     switch ($status) {
