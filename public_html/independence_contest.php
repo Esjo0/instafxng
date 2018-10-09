@@ -74,7 +74,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div  class="item super-shadow home-page-top-section">
-                        <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/independence_contest_winners.png" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                        <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/250_dollsGroup%201.jpg" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
                     </div>
                     
                     <div class="section-tint super-shadow">
@@ -101,6 +101,10 @@ $contest_members = $db_handle->fetchAssoc($result);
 
                         <div class="row">
                             <div class="col-sm-7">
+                                <div class="row">
+                                    <h5 class="text-center">Faces of Our Top 3 Winners</h5>
+                                    <img class="img img-responsive" src="https://instafxng.com/imgsource/independence_contest_winners.png">
+                                </div>
                                 <div class="row">
                                     <div class="col-sm-12 text-danger">
                                         <h4><strong>Contest Summary</strong></h4>
