@@ -1117,6 +1117,15 @@ class InstafxngSystem {
         }
     }
 
+    public function get_office_locations() {
+        global $db_handle;
+
+        $query = "SELECT * FROM office_location";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        return $fetched_data;
+    }
+
 }
 
 $system_object = new InstafxngSystem();

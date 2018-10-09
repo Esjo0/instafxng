@@ -43,6 +43,16 @@ $thisPage = "About";
                             <div class="col-sm-12">
                                 <p>See photos of our company events below</p>
 
+                                <h5>Moments from Pencil Unbroken 3(The Evolution)</h5>
+                                <p></p>
+                                <ul class="gallery clearfix photo_g">
+                                    <?php
+                                    for($i = 1; $i <= 53; $i++){
+                                        ?>
+                                        <li><a href="https://instafxng.com/imgsource/pencil_unbroken_images/pencil_unbroken_3_<?php echo $i;?>.jpg" rel="prettyPhoto[gallery4]" title=""><img class="img img-thumbnail" src="https://instafxng.com/imgsource/pencil_unbroken_images/thumbnail/pencil_unbroken_3_<?php echo $i;?>.jpg" alt=" " /></a></li>
+                                    <?php }?>
+                                </ul>
+
                                 <h5>InstaFxNg 2018 Mid-Year Retreat</h5>
                                 <p></p>
                                 <ul class="gallery clearfix photo_g">

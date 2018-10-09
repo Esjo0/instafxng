@@ -17,7 +17,7 @@ $client_operation = new clientOperation();
 
 if (isset($_POST["upload_points"])) {
     $point_date = $_POST["point_date"];
-    
+
     if(independence_date_duplicate($point_date)) {
         $message_error = "Looks like you have uploaded points for the selected date";
     } else {
@@ -27,13 +27,13 @@ if (isset($_POST["upload_points"])) {
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
-        foreach ($fetched_data AS $key => $value) {
+        foreach ($fetched_data AS $value) {
             $my_user_code = $value['user_code'];
-            $query = "SELECT SUM(point_earned) AS my_points FROM point_based_reward WHERE user_code = '$my_user_code' AND type = '2' AND date_earned = '$point_date' GROUP BY $my_user_code";
+            $query = "SELECT SUM(point_earned) AS my_points FROM point_based_reward WHERE user_code = '$my_user_code' AND type = '2' AND date_earned = '$point_date' GROUP BY user_code";
             $result = $db_handle->runQuery($query);
             $fetched_data = $db_handle->fetchAssoc($result);
 
-            $my_points = $fetched_data['my_points'];
+            $my_points = $fetched_data[0]['my_points'];
 
             // UPDATE THE POINTS
             $query = "UPDATE independence_promo SET total_points = total_points + $my_points WHERE user_code = '$my_user_code' LIMIT 1";

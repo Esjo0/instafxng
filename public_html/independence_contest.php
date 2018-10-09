@@ -37,13 +37,10 @@ if(isset($_POST['opt_in'])) {
 }
 
 // Get all contest participants
-$query = "SELECT u.first_name, SUM(pbr.point_earned) AS total_points
+$query = "SELECT u.first_name, u.last_name, ip.total_points
     FROM independence_promo AS ip
     INNER JOIN user AS u ON ip.user_code = u.user_code
-    INNER JOIN point_based_reward AS pbr ON ip.user_code = pbr.user_code
-    WHERE pbr.created = '2018-10-01' AND ip.user_code = pbr.user_code
-    ORDER BY total_points DESC 
-    ";
+    ORDER BY total_points DESC LIMIT 20";
 $result = $db_handle->runQuery($query);
 $contest_members = $db_handle->fetchAssoc($result);
 
@@ -59,7 +56,11 @@ $contest_members = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="instaforex, forex promo, forex promotion, instaforex nigeria." />
         <meta name="description" content="Win $250 in our Independence Trade Contest, let's celebrate the Independence of Nigeria together." />
         <?php require_once 'layouts/head_meta.php'; ?>
-
+        <script>
+        function contest_ended() {
+        alert("Promo Ended Watch Out for More!!!!!!!!!");
+        }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -73,7 +74,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div  class="item super-shadow home-page-top-section">
-                        <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/independence_contest_winners.png" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                        <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/250_dollsGroup%201.jpg" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
                     </div>
                     
                     <div class="section-tint super-shadow">
@@ -91,7 +92,8 @@ $contest_members = $db_handle->fetchAssoc($result);
                                     Here's your chance to prove you are a pro-trader! It's time to claim your Title and show that you
                                     are a Forex trade Champion.
                                 </p>
-                                <a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><strong>Click Here to Join the Contest.</strong></a>
+                                <p class="text-danger">This contest ended on October 5, 2018.</p>
+<!--                                <a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><strong>Click Here to Join the Contest.</strong></a>-->
                                 <br />
                                 <hr />
                             </div>
@@ -135,7 +137,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                                         </ul>
                                         <p>The contest will hold from October 1, 2018 to October 5, 2018. Thus, on Monday October 8, 2018,
                                             three heros will emerge to share the $250.</p>
-                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><b>Join the Contest</b></a></p>
+<!--                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><b>Join the Contest</b></a></p>-->
                                     </div>
                                 </div>
 
@@ -187,7 +189,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                             </div>
 
                             <div class="col-sm-5">
-                                <h5>Contest Participants</h5>
+                                <h5>Top 20 Contest Participants</h5>
 
                                 <div class="row">
                                     <div class="col-sm-12" style="max-height: 600px; overflow: scroll;">
@@ -254,7 +256,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <input name="opt_in" type="submit" class="btn btn-success" value="Join Contest Now">
+                                                    <input onclick="contest_ended()" name="" type="submit" class="btn btn-success" value="Join Contest Now">
                                                     <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                 </div>
                                             </div>
@@ -279,9 +281,9 @@ $contest_members = $db_handle->fetchAssoc($result);
         <?php if (!isset($_COOKIE['ifxng_promo'])) { ?>
         <script>
             <?php if(!$message_success) { ?>
-            $(document).ready(function () {
-                $('##contest-register').modal("show");
-            });
+            // $(document).ready(function () {
+            //     $('#contest-register').modal("show");
+            // });
             <?php } ?>
         </script>
     <?php }?>
