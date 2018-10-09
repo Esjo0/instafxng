@@ -40,12 +40,10 @@ if (isset($_POST['filter_lesson'])) {
 if (!empty($filter) || ($filter != null)) {
     $_SESSION['filter'] = $filter;
 } else {
-    $filter = $_SESSION['filter'];
+    $_SESSION['filter'] = "";
 }
 
 $filt_val = $_SESSION['filter'];
-
-var_dump($filt_val);
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 
