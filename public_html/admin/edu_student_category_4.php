@@ -29,9 +29,9 @@ if (isset($_POST['edu_sale_track'])) {
 if (isset($_POST['filter_lesson'])) {
 
     $lesson = $_POST['lesson'];
-    
+
     if ($lesson > 0) {
-        $filter = "AND ueel.lesson_id = 6 AND u.user_code NOT IN (SELECT user_code FROM user_edu_exercise_log WHERE lesson_id > 6)";
+        $filter = "AND ueel.lesson_id = $lesson AND u.user_code NOT IN (SELECT user_code FROM user_edu_exercise_log WHERE lesson_id > 6)";
     } else {
         $filter = "";
     }
