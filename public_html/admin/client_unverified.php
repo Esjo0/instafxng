@@ -99,6 +99,18 @@ GROUP BY email ORDER BY created DESC ";
         $display_msg = "Unverified clients who moved to the Level 3 Through the scheduled mail campaign";
         break;
 
+    case 'previous':
+        $query = "SELECT u.user_code, uc.full_name, u.email, u.phone, uc.created, uc.account_officer_full_name FROM unverified_clients AS uc
+            INNER JOIN user AS u ON uc.user_code = u.user_code
+            INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+            INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+            INNER JOIN trading_commission AS tc ON ui.ifx_acct_no = tc.ifx_acct_no
+            WHERE YEAR(tc.date_earned) > 2013 OR YEAR(ud.created) > 2013
+            GROUP BY u.email ORDER BY u.created DESC ) ";
+        $filter_category = "Unverified Clients with previous Activity";
+        $display_msg = "Below is a table listing all unverified clients who have traded or funded with us before since n";
+        break;
+
     default:
         $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM unverified_clients GROUP BY email ORDER BY created DESC ";
         $filter_category = "All Unverified Clients";
@@ -197,6 +209,19 @@ GROUP BY email ORDER BY created DESC ";
             GROUP BY u.email ORDER BY u.created DESC ";
             $filter_category = "Unverified to Level3";
             $display_msg = "Unverified clients who moved to the Level 3 Through the scheduled mail campaign";
+            break;
+
+        case 'previous':
+            $query = "SELECT u.user_code, uc.full_name, u.email, u.phone, uc.created, uc.account_officer_full_name FROM unverified_clients AS uc
+            INNER JOIN user AS u ON uc.user_code = u.user_code
+            INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+            INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+            INNER JOIN trading_commission AS tc ON ui.ifx_acct_no = tc.ifx_acct_no
+            WHERE YEAR(tc.date_earned) > 2013 OR YEAR(ud.created) > 2013
+            AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
+            GROUP BY u.email ORDER BY u.created DESC ) ";
+            $filter_category = "Unverified Clients with previous Activity";
+            $display_msg = "Below is a table listing all unverified clients who have traded or funded with us before since n";
             break;
 
         default:
@@ -310,6 +335,7 @@ $db_handle->closeDB();
                                                         <li><a onclick="filter('level1', 'Unverified to Level1')" href="javascript:void(0);">Unverified to Level 1 from Campaign</a></li>
                                                         <li><a onclick="filter('level2', 'Unverified to level2')" href="javascript:void(0);">Unverified to Level 2 from Campaign</a></li>
                                                         <li><a onclick="filter('level3', 'Unverified to level3')" href="javascript:void(0);">Unverified to Level 3 from Campaign</a></li>
+                                                        <li><a onclick="filter('previous', 'Unverified With Previous activity')" href="javascript:void(0);">Unverified Clients with Previous activity</a></li>
                                                     </ul>
                                                     <input id="filter_trigger" style="display: none" name="filter" type="submit">
                                                     <input id="filter_value" name="filter_value" type="hidden">
