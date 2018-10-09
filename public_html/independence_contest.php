@@ -74,8 +74,28 @@ $contest_members = $db_handle->fetchAssoc($result);
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div  class="item super-shadow home-page-top-section">
-                        <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/250_dollsGroup%201.jpg" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
-                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div style="margin:20px ">
+                                <p class="text-center">
+                                    <h5>Congratulations to our undefeated and indefatigable Heroes!</h5>
+
+                                    <span style="text-size:70px;"><strong>The winners of the prize stake of $250 in the Independence Trade Contest!
+
+                                    They came in for the win and showed us what it takes to be  Champions.
+                                            </p>
+
+                                   <p>
+
+                                    More exciting contests, promos and offers are coming your way. Keep your Fingers crossed!</strong></span>
+                                </p>
+                                    </div>
+                            </div>
+                            <div class="col-md-6">
+                                <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/independence_contest_winners.png" style="height:300px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                            </div>
+                        </div>
+                       </div>
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
@@ -101,10 +121,6 @@ $contest_members = $db_handle->fetchAssoc($result);
 
                         <div class="row">
                             <div class="col-sm-7">
-                                <div class="row">
-                                    <h5 class="text-center">Faces of Our Top 3 Winners</h5>
-                                    <img class="img img-responsive" src="https://instafxng.com/imgsource/independence_contest_winners.png">
-                                </div>
                                 <div class="row">
                                     <div class="col-sm-12 text-danger">
                                         <h4><strong>Contest Summary</strong></h4>
@@ -230,7 +246,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                             <div class="col-sm-12">
                                 <!--Modal - confirmation boxes-->
                                 <form data-toggle="validator"  class="form-horizontal" role="form" method="post" action="">
-                                    <div id="contest-register" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div id="##contest-register" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
