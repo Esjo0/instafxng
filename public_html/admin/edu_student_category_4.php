@@ -31,7 +31,7 @@ if (isset($_POST['filter_lesson'])) {
     $lesson = $_POST['lesson'];
 
     if ($lesson > 0) {
-        $filter = "AND ueel.lesson_id = $lesson AND u.user_code NOT IN (SELECT user_code FROM user_edu_exercise_log WHERE lesson_id > 6)";
+        $filter = " AND ueel.lesson_id = $lesson AND u.user_code NOT IN (SELECT user_code FROM user_edu_exercise_log WHERE lesson_id > $lesson) ";
     } else {
         $filter = "";
     }
@@ -40,10 +40,12 @@ if (isset($_POST['filter_lesson'])) {
 if (!empty($filter) || ($filter != null)) {
     $_SESSION['filter'] = $filter;
 } else {
-    $_SESSION['filter'] = $_SESSION['filter'];
+    $filter = $_SESSION['filter'];
 }
 
 $filt_val = $_SESSION['filter'];
+
+var_dump($filt_val);
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 
