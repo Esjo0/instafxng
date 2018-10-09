@@ -77,19 +77,12 @@ $contest_members = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-md-6">
                                 <div style="margin:20px ">
-                                <p class="text-center">
                                     <h5>Congratulations to our undefeated and indefatigable Heroes!</h5>
-
-                                    <span style="text-size:70px;"><strong>The winners of the prize stake of $250 in the Independence Trade Contest!
-
-                                    They came in for the win and showed us what it takes to be  Champions.
-                                            </p>
-
-                                   <p>
-
-                                    More exciting contests, promos and offers are coming your way. Keep your Fingers crossed!</strong></span>
-                                </p>
-                                    </div>
+                                    <p>The winners of the prize stake of $250 in the Independence Trade Contest came
+                                        in for the win and showed us what it takes to be  Champions.</p>
+                                    <p>More exciting contests, promos and offers are coming your way. Keep your Fingers
+                                        crossed!</p>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/independence_contest_winners.png" style="height:300px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
