@@ -13,8 +13,11 @@ if (isset($_POST['filter'])) {
     $filter = "AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')";
 }
 
-if(!empty($filter) || ($filter != null)){$_SESSION['filter'] = $filter;}
-else{$_SESSION['filter'] = $_SESSION['filter'];}
+if (!empty($filter) || ($filter != null)) {
+    $_SESSION['filter'] = $filter;
+} else {
+    $_SESSION['filter'] = "";
+}
 $filt_val = $_SESSION['filter'];
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
