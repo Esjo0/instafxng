@@ -78,6 +78,10 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(245, $my_pages_sidebar)) { ?><li><a href="client_inactive.php" title="Inactive Trading Clients">Inactive Trading Clients</a></li><?php } ?>
                         <?php if (in_array(245, $my_pages_sidebar)) { ?><li><a href="client_reactivated.php" title="Reactivated Trading Clients">Reactivated Trading Clients</a></li><?php } ?>
                         <?php if (in_array(12, $my_pages_sidebar)) { ?><li><a href="client_commission_17.php" title="Commission Clients 17">Commission Clients 17</a></li><?php } ?>
+                        <?php if (in_array(275, $my_pages_sidebar)) { ?><li><a href="client_comm_platinum.php" title="Platinum Commission Clients">Platinum Commission Clients</a></li><?php } ?>
+                        <?php if (in_array(276, $my_pages_sidebar)) { ?><li><a href="client_comm_gold.php" title="Gold Commission Clients">Gold Commission Clients</a></li><?php } ?>
+                        <?php if (in_array(277, $my_pages_sidebar)) { ?><li><a href="client_comm_silver.php" title="Silver Commission Clients">Silver Commission Clients</a></li><?php } ?>
+                        <?php if (in_array(278, $my_pages_sidebar)) { ?><li><a href="client_comm_bronze.php" title="Bronze Commission Clients">Bronze Commission Clients</a></li><?php } ?>
                     </ul>
                 </li>
 
@@ -136,6 +140,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(44, $my_pages_sidebar)) { ?><li><a href="withdrawal_completed.php" title="Completed Withdrawal">Withdrawal - Completed</a></li><?php } ?>
                         <?php if (in_array(45, $my_pages_sidebar)) { ?><li><a href="withdrawal_declined.php" title="Declined/Failed Withdrawal">Withdrawal - Declined/Failed</a></li><?php } ?>
                         <?php if (in_array(46, $my_pages_sidebar)) { ?><li><a href="withdrawal_all.php" title="All Withdrawal Transactions">Withdrawal - All</a></li><?php } ?>
+                        <?php if (in_array(279, $my_pages_sidebar)) { ?><li><a href="withdrawal_reversal.php" title="Withdrawal Reversal">Withdrawal - Reversal</a></li><?php } ?>
                         <?php if (in_array(47, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
                         <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
                     </ul>

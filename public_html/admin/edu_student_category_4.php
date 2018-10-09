@@ -4,29 +4,45 @@ if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
 $this_cat = 'cat_4';
 
-if(empty($_SESSION['cat'])) { $_SESSION['cat'] = '1';}
+if (empty($_SESSION['cat'])) {
+    $_SESSION['cat'] = '1';
+}
 
-if(isset($_POST['edu_sale_track_reset'])){edu_sale_track_reset($this_cat);}
+if (isset($_POST['edu_sale_track_reset'])) {
+    edu_sale_track_reset($this_cat);
+}
 
-if(isset($_POST['cat'])){$_SESSION['cat'] = $_POST['cat'];}
+if (isset($_POST['cat'])) {
+    $_SESSION['cat'] = $_POST['cat'];
+}
 
-if(isset($_POST['edu_sale_track'])){
-    foreach ($_POST as $key => $value){$_POST[$key] = $db_handle->sanitizePost(trim($value));}
+if (isset($_POST['edu_sale_track'])) {
+
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
     extract($_POST);
     edu_sale_track($user_code, $category);
 }
 
-if(isset($_POST['filter_lesson'])){
+if (isset($_POST['filter_lesson'])) {
+
     $lesson = $_POST['lesson'];
-    if($lesson > 0){
-        $filter = "AND ueel.lesson_id = 6 AND u.user_code NOT IN (SELECT user_code FROM user_edu_exercise_log WHERE lesson_id > 6)";
-    }else{
+
+    if ($lesson > 0) {
+        $filter = "AND ueel.lesson_id = $lesson AND u.user_code NOT IN (SELECT user_code FROM user_edu_exercise_log WHERE lesson_id > 6)";
+    } else {
         $filter = "";
     }
 }
 
-if(!empty($filter) || ($filter != null)){$_SESSION['filter'] = $filter;}
-else{$_SESSION['filter'] = $_SESSION['filter'];}
+if (!empty($filter) || ($filter != null)) {
+    $_SESSION['filter'] = $filter;
+} else {
+    $_SESSION['filter'] = $_SESSION['filter'];
+}
+
 $filt_val = $_SESSION['filter'];
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
