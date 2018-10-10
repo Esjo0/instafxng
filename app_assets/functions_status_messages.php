@@ -1,5 +1,31 @@
 <?php
 
+/**
+ * Editable schedule mode
+ */
+function training_mode($id){
+    switch ($id) {
+        case '1': $address = "Online"; break;
+        case '2': $address = "Offline"; break;
+        default: $address = ""; break;
+    }
+    return $address;
+
+}
+
+/**
+ * Editable office addresses
+*/
+function office_addresses($id){
+    switch ($id) {
+        case '1': $address = "Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri-Olofin, Lagos. "; break;
+        case '3': $address = "Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos"; break;
+        default: $address = ""; break;
+    }
+    return $address;
+
+}
+
 /*
 * Table: user_deposit_refund_type
 * Column: issue_type
