@@ -56,7 +56,11 @@ $contest_members = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="instaforex, forex promo, forex promotion, instaforex nigeria." />
         <meta name="description" content="Win $250 in our Independence Trade Contest, let's celebrate the Independence of Nigeria together." />
         <?php require_once 'layouts/head_meta.php'; ?>
-
+        <script>
+        function contest_ended() {
+        alert("Promo Ended Watch Out for More!!!!!!!!!");
+        }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -70,8 +74,21 @@ $contest_members = $db_handle->fetchAssoc($result);
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
                     <div  class="item super-shadow home-page-top-section">
-                        <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/250_dollsGroup%201.jpg" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
-                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div style="margin:20px ">
+                                    <h5>Congratulations to our undefeated and indefatigable Heroes!</h5>
+                                    <p>The winners of the prize stake of $250 in the Independence Trade Contest came
+                                        in for the win and showed us what it takes to be  Champions.</p>
+                                    <p>More exciting contests, promos and offers are coming your way. Keep your Fingers
+                                        crossed!</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%" class="img img-responsive" src="https://instafxng.com/imgsource/independence_contest_winners.png" style="height:300px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                            </div>
+                        </div>
+                       </div>
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
@@ -88,7 +105,8 @@ $contest_members = $db_handle->fetchAssoc($result);
                                     Here's your chance to prove you are a pro-trader! It's time to claim your Title and show that you
                                     are a Forex trade Champion.
                                 </p>
-                                <a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><strong>Click Here to Join the Contest.</strong></a>
+                                <p class="text-danger">This contest ended on October 5, 2018.</p>
+<!--                                <a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><strong>Click Here to Join the Contest.</strong></a>-->
                                 <br />
                                 <hr />
                             </div>
@@ -132,7 +150,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                                         </ul>
                                         <p>The contest will hold from October 1, 2018 to October 5, 2018. Thus, on Monday October 8, 2018,
                                             three heros will emerge to share the $250.</p>
-                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><b>Join the Contest</b></a></p>
+<!--                                        <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><b>Join the Contest</b></a></p>-->
                                     </div>
                                 </div>
 
@@ -221,7 +239,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                             <div class="col-sm-12">
                                 <!--Modal - confirmation boxes-->
                                 <form data-toggle="validator"  class="form-horizontal" role="form" method="post" action="">
-                                    <div id="contest-register" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div id="##contest-register" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -251,7 +269,7 @@ $contest_members = $db_handle->fetchAssoc($result);
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <input name="opt_in" type="submit" class="btn btn-success" value="Join Contest Now">
+                                                    <input onclick="contest_ended()" name="" type="submit" class="btn btn-success" value="Join Contest Now">
                                                     <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                                                 </div>
                                             </div>
@@ -276,9 +294,9 @@ $contest_members = $db_handle->fetchAssoc($result);
         <?php if (!isset($_COOKIE['ifxng_promo'])) { ?>
         <script>
             <?php if(!$message_success) { ?>
-            $(document).ready(function () {
-                $('#contest-register').modal("show");
-            });
+            // $(document).ready(function () {
+            //     $('#contest-register').modal("show");
+            // });
             <?php } ?>
         </script>
     <?php }?>
