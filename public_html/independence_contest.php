@@ -90,11 +90,14 @@ $contest_members = $db_handle->fetchAssoc($result);
 
                         <div class="row">
                             <div class="col-sm-12 text-center">
-                                <h1>Independence Trade Contest</h1>
+                                <h1>Congratulations to our undefeated and indefatigable Heroes!</h1>
                                 <p>
-                                    Have you got all it takes to be our Independence hero?
-                                    Here's your chance to prove you are a pro-trader! It's time to claim your Title and show that you
-                                    are a Forex trade Champion.
+                                    The winners of the prize stake of $250 in the Independence Trade Contest!
+
+                                    They came in for the win and showed us what it takes to be  Champions.</p>
+
+                                <p>    
+                                More exciting contests, promos and offers are coming your way. Keep your Fingers crossed!
                                 </p>
                                 <p class="text-danger">This contest ended on October 5, 2018.</p>
 <!--                                <a data-target="#contest-register" data-toggle="modal" class="btn btn-success" style="cursor: pointer;"><strong>Click Here to Join the Contest.</strong></a>-->
