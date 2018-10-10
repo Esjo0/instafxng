@@ -140,6 +140,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(44, $my_pages_sidebar)) { ?><li><a href="withdrawal_completed.php" title="Completed Withdrawal">Withdrawal - Completed</a></li><?php } ?>
                         <?php if (in_array(45, $my_pages_sidebar)) { ?><li><a href="withdrawal_declined.php" title="Declined/Failed Withdrawal">Withdrawal - Declined/Failed</a></li><?php } ?>
                         <?php if (in_array(46, $my_pages_sidebar)) { ?><li><a href="withdrawal_all.php" title="All Withdrawal Transactions">Withdrawal - All</a></li><?php } ?>
+                        <?php if (in_array(279, $my_pages_sidebar)) { ?><li><a href="withdrawal_reversal.php" title="Withdrawal Reversal">Withdrawal - Reversal</a></li><?php } ?>
                         <?php if (in_array(47, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
                         <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
                     </ul>

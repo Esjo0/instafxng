@@ -168,7 +168,8 @@ define("PAGE_CODE", json_encode(array(
     275 => "client_comm_platinum.php||",
     276 => "client_comm_gold.php||",
     277 => "client_comm_silver.php||",
-    278 => "client_comm_bronze.php||"
+    278 => "client_comm_bronze.php||",
+    279 => "withdrawal_reversal.php||"
     )));
 class Access_Controller
 {
