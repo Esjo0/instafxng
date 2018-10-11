@@ -77,8 +77,8 @@ $client_group_DEFAULT = array(
     "60" => "Platinum Commission Clients",
     "61" => "Gold Commission Clients",
     "62" => "Silver Commission Clients",
-    "63" => "Bronze Commission Clients"
-	
+    "63" => "Bronze Commission Clients",
+	"64" => "Student Category 0"
 );
 $client_group_DESC = array(
     "1" => "*Consist of all clients that have at anytime come into our system.",
@@ -143,5 +143,6 @@ $client_group_DESC = array(
     "60" => "Clients that produced $1k commission and above between December 1, 2017 to September 30, 2018",
     "61" => "Clients that produced between $500 and $999 commission and above between December 1, 2017 to September 30, 2018",
     "62" => "Clients that produced between $300 and $499 commission and above between December 1, 2017 to September 30, 2018",
-    "63" => "Clients that produced less than $300 commission and above between December 1, 2017 to September 30, 2018"
+    "63" => "Clients that produced less than $300 commission and above between December 1, 2017 to September 30, 2018",
+	"64" => "*Forex Profit Academy clients who have not taking any course but have registered"
     );

@@ -454,6 +454,7 @@ function client_group_campaign_category($status) {
         case '61': $message = "Gold Commission Clients"; break;
         case '62': $message = "Silver Commission Clients"; break;
         case '63': $message = "Bronze Commission Clients"; break;
+        case '64': $message = "Student Category 0"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -549,6 +550,7 @@ function client_group_query($client_group, $campaign_type) {
             case '61': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 500 AND 999 "; break;
             case '62': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 300 AND 499 "; break;
             case '63': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 1 AND 300 "; break;
+            case '64': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM free_training_campaign AS ftc INNER JOIN user AS u ON ftc.email = u.email WHERE u.academy_signup IS NULL GROUP BY u.user_code ORDER BY ftc.created DESC, u.last_name ASC";break;
             default: $query = false; break;
         }
 
@@ -620,6 +622,7 @@ function client_group_query($client_group, $campaign_type) {
             case '61': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 500 AND 999 "; break;
             case '62': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 300 AND 499 "; break;
             case '63': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 1 AND 300 "; break;
+            case '64': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM free_training_campaign AS ftc INNER JOIN user AS u ON ftc.email = u.email WHERE u.academy_signup IS NULL GROUP BY u.user_code ORDER BY ftc.created DESC, u.last_name ASC";break;
             default: $query = false; break;
         }
 
