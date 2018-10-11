@@ -4,21 +4,9 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-if (isset($_POST['filter'])) {
-    foreach ($_POST as $key => $value) {
-        $_POST[$key] = $db_handle->sanitizePost(trim($value));
-    }
-    $from_date = $_POST['from_date'];
-    $to_date = $_POST['to_date'];
-    $filter = "AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')";
+if (isset($_POST['view'])) {
+    unset($_SESSION['query']);
 }
-
-if (!empty($filter) || ($filter != null)) {
-    $_SESSION['filter'] = $filter;
-} else {
-    $_SESSION['filter'] = "";
-}
-$filt_val = $_SESSION['filter'];
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
@@ -28,18 +16,38 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
         INNER JOIN user AS u ON ui.user_code = u.user_code
         INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
         WHERE ud.status = '8' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
-} else {
+    $_SESSION['query'] = $query;
+}
+if(isset($_POST['filter'])){
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+    $from_date = $_POST['from_date'];
+    $to_date = $_POST['to_date'];
+
+    $query = "SELECT MIN(ud.user_deposit_id), ud.order_complete_time AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+        FROM user_deposit AS ud
+        INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
+        WHERE ud.status = '8'
+        AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+        GROUP BY u.email ORDER BY ud.order_complete_time DESC ";
+    $_SESSION['query'] = $query;
+}
+if(empty($_SESSION['query'])) {
     $query = "SELECT MIN(ud.order_complete_time) AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
         WHERE ud.status = '8'
-        $filt_val
         GROUP BY u.email ORDER BY u.created DESC ";
+    $_SESSION['query'] = $query;
 }
-$numrows = $db_handle->numRows($query);
+$query = $_SESSION['query'];
 
+$numrows = $db_handle->numRows($query);
 // For search, make rows per page equal total rows found, meaning, no pagination
 // for search results
 if (isset($_POST['search_text'])) {
@@ -122,6 +130,7 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
                                 <p>Below is a table of training clients that have funded their IFX accounts in the past.</p>
+
                                 <div class="pull-right"><button type="button" data-target="#confirm-add-admin" data-toggle="modal" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-search"></i> Apply Filter</button></div>
 
                                 <!--Modal - confirmation boxes-->
@@ -133,7 +142,7 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                                                     <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
                                                     <h4 class="modal-title">Apply Search Filter</h4></div>
                                                 <div class="modal-body">
-                                                    <p>Select Students who have funded their Instaforex Account within a date range using the form below.</p>
+                                                    <p>Select Students who have funded their Instaforex Account for the first time within a date range using the form below.</p>
 
                                                     <div class="input-group date">
                                                         <input placeholder="Select start date" name="from_date" type="text" class="form-control" id="datetimepicker" required>
@@ -158,6 +167,11 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                                         </div>
                                     </form>
                                 </div>
+                                <form class="pull-right" method="post" action="">
+                                    <button name="view" type="submit" class="btn btn-info btn-sm"><i
+                                            class="glyphicon glyphicon-eye-circle"></i>View All
+                                    </button>
+                                </form>
                                 <?php if(isset($numrows)) { ?>
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
