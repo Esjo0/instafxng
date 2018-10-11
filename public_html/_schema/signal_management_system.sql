@@ -1,4 +1,4 @@
-UPDATE signal_daily SET pips = 6000 WHERE signal_id = 233;
+UPDATE signal_daily SET pips = 1000 WHERE signal_id = 233;
 
 UPDATE signal_daily SET trigger_status = 1, pips = 0, WHERE signal_id = 212;
 
