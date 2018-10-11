@@ -144,5 +144,5 @@ $client_group_DESC = array(
     "61" => "Clients that produced between $500 and $999 commission and above between December 1, 2017 to September 30, 2018",
     "62" => "Clients that produced between $300 and $499 commission and above between December 1, 2017 to September 30, 2018",
     "63" => "Clients that produced less than $300 commission and above between December 1, 2017 to September 30, 2018",
-	"64" => "*Forex Profit Academy clients who have not taking any course but have registered"
+	"64" => "*Forex Profit Academy clients who have never logged in."
     );
