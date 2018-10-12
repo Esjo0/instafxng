@@ -559,10 +559,11 @@ analysis;
      */
     public function quote_splitter($price, $decimal)
     {
-        intval($price);
-        $value = explode('.', $price)[1];
-        $return = substr($value, 0, $decimal);
-        $return = str_pad($return, $decimal, "0", STR_PAD_RIGHT);
+        $pos = strpos($price, '.') ;
+        $len = $pos + $decimal;
+        $return = str_replace('.', '', $price);
+        $return = substr($return, 0, $len);
+        $return = str_pad($return, $len, "0", STR_PAD_RIGHT);
         $return = (int)$return;
 
         return $return;
