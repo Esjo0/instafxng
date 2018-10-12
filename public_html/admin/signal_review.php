@@ -287,9 +287,9 @@ function table_context($trigger_status){
                                             <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);}else{echo datetime_to_text($row['created']);} ?></span><br/>
                                             <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text($row['exit_time']);} ?></span><br/>
                                             <span><b>Highest Pips:</b><span style="color:green !important;"> <?php echo $row['highest_pips']; ?></span> pips</span><br/>
-                                            <span><b>Pips:</b> <?php echo $signal_object->get_pips_display($row['order_type'],$row['pips']); ?></span><br/>
-                                            <span><b>Lowest Pips:</b> <span style="color:red !important;"><?php echo $row['lowest_pips']; ?></span> pips</span><br/>
-                                            <span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
+                                            <span><b>Pips:</b> <?php if(($row['highest_pips'] >= 5) && ($row['exit_type'] == 'Stop Loss')){ echo "0pips";}else{ echo $signal_object->get_pips_display($row['order_type'],$row['pips']);} ?></span><br/>
+                                            <span><b>Lowest Pips:</b> <span style="color:red !important;"><?php if(($row['highest_pips'] >= 5) && ($row['exit_type'] == 'Stop Loss')){ echo "0";}else{ echo $row['lowest_pips'];} ?></span> pips</span><br/>
+                                            <span><b>Exit Type:</b> <?php if(($row['highest_pips'] >= 5) && ($row['exit_type'] == 'Stop Loss')){ echo "Break Even";}else{ echo $row['exit_type'];} ?></span><br/>
 											<span><b>Exit Price:</b> <?php echo $signal_object->round_price_to_dp($row['exit_price'], $row['decimal_place']); ?></span>
                                         </td>
                                     </tr>

@@ -121,14 +121,7 @@ function trigger_sell_order($row)
     $tp = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
     $tp = $tp * -1;
     //    send sms
-    $phone_number = "08094842628, 08101216471, 08060294336, 07033340385";
-    if(($row['highest_pips'] > ((2/3) * $tp)) && ($row['highest_pips'] <= (((2/3) * $tp) + 1))){
-        $text_message = "Your ".$row['symbol']." Trade is Past 2/3 of your TP @".$row['highest_pips'].", Would You mind closing it. https://instafxng.com/admin/signal_daily.php";
-        $system_object->send_sms($phone_number, $text_message);
-    }elseif($row['highest_pips'] > ((1/3) * $tp) && ($row['highest_pips'] <= (((1/3) * $tp) + 1))){
-        $text_message = "Your ".$row['symbol']." Trade is Past 1/3 of your TP @".$row['highest_pips'].", Would You mind closing it. https://instafxng.com/admin/signal_daily.php";
-        $system_object->send_sms($phone_number, $text_message);
-    }
+    $signal_object->send_notification($row['highest_pips'], $tp, $row['signal_id'], $row['symbol']);
 //send sms end
     if ( $row['highest_pips'] > $tp ) {
         $exit_time = date('Y-m-d H:i:s');
@@ -174,14 +167,7 @@ function trigger_buy_order($row)
     }
     $tp = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
 //    send sms
-    $phone_number = "08094842628, 08101216471, 08060294336, 07033340385";
-    if($row['highest_pips'] > ((2/3) * $tp) && ($row['highest_pips'] <= (((2/3) * $tp) + 5))){
-        $text_message = "Your ".$row['symbol']." Trade is Past 2/3 of your TP @".$row['highest_pips'].", Would You mind closing it. https://instafxng.com/admin/signal_daily.php";
-        $system_object->send_sms($phone_number, $text_message);
-    }elseif($row['highest_pips'] > ((1/3) * $tp) && ($row['highest_pips'] <= (((1/3) * $tp) + 5))){
-        $text_message = "Your ".$row['symbol']." Trade is Past 1/3 of your TP @".$row['highest_pips'].", Would You mind closing it. https://instafxng.com/admin/signal_daily.php";
-        $system_object->send_sms($phone_number, $text_message);
-    }
+    $signal_object->send_notification($row['highest_pips'], $tp, $row['signal_id'], $row['symbol']);
 //send sms end
     if ( $row['highest_pips'] > $tp ) {
         $exit_time = date('Y-m-d H:i:s');
