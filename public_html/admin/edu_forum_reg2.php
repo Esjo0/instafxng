@@ -5,7 +5,18 @@ if (!$session_admin->is_logged_in()) {
 }
 
 // Select all seminar registrations or search query, do pagination also
-$query = "SELECT CONCAT(first_name, SPACE(1), middle_name, SPACE(1), last_name) AS full_name, email, phone, venue, created, updated FROM forum_participant ORDER BY updated DESC ";
+if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
+    $search_text = $_POST['search_text'];
+    $query = "SELECT CONCAT(first_name, SPACE(1), middle_name, SPACE(1), last_name) AS full_name, 
+            email, phone, venue, created, updated 
+            FROM forum_participant 
+            WHERE email LIKE '%$search_text%' OR first_name LIKE '%$search_text%' OR middle_name LIKE '%$search_text%' OR last_name LIKE '%$search_text%' OR phone LIKE '%$search_text%' ORDER BY updated DESC ";
+} else {
+    $query = "SELECT CONCAT(first_name, SPACE(1), middle_name, SPACE(1), last_name) AS full_name, 
+            email, phone, venue, created, updated 
+            FROM forum_participant 
+            ORDER BY updated DESC ";
+}
 
 $numrows = $db_handle->numRows($query);
 
@@ -63,6 +74,22 @@ $forum_regs = $db_handle->fetchAssoc($result);
                     
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
+                    <div class="search-section">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                    <div class="input-group">
+                                        <input type="hidden" name="search_param" value="all" id="search_param">
+                                        <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-sm-12 text-danger">
                             <h4><strong>FORUM REGISTRATION - ALL TIME</strong></h4>
