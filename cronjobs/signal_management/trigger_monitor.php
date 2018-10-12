@@ -122,10 +122,10 @@ function trigger_sell_order($row)
     $tp = $tp * -1;
     //    send sms
     $phone_number = "08094842628, 08101216471, 08060294336, 07033340385";
-    if(($row['highest_pips'] > ((2/3) * $tp)) && ($row['highest_pips'] <= (((2/3) * $tp) + 5))){
+    if(($row['highest_pips'] > ((2/3) * $tp)) && ($row['highest_pips'] <= (((2/3) * $tp) + 1))){
         $text_message = "Your ".$row['symbol']." Trade is Past 2/3 of your TP @".$row['highest_pips'].", Would You mind closing it. https://instafxng.com/admin/signal_daily.php";
         $system_object->send_sms($phone_number, $text_message);
-    }elseif($row['highest_pips'] > ((1/3) * $tp) && ($row['highest_pips'] <= (((1/3) * $tp) + 5))){
+    }elseif($row['highest_pips'] > ((1/3) * $tp) && ($row['highest_pips'] <= (((1/3) * $tp) + 1))){
         $text_message = "Your ".$row['symbol']." Trade is Past 1/3 of your TP @".$row['highest_pips'].", Would You mind closing it. https://instafxng.com/admin/signal_daily.php";
         $system_object->send_sms($phone_number, $text_message);
     }
