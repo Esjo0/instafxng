@@ -6,9 +6,10 @@ if (!$session_client->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$user_code = $_SESSION['client_unique_code'];
+
 if (isset($_POST['schedule'])) {
     $date = $db_handle->sanitizePost($_POST['date']);
-    $user_code = $_SESSION['client_unique_code'];
     $id = $db_handle->sanitizePost($_POST['id']);
     $client_name = $_SESSION['first_name'];
     $client_email = $_SESSION['client_email'];
@@ -40,6 +41,14 @@ $to_date = date('Y-m') . "-31";
 $query = "SELECT schedule_id,schedule_date, location, schedule_mode, location FROM training_schedule_dates WHERE schedule_type = '1' AND (STR_TO_DATE(schedule_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')";
 $result = $db_handle->runQuery($query);
 $available_dates = $db_handle->fetchArray($result);
+
+$query = "SELECT  tsd.schedule_mode, tsd.location, tsd.schedule_type, tss.id, tss.status, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, tsd.schedule_date, u.user_code
+    FROM training_schedule_students AS tss
+    INNER JOIN user AS u ON u.user_code = tss.user_code
+    INNER JOIN training_schedule_dates AS tsd ON tsd.schedule_id = tss.schedule_id
+    WHERE  tss.user_code = '$user_code' AND (tss.status = '0' OR tss.status = '2' OR tss.status = '3') ORDER BY tsd.schedule_date ASC";
+$result = $db_handle->runQuery($query);
+$schedules = $db_handle->fetchArray($result);
 
 ?>
 <!DOCTYPE html>
@@ -103,15 +112,37 @@ $available_dates = $db_handle->fetchArray($result);
                                                     </div>
                                                 </div>
                                             <?php }
-                                        } ?>
+                                            echo"<p class='text-center'>
+                                        <button name='schedule' class='btn btn-success' type='submit'>SUBMIT</button>
+                                    </p>";
+                                        }else{echo "<p class='text-center'>There are no available schedule time at the moment. Check back latter!!!</p>";} ?>
                                     </div>
-                                    <p class="text-center">
-                                        <button name="schedule" class="btn btn-success" type="submit">SUBMIT</button>
-                                    </p>
+
                                 </form>
                             </div>
                         </li>
+                        <li class="list-group-item d-flex justify-content-between lh-condensed" style="display:block">
+                        <?php if(!empty($schedules)) {
+                            echo "<p><b>YOUR TRAINING</b></p>";
+                            foreach($schedules AS $row){
+                                extract($row);
+                                ?>
 
+
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><b><?php echo datetime_to_textday($schedule_date) . " " . datetime_to_text($schedule_date)?></b></div>
+                                <div class="panel-body">
+                                    <?php echo "<span class='text-center'><b>Training Type</b> - " . training_mode($schedule_mode) . "</span><hr>"?>
+                                    <?php if ($schedule_mode == 2) {
+                                         echo "<span class='text-center'><b>Training Venue</b> - " . office_addresses($location) . "</span><br>";
+                                    }?>
+                                </div>
+                            </div>
+
+
+                            <?php }
+                        }?>
+                        </li>
                     </div>
                 </div>
             </div>

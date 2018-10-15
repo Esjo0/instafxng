@@ -15,7 +15,7 @@ class training
         }
     }
 
-    public function schedule_private_time($date, $mode, $email, $admin, $location)
+    public function schedule_private_time($date, $mode, $email, $admin, $location, $schedule_type)
     {
         global $db_handle;
         $query = "SELECT user_code FROM user WHERE email = '$email'";
@@ -26,7 +26,7 @@ class training
             $user_code = $user_code;
         }
         if ($email) {
-            $query = "INSERT INTO training_schedule_dates (schedule_date, no_of_students, schedule_type, schedule_mode, admin, location) VALUE('$date', 1, '2', '$mode', '$admin', '$location')";
+            $query = "INSERT INTO training_schedule_dates (schedule_date, no_of_students, schedule_type, schedule_mode, admin, location) VALUE('$date', 1, '$schedule_type', '$mode', '$admin', '$location')";
             $result = $db_handle->runQuery($query);
             if ($result) {
                 $query = "SELECT schedule_id FROM training_schedule_dates ORDER BY schedule_id DESC LIMIT 1";

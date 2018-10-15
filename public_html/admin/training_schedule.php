@@ -31,8 +31,9 @@ if (isset($_POST['schedule_private'])) {
     $date = $db_handle->sanitizePost($_POST['schedule_time_private']);
     $mode = $db_handle->sanitizePost($_POST['mode']);
     $location = $db_handle->sanitizePost($_POST['location']);
+    $schedule_type = 2;
 
-    $schedule_public = $obj_training->schedule_private_time($date, $mode, $email, $admin_code, $location);
+    $schedule_public = $obj_training->schedule_private_time($date, $mode, $email, $admin_code, $location, $schedule_type);
     if ($schedule_public == true) {
         $message_success = "Successfully submitted";
     } else {
@@ -68,10 +69,11 @@ if (isset($_POST['schedule_private_paid'])) {
     $trans_id_encrypted = encrypt($trans_id);
     $client_name = $full_name;
     $client_email = $email;
+    $schedule_type = 3;
 
     $payment = $education_object->log_course_deposit($user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
 
-    $schedule_public = $obj_training->schedule_private_time($date, $mode, $email, $admin_code, $location);
+    $schedule_public = $obj_training->schedule_private_time($date, $mode, $email, $admin_code, $location, $schedule_type);
     $admin_details = $admin_object->get_admin_detail_by_code($admin_code);
     foreach ($admin_details AS $row) {
         extract($row);
@@ -195,7 +197,7 @@ if ($prespagehigh > $numrows) {
 }
 
 $offset = ($currentpage - 1) * $rowsperpage;
-$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$query .= ' ORDER BY tsd.created DESC LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $training_schedules = $db_handle->fetchAssoc($result);
 
@@ -401,6 +403,23 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                                             });
                                                         });
                                                     </script>
+
+                                                    <div class="form-group mx-sm-4 mb-2">
+                                                        <select type="text" name="location" class="form-control "
+                                                                id="location">
+                                                            <?php
+                                                            $query = "SELECT * FROM facility_location";
+                                                            $result = $db_handle->runQuery($query);
+                                                            $result = $db_handle->fetchAssoc($result);
+                                                            foreach ($result as $row_loc) {
+                                                                extract($row_loc)
+                                                                ?>
+                                                                <option
+                                                                    value="<?php echo $location_id; ?>"><?php echo $location; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+
                                                     <div class="form-group mx-sm-4 mb-1">
                                                         <select name="mode" id="mode" class="form-control" required>
                                                             <option value="">Select Training Type</option>
@@ -563,7 +582,13 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                 <tr>
                                     <td><?php echo $row['full_name']; ?></td>
                                     <td><?php echo datetime_to_text($row['schedule_date']); ?></td>
-                                    <td><?php echo $row['email']; ?></td>
+                                    <td><?php if ($row['schedule_type'] == '2') {
+                                            echo " <span class=\"badge badge-light\">Private</span>";
+                                        } ?>
+                                        <?php if ($row['schedule_type'] == '3') {
+                                            echo " <span class=\"badge badge-light\">Private Paid</span>";
+                                        } ?>
+                                        <?php echo $row['email']; ?></td>
                                     <td><?php echo $row['phone']; ?></td>
                                     <td><?php if ($row['location'] == 1) {
                                             echo "Diamond Estate office";
