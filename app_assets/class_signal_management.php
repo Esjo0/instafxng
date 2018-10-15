@@ -453,7 +453,7 @@ analysis;
             if (empty($highest_pips) || ($highest_pips == null)) {
                 $highest_pips = 0;
             }
-            if (($highest_pips > 5) && ($exit_type == "Stop Loss")) {
+            if (($highest_pips >= 5) && ($exit_type == "Stop Loss")) {
                 $exit_type = "Break Even";
                 $display1 = "<span style=\"color:green !important;\"> {$highest_pips} </span>pips";
             } elseif (($exit_type == "Take Profit") && !empty($lowest_pips) && ($lowest_pips != 0)) {
@@ -559,10 +559,11 @@ analysis;
      */
     public function quote_splitter($price, $decimal)
     {
-        intval($price);
-        $value = explode('.', $price)[1];
-        $return = substr($value, 0, $decimal);
-        $return = str_pad($return, $decimal, "0", STR_PAD_RIGHT);
+        $pos = strpos($price, '.') ;
+        $len = $pos + $decimal;
+        $return = str_replace('.', '', $price);
+        $return = substr($return, 0, $len);
+        $return = str_pad($return, $len, "0", STR_PAD_RIGHT);
         $return = (int)$return;
 
         return $return;
@@ -628,6 +629,35 @@ MSG;
         return $msg;
     }
 
+    public function get_keynotes($signal_id, $type){
+        global $db_handle;
+        $query = "SELECT * FROM signal_keynotes WHERE signal_id = $signal_id ORDER BY created DESC";
+        $result = $db_handle->runQuery($query);
+        $result = $db_handle->fetchArray($result);
+        $num_row = $db_handle->numRows($query);
+        $key = "";
+if($num_row > 0){
+        for($j = 0 ; $j < $num_row; $j++){
+            $row_side = (array)$result[$j];
+            extract($row_side);
+            $date = datetime_to_text($created);
+            //$author = $admin_object->get_admin_name_by_code($admin);
+            $keynote = <<<KEYNOTE
+                <div class="panel panel-warning">
+                        <div class="panel-body">
+                           <span>{$comment}</span>
+                           <small class="text-muted pull-right">{$date}</small>
+                        </div>
+                    </div>
+KEYNOTE;
+            $key = $key.$keynote;
+        }
+}else{}
+        if($type == 1){echo $key;}
+        if($type == 2){return $key;}
+
+    }
+
     public function UI_get_symbol_current_price($symbol)
     {
         $symbol = str_replace('/', '', $symbol);
@@ -647,6 +677,13 @@ MSG;
             $signal_array = $this->get_scheduled_signals(date('Y-m-d'));
             $this->update_signal_daily_FILE($signal_array);
         }
+        return $result;
+    }
+
+    public function add_keynote($keynote, $signal_id, $admin){
+        global $db_handle;
+        $query = "INSERT INTO signal_keynotes (signal_id, comment, admin) VALUE('$signal_id', '$keynote', '$admin')";
+        $result = $db_handle->runQuery($query);
         return $result;
     }
 
@@ -755,8 +792,8 @@ ORDER BY SD.signal_id DESC ";
     {
         $date = date('Y-m-d');
         global $db_handle;
-        $query = "SELECT DISTINCT SS.symbol 
-                  FROM signal_daily AS SD 
+        $query = "SELECT DISTINCT SS.symbol
+                  FROM signal_daily AS SD
                   INNER JOIN signal_symbol AS SS ON SD.symbol_id
                   WHERE SD.trigger_date = '$date' AND SD.symbol_id = SS.symbol_id ";
         $symbols = $db_handle->fetchAssoc($db_handle->runQuery($query));
@@ -951,41 +988,25 @@ MAIL;
             return false;
         }
     }
+// Send Notificaton for all quarter of the pips gained.
 
-    public function get_keynotes($signal_id, $type){
+    public function send_notification($highest, $tp, $signal_id, $symbol){
         global $db_handle;
-        $query = "SELECT * FROM signal_keynotes WHERE signal_id = $signal_id ORDER BY created DESC";
-        $result = $db_handle->runQuery($query);
-        $result = $db_handle->fetchArray($result);
-        $num_row = $db_handle->numRows($query);
-        $key = "";
-if($num_row > 0){
-        for($j = 0 ; $j < $num_row; $j++){
-            $row_side = (array)$result[$j];
-            extract($row_side);
-            $date = datetime_to_text($created);
-            //$author = $admin_object->get_admin_name_by_code($admin);
-            $keynote = <<<KEYNOTE
-                <div class="panel panel-warning">
-                        <div class="panel-body">
-                           <span>{$comment}</span>
-                           <small class="text-muted pull-right">{$date}</small>
-                        </div>
-                    </div>
-KEYNOTE;
-            $key = $key.$keynote;
+        global $system_object;
+        $phone_number = "08094842628, 08101216471, 08060294336, 07033340385";
+        $query = "SELECT * FROM signal_notification_log WHERE signal_id = '$signal_id' AND log_status = '1' AND log_status <> '2'";
+        $result = $db_handle->numRows($query);
+        if(($result == 0) && ($highest >= ((1/3) * $tp)) && ($highest <= (((1/3) * $tp) + 5))){
+            $text_message = "Your ".$symbol." Trade is Past 1/3 of your TP @".$highest.", Would You mind closing it. https://instafxng.com/admin/signal_daily.php";
+            $system_object->send_sms($phone_number, $text_message);
+            $query = "INSERT IGNORE INTO signal_notification_log (signal_id, log_status) VALUE ('$signal_id', '1')";
+            $db_handle->runQuery($query);
+        }elseif(($result == 1) && ($highest >= ((2/3) * $tp)) && ($highest <= (((2/3) * $tp) + 5))){
+            $text_message = "Your ".$symbol." Trade is Past 2/3 of your TP @".$highest.", Would You mind closing it. https://instafxng.com/admin/signal_daily.php";
+            $system_object->send_sms($phone_number, $text_message);
+            $query = "UPDATE signal_notification_log SET log_status = '2'";
+            $db_handle->runQuery($query);
         }
-}else{}
-        if($type == 1){echo $key;}
-        if($type == 2){return $key;}
-
-    }
-
-    public function add_keynote($keynote, $signal_id, $admin){
-        global $db_handle;
-        $query = "INSERT INTO signal_keynotes (signal_id, comment, admin) VALUE('$signal_id', '$keynote', '$admin')";
-        $result = $db_handle->runQuery($query);
-        return $result;
     }
 
 }

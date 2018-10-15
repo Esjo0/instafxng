@@ -1,3 +1,18 @@
+CREATE TABLE `signal_notification_log` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `signal_id` int(11) NOT NULL,
+ `log_status` enum('1','2') NOT NULL COMMENT '1- First Quater, 2- Second Quarter',
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `signal_id` (`signal_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1
+
+UPDATE signal_daily SET pips = 500 WHERE signal_id = 239;
+
+UPDATE signal_daily SET pips = 600 WHERE signal_id = 233;
+
+UPDATE signal_daily SET trigger_status = 1, pips = 0, WHERE signal_id = 212;
+
 CREATE TABLE `signal_keynotes` (
  `keynote_id` int(11) NOT NULL AUTO_INCREMENT,
  `signal_id` int(100) NOT NULL,

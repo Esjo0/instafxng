@@ -4,6 +4,8 @@ set_include_path('/home/tboy9/public_html/init/');
 require_once 'initialize_general.php';
 $signal_object = new Signal_Management();
 
+$system_object = new InstafxngSystem();
+
 $scheduled_signals = (array)json_decode(file_get_contents('/home/tboy9/models/signal_daily.json'));
 //$scheduled_signals = (array)json_decode(file_get_contents('../../models/signal_daily.json'));
 
@@ -25,20 +27,20 @@ if (!empty($scheduled_signals)) {
         if(($row['trigger_status'] == 1) && ($row['order_type'] == 2) && !empty($response[0]['price']) && ($response[0]['price'] != 0)){
             $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
             $pips = $pips * -1;
-            if(($pips > $row['highest_pips']) && ($pips >= 1) && ($pips <= 100)) {
+            if($pips > $row['highest_pips']) {
                     $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1, '', $pips, '');
             }
-            if(($pips < $row['lowest_pips']) && ($pips < -1) && ($pips >= -100)){
+            if($pips < $row['lowest_pips']){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', '', 1, '', $pips);
             }
         }
         //Get High and low for buy
         if(($row['trigger_status'] == 1) && ($row['order_type'] == 1) && !empty($response[0]['price']) && ($response[0]['price'] != 0)){
             $pips = $signal_object->get_pips($row['symbol_id'], $response[0]['price'], $row['price']);
-            if(($pips > $row['highest_pips']) && ($pips >= 1) && ($pips <= 100)){
+            if($pips > $row['highest_pips']){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', 1, '', $pips, '');
             }
-            if(($pips < $row['lowest_pips']) && ($pips < -1) && ($pips >= -100)){
+            if($pips < $row['lowest_pips']){
                 $signal_object->trigger_signal_schedule($row['signal_id'], 1, '', '', '', '', '', '', '', 1, '', $pips);
             }
         }
@@ -96,6 +98,7 @@ if (!empty($scheduled_signals)) {
 function trigger_sell_order($row)
 {
     global $signal_object;
+    global $system_object;
     $symbol = str_replace('/', '', $row['symbol']);
     $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=" . $signal_object->quotes_api_key();
     $get_data = file_get_contents($url);
@@ -117,6 +120,9 @@ function trigger_sell_order($row)
     }
     $tp = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
     $tp = $tp * -1;
+    //    send sms
+    $signal_object->send_notification($row['highest_pips'], $tp, $row['signal_id'], $row['symbol']);
+//send sms end
     if ( $row['highest_pips'] > $tp ) {
         $exit_time = date('Y-m-d H:i:s');
         $exit_type = "Take Profit";
@@ -139,6 +145,7 @@ function trigger_sell_order($row)
 function trigger_buy_order($row)
 {
     global $signal_object;
+    global $system_object;
     $symbol = str_replace('/', '', $row['symbol']);
     $url = Signal_Management::QUOTES_API . "?pairs=$symbol&api_key=" . $signal_object->quotes_api_key();
     $get_data = file_get_contents($url);
@@ -159,6 +166,9 @@ function trigger_buy_order($row)
         $signal_object->trigger_signal_schedule($row['signal_id'], 2, '', '', $exit_time, $pips, $exit_type, $exit_price, '', '', '','');
     }
     $tp = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
+//    send sms
+    $signal_object->send_notification($row['highest_pips'], $tp, $row['signal_id'], $row['symbol']);
+//send sms end
     if ( $row['highest_pips'] > $tp ) {
         $exit_time = date('Y-m-d H:i:s');
         $exit_type = "Take Profit";

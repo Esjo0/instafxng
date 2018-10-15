@@ -139,9 +139,9 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
 
                             <?php include 'layouts/feedback_message.php'; ?>
 
-                            <div id="page_reloader" style="display: none;" class="alert alert-success">
-                                <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
-                                <strong>New Updates Availabe!</strong> <a href="signal_schedules.php">Click here to view these updates.</a>
+                            <div id="page_reloader" style="z-index: 5; max-width:500px; display: none; position: fixed; top: 20px; right: 10px;" class="alert alert-success">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>New Updates Available!</strong> <a href="signal_schedules.php">Click here to view these updates.</a>
                             </div>
 
                             <div class="row">

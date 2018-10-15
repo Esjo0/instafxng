@@ -4,50 +4,74 @@ if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 
 $this_cat = 'cat_4';
 
-if(empty($_SESSION['cat'])) { $_SESSION['cat'] = '1';}
+if (empty($_SESSION['cat'])) {
+    $_SESSION['cat'] = '1';
+}
 
-if(isset($_POST['edu_sale_track_reset'])){edu_sale_track_reset($this_cat);}
+if (isset($_POST['edu_sale_track_reset'])) {
+    edu_sale_track_reset($this_cat);
+}
 
-if(isset($_POST['cat'])){$_SESSION['cat'] = $_POST['cat'];}
+if (isset($_POST['cat'])) {
+    $_SESSION['cat'] = $_POST['cat'];
+}
 
-if(isset($_POST['edu_sale_track'])){
-    foreach ($_POST as $key => $value){$_POST[$key] = $db_handle->sanitizePost(trim($value));}
+if (isset($_POST['edu_sale_track'])) {
+
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
     extract($_POST);
     edu_sale_track($user_code, $category);
 }
 
-if(isset($_POST['filter_lesson'])){
+if (isset($_POST['filter_lesson'])) {
+
     $lesson = $_POST['lesson'];
-    if($lesson > 0){
-        $filter = "AND MAX(ueel.lesson_id) = '$lesson'";
-    }else{
+
+    if ($lesson > 0) {
+        $filter = " AND ueel.lesson_id = $lesson AND u.user_code NOT IN (SELECT user_code FROM user_edu_exercise_log WHERE lesson_id > $lesson) ";
+    } else {
         $filter = "";
     }
 }
 
+if (!empty($filter) || ($filter != null)) {
+    $_SESSION['filter'] = $filter;
+} else {
+    $_SESSION['filter'] = "";
+}
+
+$filt_val = $_SESSION['filter'];
+
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 
     $search_text = $_POST['search_text'];
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
+    $query = "SELECT ud.order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
           u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name,
           ued.created AS pay_date
           FROM user_edu_exercise_log AS ueel
           INNER JOIN user AS u ON ueel.user_code = u.user_code
+          INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+          INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
           WHERE ued.status = '3' AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
           GROUP BY u.user_code ORDER BY ued.created DESC, u.last_name ASC ";
 } else {
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
+    $query = "SELECT ud.order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
           u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name,
           ued.created AS pay_date
           FROM user_edu_exercise_log AS ueel
           INNER JOIN user AS u ON ueel.user_code = u.user_code
+          INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+          INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
-          WHERE ued.status = '3' $filter
+          WHERE ued.status = '3' $filt_val
           GROUP BY u.user_code ORDER BY ued.created DESC, u.last_name ASC ";
 }
 $numrows = $db_handle->numRows($query);
@@ -204,6 +228,7 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                         <th>Client Phone</th>
                                         <th>Email Address</th>
                                         <th>Pay Date</th>
+                                        <th>Funding Date</th>
                                         <th>Officer</th>
                                         <th>Action</th>
                                     </tr>
@@ -215,6 +240,7 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo datetime_to_text($row['pay_date']); ?></td>
+                                            <td><?php if(!empty($row['order_complete_date'])){echo datetime_to_text($row['order_complete_date']);}else{ echo "Not yet funded.";} ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
                                                 <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_student_category_4'; ?>&c=<?php echo encrypt('STUDENT CATEGORY 4'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
