@@ -25,7 +25,7 @@ if(isset($_POST['filter'])){
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
 
-    $query = "SELECT MIN(ud.user_deposit_id), ud.order_complete_time AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+    $query = "SELECT MIN(ud.user_deposit_id), MIN(ud.order_complete_time) AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -33,6 +33,17 @@ if(isset($_POST['filter'])){
         WHERE ud.status = '8'
         AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
         GROUP BY u.email ORDER BY ud.order_complete_time DESC ";
+    $_SESSION['query'] = $query;
+}
+
+if(isset($_POST['funding_date'])){
+    $query = "SELECT MIN(ud.order_complete_time) AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+        FROM user_deposit AS ud
+        INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
+        WHERE ud.status = '8'
+        GROUP BY u.email ORDER BY order_complete_time DESC ";
     $_SESSION['query'] = $query;
 }
 if(empty($_SESSION['query'])) {
@@ -168,10 +179,16 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                                     </form>
                                 </div>
                                 <form class="pull-right" method="post" action="">
+                                    <button name="funding_date" type="submit" class="btn btn-primary btn-sm">
+                                        <i class="glyphicon glyphicon-circle"></i>Arrange By Funding Date
+                                    </button>
+                                </form>
+                                <form class="pull-right" method="post" action="">
                                     <button name="view" type="submit" class="btn btn-info btn-sm"><i
                                             class="glyphicon glyphicon-eye-circle"></i>View All
                                     </button>
                                 </form>
+
                                 <?php if(isset($numrows)) { ?>
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
