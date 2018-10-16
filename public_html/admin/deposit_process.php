@@ -174,6 +174,35 @@ if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['
     exit;
 }
 
+//deposit refund initiated
+if ($deposit_process_notified && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['initiate_refund'] == true)) {
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+    $client_name = $_POST['client_name'];
+    $transaction_id = $_POST['transaction_id'];
+    $remarks = $_POST['remarks'];
+    $amount = $_POST['realamtpaid'];
+    $client_email = $_POST['client_email'];
+    $refund_type = $_POST['refund_type'];
+    $subject = "DEPOST REFUND PROCCESS";
+    $my_message = "Your DEPOST TRANSACTION  has ".refund_type($refund_type)." issues visit this link to process your refund.
+    <br> https://instafxng.com/deposit_refund.php?x=$refund_type&id=".encrypt($transaction_id);
+
+    $query = "UPDATE user_deposit SET status = '11' WHERE trans_id = '$transaction_id'";
+    $result = $db_handle->runQuery($query);
+
+    $request = $client_operation->deposit_refund_initiated($transaction_id, $amount);
+
+    $system_object->send_email($subject, $my_message, $client_email, $client_name);
+
+    $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
+
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
+    header("Location: deposit_refund_initiated.php");
+    exit;
+}
+
 //complete deposit refund
 if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['complete_refund'] == true)) {
     foreach($_POST as $key => $value) {
@@ -184,11 +213,11 @@ if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['
     $remarks = $_POST['remarks'];
 
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
-    $query = "UPDATE user_deposit_refund SET refund_status = 2 WHERE transaction_id = '$transaction_id'";
+    $query = "UPDATE user_deposit_refund SET refund_status = '2', refund_complete_time = now()  WHERE transaction_id = '$transaction_id'";
     $result = $db_handle->runQuery($query);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    header("Location: deposit_refund.php");
+    header("Location: deposit_refund_completed.php");
     exit;
 }
 

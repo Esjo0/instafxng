@@ -15,9 +15,9 @@
                             <span id="transaction_identity"><strong>Refund Account Number : </strong><?php echo $refund_acct; ?></span>
                             <span><strong>Refund Type : </strong><?php echo refund_type($refund_type); ?></span>
                             <span><strong>Details : </strong><?php echo $issue_desc; ?></span>
-                            <span><strong>Amount Deposited : </strong><?php echo $refund_amount; ?></span>
-                            <span><strong>Payment_method : </strong><?php echo $payment_method; ?></span>
-                            <span><strong>Date Refund was Requested : </strong> <?php echo datetime_to_text($request_date); ?></span>
+                            <span><strong>Amount Deposited : </strong>&#8358;<?php echo $amount_paid; ?></span>
+                            <span><strong>Payment method : </strong><?php echo status_user_deposit_pay_method($payment_method); ?></span>
+                            <span><strong>Date Refund was Requested : </strong> <?php echo datetime_to_text($created); ?></span>
                             <hr>
                             <p>Client Account Details</p>
                             <span><strong>Clients Bank Name : </strong><?php echo $user_bank_name; ?></span>

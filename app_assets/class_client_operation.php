@@ -2822,4 +2822,22 @@ MAIL;
         $recipients = $obj_push_notification->get_recipients_by_access($access_code);
         $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $url);
     }
+
+    public function get_refund_details($trans_id) {
+        global $db_handle;
+
+        $query = "SELECT * FROM user_deposit_refund WHERE transaction_id = '$trans_id' ";
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        return $fetched_data;
+    }
+
+    public function deposit_refund_initiated($transaction_id, $amount) {
+        global $db_handle;
+        $query = "INSERT INTO user_deposit_refund (transaction_id, amount_paid, refund_status) VALUES ('$transaction_id', '$amount', '0')";
+        $db_handle->runQuery($query);
+
+        return true;
+    }
+
 }
