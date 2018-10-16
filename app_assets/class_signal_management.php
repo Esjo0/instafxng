@@ -379,7 +379,7 @@ MAIL;
             };
             if (!empty($market_price) && !empty($price)) {
                 $diff = $this->get_pips($symbol_id, $market_price, $price);
-                if (($diff >= -100) && ($diff <= 100)) {
+                if (!empty($diff) && $diff != 0) {
                     $display = $this->get_pips_display($order_type, $diff);
                 } else {
                     $display = 0;
