@@ -261,7 +261,8 @@ if(!empty($trans_detail['points_claimed_id'])) {
             </div>
             <?php endif; ?>
 
-            <!--Modal - confirmation boxes--> 
+            <!--Modal - confirmation boxes-->
+
             <div id="confirm-deposit-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">

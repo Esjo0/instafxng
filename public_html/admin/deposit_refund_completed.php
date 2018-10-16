@@ -6,15 +6,15 @@ if (!$session_admin->is_logged_in()) {
 
 $client_operation = new clientOperation();
 
-$query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_payable,
+$query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created AS deposit_date, ud.naira_total_payable,
         ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-        uc.passport, ui.ifxaccount_id
+        uc.passport, ui.ifxaccount_id, udf.created AS refund_date, udf.refund_complete_time
         FROM user_deposit_refund AS udf
         INNER JOIN user_deposit AS ud ON udf.transaction_id = ud.trans_id
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
-        WHERE udf.refund_status = '1' ORDER BY udf.refund_id DESC ";
+        WHERE udf.refund_status = '2' ORDER BY udf.refund_id DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -79,7 +79,7 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                     <div class="col-sm-12">
                         <?php require_once 'layouts/feedback_message.php'; ?>
                         <p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
-                        <p>List of clients who has requested for Deposit refund</p>
+                        <p>List of clients who are scheduled for Deposit refund</p>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
@@ -90,8 +90,8 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                                 <th>Phone Number</th>
                                 <th>Amount Ordered</th>
                                 <th>Total Payable</th>
-                                <th>Deposit date</th>
-                                <th>Action</th>
+                                <th>Deposit Date</th>
+                                <th>Refund Complete Date</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -106,10 +106,8 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                                         <td><?php echo $row['phone']; ?></td>
                                         <td class="nowrap">&dollar; <?php echo number_format($row['dollar_ordered'], 2, ".", ","); ?></td>
                                         <td class="nowrap">&#8358; <?php echo number_format($row['naira_total_payable'], 2, ".", ","); ?></td>
-                                        <td><?php echo datetime_to_text($row['created']); ?></td>
-                                        <td class="nowrap">
-                                            <a class="btn btn-info" href="deposit_process.php?x=refund&id=<?php echo encrypt($row['trans_id']); ?>" title="Comment"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                        </td>
+                                        <td><?php echo datetime_to_text($row['deposit_date']); ?></td>
+                                        <td><?php echo datetime_to_text($row['refund_complete_time']); ?></td>
                                     </tr>
                                 <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                             </tbody>

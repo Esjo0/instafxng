@@ -4,15 +4,20 @@ $thisPage = "";
 
 $page_requested = '';
 
+$all_banks = $system_object->get_all_banks();
+
+$get_params = allowed_get_params(['x', 'id']);
+
+$trans_id_encrypted = $get_params['id'];
+$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
+$trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+
+$refund_type = $get_params['x'];
+
 if(isset($_POST['deposit_refund'])){
-    $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
-    $refund_type = $db_handle->sanitizePost($_POST['refund_type']);
-    $transaction_id = $db_handle->sanitizePost($_POST['transaction_id']);
-    $amount_paid = $db_handle->sanitizePost($_POST['amount_paid']);
     $user_bank_name = $db_handle->sanitizePost($_POST['user_bank_name']);
     $user_acct_name = $db_handle->sanitizePost($_POST['user_acct_name']);
     $user_acct_no = $db_handle->sanitizePost($_POST['user_acct_no']);
-    $payment_method = $db_handle->sanitizePost($_POST['payment_method']);
     $comp_bank_name = $db_handle->sanitizePost($_POST['comp_bank_name']);
     $comp_acct_name = $db_handle->sanitizePost($_POST['comp_acct_name']);
     $comp_acct_no = $db_handle->sanitizePost($_POST['comp_acct_no']);
@@ -21,22 +26,21 @@ if(isset($_POST['deposit_refund'])){
     $tp_phone = $db_handle->sanitizePost($_POST['tp_phone']);
     $wrong_remark = $db_handle->sanitizePost($_POST['wrong_remark']);
 
-    $client_operation = new clientOperation($account_no);
-    $user_ifx_details = $client_operation->get_client_data();
-    $query = "SELECT * FROM user_deposit WHERE trans_id = '$transaction_id'";
+    $query = "SELECT * FROM user_deposit WHERE trans_id = '$trans_id'";
     $result = $db_handle->numRows($query);
 
-    if($user_ifx_details && $result == 1) {
+    if($result == 1) {
         switch ($refund_type){
-            case 1: $issue_desc = "Transaction ID: ".$transaction_id; break;
-            case 2: $issue_desc = "Third Party Details : Name: $tp_name <br> Email: $tp_email <br> Phone No.: $tp_phone <br>Transaction ID: $transaction_id";break;
-            case 3: $issue_desc = "Wrong Remark: $wrong_remark <br>Transaction ID: $transaction_id";break;
+            case 1: $issue_desc = "Transaction ID: ".$trans_id; break;
+            case 2: $issue_desc = "Third Party Details : Name: $tp_name <br> Email: $tp_email <br> Phone No.: $tp_phone <br>Transaction ID: $trans_id";break;
+            case 3: $issue_desc = "Wrong Remark: $wrong_remark <br>Transaction ID: $trans_id";break;
         }
-        $request = $client_operation->deposit_refund($account_no, $refund_type, $transaction_id, $amount_paid, $user_bank_name, $user_acct_name, $user_acct_no, $payment_method, $comp_bank_name, $comp_acct_name, $comp_acct_no, $issue_desc);
+        $query = "UPDATE user_deposit_refund SET user_bank_name = '$user_bank_name', user_acct_name = '$user_acct_name', user_acct_no = '$user_acct_no', company_bank_name = '$comp_bank_name', company_acct_name = '$comp_acct_name', company_acct_no = '$comp_acct_no', issue_desc = '$issue_desc', refund_status = '1' WHERE transaction_id = '$trans_id'";
+        $request = $db_handle->runQuery($query);
         if($request== true){$message_success = "Your Request has been submitted successfully";}
         else{$message_error = "Your Request was not successfully submitted"; }
         }else{
-        $message_error = "Account number not registered or Transaction ID is incorrect";
+        $message_error = "You Are Not due for a refund";
         }
 }
 ?>
@@ -52,9 +56,13 @@ if(isset($_POST['deposit_refund'])){
         <meta name="description" content=" ">
         <?php require_once 'layouts/head_meta.php'; ?>
         <script>
+            window.onload = function() {
+                displayOptions();
+            };
             function displayOptions() {
-                var options = $("#refund_type").val();
+                var options = <?php echo $refund_type; ?>;
                 if(options == 1) {
+                    document.getElementById("no_trans_id").style.display = "block";
                     document.getElementById("third_party_transaction").style.display = "none";
                     document.getElementById("wrong_remark").style.display = "none";
                     document.getElementById("tp_name").required = false;
@@ -66,6 +74,7 @@ if(isset($_POST['deposit_refund'])){
                     document.getElementById("third_party_transaction").style.display = "block";
                     document.getElementById("wrong_remark").style.display = "none";
                     document.getElementById("wrong_remark_desc").required = false;
+                    document.getElementById("trans_id").required = false;
                 }
                 else if(options == 3) {
                     document.getElementById("third_party_transaction").style.display = "none";
@@ -73,6 +82,7 @@ if(isset($_POST['deposit_refund'])){
                     document.getElementById("tp_name").required = false;
                     document.getElementById("tp_email").required = false;
                     document.getElementById("tp_phone").required = false;
+                    document.getElementById("trans_id").required = false;
                 }
             }
         </script>
@@ -98,32 +108,14 @@ if(isset($_POST['deposit_refund'])){
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-
+                                <?php if($refund_type == 1){echo "<p class='text-center'><strong>You Entered the wrong Transaction ID number.</strong></p>";}?>
+                                <?php if($refund_type == 2){echo "<p class='text-center'><strong>Your Deposit Transaction was a third party transaction</strong></p>";}?>
+                                <?php if($refund_type == 3){echo "<p class='text-center'><strong>You Entered a wrong remark.</strong></p>";}?>
                                 <ul class="fa-ul">
-                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter all requested information to process your deposit refund</li>
+                                    <li ><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter all requested information to process your deposit refund</li>
                                 </ul>
 
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                    </hr>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="ifx_acct_no">Instaforex Account No.:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <input name="ifx_acct_no" type="text" class="form-control" id="ifx_acct_no" required>
-                                        </div>
-                                        <span class="help-block"><i class="fa fa-info-circle"></i> Instaforex Account Number</span>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="ifx_acct_no">Select Refund type:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <select name="refund_type" class="form-control" id="refund_type" onchange="displayOptions()">
-                                                <option value="1">Omission of Transaction ID</option>
-                                                <option value="2">Third Party Transaction</option>
-                                                <option value="3">Wrong Remarks</option>
-                                            </select>
-                                            <span class="help-block"><i class="fa fa-info-circle"></i> Select Reason for Refund</span>
-                                        </div>
-                                    </div>
 
                                     <div id="third_party_transaction" style="display:none;">
                                         <hr>
@@ -154,38 +146,34 @@ if(isset($_POST['deposit_refund'])){
                                     <div id="wrong_remark" style="display:none;">
                                         <hr>
                                         <div class="form-group">
-                                            <label class="control-label col-sm-3" for="pass_code">Enter Previous Wrong Remark:</label>
+                                            <label class="control-label col-sm-3" for="pass_code">Enter the right Remark:</label>
                                             <div class="col-sm-9 col-lg-5">
                                                 <input name="wrong_remark" type="text" class="form-control" id="wrong_remark" required>
-                                                <span class="help-block"><i class="fa fa-info-circle"></i>Enter your previously wrong remark</span>
+                                                <span class="help-block"><i class="fa fa-info-circle"></i>Enter remark</span>
                                             </div>
                                         </div>
                                         <hr>
                                     </div>
-
+                                    <div id="no_trans_id" style="display:none;">
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Transaction ID:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="transaction_id" type="text" class="form-control" id="transaction_id" required>
+                                            <input id="trans_id" name="transaction_id" type="text" class="form-control" id="transaction_id" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Deposit Transaction details</span>
                                         </div>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="pass_code">Amount paid in Naira:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            (&#8358;)
-                                            <input name="amount_paid" type="text" class="form-control" id="" required>
-                                            <span class="help-block"><i class="fa fa-info-circle"></i> Deposit Transaction details</span>
-                                        </div>
                                     </div>
 
-                                    <hr>
                                     <p class="text-center"><u>Enter Your Bank Details</u></p>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" >Bank Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="user_bank_name" type="text" class="form-control" id="" required>
+                                            <select name="user_bank_name" class="form-control" id="bank_name" required>
+                                                <option value="" selected>Select Bank</option>
+                                                <?php foreach($all_banks as $key => $value) { ?>
+                                                    <option value="<?php echo $value['bank_name']; ?>"><?php echo $value['bank_name']; ?></option>
+                                                <?php } ?>
+                                            </select>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Your Bank Name</span>
                                         </div>
                                     </div>
@@ -209,16 +197,14 @@ if(isset($_POST['deposit_refund'])){
                                     <hr>
                                     <p class="text-center"><u>Enter Details of the bank you paid into.</u></p>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="pass_code">Enter Payment Type:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <input name="payment_method" type="text" class="form-control" id="" required>
-                                            <span class="help-block"><i class="fa fa-info-circle"></i> Enter the payment method you selected on instafxng.com</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Bank Name:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input name="comp_bank_name" type="text" class="form-control" id="" required>
+                                            <select name="comp_bank_name" class="form-control" id="bank_name" required>
+                                                <option value="" selected>Select Bank</option>
+                                                <?php foreach($all_banks as $key => $value) { ?>
+                                                    <option value="<?php echo $value['bank_name']; ?>"><?php echo $value['bank_name']; ?></option>
+                                                <?php } ?>
+                                            </select>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Bank Name</span>
                                         </div>
                                     </div>

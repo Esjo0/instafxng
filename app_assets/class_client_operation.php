@@ -2832,4 +2832,12 @@ MAIL;
         return $fetched_data;
     }
 
+    public function deposit_refund_initiated($transaction_id, $amount) {
+        global $db_handle;
+        $query = "INSERT INTO user_deposit_refund (transaction_id, amount_paid, refund_status) VALUES ('$transaction_id', '$amount', '0')";
+        $db_handle->runQuery($query);
+
+        return true;
+    }
+
 }
