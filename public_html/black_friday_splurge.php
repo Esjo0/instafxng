@@ -1,20 +1,14 @@
 <?php
-require_once '../../init/initialize_general.php';
-$thisPage = "Home";
+require_once 'init/initialize_general.php';
+$thisPage = "Black Friday";
 
 if(isset($_POST['proceed'])) {
     $email = $db_handle->sanitizePost($_POST['email']);
     //$terms = $db_handle->sanitizePost($_POST['terms']);
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $query = "SELECT u.user_code
-            FROM user_credential AS uc
-            INNER JOIN user AS u ON uc.user_code = u.user_code
-            LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            LEFT JOIN user_bank AS ub ON u.user_code = ub.user_code
-            WHERE (uc.doc_status = '111') AND u.email = '$email'";
+        $query = "SELECT user_code, email FROM user
+WHERE user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '1') AND email = '$email'";
         $result = $db_handle->runQuery($query);
         $details = $db_handle->fetchArray($result);
 
@@ -46,7 +40,7 @@ if(isset($_POST['proceed'])) {
         <meta name="title" content="Instaforex Nigeria | Online Instant Forex Trading Services" />
         <meta name="keywords" content="instaforex, forex trading in nigeria, forex seminar, forex trading seminar, how to trade forex, trade forex, instaforex nigeria">
         <meta name="description" content="Instaforex, a multiple award winning international forex broker is the leading Forex broker in Nigeria, open account and enjoy forex trading with us.">
-        <?php require_once '../../layouts/head_meta.php'; ?>
+<!--        //--><?php //require_once 'layouts/head_meta.php'; ?>
         
         <meta property="og:site_name" content="Instaforex Nigeria" />
         <meta property="og:title" content="Instaforex Nigeria | Online Instant Forex Trading Services" />
@@ -54,8 +48,8 @@ if(isset($_POST['proceed'])) {
         <meta property="og:image" content="images/instaforex-100bonus.jpg" />
         <meta property="og:url" content="https://instafxng.com/" />
         <meta property="og:type" content="website" />
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
         <script src="https://www.wpiece.com/js/webcomponents.min.js"></script>
-        <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon.png">
         <link  rel="import" href="http://www.wpiece.com/p/10_26" />
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -86,20 +80,20 @@ if(isset($_POST['proceed'])) {
             });
         </script>
     </head>
-    <body>
+    <body">
         <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
-        <div id="main-body" class="container-fluid" >
+        <div >
             <!--Carousel Wrapper-->
-            <div id="video-carousel-example2" class="carousel slide carousel-fade" data-ride="carousel">
+            <div id="video-carousel-example2" class="carousel slide carousel-fade" data-ride="carousel" style="margin:0px;">
                 <!--/.Indicators-->
                 <!--Slides-->
                 <div class="carousel-inner" role="listbox">
                     <!-- First slide -->
-                    <div class="carousel-item active" style="height:100vh;">
+                    <div class="carousel-item active" style="height:100vh; width:100vw">
                         <!--Mask color-->
                         <div class="view">
                             <!--Video source-->
-                            <video class="video-intro" poster="https://mdbootstrap.com/img/Photos/Others/background.jpg" playsinline autoplay muted loop>
+                            <video class="video-intro" playsinline autoplay muted loop>
                                 <source src="https://mdbootstrap.com/img/video/Lines-min.mp4" type="video/mp4">
                             </video>
                             <div class="mask rgba-indigo-light"></div>
@@ -109,12 +103,12 @@ if(isset($_POST['proceed'])) {
                         <div class="carousel-caption">
                             <div class="animated fadeInDown">
                                 <div style=" border-radius: 22px; background: white; padding: 2px;">
-                                    <a href="https://instafxng.com" target="_blank"><img style="width:200px" class="img img-responsive" src="../../images/ifxlogo.png"></a>
+                                    <a href="https://instafxng.com" target="_blank"><img style="width:200px" class="img img-responsive" src="images/ifxlogo.png"></a>
                                 </div>
-                                <img id="img_div" class="img img-responsive" src="https://instafxng.com/imgsource/splurge.png" style="margin-top:5px; box-shadow: 0 4px 8px 0 rgba(255, 11, 0, 0.75), 0 6px 20px 0 rgba(255, 11, 0, 0.83)">
+                                <img id="img_div" class="img img-responsive" src="https://instafxng.com/imgsource/splurge.jpg" style="margin-top:5px; box-shadow: 0 4px 8px 0 rgba(255, 11, 0, 0.75), 0 6px 20px 0 rgba(255, 11, 0, 0.83)">
                                 <div class="row" style="margin-top:8px;">
                                     <div class="col-sm-12">
-                                        <?php include '../../layouts/feedback_message.php'; ?>
+                                        <?php include 'layouts/feedback_message.php'; ?>
                                     </div>
                                     <div class="col-sm-6">
                                         <span style="color:white"><strong><i>Drop your email address to be the first to get details</i></strong></span>
