@@ -121,7 +121,7 @@ function trigger_sell_order($row)
     $tp = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
     $tp = $tp * -1;
     //    send sms
-    $signal_object->send_notification($row['highest_pips'], $tp, $row['signal_id'], $row['symbol']);
+//    $signal_object->send_notification($row['highest_pips'], $tp, $row['signal_id'], $row['symbol']);
 //send sms end
     if ( $row['highest_pips'] > $tp ) {
         $exit_time = date('Y-m-d H:i:s');
@@ -167,7 +167,7 @@ function trigger_buy_order($row)
     }
     $tp = $signal_object->get_pips($row['symbol_id'], $row['take_profit'], $row['price']);
 //    send sms
-    $signal_object->send_notification($row['highest_pips'], $tp, $row['signal_id'], $row['symbol']);
+//    $signal_object->send_notification($row['highest_pips'], $tp, $row['signal_id'], $row['symbol']);
 //send sms end
     if ( $row['highest_pips'] > $tp ) {
         $exit_time = date('Y-m-d H:i:s');
