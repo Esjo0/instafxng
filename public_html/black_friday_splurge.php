@@ -1,6 +1,30 @@
 <?php
 require_once 'init/initialize_general.php';
-$thisPage = "Home";
+$thisPage = "Black Friday";
+
+if(isset($_POST['proceed'])) {
+    $email = $db_handle->sanitizePost($_POST['email']);
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $query = "SELECT user_code, email FROM user
+WHERE user_code IN (SELECT user_code FROM user_ifxaccount AS UI WHERE UI.type = '1') AND email = '$email'";
+        $result = $db_handle->runQuery($query);
+        $details = $db_handle->fetchArray($result);
+
+        if($details) {
+            foreach ($details AS $row) {
+                extract($row);
+                $query = "INSERT IGNORE INTO black_friday_2018 (user_code) VALUE('$user_code')";
+                $result = $db_handle->runQuery($query);
+            }
+            $message_success = "You have successfully registered";
+        } else {
+            $message_error = "You are not enrolled on our Loyality Promo <a target='_blank' href='https://instafxng.com/live_account.php'> Click Here to Open an ILPR account</a>";
+        }
+    } else {
+        $message_error = "Registration failed. Check the email Address you entered";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
