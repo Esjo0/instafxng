@@ -321,6 +321,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="233" id="" <?php if (in_array(233, $my_pages)) { echo 'checked="checked"'; } ?>/> Expired Loyalty Points</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="262" id="" <?php if (in_array(262, $my_pages)) { echo 'checked="checked"'; } ?>/> Loyalty Current Rank</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="272" id="" <?php if (in_array(272, $my_pages)) { echo 'checked="checked"'; } ?>/> Independence Contest 2018</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="272" id="" <?php if (in_array(272, $my_pages)) { echo 'checked="checked"'; } ?>/> Black Friday 2018</label></div></div>
                                     </div>
                                     <hr/>
                                     

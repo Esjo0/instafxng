@@ -1,3 +1,13 @@
+
+CREATE TABLE `black_friday_2018` (
+ `id` int(10) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(100) NOT NULL,
+ `total_points` int(100) DEFAULT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `user_code` (`user_code`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1
+
 ALTER TABLE `user_deposit` CHANGE `client_pay_method` `client_pay_method` ENUM('1','2','3','4','5','6','7','8','9','10') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '1 - WebPay 2 - Internet Transfer 3 - ATM Transfer 4 - Bank Transfer 5 - Mobile Money Transfer 6 - Cash Deposit 7 - Office Funding 8 - Not Listed 9 - USSD 10 - Paystack';
 
 
