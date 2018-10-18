@@ -60,8 +60,7 @@ if(isset($_POST['proceed'])) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <h1 style="font-family: 'Oleo Script', cursive !important; color: white !important">The Blackest Friday Splurge is Coming This November, Up to 150% Extra</h1>
-                                <p style="font-family: 'Pontano Sans', sans-serif !important; color: white !important; font-size: 1.2em !important;">You Snooze, You loose! Don’t let this promo begin without you. If you would like to be a part of the promo,
-                                enter your email address below to get a reminder when the promo begins.</p>
+                                <p style="font-family: 'Pontano Sans', sans-serif !important; color: white !important; font-size: 1.2em !important;">Don't Miss out on extra cash! Enter your email address below to get a reminder when the promo begins.</p>
                                 <hr />
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                     <div class="form-group">
