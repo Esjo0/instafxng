@@ -4,11 +4,10 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, bf.total_points, u.user_code
+$query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code
     FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code
-    ORDER BY total_points DESC 
-    ";
+    ORDER BY bf.created DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 40;
@@ -30,7 +29,7 @@ if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$independence_contest = $db_handle->fetchAssoc($result);
+$black_friday_splurge_promo = $db_handle->fetchAssoc($result);
 
 ?>
 <!DOCTYPE html>
@@ -39,8 +38,8 @@ $independence_contest = $db_handle->fetchAssoc($result);
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin - Independence Contest 2018</title>
-        <meta name="title" content="Instaforex Nigeria | Admin - Independence Contest 2018" />
+        <title>Instaforex Nigeria | Admin - Black Friday Splurge 2018</title>
+        <meta name="title" content="Instaforex Nigeria | Admin - Black Friday Splurge 2018" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
@@ -71,13 +70,12 @@ $independence_contest = $db_handle->fetchAssoc($result);
                         <div class="row">
                             <div class="col-sm-12">
 
-                                <p>Below is the list of participants in the 2018 Black Friday.</p>
+                                <p>Below is the list of clients that have requested for a reminder for the 2018 Black Friday Promotion.</p>
 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>Client Name</th>
-                                        <th>Total Points</th>
                                         <th>Email Address</th>
                                         <th>Phone Number</th>
                                         <th></th>
@@ -85,12 +83,11 @@ $independence_contest = $db_handle->fetchAssoc($result);
                                     </thead>
                                     <tbody>
                                     <?php
-                                    if(isset($independence_contest) && !empty($independence_contest)) {
-                                        foreach ($independence_contest as $row) {
+                                    if(isset($black_friday_splurge_promo) && !empty($black_friday_splurge_promo)) {
+                                        foreach ($black_friday_splurge_promo as $row) {
                                             ?>
                                             <tr>
                                                 <td><?php echo $row['full_name']; ?></td>
-                                                <td><?php echo $row['total_points']; ?></td>
                                                 <td><?php echo $row['email']; ?></td>
                                                 <td><?php echo $row['phone']; ?></td>
                                                 <td nowrap="nowrap">
@@ -103,7 +100,7 @@ $independence_contest = $db_handle->fetchAssoc($result);
                                     </tbody>
                                 </table>
                                 
-                                <?php if(isset($independence_contest) && !empty($independence_contest)) { ?>
+                                <?php if(isset($black_friday_splurge_promo) && !empty($black_friday_splurge_promo)) { ?>
                                 <div class="tool-footer text-right">
                                     <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                 </div>
@@ -111,7 +108,7 @@ $independence_contest = $db_handle->fetchAssoc($result);
                             </div>
                         </div>
                         
-                        <?php if(isset($independence_contest) && !empty($independence_contest)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($black_friday_splurge_promo) && !empty($black_friday_splurge_promo)) { require_once 'layouts/pagination_links.php'; } ?>
                     </div>
 
                     <!-- Unique Page Content Ends Here

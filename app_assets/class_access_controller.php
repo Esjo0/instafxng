@@ -162,7 +162,7 @@ define("PAGE_CODE", json_encode(array(
     262 => "loyalty_current_rank.php||",
     269 => "client_retention_review.php||",
     270 => "notification_manage.php||",
-    272 => "independence_contest.php||",
+    272 => "independence_contest.php||the_splurge.php||",
     273 => "walk_in_client_add.php||",
     274 => "walk_in_client_list.php||",
     275 => "client_comm_platinum.php||",
