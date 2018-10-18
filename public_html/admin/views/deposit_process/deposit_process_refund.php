@@ -20,14 +20,14 @@
                             <span><strong>Date Refund was Requested : </strong> <?php echo datetime_to_text($created); ?></span>
                             <hr>
                             <p>Client Account Details</p>
-                            <span><strong>Clients Bank Name : </strong><?php echo $user_bank_name; ?></span>
-                            <span><strong>Clients Bank Account Name : </strong><?php echo $user_acct_name; ?></span>
-                            <span><strong>Clients Bank Account Number : </strong><?php echo $user_acct_no; ?></span>
+                            <span><strong>Bank Name : </strong><?php echo $user_bank_name; ?></span>
+                            <span><strong>Bank Account Name : </strong><?php echo $user_acct_name; ?></span>
+                            <span><strong>Bank Account Number : </strong><?php echo $user_acct_no; ?></span>
                             <hr>
                             <p>Company Bank Account Details</p>
-                            <span><strong>Clients Bank Name : </strong><?php echo $company_bank_name; ?></span>
-                            <span><strong>Clients Bank Account Name : </strong><?php echo $company_acct_name; ?></span>
-                            <span><strong>Clients Bank Account Number : </strong><?php echo $company_acct_no; ?></span>
+                            <span><strong>Bank Name : </strong><?php echo $company_bank_name; ?></span>
+                            <span><strong>Bank Account Name : </strong><?php echo $company_acct_name; ?></span>
+                            <span><strong>Bank Account Number : </strong><?php echo $company_acct_no; ?></span>
                         <?php
                         }
                         ?>
@@ -142,8 +142,8 @@
                             <h4 class="modal-title">Save Comment</h4></div>
                         <div class="modal-body">Do you want to save the information?</div>
                         <div class="modal-footer">
-                            <input name="pending_refund" type="submit" class="btn btn-primary" value="PEND REFUND">
-                            <input name="complete_refund" type="submit" class="btn btn-success" value="COMPLETE REFUND">
+                            <input name="pending_refund" type="submit" class="btn btn-primary" value="Pend Refund">
+                            <input name="complete_refund" type="submit" class="btn btn-success" value="Complete Refund">
                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                         </div>
                     </div>
