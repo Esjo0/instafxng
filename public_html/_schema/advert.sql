@@ -1,5 +1,5 @@
 
-ALTER TABLE `free_training_campaign` ADD `entry_point` ENUM('1','2','3','4','5','6') NOT NULL COMMENT '1. Incoming Calls 2. Whatsapp 3. Support Mails 4.Walk in Clients 5. Facebook Ads 6. Referals' AFTER `campaign_period`;
+ALTER TABLE `free_training_campaign` ADD `entry_point` ENUM('1','2','3','4','5','6','7') NOT NULL DEFAULT '7' COMMENT '1. Incoming Calls 2. Whatsapp 3. Support Mails 4. Walk in Clients 5. Facebook Ads 6. Referrals 7. Website' AFTER `campaign_period`;
 
 
 CREATE TABLE `black_friday_2018` (
