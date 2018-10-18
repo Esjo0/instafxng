@@ -169,7 +169,10 @@ define("PAGE_CODE", json_encode(array(
     276 => "client_comm_gold.php||",
     277 => "client_comm_silver.php||",
     278 => "client_comm_bronze.php||",
-    279 => "withdrawal_reversal.php||"
+    279 => "withdrawal_reversal.php||",
+    281 => "deposit_refund_initiated.php||",
+    282 => "deposit_refund_pending.php||",
+    283 => "deposit_refund_completed.php||"
     )));
 class Access_Controller
 {

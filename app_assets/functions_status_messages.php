@@ -32,7 +32,7 @@ function office_addresses($id){
 */
 function refund_type($refund_type) {
     switch ($refund_type) {
-        case '1': $type = "Ommission of Transaction Id"; break;
+        case '1': $type = "Omission of Transaction ID"; break;
         case '2': $type = "Third Party Transaction"; break;
         case '3': $type = "Wrong remark"; break;
         default: $type = "Unknown"; break;

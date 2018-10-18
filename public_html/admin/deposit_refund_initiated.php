@@ -36,7 +36,7 @@ if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$pending_deposit_requests = $db_handle->fetchAssoc($result);
+$deposit_refund_initiated = $db_handle->fetchAssoc($result);
 
 ?>
 <!DOCTYPE html>
@@ -45,8 +45,8 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Admin - Pending Deposit</title>
-    <meta name="title" content="Instaforex Nigeria | Admin - Pending Deposit" />
+    <title>Instaforex Nigeria | Admin - Deposit Refund Initiated</title>
+    <meta name="title" content="Instaforex Nigeria | Admin - Deposit Refund Initiated" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <?php require_once 'layouts/head_meta.php'; ?>
@@ -96,8 +96,8 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                             </thead>
                             <tbody>
                             <?php
-                            if(isset($pending_deposit_requests) && !empty($pending_deposit_requests)) {
-                                foreach ($pending_deposit_requests as $row) {
+                            if(isset($deposit_refund_initiated) && !empty($deposit_refund_initiated)) {
+                                foreach ($deposit_refund_initiated as $row) {
                                     ?>
                                     <tr>
                                         <td><?php echo $row['trans_id']; ?></td>
@@ -109,11 +109,11 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                                         <td><?php echo datetime_to_text($row['deposit_date']); ?></td>
                                         <td><?php echo datetime_to_text($row['refund_date']); ?></td>
                                     </tr>
-                                <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                             </tbody>
                         </table>
 
-                        <?php if(isset($pending_deposit_requests) && !empty($pending_deposit_requests)) { ?>
+                        <?php if(isset($deposit_refund_initiated) && !empty($deposit_refund_initiated)) { ?>
                             <div class="tool-footer text-right">
                                 <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                             </div>
@@ -122,7 +122,7 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                     </div>
                 </div>
 
-                <?php if(isset($pending_deposit_requests) && !empty($pending_deposit_requests)) { require_once 'layouts/pagination_links.php'; } ?>
+                <?php if(isset($deposit_refund_initiated) && !empty($deposit_refund_initiated)) { require_once 'layouts/pagination_links.php'; } ?>
             </div>
 
             <!-- Unique Page Content Ends Here

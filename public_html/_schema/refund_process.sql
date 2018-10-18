@@ -2,19 +2,20 @@ ALTER TABLE `user_deposit` CHANGE `status` `status` ENUM('1','2','3','4','5','6'
 
 CREATE TABLE `user_deposit_refund` (
  `refund_id` int(11) NOT NULL AUTO_INCREMENT,
- `refund_type` enum('1','2','3') NOT NULL,
+ `refund_type` enum('1','2','3') NOT NULL COMMENT '1-Omission of Transaction Id 2-Third Party Transaction 3-Wrong remark',
  `transaction_id` varchar(100) NOT NULL,
- `amount_paid` int(11) NOT NULL,
+ `amount_paid` decimal(10,2) NOT NULL,
  `user_bank_name` varchar(100) DEFAULT NULL,
  `user_acct_name` varchar(100) DEFAULT NULL,
- `user_acct_no` int(11) DEFAULT NULL,
+ `user_acct_no` int(10) DEFAULT NULL,
  `payment_method` varchar(100) DEFAULT NULL,
  `company_bank_name` varchar(100) DEFAULT NULL,
  `company_acct_name` varchar(100) DEFAULT NULL,
- `company_acct_no` int(11) DEFAULT NULL,
+ `company_acct_no` int(10) DEFAULT NULL,
  `issue_desc` text,
  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- `refund_status` set('0','1','2') DEFAULT '1' COMMENT '1-Pending 2-Completed',
+ `refund_status` enum('0','1','2') DEFAULT '1' COMMENT '0-Initiated 1-Pending 2-Completed',
  `refund_complete_time` datetime DEFAULT NULL,
- UNIQUE KEY `refund_id` (`refund_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1
+ PRIMARY KEY (`refund_id`),
+ UNIQUE INDEX `transaction_id_UNIQUE` (`transaction_id` ASC)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8

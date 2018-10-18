@@ -14,7 +14,25 @@ $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 
 $refund_type = $get_params['x'];
 
-if(isset($_POST['deposit_refund'])){
+//Ensure only those that have an initiated refund can access this page
+if (!empty($trans_id_encrypted) && !empty($refund_type)) {
+    //since GET values are set, we will confirm if its a true refund transaction
+    $query = "SELECT * FROM user_deposit_refund WHERE transaction_id = '$trans_id' AND refund_status = '0' LIMIT 1";
+    $num_rows = $db_handle->numRows($query);
+
+    if($num_rows != 1) {
+        // No record found. Redirect to the home page.
+        redirect_to("./");
+        exit;
+    }
+
+} else {
+    //Redirect to homepage - user trying to access page directly without been sent a link
+    redirect_to("./");
+    exit;
+}
+
+if (isset($_POST['deposit_refund'])) {
     $user_bank_name = $db_handle->sanitizePost($_POST['user_bank_name']);
     $user_acct_name = $db_handle->sanitizePost($_POST['user_acct_name']);
     $user_acct_no = $db_handle->sanitizePost($_POST['user_acct_no']);
@@ -29,20 +47,32 @@ if(isset($_POST['deposit_refund'])){
     $query = "SELECT * FROM user_deposit WHERE trans_id = '$trans_id'";
     $result = $db_handle->numRows($query);
 
-    if($result == 1) {
-        switch ($refund_type){
-            case 1: $issue_desc = "Transaction ID: ".$trans_id; break;
-            case 2: $issue_desc = "Third Party Details : Name: $tp_name <br> Email: $tp_email <br> Phone No.: $tp_phone <br>Transaction ID: $trans_id";break;
-            case 3: $issue_desc = "Wrong Remark: $wrong_remark <br>Transaction ID: $trans_id";break;
+    if ($result == 1) {
+        switch ($refund_type) {
+            case 1:
+                $issue_desc = "Transaction ID: " . $trans_id;
+                break;
+            case 2:
+                $issue_desc = "Third Party Details : Name: $tp_name <br> Email: $tp_email <br> Phone No.: $tp_phone <br>Transaction ID: $trans_id";
+                break;
+            case 3:
+                $issue_desc = "Wrong Remark: $wrong_remark <br>Transaction ID: $trans_id";
+                break;
         }
+
         $query = "UPDATE user_deposit_refund SET user_bank_name = '$user_bank_name', user_acct_name = '$user_acct_name', user_acct_no = '$user_acct_no', company_bank_name = '$comp_bank_name', company_acct_name = '$comp_acct_name', company_acct_no = '$comp_acct_no', issue_desc = '$issue_desc', refund_status = '1' WHERE transaction_id = '$trans_id'";
         $request = $db_handle->runQuery($query);
-        if($request== true){$message_success = "Your Request has been submitted successfully";}
-        else{$message_error = "Your Request was not successfully submitted"; }
-        }else{
-        $message_error = "You Are Not due for a refund";
+
+        if ($request == true) {
+            $message_success = "Your Request has been submitted successfully";
+        } else {
+            $message_error = "Your Request was not successfully submitted";
         }
+    } else {
+        $message_error = "You Are Not due for a refund";
+    }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +81,7 @@ if(isset($_POST['deposit_refund'])){
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Instaforex Nigeria | Deposit refund</title>
-        <meta name="title" content="Instaforex Nigeria | Client Document Verification" />
+        <meta name="title" content="Instaforex Nigeria | Deposit refund" />
         <meta name="keywords" content=" ">
         <meta name="description" content=" ">
         <?php require_once 'layouts/head_meta.php'; ?>
@@ -117,9 +147,22 @@ if(isset($_POST['deposit_refund'])){
 
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="pass_code">Transaction ID:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <input id="trans_id" name="transaction_id" value="<?php if(isset($trans_id)) { echo $trans_id; } ?>" type="text" class="form-control" id="transaction_id" disabled>
+                                        </div>
+                                    </div>
+
+                                    <!-- Section for no transaction id -->
+                                    <div id="no_trans_id" style="display:none;">
+
+                                    </div>
+
+                                    <!-- Section for third party transaction -->
                                     <div id="third_party_transaction" style="display:none;">
                                         <hr>
-                                        <p class="text-center"><u>Third Party Details<u></p>
+                                        <p class="text-center"><strong>Third Party Details</strong></p>
                                         <div class="form-group">
                                             <label class="control-label col-sm-3" for="pass_code">Third Party's Name:</label>
                                             <div class="col-sm-9 col-lg-5">
@@ -143,6 +186,8 @@ if(isset($_POST['deposit_refund'])){
                                         </div>
                                         <hr>
                                     </div>
+
+                                    <!-- Section for wrong remark -->
                                     <div id="wrong_remark" style="display:none;">
                                         <hr>
                                         <div class="form-group">
@@ -154,17 +199,9 @@ if(isset($_POST['deposit_refund'])){
                                         </div>
                                         <hr>
                                     </div>
-                                    <div id="no_trans_id" style="display:none;">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="pass_code">Transaction ID:</label>
-                                        <div class="col-sm-9 col-lg-5">
-                                            <input id="trans_id" name="transaction_id" type="text" class="form-control" id="transaction_id" required>
-                                            <span class="help-block"><i class="fa fa-info-circle"></i> Deposit Transaction details</span>
-                                        </div>
-                                    </div>
-                                    </div>
 
-                                    <p class="text-center"><u>Enter Your Bank Details</u></p>
+                                    <!-- Client bank details -->
+                                    <p class="text-center"><strong>Enter Your Bank Details</strong></p>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" >Bank Name:</label>
                                         <div class="col-sm-9 col-lg-5">
@@ -193,9 +230,10 @@ if(isset($_POST['deposit_refund'])){
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Your Bank Account Number</span>
                                         </div>
                                     </div>
+                                    <hr />
 
-                                    <hr>
-                                    <p class="text-center"><u>Enter Details of the bank you paid into.</u></p>
+                                    <!-- -->
+                                    <p class="text-center"><strong>Enter Details of the Bank you paid into.</strong></p>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Bank Name:</label>
                                         <div class="col-sm-9 col-lg-5">
@@ -224,6 +262,7 @@ if(isset($_POST['deposit_refund'])){
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Bank Account Number</span>
                                         </div>
                                     </div>
+
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9 "><input name="deposit_refund" type="submit" class="btn btn-success" value="Submit" /></div>
                                     </div>
