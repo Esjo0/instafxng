@@ -72,6 +72,23 @@ function partner_status($status) {
 }
 
 /*
+* Table: free training campaign
+* Column: entry_point
+*/
+function training_entry_point($status) {
+    switch ($status) {
+        case '1': $message = "Incoming Calls"; break;
+        case '2': $message = "Whats App"; break;
+        case '3': $message = "Support Mails"; break;
+        case '4': $message = "Walk in Clients"; break;
+        case '5': $message = "Facebook Advert"; break;
+        case '6': $message = "Referrals"; break;
+        default: $message = "Channel Unknown"; break;
+    }
+    return $message;
+}
+
+/*
 * Table: forum_participants
 * Column: entry_route
 */
