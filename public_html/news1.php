@@ -4,93 +4,129 @@ $thisPage = "About";
 
 $news_id = $_GET['id'];
 
-if (isset($_POST['post_comment'])){
-
-if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-$secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
-$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-$responseData = json_decode($verifyResponse);
-
-    if ($responseData->success) {
-        $name = $db_handle->sanitizePost($_POST['name']);
-        $email = $db_handle->sanitizePost($_POST['email']);
-        $comment = $db_handle->sanitizePost($_POST['comment']);
-        $article_id = $db_handle->sanitizePost($_POST['article_id']);
-
-        if (empty($name) || empty($email) || empty($comment)) {
-            $message_error = "All fields are compulsory, please try again.";
-        } elseif (!check_email($email)) {
-            $message_error = "You have provided an invalid email address. Please try again.";
-        } else {
-            $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('$email', '$name')");
-            $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '$email'");
-            $block_status = $db_handle->fetchAssoc($block_status);
-            $block_status = $block_status[0];
-            $block_status = $block_status['block_status'];
-
-            if ($block_status == 'OFF') {
-                $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery("SELECT visitor_id FROM article_visitors WHERE email = '$email'"));
-                $visitor_id = $fetched_data[0]['visitor_id'];
-
-                $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment) VALUES ($visitor_id, '$article_id', '$comment')");
-
-                if ($db_handle->affectedRows() > 0) {
-                    $message_success = "You have successfully added a new comment.";
-                } else {
-                    $message_error = "An error occurred, your comment could not be saved.";
-                }
-            } else {
-                $message_error = "An error occurred, you do not have permission to submit comments.";
-            }
-
-        }
-    }
-
-} else {
-    $message_error = "Kindly take the robot test.";
-}
-}
-if (isset($_POST['reply_comment']))
-{
-if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+if (isset($_POST['post_comment'])) {
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
     $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
     $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
     $responseData = json_decode($verifyResponse);
 
-if ($responseData->success) {
-    $name = $db_handle->sanitizePost($_POST['name']);
-    $email = $db_handle->sanitizePost($_POST['email']);
-    $comment = $db_handle->sanitizePost($_POST['comment']);
-    $article_id = $db_handle->sanitizePost($_POST['article_id']);
-    $comment_id = $db_handle->sanitizePost($_POST['comment_id']);
+        if ($responseData->success) {
+            $name = $db_handle->sanitizePost($_POST['name']);
+            $email = $db_handle->sanitizePost($_POST['email']);
+            $comment = $db_handle->sanitizePost($_POST['comment']);
+            $article_id = $db_handle->sanitizePost($_POST['article_id']);
 
-    if(empty($name) || empty($email) || empty($comment)) {
-        $message_error = "All fields are compulsory, please try again.";
-    } elseif (!check_email($email)) {
-        $message_error = "You have provided an invalid email address. Please try again.";
-    }  else
-    {
-        $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('".$email."', '".$name."')");
-        $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '".$email."';");
-        $block_status = $db_handle->fetchAssoc($block_status);
-        $block_status = $block_status[0];
-        $block_status = $block_status['block_status'];
+            if (empty($name) || empty($email) || empty($comment)) {
+                $message_error = "All fields are compulsory, please try again.";
+            } elseif (!check_email($email)) {
+                $message_error = "You have provided an invalid email address. Please try again.";
+            } else {
+                $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('$email', '$name')");
+                $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '$email'");
+                $block_status = $db_handle->fetchAssoc($block_status);
+                $block_status = $block_status[0];
+                $block_status = $block_status['block_status'];
 
-        if ($block_status == 'OFF')
-        {
-            $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_visitors WHERE email = '".$email."';");
-            $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment, reply_to) VALUES(@v_id, '".$article_id."', '".$comment."', '".$comment_id."')");
+                if ($block_status == 'OFF') {
+                    $fetched_data = $db_handle->fetchAssoc($db_handle->runQuery("SELECT visitor_id FROM article_visitors WHERE email = '$email'"));
+                    $visitor_id = $fetched_data[0]['visitor_id'];
+
+                    $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment) VALUES ($visitor_id, '$article_id', '$comment')");
+
+                    if ($db_handle->affectedRows() > 0) {
+                        $message_success = "You have successfully added a new comment.";
+                    } else {
+                        $message_error = "An error occurred, your comment could not be saved.";
+                    }
+                } else {
+                    $message_error = "An error occurred, you do not have permission to submit comments.";
+                }
+            }
         }
-        $message_success = "You have successfully added a reply.";
+    } else {
+        $message_error = "Kindly take the robot test.";
     }
 }
 
-} else {
-    $message_error = "Kindly take the robot test.";
+if (isset($_POST['register'])) {
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+        $responseData = json_decode($verifyResponse);
+
+        if ($responseData->success) {
+            $name = $db_handle->sanitizePost($_POST['name']);
+            $email = $db_handle->sanitizePost($_POST['email']);
+
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $query = "SELECT * FROM article_vistors WHERE email = '$email'";
+                $result = $db_handle->numRows($query);
+                if ($result == 0) {
+                    $query = "SELECT type FROM article WHERE article_id = $news_id";
+                    $result = $db_handle->runQuery($query);
+                    $type = $db_handle->fetchArray($result);
+
+                    foreach($type AS $row) {
+                        extract($row);
+                    }
+
+                    $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name, entry_point) VALUES ('$email', '$name', '$type')");
+                    $cookie_name = "ifxng_articles";
+                    $cookie_value = $email;
+                    setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+                    header('Location: '.$_SERVER['REQUEST_URI']);
+                } else {
+                    $cookie_name = "ifxng_articles";
+                    $cookie_value = $email;
+                    setcookie($cookie_name, $cookie_value, time() + (86400 * 365), "/"); // 86400 = 1 day
+                    header('Location: '.$_SERVER['REQUEST_URI']);
+                }
+            }
+        } else {
+            $message_error = "Kindly take the robot test.";
+        }
+    }
 }
+
+if (isset($_POST['reply_comment'])) {
+    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+        $responseData = json_decode($verifyResponse);
+
+        if ($responseData->success) {
+            $name = $db_handle->sanitizePost($_POST['name']);
+            $email = $db_handle->sanitizePost($_POST['email']);
+            $comment = $db_handle->sanitizePost($_POST['comment']);
+            $article_id = $db_handle->sanitizePost($_POST['article_id']);
+            $comment_id = $db_handle->sanitizePost($_POST['comment_id']);
+
+            if(empty($name) || empty($email) || empty($comment)) {
+                $message_error = "All fields are compulsory, please try again.";
+            } elseif (!check_email($email)) {
+                $message_error = "You have provided an invalid email address. Please try again.";
+            }  else {
+                $db_handle->runQuery("INSERT IGNORE INTO article_visitors (email, full_name) VALUES ('".$email."', '".$name."')");
+                $block_status = $db_handle->runQuery("SELECT block_status FROM article_visitors WHERE email = '".$email."';");
+                $block_status = $db_handle->fetchAssoc($block_status);
+                $block_status = $block_status[0];
+                $block_status = $block_status['block_status'];
+
+                if ($block_status == 'OFF') {
+                    $db_handle->runQuery("SELECT @v_id:= visitor_id FROM article_visitors WHERE email = '".$email."';");
+                    $db_handle->runQuery("INSERT INTO article_comments (visitor_id, article_id, comment, reply_to) VALUES(@v_id, '".$article_id."', '".$comment."', '".$comment_id."')");
+                }
+
+                $message_success = "You have successfully added a reply.";
+            }
+        }
+    } else {
+        $message_error = "Kindly take the robot test.";
+    }
 }
+
 if(strlen($news_id) > 4) {
-    header("Location: view_news.php");
+    header("Location: blog.php");
 } else {
     $query = "SELECT * FROM article WHERE article_id = $news_id LIMIT 1";
     $result = $db_handle->runQuery($query);
@@ -108,18 +144,16 @@ if(strlen($news_id) > 4) {
         $result = $db_handle->runQuery("SELECT * FROM article WHERE status = 1 ORDER BY article_id DESC LIMIT  1, 6");
         $latest_news = $db_handle->fetchAssoc($result);
     } else {
-        header("Location: view_news.php");
+        header("Location: blog.php");
     }
 }
 
-function print_reply($replies)
-{
+function print_reply($replies) {
     global $db_handle, $title, $news_id;
-    if(isset($replies) && !empty($replies))
-    {?>
+    if(isset($replies) && !empty($replies)) {
+        ?>
         <div id="<?php echo $replies[0]['comment_id'];?>" style="padding-left: 2%; display: none;">
-       <?php foreach($replies as $key)
-        {
+       <?php foreach($replies as $key) {
             ?>
 
                 <li class="media" style="font-size:small;">
@@ -217,11 +251,9 @@ function print_reply($replies)
                 </div>
                 <?php print_reply($replies); ?>
 
-        <?php }?>
+        <?php } ?>
         </div>
-                <?php }
-}
-?>
+<?php } } ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -355,6 +387,62 @@ function print_reply($replies)
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
+                            <?php if (!isset($_COOKIE['ifxng_articles'])) { ?>
+                            <div id="register" class="modal" data-easein="perspectiveDownIn"  tabindex="-1" role="dialog" aria-labelledby="costumModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-md" style="background-color:rgba(198, 198, 198, 0.07);">
+                                    <div class="modal-content" style="background-color: ghostwhite">
+                                        <div class="modal-header">
+                                            <button type="button" class="close btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div style="margin-bottom: 30px; border-radius: 22px; background: rgba(255, 170, 159, 1); padding: 8px;">
+                                                <p class="text-center" style="color:#000000;">
+                                                    <strong>
+                                                    Don't miss out on any high impact news, article or special offers! <br>Subscribe to receive every update as soon as they are up!
+                                                    </strong>
+                                                </p>
+                                            </div>
+                                            <?php include '../layouts/feedback_message.php'; ?>
+                                            <form data-toggle="validator" class="form-horizontal " role="form" method="post" action="">
+                                                <div class="form-group" >
+                                                    <label class="control-label col-sm-3" for="name">Full Name:</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                                            <input name="name" type="text" id="name" value="" class="form-control" required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" >
+                                                    <label class="control-label col-sm-3" for="email">Email Address:</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+                                                            <input name="email" type="text" id="email" value="" class="form-control" required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group" >
+                                                    <label class="control-label col-sm-3" for=""></label>
+                                                    <div class="g-recaptcha col-sm-7" data-sitekey="6LcKDhATAAAAAF3bt-hC_fWA2F0YKKpNCPFoz2Jm"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-3 col-sm-9">
+                                                        <input type="submit" name="register" class="btn btn-success" value="SUBSCRIBE"/>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>$(document).ready(function () {
+                                    $('#register').modal("show");
+                                });</script>
+                            <?php }?>
                             <div class="col-sm-12">
                                 <p><a href="blog.php" class="btn btn-default" title="All Blog Post"><i class="fa fa-arrow-circle-left"></i> All Blog Post</a></p>
                                 <p>
@@ -376,6 +464,12 @@ function print_reply($replies)
                             <div class="col-sm-12">
                                 <p><strong><?php if(isset($description)) { echo stripslashes($description); } ?></strong></p>
                                 <?php if(isset($content)) { echo htmlspecialchars_decode(stripslashes(trim($content))); } ?>
+
+                                <hr />
+                                <?php if($news_id != 604){?>
+                                    <div class="col-sm-12"><div class="addthis_sharing_toolbox">Share on social media: </div></div>
+                                <?php } ?>
+                                <hr />
 
                                 <h5>Leave a comment</h5>
                                 <!--<div class="fb-comments" data-href="https://instafxng.com/news1/id/<?php /*echo $article_id . '/u/' . $url . '/'; */?>" data-numposts="10" data-mobile="1" data-width="100%"></div>-->
@@ -527,7 +621,6 @@ function print_reply($replies)
                                                                     </div>
                                                                 </div>
                                                             </div>
-
 
                                                         <?php
                                                         if(isset($replies) && !empty($replies))

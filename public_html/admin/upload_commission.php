@@ -140,6 +140,7 @@ $last_updated = date_to_text($last_updated[0]['date_earned']);
                                         </div>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
 

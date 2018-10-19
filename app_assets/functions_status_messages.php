@@ -1,5 +1,61 @@
 <?php
 
+/**
+ * Editable schedule mode
+ */
+function training_mode($id){
+    switch ($id) {
+        case '1': $address = "Online"; break;
+        case '2': $address = "Offline"; break;
+        default: $address = ""; break;
+    }
+    return $address;
+
+}
+
+/**
+ * Editable office addresses
+*/
+function office_addresses($id){
+    switch ($id) {
+        case '1': $address = "Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri-Olofin, Lagos. "; break;
+        case '3': $address = "Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos"; break;
+        default: $address = ""; break;
+    }
+    return $address;
+
+}
+
+/*
+* Table: user_deposit_refund_type
+* Column: issue_type
+*/
+function refund_type($refund_type) {
+    switch ($refund_type) {
+        case '1': $type = "Omission of Transaction ID"; break;
+        case '2': $type = "Third Party Transaction"; break;
+        case '3': $type = "Wrong remark"; break;
+        default: $type = "Unknown"; break;
+    }
+    return $type;
+}
+
+/*
+* Table: unverified_campaign_mail_log
+* Column: email_flag position
+*/
+function position_status($number) {
+    switch ($number) {
+        case '1': $position = "1st"; break;
+        case '2': $position = "2nd"; break;
+        case '3': $position = "3rd"; break;
+        case '4': $position = "4th"; break;
+        case '5': $position = "5th"; break;
+        default: $position = "$number"; break;
+    }
+    return $position;
+}
+
 /*
 * Table: partner
 * Column: status
@@ -11,6 +67,23 @@ function partner_status($status) {
         case '3': $message = "Inactive"; break;
         case '4': $message = "Suspended"; break;
         default: $message = "Status Unknown"; break;
+    }
+    return $message;
+}
+
+/*
+* Table: free training campaign
+* Column: entry_point
+*/
+function training_entry_point($status) {
+    switch ($status) {
+        case '1': $message = "Incoming Calls"; break;
+        case '2': $message = "Whats App"; break;
+        case '3': $message = "Support Mails"; break;
+        case '4': $message = "Walk in Clients"; break;
+        case '5': $message = "Facebook Advert"; break;
+        case '6': $message = "Referrals"; break;
+        default: $message = "Channel Unknown"; break;
     }
     return $message;
 }
@@ -72,6 +145,7 @@ function status_edu_deposit($status) {
         case '3': $message = "Confirmed"; break;
         case '4': $message = "Declined"; break;
         case '5': $message = "Failed"; break;
+        case '6': $message = "Pending"; break;
         default: $message = "Status Unknown"; break;
     }
     return $message;
@@ -134,6 +208,7 @@ function status_user_deposit_pay_method($status) {
         case '7': $message = "Office Funding"; break;
         case '8': $message = "Not Listed"; break;
         case '9': $message = "USSD"; break;
+        case '10': $message = "PayStack"; break;
         default: $message = "Payment Method Unknown"; break;
     }
     return $message;
@@ -388,6 +463,15 @@ function client_group_campaign_category($status) {
 		case '53': $message = "All clients who made deposit last month"; break;
 		case '54': $message = "All clients who made withdrawals last month"; break;
         case '55': $message = "All inactive clients before May 1 2018."; break;
+        case '56': $message = "All who have used WebPay for Deposit."; break;
+        case '57': $message = "All signal user."; break;
+        case '58': $message = "VIP Clients"; break;
+        case '59': $message = "Independence Contest Participant"; break;
+        case '60': $message = "Platinum Commission Clients"; break;
+        case '61': $message = "Gold Commission Clients"; break;
+        case '62': $message = "Silver Commission Clients"; break;
+        case '63': $message = "Bronze Commission Clients"; break;
+        case '64': $message = "Student Category 0"; break;
         default: $message = "Unknown"; break;
     }
     return $message;
@@ -441,7 +525,7 @@ function client_group_query($client_group, $campaign_type) {
             case '19': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_other = '2'"; break;
             case '20': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE u.campaign_subscribe = '1' AND (ud.status = '8' AND STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY ud.ifxaccount_id"; break;
             case '21': $query = "SELECT full_name AS first_name, email_address AS email, phone_number AS phone FROM pencil_comedy_reg"; break;
-            case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE email IN ('esan@sludasoft.com', 'utomudopercy@gmail.com', 'olagold4@yahoo.com', 'ademolaoyebode@gmail.com', 'Scargger2010560@gmail.com', 'Joshuagoke08@gmail.com', 'olasomimercy@gmail.com', 'estellynab38@yahoo.com', 'bunmzyfad@yahoo.com', 'estherogunsola463@yahoo.com', 'afujah@yahoo.com', 'ayoola@instafxng.com')"; break;
+            case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE email IN ('esan@sludasoft.com', 'utomudopercy@gmail.com', 'olagold4@yahoo.com', 'ademolaoyebode@gmail.com', 'Joshuagoke08@gmail.com', 'olasomimercy@gmail.com', 'estellynab38@yahoo.com', 'bunmzyfad@yahoo.com', 'estherogunsola463@yahoo.com', 'afujah@yahoo.com', 'ayoola@instafxng.com')"; break;
             case '23': $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS first_name, u.email, u.phone FROM point_ranking AS pr INNER JOIN user AS u ON pr.user_code = u.user_code ORDER BY pr.year_rank DESC, first_name ASC LIMIT 20"; break;
             case '24': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM career_user_application AS cua INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code WHERE cua.status = '2'"; break;
             case '25': $query = "SELECT u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned BETWEEN '$top_trader_from_date' AND '$top_trader_to_date'"; break;
@@ -475,7 +559,16 @@ function client_group_query($client_group, $campaign_type) {
             case '53': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' AND u.user_code NOT IN (SELECT u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.user_code "; break;
             case '54': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'  GROUP BY u.user_code "; break;
             case '55': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE u.user_code NOT IN ( SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '2018-07-20' AND '2018-07-20' ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '2018-07-20' GROUP BY u.user_code ORDER BY last_trade_date DESC LIMIT 0,600"; break;
-			default: $query = false; break;
+            case '56': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.client_pay_method = '1' GROUP BY u.user_code"; break;
+            case '57': $query = "SELECT su.name AS first_name, su.email, su.phone FROM signal_users AS su GROUP BY su.phone"; break;
+			case '58': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id INNER JOIN user AS u ON u.user_code = ui.user_code WHERE ud.status = '8' AND ud.real_dollar_equivalent >= 1000 AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '2017-12-01' AND '$date_today') GROUP BY u.user_code "; break;
+            case '59': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM independence_promo AS ip INNER JOIN user AS u ON ip.user_code = u.user_code GROUP BY u.user_code "; break;
+            case '60': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission >= 1000 "; break;
+            case '61': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 500 AND 999 "; break;
+            case '62': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 300 AND 499 "; break;
+            case '63': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 1 AND 300 "; break;
+            case '64': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM free_training_campaign AS ftc INNER JOIN user AS u ON ftc.email = u.email WHERE u.academy_signup IS NULL GROUP BY u.user_code ORDER BY ftc.created DESC, u.last_name ASC ";break;
+            default: $query = false; break;
         }
 
     } else {
@@ -502,9 +595,9 @@ function client_group_query($client_group, $campaign_type) {
             case '17': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_investment = '2' GROUP BY u.user_code"; break;
             case '18': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_services = '2' GROUP BY u.user_code"; break;
             case '19': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_other = '2' GROUP BY u.user_code"; break;
-            case '20': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE u.campaign_subscribe = '1' AND (ud.status = '8' AND STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.user_code GROUP BY ud.ifxaccount_id"; break;
+            case '20': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE u.campaign_subscribe = '1' AND (ud.status = '8' AND STR_TO_DATE(ud.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.user_code"; break;
             case '21': $query = "SELECT full_name AS first_name, email_address AS email, phone_number AS phone FROM pencil_comedy_reg"; break;
-            case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE email IN ('esan@sludasoft.com','utomudopercy@gmail.com', 'olagold4@yahoo.com', 'ademolaoyebode@gmail.com', 'Scargger2010560@gmail.com', 'Joshuagoke08@gmail.com', 'olasomimercy@gmail.com', 'estellynab38@yahoo.com', 'bunmzyfad@yahoo.com', 'estherogunsola463@yahoo.com', 'afujah@yahoo.com', 'ayoola@instafxng.com') GROUP BY phone"; break;
+            case '22': $query = "SELECT user_code, first_name, email, phone FROM user WHERE email IN ('esan@sludasoft.com','utomudopercy@gmail.com', 'olagold4@yahoo.com', 'ademolaoyebode@gmail.com', 'Joshuagoke08@gmail.com', 'olasomimercy@gmail.com', 'estellynab38@yahoo.com', 'bunmzyfad@yahoo.com', 'estherogunsola463@yahoo.com', 'afujah@yahoo.com', 'ayoola@instafxng.com') GROUP BY phone"; break;
             case '23': $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS first_name, u.email, u.phone FROM point_ranking AS pr INNER JOIN user AS u ON pr.user_code = u.user_code ORDER BY pr.year_rank DESC, first_name ASC LIMIT 20"; break;
             case '24': $query = "SELECT first_name, email_address AS email, phone_number AS phone FROM career_user_application AS cua INNER JOIN career_user_biodata AS cub ON cua.cu_user_code = cub.cu_user_code WHERE cua.status = '2' GROUP BY phone"; break;
             case '25': $query = "SELECT u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE date_earned BETWEEN '$top_trader_from_date' AND '$top_trader_to_date' GROUP BY phone"; break;
@@ -538,6 +631,15 @@ function client_group_query($client_group, $campaign_type) {
             case '53': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' AND u.user_code NOT IN (SELECT u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') GROUP BY u.user_code "; break;
             case '54': $query = "SELECT '$from_date' AS date_from, '$to_date' AS date_to, u.first_name, u.email, u.phone, u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' GROUP BY u.user_code "; break;
             case '55': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE u.user_code NOT IN ( SELECT u.user_code FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '2018-07-20' AND '2018-07-20' ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '2018-07-20' GROUP BY u.phone ORDER BY last_trade_date DESC LIMIT 0,600"; break;
+            case '56': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.client_pay_method = '1' GROUP BY u.user_code"; break;
+            case '57': $query = "SELECT su.name AS first_name, su.phone, su.email FROM signal_users AS su GROUP BY su.phone"; break;
+			case '58': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id INNER JOIN user AS u ON u.user_code = ui.user_code WHERE ud.status = '8' AND ud.real_dollar_equivalent >= 1000 AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '2017-12-01' AND '$date_today') GROUP BY u.user_code "; break;
+            case '59': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM independence_promo AS ip INNER JOIN user AS u ON ip.user_code = u.user_code GROUP BY u.user_code "; break;
+            case '60': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission >= 1000 "; break;
+            case '61': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 500 AND 999 "; break;
+            case '62': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 300 AND 499 "; break;
+            case '63': $query = "SELECT SUM(td.commission) AS total_commission, u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON ui.ifx_acct_no = td.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' GROUP BY u.user_code HAVING total_commission BETWEEN 1 AND 300 "; break;
+            case '64': $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM free_training_campaign AS ftc INNER JOIN user AS u ON ftc.email = u.email WHERE u.academy_signup IS NULL GROUP BY u.user_code ORDER BY ftc.created DESC, u.last_name ASC ";break;
             default: $query = false; break;
         }
 
@@ -733,6 +835,15 @@ function office_location($status)
 }
 
 function forum_reg_venue($status) {
+    switch ($status) {
+        case '1': $message = "Diamond Estate"; break;
+        case '2': $message = "Eastline Complex"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
+//TODO: regularize office location numbers
+function office_location_walkin_client($status) {
     switch ($status) {
         case '1': $message = "Diamond Estate"; break;
         case '2': $message = "Eastline Complex"; break;

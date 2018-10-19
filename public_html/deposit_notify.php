@@ -38,20 +38,24 @@ if (isset($_POST['deposit_notify_detail_form'])) {
     extract($_POST);
     $naira_amount = str_replace(",", "", $naira_amount);
 
-    $client_operation = new clientOperation();
-    $notification = $client_operation->user_payment_notification($trans_id, $pay_method, $pay_date, $teller_no, $naira_amount, $comment);
-    if($notification) {
-        $_transaction_details = $client_operation->get_deposit_transaction($trans_id);
-        $title = "New Deposit Notification";
-        $message = "Transaction ID: $trans_id <br/>Client Name: ".$_transaction_details['full_name']." <br/>Pay Date: $pay_date <br/>Amount : N $naira_amount <br/>Teller No : $teller_no <br/>Client's Comment: $comment <br/>";
-        $recipients = $obj_push_notification->get_recipients_by_access(31);
-        $author = $_transaction_details['full_name'];
-        $source_url = "https://instafxng.com/admin/deposit_notified.php";
-        $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
-        $page_requested = "deposit_notify_completed_php";
+    if(empty($pay_method) || empty($pay_date) || empty($naira_amount)) {
+        $message_error = "All compulsory fields must be filled.";
     } else {
-        $message_error = "Something went wrong, the operation could not be completed.
+        $client_operation = new clientOperation();
+        $notification = $client_operation->user_payment_notification($trans_id, $pay_method, $pay_date, $teller_no, $naira_amount, $comment);
+        if($notification) {
+            $_transaction_details = $client_operation->get_deposit_transaction($trans_id);
+            $title = "New Deposit Notification";
+            $message = "Transaction ID: $trans_id <br/>Client Name: ".$_transaction_details['full_name']." <br/>Pay Date: $pay_date <br/>Amount : N $naira_amount <br/>Teller No : $teller_no <br/>Client's Comment: $comment <br/>";
+            $recipients = $obj_push_notification->get_recipients_by_access(31);
+            $author = $_transaction_details['full_name'];
+            $source_url = "https://instafxng.com/admin/deposit_notified.php";
+            $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
+            $page_requested = "deposit_notify_completed_php";
+        } else {
+            $message_error = "Something went wrong, the operation could not be completed.
             Payment notification for this transaction may already exist. Please contact support.";
+        }
     }
 }
 

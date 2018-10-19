@@ -57,9 +57,9 @@ if(isset($_POST['withdraw_funds_pcode'])) {
                 $message_error .= "Please verify your account by <a href='verify_account.php'> clicking here.</a> or <a href='contact_info.php'>contact us</a> for help</p>";
             } elseif (!$client_operation->confirm_bank_account($client_user_code)) {
                 $all_banks = $system_object->get_all_banks();
-                $page_requested = withdraw_funds_add_bank_php;
+                $page_requested = 'withdraw_funds_add_bank_php';
             } else {
-                $page_requested = withdraw_funds_qty_php;
+                $page_requested = 'withdraw_funds_qty_php';
             }
         } else {
             $page_requested = 'withdraw_funds_pcode_php';
@@ -179,16 +179,7 @@ if(isset($_POST['withdraw_funds_qty'])) {
                 $source_url = "https://instafxng.com/admin/withdrawal_initiated.php";
                 $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
 
-
-                $message_success = "<p>Withdrawal Request Submitted - See the summary of your withdrawal below. Your Withdrawal will
-                                    be processed and payment made within one business day.</p>
-                                    <p>In a few cases some requests fall outside the category of withdrawals we can process from
-                                    our office and has to be sent to InstaForex office. Withdrawal requests in this category can take
-                                    up to 3 Business days.</p>
-                                    <p>If your withdrawal request falls within this category, we will inform you immediately.</p>
-                                    <p>Thank you for choosing InstaForex.</p>
-                                    <p class='text-danger' style='font-size: 1.3em'><strong>NOTE: </strong>Your payment will be made based on the rate as at the time the fund
-                                    is debited from your Instaforex account.</p>";
+                $message_success = "Withdrawal Request Submitted.";
                 $page_requested = 'withdraw_funds_finalize_php';
             } else {
                 $message_error = "An error occurred, please enter your amount again or contact support for assistance.";

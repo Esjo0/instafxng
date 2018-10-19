@@ -1,8 +1,8 @@
 <?php
 require_once 'init/initialize_general.php';
-$thisPage = "About";
+$thisPage = "Articles";
 
-$query = "SELECT * FROM article WHERE status = 1 ORDER BY created DESC ";
+$query = "SELECT * FROM article WHERE status = 1 ORDER BY type ASC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 10;
@@ -55,13 +55,25 @@ $all_news_items = $db_handle->fetchAssoc($result);
                             <div class="col-sm-12 text-center">
                                 <h3><strong>Blog - Articles, News, How - to</strong></h3>
                                 <br />
+                                <div class="panel panel-default col-sm-3" style="background-color: floralwhite">
+                                    <a href="blog.php"><div class="panel-body btn-default" title="Click to View All Blog post"><strong>All BLOG POSTS</strong></div></a>
+                                </div>
+                                <div class="panel panel-default col-sm-3" style="background-color: floralwhite">
+                                    <a href="articles.php"><div class="panel-body btn-default" title="Click to View All Ariticles"><strong>ARTICLES</strong></div></a>
+                                </div>
+                                <div class="panel panel-default col-sm-3">
+                                    <a href="fxcalendar.php"><div class="panel-body btn-default" title="Click to View All Forex News"><strong>NEWS CALENDAR</strong></div></a>
+                                </div>
+                                <div class="panel panel-default col-sm-3" >
+                                    <a href="extras.php"><div class="panel-body btn-default" title="Click to View Extras"><strong>EXTRAS</strong></div></a>
+                                </div>
                             </div>
                         </div>
                         
                         <div class="row">
                             <div class="col-sm-8">
 
-                                <?php foreach ($all_news_items as $row) { extract($row); ?>
+                                <?php if(isset($all_news_items) && !empty($all_news_items)) { foreach ($all_news_items as $row) { extract($row); ?>
                                 <div class="row news_list">
                                     <div class="col-sm-12"><h4><strong><a title="Click to read" class="title_link" href="news1/id/<?php echo $article_id . '/u/' . $url . '/'; ?>"><?php echo $title; ?></a></strong></h4></div>
                                     <div class="col-sm-5">
@@ -82,9 +94,9 @@ $all_news_items = $db_handle->fetchAssoc($result);
                                         </section>
                                     </div>
                                 </div>
-                                <?php } ?>
+                                <?php } } else { echo "<p><em>No results to display</em></p>"; } ?>
 
-                                <?php require 'layouts/pagination_links.php'; ?>
+                                <?php if(isset($all_news_items) && !empty($all_news_items)) { require_once 'layouts/pagination_links.php'; } ?>
                             </div>
 
                             <div class="col-sm-4"></div>

@@ -23,6 +23,7 @@ require_once(LIB_PATH.DS."class_database.php");
 // Load other assets
 require_once(LIB_PATH.DS."vendor".DS."autoload.php");
 require_once(LIB_PATH.DS."class_system.php");
+require_once(LIB_PATH.DS."class_paystack.php");
 require_once(LIB_PATH.DS."class_client_operation.php");
 require_once(LIB_PATH.DS."class_education.php");
 require_once(LIB_PATH.DS."class_questions.php");

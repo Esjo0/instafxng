@@ -14,8 +14,8 @@ if (isset($_POST['signal_report'])){
 }
 
 
-$query = "SELECT SS.symbol AS pair, SD.price, SD.take_profit, SD.stop_loss, SD.created, SD.views, SD.entry_price, 
-SD.entry_time, SD.exit_time, SD.exit_type, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note, SD.created_by, SD.market_price
+$query = "SELECT SS.symbol AS pair, SD.signal_id, SD.price, SD.take_profit, SD.stop_loss, SD.created, SD.views, SD.entry_price,
+SD.entry_time, SD.exit_time, SD.exit_type,SD.highest_pips, SD.lowest_pips, SD.pips, SD.trigger_status, SD.order_type, SD.exit_price, SD.note, SD.created_by, SD.market_price, SS.decimal_place
 FROM signal_daily AS SD 
 INNER JOIN signal_symbol AS SS ON SD.symbol_id = SS.symbol_id 
 WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')  ";
@@ -23,14 +23,59 @@ WHERE (STR_TO_DATE(trigger_date, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
 $total_Signals_Posted = $db_handle->numRows($query);
 $total_Signals_triggered = $db_handle->numRows($query."AND SD.entry_price IS NOT NULL OR SD.entry_time IS NOT NULL ");
 $total_Signals_triggered_tp = $db_handle->numRows($query."AND SD.exit_type = 'Take Profit' ");
-$total_Signals_triggered_sl = $db_handle->numRows($query."AND SD.exit_type = 'Stop Loss' ");
+$total_Signals_triggered_sl = $db_handle->numRows($query."AND SD.exit_type = 'Stop Loss' AND SD.highest_pips < 5");
 $total_Signals_pending = $db_handle->numRows($query."AND SD.trigger_status = '0' ");
 $total_Signals_users = $db_handle->numRows("SELECT email FROM signal_users");
+$total_Signals_breakeven = $db_handle->numRows($query."AND SD.highest_pips >= 5 AND  SD.exit_type = 'Stop Loss' ");
+$total_Signals_triggered_manual_tp = $db_handle->numRows($query."AND ((SD.exit_type = 'Manual' AND SD.order_type = '2' AND SD.exit_price < SD.price) OR (SD.exit_type = 'Manual' AND SD.order_type = '1' AND SD.exit_price > SD.price))");
+$total_Signals_triggered_manual_sl = $db_handle->numRows($query."AND ((SD.exit_type = 'Manual' AND SD.order_type = '2' AND SD.exit_price > SD.price) OR (SD.exit_type = 'Manual' AND SD.order_type = '1' AND SD.exit_price < SD.price))");
 
 
-//$query = "SELECT SUM(views) AS Total FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date'";
-//$result_view = $db_handle->runQuery($query);
+$query_profit = "SELECT pips AS Total_profit FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Take Profit')";
+$result_profit = $db_handle->runQuery($query_profit);
+$result_profit = $db_handle->fetchAssoc($result_profit);
 
+$sum_of_profit = 0;
+foreach($result_profit AS $row){
+    extract($row);
+    $Total_profit = abs($Total_profit);
+    $sum_of_profit += $Total_profit;
+}
+
+$query_loss = "SELECT pips AS Total_loss FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND (exit_type = 'Stop Loss') AND ((highest_pips < 5) OR (highest_pips IS NULL))";
+$result_loss= $db_handle->runQuery($query_loss);
+$result_loss = $db_handle->fetchAssoc($result_loss);
+$sum_of_loss = 0;
+foreach($result_loss AS $row){
+    extract($row);
+    $Total_loss = abs($Total_loss);
+    $sum_of_loss += $Total_loss;
+}
+
+$query_manual_profit = "SELECT pips AS Total_manual_profit FROM signal_daily AS SD WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND ((SD.exit_type = 'Manual' AND SD.order_type = '2' AND SD.exit_price < SD.price) OR (SD.exit_type = 'Manual' AND SD.order_type = '1' AND SD.exit_price > SD.price))";
+$result_manual_profit = $db_handle->runQuery($query_manual_profit);
+$result_manual_profit = $db_handle->fetchAssoc($result_manual_profit);
+
+$sum_of_manual_profit = 0;
+foreach($result_manual_profit AS $row){
+    extract($row);
+    $Total_manual_profit = abs($Total_manual_profit);
+    $sum_of_manual_profit += $Total_manual_profit;
+}
+
+$query_manual_loss = "SELECT pips AS Total_manual_loss FROM signal_daily AS SD WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND ((SD.exit_type = 'Manual' AND SD.order_type = '2' AND SD.exit_price > SD.price) OR (SD.exit_type = 'Manual' AND SD.order_type = '1' AND SD.exit_price < SD.price))";
+$result_manual_loss= $db_handle->runQuery($query_manual_loss);
+$result_manual_loss = $db_handle->fetchAssoc($result_manual_loss);
+$sum_of_manual_loss = 0;
+foreach($result_manual_loss AS $row){
+    extract($row);
+    $Total_manual_loss = abs($Total_manual_loss);
+    $sum_of_manual_loss += $Total_manual_loss;
+}
+$sum_of_profit = $sum_of_profit + $sum_of_manual_profit;
+$sum_of_loss = $sum_of_loss + $sum_of_manual_loss;
+
+$net_pips = $sum_of_profit - $sum_of_loss;
 //$query = "SELECT trigger_status FROM signal_daily WHERE trigger_date BETWEEN '$from_date' AND '$to_date' AND trigger_status = '1'";
 //$total_triggered = $db_handle->numRows($query);
 
@@ -85,6 +130,28 @@ function table_context($trigger_status){
             }
         </script>
         <link rel="stylesheet" href="../css/signal_table_context.css">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load("current", {packages:["corechart"]});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var profit = <?php echo $sum_of_profit;?>;
+                var loss =  <?php echo $sum_of_loss;?>;
+                var data = google.visualization.arrayToDataTable([
+                    ['Type', 'Pips'],
+                    ['Profit', profit],
+                    ['Loss',    loss]
+                ]);
+
+                var options = {
+                    title: 'Pips Analysis',
+                    pieHole: 0.4,
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+                chart.draw(data, options);
+            }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -159,10 +226,19 @@ function table_context($trigger_status){
                                             <tr><th>Total Triggered Signals (All)</th> <th><?php echo $total_Signals_triggered;?></th></tr>
                                             <tr><th>Total Triggered Signals (Take Profit)</th> <th><?php echo $total_Signals_triggered_tp;?></th></tr>
                                             <tr><th>Total Triggered Signals (Stop Loss)</th> <th><?php echo $total_Signals_triggered_sl;?></th></tr>
+                                            <tr><th>Total Triggered Signals (Break Even)</th> <th><?php echo $total_Signals_breakeven;?></th></tr>
+                                            <tr><th>Total Triggered Signals (Manual Take Profit)</th> <th><?php echo $total_Signals_triggered_manual_tp;?></th></tr>
+                                            <tr><th>Total Triggered Signals (Manual Stop Loss)</th> <th><?php echo $total_Signals_triggered_manual_sl;?></th></tr>
                                             <tr><th>Total Pending Signals</th> <th><?php echo $total_Signals_pending;?></th></tr>
                                             <tr><th>Total Signal Users</th> <th><?php echo $total_Signals_users;?></th></tr>
                                         </thead>
                                     </table>
+                            </div>
+                            <div class="col-sm-6">
+                                <div id="donutchart" ></div>
+                                <p class="text-center">Total Profit : <span style="color:green !important;"><?php echo number_format($sum_of_profit);?></span> pips || Total Loss : <span style="color:red !important;">-<?php echo number_format($sum_of_loss);?></span> pips<br>
+                                    NET PIPS : <?php echo ($signal_object->get_pips_display(1,$net_pips));?>
+                                </p>
                             </div>
                         </div>
 
@@ -185,21 +261,36 @@ function table_context($trigger_status){
                                                 ?></p></td>
                                         <td>
                                             <span><b>Currency Pair:</b> <?php echo $row['pair']; ?></span><br/>
-                                            <span><b>Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['price']); ?></span><br/>
-                                            <span><b>Take Profit:</b> <?php echo $signal_object->round_price_to_4_dp($row['take_profit']); ?></span><br/>
-                                            <span><b>Stop Loss:</b> <?php echo $signal_object->round_price_to_4_dp($row['stop_loss']); ?></span><br/>
+                                            <span><b>Price:</b> <?php echo $signal_object->round_price_to_dp($row['price'], $row['decimal_place']); ?></span><br/>
+                                            <span><b>Take Profit:</b> <?php echo $signal_object->round_price_to_dp($row['take_profit'], $row['decimal_place']); ?></span><br/>
+                                            <span><b>Stop Loss:</b> <?php echo $signal_object->round_price_to_dp($row['stop_loss'], $row['decimal_place']); ?></span><br/>
                                             <span><b>Date Created:</b> <?php echo datetime_to_text($row['created']); ?></span><br/>
-											<span><b>Keynote:</b> <?php echo $row['note']; ?><br/>
-                                            <span><b>Created By:</b> <?php echo $admin_object->get_admin_name_by_code($row['created_by']);; ?>
+                                            <span><b>Created By:</b> <?php echo $admin_object->get_admin_name_by_code($row['created_by']);; ?><br/>
+                                                <li class="list-group-item d-flex justify-content-between lh-condensed" style="width: 500px;">
+                                                    <div>
+                                                        <h6 class="text-center"><strong>KeyNote </strong></h6>
+                                                        <div class="text-muted" title="Scroll to view more" style="overflow:auto; ]; height:70px">
+                                                            <?php if(!empty($row['note']) && ($row['note'] != NULL)){?><div class="panel panel-warning">
+                                                                <div class="panel-body">
+                                                                    <span><?php echo $row['note']; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <?php }?>
+                                                            <?php $signal_object->get_keynotes($row['signal_id'], 1)?>
+                                                        </div>
+                                                    </div>
+                                                </li>
                                         </td>
                                         <td>
                                             <span><b>Market Price when order was place:</b> <?php echo $row['market_price']; ?></span></br>
-                                            <span><b>Entry Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['entry_price']); ?></span><br/>
-                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);} ?></span><br/>
+                                            <span><b>Entry Price:</b> <?php if(!empty($row['entry_price'])){echo $signal_object->round_price_to_dp($row['entry_price'], $row['decimal_place']);}else{echo $row['market_price']; } ?></span><br/>
+                                            <span><b>Entry Time:</b> <?php if(!empty($row['entry_time'])){echo datetime_to_text($row['entry_time']);}else{echo datetime_to_text($row['created']);} ?></span><br/>
                                             <span><b>Exit Time:</b> <?php if(!empty($row['exit_time'])){echo datetime_to_text($row['exit_time']);} ?></span><br/>
-                                            <span><b>Pips:</b> <?php echo $signal_object->get_pips_display($row['order_type'],$row['pips']); ?></span><br/>
-											<span><b>Exit Type:</b> <?php echo $row['exit_type']; ?></span><br/>
-											<span><b>Exit Price:</b> <?php echo $signal_object->round_price_to_4_dp($row['exit_price']); ?></span>
+                                            <span><b>Highest Pips:</b><span style="color:green !important;"> <?php echo $row['highest_pips']; ?></span> pips</span><br/>
+                                            <span><b>Pips:</b> <?php if(($row['highest_pips'] >= 5) && ($row['exit_type'] == 'Stop Loss')){ echo "0pips";}else{ echo $signal_object->get_pips_display($row['order_type'],$row['pips']);} ?></span><br/>
+                                            <span><b>Lowest Pips:</b> <span style="color:red !important;"><?php if(($row['highest_pips'] >= 5) && ($row['exit_type'] == 'Stop Loss')){ echo "0";}else{ echo $row['lowest_pips'];} ?></span> pips</span><br/>
+                                            <span><b>Exit Type:</b> <?php if(($row['highest_pips'] >= 5) && ($row['exit_type'] == 'Stop Loss')){ echo "Break Even";}else{ echo $row['exit_type'];} ?></span><br/>
+											<span><b>Exit Price:</b> <?php echo $signal_object->round_price_to_dp($row['exit_price'], $row['decimal_place']); ?></span>
                                         </td>
                                     </tr>
                                     <tr class="table-warning">
@@ -226,5 +317,6 @@ function table_context($trigger_status){
         <?php require_once 'layouts/footer.php'; ?>
         <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
         <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
-    </body>
+
+        </body>
 </html>

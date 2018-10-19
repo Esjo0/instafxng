@@ -1,3 +1,61 @@
+CREATE TABLE `signal_notification_log` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `signal_id` int(11) NOT NULL,
+ `log_status` enum('1','2') NOT NULL COMMENT '1- First Quater, 2- Second Quarter',
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `signal_id` (`signal_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1
+
+UPDATE signal_daily SET pips = 500 WHERE signal_id = 239;
+
+UPDATE signal_daily SET pips = 600 WHERE signal_id = 233;
+
+UPDATE signal_daily SET trigger_status = 1, pips = 0, WHERE signal_id = 212;
+
+CREATE TABLE `signal_notification_log` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `signal_id` int(11) NOT NULL,
+ `log_status` enum('1','2') NOT NULL COMMENT '1- First Quater, 2- Second Quarter',
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `signal_id` (`signal_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1
+Open new phpMyAdmin window
+
+CREATE TABLE `signal_keynotes` (
+ `keynote_id` int(11) NOT NULL AUTO_INCREMENT,
+ `signal_id` int(100) NOT NULL,
+ `comment` text NOT NULL,
+ `admin` varchar(10) NOT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ UNIQUE KEY `keynote_id` (`keynote_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1
+Open new phpMyAdmin window
+
+UPDATE signal_daily SET pips = 0, trigger_status = 1 WHERE signal_id = 200;
+UPDATE signal_daily SET pips = 7 WHERE signal_id = 199;
+UPDATE signal_daily SET pips = 7 WHERE signal_id = 198;
+UPDATE signal_daily SET pips = -3 WHERE signal_id = 197;
+
+UPDATE signal_daily SET lowest_pips = -8 WHERE signal_id = 185;
+
+UPDATE signal_daily SET lowest_pips = 0 WHERE signal_id = 181;
+
+ALTER TABLE `signal_daily` CHANGE `highest_pips` `highest_pips` INT(100) NULL DEFAULT '0', CHANGE `lowest_pips` `lowest_pips` INT(100) NULL DEFAULT '0';
+
+ALTER TABLE `campaign_leads` CHANGE `interest` `interest` ENUM('1','2','3') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '1-Training 2-ILPR 3-Signals';
+
+ALTER TABLE `campaign_leads` CHANGE `source` `source` ENUM('1','2','3') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '1-Landing Page 2-Facebook 3-Signals';
+
+
+
+ALTER TABLE `signal_daily` ADD `lowest_pips_time` DATETIME(6) NULL DEFAULT NULL AFTER `highest_pips_time`,
+ ADD `highest_pips` INT(100) NULL DEFAULT NULL AFTER `lowest_pips_time`,
+ ADD `lowest_pips` INT(100) NULL DEFAULT NULL AFTER `highest_pips`;
+
+ALTER TABLE `signal_daily` CHANGE `pips_time` `highest_pips_time` DATETIME(6) NULL DEFAULT NULL;
+
 UPDATE signal_daily SET exit_time = '2018-08-10 14:58:00', entry_time = '2018-08-10 13:35:00' WHERE trigger_date = '2018-08-10' AND trigger_status = '2';
 
 UPDATE signal_daily SET entry_time = '2018-08-10 14:15:00' WHERE trigger_date = '2018-08-10' AND trigger_status = '1';

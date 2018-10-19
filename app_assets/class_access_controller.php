@@ -2,7 +2,7 @@
 //Define an array of the majour pages and its code
 define("PAGE_CODE", json_encode(array(
     1 => "admin_add.php||account_officers.php||",
-    2 => "admin_view.php||admin_manage.php||",
+    2 => "admin_view.php||",
     3 => "bulletin_add.php||",
     4 => "bulletin_view.php||",
     5 => "bulletin_centre.php||",
@@ -72,7 +72,7 @@ define("PAGE_CODE", json_encode(array(
     54 => "partner_set_commission.php||",
     55 => "partner_pending_payout.php||",
     56 => "partner_payout_history.php||",
-    57 => "upload_commission.php||val_contest.php||",
+    57 => "upload_commission.php||val_contest.php||upload_independence_contest.php",
     58 => "commission_upload_log.php||",
     59 => "commission_view.php||",
     60 => "rewards_report.php||",
@@ -159,6 +159,20 @@ define("PAGE_CODE", json_encode(array(
     259 => "client_life.php||",
     260 => "client_update.php||",
     261 => "locked_transactions.php||",
+    262 => "loyalty_current_rank.php||",
+    269 => "client_retention_review.php||",
+    270 => "notification_manage.php||",
+    272 => "independence_contest.php||the_splurge.php||",
+    273 => "walk_in_client_add.php||",
+    274 => "walk_in_client_list.php||",
+    275 => "client_comm_platinum.php||",
+    276 => "client_comm_gold.php||",
+    277 => "client_comm_silver.php||",
+    278 => "client_comm_bronze.php||",
+    279 => "withdrawal_reversal.php||",
+    281 => "deposit_refund_initiated.php||",
+    282 => "deposit_refund_pending.php||",
+    283 => "deposit_refund_completed.php||"
     )));
 class Access_Controller
 {

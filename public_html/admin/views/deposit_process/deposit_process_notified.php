@@ -245,14 +245,50 @@ if(!empty($trans_detail['points_claimed_id'])) {
                 <div><textarea name="remarks" id="message" rows="3" class="form-control" placeholder="Enter your remark" required></textarea></div>
             </div>
             <div class="form-group">
-                <button type="button" data-target="#confirm-deposit-approve" data-toggle="modal" class="btn btn-success">Confirm Deposit</button>
-                <button type="button" data-target="#confirm-deposit-decline" data-toggle="modal" class="btn btn-danger">Decline Deposit</button>
-                <button type="button" data-target="#confirm-deposit-pend" data-toggle="modal" class="btn btn-info">Pend Deposit</button>
+                <button type="button" data-target="#confirm-deposit-approve" data-toggle="modal" class="btn btn-success btn-sm">Confirm Deposit</button>
+                <button type="button" data-target="#confirm-deposit-decline" data-toggle="modal" class="btn btn-danger btn-sm">Decline Deposit</button>
+                <button type="button" data-target="#confirm-deposit-pend" data-toggle="modal" class="btn btn-info btn-sm">Pend Deposit</button>
+            </div>
+            <hr />
+            <p class="text-center">Would you like to initiate the refund process for this transaction? You should enter the amount paid
+            and your remark first.</p>
+            <div class="form-group text-center">
+<!--                <button type="button" data-target="#confirm-deposit-refund" data-toggle="modal" class="btn btn-primary btn-sm">Refund Deposit</button>-->
+                <span style="color: red;">Coming Soon</span>
             </div>
             <?php endif; ?>
 
 
             <!--Modal - confirmation boxes-->
+            <div id="confirm-deposit-refund" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                    class="close">&times;</button>
+                            <h4 class="modal-title">Refund Deposit</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="client_name" value="<?php echo $trans_detail['full_name']; ?>" />
+                            <input type="hidden" name="client_email" value="<?php echo $trans_detail['email']; ?>" />
+                            <input type="hidden" name="trans_id" value="<?php echo $trans_id; ?>" />
+                                <div class="form-group">
+                                    <label>Select refund type</label>
+                                <select name="refund_type" class="form-control" id="refund_type" required>
+                                    <option value="1">Omission of Transaction ID</option>
+                                    <option value="2">Third Party Transaction</option>
+                                    <option value="3">Wrong Remarks</option>
+                                </select>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input name="initiate_refund" type="submit" class="btn btn-success" value="Confirm Refund">
+                            <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="confirm-deposit-approve" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">

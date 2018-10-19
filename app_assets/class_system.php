@@ -1103,7 +1103,29 @@ class InstafxngSystem {
 
         return $current_position ? $current_position : false;
     }
-    
+
+    public function unverified_email_campaign_log($email, $flag)
+    {
+        global $db_handle;
+        $query = "INSERT INTO unverified_campaign_mail_log (email, email_flag) VALUES('$email', '$flag')";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function get_office_locations() {
+        global $db_handle;
+
+        $query = "SELECT * FROM office_location";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        return $fetched_data;
+    }
+
 }
 
 $system_object = new InstafxngSystem();

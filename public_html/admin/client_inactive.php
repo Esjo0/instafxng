@@ -68,36 +68,6 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
     $query .= ' LIMIT ' . $offset . ',' . $rowsperpage;
     $result = $db_handle->runQuery($query);
     $selected_inactive_clients = $db_handle->fetchAssoc($result);
-
-
-    ///
-    $query2 = "CREATE TEMPORARY TABLE inactive_client_temp
-        SELECT u.user_code
-        FROM trading_commission AS td
-        INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        WHERE u.user_code NOT IN (
-            SELECT u.user_code
-            FROM trading_commission AS td
-            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-            INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'
-        ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$to_date' GROUP BY u.user_code ";
-    $db_handle->runQuery($query2);
-
-    $query3 = "SELECT COUNT(ict.user_code) AS total FROM inactive_client_temp AS ict
-        INNER JOIN user AS u ON u.user_code = ict.user_code
-        INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-        INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-        INNER JOIN trading_commission AS td ON td.ifx_acct_no = ui.ifx_acct_no
-        WHERE STR_TO_DATE(ud.created, '%Y-%m-%d') > '$to_date'
-        AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') > '$to_date'";
-    $result3 = $db_handle->runQuery($query3);
-    $selected_total = $db_handle->fetchAssoc($result3);
-    $total_active = $selected_total[0]['total'];
-//    var_dump($total_active);
-
-    $db_handle->closeDB();
 }
 
 ?>
@@ -172,7 +142,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                                         <label class="control-label col-sm-3" for="search_text">Order:</label>
                                         <div class="col-sm-9 col-lg-5">
                                             <div class="row">
-                                                <div class="col-sm-6"><div class="radio"><label for="my_volume"><input type="radio" name="order" value="my_volume" id="my_volume" required/> Old Order</label></div></div>
+                                                <div class="col-sm-6"><div class="radio"><label for="my_volume"><input type="radio" name="order" value="my_volume" id="my_volume" required/> Trade Volume</label></div></div>
                                                 <div class="col-sm-6"><div class="radio"><label for="last_trade_date"><input type="radio" name="order" value="last_trade_date" id="last_trade_date" /> Last Trade Date</label></div></div>
                                             </div>
                                         </div>

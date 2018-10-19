@@ -2,7 +2,7 @@
 
 class clientOperation {
     private $client_data;
-    
+
     public function __construct($ifx_account = '', $email_address = '') {
         if(isset($ifx_account) && !empty($ifx_account)) {
             $this->client_data = $this->set_client_data($ifx_account);
@@ -159,6 +159,25 @@ class clientOperation {
         $my_subject_new = str_replace('[FULL_NAME]', $client_name, $my_subject_new);
 
         $system_object->send_email($my_subject_new, $my_message_new, $sendto, $client_name);
+
+        // TODO: refine this, no repetition
+        $query = "SELECT * FROM system_message WHERE constant = 'WELCOME_GUIDE' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $selected_message_welcome_guide = $fetched_data[0];
+
+        $my_subject_welcome_guide = trim($selected_message_welcome_guide['subject']);
+        $my_message_welcome_guide = stripslashes($selected_message_welcome_guide['value']);
+
+        // Replace placeholders
+        $my_message_new_welcome_guide = str_replace('[FIRST_NAME]', $client_name, $my_message_welcome_guide);
+        $my_subject_new_welcome_guide = str_replace('[FIRST_NAME]', $client_name, $my_subject_welcome_guide);
+
+        $my_message_new_welcome_guide = str_replace('[FULL_NAME]', $client_name, $my_message_new_welcome_guide);
+        $my_subject_new_welcome_guide = str_replace('[FULL_NAME]', $client_name, $my_subject_new_welcome_guide);
+        if($my_subject_new_welcome_guide) {
+            $system_object->send_email($my_subject_new_welcome_guide, $my_message_new_welcome_guide, $sendto, $client_name);
+        }
     }
 
     /**
@@ -664,7 +683,7 @@ MAIL;
     public function get_user_verification_docs($user_credential_id) {
         global $db_handle;
 
-        $query = "SELECT uc.user_credential_id, uc.idcard, uc.passport, uc.signature, uc.doc_status,
+        $query = "SELECT uc.user_code, uc.user_credential_id, uc.idcard, uc.passport, uc.signature, uc.doc_status,
                 CONCAT(um.address, SPACE(1), um.city, SPACE(1), s.state) AS full_address, um.user_meta_id,
                 GROUP_CONCAT(DISTINCT ui.ifx_acct_no) AS ifx_accounts,
                 u.phone, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code
@@ -690,6 +709,35 @@ MAIL;
         return $db_handle->numOfRows($result) > 0 ? $fetched_data[0] : false;
     }
 
+    public function update_verification_remark($user_code, $admin_code, $remark ) {
+        global $db_handle;
+        $pointer = "CLIENT DOCUMENT VERIFICATION";
+        $comment = $pointer . ": " . $remark;
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$comment')";
+        $result = $db_handle->runQuery($query);
+        return $result;
+    }
+
+    public function get_verification_remark($user_code) {
+        global $db_handle;
+//        $pointer = "CLIENT DOCUMENT VERIFICATION";
+//        $pointer = $pointer . ": ";
+//        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, scc.comment, scc.created
+//                FROM sales_contact_comment AS scc
+//                INNER JOIN admin AS a ON scc.admin_code = a.admin_code
+//                WHERE scc.user_code = '$user_code' AND scc.comment LIKE '%$pointer%' ORDER BY scc.created DESC";
+
+        $query = "SELECT CONCAT(a.last_name, SPACE(1), a.first_name) AS admin_full_name, scc.comment, scc.created
+                FROM sales_contact_comment AS scc
+                INNER JOIN admin AS a ON scc.admin_code = a.admin_code
+                WHERE scc.user_code = '$user_code' ORDER BY scc.created DESC";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+
+        return $fetched_data ? $fetched_data : false;
+    }
+
     public function update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks) {
         global $db_handle;
         global $system_object;
@@ -702,7 +750,7 @@ MAIL;
         $fetched_data = $db_handle->fetchAssoc($result);
         extract($fetched_data[0]);
 
-        $query = "UPDATE user_credential SET status = '2', doc_status = '$doc_status', remark = '$remarks' WHERE user_credential_id = $credential_id LIMIT 1";
+        $query = "UPDATE user_credential SET status = '2', doc_status = '$doc_status' WHERE user_credential_id = $credential_id LIMIT 1";
         $db_handle->runQuery($query);
 
         $query = "UPDATE user_meta SET status = '$address_status' WHERE user_meta_id = $meta_id LIMIT 1";
@@ -774,7 +822,7 @@ MAIL;
     </div>
 </div>
 MAIL;
-            $system_object->send_email($subject, $body, $email, $full_name);
+            //$system_object->send_email($subject, $body, $email, $full_name);
 
         } else { // Send success message
             $subject = "Instafxng Verification Status";
@@ -824,7 +872,7 @@ MAIL;
     </div>
 </div>
 MAIL;
-            $system_object->send_email($subject, $body, $email, $full_name);
+            //$system_object->send_email($subject, $body, $email, $full_name);
 
         }
 
@@ -1288,6 +1336,41 @@ MAIL;
         return $db_handle->affectedRows() > 0 ? true : false;
     }
 
+    public function requery_paystack_deposit($trans_id) {
+        global $db_handle;
+        global $obj_paystack;
+
+        $paystack_response = $obj_paystack->verify($trans_id);
+        $paystack_response_amount = $paystack_response['data']['amount'] / 100;
+
+        if($paystack_response['data']['status'] == 'success') {
+            // Update the transaction
+            $client_naira_notified = $paystack_response_amount;
+
+            $query = "UPDATE user_deposit SET client_naira_notified = '$client_naira_notified', client_pay_date = NOW(), client_pay_method = '10', client_notified_date = NOW(), status = '2' WHERE trans_id = '$trans_id' LIMIT 1";
+            $db_handle->runQuery($query);
+
+            $message_success = "The transaction ID: $trans_id was SUCCESSFUL on the PayStack platform and has been moved to Notified Deposit.";
+            $return_msg = array(
+                'type' => 1,
+                'resp' => $message_success
+            );
+
+            return $return_msg;
+        } else {
+            $query = "UPDATE user_deposit SET status = '9' WHERE trans_id = '$trans_id' LIMIT 1";
+            $db_handle->runQuery($query);
+
+            $message_error = "The transaction ID: $trans_id was NOT SUCCESSFUL on the PayStack platform and would remain in Deposit Failed. <strong>PayStack Response: " . $paystack_response['data']['gateway_response'] . "</strong>";
+            $return_msg = array(
+                'type' => 2,
+                'resp' => $message_error
+            );
+
+            return $return_msg;
+        }
+    }
+
     public function requery_webpay_deposit($trans_id) {
         global $db_handle;
 
@@ -1396,7 +1479,10 @@ MAIL;
                     <tr><td>Bank Account Number</td><td>$client_acct_no</td></tr>
                 </tbody>
             </table>
+<p>Update Alert!<br/>
 
+You can make your next deposit directly from your debit card! This method is faster, easier and smoother!
+click <a href="http://bit.ly/2xT1Mbg" title="Deposit Now">here</a> to make your deposit with your card now.</p>
             <br /><br />
             <p>Best Regards,</p>
             <p>Instafxng Support,<br />
@@ -1661,7 +1747,7 @@ MAIL;
         $user_code_encrypted = encrypt($client_user_code);
 
         $sms_code = generate_sms_code();
-        $sms_message = "Your activation code is: $sms_code A message has been sent to your email, click the activation link in it and enter this code.";
+        $sms_message = "Your activation number is: $sms_code A message has been sent to your email, click the activation link in it and enter this number.";
         
         $system_object->send_sms($client_phone_number, $sms_message);
         
@@ -2053,11 +2139,12 @@ MAIL;
     }
 
     public function deposit_transaction_completion($transaction_id, $transaction_reference, $status, $remarks, $admin_code) {
-        global $db_handle;
+        global $db_handle, $partner_object;
 
         if($status == '8') {
             $query = "UPDATE user_deposit SET order_complete_time = NOW(), status = '$status', transfer_reference = '$transaction_reference' "
                 . "WHERE trans_id = '$transaction_id' LIMIT 1";
+            $partner_object->set_partner_commission($transaction_id, $type = "FC");
         } else {
             $query = "UPDATE user_deposit SET status = '$status', transfer_reference = '$transaction_reference' "
                 . "WHERE trans_id = '$transaction_id' LIMIT 1";
@@ -2149,8 +2236,11 @@ MAIL;
                 </tbody>
             </table>
 
-            <p>Do you know you can win up to $4,200 and 1 million Naira from our point based
-            loyalty program and rewards this year? <a href="https://instafxng.com/loyalty.php">Click here</a> for details</p>
+            <p>Instant Payment is Back!<br/> You can now fund your Instaforex account directly from your debit card! This method is faster, easier and smoother!
+            click <a href="http://bit.ly/2xT1Mbg">here</a> to make your deposit with your card now.</p>
+
+            <p><strong>Do you know you can win up to $4,200 and 1 million Naira from our point based
+            loyalty program and rewards this year? <a href="https://instafxng.com/loyalty.php">Click here</a> for details</strong></p>
 
             <p>Thank you for choosing Instafxng.</p>
 
@@ -2403,6 +2493,20 @@ MAIL;
         }
     }
 
+    public function log_paystack_meta($id, $tranx_status_code, $tranx_status_msg, $tranx_amt, $tranx_curr, $gway_name) {
+        global $db_handle;
+
+        $query = "INSERT INTO user_deposit_meta (user_deposit_id, trans_status_code, trans_status_message, trans_amount, trans_currency, gateway_name) "
+            . "VALUES ($id, '$tranx_status_code', '$tranx_status_msg', '$tranx_amt', '$tranx_curr', '$gway_name')";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @param $user_code
      * @param string $interest_training
@@ -2615,6 +2719,38 @@ MAIL;
         return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
     }
 
+    public function get_last_deposit_detail($user_code) {
+        global $db_handle;
+
+        $query = "SELECT ud.created, ud.real_dollar_equivalent
+            FROM user_deposit AS ud
+            INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE ud.status = '8' AND u.user_code = '$user_code' ORDER BY ud.created DESC LIMIT 1";
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $last_deposit_detail = $fetched_data[0];
+
+        return $last_deposit_detail ? $last_deposit_detail : false;
+    }
+
+    public function get_last_withdrawal_detail($user_code) {
+        global $db_handle;
+
+        $query = "SELECT uw.created, uw.dollar_withdraw
+            FROM user_withdrawal AS uw
+            INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE uw.status = '10' AND u.user_code = '$user_code' ORDER BY uw.created DESC LIMIT 1";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $last_withdrawal_detail = $fetched_data[0];
+
+        return $last_withdrawal_detail ? $last_withdrawal_detail : false;
+    }
+
     public function get_last_trade_detail($user_code) {
         global $db_handle;
 
@@ -2686,4 +2822,22 @@ MAIL;
         $recipients = $obj_push_notification->get_recipients_by_access($access_code);
         $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $url);
     }
+
+    public function get_refund_details($trans_id) {
+        global $db_handle;
+
+        $query = "SELECT * FROM user_deposit_refund WHERE transaction_id = '$trans_id' ";
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        return $fetched_data;
+    }
+
+    public function deposit_refund_initiated($transaction_id, $amount) {
+        global $db_handle;
+        $query = "INSERT INTO user_deposit_refund (transaction_id, amount_paid, refund_status) VALUES ('$transaction_id', '$amount', '0')";
+        $db_handle->runQuery($query);
+
+        return true;
+    }
+
 }

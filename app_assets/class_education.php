@@ -439,7 +439,7 @@ MAIL;
             FROM edu_lesson AS el
             INNER JOIN edu_course AS ec ON ec.edu_course_id = el.course_id
             INNER JOIN admin AS a ON a.admin_code = el.admin_code
-            WHERE el.course_id = $course_id AND el.status = '2' ORDER BY el.lesson_order ASC";
+            WHERE el.course_id = $course_id ORDER BY el.lesson_order ASC";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 

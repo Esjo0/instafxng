@@ -24,6 +24,7 @@ require_once(LIB_PATH.DS."class_database.php");
 require_once(LIB_PATH.DS."vendor".DS."autoload.php");
 require_once(LIB_PATH.DS."class_admin.php");
 require_once(LIB_PATH.DS."class_system.php");
+require_once(LIB_PATH.DS."class_paystack.php");
 require_once(LIB_PATH.DS."class_client_operation.php");
 require_once(LIB_PATH.DS."class_education.php");
 require_once(LIB_PATH.DS."class_questions.php");
@@ -46,6 +47,7 @@ require_once(LIB_PATH.DS."class_easter_promo.php");
 require_once(LIB_PATH.DS."class_signal_management.php");
 require_once(LIB_PATH.DS."class_bonus_operations.php");
 require_once(LIB_PATH.DS."class_bonus_conditions.php");
+require_once(LIB_PATH.DS."class_training_schedule.php");
 
 if(!endsWith(getCurrentURL(), "push_notification_server.php")){add_activity_log();}
 $obj_access_control->validate_access();

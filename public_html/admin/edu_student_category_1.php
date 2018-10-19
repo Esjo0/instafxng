@@ -19,18 +19,20 @@ if(isset($_POST['edu_sale_track'])){
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
-            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name, ftc.entry_point
             FROM user AS u
             LEFT JOIN user_edu_exercise_log AS ueel ON u.user_code = ueel.user_code
+            INNER JOIN free_training_campaign AS ftc ON u.email = ftc.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%')
             ORDER BY u.academy_signup DESC, u.last_name ASC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email,
-            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name, ftc.entry_point
             FROM user AS u
             LEFT JOIN user_edu_exercise_log AS ueel ON u.user_code = ueel.user_code
+            INNER JOIN free_training_campaign AS ftc ON u.email = ftc.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE u.academy_signup IS NOT NULL AND ueel.user_code IS NULL
@@ -166,6 +168,7 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                     <tr>
                                         <th>Client Name</th>
                                         <th>Client Phone</th>
+                                        <th>Email</th>
                                         <th>First Login</th>
                                         <th>Officer</th>
                                         <th>Action</th>
@@ -175,7 +178,10 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                     <?php if(isset($education_students) && !empty($education_students)) { foreach ($education_students as $row) { ?>
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
-                                            <td><?php echo $row['phone']; ?></td>
+                                            <td><?php echo $row['phone']; ?>
+                                                <?php $entry_point =  training_entry_point($row['entry_point']); echo " <span class=\"badge badge-light\"> $entry_point</span>"; ?>
+                                            </td>
+                                            <td><?php echo $row['email']; ?></td>
                                             <td><?php echo datetime_to_text($row['academy_signup']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">

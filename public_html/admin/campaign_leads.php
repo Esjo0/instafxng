@@ -25,10 +25,12 @@ if(isset($_POST['file_upload']))
             $_full_name = split_name(trim($row_contents[3]));
             $_email = strtolower(trim($row_contents[2]));
             $_phone = strtolower(trim(str_replace('p:', '', $row_contents[4]))) ;
+            $_phone = strtolower(trim(str_replace('p+', '+', $_phone))) ;
             $_interest = $row_contents[1];
             $created = str_replace('T', ' ', $row_contents[0]);
             $created = str_replace('+01:00', '', $created);
-            $obj_loyalty_training->add_lead($_full_name['first_name'], $_full_name['last_name'], $_email, $_phone, $_interest, 2, $created);
+            $created = date("Y-m-d", strtotime($created));
+            $obj_loyalty_training->add_lead($_full_name['first_name'], $_full_name['last_name'], $_email, $_phone, 2, $_interest, $created);
         }
     }
     //Delete the uploaded file
@@ -75,6 +77,22 @@ FROM campaign_leads AS CL, user AS U
 WHERE CL.email = '$search' AND CL.email = U.email
 ORDER BY CL.created DESC";
         $msg = "Results For ".$search;
+        break;
+    case '5':
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created
+FROM campaign_leads AS CL, user AS U
+WHERE CL.email = U.email
+ AND CL.interest = 3
+ORDER BY CL.created DESC";
+        $msg = "all Signal leads";
+        break;
+    case '6':
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created
+FROM campaign_leads AS CL, user AS U
+WHERE CL.email = U.email
+ AND CL.source = 3
+ORDER BY CL.created DESC";
+        $msg = "all Signal Campaign leads";
         break;
     default:
         $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
@@ -191,6 +209,8 @@ function bulk_sms_url($query){
                                             <button class="btn btn-sm <?php if($_SESSION['cat'] == '1'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="1">All Leads</button>
                                             <button class="btn btn-sm <?php if($_SESSION['cat'] == '2'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="2">All Training Leads</button>
                                             <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All ILPR Leads</button>
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '5'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="5">All signal Leads</button>
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '6'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="6">All Signal Campaign Leads</button>
                                         </div>
                                     </center>
                                     <br/>

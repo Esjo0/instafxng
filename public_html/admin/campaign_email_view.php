@@ -17,9 +17,11 @@ if (isset($_POST['delete_campaign'])) {
 }
 
 $query = "SELECT ce.sender AS campaign_sender, ce.send_date AS campaign_send_date, ce.created AS campaign_created, ce.subject AS campaign_subject, ce.status AS campaign_status,
-      ce.send_status AS campaign_send_status, ce.campaign_email_id AS campaign_id, ce.send_date AS campaign_send_date, cc.title AS campaign_category
+      ce.send_status AS campaign_send_status, ce.campaign_email_id AS campaign_id, ce.send_date AS campaign_send_date, cc.title AS campaign_category,
+      cet.total_recipient, cet.status AS email_track_status
       FROM campaign_email AS ce
       INNER JOIN campaign_category AS cc ON ce.campaign_category_id = cc.campaign_category_id
+      LEFT JOIN campaign_email_track AS cet ON cet.campaign_id = ce.campaign_email_id
       ORDER BY ce.created DESC ";
 $numrows = $db_handle->numRows($query);
 
@@ -84,7 +86,9 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <p class="text-right"><a href="campaign_email.php" class="btn btn-default" title="Create New Campaign Email">New Campaign Email <i class="fa fa-arrow-circle-right"></i></a></p>
-                                <p>All email campaigns</p>
+                                <p>All email campaigns. For campaigns with Status "Completed", the system will display the total number of
+                                clients that the email was sent to.</p>
+                                <hr /><br />
                                 
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
@@ -186,7 +190,14 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['campaign_sender']; ?></td>
                                             <td><?php echo $row['campaign_subject']; ?></td>
                                             <td><?php echo $row['campaign_category']; ?></td>
-                                            <td class="nowrap"><?php echo status_campaign_email($row['campaign_status']); ?></td>
+                                            <td class="nowrap">
+                                                <?php echo status_campaign_email($row['campaign_status']); ?>
+                                                <?php
+                                                if(isset($row['email_track_status']) && $row['email_track_status'] == '2') {
+                                                    echo "<br /><strong>(" . number_format($row['total_recipient']) . ")</strong>";
+                                                }
+                                                ?>
+                                            </td>
                                             <td><?php if(!is_null($row['campaign_send_date'])) { echo datetime_to_text($row['campaign_send_date']); } else { echo "Not Sent"; } ?></td>
                                             <td><?php echo datetime_to_text($row['campaign_created']); ?></td>
                                         </tr>

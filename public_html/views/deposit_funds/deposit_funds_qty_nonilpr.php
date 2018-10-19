@@ -1,6 +1,6 @@
 <?php
 $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
-//$total_point_balance = $client_operation->get_loyalty_point($client_user_code);
+
 $client_point_details = $obj_loyalty_point->get_user_point_details($client_user_code);
 $total_point_balance = $client_point_details['point_balance'];
 ?>
@@ -35,14 +35,14 @@ $total_point_balance = $client_point_details['point_balance'];
     </div>
 </form>
 <p>Available Payment METHODS includes:</p>
-<!--<p><strong>Note:</strong> Available Payment METHODS includes:</p>-->
 <ul class="fa-ul">
-<!--    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Instant Card Payments (MasterCard / Visa / Verve)</li>-->
+    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Instant Card Payments (MasterCard / Visa / Verve)</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Internet Banking Transfer</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>ATM Transfer</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Bank Transfer i.e. transferring over the counter at your bank</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Mobile Money Transfer</li>
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Cash Deposit</li>
+    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>USSD Transfer</li>
 </ul>
 
 
