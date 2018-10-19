@@ -348,7 +348,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     </div>
                                     <hr />
 
-                                    <h5 class="text-center">Haven't made it to the top 20 in <?php echo date('F, Y', strtotime('this month')); ?> yet? No worries, check your position below and speed things up to appear on the rank list</h5>
+                                    <h5 class="text-center" id="check_your_monthly_rank">Haven't made it to the top 20 in <?php echo date('F, Y', strtotime('this month')); ?> yet? No worries, check your position below and speed things up to appear on the rank list</h5>
                                     <br />
 
                                     <div class="form-group">
@@ -398,7 +398,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     </div>
                                     <hr />
 
-                                    <h5 class="text-center">Haven't made it to the top 20 in the current loyalty year? Check your position below and speed things up to appear on the rank list</h5>
+                                    <h5 class="text-center" id="check_your_yearly_rank" >Haven't made it to the top 20 in the current loyalty year? Check your position below and speed things up to appear on the rank list</h5>
                                     <br />
 
                                     <div class="form-group">
