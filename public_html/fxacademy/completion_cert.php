@@ -5,6 +5,13 @@ $thisPage = "";
 if (!$session_client->is_logged_in()) {
     redirect_to("login.php");
 }
+$get_learning_position = $education_object->get_learning_position($_SESSION['client_unique_code']);
+$highest_lesson_published = $education_object->get_highest_lesson_published();
+
+if($get_learning_position != $highest_lesson_published){
+    redirect_to("./");
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -52,8 +59,8 @@ if (!$session_client->is_logged_in()) {
                                 <p>You can now comfortably take live trades in the Forex Market and make as much profit as you desire.
                                     At this point, you qualify for our 100% education bonus* for funding your account.</p>
                                 <p><a class="btn btn-success btn-lg" target="_blank" href="https://instafxng.com/deposit.php">Fund Account - Get Bonus Now</a></p>
-                                <p><button onclick="print_report('print_out');" type="button" class="btn btn-lg btn-success">Download Your Certificate</button></p>
-                                <p><a class="btn btn-success btn-lg" target="_blank" href="schedule_training.php">Schedule A free one-on-one training with our analyst</a></p>
+                                <p style="display:none;"><button onclick="print_report('print_out');" type="button" class="btn btn-lg btn-success">Download Your Certificate</button></p>
+                                <p><a class="btn btn-success btn-lg" target="_blank" href="https://instafxng.com/fxacademy/schedule_training.php">Schedule A free one-on-one training with our analyst</a></p>
                                 <hr />
                             </div>
                         </div>

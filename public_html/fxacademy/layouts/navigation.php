@@ -3,6 +3,8 @@
 $user_code = $_SESSION['client_unique_code'];
 $initiated_trans = $education_object->get_initiated_trans_by_code($user_code);
 $confirm_client_paid = $education_object->confirm_course_payment($_SESSION['client_unique_code'], 3);
+$get_learning_position = $education_object->get_learning_position($_SESSION['client_unique_code']);
+$highest_lesson_published = $education_object->get_highest_lesson_published();
 ?>
 
 <div class="section-tint-red super-shadow">
@@ -31,7 +33,7 @@ $confirm_client_paid = $education_object->confirm_course_payment($_SESSION['clie
                         <ul class="nav navbar-nav">
                             <li><a href="fxacademy/index.php" title="Dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
                             <li><a href="fxacademy/support_message.php" title=""><i class="fa fa-envelope fa-fw"></i> Messages</a></li>
-                            <?php if($confirm_client_paid == true){?>
+                            <?php if($get_learning_position == $highest_lesson_published){?>
                             <li><a href="fxacademy/schedule_training.php" title=""><i class="fa fa- fa-fw"></i>Schedule Training</a></li>
                             <?php }?>
                             <?php if($initiated_trans) { ?>
