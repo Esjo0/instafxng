@@ -259,7 +259,7 @@ MAIL;
 }
 
 //approve deposit refund
-if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['approve_refund'] == true)) {
+if ($deposit_process_refund_approve && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['approve_refund'] == true)) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
@@ -272,12 +272,12 @@ if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['
     $result = $db_handle->runQuery($query);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    header("Location: deposit_refund_approved.php");
+    header("Location: deposit_refund_approve.php");
     exit;
 }
 
 //complete deposit refund
-if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['complete_refund'] == true)) {
+if ($deposit_process_refund_completed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['complete_refund'] == true)) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
