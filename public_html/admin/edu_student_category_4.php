@@ -26,25 +26,6 @@ if (isset($_POST['edu_sale_track'])) {
     edu_sale_track($user_code, $category);
 }
 
-if (isset($_POST['filter_lesson'])) {
-
-    $lesson = $_POST['lesson'];
-
-    if ($lesson > 0) {
-        $filter = " AND ueel.lesson_id = $lesson AND u.user_code NOT IN (SELECT user_code FROM user_edu_exercise_log WHERE lesson_id > $lesson) ";
-    } else {
-        $filter = "";
-    }
-}
-
-if (!empty($filter) || ($filter != null)) {
-    $_SESSION['filter'] = $filter;
-} else {
-    $_SESSION['filter'] = "";
-}
-
-$filt_val = $_SESSION['filter'];
-
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 
     $search_text = $_POST['search_text'];
@@ -73,7 +54,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
           INNER JOIN admin AS a ON ao.admin_code = a.admin_code
           LEFT JOIN user_edu_deposits AS ued ON ued.user_code = u.user_code
-          WHERE ued.status = '3' $filt_val
+          WHERE ued.status = '3'
           GROUP BY u.user_code ORDER BY ued.created DESC, u.last_name ASC ";
 }
 $numrows = $db_handle->numRows($query);
@@ -173,50 +154,6 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                                 <button class="btn btn-sm <?php if($_SESSION['cat'] == '2'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="2">All Clients Contacted</button>
                                                 <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All Clients Yet To Be Contacted</button>
                                             </div>
-                                        </div>
-                                    </center>
-
-                                    <center>
-                                        <div class="col-sm-3"></div>
-                                        <div class="col-sm-6">
-                                            <div class="search-section">
-                                                <div class="row">
-                                                    <div class="col-xs-12">
-                                                        <div class="input-group">
-                                                            <input type="hidden" name="search_param" value="all" id="search_param">
-                                                            <input minlength="3" type="text" class="form-control" name="search_text" placeholder="Search term..." >
-                                                            <span class="input-group-btn">
-                                                                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="input-group">
-                                                <select name="lesson" id="options" class="form-control" >
-                                                    <option value="">Select Lesson</option>
-                                                    <option value="0">All</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8</option>
-                                                    <option value="9">9</option>
-                                                    <option value="10">10</option>
-                                                    <option value="11">11</option>
-                                                    <option value="12">12</option>
-                                                    <option value="13">13</option>
-                                                </select>
-                                                <span class="input-group-btn">
-                                                <button name="filter_lesson" class="btn btn-info" type="submit">FILTER</button>
-                                                    </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-
                                         </div>
                                     </center>
                                 </form>
