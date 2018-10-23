@@ -111,8 +111,7 @@ switch ($_SESSION['selected_cat']) {
             INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
             INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
             INNER JOIN trading_commission AS tc ON ui.ifx_acct_no = tc.ifx_acct_no
-            WHERE YEAR(tc.date_earned) > 2013 OR YEAR(ud.created) > 2013
-            GROUP BY u.email ORDER BY u.created DESC ) ";
+            GROUP BY u.email ORDER BY u.created DESC ";
         $filter_category = "Unverified Clients with previous Activity";
         $display_msg = "Below is a table listing all unverified clients who have traded or funded with us before";
         break;
