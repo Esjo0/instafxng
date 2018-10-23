@@ -257,6 +257,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="261" id="" <?php if (in_array(261, $my_pages)) { echo 'checked="checked"'; } ?>/> Review Locked Transactions</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="281" id="" <?php if (in_array(281, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit Refund - Initiated</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="282" id="" <?php if (in_array(282, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit Refund - Pending</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="284" id="" <?php if (in_array(283, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit Refund - Approve</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="283" id="" <?php if (in_array(283, $my_pages)) { echo 'checked="checked"'; } ?>/> Deposit Refund - Completed</label></div></div>
                                     </div>
                                     <hr/>
