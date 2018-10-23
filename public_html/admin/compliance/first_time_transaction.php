@@ -5,8 +5,7 @@ if (!$session_admin->is_logged_in()) {
 }
 
 // table table
-$query = "SELECT STR_TO_DATE(created, '%Y-%m-%d') AS order_date, COUNT(trans_id) AS total_deposit
-          FROM user_deposit GROUP BY STR_TO_DATE(created, '%Y-%m-%d') ORDER BY STR_TO_DATE(created, '%Y-%m-%d') DESC ";
+$query = "SELECT * FROM user_first_transaction ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -29,7 +28,7 @@ if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$total_deposit = $db_handle->fetchAssoc($result);
+$first_time_transaction = $db_handle->fetchAssoc($result);
 
 ?>
 <!DOCTYPE html>
