@@ -2832,9 +2832,9 @@ MAIL;
         return $fetched_data;
     }
 
-    public function deposit_refund_initiated($transaction_id, $amount) {
+    public function deposit_refund_initiated($transaction_id, $amount, $admin_code) {
         global $db_handle;
-        $query = "INSERT INTO user_deposit_refund (transaction_id, amount_paid, refund_status) VALUES ('$transaction_id', '$amount', '0')";
+        $query = "INSERT INTO user_deposit_refund (transaction_id, amount_paid, refund_status, admin) VALUES ('$transaction_id', '$amount', '0', '$admin_code')";
         $db_handle->runQuery($query);
 
         return true;

@@ -128,6 +128,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
                         <?php if (in_array(281, $my_pages_sidebar)) { ?><li><a href="deposit_refund_initiated.php"> Deposit Refund - Initiated</a></li><?php } ?>
                         <?php if (in_array(282, $my_pages_sidebar)) { ?><li><a href="deposit_refund_pending.php"> Deposit Refund - Pending</a></li><?php } ?>
+                        <?php if (in_array(284, $my_pages_sidebar)) { ?><li><a href="deposit_refund_approve.php"> Deposit Refund - Approve</a></li><?php } ?>
                         <?php if (in_array(283, $my_pages_sidebar)) { ?><li><a href="deposit_refund_completed.php"> Deposit Refund - Completed</a></li><?php } ?>
                     </ul>
                 </li>
