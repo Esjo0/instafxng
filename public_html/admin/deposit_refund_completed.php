@@ -14,7 +14,7 @@ $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created AS deposit_date, ud.
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
-        WHERE udf.refund_status = '2' ORDER BY udf.refund_id DESC ";
+        WHERE udf.refund_status = '3' ORDER BY udf.refund_id DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
