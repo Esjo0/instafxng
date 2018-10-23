@@ -50,9 +50,10 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT ud.order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
           u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name,
-          ued.created AS pay_date
+          ued.created AS pay_date, ftc.entry_point
           FROM user_edu_exercise_log AS ueel
           INNER JOIN user AS u ON ueel.user_code = u.user_code
+          INNER JOIN free_training_campaign AS ftc ON u.email = ftc.email
           INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
           INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
@@ -63,9 +64,10 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 } else {
     $query = "SELECT ud.order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone,
           u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name,
-          ued.created AS pay_date
+          ued.created AS pay_date, ftc.entry_point
           FROM user_edu_exercise_log AS ueel
           INNER JOIN user AS u ON ueel.user_code = u.user_code
+          INNER JOIN free_training_campaign AS ftc ON u.email = ftc.email
           INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
           INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
           INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id

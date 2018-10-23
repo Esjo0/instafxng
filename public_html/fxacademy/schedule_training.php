@@ -6,6 +6,13 @@ if (!$session_client->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$get_learning_position = $education_object->get_learning_position($_SESSION['client_unique_code']);
+$highest_lesson_published = $education_object->get_highest_lesson_published();
+
+if($get_learning_position != $highest_lesson_published){
+    redirect_to("./");
+}
+
 $user_code = $_SESSION['client_unique_code'];
 
 if (isset($_POST['schedule'])) {
@@ -13,12 +20,57 @@ if (isset($_POST['schedule'])) {
     $id = $db_handle->sanitizePost($_POST['id']);
     $client_name = $_SESSION['first_name'];
     $client_email = $_SESSION['client_email'];
-    $subject = "FOREX ACADEMY TRAINING";
+
+    $subject = "Congratulations $client_name! You have been scheduled.";
     $_date = datetime_to_textday($date) . " " . datetime_to_text($date);
-    $body = <<<MAIL
+    $core_msg = <<<MAIL
 Dear $client_name,
-You have Successfully Scheduled a training with our analyst for
-$_date.
+
+Congratulations on the successful completion of the Fxacademy, we are so proud of you!
+
+Kindly be informed that, your personalized training with the analyst has been successfully scheduled for $date.
+
+We look forward to hosting you.
+MAIL;
+    $body =
+        <<<MAIL
+        <div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+
+            $core_msg
+
+            <br /><br />
+            <p>Best Regards,</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
 MAIL;
     $query = "SELECT * FROM training_schedule_students WHERE user_code = '$user_code' AND status = '0'";
     $result = $db_handle->numRows($query);

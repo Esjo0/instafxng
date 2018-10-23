@@ -36,6 +36,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['release_transaction']))
         case 'inspect': $url = 'deposit_confirmed'; break;
         case 'notified': $url = 'deposit_notified'; break;
         case 'view': $url = 'deposit_confirmed'; break;
+        case 'refund': $url = 'deposit_refund_pending'; break;
     }
     header("Location: $url.php");
     exit();

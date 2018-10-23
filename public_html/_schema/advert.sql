@@ -2,6 +2,9 @@ ALTER TABLE `user_deposit_refund` ADD `refund_approve_time` DATETIME NULL AFTER 
 ALTER TABLE `user_deposit_refund` ADD `admin` VARCHAR(10) NOT NULL AFTER `refund_complete_time`;
 ALTER TABLE `user_deposit_refund` CHANGE `refund_status` `refund_status` SET('0','1','2','3') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '1' COMMENT '0-Initiated 1-Pending 2-Approved 3-Completed';
 
+ALTER TABLE `free_training_campaign` ADD `entry_point` ENUM('1','2','3','4','5','6','7') NOT NULL DEFAULT '7' COMMENT '1. Incoming Calls 2. Whatsapp 3. Support Mails 4. Walk in Clients 5. Facebook Ads 6. Referrals 7. Website' AFTER `campaign_period`;
+
+
 CREATE TABLE `black_friday_2018` (
  `id` int(10) NOT NULL AUTO_INCREMENT,
  `user_code` varchar(100) NOT NULL,

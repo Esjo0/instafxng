@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
             $last_name = "";
         }
 
-        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, attendant) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', $attendant)";
+        $query = "INSERT INTO free_training_campaign (first_name, last_name, email, phone, attendant, entry_point) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', $attendant, '$entry_point')";
         $result = $db_handle->runQuery($query);
 
         // create profile for this client
@@ -160,7 +160,7 @@ MAIL;
 
             $message_success = "You have successfully registered the client.";
         } else {
-            $message_error = "An error occurred, please try again.";
+            $message_error = "An error occurred, please try again. - Client Might have been Earlier Registered.";
         }
     }
 }
@@ -228,6 +228,20 @@ $all_account_officers = $admin_object->get_all_account_officers();
                                         <?php foreach($all_account_officers as $key => $value) { ?>
                                             <option value="<?php echo $value['account_officers_id']; ?>"><?php echo $value['account_officer_full_name']; ?></option>
                                         <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="attendant">Point of Entry:</label>
+                                <div class="col-sm-9 col-lg-5">
+                                    <select name="entry_point" class="form-control" id="entry" required>
+                                        <option value="1">Incoming Calls</option>
+                                        <option value="2">Whats App</option>
+                                        <option value="3">Support Mails</option>
+                                        <option value="4">Walk in Clients</option>
+                                        <option value="5">Facebook Adverts</option>
+                                        <option value="6">Referrals</option>
                                     </select>
                                 </div>
                             </div>

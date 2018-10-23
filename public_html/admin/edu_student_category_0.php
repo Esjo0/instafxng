@@ -19,7 +19,7 @@ if(isset($_POST['edu_sale_track'])){
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, ftc.created,
-            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name, ftc.entry_point
             FROM free_training_campaign AS ftc
             INNER JOIN user AS u ON ftc.email = u.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
@@ -28,7 +28,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             ORDER BY ftc.created DESC, u.last_name ASC ";
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, ftc.created,
-            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            u.phone, u.academy_signup, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name, ftc.entry_point
             FROM free_training_campaign AS ftc
             INNER JOIN user AS u ON ftc.email = u.email
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
@@ -177,7 +177,9 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                     <?php if(isset($education_students) && !empty($education_students)) { foreach ($education_students as $row) { ?>
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
-                                            <td><?php echo $row['phone']; ?></td>
+                                            <td><?php echo $row['phone']; ?>
+                                                <?php $entry_point =  training_entry_point($row['entry_point']); echo " <span class=\"badge badge-light\"> $entry_point</span>"; ?>
+                                            </td>
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
