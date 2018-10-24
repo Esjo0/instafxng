@@ -9,7 +9,7 @@ $thisPage = "timmer";
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | InstaFxNg Black Friday Splurge</title>
+    <title>Instaforex Nigeria | timmer</title>
     <meta name="title" content="Instaforex Nigeria | InstaFxNg Black Friday Splurge" />
     <meta name="keywords" content="instaforex, promotions of instaforex, gifts for forex traders, contest and promotions" />
     <meta name="description" content="InstaFxNg Black Friday Splurge" />
