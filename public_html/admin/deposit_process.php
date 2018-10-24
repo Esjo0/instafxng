@@ -415,8 +415,8 @@ if(!empty($transaction_access['holder'])){
                                     if($deposit_process_inspect) { include_once 'views/deposit_process/deposit_process_inspect.php'; }
                                     if($deposit_process_notified) { include_once 'views/deposit_process/deposit_process_notified.php'; }
                                     if($deposit_process_view) { include_once 'views/deposit_process/deposit_process_view.php'; }
-                                if($deposit_process_refund_approve) { include_once 'views/deposit_process/deposit_process_refund_approve.php'; }
-                                if($deposit_process_refund_completed) { include_once 'views/deposit_process/deposit_process_refund_completed.php'; }
+                                    if($deposit_process_refund_approve) { include_once 'views/deposit_process/deposit_process_refund_approve.php'; }
+                                    if($deposit_process_refund_completed) { include_once 'views/deposit_process/deposit_process_refund_completed.php'; }
                                 ?>
                                 
                             </div>
