@@ -12,7 +12,7 @@ $system_object = new InstafxngSystem();
 //Ensure only those that have an initiated refund can access this page
 if (!empty($trans_id_encrypted) && !empty($refund_type)) {
     //since GET values are set, we will confirm if its a true refund transaction
-    $query = "SELECT * FROM user_deposit_refund WHERE transaction_id = '$trans_id' AND refund_status = '0' LIMIT 1";
+    $query = "SELECT * FROM user_deposit_refund WHERE transaction_id = '$trans_id' AND refund_status = '1' LIMIT 1";
     $num_rows = $db_handle->numRows($query);
     //get  user credentials
     $query = "SELECT U.email, UC.passport, CONCAT(U.first_name, SPACE(1), U.last_name) AS client_name, U.middle_name,

@@ -45,7 +45,7 @@ $deposit_refund_pending = $db_handle->fetchAssoc($result);
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Admin - Deposit Refund Pending</title>
+    <title>Instaforex Nigeria | Admin - Deposit Refund Approved</title>
     <meta name="title" content="Instaforex Nigeria | Admin - Deposit Refund Approve" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
@@ -70,7 +70,7 @@ $deposit_refund_pending = $db_handle->fetchAssoc($result);
 
             <div class="row">
                 <div class="col-sm-12 text-danger">
-                    <h4><strong>DEPOSIT REFUND PROCESS</strong></h4>
+                    <h4><strong>DEPOSIT REFUND APPROVED</strong></h4>
                 </div>
             </div>
 
@@ -79,7 +79,7 @@ $deposit_refund_pending = $db_handle->fetchAssoc($result);
                     <div class="col-sm-12">
                         <?php require_once 'layouts/feedback_message.php'; ?>
                         <p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
-                        <p>List of clients who has requested for Deposit refund</p>
+                        <p>List of clients whose refund has been approved</p>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
