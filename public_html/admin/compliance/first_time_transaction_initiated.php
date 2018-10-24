@@ -65,7 +65,7 @@ $first_time_transaction = $db_handle->fetchAssoc($result);
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>CLIENT FIRST TRANSACTION</strong></h4>
+                            <h4><strong>CLIENT FIRST TRANSACTION - INITIATED</strong></h4>
                         </div>
                     </div>
                     
