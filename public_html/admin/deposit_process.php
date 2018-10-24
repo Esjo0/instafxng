@@ -256,7 +256,7 @@ MAIL;
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    header("Location: deposit_refund_initiated.php");
+    header("Location: deposit_notified.php");
     exit;
 }
 

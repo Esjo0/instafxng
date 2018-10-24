@@ -253,8 +253,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
             <p class="text-center">Would you like to initiate the refund process for this transaction? You should enter the amount paid
             and your remark first.</p>
             <div class="form-group text-center">
-<!--                <button type="button" data-target="#confirm-deposit-refund" data-toggle="modal" class="btn btn-primary btn-sm">Refund Deposit</button>-->
-                <span style="color: red;">Coming Soon</span>
+                <button type="button" data-target="#confirm-deposit-refund" data-toggle="modal" class="btn btn-primary btn-sm">Refund Deposit</button>
             </div>
             <?php endif; ?>
 
