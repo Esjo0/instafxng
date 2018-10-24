@@ -939,3 +939,17 @@ function project_management_status($status)
     }
     return $message;
 }
+
+/*
+ * Table:
+ */
+function financial_trans_type($status)
+{
+    switch ($status)
+    {
+        case '1': $message = "Deposit"; break;
+        case '2': $message = "Withdrawal"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}

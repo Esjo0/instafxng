@@ -5,7 +5,13 @@ if (!$session_admin->is_logged_in()) {
 }
 
 // table table
-$query = "SELECT * FROM user_first_transaction ";
+$query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name, u.phone, u.email,
+    u.created AS user_reg_date, ud.real_dollar_equivalent, uft.trans_id, ud.created, uft.trans_type,
+    uft.comment
+    FROM user_first_transaction AS uft
+    INNER JOIN user AS u ON u.user_code = uft.user_code
+    INNER JOIN user_deposit AS ud ON ud.trans_id = uft.trans_id
+    WHERE uft.status = '2' ORDER BY uft.created DESC ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -37,8 +43,8 @@ $first_time_transaction = $db_handle->fetchAssoc($result);
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin - Daily Funding Report</title>
-        <meta name="title" content="Instaforex Nigeria | Admin - Daily Funding Report" />
+        <title>Instaforex Nigeria | Admin - Client First Transaction</title>
+        <meta name="title" content="Instaforex Nigeria | Admin - Client First Transaction" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once '../layouts/head_meta.php'; ?>
@@ -60,7 +66,7 @@ $first_time_transaction = $db_handle->fetchAssoc($result);
                     ================================================== -->
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>DAILY FUNDING REPORTS</strong></h4>
+                            <h4><strong>CLIENT FIRST TRANSACTION</strong></h4>
                         </div>
                     </div>
                     
@@ -68,36 +74,37 @@ $first_time_transaction = $db_handle->fetchAssoc($result);
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <p>Below is the breakdown of daily deposit transactions.</p>
+                                <p>Below is a list of clients that made their first transaction and was reviewed by compliance.</p>
                                 <table class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Order</th>
-                                        <th>Not Notified</th>
-                                        <th>Completed</th>
-                                        <th>Failed</th>
-                                        <th>Declined</th>
+                                        <th>Client Details</th>
+                                        <th>Transaction ID</th>
+                                        <th>Transaction Date</th>
+                                        <th>Amount</th>
+                                        <th>Type</th>
+                                        <th>Comment</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php
-                                        if(isset($total_deposit) && !empty($total_deposit)) { foreach ($total_deposit as $row) {
-                                            $order_date = $row['order_date'];
-                                    ?>
+                                    <?php if(isset($first_time_transaction) && !empty($first_time_transaction)) { foreach ($first_time_transaction as $row) { ?>
                                         <tr>
-                                            <td><?php echo $row['order_date']; ?></td>
-                                            <td><?php echo $row['total_deposit']; ?></td>
-                                            <td><?php echo $db_handle->numRows("SELECT trans_id FROM user_deposit WHERE status = '1' AND STR_TO_DATE(created, '%Y-%m-%d') = '$order_date'"); ?></td>
-                                            <td><?php echo $db_handle->numRows("SELECT trans_id FROM user_deposit WHERE status = '8' AND STR_TO_DATE(created, '%Y-%m-%d') = '$order_date'"); ?></td>
-                                            <td><?php echo $db_handle->numRows("SELECT trans_id FROM user_deposit WHERE status = '9' AND STR_TO_DATE(created, '%Y-%m-%d') = '$order_date'"); ?></td>
-                                            <td><?php echo $db_handle->numRows("SELECT trans_id FROM user_deposit WHERE status IN ('4', '7') AND STR_TO_DATE(created, '%Y-%m-%d') = '$order_date'"); ?></td>
+                                            <td>
+                                                <?php echo $row['client_full_name']; ?><br />
+                                                <?php echo $row['email']; ?><br />
+                                                <?php echo $row['phone']; ?>
+                                            </td>
+                                            <td><?php echo $row['trans_id']; ?></td>
+                                            <td><?php echo datetime_to_text($row['created']); ?></td>
+                                            <td><?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
+                                            <td><?php echo financial_trans_type($row['trans_type']); ?></td>
+                                            <td><?php echo $row['comment']; ?></td>
                                         </tr>
-                                    <?php } } else { echo "<tr><td colspan='2' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
 
-                                <?php if(isset($total_deposit) && !empty($total_deposit)) { ?>
+                                <?php if(isset($first_time_transaction) && !empty($first_time_transaction)) { ?>
                                     <div class="tool-footer text-right">
                                         <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                     </div>
@@ -105,7 +112,7 @@ $first_time_transaction = $db_handle->fetchAssoc($result);
 
                             </div>
                         </div>
-                        <?php if(isset($total_deposit) && !empty($total_deposit)) { require_once '../layouts/pagination_links.php'; } ?>
+                        <?php if(isset($first_time_transaction) && !empty($first_time_transaction)) { require_once '../layouts/pagination_links.php'; } ?>
 
                     </div>
 
