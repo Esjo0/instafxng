@@ -172,7 +172,7 @@ define("PAGE_CODE", json_encode(array(
     279 => "withdrawal_reversal.php||",
     281 => "deposit_refund_initiated.php||",
     282 => "deposit_refund_pending.php||",
-    283 => "deposit_refund_completed.php||",
+    283 => "deposit_refund_approve.php||",
     284 => "deposit_refund_completed.php||",
     285 => "first_time_transaction_initiated.php||",
     286 => "first_time_transaction_completed.php||"
