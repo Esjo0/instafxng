@@ -2940,9 +2940,11 @@ MAIL;
         $query = "INSERT INTO user_first_transaction (user_code, trans_id, trans_type) VALUE ('$client_user_code', '$transaction_id', '$trans_type')";
         $db_handle->runQuery($query);
 
-        // Send system email to client
-        $subject = "ATTN: Information about your First Deposit";
-        $body = <<<MAIL
+        if($db_handle->affectedRows() == 1) {
+
+            // Send system email to client
+            $subject = "ATTN: Information about your First Deposit";
+            $body = <<<MAIL
 <div style="background-color: #F3F1F2">
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
         <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -3004,7 +3006,8 @@ MAIL;
 </div>
 MAIL;
 
-        return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
+            return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
+        }
     }
 
 }
