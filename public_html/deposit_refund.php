@@ -66,7 +66,7 @@ if (isset($_POST['deposit_refund'])) {
         if ($request == true) {
             $message_success = "Your Request has been submitted successfully";
             $refund_url = "https://instafxng.com/refund_declaration.php?x=" . $refund_type . "&id=" . encrypt($trans_id);
-            var_dump($refund_url);
+
             header("Location: $refund_url");
         } else {
             $message_error = "Your Request was not successfully submitted";
