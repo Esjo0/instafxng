@@ -36,7 +36,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['release_transaction']))
         case 'inspect': $url = 'deposit_confirmed'; break;
         case 'notified': $url = 'deposit_notified'; break;
         case 'view': $url = 'deposit_confirmed'; break;
-        case 'refund': $url = 'deposit_refund_pending'; break;
+        case 'refund_approve': $url = 'deposit_refund_pending'; break;
+        case 'refund_completed': $url = 'deposit_refund_completed'; break;
     }
     header("Location: $url.php");
     exit();
@@ -255,7 +256,7 @@ MAIL;
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    header("Location: deposit_refund_initiated.php");
+    header("Location: deposit_notified.php");
     exit;
 }
 
@@ -415,8 +416,8 @@ if(!empty($transaction_access['holder'])){
                                     if($deposit_process_inspect) { include_once 'views/deposit_process/deposit_process_inspect.php'; }
                                     if($deposit_process_notified) { include_once 'views/deposit_process/deposit_process_notified.php'; }
                                     if($deposit_process_view) { include_once 'views/deposit_process/deposit_process_view.php'; }
-                                if($deposit_process_refund_approve) { include_once 'views/deposit_process/deposit_process_refund_approve.php'; }
-                                if($deposit_process_refund_completed) { include_once 'views/deposit_process/deposit_process_refund_completed.php'; }
+                                    if($deposit_process_refund_approve) { include_once 'views/deposit_process/deposit_process_refund_approve.php'; }
+                                    if($deposit_process_refund_completed) { include_once 'views/deposit_process/deposit_process_refund_completed.php'; }
                                 ?>
                                 
                             </div>

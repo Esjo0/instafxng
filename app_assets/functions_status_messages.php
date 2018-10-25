@@ -167,6 +167,7 @@ function status_user_deposit($status) {
         case '8': $message = "Completed"; break;
         case '9': $message = "Payment Failed"; break;
         case '10': $message = "Expired"; break;
+        case '11': $message = "Refund"; break;
         default: $message = "Status Unknown"; break;
     }
     return $message;
@@ -935,6 +936,20 @@ function project_management_status($status)
         case '0': $message = "Suspended"; break;
         case '1': $message = "In Progress"; break;
         case '2': $message = "Completed"; break;
+        default: $message = "Unknown"; break;
+    }
+    return $message;
+}
+
+/*
+ * Table:
+ */
+function financial_trans_type($status)
+{
+    switch ($status)
+    {
+        case '1': $message = "Deposit"; break;
+        case '2': $message = "Withdrawal"; break;
         default: $message = "Unknown"; break;
     }
     return $message;

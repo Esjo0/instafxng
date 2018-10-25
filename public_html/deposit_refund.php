@@ -60,12 +60,13 @@ if (isset($_POST['deposit_refund'])) {
                 break;
         }
 
-        $query = "UPDATE user_deposit_refund SET user_bank_name = '$user_bank_name', user_acct_name = '$user_acct_name', user_acct_no = '$user_acct_no', company_bank_name = '$comp_bank_name', company_acct_name = '$comp_acct_name', company_acct_no = '$comp_acct_no', issue_desc = '$issue_desc' WHERE transaction_id = '$trans_id'";
+        $query = "UPDATE user_deposit_refund SET user_bank_name = '$user_bank_name', user_acct_name = '$user_acct_name', user_acct_no = '$user_acct_no', company_bank_name = '$comp_bank_name', company_acct_name = '$comp_acct_name', company_acct_no = '$comp_acct_no', issue_desc = '$issue_desc', refund_status = '1' WHERE transaction_id = '$trans_id'";
         $request = $db_handle->runQuery($query);
 
         if ($request == true) {
             $message_success = "Your Request has been submitted successfully";
-            $refund_url = "refund_declaration.php?x=" . $refund_type . "&id=" . encrypt($trans_id);
+            $refund_url = "https://instafxng.com/refund_declaration.php?x=" . $refund_type . "&id=" . encrypt($trans_id);
+
             header("Location: $refund_url");
         } else {
             $message_error = "Your Request was not successfully submitted";
@@ -228,7 +229,7 @@ if (isset($_POST['deposit_refund'])) {
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" >Bank Account Number:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input maxlength="10" name="user_acct_no" type="text" class="form-control" id="" required>
+                                            <input name="user_acct_no" type="text" class="form-control" id="" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Your Bank Account Number</span>
                                         </div>
                                     </div>
@@ -260,7 +261,7 @@ if (isset($_POST['deposit_refund'])) {
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="pass_code">Bank Account Number:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <input maxlength="10" name="comp_acct_no" type="text" class="form-control" id="" required>
+                                            <input name="comp_acct_no" type="text" class="form-control" id="" required>
                                             <span class="help-block"><i class="fa fa-info-circle"></i> Enter Bank Account Number</span>
                                         </div>
                                     </div>

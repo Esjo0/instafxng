@@ -2135,6 +2135,21 @@ MAIL;
         // Log deposit monitoring
         $this->deposit_monitoring($admin_code, $transaction_id, $status);
 
+        // If $status == 5, i.e. transaction is confirmed, confirm if it is client's first transaction
+        if($status == '5') {
+            $confirm_first_transaction = $this->confirm_first_transaction($transaction_id, '1');
+
+            if($confirm_first_transaction) {
+                $user_detail = $this->get_user_detail_by_trans_id($transaction_id, '1');
+
+                $client_user_code = $user_detail['client_user_code'];
+                $client_full_name = $user_detail['client_full_name'];
+                $client_email = $user_detail['client_email'];
+
+                $this->log_first_transaction($client_user_code,$client_full_name, $client_email, $transaction_id, '1');
+            }
+        }
+
         return true;
     }
 
@@ -2838,6 +2853,161 @@ MAIL;
         $db_handle->runQuery($query);
 
         return true;
+    }
+
+    /**
+     * Confirm if the transaction is the client's first transaction
+     *
+     * @param $trans_id
+     * @param $trans_type
+     * @return bool
+     */
+    public function confirm_first_transaction($trans_id, $trans_type) {
+        global $db_handle;
+
+        switch($trans_type) {
+            // Deposit Transaction
+            case '1':
+                $query = "SELECT ud.trans_id 
+                    FROM user_deposit AS ud
+                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE ud.status = '8' AND ud.trans_id NOT IN ('$trans_id') AND u.user_code = (
+                      SELECT ui.user_code 
+                      FROM user_deposit AS ud 
+                      INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
+                      WHERE ud.trans_id = '$trans_id'
+                    )";
+                break;
+
+            // Withdrawal Transaction
+            case '2':
+                $query = "SELECT uw.trans_id 
+                    FROM user_withdrawal AS uw
+                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = uw.ifxaccount_id
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE uw.status = '10' AND uw.trans_id NOT IN ('$trans_id') AND u.user_code = (
+                      SELECT ui.user_code 
+                      FROM user_withdrawal AS uw
+                      INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = uw.ifxaccount_id
+                      WHERE uw.trans_id = '$trans_id'
+                    )";
+                break;
+        }
+
+        // if no row is found, it is the first transaction
+        return $db_handle->numRows($query) == 0 ? true : false;
+    }
+
+    public function get_user_detail_by_trans_id($trans_id, $trans_type) {
+        global $db_handle;
+
+        switch($trans_type) {
+            // Deposit Transaction
+            case '1':
+                $query = "SELECT u.user_code AS client_user_code, u.email AS client_email, u.first_name AS client_first_name,
+                    u.last_name AS client_last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+                    u.phone AS client_phone_number 
+                    FROM user_deposit AS ud 
+                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE ud.trans_id = '$trans_id'";
+                break;
+
+            // Withdrawal Transaction
+            case '2':
+                $query = "SELECT u.user_code AS client_user_code, u.email AS client_email, u.first_name AS client_first_name,
+                    u.last_name AS client_last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+                    u.phone AS client_phone_number 
+                    FROM user_withdrawal AS uw
+                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = uw.ifxaccount_id
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE uw.trans_id = '$trans_id'";
+                break;
+        }
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $user_detail = $fetched_data[0];
+
+        return $user_detail ? $user_detail : false;
+    }
+
+    public function log_first_transaction($client_user_code,$client_full_name, $client_email, $transaction_id, $trans_type) {
+        global $db_handle, $system_object;
+
+        // Log transaction for compliance
+        $query = "INSERT INTO user_first_transaction (user_code, trans_id, trans_type) VALUE ('$client_user_code', '$transaction_id', '$trans_type')";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() == 1) {
+
+            // Send system email to client
+            $subject = "ATTN: Information about your First Deposit";
+            $body = <<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Dear $client_full_name,</p>
+            
+            <p>You are receiving this email because you have just attempted your first deposit transaction
+            to your Instaforex Account through our website at www.instafxng.com</p>
+            
+            <p>Thank you for choosing to do business with us.</p>
+            
+            <p>Please note the following:</p>
+            
+            <ol>
+                <li>We do not have any agent affiliated with us. We operate primarily via www.instafxng.com</li>
+                <li>We are not an investment company and do not hold funds for investment purposes.</li>
+                <li>Any money deposited is purposely meant for online currency trading.</li>
+                <li>We do not accept or approve of third party transactions.</li>
+                <li>You assume full responsibilities for the funds deposited in your trading account(s).</li>
+                <li>We do not advise you to give your Instaforex account details to a third party to operate on your behalf.</li>
+                <li>www.instafxng.com is owned and operated by Instant Web-Net Technologies Ltd.</li>
+            </ol>
+
+            <p>If you need additional information about our services or to learn more, please visit our website at
+            <a href="https://instafxng.com">www.instafxng.com</a> or <a href="https://instafxng.com/contact_info.php">contact us here.</a></p>
+
+            <br /><br />
+            <p>Best Regards,</p>
+            <p>Bunmi,</p>
+            <p>Clients Relations Manager,<br />
+                www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+            return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
+        }
     }
 
 }
