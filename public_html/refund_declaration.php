@@ -8,6 +8,8 @@ $trans_id_encrypted = $get_params['id'];
 $trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
 $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 
+$refund_type = $get_params['x'];
+
 $system_object = new InstafxngSystem();
 //Ensure only those that have an initiated refund can access this page
 if (!empty($trans_id_encrypted) && !empty($refund_type)) {
@@ -25,7 +27,6 @@ UM.address, UC.signature
          WHERE UD.trans_id = '$trans_id'";
     $result = $db_handle->fetchAssoc($db_handle->runQuery($query))[0];
     extract($result);
-
     if($num_rows != 1) {
 //         No record found. Redirect to the home page.
         redirect_to("./");
