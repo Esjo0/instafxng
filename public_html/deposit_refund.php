@@ -60,7 +60,7 @@ if (isset($_POST['deposit_refund'])) {
                 break;
         }
 
-        $query = "UPDATE user_deposit_refund SET user_bank_name = '$user_bank_name', user_acct_name = '$user_acct_name', user_acct_no = '$user_acct_no', company_bank_name = '$comp_bank_name', company_acct_name = '$comp_acct_name', company_acct_no = '$comp_acct_no', issue_desc = '$issue_desc', refund_status = '1' WHERE transaction_id = '$trans_id'";
+        $query = "UPDATE user_deposit_refund SET user_bank_name = '$user_bank_name', user_acct_name = '$user_acct_name', user_acct_no = '$user_acct_no', company_bank_name = '$comp_bank_name', company_acct_name = '$comp_acct_name', company_acct_no = '$comp_acct_no', issue_desc = '$issue_desc', refund_status = '0' WHERE transaction_id = '$trans_id'";
         $request = $db_handle->runQuery($query);
 
         if ($request == true) {
