@@ -128,7 +128,7 @@ MAIL;
         $mpdf->SetFooter("Date Generated: " . $date_now . " - {PAGENO}");
 
         $mpdf->WriteHTML($declaration);
-        $mpdf->Output('/home/tboy9/public_html/models/refund_declarations/'.$trans_id. ' - Refund Declaration.pdf', \Mpdf\Output\Destination::FILE);// save a copy of the file
+        $mpdf->Output('/home/tboy9/models/refund_declarations/'.$trans_id. ' - Refund Declaration.pdf', \Mpdf\Output\Destination::FILE);// save a copy of the file
         $system_object->send_email('Refund Declaraton', $mail_message, $email, $client_name, 'Instafxng', '/home/tboy9/public_html/models/refund_declarations/'.$trans_id. ' - Refund Declaration.pdf');//send to clients email
         $mpdf->Output($trans_id. ' - Refund Declaration.pdf', \Mpdf\Output\Destination::DOWNLOAD);//open download option for clients.
 }
