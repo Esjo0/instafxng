@@ -106,12 +106,30 @@ switch ($_SESSION['selected_cat']) {
         break;
 
     case 'previous':
-        $query = "SELECT u.user_code, uc.full_name, u.email, u.phone, uc.created, uc.account_officer_full_name FROM unverified_clients AS uc
-            INNER JOIN user AS u ON uc.user_code = u.user_code
+        $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM (
+            SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, 
+            u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM user AS u
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-            INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-            INNER JOIN trading_commission AS tc ON ui.ifx_acct_no = tc.ifx_acct_no
-            GROUP BY u.email ORDER BY u.created DESC ";
+            LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+            WHERE (u.password IS NULL OR u.password = '') AND ud.status = '8'
+            GROUP BY u.email
+            
+            UNION ALL
+            
+            SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, 
+            u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            FROM user AS u
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+            LEFT JOIN trading_commission AS tc ON ui.ifx_acct_no = tc.ifx_acct_no
+            WHERE (u.password IS NULL OR u.password = '') AND tc.volume > 0.00
+            GROUP BY u.email
+        ) src GROUP BY email ORDER BY created DESC, full_name ASC
+        ";
         $filter_category = "Unverified Clients with previous Activity";
         $display_msg = "Below is a table listing all unverified clients who have traded or funded with us before";
         break;
@@ -217,16 +235,32 @@ if (isset($_POST['search'])) {
             break;
 
         case 'previous':
-            $query = "SELECT u.user_code, uc.full_name, u.email, u.phone, uc.created, uc.account_officer_full_name FROM unverified_clients AS uc
-                INNER JOIN user AS u ON uc.user_code = u.user_code
+            $query = "SELECT user_code, full_name, email, phone, created, account_officer_full_name FROM (
+                SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, 
+                u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+                FROM user AS u
+                INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+                INNER JOIN admin AS a ON ao.admin_code = a.admin_code
                 INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-                INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-                INNER JOIN trading_commission AS tc ON ui.ifx_acct_no = tc.ifx_acct_no
-                WHERE YEAR(tc.date_earned) > 2013 OR YEAR(ud.created) > 2013
-                AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
-                GROUP BY u.email ORDER BY u.created DESC ) ";
+                LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+                WHERE (u.password IS NULL OR u.password = '') AND ud.status = '8'
+                GROUP BY u.email
+                
+                UNION ALL
+                
+                SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, 
+                u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+                FROM user AS u
+                INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+                INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+                INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                LEFT JOIN trading_commission AS tc ON ui.ifx_acct_no = tc.ifx_acct_no
+                WHERE (u.password IS NULL OR u.password = '') AND tc.volume > 0.00
+                GROUP BY u.email
+            ) src WHERE (email LIKE '%$search_text%' OR full_name LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR created LIKE '$search_text%')
+            GROUP BY email ORDER BY created DESC, full_name ASC ";
             $filter_category = "Unverified Clients with previous Activity";
-            $display_msg = "Below is a table listing all unverified clients who have traded or funded with us before since n";
+            $display_msg = "Below is a table listing all unverified clients who have traded or funded with us before";
             break;
 
         default:
@@ -350,8 +384,6 @@ $db_handle->closeDB();
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <?php echo $display_msg; ?> <br/>
-                                            These clients have not done any form of
-                                            transaction since the last quarter of year 2014.
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="input-group input-group-sm <?php if(number_format($numrows) == 0){echo 'has-danger';}elseif(number_format($numrows) > 0){echo 'has-success';} ?> ">
