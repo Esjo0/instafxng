@@ -218,7 +218,7 @@ $i = 0;
                 <div class="row">
                     <div class="col-sm-12 text-center">
                         <h1 style="font-family: 'Oleo Script', cursive !important; color: #000000 !important">The
-                            Blackest Friday Splurge is Here, Up to 150% Extra up for grap.</h1>
+                            Blackest Friday Splurge is Here, Up to 150% Extra up for Grabs.</h1>
                         <p class="text-danger">Starting from November 12, 2018 To November 23, 2018.</p>
                         <a data-target="#contest-register" data-toggle="modal" class="btn btn-success"
                            style="cursor: pointer;"><strong>Click Here to Join the Splurge.</strong></a>
