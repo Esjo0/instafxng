@@ -1,9 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Promotion";
-
 $get_params = allowed_get_params(['x']);
-
 $user_code_encrypted = $get_params['x'];
 $user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
@@ -145,6 +143,7 @@ HAVING total_commission BETWEEN 0 AND 300 ";
 if (isset($_POST['opt_in'])) {
     $tire = $db_handle->sanitizePost($_POST['tire']);
     $terms = $db_handle->sanitizePost($_POST['terms']);
+    $user_code = $db_handle->sanitizePost($_POST['user']);
     if ($terms == 1) {
         $query = "UPDATE black_friday_2018 SET tire = '$tire' WHERE user_code = '$user_code'";
         $result = $db_handle->runQuery($query);
@@ -464,6 +463,8 @@ $i = 0;
                                             <div class="form-group">
 
                                                 <div class="col-sm-12 col-lg-12">
+                                                    <input type="hidden" name="user"
+                                                           value="<?php echo $user_code ?>" >
                                                     <?php if ($sign_up == true) { ?>
                                                         <p>Enter Your INSTAFOREX ILPR account number.</p>
                                                         <input maxlength="10" value=""
