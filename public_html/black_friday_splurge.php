@@ -188,11 +188,11 @@ $i = 0;
 </head>
 <body>
 <?php require_once 'layouts/header.php'; ?>
-<!-- Main Body: The is the main content area of the web site, contains a side bar  -->
+
 <div id="main-body" class="container-fluid">
     <div class="row no-gutter">
         <?php require_once 'layouts/topnav.php'; ?>
-        <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
+
         <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3 ">
 
             <!-- Unique Page Content Starts Here
@@ -243,28 +243,7 @@ $i = 0;
                                 <h5>How To Qualify For The Black Friday Splurge</h5>
 
                                 <ul class="fa-ul">
-                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 1:</strong>
-                                        You need to have an InstaForex Account. Your account has to be enrolled into the
-                                        InstaFxNg Loyalty Programs and Rewards (ILPR)
-                                        <a href="live_account.php" target="_blank" title="Open A Live Trading Account">open
-                                            a qualifying account</a> now.
-                                    </li>
 
-                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 2:</strong>
-                                        Fill the contest registration form to participate in the contest.
-                                        <a data-target="#contest-register" data-toggle="modal" style="cursor: pointer;">Click
-                                            Here to Join the Contest.</a>
-                                    </li>
-
-                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 3:</strong>
-                                        Trade with your account to start earning points. You can
-                                        <a href="deposit.php" target="_blank" title="Fund your account in Naira">fund
-                                            your account here</a>.
-                                    </li>
-
-                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 4:</strong>
-                                        Earn a minimum of 25 points and also trade to be the highest point earner.
-                                    </li>
                                 </ul>
                                 <p>The contest will hold from November 12, 2018 To November 23, 2018.</p>
                                 <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal"
@@ -279,7 +258,7 @@ $i = 0;
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion"
-                                                                       href="#collapse1">How The Winners are Chosen</a>
+                                                                       href="#collapse1">How to</a>
                                             </h5>
                                         </div>
                                         <div id="collapse1" class="panel-collapse collapse">
@@ -303,31 +282,9 @@ $i = 0;
                                         </div>
                                         <div id="collapse2" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p>All traders participating in this contest must meet the following
-                                                    rules to win.</p>
+                                                <p></p>
                                                 <ul>
-                                                    <li>Only ILPR enrolled accounts are qualified for this contest. <a
-                                                            href="live_account.php" target="_blank"
-                                                            title="Open A Live Trading Account">Open a qualifying
-                                                            account.</a></li>
-                                                    <li>You earn points when you trade during the contest.</li>
-                                                    <li>Participant must accrue a minimum of 5 points daily and 25
-                                                        points weekly to qualify to win.
-                                                    </li>
-                                                    <li>The rank of all qualified participants will be displayed on a
-                                                        daily basis.
-                                                    </li>
-                                                    <li>The points earned by a participant in a day is automatically
-                                                        generated by our system and added up before 10am next day.
-                                                    </li>
-                                                    <li>Contest ends by 11:59pm on Friday 5th October, 2018. The top
-                                                        three highest point winners, will get a prize of $120, $80 and
-                                                        $50 respectively
-                                                    </li>
-                                                    <li>In a case where there is a tie for the highest point earner,
-                                                        there would be a draw.
-                                                    </li>
-                                                    <li>Winners will be announced on Monday October 8, 2018.</li>
+
                                                 </ul>
                                             </div>
                                         </div>
