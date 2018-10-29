@@ -1,9 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Promotion";
-
 $get_params = allowed_get_params(['x']);
-
 $user_code_encrypted = $get_params['x'];
 $user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
@@ -92,7 +90,7 @@ INNER JOIN admin AS a ON ao.admin_code = a.admin_code
 WHERE date_earned BETWEEN '2017-12-01' AND '2018-10-30' AND u.user_code = '$user_code'
 GROUP BY u.user_code
 HAVING total_commission BETWEEN 300 AND 499 ";
-            $silver = $db_handle->numOfRows($query);
+            $silver = $db_handle->numRows($query);
             $result = $db_handle->runQuery($query);
             $result = $db_handle->fetchAssoc($result);
             foreach ($result AS $row) {
@@ -113,7 +111,7 @@ INNER JOIN admin AS a ON ao.admin_code = a.admin_code
 WHERE date_earned BETWEEN '2017-12-01' AND '2018-10-30' AND u.user_code = '$user_code'
 GROUP BY u.user_code
 HAVING total_commission BETWEEN 0 AND 300 ";
-            $bronze = $db_handle->numOfRows($query);
+            $bronze = $db_handle->numRows($query);
             $result = $db_handle->runQuery($query);
             $result = $db_handle->fetchAssoc($result);
             foreach ($result AS $row) {
@@ -132,7 +130,7 @@ HAVING total_commission BETWEEN 0 AND 300 ";
             extract($row);
         }
         if (!empty($tire)) {
-            $message_success = "You Have Opted in earlier for the " . black_friday_tire($tire) . " category Kindly Check Your Progress <a href='black_friday_splurge_view.php'>Here</a>. ";
+            $message_success = "You Have Opted in earlier for the " . black_friday_tire($tire) . " category Kindly Check Your Progress.";
         } else {
             $sign_up = true;
         }
@@ -145,8 +143,9 @@ HAVING total_commission BETWEEN 0 AND 300 ";
 if (isset($_POST['opt_in'])) {
     $tire = $db_handle->sanitizePost($_POST['tire']);
     $terms = $db_handle->sanitizePost($_POST['terms']);
+    $user_code = $db_handle->sanitizePost($_POST['user']);
     if ($terms == 1) {
-        $query = "UPDATE black_friday_2018 SET tire = '$terms' WHERE user_code = '$user_code'";
+        $query = "UPDATE black_friday_2018 SET tire = '$tire' WHERE user_code = '$user_code'";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $cookie_name = "ifxng_black_friday";
@@ -154,7 +153,7 @@ if (isset($_POST['opt_in'])) {
             setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
             $sign_up = false;
             $opt_in = false;
-            $message_success = "You have sucessfully opted in for The spluge. Check Your Progress <a href='black_friday_splurge_view.php'>Here</a>";
+            $message_success = "You have sucessfully opted in for The spluge. Check Your Progress.";
         } else {
             $messsage_error = "Kindly try again.";
         }
@@ -207,7 +206,7 @@ $i = 0;
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Independence Trade Contest</title>
+    <title>Instaforex Nigeria | Black Friday - The Splurge</title>
     <meta name="title" content="Instaforex Nigeria | Independence Trade Contest"/>
     <meta name="keywords" content="instaforex, forex promo, forex promotion, instaforex nigeria."/>
     <meta name="description"
@@ -342,18 +341,16 @@ $i = 0;
                     <div class="col-sm-5">
                         <div class="col-sm-12 text-center" ><button type="button" class="btn btn-disabled btn-danger"><b>View Your
                                     Progress Here</b></button></div>
-                        <div class="row" style="background-color: black; border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(255, 11, 0, 0.75), 0 6px 20px 0 rgba(255, 11, 0, 0.83)">
+                        <div class="row" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(255, 240, 249, 0.75), 0 6px 20px 0 rgba(230, 225, 221, 0.83)">
                             <div class="col-sm-12">
-                                <h3 class="text-center" style="font-family: 'Oleo Script', cursive !important; color: white !important">
+                                <h3 class="text-center" style="font-family: 'Oleo Script', cursive !important; !important">
                                     Enter your Email Address to know how you have fared in The Blackest Friday
                                     Splurge</h3>
                                 <hr/>
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post"
+                                <form data-toggle="validator" class="form-horizontal text-center" role="form" method="post"
                                       action="">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" style="color: white !important;"
-                                               for="email">Email Address:</label>
-                                        <div class="col-sm-9">
+                                    <div class="form-group col-sm-9">
+                                        <div class="">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i
                                                         class="fa fa-envelope fa-fw"></i></span>
@@ -363,16 +360,15 @@ $i = 0;
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group text-center">
-                                        <div class="col-sm-offset-3 col-sm-9">
+                                    <div class="form-group col-sm-4">
+                                        <div class="">
                                             <input name="progress" type="submit" class="btn btn-success" value="SUBMIT"/>
                                         </div>
                                     </div>
                                 </form>
-                                <hr/>
                                 <?php if ($details) { ?>
                                     <div class="row">
-                                        <div class="col-sm-12"><p style="color:white;"
+                                        <div class="col-sm-12"><p style="color:black; !important;"
                                                                   class="text-center"><?php echo $name ?> , You are in
                                                 the <?php echo black_friday_tire($tire) ?> Category With a target
                                                 of <?php echo black_friday_tire_target($tire); ?> loyality points</p>
@@ -467,6 +463,8 @@ $i = 0;
                                             <div class="form-group">
 
                                                 <div class="col-sm-12 col-lg-12">
+                                                    <input type="hidden" name="user"
+                                                           value="<?php echo $user_code ?>" >
                                                     <?php if ($sign_up == true) { ?>
                                                         <p>Enter Your INSTAFOREX ILPR account number.</p>
                                                         <input maxlength="10" value=""
@@ -474,8 +472,8 @@ $i = 0;
                                                                type="text" class="form-control" required>
                                                     <?php } ?>
                                                     <?php if ($opt_in == true) { ?>
-                                                        <p class="text-center">Welcome <?php echo $first_name ?> Select
-                                                            A suitable Target OR <span data-dismiss="modal"> Read <a
+                                                        <p class="text-center">Welcome <?php echo $first_name ?>, Select
+                                                            a suitable target OR <span data-dismiss="modal"> Read <a
                                                                     href="">more</a> details</span></p>
                                                         <div class="text-center well">
                                                             <?php if ($platinum == true) { ?>
@@ -527,7 +525,17 @@ $i = 0;
 
                                                         <p class="text-center"><input type="checkbox" name="terms"
                                                                                       value="1" required> <b>Tick
-                                                                to <em>Agree</em> With Terms $ Condition</b></p>
+                                                                to <em>Agree</em> With Terms $ Condition</b>
+                                                        <ul>
+                                                            <li>Only ILPR enrolled accounts are qualified for this contest.</li>
+                                                            <li>You earn points when you deposit and trade during the contest.</li>
+                                                            <li>Participant must select a target and hit the target within the duration of the promo to get 150% of the dollar equivalent of the loyalty points.</li>
+                                                            <li>Participant would get rewarded every time he/she hits the set target before the promo ends, so the more times you hit your target the more money extra money you earn!</li>
+                                                            <li>Participants will be able to see his total points earned within the promo period right on the page.</li>
+                                                            <li>The points earned by a participant in a day is automatically generated by our system and added up before 10am next day.</li>
+                                                            <li>Contest starts on Thursday 1st November 2018 and ends by 11:59pm on Friday 30th November, 2018.</li>
+                                                        </ul>
+                                                        </p>
                                                     <?php } ?>
                                                 </div>
                                             </div>
