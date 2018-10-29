@@ -160,13 +160,41 @@ if (isset($_POST['opt_in'])) {
         }
     }
 }
+if (isset($_POST['progress'])) {
+    $email = $db_handle->sanitizePost($_POST['email']);
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $query = "SELECT bf.total_points, CONCAT(u.last_name, SPACE(1), u.first_name) AS name, bf.tire
+            FROM user AS u
+            INNER JOIN black_friday_2018 AS bf ON u.user_code = bf.user_code
+            WHERE u.email = '$email' AND bf.tire IS NOT NULL";
+        $result = $db_handle->runQuery($query);
+        $details = $db_handle->fetchAssoc($result);
+
+
+        if ($details) {
+            foreach ($details AS $row) {
+                extract($row);
+                if (empty($total_points)) {
+                    $total_points = 0;
+                }
+                $points_to_target = black_friday_tire_target($tire) - ($total_points % black_friday_tire_target($tire));
+                $target_reached = round($total_points / black_friday_tire_target($tire), 0, PHP_ROUND_HALF_DOWN);
+            }
+        } else {
+            $message_error = "You are not enrolled for the black friday Splurge <a data-target=\"#contest-register\" data-toggle=\"modal\"> Click Here to Join</a>";
+        }
+    } else {
+        $message_error = "Looks like you entered an invalid email, please try again.";
+    }
+}
 
 // Get all participants
 $query = "SELECT u.first_name, u.last_name
     FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code
     WHERE bf.tire IS NOT NULL 
-    ORDER BY bf.created ASC LIMIT 20";
+    ORDER BY bf.created ASC LIMIT 10";
 $result = $db_handle->runQuery($query);
 $numrows = $db_handle->numOfRows($result);
 $contest_members = $db_handle->fetchAssoc($result);
@@ -218,8 +246,8 @@ $i = 0;
                 <div class="row">
                     <div class="col-sm-12 text-center">
                         <h1 style="font-family: 'Oleo Script', cursive !important; color: #000000 !important">The
-                            Blackest Friday Splurge is Here, Up to 150% Extra up for grap.</h1>
-                        <p class="text-danger">Starting from November 12, 2018 To November 23, 2018.</p>
+                            Blackest Friday Splurge is Here, Up to 150% Extra up for Grabs.</h1>
+                        <p class="text-danger">Starting from November 1, 2018 To November 30, 2018.</p>
                         <a data-target="#contest-register" data-toggle="modal" class="btn btn-success"
                            style="cursor: pointer;"><strong>Click Here to Join the Splurge.</strong></a>
                         <br/>
@@ -231,21 +259,41 @@ $i = 0;
                     <div class="col-sm-7">
                         <div class="row">
                             <div class="col-sm-12 text-danger">
-                                <h4><strong>Details</strong></h4>
+                                <h4><strong>Are you ready for the Splurge?</strong></h4>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12" id="details">
-                                <p>To enjoy up to 150% extra this November it is necessary to fulfill the following
-                                    conditions:</p>
+                                <p>It’s the season of splurge and you can get over $1000 extra in this Black Friday Promo.</p>
+
+                                <p>No contest! No battle! Just set your target, hit it and get 150% of the loyalty points accrued during the promo.</p>
+
+                                <p>You get your reward every time you hit your target</p>
 
                                 <h5>How To Qualify For The Black Friday Splurge</h5>
 
                                 <ul class="fa-ul">
+                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 1:</strong>
+                                        To participate, you need to have an InstaForex Account enrolled into the InstaFxNg Loyalty Programs and Rewards (ILPR).
+                                        <a href="live_account.php" target="_blank" title="Open A Live Trading Account">open
+                                            a qualifying account</a> now.
+                                    </li>
 
+                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 2:</strong>
+                                        Fill the promo form to participate in the Splurge.
+                                        <a data-target="#contest-register" data-toggle="modal" style="cursor: pointer;">Click Here to Join Now.</a>
+                                    </li>
+
+                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 3:</strong>
+                                        Select your desired target and enter the promo. You will be required to hit your target within the duration of the promo.
+                                    </li>
+
+                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 4:</strong>
+                                        You would be able to redeem your prize every time you hit your set target while the promo is on.
+                                    </li>
                                 </ul>
-                                <p>The contest will hold from November 12, 2018 To November 23, 2018.</p>
+                                <p>So not to worry, you do not have to wait for the promo to end before cashing out!</p>
                                 <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal"
                                                                  class="btn btn-success" style="cursor: pointer;"><b>Join
                                             Now</b></a></p>
@@ -258,38 +306,33 @@ $i = 0;
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion"
-                                                                       href="#collapse1">How to</a>
+                                                                       href="#collapse1">Rules of the Black Friday– The Splurge</a>
                                             </h5>
                                         </div>
                                         <div id="collapse1" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p>You become a winner as soon as you reach your target</p>
-
-                                                <p> Platinum - 2000 Loyalty Points <br>
-                                                    Gold - 1000 Loyalty Points <br>
-                                                    Silver - 500 Loyalty Points <br>
-                                                    Bronze 1 - 200 Loyalty Points <br>
-                                                    Bronze 2 - 100 Loyalty Points <br>
+                                                <p>All traders participating in this promo must meet the following rules to win.</p>
+                                                <p>Only ILPR enrolled accounts are qualified for this contest. Open a qualifying account.
+                                                    You earn points when you deposit and trade during the contest.
+                                                    Participant must select a target and hit the target within the
+                                                    duration of the promo to get 150% of the dollar equivalent of the loyalty points.
                                                 </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion"
-                                                                       href="#collapse2">Black Friday Rules</a></h5>
-                                        </div>
-                                        <div id="collapse2" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <p></p>
+                                                <p>E.g. If you select  a target of 3000 points for the Splurge promo and you work smart to hit this target,
+                                                    You will be redeeming a whopping $750 into your InstaForex account instead of the regular $300.
+                                                </p>
                                                 <ul>
+                                                    <li>Participant would get rewarded every time he/she hits the set target before the promo ends, so the more times you hit your target the more money extra money you earn!</li>
+                                                    <li>Participants will be able to see his total points earned within the promo period right here on this page.</li>
+                                                    <li>The points earned by a participant in a day is automatically generated by our system and added up before 10am next day.</li>
+                                                    <li>Contest starts on Thursday 1st November 2018 and ends by 11:59pm on Friday 30th  November, 2018.</li>
+                                                    <li>Participants are allowed to withdraw points accrued during the contest, but this is not compulsory as the points are also valid for increasing the yearly loyalty reward race worth N2.2 million.</li>
+                                                    <li>Prizes won are monetary and cannot be converted into loyalty points, during and after the promo season.</li>
 
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-
+<h5 class="text-center"> Need more clarification on any of the rule? <a href="https://instafxng.com/contact_info.php">Click here to ask!</a></h5>
                                 </div>
                             </div>
                         </div>
@@ -297,10 +340,76 @@ $i = 0;
                     </div>
 
                     <div class="col-sm-5">
-                        <div class="col-sm-12 text-center"><a target="_blank" href="black_friday_splurge_view.php"
-                                                              class="btn btn-primary btn-md"><b>View Your
-                                    Progress</b></a></div>
+                        <div class="col-sm-12 text-center" ><button type="button" class="btn btn-disabled btn-danger"><b>View Your
+                                    Progress Here</b></button></div>
+                        <div class="row" style="background-color: black; border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(255, 11, 0, 0.75), 0 6px 20px 0 rgba(255, 11, 0, 0.83)">
+                            <div class="col-sm-12">
+                                <h3 class="text-center" style="font-family: 'Oleo Script', cursive !important; color: white !important">
+                                    Enter your Email Address to know how you have fared in The Blackest Friday
+                                    Splurge</h3>
+                                <hr/>
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post"
+                                      action="">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" style="color: white !important;"
+                                               for="email">Email Address:</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i
+                                                        class="fa fa-envelope fa-fw"></i></span>
+                                                <input name="email" type="text" id=""
+                                                       placeholder="Enter Your Email address" value=""
+                                                       class="form-control" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <div class="col-sm-offset-3 col-sm-9">
+                                            <input name="progress" type="submit" class="btn btn-success" value="SUBMIT"/>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr/>
+                                <?php if ($details) { ?>
+                                    <div class="row">
+                                        <div class="col-sm-12"><p style="color:white;"
+                                                                  class="text-center"><?php echo $name ?> , You are in
+                                                the <?php echo black_friday_tire($tire) ?> Category With a target
+                                                of <?php echo black_friday_tire_target($tire); ?> loyality points</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <li class="list-group-item d-flex justify-content-between lh-condensed text-center"
+                                                style="display:block">
+                                                <h6><b>Total Points Gained</b></h6>
+                                                <h5><?php echo $total_points ?> Points</h5>
+                                            </li>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <li class="list-group-item d-flex justify-content-between lh-condensed text-center"
+                                                style="display:block">
+                                                <h6><b>Total Points to Target</b></h6>
+                                                <h5><?php echo $points_to_target ?> Points</h5>
+                                            </li>
+                                        </div>
 
+                                        <div class="col-sm-4">
+                                            <li class="list-group-item d-flex justify-content-between lh-condensed text-center"
+                                                style="display:block">
+                                                <h6><b>Target Reached</b></h6>
+                                                <h5><?php if ($target_reached > 1) {
+                                                        echo $target_reached . " Times";
+                                                    } elseif ($target_reached == 1) {
+                                                        echo "Once";
+                                                    } else {
+                                                        echo "Not Yet.";
+                                                    } ?></h5>
+                                            </li>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+<br>
                         <h5>Total Number of Participant : <?php echo $numrows; ?></h5>
 
                         <div class="row">
