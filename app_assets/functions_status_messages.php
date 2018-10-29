@@ -83,6 +83,7 @@ function training_entry_point($status) {
         case '4': $message = "Walk in Clients"; break;
         case '5': $message = "Facebook Advert"; break;
         case '6': $message = "Referrals"; break;
+        case '7': $message = "Instagram"; break;
         default: $message = "Channel Unknown"; break;
     }
     return $message;
