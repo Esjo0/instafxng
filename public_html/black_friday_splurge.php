@@ -394,8 +394,7 @@ $i = 0;
                                         <div class="modal-header">
                                             <button type="button" data-dismiss="modal" aria-hidden="true"
                                                     class="close">&times;</button>
-                                            <p class="modal-title"><strong>Independence Trade Contest
-                                                    Registration</strong></p></div>
+                                            <p class="modal-title"><strong>Black Friday - Registration</strong></p></div>
                                         <div class="modal-body">
                                             <?php include 'layouts/feedback_message.php'; ?>
 
