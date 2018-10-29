@@ -92,7 +92,7 @@ INNER JOIN admin AS a ON ao.admin_code = a.admin_code
 WHERE date_earned BETWEEN '2017-12-01' AND '2018-10-30' AND u.user_code = '$user_code'
 GROUP BY u.user_code
 HAVING total_commission BETWEEN 300 AND 499 ";
-            $silver = $db_handle->numOfRows($query);
+            $silver = $db_handle->numRows($query);
             $result = $db_handle->runQuery($query);
             $result = $db_handle->fetchAssoc($result);
             foreach ($result AS $row) {
@@ -113,7 +113,7 @@ INNER JOIN admin AS a ON ao.admin_code = a.admin_code
 WHERE date_earned BETWEEN '2017-12-01' AND '2018-10-30' AND u.user_code = '$user_code'
 GROUP BY u.user_code
 HAVING total_commission BETWEEN 0 AND 300 ";
-            $bronze = $db_handle->numOfRows($query);
+            $bronze = $db_handle->numRows($query);
             $result = $db_handle->runQuery($query);
             $result = $db_handle->fetchAssoc($result);
             foreach ($result AS $row) {
@@ -132,7 +132,7 @@ HAVING total_commission BETWEEN 0 AND 300 ";
             extract($row);
         }
         if (!empty($tire)) {
-            $message_success = "You Have Opted in earlier for the " . black_friday_tire($tire) . " category Kindly Check Your Progress <a href='black_friday_splurge_view.php'>Here</a>. ";
+            $message_success = "You Have Opted in earlier for the " . black_friday_tire($tire) . " category Kindly Check Your Progress.";
         } else {
             $sign_up = true;
         }
@@ -146,7 +146,7 @@ if (isset($_POST['opt_in'])) {
     $tire = $db_handle->sanitizePost($_POST['tire']);
     $terms = $db_handle->sanitizePost($_POST['terms']);
     if ($terms == 1) {
-        $query = "UPDATE black_friday_2018 SET tire = '$terms' WHERE user_code = '$user_code'";
+        $query = "UPDATE black_friday_2018 SET tire = '$tire' WHERE user_code = '$user_code'";
         $result = $db_handle->runQuery($query);
         if ($result) {
             $cookie_name = "ifxng_black_friday";
@@ -154,7 +154,7 @@ if (isset($_POST['opt_in'])) {
             setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
             $sign_up = false;
             $opt_in = false;
-            $message_success = "You have sucessfully opted in for The spluge. Check Your Progress <a href='black_friday_splurge_view.php'>Here</a>";
+            $message_success = "You have sucessfully opted in for The spluge. Check Your Progress.";
         } else {
             $messsage_error = "Kindly try again.";
         }
@@ -471,8 +471,8 @@ $i = 0;
                                                                type="text" class="form-control" required>
                                                     <?php } ?>
                                                     <?php if ($opt_in == true) { ?>
-                                                        <p class="text-center">Welcome <?php echo $first_name ?> Select
-                                                            A suitable Target OR <span data-dismiss="modal"> Read <a
+                                                        <p class="text-center">Welcome <?php echo $first_name ?>, Select
+                                                            a suitable target OR <span data-dismiss="modal"> Read <a
                                                                     href="">more</a> details</span></p>
                                                         <div class="text-center well">
                                                             <?php if ($platinum == true) { ?>
