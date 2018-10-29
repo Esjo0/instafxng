@@ -1,7 +1,4 @@
-ALTER TABLE `black_friday_2018` CHANGE `tire` `tire` ENUM('0','1','2','3','4','5') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT '1- Platinum 2- Gold 3- Silver 4- Bronze1 5- Bronze2';
-ALTER TABLE `black_friday_2018` ADD `tire` ENUM('0','1','2','3','4','5') NULL AFTER `user_code`, ADD `total_points` INT NULL AFTER `tire`;
-ALTER TABLE `black_friday_2018` CHANGE `tire` `tire` ENUM('0','1','2','3','4','5') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-
+ALTER TABLE `free_training_campaign` CHANGE `entry_point` `entry_point` ENUM('0','1','2','3','4','5','6','7') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '0. Website 1.  Incoming Calls 2. Whatsapp 3. Support Mails 4.Walk in Clients 5. Facebook Ads 6. Referals 7.Instagram';
 ALTER TABLE `user_deposit_refund` ADD `refund_approve_time` DATETIME NULL AFTER `refund_status`;
 ALTER TABLE `user_deposit_refund` ADD `admin` VARCHAR(10) NOT NULL AFTER `refund_complete_time`;
 ALTER TABLE `user_deposit_refund` CHANGE `refund_status` `refund_status` SET('0','1','2','3') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '1' COMMENT '0-Initiated 1-Pending 2-Approved 3-Completed';

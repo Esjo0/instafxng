@@ -200,6 +200,9 @@ function training_entry_point($status)
         case '6':
             $message = "Referrals";
             break;
+        case '7':
+            $message = "Instagram";
+            break;
         default:
             $message = "Channel Unknown";
             break;

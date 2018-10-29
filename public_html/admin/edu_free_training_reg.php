@@ -242,6 +242,7 @@ $all_account_officers = $admin_object->get_all_account_officers();
                                         <option value="4">Walk in Clients</option>
                                         <option value="5">Facebook Adverts</option>
                                         <option value="6">Referrals</option>
+                                        <option value="7">Instagram</option>
                                     </select>
                                 </div>
                             </div>
