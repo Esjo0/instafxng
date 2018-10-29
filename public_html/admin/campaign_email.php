@@ -173,6 +173,7 @@ if($get_params['x'] == 'duplicate') {
                                     <li>[LTV] - Last Trade Volume</li>
                                     <li>[FUNDED] - Total Amount funded last Month</li>
                                     <li>[WITHDRAWN] - Total Amount withdrawn last Month</li>
+                                    <li>[BFL] - Black Friday 2018 link The Splurge</li>
                                 </ul>
                                 
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
