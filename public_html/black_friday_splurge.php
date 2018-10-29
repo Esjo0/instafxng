@@ -207,7 +207,7 @@ $i = 0;
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Independence Trade Contest</title>
+    <title>Instaforex Nigeria | Black Friday - The Splurge</title>
     <meta name="title" content="Instaforex Nigeria | Independence Trade Contest"/>
     <meta name="keywords" content="instaforex, forex promo, forex promotion, instaforex nigeria."/>
     <meta name="description"
