@@ -342,18 +342,16 @@ $i = 0;
                     <div class="col-sm-5">
                         <div class="col-sm-12 text-center" ><button type="button" class="btn btn-disabled btn-danger"><b>View Your
                                     Progress Here</b></button></div>
-                        <div class="row" style="background-color: black; border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(255, 11, 0, 0.75), 0 6px 20px 0 rgba(255, 11, 0, 0.83)">
+                        <div class="row" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(255, 240, 249, 0.75), 0 6px 20px 0 rgba(230, 225, 221, 0.83)">
                             <div class="col-sm-12">
-                                <h3 class="text-center" style="font-family: 'Oleo Script', cursive !important; color: white !important">
+                                <h3 class="text-center" style="font-family: 'Oleo Script', cursive !important; !important">
                                     Enter your Email Address to know how you have fared in The Blackest Friday
                                     Splurge</h3>
                                 <hr/>
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post"
+                                <form data-toggle="validator" class="form-horizontal text-center" role="form" method="post"
                                       action="">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" style="color: white !important;"
-                                               for="email">Email Address:</label>
-                                        <div class="col-sm-9">
+                                    <div class="form-group col-sm-9">
+                                        <div class="">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i
                                                         class="fa fa-envelope fa-fw"></i></span>
@@ -363,16 +361,15 @@ $i = 0;
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group text-center">
-                                        <div class="col-sm-offset-3 col-sm-9">
+                                    <div class="form-group col-sm-4">
+                                        <div class="">
                                             <input name="progress" type="submit" class="btn btn-success" value="SUBMIT"/>
                                         </div>
                                     </div>
                                 </form>
-                                <hr/>
                                 <?php if ($details) { ?>
                                     <div class="row">
-                                        <div class="col-sm-12"><p style="color:white;"
+                                        <div class="col-sm-12"><p style="color:black; !important;"
                                                                   class="text-center"><?php echo $name ?> , You are in
                                                 the <?php echo black_friday_tire($tire) ?> Category With a target
                                                 of <?php echo black_friday_tire_target($tire); ?> loyality points</p>
