@@ -3,12 +3,12 @@
 set_include_path('/home/tboy9/public_html/init/');
 require_once 'initialize_general.php';
 
-$my_subject_1 = "There’s more from where the Signals came… allow me to show you!";
+$my_subject_1 = "There's more from where the Signals came... allow me to show you!";
 $my_message_1 =
 <<<MAIL
 <p>Dear [NAME],</p>
 <p>This month on the signal channel, we are working towards 1000 pips.</p>
-<p>To be a part of this, all you have to do is become a member of our loyalty reward programme. Trust me, you do not want to miss out on this month’s profits.</p>
+<p>To be a part of this, all you have to do is become a member of our loyalty reward programme. Trust me, you do not want to miss out on this month's profits.</p>
 <p><a href="http://bit.ly/2mpqehQ"><button style="border-radius:10px; background-color:blue; color:white";><strong>Click here to open an account and enjoy this offer from today.</strong></button></a></p>
 <p>Now, Here is More!</p>
 <p>Other than the signals, I am offering you a chance to get between 30-100% welcome bonus on your first deposit and 30% on your subsequent deposits.</p>
@@ -16,13 +16,13 @@ $my_message_1 =
 <p>However, if you need my assistance to create your account or claim your bonus, do not hesitate to hit the reply button and I will be sure to assist you immediately.</p>
 MAIL;
 
-$my_subject_2 = "[NAME], You can’t miss the next entry point with this news!";
+$my_subject_2 = "[NAME], You can't miss the next entry point with this news!";
 $my_message_2 =
 <<<MAIL
 <p>Dear [NAME],</p>
 <p>How are you doing today?</p>
 <p>How awesome will it be, if you got notified every time signals are posted on our site?</p>
-<p>This means that you will be among the first persons to see all our signals immediately they are posted and you’ll never miss out on a single entry price or pip gained!</p>
+<p>This means that you will be among the first persons to see all our signals immediately they are posted and you'll never miss out on a single entry price or pip gained!</p>
 <p>Guess what? We are ready to send you notifications every time our signals are posted!</p>
 <p>Thousands of clients are already benefiting from this already, and you need to join them now. All you need to do is become a member of our loyalty reward program and begin to enjoy these benefits right away.</p>
 <p><a href="http://bit.ly/2mpqehQ"><button style="border-radius:10px; background-color:blue; color:white";><strong>Click here to create your account now.</strong></button></a></p>
@@ -50,7 +50,7 @@ $my_message_3 =
 </ol>
 </p>
 <p>This is an awesome opportunity for you to make extra while you earn. Get set and take your positions immediately and make the points start counting.</p>
-<p>Now that’s not all! There’s More!</p>
+<p>Now that's not all! There's More!</p>
 <p>These points are redeemable and you can claim your point in dollars! So apart from hitting your daily profits, you also get to earn extra for all your hard work.</p>
 <p>So if you must trade Forex in Nigeria, get rewarded maximally! Join thousands of clients enjoying this premium experience on our platform now. <a href="http://bit.ly/2mpqehQ">Click here to create you account now!</a></p>
 <p>To Join the Loyalty Reward Programme: There are 3 steps to
@@ -62,7 +62,7 @@ $my_message_3 =
 </p>
 <p>The more you trade, the more you earn! <a href="https://www.instafxng.com/loyalty.php">Click here to read more on the programme and see winners of the 2017 loyalty rewards</a></p>
 <p>This is an exciting opportunity to earn more from Forex trading, would you take it?</p>
-<p>Feel free to write me up if you’ll like to inquire about the loyalty reward programme and other services and I will be sure to respond immediately.</p>
+<p>Feel free to write me up if you'll like to inquire about the loyalty reward programme and other services and I will be sure to respond immediately.</p>
 MAIL;
 
 
