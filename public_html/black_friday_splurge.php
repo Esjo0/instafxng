@@ -98,6 +98,7 @@ HAVING total_commission BETWEEN 300 AND 499 ";
             }
         }
         if ($silver == 1) {
+            $platinum = true;
             $gold = true;
             $silver = true;
         } elseif ($silver == 0) {
@@ -110,7 +111,7 @@ INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
 INNER JOIN admin AS a ON ao.admin_code = a.admin_code
 WHERE date_earned BETWEEN '2017-12-01' AND '2018-10-30' AND u.user_code = '$user_code'
 GROUP BY u.user_code
-HAVING total_commission BETWEEN 0 AND 300 ";
+HAVING total_commission < 300 ";
             $bronze = $db_handle->numRows($query);
             $result = $db_handle->runQuery($query);
             $result = $db_handle->fetchAssoc($result);
@@ -119,6 +120,8 @@ HAVING total_commission BETWEEN 0 AND 300 ";
             }
         }
         if ($bronze == 1) {
+            $platinum = true;
+            $gold = true;
             $silver = true;
             $bronze = true;
         }
@@ -371,7 +374,7 @@ $i = 0;
                                         <div class="col-sm-12"><p style="color:black; !important;"
                                                                   class="text-center"><?php echo $name ?> , You are in
                                                 the <?php echo black_friday_tire($tire) ?> Category With a target
-                                                of <?php echo black_friday_tire_target($tire); ?> loyality points</p>
+                                                of <?php echo black_friday_tire_target($tire); ?> loyalty points</p>
                                         </div>
                                         <div class="col-sm-4">
                                             <li class="list-group-item d-flex justify-content-between lh-condensed text-center"
@@ -477,55 +480,48 @@ $i = 0;
                                                                     href="">more</a> details</span></p>
                                                         <div class="text-center well">
                                                             <?php if ($platinum == true) { ?>
-                                                                <button class="btn btn-green btn-lg"
-                                                                        style="background-color: gainsboro;">PLATINUM -
-                                                                    TARGET(2000 loyalty points)
-                                                                </button><label><input type="radio" name="tire"
-                                                                                       value="1" required>
-                                                                    <b></b></label><br>
+                                                                <button onclick="select_tire('1')" class="btn btn-green btn-lg"
+                                                                        style="background-color: rgba(158, 158, 158, 0.75);">PLATINUM
+                                                                    (2000 loyalty points)
+                                                                </button><label>
+                                                                    <b id="platinum" style="display:none;"><i>Selected</i></b></label><br>
                                                                 <hr>
                                                             <?php } ?>
                                                             <?php if ($gold == true) { ?>
-                                                                <button class="btn btn-warning btn-lg"
-                                                                        style="background-color: gold;">GOLD --------
-                                                                    TARGET(1000 loyalty points)
-                                                                </button><label><input type="radio" name="tire"
-                                                                                       value="2" required>
-                                                                    <b></b></label><br>
+                                                                <button onclick="select_tire('2')" type="radio" name="tire" value="2" class="btn btn-warning btn-lg"
+                                                                        style="background-color: gold;">GOLD
+                                                                    (1000 loyalty points)
+                                                                </button><label>
+                                                                    <b id="gold" style="display:none;"><i>Selected</i></b></label><br>
                                                                 <hr>
                                                             <?php } ?>
                                                             <?php if ($silver == true) { ?>
-                                                                <button class="btn btn-default btn-lg"
-                                                                        style="background-color: silver;">SILVER -------
-                                                                    TARGET(500 loyalty points)
-                                                                </button><label><input type="radio" name="tire"
-                                                                                       value="3" required>
-                                                                    <b></b></label><br>
+                                                                <button onclick="select_tire('3')" class="btn btn-default btn-lg"
+                                                                        style="background-color: #d7d7d7;">SILVER -
+                                                                    (500 loyalty points)
+                                                                </button><label>
+                                                                    <b id="silver" style="display:none;"><i>Selected</i></b></label><br>
                                                                 <hr>
                                                             <?php } ?>
                                                             <?php if ($bronze == true) { ?>
-                                                                <button class="btn btn-danger btn-lg"
-                                                                        style="background-color: saddlebrown;">BRONZE -
-                                                                    1 - TARGET(200 loyalty points)
-                                                                </button><label><input type="radio" name="tire"
-                                                                                       value="4" required>
-                                                                    <b></b></label><br>
+                                                                <button onclick="select_tire('4')" class="btn btn-danger btn-lg"
+                                                                        style="background-color: saddlebrown;">BRONZE
+                                                                    PRO - (200 loyalty points)
+                                                                </button><label>
+                                                                    <b id="pro" style="display:none;"><i>Selected</i></b></label><br>
                                                                 <hr>
                                                             <?php } ?>
                                                             <?php if ($bronze == true) { ?>
-                                                                <button class="btn btn-danger btn-lg"
-                                                                        style="background-color: sienna;">BRONZE - 2 -
-                                                                    TARGET(100 loyalty points)
-                                                                </button><label><input type="radio" name="tire"
-                                                                                       value="5" required>
-                                                                    <b></b></label><br>
+                                                                <button onclick="select_tire('5')" class="btn btn-danger btn-lg"
+                                                                        style="background-color: sienna;">BRONZE - LITE
+                                                                    (100 loyalty points)
+                                                                </button><label>
+                                                                    <b id="lite" style="display:none;"><i>Selected</i></b></label><br>
                                                                 <hr>
                                                             <?php } ?>
                                                         </div>
 
-                                                        <p class="text-center"><input type="checkbox" name="terms"
-                                                                                      value="1" required> <b>Tick
-                                                                to <em>Agree</em> With Terms $ Condition</b>
+                                                        <p class="text-center">
                                                         <ul>
                                                             <li>Only ILPR enrolled accounts are qualified for this contest.</li>
                                                             <li>You earn points when you deposit and trade during the contest.</li>
@@ -535,6 +531,11 @@ $i = 0;
                                                             <li>The points earned by a participant in a day is automatically generated by our system and added up before 10am next day.</li>
                                                             <li>Contest starts on Thursday 1st November 2018 and ends by 11:59pm on Friday 30th November, 2018.</li>
                                                         </ul>
+                                                        <input id="tire" type="hidden" name="tire"
+                                                               value="" required>
+                                                        <input type="checkbox" name="terms"
+                                                               value="1" required> <b>Tick
+                                                            to <em>Agree</em> With Terms & Condition</b>
                                                         </p>
                                                     <?php } ?>
                                                 </div>
@@ -580,4 +581,52 @@ $i = 0;
         });
     </script>
 <?php } ?>
+<script>
+    function select_tire(tire){
+        document.getElementById("tire").value = tire;
+        if(tire == 1) {
+            document.getElementById("platinum").style.display = "block";
+            document.getElementById("gold").style.display = "none";
+            document.getElementById("silver").style.display = "none";
+            document.getElementById("pro").style.display = "none";
+            document.getElementById("lite").style.display = "none";
+
+        }
+        else if(tire == 2) {
+            document.getElementById("platinum").style.display = "none";
+            document.getElementById("gold").style.display = "block";
+            document.getElementById("silver").style.display = "none";
+            document.getElementById("pro").style.display = "none";
+            document.getElementById("lite").style.display = "none";
+        }
+        else if(tire == 3) {
+            document.getElementById("platinum").style.display = "none";
+            document.getElementById("gold").style.display = "none";
+            document.getElementById("silver").style.display = "block";
+            document.getElementById("pro").style.display = "none";
+            document.getElementById("lite").style.display = "none";
+        }
+        else if(tire == 4) {
+            document.getElementById("platinum").style.display = "none";
+            document.getElementById("gold").style.display = "none";
+            document.getElementById("silver").style.display = "none";
+            document.getElementById("pro").style.display = "block";
+            document.getElementById("lite").style.display = "none";
+        }
+        else if(tire == 5) {
+            document.getElementById("platinum").style.display = "none";
+            document.getElementById("gold").style.display = "none";
+            document.getElementById("silver").style.display = "none";
+            document.getElementById("pro").style.display = "none";
+            document.getElementById("lite").style.display = "block";
+        }
+        else {
+            document.getElementById("platinum").style.display = "none";
+            document.getElementById("gold").style.display = "none";
+            document.getElementById("silver").style.display = "none";
+            document.getElementById("pro").style.display = "none";
+            document.getElementById("lite").style.display = "none";
+        }
+    }
+</script>
 </html>
