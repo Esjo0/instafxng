@@ -48,6 +48,7 @@ if (isset($_POST['post_comment']))
             $subject = 'New Bulletin Comment - '.$selected_bulletin['title'];
             $title = $selected_bulletin['title'];
             $created = date('d-m-y h:i:s a');
+            $comment_mail = nl2br($comment);
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
@@ -57,7 +58,7 @@ if (isset($_POST['post_comment']))
                                 <p>Dear $admin_name,</p>
                                 <p>$author left a new comment.</p>
                                 <p><b>BULLETIN TITLE: </b>$title</p>
-                                <p><b>COMMENT: </b><br/>$comment</p>
+                                <p><b>COMMENT: </b><br/>$comment_mail</p>
                                 <p><b>DATE AND TIME: </b>$created</p>                                
                                 <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />
@@ -207,7 +208,7 @@ $latest_comments = $db_handle->fetchAssoc($result);
                                                     <div class="col-sm-12">
                                                         <div class="transaction-remarks">
                                                             <span id="trans_remark_author"><?php echo $admin_object->get_admin_name_by_code($row['admin_code']); ?></span>
-                                                            <span id="trans_remark"><?php echo $row['comment'];?></span>
+                                                            <span id="trans_remark"><?php echo nl2br($row['comment']);?></span>
                                                             <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
                                                         </div>
                                                     </div>
