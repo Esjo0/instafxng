@@ -162,34 +162,6 @@ if (isset($_POST['opt_in'])) {
         }
     }
 }
-if (isset($_POST['progress'])) {
-    $email = $db_handle->sanitizePost($_POST['email']);
-
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $query = "SELECT bf.total_points, CONCAT(u.last_name, SPACE(1), u.first_name) AS name, bf.tire
-            FROM user AS u
-            INNER JOIN black_friday_2018 AS bf ON u.user_code = bf.user_code
-            WHERE u.email = '$email' AND bf.tire IS NOT NULL";
-        $result = $db_handle->runQuery($query);
-        $details = $db_handle->fetchAssoc($result);
-
-
-        if ($details) {
-            foreach ($details AS $row) {
-                extract($row);
-                if (empty($total_points)) {
-                    $total_points = 0;
-                }
-                $points_to_target = black_friday_tire_target($tire) - ($total_points % black_friday_tire_target($tire));
-                $target_reached = round($total_points / black_friday_tire_target($tire), 0, PHP_ROUND_HALF_DOWN);
-            }
-        } else {
-            $message_error = "You are not enrolled for the black friday Splurge <a data-target=\"#contest-register\" data-toggle=\"modal\"> Click Here to Join</a>";
-        }
-    } else {
-        $message_error = "Looks like you entered an invalid email, please try again.";
-    }
-}
 
 // Get all participants
 $query = "SELECT u.first_name, u.last_name
@@ -215,6 +187,28 @@ $i = 0;
     <meta name="description"
           content="Win $250 in our Independence Trade Contest, let's celebrate the Independence of Nigeria together."/>
     <?php require_once 'layouts/head_meta.php'; ?>
+    <script>
+        function progress(email) {
+            if (email=="") {
+                document.getElementById("progress").innerHTML="";
+                return;
+            }
+            console.log(email);
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            } else {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange=function() {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    document.getElementById("progress").innerHTML=xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "logic/calculate_black_friday_progress.php?email="+email, true);
+            xmlhttp.send();
+        }
+
+    </script>
 </head>
 <body>
 <?php require_once 'layouts/header.php'; ?>
@@ -223,7 +217,7 @@ $i = 0;
     <div class="row no-gutter">
         <?php require_once 'layouts/topnav.php'; ?>
 
-        <div id="main-body-content-area" class="col-md-8 col-md-push-4 col-lg-9 col-lg-push-3 ">
+        <div id="main-body-content-area" class="col-md-7 col-md-push-5 col-lg-8 col-lg-push-4">
 
             <!-- Unique Page Content Starts Here
             ================================================== -->
@@ -237,7 +231,6 @@ $i = 0;
                     </div>
                 </div>
             </div>
-
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
@@ -258,7 +251,7 @@ $i = 0;
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-7">
+                    <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-12 text-danger">
                                 <h4><strong>Are you ready for the Splurge?</strong></h4>
@@ -341,111 +334,7 @@ $i = 0;
 
                     </div>
 
-                    <div class="col-sm-5">
-                        <div class="col-sm-12 text-center" ><button type="button" class="btn btn-disabled btn-danger"><b>View Your
-                                    Progress Here</b></button></div>
-                        <div class="row" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(255, 240, 249, 0.75), 0 6px 20px 0 rgba(230, 225, 221, 0.83)">
-                            <div class="col-sm-12">
-                                <h3 class="text-center" style="font-family: 'Oleo Script', cursive !important; !important">
-                                    Enter your Email Address to know how you have fared in The Blackest Friday
-                                    Splurge</h3>
-                                <hr/>
-                                <form data-toggle="validator" class="form-horizontal text-center" role="form" method="post"
-                                      action="">
-                                    <div class="form-group col-sm-9">
-                                        <div class="">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i
-                                                        class="fa fa-envelope fa-fw"></i></span>
-                                                <input name="email" type="text" id=""
-                                                       placeholder="Enter Your Email address" value=""
-                                                       class="form-control" required/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-sm-4">
-                                        <div class="">
-                                            <input name="progress" type="submit" class="btn btn-success" value="SUBMIT"/>
-                                        </div>
-                                    </div>
-                                </form>
-                                <?php if ($details) { ?>
-                                    <div class="row">
-                                        <div class="col-sm-12"><p style="color:black; !important;"
-                                                                  class="text-center"><?php echo $name ?> , You are in
-                                                the <?php echo black_friday_tire($tire) ?> Category With a target
-                                                of <?php echo black_friday_tire_target($tire); ?> loyalty points</p>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <li class="list-group-item d-flex justify-content-between lh-condensed text-center"
-                                                style="display:block">
-                                                <h6><b>Total Points Gained</b></h6>
-                                                <h5><?php echo $total_points ?> Points</h5>
-                                            </li>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <li class="list-group-item d-flex justify-content-between lh-condensed text-center"
-                                                style="display:block">
-                                                <h6><b>Total Points to Target</b></h6>
-                                                <h5><?php echo $points_to_target ?> Points</h5>
-                                            </li>
-                                        </div>
 
-                                        <div class="col-sm-4">
-                                            <li class="list-group-item d-flex justify-content-between lh-condensed text-center"
-                                                style="display:block">
-                                                <h6><b>Target Reached</b></h6>
-                                                <h5><?php if ($target_reached > 1) {
-                                                        echo $target_reached . " Times";
-                                                    } elseif ($target_reached == 1) {
-                                                        echo "Once";
-                                                    } else {
-                                                        echo "Not Yet.";
-                                                    } ?></h5>
-                                            </li>
-                                        </div>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                        </div>
-<br>
-                        <h5>Total Number of Participant : <?php echo $numrows; ?></h5>
-
-                        <div class="row">
-                            <div class="col-sm-12" style="max-height: 600px; overflow: scroll;">
-
-                                <table class="table table-responsive table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>S/N</th>
-                                        <th>Name</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php if (isset($contest_members) && !empty($contest_members)) {
-                                        foreach ($contest_members as $row) {
-                                            $i++; ?>
-                                            <tr>
-                                                <td><?php echo $i; ?></td>
-                                                <td>
-                                                    <?php if (!empty($row['first_name'])) {
-                                                        echo $row['first_name'];
-                                                    } else {
-                                                        echo $row['last_name'];
-                                                    }
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                        <?php }
-                                    } else {
-                                        echo "<tr><td colspan='2' class='text-danger'><em>No participant yet.</em></td></tr>";
-                                    } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
 
                 <div class="row">
@@ -567,8 +456,70 @@ $i = 0;
 
         </div>
         <!-- Main Body - Side Bar  -->
-        <div id="main-body-side-bar" class="col-md-4 col-md-pull-8 col-lg-3 col-lg-pull-9 left-nav">
-            <?php require_once 'layouts/sidebar.php'; ?>
+        <div id="main-body-side-bar" class="col-md-5 col-md-pull-7 col-lg-4 col-lg-pull-8 left-nav">
+            <div class="col-sm-12 section-tint super-shadow nav-display super-shadow">
+                <div class="col-sm-12 text-center" ><button type="button" class="btn btn-disabled btn-danger"><b>View Your
+                            Progress Here</b></button></div>
+                <div class="row" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(255, 240, 249, 0.75), 0 6px 20px 0 rgba(230, 225, 221, 0.83)">
+                    <div class="col-sm-12">
+                        <h3 class="text-center" style="font-family: 'Oleo Script', cursive !important; !important">
+                            Enter your Email Address to know how you have fared in The Blackest Friday
+                            Splurge</h3>
+                        <hr/>
+                            <div class="form-group col-sm-12">
+                                <div class="">
+                                    <div class="input-group">
+                                                <span class="input-group-addon"><i
+                                                        class="fa fa-envelope fa-fw"></i></span>
+                                        <input name="email" type="text" id="email"
+                                               placeholder="Enter Your Email address"
+                                               class="form-control" onchange="progress(this.value);"
+                                               onfocus="progress(this.value);"
+                                               onblur="progress(this.value);"/>
+                                    </div>
+                                </div>
+                            </div>
+                        <div id="progress"></div>
+                    </div>
+                </div>
+                <br>
+                <h5>Total Number of Participant : <?php echo $numrows; ?></h5>
+
+                <div class="row">
+                    <div class="col-sm-12" style="max-height: 600px; overflow: scroll;">
+
+                        <table class="table table-responsive table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (isset($contest_members) && !empty($contest_members)) {
+                                foreach ($contest_members as $row) {
+                                    $i++; ?>
+                                    <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td>
+                                            <?php if (!empty($row['first_name'])) {
+                                                echo $row['first_name'];
+                                            } else {
+                                                echo $row['last_name'];
+                                            }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                <?php }
+                            } else {
+                                echo "<tr><td colspan='2' class='text-danger'><em>No participant yet.</em></td></tr>";
+                            } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
