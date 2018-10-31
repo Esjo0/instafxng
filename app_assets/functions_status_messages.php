@@ -18,10 +18,10 @@ function black_friday_tire($id)
             $tire = "SILVER";
             break;
         case '4':
-            $tire = "BRONZE 1";
+            $tire = "BRONZE PRO";
             break;
         case '5':
-            $tire = "BRONZE 2";
+            $tire = "BRONZE LITE";
             break;
         default:
             $tire = " ";
