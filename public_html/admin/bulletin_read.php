@@ -27,8 +27,8 @@ if (isset($_POST['post_comment']))
 {
     $comment = htmlspecialchars_decode(stripslashes(trim($_POST['comment'])));
     $bulletin_id = $db_handle->sanitizePost($_POST['bulletin_id']);
-
-    $db_handle->runQuery("INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')");
+    $query = "INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')";
+    $db_handle->runQuery($query);
     if($db_handle->affectedRows() > 0)
     {
         //$content = 'Author: '.$admin_object->get_admin_name_by_code($admin_code) ."";
@@ -132,6 +132,27 @@ $latest_comments = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script src="tinymce/tinymce.min.js"></script>
+        <script type="text/javascript">
+            tinyMCE.init({
+                selector: "textarea#content",
+                height: 350,
+                theme: "modern",
+                relative_urls: false,
+                remove_script_host: false,
+                convert_urls: true,
+                plugins: [
+                    "autolink lists print preview hr anchor",
+                    "wordcount code fullscreen",
+                    "insertdatetime nonbreaking save",
+                    ""
+                ],
+                toolbar1: "undo redo | bold italic ",
+                browser_spellcheck: true
+//                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
+
+            });
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -184,9 +205,9 @@ $latest_comments = $db_handle->fetchAssoc($result);
                                     <form  data-toggle="validator" role="form" method="post" action="">
                                         <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
                                         <div class="form-group">
-                                            <label class="control-label" for="remarks">Your Remark:</label>
+                                            <label class="control-label" for="content">Your Remark:</label>
                                             <div>
-                                                <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
+                                                <textarea  name="comment" type="text" id="content" value="" rows="10" class="form-control" required></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
