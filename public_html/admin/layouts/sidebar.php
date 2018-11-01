@@ -212,7 +212,6 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(262, $my_pages_sidebar)) { ?><li><a href="loyalty_current_rank.php">Loyalty Current Rank</a></li><?php } ?>
                         <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="independence_contest.php">Independence Contest 2018</a></li><?php } ?>
                         <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="the_splurge.php">Black Friday 2018</a></li><?php } ?>
-                        <li class="divider"></li>
                         <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="black_friday_splurge_participants.php">Black Friday - Participants</a></li><?php } ?>
                     </ul>
                 </li>
