@@ -3,6 +3,8 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$cat = " ALL";
+$point = "2000, 1000, 500, 200, 100";
 if(isset($_POST['filter'])){
     $filter = $db_handle->sanitizePost(trim($_POST['filt_val']));
 
@@ -12,6 +14,33 @@ if(isset($_POST['filter'])){
     WHERE bf.tire = '$filter'
     ORDER BY bf.total_points DESC ";
     $_SESSION['query'] = $query;
+  switch ($filter) {
+      case '1':
+          $cat = "PLATINUM";
+          $point = "2000";
+          break;
+      case '2':
+          $cat = "GOLD";
+          $point = "1000";
+          break;
+      case '3':
+          $cat = "SILVER";
+          $point = "500";
+          break;
+      case '4':
+          $cat = "BRONZE PRO";
+          $point = "200";
+          break;
+      case '5':
+          $cat = "BRONZE LITE";
+          $point = "100";
+          break;
+
+      default:
+          $cat = "";
+          $point = "";
+          break;
+  }
 }elseif(empty($_SESSION['query']) || isset($_POST['all'])){
 
 $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code, bf.total_points
@@ -81,7 +110,7 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
 
             <div class="row">
                 <div class="col-sm-12 text-danger">
-                    <h4><strong>Black Friday 2018 -PLATINUM CATEGORY</strong></h4>
+                    <h4><strong>Black Friday 2018 - <?php echo $cat?> CATEGORY</strong></h4>
                 </div>
             </div>
 
@@ -105,7 +134,7 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
                     <button class="btn btn-outline-primary" type="submit" name="all">View All</button>
                 </div>
             </form>
-                        <p>Below is the list of clients that have opted in for the PLATINUM Category To Make <b>2000
+                        <p>Below is the list of clients that have opted in for the <?php echo $cat?> Category To Make <b><?php echo $point?>
                                 points</b> in the 2018 Black Friday Promotion.</p>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
