@@ -267,11 +267,7 @@ $i = 0;
                                                             Select your desired target and enter the promo. You will be required to hit
                                                             your target within the duration of the promo.
                                                         </li>
-
-                                                        <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 4:</strong>
-                                                            You would be able to redeem your prize every time you hit your set target
-                                                            while the promo is on.
-                                                        </li>
+                                                        
                                                     </ul>
                                                 </div>
                                             </div>
