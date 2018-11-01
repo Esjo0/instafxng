@@ -157,7 +157,7 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
 
                                     $points_to_target = black_friday_tire_target($row['tire']) - ($row['total_points'] % black_friday_tire_target($row['tire']));
                                     $target_reached = round($row['total_points'] / black_friday_tire_target($row['tire']), 0, PHP_ROUND_HALF_DOWN);
-                                    $dollar_value = ((($target_reached * black_friday_tire_target($row['tire'])) * 10) / 100) * ((150/100) * $target_reached);
+                                    $dollar_value = ((($target_reached * black_friday_tire_target($row['tire']))) / 100) * ((150));
                                     ?>
                                     <tr>
                                         <td><?php echo $row['full_name']; ?></td>
