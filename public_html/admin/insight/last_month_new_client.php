@@ -182,14 +182,14 @@ $clients = $db_handle->fetchAssoc($result);
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                             <div class="col-sm-4">
                                                 <select name="filter" class="form-control" id="filter" onchange="selector_function()">
-                                                    <option <?php if($filter == 1){echo "selected";} ?> value="1">Last Months New Clients</option>
-                                                    <option <?php if($filter == 2){echo "selected";} ?> value="2">Last Months New Clients with Accounts</option>
-                                                    <option <?php if($filter == 3){echo "selected";} ?> value="3">Last Months New Clients without Accounts and have no Training</option>
-                                                    <option <?php if($filter == 4){echo "selected";} ?> value="4">Last Months New Clients without Accounts and have Training</option>
-                                                    <option <?php if($filter == 5){echo "selected";} ?> value="5">Last Months New Trainee Still in course 2 in current month</option>
-                                                    <option <?php if($filter == 6){echo "selected";} ?> value="6">Last Months New Clients not yet funded above $50</option>
-                                                    <option <?php if($filter == 7){echo "selected";} ?> value="7">Last Months New Clients funded above $50</option>
-                                                    <option <?php if($filter == 8){echo "selected";} ?> value="8">Last Months New Clients not yet funded</option>
+                                                    <option <?php if($filter == 1){echo "selected";} ?> value="1">Last Month New Clients</option>
+                                                    <option <?php if($filter == 2){echo "selected";} ?> value="2">Last Month New Clients with Accounts</option>
+                                                    <option <?php if($filter == 3){echo "selected";} ?> value="3">Last Month New Clients without Accounts and have no Training</option>
+                                                    <option <?php if($filter == 4){echo "selected";} ?> value="4">Last Month New Clients without Accounts and have Training</option>
+                                                    <option <?php if($filter == 5){echo "selected";} ?> value="5">Last Month New Trainee Still in course 2 in current month</option>
+                                                    <option <?php if($filter == 6){echo "selected";} ?> value="6">Last Month New Clients not yet funded above $50</option>
+                                                    <option <?php if($filter == 7){echo "selected";} ?> value="7">Last Month New Clients funded above $50</option>
+                                                    <option <?php if($filter == 8){echo "selected";} ?> value="8">Last Month New Clients not yet funded</option>
                                                 </select>
                                                 <button style="display: none" id="_selector" name="selector" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                                             </div>

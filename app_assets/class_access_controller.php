@@ -170,6 +170,7 @@ define("PAGE_CODE", json_encode(array(
     277 => "client_comm_silver.php||",
     278 => "client_comm_bronze.php||",
     279 => "withdrawal_reversal.php||",
+    280 => "training_schedule.php||",
     281 => "deposit_refund_initiated.php||",
     282 => "deposit_refund_pending.php||",
     283 => "deposit_refund_approve.php||",
