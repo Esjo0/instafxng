@@ -292,7 +292,7 @@ $i = 0;
                                                     <ul>
                                                         <li>Participant would get rewarded every time he/she hits the
                                                             set target before the promo ends, so the more times you hit
-                                                            your target the more money extra money you earn!
+                                                            your target the more money you earn!
                                                         </li>
                                                         <li>Participants will be able to see his total points earned
                                                             within the promo period right here on this page.
@@ -435,8 +435,7 @@ $i = 0;
                                                                 </li>
                                                                 <li>Participant would get rewarded every time he/she
                                                                     hits the set target before the promo ends, so the
-                                                                    more times you hit your target the more money extra
-                                                                    money you earn!
+                                                                    more times you hit your target the more money you earn!
                                                                 </li>
                                                                 <li>Participants will be able to see his total points
                                                                     earned within the promo period right on the page.
