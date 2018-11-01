@@ -123,19 +123,13 @@ function auto_mail_query($query_type) {
 
     switch($query_type) {
         case 1:
-            $query = "SELECT f_name AS first_name, email FROM `campaign_leads` WHERE source = '3' AND interest = '2'
-WHERE (DATEDIFF('$today', STR_TO_DATE(created, '%Y-%m-%d')) = '15')
-                GROUP BY email ORDER BY created DESC, l_name ASC";
+            $query = "SELECT f_name AS first_name, email FROM `campaign_leads` WHERE (DATEDIFF('$today', STR_TO_DATE(created, '%Y-%m-%d')) = '15') AND source = '3' AND interest = '2' GROUP BY email ORDER BY created DESC ";
             break;
         case 2:
-            $query = "SELECT f_name AS first_name, email FROM `campaign_leads` WHERE source = '3' AND interest = '2'
-WHERE (DATEDIFF('$today', STR_TO_DATE(created, '%Y-%m-%d')) = '28')
-                GROUP BY email ORDER BY created DESC, l_name ASC";
+            $query = "SELECT f_name AS first_name, email FROM `campaign_leads` WHERE (DATEDIFF('$today', STR_TO_DATE(created, '%Y-%m-%d')) = '28') AND source = '3' AND interest = '2' GROUP BY email ORDER BY created DESC ";
             break;
         case 3:
-            $query = "SELECT f_name AS first_name, email FROM `campaign_leads` WHERE source = '3' AND interest = '2'
-WHERE (DATEDIFF('$today', STR_TO_DATE(created, '%Y-%m-%d')) = '42')
-                GROUP BY email ORDER BY created DESC, l_name ASC";
+            $query = "SELECT f_name AS first_name, email FROM `campaign_leads` WHERE (DATEDIFF('$today', STR_TO_DATE(created, '%Y-%m-%d')) = '42') AND source = '3' AND interest = '2' GROUP BY email ORDER BY created DESC ";
             break;
         default:
             $query = "";
