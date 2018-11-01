@@ -3,12 +3,54 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$cat = " ALL";
+$point = "2000, 1000, 500, 200, 100";
+if(isset($_POST['filter'])){
+    $filter = $db_handle->sanitizePost(trim($_POST['filt_val']));
+
+        $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code, bf.total_points
+    FROM black_friday_2018 AS bf
+    INNER JOIN user AS u ON bf.user_code = u.user_code
+    WHERE bf.tire = '$filter'
+    ORDER BY bf.total_points DESC ";
+    $_SESSION['query'] = $query;
+  switch ($filter) {
+      case '1':
+          $cat = "PLATINUM";
+          $point = "2000";
+          break;
+      case '2':
+          $cat = "GOLD";
+          $point = "1000";
+          break;
+      case '3':
+          $cat = "SILVER";
+          $point = "500";
+          break;
+      case '4':
+          $cat = "BRONZE PRO";
+          $point = "200";
+          break;
+      case '5':
+          $cat = "BRONZE LITE";
+          $point = "100";
+          break;
+
+      default:
+          $cat = "";
+          $point = "";
+          break;
+  }
+}elseif(empty($_SESSION['query']) || isset($_POST['all'])){
 
 $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code, bf.total_points
     FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code
-    WHERE bf.tire = '4'
+    WHERE bf.tire IS NOT NULL
     ORDER BY bf.total_points DESC ";
+    $_SESSION['query'] = $query;
+}
+$query = $_SESSION['query'];
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 40;
@@ -63,21 +105,36 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
 
         <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
         <div id="main-body-content-area" class="col-md-8 col-lg-9">
-
             <!-- Unique Page Content Starts Here
             ================================================== -->
 
             <div class="row">
                 <div class="col-sm-12 text-danger">
-                    <h4><strong>Black Friday 2018 -BRONZE 1 CATEGORY</strong></h4>
+                    <h4><strong>Black Friday 2018 - <?php echo $cat?> CATEGORY</strong></h4>
                 </div>
             </div>
 
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
-
-                        <p>Below is the list of clients that have opted in for the BRONZE 1 Category To Make <b>200
+            <form action="" method="post" class="form horizontal row">
+                <div class="col-md-6">
+                    <select name="filt_val" class="form-control" id="filter" placeholder="Filter by" required>
+                        <option value="1" >Platinum</option>
+                        <option value="2" >Gold</option>
+                        <option value="3">Silver</option>
+                        <option value="4">Bronze Pro</option>
+                        <option value="5">Bronze Lite</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-success" type="submit" name="filter"> Submit</button>
+                </div>
+                <div class="col-md-3 pull-right">
+                    <button class="btn btn-outline-primary" type="submit" name="all">View All</button>
+                </div>
+            </form>
+                        <p>Below is the list of clients that have opted in for the <?php echo $cat?> Category To Make <b><?php echo $point?>
                                 points</b> in the 2018 Black Friday Promotion.</p>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
