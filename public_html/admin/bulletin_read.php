@@ -27,8 +27,8 @@ if (isset($_POST['post_comment']))
 {
     $comment = htmlspecialchars_decode(stripslashes(trim($_POST['comment'])));
     $bulletin_id = $db_handle->sanitizePost($_POST['bulletin_id']);
-
-    $db_handle->runQuery("INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')");
+    $query = "INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')";
+    $db_handle->runQuery($query);
     if($db_handle->affectedRows() > 0)
     {
         //$content = 'Author: '.$admin_object->get_admin_name_by_code($admin_code) ."";
@@ -48,6 +48,7 @@ if (isset($_POST['post_comment']))
             $subject = 'New Bulletin Comment - '.$selected_bulletin['title'];
             $title = $selected_bulletin['title'];
             $created = date('d-m-y h:i:s a');
+            $comment_mail = nl2br($comment);
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
@@ -57,7 +58,7 @@ if (isset($_POST['post_comment']))
                                 <p>Dear $admin_name,</p>
                                 <p>$author left a new comment.</p>
                                 <p><b>BULLETIN TITLE: </b>$title</p>
-                                <p><b>COMMENT: </b><br/>$comment</p>
+                                <p><b>COMMENT: </b><br/>$comment_mail</p>
                                 <p><b>DATE AND TIME: </b>$created</p>                                
                                 <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />
@@ -131,6 +132,27 @@ $latest_comments = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script src="tinymce/tinymce.min.js"></script>
+        <script type="text/javascript">
+            tinyMCE.init({
+                selector: "textarea#content",
+                height: 350,
+                theme: "modern",
+                relative_urls: false,
+                remove_script_host: false,
+                convert_urls: true,
+                plugins: [
+                    "autolink lists print preview hr anchor",
+                    "wordcount code fullscreen",
+                    "insertdatetime nonbreaking save",
+                    ""
+                ],
+                toolbar1: "undo redo | bold italic ",
+                browser_spellcheck: true
+//                external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}
+
+            });
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -183,9 +205,9 @@ $latest_comments = $db_handle->fetchAssoc($result);
                                     <form  data-toggle="validator" role="form" method="post" action="">
                                         <input type="hidden" class="form-control" id="client_id" name="transaction_id" value="<?php echo $trans_id; ?>">
                                         <div class="form-group">
-                                            <label class="control-label" for="remarks">Your Remark:</label>
+                                            <label class="control-label" for="content">Your Remark:</label>
                                             <div>
-                                                <textarea  name="comment" type="text" id="comment" value="" class="form-control" required></textarea>
+                                                <textarea  name="comment" type="text" id="content" value="" rows="10" class="form-control" required></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -207,7 +229,7 @@ $latest_comments = $db_handle->fetchAssoc($result);
                                                     <div class="col-sm-12">
                                                         <div class="transaction-remarks">
                                                             <span id="trans_remark_author"><?php echo $admin_object->get_admin_name_by_code($row['admin_code']); ?></span>
-                                                            <span id="trans_remark"><?php echo $row['comment'];?></span>
+                                                            <span id="trans_remark"><?php echo nl2br($row['comment']);?></span>
                                                             <span id="trans_remark_date"><?php echo datetime_to_text($row['created']); ?></span>
                                                         </div>
                                                     </div>
