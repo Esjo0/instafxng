@@ -8,7 +8,7 @@ $point = "2000, 1000, 500, 200, 100";
 if(isset($_POST['filter'])){
     $filter = $db_handle->sanitizePost(trim($_POST['filt_val']));
 
-        $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code, bf.total_points
+        $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code, bf.total_points, bf.tire
     FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code
     WHERE bf.tire = '$filter'
@@ -43,7 +43,7 @@ if(isset($_POST['filter'])){
   }
 }elseif(empty($_SESSION['query']) || isset($_POST['all'])){
 
-$query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code, bf.total_points
+$query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code, bf.total_points, bf.tire
     FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code
     WHERE bf.tire IS NOT NULL
@@ -51,6 +51,7 @@ $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.pho
     $_SESSION['query'] = $query;
 }
 $query = $_SESSION['query'];
+
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 40;
@@ -142,6 +143,8 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
                             <tr>
                                 <th>Client Name</th>
                                 <th>Total Points</th>
+                                <th>Target Reached</th>
+                                <th>Amount to be Claimed</th>
                                 <th>Email Address</th>
                                 <th>Phone Number</th>
                                 <th></th>
@@ -151,10 +154,22 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
                             <?php
                             if (isset($black_friday_splurge_promo) && !empty($black_friday_splurge_promo)) {
                                 foreach ($black_friday_splurge_promo as $row) {
+
+                                    $points_to_target = black_friday_tire_target($row['tire']) - ($row['total_points'] % black_friday_tire_target($row['tire']));
+                                    $target_reached = round($row['total_points'] / black_friday_tire_target($row['tire']), 0, PHP_ROUND_HALF_DOWN);
+                                    $dollar_value = ((($target_reached * black_friday_tire_target($row['tire'])) * 10) / 100) * ((150/100) * $target_reached);
                                     ?>
                                     <tr>
                                         <td><?php echo $row['full_name']; ?></td>
                                         <td><?php echo $row['total_points']; ?></td>
+                                        <td><?php if ($target_reached > 1) {
+                                                echo $target_reached . " Times";
+                                            } elseif ($target_reached == 1) {
+                                                echo "Once";
+                                            } else {
+                                                echo "Not Yet.";
+                                            } ?></td>
+                                        <td><?php echo "$". number_format($dollar_value); ?></td>
                                         <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['phone']; ?></td>
                                         <td nowrap="nowrap">

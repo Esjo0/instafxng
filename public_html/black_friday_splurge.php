@@ -10,7 +10,7 @@ $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 if (isset($_POST['check_acct'])) {
     $acct_no = $db_handle->sanitizePost($_POST['acct_no']);
 
-    $query = "SELECT u.user_code, u.first_name, u.last_name,
+    $query = "SELECT u.user_code, u.first_name, u.last_name
             FROM user_credential AS uc
             INNER JOIN user AS u ON uc.user_code = u.user_code
             LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
@@ -553,7 +553,7 @@ $i = 0;
 </div>
 <?php require_once 'layouts/footer.php'; ?>
 </body>
-<?php if (!isset($_COOKIE['ifxng_black_friday'])) { ?>
+<?php if ($opt_in == true) { ?>
     <script>
         $(document).ready(function () {
             $('#contest-register').modal("show");
@@ -608,9 +608,5 @@ $i = 0;
         }
     }
 </script>
-<script src="https://cdn.rawgit.com/icons8/titanic/master/dist/js/titanic.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/4.5.9/bodymovin.min.js"></script>
-<script>
-    var titanic = new Titanic();
-</script>
+
 </html>

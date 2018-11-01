@@ -212,12 +212,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(262, $my_pages_sidebar)) { ?><li><a href="loyalty_current_rank.php">Loyalty Current Rank</a></li><?php } ?>
                         <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="independence_contest.php">Independence Contest 2018</a></li><?php } ?>
                         <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="the_splurge.php">Black Friday 2018</a></li><?php } ?>
-                        <li class="divider"></li>
-                        <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="black_friday_splurge_platinum.php">Black Friday -Platinum</a></li><?php } ?>
-                        <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="black_friday_splurge_gold.php">Black Friday -Gold</a></li><?php } ?>
-                        <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="black_friday_splurge_silver.php">Black Friday -Silver</a></li><?php } ?>
-                        <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="black_friday_splurge_bronze1.php">Black Friday -Bronze 1</a></li><?php } ?>
-                        <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="black_friday_splurge_bronze2.php">Black Friday -Bronze 2</a></li><?php } ?>
+                        <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="black_friday_splurge_participants.php">Black Friday - Participants</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
