@@ -199,7 +199,7 @@ $i = 0;
                     <div class="col-sm-12 text-center">
                         <h3 style="font-family: 'Oleo Script', cursive !important; color: #000000 !important">The
                             Blackest Friday Splurge is Here, Up to 150% Extra up for Grabs.</h3>
-                        <p class="text-danger">Starting from November 1, 2018 To November 30, 2018.</p>
+                        <p class="text-danger">Starting from November 5, 2018 To November 30, 2018.</p>
                         <a data-target="#contest-register" data-toggle="modal" class="btn btn-success"
                            style="cursor: pointer;"><strong>Click Here to Join the Splurge.</strong></a>
                         <br/>
@@ -214,21 +214,18 @@ $i = 0;
                             </div>
                                 <div class="col-sm-12" id="details">
                                     <p>This year’s black Friday promo is themed the splurge, as we intend to reward you with more money this promo period!</p>
-                                    <p>As a member of our loyalty reward programme this is another opportunity to earn over $1000 extra throughout the month of November and increase your loyalty points in anticipation for the yearly reward of N2.250 Million.</p>
                                     <p>What is the highest points you have earned in the loyalty reward promo so far, can you beat your previous points? Yes! We are set to reward you every step of the way.</p>
-                                    <p>The promo is divided into 2 rounds, the first round begins on the 5th of November and ends by 11:5pm on the 16th of November, while the second round begins by 12am on the 19th of November and ends by 11:59pm on the 30th of November 2018.</p>
+                                    <p>The promo is divided into 2 rounds, the first round begins on the 5th of November and ends by 11:59pm on the 16th of November, while the second round begins by 12am on the 19th of November and ends by 11:59pm on the 30th of November 2018.</p>
                                     <p>To participate in this promo, we have created different categories with targets for you. You only need to choose from the set targets and work towards hitting and surpassing it. </p>
                                     <p>The more times you hit your target the more rewards you get.</p>
-                                    <p>For instance, if your target is to get 1000 points in the first round, once you get to 1000points you will be rewarded with $150 plus the 1000 points you have. 1000 points equals $100 so the total becomes $250.</p>
-                                    <p><strong>The Breakdown</strong></p>
-                                    <p>Trade 1000 points to get $150<br>
-                                        The same $1000 qualifies you for $100.<br>
-                                        Total Reward - $250</p>
+                                    <p>For instance, if your target is to get 1000 points in the first round, once you get to 1000points you will be rewarded with $150 in addition to the 1000 points you have. 1000 points equals $100 so the total becomes $250.</p>
+                                    <center><p style="font-size: 50px" class="text-center"><strong><h5><u>The Breakdown</u></h5></strong>Trade 1000 points to get $150<br>
+                                        The same 1000 points is equal to $100.<br>
+                                        Total Reward - $100 + $150 = $250</p></center>
 
-                                    <p>From the example above, if you choose to redeem the points accrued for the promo season, you will be receiving a total of $750 in your account.</p>
+                                    <p>From the example above, if you choose to redeem your win and the points accrued for the promo season, you will be receiving a total of $250 extra cash!</p>
 
-                                    <p>However, you can also choose to claim only your win of $450 and keep the 3000 points which will help you rank higher in the yearly reward programme and position you to secure your share of the yearly N2.250 Million winners’ pool by 3oth November.</p>
-
+                                    <p>However, you can also choose to claim only your win of $150 and keep the 1000 points which will help you rank higher in the yearly reward programme and position you to secure your share of the yearly N2.250 Million winners’ pool by 30th November, 2018.
                                     <p>Whatever your choice is, you remain a winner!</p>
                                     <p><strong>How To Earn Points.</strong> For the purpose of this promo, both your funding and trading activity will earn you loyalty points, which will be published by 10am the following day.</p>
                                     <p><strong>No Limitations! You Can Grab Over $1000 Extra in the Splurge.</strong> There is no limit to how much you can earn in every round because every time you hit your set target within a round, you’ll get an extra 150%. </p>
@@ -270,11 +267,7 @@ $i = 0;
                                                             Select your desired target and enter the promo. You will be required to hit
                                                             your target within the duration of the promo.
                                                         </li>
-
-                                                        <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 4:</strong>
-                                                            You would be able to redeem your prize every time you hit your set target
-                                                            while the promo is on.
-                                                        </li>
+                                                        
                                                     </ul>
                                                 </div>
                                             </div>
