@@ -324,6 +324,10 @@ $i = 0;
                                                         <li>Prizes won will be paid into your InstaForex Account and cannot be converted into loyalty
                                                             points, during and after the promo season.
                                                         </li>
+                                                        <li>
+                                                            Participation in the second round will not be automatic,
+                                                            you will be required to Opt-In to round 2 upon the completion of round one.
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -459,6 +463,10 @@ $i = 0;
                                                                 </li>
                                                                 <li>Contest starts on Monday 5th November 2018 and
                                                                     ends by 11:59pm on Friday 16th November, 2018.
+                                                                </li>
+                                                                <li>
+                                                                    Participation in the second round will not be automatic,
+                                                                    you will be required to Opt-In to round 2 upon the completion of round one.
                                                                 </li>
                                                             </ul>
                                                             <input id="tire" type="hidden" name="tire" value=""
