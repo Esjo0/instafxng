@@ -198,7 +198,7 @@ $i = 0;
 
                 <div class="row ">
                     <div class="col-sm-12 text-center">
-                        <h3 style="font-family: 'Oleo Script', cursive !important; color: #000000 !important">The
+                        <h3 style="font-family: 'Microsoft YaHei', cursive !important; color: #000000 !important">The
                             Blackest Friday Splurge is Here, Up to 150% Extra up for Grabs.</h3>
                         <p class="text-danger">First Round <i class="fa fa-arrow-right"></i> Starts on Monday 5th November, 2018 To Friday 16th November, 2018.</p>
                         <a data-target="#contest-register" data-toggle="modal" class="btn btn-success"
@@ -537,7 +537,7 @@ $i = 0;
                 <div class="row"
                      style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(255, 240, 249, 0.75), 0 6px 20px 0 rgba(230, 225, 221, 0.83)">
                     <div class="col-sm-12">
-                        <p class="text-center" style="font-family: 'Oreo Script', cursive !important; !important">
+                        <p class="text-center" style="font-family: 'Times New Roman', cursive !important; !important">
                             Enter your Email Address to know how you have fared in The Blackest Friday
                             Splurge</p>
                         <hr/>
