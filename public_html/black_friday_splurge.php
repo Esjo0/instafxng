@@ -184,7 +184,7 @@ $i = 0;
                         <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%"
                              class="img img-responsive" src="https://instafxng.com/imgsource/the_splurge_website.jpg"
                              alt="The Splurge"
-                             style="height:300px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                             style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
                     </div>
                 </div>
             </div>
@@ -198,7 +198,7 @@ $i = 0;
 
                 <div class="row ">
                     <div class="col-sm-12 text-center">
-                        <h3 style="font-family: 'Microsoft YaHei', cursive !important; color: #000000 !important">The
+                        <h3 style=" color: #000000 !important">The
                             Blackest Friday Splurge is Here, Up to 150% Extra up for Grabs.</h3>
                         <p class="text-danger">First Round <i class="fa fa-arrow-right"></i> Starts on Monday 5th November, 2018 To Friday 16th November, 2018.</p>
                         <a data-target="#contest-register" data-toggle="modal" class="btn btn-success"
@@ -323,6 +323,10 @@ $i = 0;
                                                         </li>
                                                         <li>Prizes won will be paid into your InstaForex Account and cannot be converted into loyalty
                                                             points, during and after the promo season.
+                                                        </li>
+                                                        <li>
+                                                            Participation in the second round will not be automatic,
+                                                            you will be required to Opt-In to round 2 upon the completion of round one.
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -459,6 +463,10 @@ $i = 0;
                                                                 </li>
                                                                 <li>Contest starts on Monday 5th November 2018 and
                                                                     ends by 11:59pm on Friday 16th November, 2018.
+                                                                </li>
+                                                                <li>
+                                                                    Participation in the second round will not be automatic,
+                                                                    you will be required to Opt-In to round 2 upon the completion of round one.
                                                                 </li>
                                                             </ul>
                                                             <input id="tire" type="hidden" name="tire" value=""
