@@ -59,6 +59,7 @@ if (!empty($user_code_encrypted) || $check_acct = true) {
 
         if ($total_commission >= 1000) {
             $platinum = true;
+            $gold = true;
         } elseif ($total_commission >= 500 AND $total_commission <= 999) {
             $platinum = true;
             $gold = true;
