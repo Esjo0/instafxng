@@ -59,6 +59,7 @@ if (!empty($user_code_encrypted) || $check_acct = true) {
 
         if ($total_commission >= 1000) {
             $platinum = true;
+            $gold = true;
         } elseif ($total_commission >= 500 AND $total_commission <= 999) {
             $platinum = true;
             $gold = true;
@@ -264,10 +265,9 @@ $i = 0;
                                                         </li>
 
                                                         <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 3:</strong>
-                                                            Select your desired target and enter the promo. You will be required to hit
-                                                            your target within the duration of the promo.
+                                                            Choose your desired target and enter the promo. You will be required to hit your target within each round of the promo.
                                                         </li>
-                                                        
+
                                                     </ul>
                                                 </div>
                                             </div>
