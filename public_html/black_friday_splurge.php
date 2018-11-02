@@ -220,10 +220,17 @@ $i = 0;
                                     <p>To participate in this promo, we have created different categories with targets for you. You only need to choose from the set targets and work towards hitting and surpassing it. </p>
                                     <p>The more times you hit your target the more rewards you get.</p>
                                     <p>For instance, if your target is to get 1000 points in the first round, once you get to 1000points you will be rewarded with $150 in addition to the 1000 points you have. 1000 points equals $100 so the total becomes $250.</p>
-                                    <center><p style="font-size: 50px" class="text-center"><strong><h5><u>The Breakdown</u></h5></strong>Trade 1000 points to get $150<br>
+                                    <div class="row">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-6">
+                                            <strong><h5 class="text-center"><u>The Breakdown</u></h5></strong>
+                                        <p class="text-center">
+                                            Trade 1000 points to get $150<br>
                                         The same 1000 points is equal to $100.<br>
-                                        Total Reward - $100 + $150 = $250</p></center>
-
+                                        Total Reward - $100 + $150 = $250</p>
+                                            </div>
+                                        <div class="col-md-3"></div>
+                                    </div>
                                     <p>From the example above, if you choose to redeem your win and the points accrued for the promo season, you will be receiving a total of $250 extra cash!</p>
 
                                     <p>However, you can also choose to claim only your win of $150 and keep the 1000 points which will help you rank higher in the yearly reward programme and position you to secure your share of the yearly N2.250 Million winners’ pool by 30th November, 2018.
