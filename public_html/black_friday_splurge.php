@@ -200,7 +200,7 @@ $i = 0;
                     <div class="col-sm-12 text-center">
                         <h3 style="font-family: 'Oleo Script', cursive !important; color: #000000 !important">The
                             Blackest Friday Splurge is Here, Up to 150% Extra up for Grabs.</h3>
-                        <p class="text-danger">Starting from November 5, 2018 To November 30, 2018.</p>
+                        <p class="text-danger">First Round <i class="fa fa-arrow-right"></i> Starts on Monday 5th November, 2018 To Friday 16th November, 2018.</p>
                         <a data-target="#contest-register" data-toggle="modal" class="btn btn-success"
                            style="cursor: pointer;"><strong>Click Here to Join the Splurge.</strong></a>
                         <br/>
@@ -218,25 +218,25 @@ $i = 0;
                                     <p>What is the highest points you have earned in the loyalty reward promo so far, can you beat your previous points? Yes! We are set to reward you every step of the way.</p>
                                     <p>The promo is divided into 2 rounds, the first round begins on the 5th of November and ends by 11:59pm on the 16th of November, while the second round begins by 12am on the 19th of November and ends by 11:59pm on the 30th of November 2018.</p>
                                     <p>To participate in this promo, we have created different categories with targets for you. You only need to choose from the set targets and work towards hitting and surpassing it. </p>
-                                    <p>The more times you hit your target the more rewards you get.</p>
-                                    <p>For instance, if your target is to get 1000 points in the first round, once you get to 1000points you will be rewarded with $150 in addition to the 1000 points you have. 1000 points equals $100 so the total becomes $250.</p>
+                                    <p>The more time you hit your target the more rewards you get.</p>
+                                    <p>For instance, if your target is to get 1000 points in the first round, once you get to 1000 points you will be rewarded with $150 in addition to the 1000 points you have. 1000 points equals $100 so the total becomes $250.</p>
                                     <div class="row">
                                         <div class="col-md-3"></div>
                                         <div class="col-md-6">
                                             <strong><h5 class="text-center"><u>The Breakdown</u></h5></strong>
                                         <p class="text-center">
                                             Trade 1000 points to get $150<br>
-                                        The same 1000 points is equal to $100.<br>
+                                        The same 1000 points equals $100.<br>
                                         Total Reward - $100 + $150 = $250</p>
                                             </div>
                                         <div class="col-md-3"></div>
                                     </div>
                                     <p>From the example above, if you choose to redeem your win and the points accrued for the promo season, you will be receiving a total of $250 extra cash!</p>
 
-                                    <p>However, you can also choose to claim only your win of $150 and keep the 1000 points which will help you rank higher in the yearly reward programme and position you to secure your share of the yearly N2.250 Million winners’ pool by 30th November, 2018.
+                                    <p>However, you can also choose to claim only your win of $150 and keep the 1000 points which will help you rank higher in the yearly reward programme and position you to secure your share of the yearly N2.250 Million pool by 30th November, 2018.
                                     <p>Whatever your choice is, you remain a winner!</p>
                                     <p><strong>How To Earn Points.</strong> For the purpose of this promo, both your funding and trading activity will earn you loyalty points, which will be published by 10am the following day.</p>
-                                    <p><strong>No Limitations! You Can Grab Over $1000 Extra in the Splurge.</strong> There is no limit to how much you can earn in every round because every time you hit your set target within a round, you’ll get an extra 150%. </p>
+                                    <p><strong>No Limitations! You Can Grab Over $1000 Extra in the Splurge.</strong> There is no limit to how much you can earn in every round because every time you hit your set target, you’ll get an extra 150%. </p>
                                     <p>This means if you hit your target 2 times or more in a round, you will get 150% extra twice or more. So brace up!</p>
                                     <p><strong>Important Notice.</strong> Only ILPR enrolled accounts are qualified for this promo. <a target="_blank" href="http://bit.ly/2mpqehQ">Fill in step one and two form here to open a qualifying account now.</a></p>
                                     <p>We are ready to splurge, are you ready to earn? Click here to join the promo now.</p>
@@ -300,10 +300,10 @@ $i = 0;
                                                     </p>
                                                     <ul>
                                                         <li>Participant would get rewarded every time he/she hits the
-                                                            set target before the promo ends, so the more times you hit
+                                                            set target before the promo ends, so the more you hit
                                                             your target the more money you earn!
                                                         </li>
-                                                        <li>Participants will be able to see his total points earned
+                                                        <li>Participants will be able to see his/her total points earned
                                                             within the promo period right here on this page.
                                                         </li>
                                                         <li>The points earned by a participant in a day is automatically
@@ -319,9 +319,9 @@ $i = 0;
                                                         <li>As Participants you are allowed to withdraw points accrued during
                                                             the contest, but this is not compulsory as the points are
                                                             also valid for increasing the yearly loyalty reward race
-                                                            worth N2.2 million.
+                                                            worth N2.250 million.
                                                         </li>
-                                                        <li>Prizes won are monetary and cannot be converted into loyalty
+                                                        <li>Prizes won will be paid into your InstaForex Account and cannot be converted into loyalty
                                                             points, during and after the promo season.
                                                         </li>
                                                     </ul>
@@ -448,17 +448,17 @@ $i = 0;
                                                                 </li>
                                                                 <li>Participant would get rewarded every time he/she
                                                                     hits the set target before the promo ends, so the
-                                                                    more times you hit your target the more money you earn!
+                                                                    more you hit your target the more money you earn!
                                                                 </li>
-                                                                <li>Participants will be able to see his total points
+                                                                <li>Participants will be able to see his/her total points
                                                                     earned within the promo period right on the page.
                                                                 </li>
                                                                 <li>The points earned by a participant in a day is
-                                                                    automatically generated by our system and added up
-                                                                    before 10am next day.
+                                                                    automatically generated by our system and added
+                                                                    before 10am the next day.
                                                                 </li>
-                                                                <li>Contest starts on Thursday 1st November 2018 and
-                                                                    ends by 11:59pm on Friday 30th November, 2018.
+                                                                <li>Contest starts on Monday 5th November 2018 and
+                                                                    ends by 11:59pm on Friday 16th November, 2018.
                                                                 </li>
                                                             </ul>
                                                             <input id="tire" type="hidden" name="tire" value=""
