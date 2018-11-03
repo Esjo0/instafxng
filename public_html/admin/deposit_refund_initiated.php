@@ -70,7 +70,7 @@ $deposit_refund_initiated = $db_handle->fetchAssoc($result);
 
             <div class="row">
                 <div class="col-sm-12 text-danger">
-                    <h4><strong>DEPOSIT REFUND PROCESS</strong></h4>
+                    <h4><strong>DEPOSIT REFUND INITIATED</strong></h4>
                 </div>
             </div>
 

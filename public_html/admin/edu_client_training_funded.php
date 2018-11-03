@@ -25,14 +25,14 @@ if(isset($_POST['filter'])){
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
 
-    $query = "SELECT MIN(ud.user_deposit_id), MIN(ud.order_complete_time) AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+    $query = "SELECT MIN(ud.order_complete_time) AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
         WHERE ud.status = '8'
-        AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
-        GROUP BY u.email ORDER BY ud.order_complete_time DESC ";
+        GROUP BY u.user_code
+        HAVING order_complete_time BETWEEN '$from_date' AND '$to_date'";
     $_SESSION['query'] = $query;
 }
 

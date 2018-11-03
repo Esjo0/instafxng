@@ -12,22 +12,23 @@
                         foreach($refund_details AS $refund) {
                             extract($refund);
                             ?>
-                            <span id="transaction_identity"><strong>Refund Account Number : </strong><?php echo $refund_acct; ?></span>
+                            <span id="transaction_identity"><strong>Refund Account Number : </strong><?php echo $user_acct_no; ?></span>
                             <span><strong>Refund Type : </strong><?php echo refund_type($refund_type); ?></span>
                             <span><strong>Details : </strong><?php echo $issue_desc; ?></span>
                             <span><strong>Amount Deposited : </strong>&#8358;<?php echo $amount_paid; ?></span>
                             <span><strong>Payment method : </strong><?php echo status_user_deposit_pay_method($payment_method); ?></span>
                             <span><strong>Date Refund was Requested : </strong> <?php echo datetime_to_text($created); ?></span>
+                            <span><a href="/home/tboy9/models/refund_declarations/<?php echo $transaction_id; ?> - Refund Declaration.pdf" download="<?php echo $transaction_id; ?> - Refund Declaration.pdf"><button class="btn btn-success btn-sm" type="button">View Clients Declaration</button></a></span>
                             <hr>
                             <p>Client Account Details</p>
-                            <span><strong>Bank Name : </strong><?php echo $user_bank_name; ?></span>
-                            <span><strong>Bank Account Name : </strong><?php echo $user_acct_name; ?></span>
-                            <span><strong>Bank Account Number : </strong><?php echo $user_acct_no; ?></span>
+                            <span><strong>Clients Bank Name : </strong><?php echo $user_bank_name; ?></span>
+                            <span><strong>Clients Bank Account Name : </strong><?php echo $user_acct_name; ?></span>
+                            <span><strong>Clients Bank Account Number : </strong><?php echo $user_acct_no; ?></span>
                             <hr>
                             <p>Company Bank Account Details</p>
-                            <span><strong>Bank Name : </strong><?php echo $company_bank_name; ?></span>
-                            <span><strong>Bank Account Name : </strong><?php echo $company_acct_name; ?></span>
-                            <span><strong>Bank Account Number : </strong><?php echo $company_acct_no; ?></span>
+                            <span><strong>Clients Bank Name : </strong><?php echo $company_bank_name; ?></span>
+                            <span><strong>Clients Bank Account Name : </strong><?php echo $company_acct_name; ?></span>
+                            <span><strong>Clients Bank Account Number : </strong><?php echo $company_acct_no; ?></span>
                         <?php
                         }
                         ?>
@@ -142,8 +143,8 @@
                             <h4 class="modal-title">Save Comment</h4></div>
                         <div class="modal-body">Do you want to save the information?</div>
                         <div class="modal-footer">
-                            <input name="pending_refund" type="submit" class="btn btn-primary" value="Pend Refund">
-                            <input name="complete_refund" type="submit" class="btn btn-success" value="Complete Refund">
+                            <input name="pending_refund" type="submit" class="btn btn-primary" value="PEND REFUND">
+                            <input name="approve_refund" type="submit" class="btn btn-success" value="APPROVE REFUND">
                             <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
                         </div>
                     </div>

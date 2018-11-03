@@ -26,7 +26,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' 
             GROUP BY u.email
-            HAVING total_commission BETWEEN 1 AND 300
+            HAVING total_commission BETWEEN 1 AND 299
             ORDER BY total_commission DESC ";
 }
 $numrows = $db_handle->numRows($query);

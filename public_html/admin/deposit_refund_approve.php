@@ -14,7 +14,7 @@ $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_paya
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
-        WHERE udf.refund_status = '1' ORDER BY udf.refund_id DESC ";
+        WHERE udf.refund_status = '2' ORDER BY udf.refund_id DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -45,8 +45,8 @@ $deposit_refund_pending = $db_handle->fetchAssoc($result);
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Admin - Deposit Refund Pending</title>
-    <meta name="title" content="Instaforex Nigeria | Admin - Deposit Refund Pending" />
+    <title>Instaforex Nigeria | Admin - Deposit Refund Approved</title>
+    <meta name="title" content="Instaforex Nigeria | Admin - Deposit Refund Approve" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <?php require_once 'layouts/head_meta.php'; ?>
@@ -70,7 +70,7 @@ $deposit_refund_pending = $db_handle->fetchAssoc($result);
 
             <div class="row">
                 <div class="col-sm-12 text-danger">
-                    <h4><strong>DEPOSIT REFUND PENDING</strong></h4>
+                    <h4><strong>DEPOSIT REFUND APPROVED</strong></h4>
                 </div>
             </div>
 
@@ -79,7 +79,7 @@ $deposit_refund_pending = $db_handle->fetchAssoc($result);
                     <div class="col-sm-12">
                         <?php require_once 'layouts/feedback_message.php'; ?>
                         <p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
-                        <p>List of clients who have requested to be refunded</p>
+                        <p>List of clients whose refund has been approved</p>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
@@ -108,7 +108,7 @@ $deposit_refund_pending = $db_handle->fetchAssoc($result);
                                         <td class="nowrap">&#8358; <?php echo number_format($row['naira_total_payable'], 2, ".", ","); ?></td>
                                         <td><?php echo datetime_to_text($row['created']); ?></td>
                                         <td class="nowrap">
-                                            <a class="btn btn-info" href="deposit_process.php?x=refund_approve&id=<?php echo encrypt($row['trans_id']); ?>" title="Comment"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            <a class="btn btn-info" href="deposit_process.php?x=refund_completed&id=<?php echo encrypt($row['trans_id']); ?>" title="Comment"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
                                 <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

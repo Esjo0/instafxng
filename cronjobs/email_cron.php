@@ -64,6 +64,8 @@ if($db_handle->numOfRows($result) > 0) {
             if(array_key_exists('user_code', $row)) {
                 $user_code = $row['user_code'];
 
+                $encrypted_user_code = encrypt($user_code);
+                $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
                 $found_position_month = in_array_r($user_code, $found_loyalty_month);
                 $month_position = $found_position_month['position'];
                 $month_rank = number_format(($found_position_month['rank']), 2, ".", ",");
@@ -85,6 +87,7 @@ if($db_handle->numOfRows($result) > 0) {
                 $funded = $client_operation->get_total_funding($user_code, $from_date, $to_date);
                 $withdrawn = $client_operation->get_total_withdrawal($user_code, $from_date, $to_date);
 
+                $my_message_new = str_replace('[BFL]', $black_friday_link, $my_message_new);
                 $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
                 $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
                 $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);

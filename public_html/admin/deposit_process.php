@@ -18,7 +18,8 @@ switch($get_params['x']) {
     case 'inspect': $deposit_process_inspect = true; $page_title = '- INSPECT'; break;
     case 'notified': $deposit_process_notified = true; $page_title = '- NOTIFIED'; break;
     case 'view': $deposit_process_view = true; $page_title = '- VIEW'; break;
-    case 'refund': $deposit_process_refund = true; $page_title = '- REFUND'; break;
+    case 'refund_approve': $deposit_process_refund_approve = true; $page_title = '- REFUND APPROVE'; break;
+    case 'refund_completed': $deposit_process_refund_completed = true; $page_title = '- REFUND COMPLETED'; break;
     default: $no_valid_page = true; break;
 }
 
@@ -35,7 +36,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['release_transaction']))
         case 'inspect': $url = 'deposit_confirmed'; break;
         case 'notified': $url = 'deposit_notified'; break;
         case 'view': $url = 'deposit_confirmed'; break;
-        case 'refund': $url = 'deposit_refund_pending'; break;
+        case 'refund_approve': $url = 'deposit_refund_pending'; break;
+        case 'refund_completed': $url = 'deposit_refund_completed'; break;
     }
     header("Location: $url.php");
     exit();
@@ -247,19 +249,19 @@ MAIL;
     $query = "UPDATE user_deposit SET status = '11' WHERE trans_id = '$transaction_id' LIMIT 1";
     $result = $db_handle->runQuery($query);
 
-    $request = $client_operation->deposit_refund_initiated($transaction_id, $amount);
+    $request = $client_operation->deposit_refund_initiated($transaction_id, $amount, $_SESSION['admin_unique_code']);
 
     $system_object->send_email($subject, $my_message, $client_email, $client_name);
 
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    header("Location: deposit_refund_initiated.php");
+    header("Location: deposit_notified.php");
     exit;
 }
 
-//complete deposit refund
-if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['complete_refund'] == true)) {
+//approve deposit refund
+if ($deposit_process_refund_approve && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['approve_refund'] == true)) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
@@ -268,7 +270,25 @@ if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['
     $remarks = $_POST['remarks'];
 
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
-    $query = "UPDATE user_deposit_refund SET refund_status = '2', refund_complete_time = now() WHERE transaction_id = '$transaction_id' LIMIT 1";
+    $query = "UPDATE user_deposit_refund SET refund_status = '2', refund_approve_time = now() WHERE transaction_id = '$transaction_id' LIMIT 1";
+    $result = $db_handle->runQuery($query);
+
+    release_transaction($transaction_id, $_SESSION['admin_unique_code']);
+    header("Location: deposit_refund_approve.php");
+    exit;
+}
+
+//complete deposit refund
+if ($deposit_process_refund_completed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['complete_refund'] == true)) {
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    $transaction_id = $_POST['transaction_id'];
+    $remarks = $_POST['remarks'];
+
+    $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
+    $query = "UPDATE user_deposit_refund SET refund_status = '3', refund_complete_time = now() WHERE transaction_id = '$transaction_id' LIMIT 1";
     $result = $db_handle->runQuery($query);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
@@ -396,7 +416,8 @@ if(!empty($transaction_access['holder'])){
                                     if($deposit_process_inspect) { include_once 'views/deposit_process/deposit_process_inspect.php'; }
                                     if($deposit_process_notified) { include_once 'views/deposit_process/deposit_process_notified.php'; }
                                     if($deposit_process_view) { include_once 'views/deposit_process/deposit_process_view.php'; }
-                                if($deposit_process_refund) { include_once 'views/deposit_process/deposit_process_refund.php'; }
+                                    if($deposit_process_refund_approve) { include_once 'views/deposit_process/deposit_process_refund_approve.php'; }
+                                    if($deposit_process_refund_completed) { include_once 'views/deposit_process/deposit_process_refund_completed.php'; }
                                 ?>
                                 
                             </div>

@@ -23,11 +23,12 @@ $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_paya
         ud.client_naira_notified, ud.client_pay_date, ud.client_reference, ud.client_pay_method,
         ud.client_notified_date, ud.status AS deposit_status, u.user_code,
         ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-        uc.passport, ui.ifxaccount_id
+        uc.passport, ui.ifxaccount_id, uft.trans_id AS first_deposit_transaction, uft.status AS first_deposit_status
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
+        LEFT JOIN user_first_transaction AS uft ON uft.trans_id = ud.trans_id
         WHERE ud.status = '5' OR ud.status = '6' ORDER BY ud.client_notified_date DESC ";
 $numrows = $db_handle->numRows($query);
 
@@ -264,7 +265,15 @@ $confirmed_deposit_requests = $db_handle->fetchAssoc($result);
                                                             } ?>
                                                         </span>
                                                     </div>
-                                                    <div class="col-xs-4"><span style="text-align: right"><a class="btn btn-info" href="deposit_process.php?x=confirmed&id=<?php echo encrypt($row['trans_id']) ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Process</a></span></div>
+                                                    <div class="col-xs-4">
+                                                        <span style="text-align: right">
+                                                        <?php if(!is_null($row['first_deposit_transaction']) && $row['first_deposit_status'] == '1') { ?>
+                                                            <em>Held by Compliance</em>
+                                                        <?php } else { ?>
+                                                            <a class="btn btn-info" href="deposit_process.php?x=confirmed&id=<?php echo encrypt($row['trans_id']) ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Process</a>
+                                                        <?php } ?>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

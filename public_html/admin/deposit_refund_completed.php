@@ -14,7 +14,7 @@ $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created AS deposit_date, ud.
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
         LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
-        WHERE udf.refund_status = '2' ORDER BY udf.refund_id DESC ";
+        WHERE udf.refund_status = '3' ORDER BY udf.refund_id DESC ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -70,7 +70,7 @@ $deposit_refund_completed = $db_handle->fetchAssoc($result);
 
             <div class="row">
                 <div class="col-sm-12 text-danger">
-                    <h4><strong>DEPOSIT REFUND PROCESS</strong></h4>
+                    <h4><strong>DEPOSIT REFUND COMPLETED</strong></h4>
                 </div>
             </div>
 
@@ -79,7 +79,7 @@ $deposit_refund_completed = $db_handle->fetchAssoc($result);
                     <div class="col-sm-12">
                         <?php require_once 'layouts/feedback_message.php'; ?>
                         <p><button onclick="history.go(-1);" class="btn btn-default" title="Go back to previous page"><i class="fa fa-arrow-circle-left"></i> Go Back!</button></p>
-                        <p>List of clients who are scheduled for Deposit refund</p>
+                        <p>List of clients whose refund has been completed</p>
 
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>

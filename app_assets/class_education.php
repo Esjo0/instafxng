@@ -129,6 +129,18 @@ MAIL;
         return $fetched_data ? $fetched_data : false;
     }
 
+    //Get the maximum published lesson available to clients.
+    public function get_highest_lesson_published(){
+        global $db_handle;
+        $query = "SELECT MAX(edu_lesson_id) AS max_lesson FROM edu_lesson WHERE status = '2'";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchArray($result);
+        foreach($fetched_data AS $row){
+            extract($row);
+        }
+        return $max_lesson;
+    }
+
     // Get the next lesson position using course id and lesson id
     public function get_next_lesson($course_id, $course_lesson_id) {
         global $db_handle;
@@ -329,7 +341,6 @@ MAIL;
         } else {
             $query = "INSERT INTO edu_course (admin_code, course_code, course_order, title, description, course_cost, status)
             VALUES ('$admin_code', '$c_code', $c_order, '$c_title', '$c_describe', $c_cost, '$c_status')";
-
         }
 
         $db_handle->runQuery($query);

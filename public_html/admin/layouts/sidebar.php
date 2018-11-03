@@ -128,7 +128,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
                         <?php if (in_array(281, $my_pages_sidebar)) { ?><li><a href="deposit_refund_initiated.php"> Deposit Refund - Initiated</a></li><?php } ?>
                         <?php if (in_array(282, $my_pages_sidebar)) { ?><li><a href="deposit_refund_pending.php"> Deposit Refund - Pending</a></li><?php } ?>
-                        <?php if (in_array(283, $my_pages_sidebar)) { ?><li><a href="deposit_refund_completed.php"> Deposit Refund - Completed</a></li><?php } ?>
+                        <?php if (in_array(283, $my_pages_sidebar)) { ?><li><a href="deposit_refund_approve.php"> Deposit Refund - Approve</a></li><?php } ?>
+                        <?php if (in_array(284, $my_pages_sidebar)) { ?><li><a href="deposit_refund_completed.php"> Deposit Refund - Completed</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -145,6 +146,13 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(279, $my_pages_sidebar)) { ?><li><a href="withdrawal_reversal.php" title="Withdrawal Reversal">Withdrawal - Reversal</a></li><?php } ?>
                         <?php if (in_array(47, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
                         <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-binoculars fa-fw"></i> Compliance<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php if (in_array(285, $my_pages_sidebar)) { ?><li><a href="compliance/first_time_transaction_initiated.php">First Time Transaction - Initiated</a></li><?php } ?>
+                        <?php if (in_array(286, $my_pages_sidebar)) { ?><li><a href="compliance/first_time_transaction_completed.php">First Time Transaction - Reviewed</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -204,6 +212,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(262, $my_pages_sidebar)) { ?><li><a href="loyalty_current_rank.php">Loyalty Current Rank</a></li><?php } ?>
                         <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="independence_contest.php">Independence Contest 2018</a></li><?php } ?>
                         <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="the_splurge.php">Black Friday 2018</a></li><?php } ?>
+                        <?php if (in_array(272, $my_pages_sidebar)) { ?><li><a href="black_friday_splurge_participants.php">Black Friday - Participants</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">

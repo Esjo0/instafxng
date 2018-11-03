@@ -9,12 +9,12 @@ if(isset($email_forward)) {
 }
 
 if (isset($_POST['submit'])) {
-    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
-        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-        $responseData = json_decode($verifyResponse);
-
-        if ($responseData->success) {
+//    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+//        $secret = '6LcKDhATAAAAALn9hfB0-Mut5qacyOxxMNOH6tov';
+//        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+//        $responseData = json_decode($verifyResponse);
+//
+//        if ($responseData->success) {
 
             foreach($_POST as $key => $value) {
                 $_POST[$key] = $db_handle->sanitizePost(trim($value));
@@ -78,12 +78,12 @@ if (isset($_POST['submit'])) {
                     $message_error = "An error occurred, please try again.";
                 }
             }
-        } else {
-            $message_error = "You did not pass the robot verification check, please try again.";
-        }
-    } else {
-        $message_error = "Kindly take the robot verification test. Try again.";
-    }
+//        } else {
+//            $message_error = "You did not pass the robot verification check, please try again.";
+//        }
+//    } else {
+//        $message_error = "Kindly take the robot verification test. Try again.";
+//    }
 }
 
 ?>
