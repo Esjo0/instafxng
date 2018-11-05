@@ -1047,7 +1047,7 @@ function client_group_campaign_category($status)
             $message = "Last Month Trading Clients";
             break;
         case '67':
-            $message = "Black Friday Splurge 2018";
+            $message = "Splurge participant without tier";
             break;
         default:
             $message = "Unknown";
