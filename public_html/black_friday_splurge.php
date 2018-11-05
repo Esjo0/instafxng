@@ -116,13 +116,20 @@ if (isset($_POST['opt_in'])) {
         }
     }
 }
+$query = "SELECT u.first_name, u.last_name
+    FROM black_friday_2018 AS bf
+    INNER JOIN user AS u ON bf.user_code = u.user_code
+    WHERE bf.tire IS NOT NULL
+    ORDER BY bf.created";
+
+$total_participants = $db_handle->numRows($query);
 
 // Get all participants
 $query = "SELECT u.first_name, u.last_name
     FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code
     WHERE bf.tire IS NOT NULL 
-    ORDER BY bf.created ASC LIMIT 10";
+    ORDER BY bf.created DESC LIMIT 10";
 
 $result = $db_handle->runQuery($query);
 $numrows = $db_handle->numOfRows($result);
@@ -503,7 +510,7 @@ $i = 0;
         <div id="main-body-side-bar" class="col-md-5 col-md-pull-7 col-lg-4 col-lg-pull-8 left-nav">
             <div class="col-sm-12 section-tint super-shadow nav-display super-shadow">
 
-                <h5>Total Number of Participant : <?php echo $numrows; ?></h5>
+                <h5>Total Number of Participant : <?php echo $total_participants; ?></h5>
                 <div class="row">
                     <div class="col-sm-12" style="max-height: 600px; overflow: scroll;">
 
@@ -567,16 +574,16 @@ $i = 0;
                         <div id="progress"></div>
                     </div>
                 </div>
-                <div class="section-tint super-shadow" style="background-color: black;border-radius:10px">
-                    <div class="row">
-                        <div class="col-sm-12 text-lg-center text-center" id="time-counter" style="color: white; font-size: 18px;">
+<!--                <div class="section-tint super-shadow" style="background-color: black;border-radius:10px">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-sm-12 text-lg-center text-center" id="time-counter" style="color: white; font-size: 18px;">-->
 <!--                            <span  id="day"></span>-->
-                            <span  id="hour"></span>
-                            <span  id="min"></span>
-                            <span  id="sec"></span>
-                        </div>
-                    </div>
-            </div>
+<!--                            <span  id="hour"></span>-->
+<!--                            <span  id="min"></span>-->
+<!--                            <span  id="sec"></span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--            </div>-->
         </div>
     </div>
 </div>
