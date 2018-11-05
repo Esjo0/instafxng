@@ -22,8 +22,8 @@ if(isset($_POST['filter'])){
     foreach ($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
-    $from_date = $_POST['from_date'];
-    $to_date = $_POST['to_date'];
+    $year = $_POST['year'];
+    $period = $_POST['period'];
 
     $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created,
       MIN(tc.date_earned) AS date_earned FROM trading_commission AS tc
