@@ -1,5 +1,77 @@
 <?php
 
+
+/**
+ * Editable schedule mode
+ */
+function target_period($id)
+{
+    switch ($id) {
+        case '1':
+            $period = "January";
+            break;
+        case '2':
+            $period = "February";
+            break;
+        case '3':
+            $period = "March";
+            break;
+        case '4':
+            $period = "April";
+            break;
+        case '5':
+            $period = "May";
+            break;
+        case '6':
+            $period = "June";
+            break;
+        case '7':
+            $period = "July";
+            break;
+        case '8':
+            $period = "August";
+            break;
+        case '9':
+            $period = "September";
+        break;
+        case '10':
+            $period = "October";
+            break;
+        case '11':
+            $period = "November";
+            break;
+        case '12':
+            $period = "December";
+            break;
+        case '1-12':
+            $period = "Annual";
+            break;
+        case '1-6':
+            $period = "First Half";
+            break;
+        case '6-12':
+            $period = "Second Half";
+            break;
+        case '1-3':
+            $period = "First Quarter";
+            break;
+        case '3-6':
+            $period = "Second Quarter";
+            break;
+        case '6-9':
+            $period = "Third Quarter";
+            break;
+        case '9-12':
+            $period = "Fourth Quarter";
+            break;
+        default:
+            $period = "";
+            break;
+    }
+    return $period;
+
+}
+
 /**
  * Black friday tires
  * table black_friday_2018
@@ -974,6 +1046,9 @@ function client_group_campaign_category($status)
         case '66':
             $message = "Last Month Trading Clients";
             break;
+        case '67':
+            $message = "Splurge participant without tier";
+            break;
         default:
             $message = "Unknown";
             break;
@@ -1207,6 +1282,9 @@ function client_group_query($client_group, $campaign_type)
             case '66':
                 $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' GROUP BY u.user_code ";
                 break;
+            case '67':
+                $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NULL GROUP BY u.user_code ";
+                break;
             default:
                 $query = false;
                 break;
@@ -1414,6 +1492,9 @@ function client_group_query($client_group, $campaign_type)
                 break;
             case '66':
                 $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' GROUP BY u.user_code ";
+                break;
+            case '67':
+                $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NULL GROUP BY u.user_code ";
                 break;
             default:
                 $query = false;
