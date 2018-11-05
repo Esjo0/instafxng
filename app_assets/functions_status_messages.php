@@ -974,6 +974,9 @@ function client_group_campaign_category($status)
         case '66':
             $message = "Last Month Trading Clients";
             break;
+        case '67':
+            $message = "Black Friday Splurge 2018";
+            break;
         default:
             $message = "Unknown";
             break;
@@ -1207,6 +1210,9 @@ function client_group_query($client_group, $campaign_type)
             case '66':
                 $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' GROUP BY u.user_code ";
                 break;
+            case '67':
+                $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NULL GROUP BY u.user_code ";
+                break;
             default:
                 $query = false;
                 break;
@@ -1414,6 +1420,9 @@ function client_group_query($client_group, $campaign_type)
                 break;
             case '66':
                 $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' GROUP BY u.user_code ";
+                break;
+            case '67':
+                $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NULL GROUP BY u.user_code ";
                 break;
             default:
                 $query = false;
