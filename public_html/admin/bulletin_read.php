@@ -23,10 +23,14 @@ if(!$selected_bulletin)
     redirect_to('bulletin_centre.php');
 }
 
-if (isset($_POST['post_comment']))
-{
-    $comment = htmlspecialchars_decode(stripslashes(trim($_POST['comment'])));
-    $bulletin_id = $db_handle->sanitizePost($_POST['bulletin_id']);
+if (isset($_POST['post_comment'])) {
+
+    foreach($_POST as $key => $value) {
+        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+    }
+
+    $comment = $_POST['comment'];
+    $bulletin_id = $_POST['bulletin_id'];
     $query = "INSERT INTO admin_bulletin_comments (author_code, bulletin_id, comment) VALUES ('$admin_code', '$bulletin_id', '$comment')";
     $db_handle->runQuery($query);
     if($db_handle->affectedRows() > 0)
@@ -48,7 +52,10 @@ if (isset($_POST['post_comment']))
             $subject = 'New Bulletin Comment - '.$selected_bulletin['title'];
             $title = $selected_bulletin['title'];
             $created = date('d-m-y h:i:s a');
-            $comment_mail = nl2br($comment);
+
+            $comment_mail = str_replace('\r\n', '', $comment);
+            $comment_mail = str_replace("\'", "'", $comment_mail);
+
             $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
@@ -59,7 +66,7 @@ if (isset($_POST['post_comment']))
                                 <p>$author left a new comment.</p>
                                 <p><b>BULLETIN TITLE: </b>$title</p>
                                 <p><b>COMMENT: </b><br/>$comment_mail</p>
-                                <p><b>DATE AND TIME: </b>$created</p>                                
+                                <p><b>DATE AND TIME: </b>$created</p>
                                 <p><a href="https://instafxng.com/admin/">Login to your Admin Cabinet for for more information.</a></p>
                                 <br /><br />
                                 <p>Best Regards,</p>

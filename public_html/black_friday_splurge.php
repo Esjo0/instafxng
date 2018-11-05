@@ -59,6 +59,7 @@ if (!empty($user_code_encrypted) || $check_acct = true) {
 
         if ($total_commission >= 1000) {
             $platinum = true;
+            $gold = true;
         } elseif ($total_commission >= 500 AND $total_commission <= 999) {
             $platinum = true;
             $gold = true;
@@ -183,7 +184,7 @@ $i = 0;
                         <img data-target="#contest-register" data-toggle="modal" id="img_div_2" width="100%"
                              class="img img-responsive" src="https://instafxng.com/imgsource/the_splurge_website.jpg"
                              alt="The Splurge"
-                             style="height:300px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                             style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
                     </div>
                 </div>
             </div>
@@ -197,9 +198,9 @@ $i = 0;
 
                 <div class="row ">
                     <div class="col-sm-12 text-center">
-                        <h3 style="font-family: 'Oleo Script', cursive !important; color: #000000 !important">The
+                        <h3 style=" color: #000000 !important">The
                             Blackest Friday Splurge is Here, Up to 150% Extra up for Grabs.</h3>
-                        <p class="text-danger">Starting from November 1, 2018 To November 30, 2018.</p>
+                        <p class="text-danger">First Round <i class="fa fa-arrow-right"></i> Starts on Monday 5th November, 2018 To Friday 16th November, 2018.</p>
                         <a data-target="#contest-register" data-toggle="modal" class="btn btn-success"
                            style="cursor: pointer;"><strong>Click Here to Join the Splurge.</strong></a>
                         <br/>
@@ -214,17 +215,30 @@ $i = 0;
                             </div>
                                 <div class="col-sm-12" id="details">
                                     <p>This year’s black Friday promo is themed the splurge, as we intend to reward you with more money this promo period!</p>
-                                    <p>As a member of our loyalty reward programme this is another opportunity to earn over $1000 extra throughout the month of November and increase your loyalty points in anticipation for the yearly reward of N2.250 Million.</p>
                                     <p>What is the highest points you have earned in the loyalty reward promo so far, can you beat your previous points? Yes! We are set to reward you every step of the way.</p>
-                                    <p>The promo is divided into 2 rounds, the first round begins on the 1st of November and ends by 11:5pm on the 15th of November, while the second round begins by 12am on the 16th of November and ends by 11:59pm on the 30th of November 2018.</p>
-                                    <p>To participate in this promo, all you have to do is set a target for yourself (I.e Number of points you want to hit for each round of the promo) and for every time you hit your target within the round, you’ll get 150% extra on the dollar equivalent of the loyalty points accrued.</p>
-                                    <p>From the example above, if you choose to redeem the points accrued for the promo season, you will be receiving a total of $750 in your account.</p>
-                                    <p>However, you can also choose to claim only your win of $450 and keep the 3000 points which will help you rank higher in the yearly reward programme and position you to secure your share of the yearly N2.250 Million winners’ pool by 3oth November.</p>
+                                    <p>The promo is divided into 2 rounds, the first round begins on the 5th of November and ends by 11:59pm on the 16th of November, while the second round begins by 12am on the 19th of November and ends by 11:59pm on the 30th of November 2018.</p>
+                                    <p>To participate in this promo, we have created different categories with targets for you. You only need to choose from the set targets and work towards hitting and surpassing it. </p>
+                                    <p>The more time you hit your target the more rewards you get.</p>
+                                    <p>For instance, if your target is to get 1000 points in the first round, once you get to 1000 points you will be rewarded with $150 in addition to the 1000 points you have. 1000 points equals $100 so the total becomes $250.</p>
+                                    <div class="row">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-6">
+                                            <strong><h5 class="text-center"><u>The Breakdown</u></h5></strong>
+                                        <p class="text-center">
+                                            Trade 1000 points to get $150<br>
+                                        The same 1000 points equals $100.<br>
+                                        Total Reward - $100 + $150 = $250</p>
+                                            </div>
+                                        <div class="col-md-3"></div>
+                                    </div>
+                                    <p>From the example above, if you choose to redeem your win and the points accrued for the promo season, you will be receiving a total of $250 extra cash!</p>
+
+                                    <p>However, you can also choose to claim only your win of $150 and keep the 1000 points which will help you rank higher in the yearly reward programme and position you to secure your share of the yearly N2.250 Million pool by 30th November, 2018.
                                     <p>Whatever your choice is, you remain a winner!</p>
                                     <p><strong>How To Earn Points.</strong> For the purpose of this promo, both your funding and trading activity will earn you loyalty points, which will be published by 10am the following day.</p>
-                                    <p><strong>No Limitations! You Can Grab Over $1000 Extra in the Splurge.</strong> There is no limit to how much you can earn in every round because every time you hit your set target within a round, you’ll get an extra 150%. </p>
+                                    <p><strong>No Limitations! You Can Grab Over $1000 Extra in the Splurge.</strong> There is no limit to how much you can earn in every round because every time you hit your set target, you’ll get an extra 150%. </p>
                                     <p>This means if you hit your target 2 times or more in a round, you will get 150% extra twice or more. So brace up!</p>
-                                    <p><strong>Important Notice.</strong> Only ILPR enrolled accounts are qualified for this promo. <a href="http://bit.ly/2mpqehQ">Fill in step one and two form here to open a qualifying account now.</a></p>
+                                    <p><strong>Important Notice.</strong> Only ILPR enrolled accounts are qualified for this promo. <a target="_blank" href="http://bit.ly/2mpqehQ">Fill in step one and two form here to open a qualifying account now.</a></p>
                                     <p>We are ready to splurge, are you ready to earn? Click here to join the promo now.</p>
                                     <p style="text-align: center"><a data-target="#contest-register" data-toggle="modal"
                                                                      class="btn btn-success"
@@ -258,14 +272,9 @@ $i = 0;
                                                         </li>
 
                                                         <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 3:</strong>
-                                                            Select your desired target and enter the promo. You will be required to hit
-                                                            your target within the duration of the promo.
+                                                            Choose your desired target and enter the promo. You will be required to hit your target within each round of the promo.
                                                         </li>
 
-                                                        <li><i class="fa-li fa fa-check-square-o icon-tune"></i><strong>Step 4:</strong>
-                                                            You would be able to redeem your prize every time you hit your set target
-                                                            while the promo is on.
-                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -291,25 +300,33 @@ $i = 0;
                                                     </p>
                                                     <ul>
                                                         <li>Participant would get rewarded every time he/she hits the
-                                                            set target before the promo ends, so the more times you hit
+                                                            set target before the promo ends, so the more you hit
                                                             your target the more money you earn!
                                                         </li>
-                                                        <li>Participants will be able to see his total points earned
+                                                        <li>Participants will be able to see his/her total points earned
                                                             within the promo period right here on this page.
                                                         </li>
                                                         <li>The points earned by a participant in a day is automatically
                                                             generated by our system and added up before 10am next day.
                                                         </li>
-                                                        <li>Contest starts on Thursday 1st November 2018 and ends by
-                                                            11:59pm on Friday 30th November, 2018.
+                                                        <li>The first round of the contest starts on Monday 5th November 2018
+                                                            and ends by 11:59pm on Friday 16th November, 2018.
                                                         </li>
-                                                        <li>Participants are allowed to withdraw points accrued during
+                                                        <li>
+                                                            The Second round of the Contest starts on Monday 19th November
+                                                            and ends by 11:59pm on Friday 30th November, 2018.
+                                                        </li>
+                                                        <li>As Participants you are allowed to withdraw points accrued during
                                                             the contest, but this is not compulsory as the points are
                                                             also valid for increasing the yearly loyalty reward race
-                                                            worth N2.2 million.
+                                                            worth N2.250 million.
                                                         </li>
-                                                        <li>Prizes won are monetary and cannot be converted into loyalty
+                                                        <li>Prizes won will be paid into your InstaForex Account and cannot be converted into loyalty
                                                             points, during and after the promo season.
+                                                        </li>
+                                                        <li>
+                                                            Participation in the second round will not be automatic,
+                                                            you will be required to Opt-In to round 2 upon the completion of round one.
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -322,7 +339,7 @@ $i = 0;
                                             <a href="javascript:void(window.open('https://instafxng.com/livechat/chat.php?v=2','','width=590,height=760,left=0,top=0,resizable=yes,menubar=no,location=no,status=yes,scrollbars=yes'))" class="lz_cbl"><img src="https://instafxng.com/livechat/image.php?id=4&type=inlay" width="210" height="66" style="border:0;" alt="LiveZilla Live Chat Software"></a>
                                             <!-- livezilla.net PLACE WHERE YOU WANT TO SHOW GRAPHIC BUTTON -->
                                         <br>
-                                        <a href="https://instafxng.com/contact_info.php">
+                                        <a target="_blank" href="https://instafxng.com/contact_info.php">
                                             Click here to contact us </a>if
                                         you need further clarification about the black friday promotion.
 
@@ -365,7 +382,7 @@ $i = 0;
 
                                                         <?php if ($opt_in == true) { ?>
                                                             <p class="text-center">Welcome <?php echo $first_name; if(empty($first_name)){echo $last_name;} ?>,
-                                                                Select a suitable target OR <span data-dismiss="modal"> Read <a
+                                                                Select a suitable target OR <span onClick="window.close();" data-dismiss="modal"> Read <a
                                                                         href="">more</a> details</span></p>
                                                             <div class="text-center well">
                                                                 <?php if ($platinum == true) { ?>
@@ -435,17 +452,21 @@ $i = 0;
                                                                 </li>
                                                                 <li>Participant would get rewarded every time he/she
                                                                     hits the set target before the promo ends, so the
-                                                                    more times you hit your target the more money you earn!
+                                                                    more you hit your target the more money you earn!
                                                                 </li>
-                                                                <li>Participants will be able to see his total points
+                                                                <li>Participants will be able to see his/her total points
                                                                     earned within the promo period right on the page.
                                                                 </li>
                                                                 <li>The points earned by a participant in a day is
-                                                                    automatically generated by our system and added up
-                                                                    before 10am next day.
+                                                                    automatically generated by our system and added
+                                                                    before 10am the next day.
                                                                 </li>
-                                                                <li>Contest starts on Thursday 1st November 2018 and
-                                                                    ends by 11:59pm on Friday 30th November, 2018.
+                                                                <li>Contest starts on Monday 5th November 2018 and
+                                                                    ends by 11:59pm on Friday 16th November, 2018.
+                                                                </li>
+                                                                <li>
+                                                                    Participation in the second round will not be automatic,
+                                                                    you will be required to Opt-In to round 2 upon the completion of round one.
                                                                 </li>
                                                             </ul>
                                                             <input id="tire" type="hidden" name="tire" value=""
@@ -524,7 +545,7 @@ $i = 0;
                 <div class="row"
                      style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(255, 240, 249, 0.75), 0 6px 20px 0 rgba(230, 225, 221, 0.83)">
                     <div class="col-sm-12">
-                        <p class="text-center" style="font-family: 'Oreo Script', cursive !important; !important">
+                        <p class="text-center" style="font-family: 'Times New Roman', cursive !important; !important">
                             Enter your Email Address to know how you have fared in The Blackest Friday
                             Splurge</p>
                         <hr/>

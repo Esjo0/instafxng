@@ -968,6 +968,12 @@ function client_group_campaign_category($status)
         case '64':
             $message = "Student Category 0";
             break;
+        case '65':
+            $message = "Last Month New Clients not yet funded";
+            break;
+        case '66':
+            $message = "Last Month Trading Clients";
+            break;
         default:
             $message = "Unknown";
             break;
@@ -1198,6 +1204,9 @@ function client_group_query($client_group, $campaign_type)
             case '65':
                 $query = "SELECT DISTINCT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND u.user_code = ui.user_code AND ui.ifxaccount_id NOT IN (SELECT ifxaccount_id FROM user_deposit) GROUP BY u.email  ";
                 break;
+            case '66':
+                $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' GROUP BY u.user_code ";
+                break;
             default:
                 $query = false;
                 break;
@@ -1402,6 +1411,9 @@ function client_group_query($client_group, $campaign_type)
                 break;
             case '65':
                 $query = "SELECT DISTINCT u.user_code, u.first_name, u.email, u.phone FROM user AS u LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND u.user_code = ui.user_code AND ui.ifxaccount_id NOT IN (SELECT ifxaccount_id FROM user_deposit) GROUP BY u.email  ";
+                break;
+            case '66':
+                $query = "SELECT u.user_code, u.first_name, u.email, u.phone FROM trading_commission AS td INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no INNER JOIN user AS u ON ui.user_code = u.user_code INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id INNER JOIN admin AS a ON ao.admin_code = a.admin_code WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' GROUP BY u.user_code ";
                 break;
             default:
                 $query = false;

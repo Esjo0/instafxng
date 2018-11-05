@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $user_code = $selected_member['user_code'];
 
             $encrypted_user_code = encrypt($user_code);
-            $black_friday_link = "<a title='Click Here to enjoy the splurge' style='background-color: black; color:white;' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Black Friday Link - The Splurge</strong></a>";
+            $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
             $found_position_month = in_array_r($user_code, $found_loyalty_month);
             $month_position = $found_position_month['position'];
             $month_rank = number_format(($found_position_month['rank']), 2, ".", ",");
