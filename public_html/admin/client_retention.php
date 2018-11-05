@@ -2,6 +2,14 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
+if(isset($_GET['f'])) {
+    $section = $_GET['f'];
+    switch($section) {
+        case '1': $selected_section = "1"; break;
+        default: $selected_section = false;
+    }
+}
+
 $base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
     u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
     FROM trading_commission AS td
@@ -13,14 +21,26 @@ $base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_co
 
 $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
 
-$query = "SELECT sum_volume, sum_commission, user_code, full_name, email, phone, created, account_officer_full_name FROM reference_clients
-    WHERE user_code IN (
-        SELECT u.user_code
-        FROM trading_commission AS td
-        INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        WHERE date_earned BETWEEN '2018-11-01' AND '2018-11-30' GROUP BY u.email ORDER BY sum_commission DESC
-    ) ";
+if($selected_section != '1') {
+    $query = "SELECT sum_volume, sum_commission, user_code, full_name, email, phone, created, account_officer_full_name FROM reference_clients
+        WHERE user_code NOT IN (
+            SELECT u.user_code
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE date_earned BETWEEN '2018-11-01' AND '2018-11-30' GROUP BY u.email ORDER BY sum_commission DESC
+        ) ";
+} else {
+    $query = "SELECT sum_volume, sum_commission, user_code, full_name, email, phone, created, account_officer_full_name FROM reference_clients
+        WHERE user_code IN (
+            SELECT u.user_code
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE date_earned BETWEEN '2018-11-01' AND '2018-11-30' GROUP BY u.email ORDER BY sum_commission DESC
+        ) ";
+}
+
 
 $numrows = $db_handle->numRows($query);
 
@@ -43,7 +63,7 @@ if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$retained_clients = $db_handle->fetchAssoc($result);
+$retention_result = $db_handle->fetchAssoc($result);
 
 ?>
 <!DOCTYPE html>
@@ -83,26 +103,39 @@ $retained_clients = $db_handle->fetchAssoc($result);
                     <div class="col-sm-12">
                         <p>Select a period below.</p>
 
+                        <div class="row text-center">
+                            <div class="col-sm-12">
+                                <div class="btn-group btn-breadcrumb">
+                                    <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="btn btn-default" title="All Registrations">Not Retained</a>
+                                    <a href="<?php echo $_SERVER['PHP_SELF'] . '?f=1'; ?>" class="btn btn-default" title="">Retained</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <?php if(isset($retention_result) && !empty($retention_result)) { require 'layouts/pagination_links.php'; } ?>
+
                         <div class="table-wrap">
                             <table class="table table-responsive table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Full Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Reg Date</th>
-                                    <th>Account Officer</th>
+                                    <th>Client Detail</th>
+                                    <th></th>
+                                    <th></th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php if(isset($retained_clients) && !empty($retained_clients)) { foreach ($retained_clients as $row) { ?>
+                                <?php if(isset($retention_result) && !empty($retention_result)) { foreach ($retention_result as $row) { ?>
                                     <tr>
-                                        <td><?php echo $row['full_name']; ?></td>
-                                        <td><?php echo $row['email']; ?></td>
-                                        <td><?php echo $row['phone']; ?></td>
-                                        <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                        <td><?php echo $row['account_officer_full_name']; ?></td>
+                                        <td>
+                                            <?php echo $row['full_name']; ?><br />
+                                            <?php echo $row['email']; ?><br />
+                                            <?php echo $row['phone']; ?>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
                                         <td nowrap="nowrap">
                                             <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>                                            
                                         </td>
@@ -112,11 +145,13 @@ $retained_clients = $db_handle->fetchAssoc($result);
                             </table>
                         </div>
 
-                        <?php if(isset($retained_clients) && !empty($retained_clients)) { ?>
+                        <?php if(isset($retention_result) && !empty($retention_result)) { ?>
                             <div class="tool-footer text-right">
                                 <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                             </div>
                         <?php } ?>
+
+                        <?php if(isset($retention_result) && !empty($retention_result)) { require 'layouts/pagination_links.php'; } ?>
 
                     </div>
                 </div>
