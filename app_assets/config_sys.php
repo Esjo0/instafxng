@@ -80,7 +80,8 @@ $client_group_DEFAULT = array(
     "63" => "Bronze Commission Clients",
 	"64" => "Student Category 0",
     "65" => "Last Month New Clients not yet funded",
-    "66" => "Last Month Trading Clients"
+    "66" => "Last Month Trading Clients",
+	"67" => "Black Friday Splurge"
 );
 $client_group_DESC = array(
     "1" => "*Consist of all clients that have at anytime come into our system.",
@@ -148,5 +149,6 @@ $client_group_DESC = array(
     "63" => "Clients that produced less than $300 commission and above between December 1, 2017 to September 30, 2018",
 	"64" => "*Forex Profit Academy clients who have never logged in.",
     "65" => "Details of unique clients that joined the system last month, But have not yet funded.",
-    "66" => "List of clients that placed trades in the previous month."
+    "66" => "List of clients that placed trades in the previous month.",
+	"67" => "Black Friday Splurge leads who havn't selected a tire."
     );
