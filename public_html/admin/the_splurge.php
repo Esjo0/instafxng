@@ -7,6 +7,7 @@ if (!$session_admin->is_logged_in()) {
 $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code
     FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code
+    WHERE bf.tire IS NULL
     ORDER BY bf.created DESC ";
 $numrows = $db_handle->numRows($query);
 
