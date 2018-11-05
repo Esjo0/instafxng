@@ -27,12 +27,8 @@ if(isset($_POST['create'])){
     $year = $db_handle->sanitizePost($_POST['year']);
     $type = $db_handle->sanitizePost($_POST['type']);
 
-    if($period > 12){
 
-    }
-
-    $query = "INSERT into admin_targets(name, details, period, value, year, status, admin) VALUES('$name','$details', '$period','$value', '$year', '1', '$admin_code')";
-    var_dump($query);
+    $query = "INSERT into admin_targets(name, details, period, value, year, status, admin) VALUES('$name','$details', '$period','$value', '$year', '$type', '$admin_code')";
     $result = $db_handle->runQuery($query);
     if($result) {
         $message_success = "You have successfully created a new Target";
@@ -41,12 +37,17 @@ if(isset($_POST['create'])){
     }
 }
 
-//Update notification
+//Update target
 if(isset($_POST['update'])){
-    $advert_id = $db_handle->sanitizePost($_POST['advert_id']);
-    $content = $db_handle->sanitizePost($_POST['content']);
+    $name = $db_handle->sanitizePost($_POST['name']);
+    $details = $db_handle->sanitizePost($_POST['details']);
+    $period = $db_handle->sanitizePost($_POST['period']);
+    $value = $db_handle->sanitizePost($_POST['value']);
+    $year = $db_handle->sanitizePost($_POST['year']);
+    $type = $db_handle->sanitizePost($_POST['type']);
 
-    $query = "UPDATE advert_div SET content = '$content' WHERE advert_id = '$advert_id'";
+    $query = "UPDATE admin_targets SET name = '$name', details = '$details', period = '$period', value = '$value', year = '$year', type = '$type'
+WHERE advert_id = '$advert_id'";
     $result = $db_handle->runQuery($query);
     if($result) {
         $message_success = "You have successfully updated this notification";
@@ -57,8 +58,8 @@ if(isset($_POST['update'])){
 
 //Update notification status to display
 if(isset($_POST['status_display'])){
-    $advert_id = $db_handle->sanitizePost($_POST['advert_id']);
-    $query = "UPDATE advert_div SET status = 1 WHERE advert_id = '$advert_id'";
+    $target_id = $db_handle->sanitizePost($_POST['advert_id']);
+    $query = "UPDATE admin_targets SET status = 1 WHERE advert_id = '$advert_id'";
     $result = $db_handle->runQuery($query);
     if($result) {
         $message_success = "You have successfully updated this notification view status";
@@ -69,8 +70,8 @@ if(isset($_POST['status_display'])){
 
 //Update notification status to hidden
 if(isset($_POST['status_hide'])){
-    $advert_id = $db_handle->sanitizePost($_POST['advert_id']);
-    $query = "UPDATE advert_div SET status = 2 WHERE advert_id = '$advert_id'";
+    $target_id = $db_handle->sanitizePost($_POST['advert_id']);
+    $query = "UPDATE admin_targets SET status = 2 WHERE advert_id = '$advert_id'";
     $result = $db_handle->runQuery($query);
     if($result) {
         $message_success = "You have successfully updated this notification view status";
@@ -258,7 +259,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                 <?php
                                                 foreach ($targets as $row) {extract($row);
                                                 ?>
-                                                <tr data-target="#update<?php echo $row['advert_id']; ?>" data-toggle="modal" title="Click Here to Update or Delete this notification.">
+                                                <tr data-target="#update<?php echo $row['id']; ?>" data-toggle="modal" title="Click Here to Update or Delete this notification.">
                                                     <td ><?php echo $name; ?></td>
                                                     <td ><?php echo $details; ?></td>
                                                     <td ><?php echo target_period($period); ?></td>
@@ -267,7 +268,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                     <td ><?php echo status_snappy_help($status); ?></td>
 
                                                     <!--Modal - confirmation boxes-->
-                                                    <div id="update<?php echo $row['advert_id']; ?>" tabindex="-1" role="dialog"
+                                                    <div id="update<?php echo $row['id']; ?>" tabindex="-1" role="dialog"
                                                          aria-hidden="true" class="modal fade ">
                                                         <div class="modal-dialog modal-md">
                                                             <div class="modal-content">
@@ -277,45 +278,46 @@ $targets = $db_handle->fetchAssoc($result);
                                                                             class="close">&times;
                                                                     </button>
                                                                     <h4 class="modal-title">Update Target <?php echo ($row['title']); ?> </h4>
-                                                                    <div class="pull-right">
-                                                                        <span><b>STATUS</b></span>
-                                                                    <form data-toggle="validator"
-                                                                          class="form-vertical" role="form"
-                                                                          method="post" action="">
-                                                                        <input name="advert_id"
-                                                                               class="form-control" type="hidden"
-                                                                               value="<?php echo $row['advert_id']; ?>" >
-                                                                        <?php if($row['status'] == 2){?>
-                                                                            <button title="Click Here to Make this notification visible to Users" type="submit" name="status_display" class="btn btn-success" >
-                                                                                <span class="glyphicon glyphicon-eye-open"></span></button>
-                                                                        <?php }elseif($row['status'] == 1){?>
-                                                                            <button title="Click Here to Hide this notification from Users" type="submit" name="status_hide" class="btn btn-success" >
-                                                                                <span class="glyphicon glyphicon-eye-close"></span></button>
-                                                                        <?php }?>
-                                                                    </form>
-                                                                        </div>
+
                                                                 </div>
                                                                 <div class="modal-body">
+                                                                    <div class="pull-right">
+                                                                        <span><b>STATUS</b></span>
+                                                                        <form data-toggle="validator"
+                                                                              class="form-vertical" role="form"
+                                                                              method="post" action="">
+                                                                            <input name="target_id"
+                                                                                   class="form-control" type="hidden"
+                                                                                   value="<?php echo $row['id']; ?>" >
+                                                                            <?php if($row['status'] == 2){?>
+                                                                                <button title="Click Here to Make this notification visible to Users" type="submit" name="status_display" class="btn btn-success" >
+                                                                                    <span class="glyphicon glyphicon-eye-open"></span></button>
+                                                                            <?php }elseif($row['status'] == 1){?>
+                                                                                <button title="Click Here to Hide this notification from Users" type="submit" name="status_hide" class="btn btn-success" >
+                                                                                    <span class="glyphicon glyphicon-eye-close"></span></button>
+                                                                            <?php }?>
+                                                                        </form>
+                                                                    </div>
 
                                                                     <form class="form-vertical" role="form" method="post" action="">
                                                                         <div class="form-group row">
                                                                             <div class="col-sm-12">
                                                                                 <label for="inputHeading3" class="col-form-label">Target Title/Name:</label>
-                                                                                <input name="name" type="text" class="form-control" id="forum_title" placeholder="Enter Target Name or title">
+                                                                                <input name="name" value="<?php echo $row['name']?>" type="text" class="form-control" id="forum_title" placeholder="Enter Target Name or title">
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group row">
                                                                             <div class="col-sm-12">
                                                                                 <label for="inputHeading3" class="col-form-label">Description</label>
-                                                                                <textarea rows="3" name="details" type="text" class="form-control" id="forum_title" placeholder="Enter Detailed Description of the target"></textarea>
+                                                                                <textarea rows="3" name="details" type="text" class="form-control" id="forum_title" placeholder="Enter Detailed Description of the target"><?php echo $row['details']?></textarea>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group row">
                                                                             <div class="col-sm-6">
                                                                                 <label>Target Type</label>
                                                                                 <select  type="text" name="type" class="form-control " >
-                                                                                    <option value="1">On Boarding</option>
-                                                                                    <option value="2">Retention</option>
+                                                                                    <option value="1" <?php if($row['type'] == 1){echo "selected";}?>>On Boarding</option>
+                                                                                    <option value="2" <?php if($row['type'] == 2){echo "selected";}?>>Retention</option>
                                                                                 </select>
                                                                             </div>
                                                                         </div>
@@ -323,13 +325,13 @@ $targets = $db_handle->fetchAssoc($result);
                                                                             <label class="col-sm-12">Select Duration</label>
                                                                             <div class="col-sm-6">
                                                                                 <div class="input-group date">
-                                                                                    <input placeholder="Select Year" name="year" type="text" class="form-control" id="datetimepicker" required>
+                                                                                    <input placeholder="Select Year" value="<?php echo $row['year'] ?>" name="year" type="text" class="form-control" id="datetimepicker" required>
                                                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-sm-6">
                                                                                 <div class="input-group date">
-                                                                                    <select  type="text" name="period" class="form-control" >
+                                                                                    <select value="<?php echo $period;?>"  type="text" name="period" class="form-control" >
                                                                                         <option value="1">January</option>
                                                                                         <option value="2">February</option>
                                                                                         <option value="3">March</option>
@@ -359,7 +361,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                                         <div class="form-group row">
                                                                             <div class="col-sm-5">
                                                                                 <label for="inputHeading3" class="col-form-label">Value</label>
-                                                                                <input name="value" type="number" class="form-control" placeholder="Enter Target Value">
+                                                                                <input name="value" value="<?php echo $row['value']?>" type="number" class="form-control" placeholder="Enter Target Value">
                                                                             </div>
                                                                         </div>
                                                                 </div>

@@ -30,18 +30,17 @@ if(isset($_POST['filter'])){
       INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
       INNER JOIN user AS u ON ui.user_code = u.user_code
         GROUP BY u.user_code
-        HAVING date_earned BETWEEN '$from_date' AND '$to_date'";
+        HAVING MONTH(date_earned) BETWEEN 1 AND 3 ";
     $_SESSION['query'] = $query;
 }
 
 if(empty($_SESSION['query'])) {
-    $from_date = date('Y-m-d', strtotime('first day of last month'));
-    $to_date = date('Y-m-d', strtotime('last day of last month'));
-    $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created,
-      MIN(tc.date_earned) AS date_earned FROM trading_commission AS tc
-      INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
-      INNER JOIN user AS u ON ui.user_code = u.user_code
-      WHERE tc.date_earned BETWEEN $from_date TO $to_date ";
+    $pointer = date('M');
+    $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created, MIN(tc.date_earned) AS date_earned
+FROM trading_commission AS tc
+INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
+INNER JOIN user AS u ON ui.user_code = u.user_code
+GROUP BY u.user_code HAVING MONTH(date_earned) = $pointer  ";
     $_SESSION['query'] = $query;
 }
 $query = $_SESSION['query'];
