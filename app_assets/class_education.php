@@ -132,7 +132,11 @@ MAIL;
     //Get the maximum published lesson available to clients.
     public function get_highest_lesson_published(){
         global $db_handle;
-        $query = "SELECT MAX(edu_lesson_id) AS max_lesson FROM edu_lesson WHERE status = '2'";
+        $query = "SELECT el.edu_lesson_id AS max_lesson FROM edu_lesson AS el
+            INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
+            WHERE ec.course_order = (SELECT MAX(course_order) FROM edu_course WHERE status = '2')
+            AND ec.edu_course_id = (SELECT course_id FROM edu_lesson WHERE lesson_order = (SELECT MAX(lesson_order) FROM edu_lesson WHERE status = '2'))
+            AND el.lesson_order = (SELECT MAX(lesson_order) FROM edu_lesson WHERE status = '2')";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchArray($result);
         foreach($fetched_data AS $row){
