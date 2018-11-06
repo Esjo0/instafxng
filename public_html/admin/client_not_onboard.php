@@ -317,7 +317,7 @@ $db_handle->closeDB();
                                         <td><?php echo datetime_to_text2($row['created']); ?></td>
                                         <td nowrap="nowrap">
                                             <a title="Comment" class="btn btn-xs btn-success"
-                                               href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_unverified'; ?>&c=<?php echo encrypt('UNVERIFIED CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i
+                                               href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_not_onboard'; ?>&c=<?php echo encrypt('CLIENT NOT ON BOARD'); ?>&pg=<?php echo $currentpage; ?>"><i
                                                     class="glyphicon glyphicon-comment icon-white"></i> </a>
                                             <a target="_blank" title="View" class="btn btn-xs btn-info"
                                                href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i
