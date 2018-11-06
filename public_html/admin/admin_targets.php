@@ -11,7 +11,7 @@ if (isset($_POST['create'])) {
     $name = $db_handle->sanitizePost($_POST['name']);
     $details = $db_handle->sanitizePost($_POST['details']);
     $period = $db_handle->sanitizePost($_POST['period']);
-    $value = $db_handle->sanitizePost($_POST['value']);
+    $value = $db_handle->sanitizePost($_POST['target']);
     $year = $db_handle->sanitizePost($_POST['year']);
     $type = $db_handle->sanitizePost($_POST['type']);
 
@@ -161,7 +161,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                                 Title/Name:</label>
                                                             <input name="name" type="text" class="form-control"
                                                                    id="forum_title"
-                                                                   placeholder="Enter Target Name or title">
+                                                                   placeholder="Enter Target Name or title" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -169,13 +169,13 @@ $targets = $db_handle->fetchAssoc($result);
                                                             <label for="inputHeading3" class="col-form-label">Description</label>
                                                             <textarea rows="3" name="details" type="text"
                                                                       class="form-control" id="forum_title"
-                                                                      placeholder="Enter Detailed Description of the target"></textarea>
+                                                                      placeholder="Enter Detailed Description of the target" required></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label>Target Type</label>
-                                                            <select type="text" name="type" class="form-control ">
+                                                            <select type="text" name="type" class="form-control " required>
                                                                 <option value="1">On Boarding</option>
                                                                 <option value="2">Retention</option>
                                                             </select>
@@ -194,7 +194,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="input-group date">
-                                                                <select type="text" name="period" class="form-control">
+                                                                <select type="text" name="period" class="form-control" required>
                                                                     <option value="1">January</option>
                                                                     <option value="2">February</option>
                                                                     <option value="3">March</option>
@@ -227,8 +227,8 @@ $targets = $db_handle->fetchAssoc($result);
                                                         <div class="col-sm-5">
                                                             <label for="inputHeading3"
                                                                    class="col-form-label">Value</label>
-                                                            <input name="value" type="number" class="form-control"
-                                                                   placeholder="Enter Target Value">
+                                                            <input name="target" type="number" class="form-control"
+                                                                   placeholder="Enter Target Value" required>
                                                         </div>
                                                     </div>
                                             </div>
