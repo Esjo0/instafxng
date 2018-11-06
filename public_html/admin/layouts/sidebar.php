@@ -272,11 +272,13 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bullhorn fa-fw"></i> Marketing<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <?php if (in_array(255, $my_pages_sidebar)) { ?><li><a href="#">Client - Onboarding</a></li><?php } ?>
                         <?php if (in_array(255, $my_pages_sidebar)) { ?><li><a href="campaign_leads.php">Campaign Leads</a></li><?php } ?>
                         <?php if (in_array(256, $my_pages_sidebar)) { ?><li><a href="campaign_analytics.php">Campaign Analytics</a></li><?php } ?>
                         <div class="divider"></div>
                         <?php if (in_array(287, $my_pages_sidebar)) { ?><li><a href="client_retention.php">Client - Retention</a></li><?php } ?>
+                        <?php if (in_array(289, $my_pages_sidebar)) { ?><li><a href="client_onboarding.php">Client ON-Boarding</a></li><?php } ?>
+                        <?php if (in_array(289, $my_pages_sidebar)) { ?><li><a href="client_not_onboard.php">Clients Not On-Board</a></li><?php } ?>
+
                     </ul>
                 </li>
 
@@ -393,6 +395,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <ul class="dropdown-menu">
                         <?php if (in_array(231, $my_pages_sidebar)) { ?><li><a href="hr_attendance_system_logs.php" title="Attendance Logs">Attendance Logs</a></li><?php } ?>
                         <?php if (in_array(253, $my_pages_sidebar)) { ?><li><a href="rms.php" title="Reports Management">Reports Management</a></li><?php } ?>
+                        <?php if (in_array(288, $my_pages_sidebar)) { ?><li><a href="admin_targets.php" title="Admin Targets">Admin Targets</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
