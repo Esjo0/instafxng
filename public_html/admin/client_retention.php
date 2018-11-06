@@ -2,14 +2,6 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
-if(isset($_GET['f'])) {
-    $section = $_GET['f'];
-    switch($section) {
-        case '1': $selected_section = "1"; break;
-        default: $selected_section = false;
-    }
-}
-
 if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
     if (isset($_POST['retention_tracker'])) {
@@ -23,18 +15,17 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         extract($dates_selected);
 
         $base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
-            u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+            u.email, u.phone, u.created
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-            LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
             WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
 
-        if($selected_section != '1') {
-            $query = "SELECT sum_volume, sum_commission, user_code, full_name, email, phone, created, account_officer_full_name FROM reference_clients
+        if($ret_type == '1') {
+            $retention_type = "NOT YET RETAINED";
+            $query = "SELECT sum_volume, sum_commission, user_code, full_name, email, phone, created FROM reference_clients
                 WHERE user_code NOT IN (
                     SELECT u.user_code
                     FROM trading_commission AS td
@@ -43,7 +34,8 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                     WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY sum_commission DESC
                 ) ";
         } else {
-            $query = "SELECT sum_volume, sum_commission, user_code, full_name, email, phone, created, account_officer_full_name FROM reference_clients
+            $retention_type = "RETAINED";
+            $query = "SELECT sum_volume, sum_commission, user_code, full_name, email, phone, created FROM reference_clients
                 WHERE user_code IN (
                     SELECT u.user_code
                     FROM trading_commission AS td
@@ -60,6 +52,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $_SESSION['client_retention_from_date'] = $from_date;
         $_SESSION['client_retention_to_date'] = $to_date;
         $_SESSION['client_retention_result_title'] = $result_title;
+        $_SESSION['client_retention_type'] = $retention_type;
     } else {
 
         $base_query = $_SESSION['client_retention_base_query'];
@@ -69,6 +62,8 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $from_date = $_SESSION['client_retention_from_date'];
         $to_date = $_SESSION['client_retention_to_date'];
         $result_title = $_SESSION['client_retention_result_title'];
+        $retention_type = $_SESSION['client_retention_type'];
+        $ret_type = $_SESSION['client_retention_type_seleted'];
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
     }
@@ -77,7 +72,13 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
     $numrows = $db_handle->numRows($query);
 
-    $total_not_retained = $numrows;
+    if($ret_type == 1) {
+        $total_not_retained = $numrows;
+    } else {
+        $total_not_retained = $total_to_retain - $numrows;
+    }
+
+
     $total_retained = $total_to_retain - $total_not_retained;
     $retention_rate = number_format((($total_retained / $total_to_retain) * 100), 2);
 
@@ -175,14 +176,26 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                                                 <option value="12">December</option>
 <!--                                                <option value="1-12">Annual</option>-->
 <!--                                                <option value="1-6">First Half</option>-->
-<!--                                                <option value="6-12">Second Half</option>-->
+<!--                                                <option value="7-12">Second Half</option>-->
                                                 <option value="1-3">First Quarter</option>
-                                                <option value="3-6">Second Quarter</option>
-                                                <option value="6-9">Third Quarter</option>
-                                                <option value="9-12">Fourth Quarter</option>
+                                                <option value="4-6">Second Quarter</option>
+                                                <option value="7-9">Third Quarter</option>
+                                                <option value="10-12">Fourth Quarter</option>
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="retention_type">Type:</label>
+                                        <div class="col-sm-9 col-lg-5">
+                                            <select type="text" name="ret_type" id="retention_type" class="form-control">
+                                                <option value=""></option>
+                                                <option value="1">Not Yet Retained</option>
+                                                <option value="2">Retained</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9"><input name="retention_tracker" type="submit" class="btn btn-success" value="Display Result" /></div>
                                     </div>
@@ -197,18 +210,9 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                                 <hr /><br />
 
                                 <?php if(isset($result_title)) { ?>
-                                <p class="text-center"><strong>Period: <?php echo $result_title; ?></strong><br />
+                                <p class="text-center"><strong>Period: <?php echo $result_title . " (" . $retention_type . ")"; ?></strong><br />
                                 Retention rate: <?php echo $retention_rate . '%'; ?></p>
                                 <?php } ?>
-
-<!--                                <div class="row text-center">-->
-<!--                                    <div class="col-sm-12">-->
-<!--                                        <div class="btn-group btn-breadcrumb">-->
-<!--                                            <a href="--><?php //echo $_SERVER['PHP_SELF']; ?><!--" class="btn btn-default" title="All Registrations">Not Retained</a>-->
-<!--                                            <a href="--><?php //echo $_SERVER['PHP_SELF'] . '?f=1'; ?><!--" class="btn btn-default" title="">Retained</a>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
 
                                 <br />
 
@@ -237,7 +241,10 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                                                 <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
                                                 <td></td>
                                                 <td nowrap="nowrap">
-                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo encrypt('CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
+                                                    <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
                                                 </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
