@@ -503,6 +503,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="253" id="" <?php if (in_array(253, $my_pages)) { echo 'checked="checked"'; } ?>/> Reports</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="254" id="" <?php if (in_array(254, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Staff Reports</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="288" id="" <?php if (in_array(288, $my_pages)) { echo 'checked="checked"'; } ?>/> Admin Targets</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="290" id="" <?php if (in_array(290, $my_pages)) { echo 'checked="checked"'; } ?>/> Edit Admin Targets</label></div></div>
                                     </div>
                                     <hr/>
 

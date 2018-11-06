@@ -16,7 +16,7 @@ if (isset($_POST['create'])) {
     $type = $db_handle->sanitizePost($_POST['type']);
 
 
-    $query = "INSERT into admin_targets(name, details, period, value, year, type, status, admin) VALUES('$name','$details', '$period','$value', '$year', '$type', '2','$admin_code')";
+    $query = "INSERT into admin_targets(name, details, period, value, year, type, status, admin) VALUES('$name','$details', '$period','$value', '$year', '$type', '1','$admin_code')";
     $result = $db_handle->runQuery($query);
     if ($result) {
         $message_success = "You have successfully created a new Target";
@@ -220,7 +220,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                     </div>
                                                     <script type="text/javascript">
                                                         $(function () {
-                                                            $('#datetimepicker1').datetimepicker({format: 'YYYY'});
+                                                            $('#datetimepicker').datetimepicker({format: 'YYYY'});
                                                         });
                                                     </script>
                                                     <div class="form-group row">
@@ -256,12 +256,11 @@ $targets = $db_handle->fetchAssoc($result);
                                                     <th>Period</th>
                                                     <th>Year</th>
                                                     <th>Value</th>
-                                                    <th>Status</th>
+                                                    <th></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <p><i class="fa fa-info-circle"></i> Click Each Target row to Update
-                                                    Target OR Update Status</p>
+                                                <p><i class="fa fa-info-circle"></i>List of all Admin Targets</p>
                                                 <?php
                                                 foreach ($targets as $row) {
                                                 extract($row);
@@ -273,252 +272,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                     <td><?php echo target_period($period); ?></td>
                                                     <td><?php echo $year; ?></td>
                                                     <td><?php echo $value; ?></td>
-                                                    <td><?php echo status_snappy_help($status); ?></td>
-
-                                                    <!--Modal - confirmation boxes-->
-                                                    <div id="update<?php echo $row['id']; ?>" tabindex="-1"
-                                                         role="dialog"
-                                                         aria-hidden="true" class="modal fade ">
-                                                        <div class="modal-dialog modal-md">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" data-dismiss="modal"
-                                                                            aria-hidden="true"
-                                                                            class="close">&times;
-                                                                    </button>
-                                                                    <h4 class="modal-title">Update
-                                                                        Target <?php echo($row['title']); ?> </h4>
-
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="text-center">
-                                                                        <span><b>STATUS</b></span>
-                                                                        <form data-toggle="validator"
-                                                                              class="form-vertical" role="form"
-                                                                              method="post" action="">
-                                                                            <input name="target_id"
-                                                                                   class="form-control" type="hidden"
-                                                                                   value="<?php echo $row['id']; ?>">
-                                                                            <?php if ($row['status'] == 2) { ?>
-                                                                                <button type="submit"
-                                                                                        name="status_display"
-                                                                                        class="btn btn-success">
-                                                                                    <span
-                                                                                        class="glyphicon glyphicon-eye-open"></span><b>Click
-                                                                                        here to make target Active</b>
-                                                                                </button>
-                                                                            <?php } elseif ($row['status'] == 1) { ?>
-                                                                                <button type="submit" name="status_hide"
-                                                                                        class="btn btn-success">
-                                                                                    <span
-                                                                                        class="glyphicon glyphicon-eye-close"></span><b>Click
-                                                                                        Here to make target Inactive</b>
-                                                                                </button>
-                                                                            <?php } ?>
-                                                                        </form>
-                                                                    </div>
-
-                                                                    <form class="form-vertical" role="form"
-                                                                          method="post" action="">
-                                                                        <input name="id"
-                                                                               class="form-control" type="hidden"
-                                                                               value="<?php echo $row['id']; ?>"
-                                                                               required>
-                                                                        <div class="form-group row">
-                                                                            <div class="col-sm-12">
-                                                                                <label for="inputHeading3"
-                                                                                       class="col-form-label">Target
-                                                                                    Title/Name:</label>
-                                                                                <input name="name"
-                                                                                       value="<?php echo $row['name'] ?>"
-                                                                                       type="text" class="form-control"
-                                                                                       id="forum_title"
-                                                                                       placeholder="Enter Target Name or title"
-                                                                                       required>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group row">
-                                                                            <div class="col-sm-12">
-                                                                                <label for="inputHeading3"
-                                                                                       class="col-form-label">Description</label>
-                                                                                <textarea rows="3" name="details"
-                                                                                          type="text"
-                                                                                          class="form-control"
-                                                                                          id="forum_title"
-                                                                                          placeholder="Enter Detailed Description of the target"
-                                                                                          required><?php echo $row['details'] ?></textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group row">
-                                                                            <div class="col-sm-6">
-                                                                                <label>Target Type</label>
-                                                                                <select type="text" name="type"
-                                                                                        class="form-control " disabled>
-                                                                                    <option
-                                                                                        value="1" <?php if ($row['type'] == 1) {
-                                                                                        echo "selected";
-                                                                                    } ?>>On Boarding
-                                                                                    </option>
-                                                                                    <option
-                                                                                        value="2" <?php if ($row['type'] == 2) {
-                                                                                        echo "selected";
-                                                                                    } ?>>Retention
-                                                                                    </option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group row">
-                                                                            <label class="col-sm-12">Select
-                                                                                Duration</label>
-                                                                            <div class="col-sm-6">
-                                                                                <div class="input-group date">
-                                                                                    <input placeholder="Select Year"
-                                                                                           value="<?php echo $row['year'] ?>"
-                                                                                           name="year" type="text"
-                                                                                           class="form-control"
-                                                                                           id="datetimepicker" disabled>
-                                                                                    <span
-                                                                                        class="input-group-addon"><span
-                                                                                            class="glyphicon glyphicon-calendar"></span></span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-sm-6">
-                                                                                <div class="input-group date">
-                                                                                    <select
-                                                                                        value="<?php echo $period; ?>"
-                                                                                        type="text" name="period"
-                                                                                        class="form-control" disabled>
-                                                                                        <option
-                                                                                            value="1" <?php if ($row['period'] == 1) {
-                                                                                            echo "selected";
-                                                                                        } ?>>January
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="2" <?php if ($row['period'] == 2) {
-                                                                                            echo "selected";
-                                                                                        } ?>>February
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="3" <?php if ($row['period'] == 3) {
-                                                                                            echo "selected";
-                                                                                        } ?>>March
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="4" <?php if ($row['period'] == 4) {
-                                                                                            echo "selected";
-                                                                                        } ?>>April
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="5" <?php if ($row['period'] == 5) {
-                                                                                            echo "selected";
-                                                                                        } ?>>May
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="6" <?php if ($row['period'] == 6) {
-                                                                                            echo "selected";
-                                                                                        } ?>>June
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="7" <?php if ($row['period'] == 7) {
-                                                                                            echo "selected";
-                                                                                        } ?>>July
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="8" <?php if ($row['period'] == 8) {
-                                                                                            echo "selected";
-                                                                                        } ?>>August
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="9" <?php if ($row['period'] == 9) {
-                                                                                            echo "selected";
-                                                                                        } ?>>September
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="10" <?php if ($row['period'] == 10) {
-                                                                                            echo "selected";
-                                                                                        } ?>>October
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="11" <?php if ($row['period'] == 11) {
-                                                                                            echo "selected";
-                                                                                        } ?>>November
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="12" <?php if ($row['period'] == 12) {
-                                                                                            echo "selected";
-                                                                                        } ?>>December
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="1-12" <?php if ($row['period'] == '1-12') {
-                                                                                            echo "selected";
-                                                                                        } ?>>Annual
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="1-6" <?php if ($row['period'] == '1-6') {
-                                                                                            echo "selected";
-                                                                                        } ?>>First Half
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="6-12" <?php if ($row['period'] == '6-12') {
-                                                                                            echo "selected";
-                                                                                        } ?>>Second Half
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="1-3" <?php if ($row['period'] == '1-3') {
-                                                                                            echo "selected";
-                                                                                        } ?>>First Quarter
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="4-6" <?php if ($row['period'] == '4-6') {
-                                                                                            echo "selected";
-                                                                                        } ?>>Second Quarter
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="7-9" <?php if ($row['period'] == '7-9') {
-                                                                                            echo "selected";
-                                                                                        } ?>>Third Quarter
-                                                                                        </option>
-                                                                                        <option
-                                                                                            value="10-12" <?php if ($row['period'] == '9-12') {
-                                                                                            echo "selected";
-                                                                                        } ?>>Fourth Quarter
-                                                                                        </option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <script type="text/javascript">
-                                                                            $(function () {
-                                                                                $('#datetimepicker2').datetimepicker({format: 'YYYY'});
-                                                                            });
-                                                                        </script>
-                                                                        <div class="form-group row">
-                                                                            <div class="col-sm-5">
-                                                                                <label for="inputHeading3"
-                                                                                       class="col-form-label">Value</label>
-                                                                                <input name="value"
-                                                                                       value="<?php echo $row['value'] ?>"
-                                                                                       type="number"
-                                                                                       class="form-control"
-                                                                                       placeholder="Enter Target Value"
-                                                                                       required>
-                                                                            </div>
-                                                                        </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button name="update" type="submit"
-                                                                            class="btn btn-success"> UPDATE
-                                                                    </button>
-                                                                    </form>
-                                                                    <button type="submit" name="close"
-                                                                            onClick="window.close();"
-                                                                            data-dismiss="modal" class="btn btn-danger">
-                                                                        Close!
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <td><a target="_blank" title="Edit Target" class="btn btn-xs btn-info" href="edit_targets.php?x=<?php echo $row['id']; ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a></td>
                                                     <?php
                                                     }
                                                     ?></tr>
