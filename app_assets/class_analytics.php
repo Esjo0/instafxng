@@ -110,7 +110,7 @@ class Analytics {
                 $prev_from_date = $prev_year . "-07-01";
                 $prev_to_date = $prev_year . "-12-31";
                 break;
-            case '6-12':
+            case '7-12':
                 $title = "Second Half " . $year;
                 $from_date = $year . "-07-01";
                 $to_date = $year . "-12-31";
@@ -124,21 +124,21 @@ class Analytics {
                 $prev_from_date = $prev_year . "-10-01";
                 $prev_to_date = $prev_year . "-12-31";
                 break;
-            case '3-6':
+            case '4-6':
                 $title = "Second Quarter " . $year;
                 $from_date = $year . "-04-01";
                 $to_date = $year . "-06-30";
                 $prev_from_date = $year . "-01-01";
                 $prev_to_date = $year . "-03-31";
                 break;
-            case '6-9':
+            case '7-9':
                 $title = "Third Quarter " . $year;
                 $from_date = $year . "-07-01";
                 $to_date = $year . "-09-31";
                 $prev_from_date = $year . "-04-01";
                 $prev_to_date = $year . "-06-30";
                 break;
-            case '9-12':
+            case '10-12':
                 $title = "Fourth Quarter " . $year;
                 $from_date = $year . "-10-01";
                 $to_date = $year . "-12-31";
