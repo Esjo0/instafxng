@@ -402,10 +402,11 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                     </div>
                                     <hr/>
 
-                                    <p><strong>Campaign Management</strong></p>
+                                    <p><strong>Marketing</strong></p>
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="255" id="" <?php if (in_array(255, $my_pages)) { echo 'checked="checked"'; } ?>/> Campaign Leads</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="256" id="" <?php if (in_array(256, $my_pages)) { echo 'checked="checked"'; } ?>/> Campaign Analytics</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="287" id="" <?php if (in_array(287, $my_pages)) { echo 'checked="checked"'; } ?>/> Client Retention</label></div></div>
                                     </div>
                                     <hr/>
                                     
