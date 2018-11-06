@@ -285,6 +285,13 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                     </div>
                                     <hr/>
 
+                                    <p><strong>Marketing</strong></p>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="288" id="" <?php if (in_array(288, $my_pages)) { echo 'checked="checked"'; } ?>/> Clients On-Boarding</label></div></div>
+                                    </div>
+                                    <hr/>
+
+
                                     <p><strong>Events</strong></p>
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="48" id="" <?php if (in_array(48, $my_pages)) { echo 'checked="checked"'; } ?>/> New Dinner 2016 Reg</label></div></div>
@@ -499,6 +506,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="252" id="" <?php if (in_array(252, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Staff Targets</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="253" id="" <?php if (in_array(253, $my_pages)) { echo 'checked="checked"'; } ?>/> Reports</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="254" id="" <?php if (in_array(254, $my_pages)) { echo 'checked="checked"'; } ?>/> Manage Staff Reports</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="287" id="" <?php if (in_array(287, $my_pages)) { echo 'checked="checked"'; } ?>/> Admin Targets</label></div></div>
                                     </div>
                                     <hr/>
 

@@ -6,20 +6,8 @@ if (!$session_admin->is_logged_in()) {
 //Gets Administrator code
 $admin_code = $_SESSION['admin_unique_code'];
 
-//delete notification schedule
-if(isset($_POST['delete'])) {
-    $advert_id = $db_handle->sanitizePost($_POST['advert_id']);
-    $query = "DELETE FROM advert_div WHERE advert_id = $advert_id";
-    $result = $db_handle->runQuery($query);
-    if($result) {
-        $message_success = "You have successfully deleted this notification";
-    } else {
-        $message_error = "Something went wrong. Please try again.";
-    }
-}
-
-//Add new notification schedule
-if(isset($_POST['create'])){
+//Add new Target
+if (isset($_POST['create'])) {
     $name = $db_handle->sanitizePost($_POST['name']);
     $details = $db_handle->sanitizePost($_POST['details']);
     $period = $db_handle->sanitizePost($_POST['period']);
@@ -28,9 +16,9 @@ if(isset($_POST['create'])){
     $type = $db_handle->sanitizePost($_POST['type']);
 
 
-    $query = "INSERT into admin_targets(name, details, period, value, year, status, admin) VALUES('$name','$details', '$period','$value', '$year', '$type', '$admin_code')";
+    $query = "INSERT into admin_targets(name, details, period, value, year, type, status, admin) VALUES('$name','$details', '$period','$value', '$year', '$type', '2','$admin_code')";
     $result = $db_handle->runQuery($query);
-    if($result) {
+    if ($result) {
         $message_success = "You have successfully created a new Target";
     } else {
         $message_error = "Something went wrong. Please try again.";
@@ -38,52 +26,49 @@ if(isset($_POST['create'])){
 }
 
 //Update target
-if(isset($_POST['update'])){
+if (isset($_POST['update'])) {
     $name = $db_handle->sanitizePost($_POST['name']);
     $details = $db_handle->sanitizePost($_POST['details']);
-    $period = $db_handle->sanitizePost($_POST['period']);
     $value = $db_handle->sanitizePost($_POST['value']);
-    $year = $db_handle->sanitizePost($_POST['year']);
-    $type = $db_handle->sanitizePost($_POST['type']);
+    $id = $db_handle->sanitizePost($_POST['id']);
 
-    $query = "UPDATE admin_targets SET name = '$name', details = '$details', period = '$period', value = '$value', year = '$year', type = '$type'
-WHERE advert_id = '$advert_id'";
+    $query = "UPDATE admin_targets SET name = '$name', details = '$details', value = '$value', updated = now() WHERE id = '$id'";
     $result = $db_handle->runQuery($query);
-    if($result) {
-        $message_success = "You have successfully updated this notification";
+    if ($result) {
+        $message_success = "You have successfully updated your target";
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
 }
 
-//Update notification status to display
-if(isset($_POST['status_display'])){
-    $target_id = $db_handle->sanitizePost($_POST['advert_id']);
-    $query = "UPDATE admin_targets SET status = 1 WHERE advert_id = '$advert_id'";
+//Update target status to active
+if (isset($_POST['status_display'])) {
+    $target_id = $db_handle->sanitizePost($_POST['target_id']);
+    $query = "UPDATE admin_targets SET status = 1 WHERE id = '$target_id'";
     $result = $db_handle->runQuery($query);
-    if($result) {
-        $message_success = "You have successfully updated this notification view status";
+    if ($result) {
+        $message_success = "You have successfully updated your target view status to ACTIVE";
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
 }
 
-//Update notification status to hidden
-if(isset($_POST['status_hide'])){
-    $target_id = $db_handle->sanitizePost($_POST['advert_id']);
-    $query = "UPDATE admin_targets SET status = 2 WHERE advert_id = '$advert_id'";
+//Update target status to inactive
+if (isset($_POST['status_hide'])) {
+    $target_id = $db_handle->sanitizePost($_POST['target_id']);
+    $query = "UPDATE admin_targets SET status = 2 WHERE id = '$target_id'";
     $result = $db_handle->runQuery($query);
-    if($result) {
-        $message_success = "You have successfully updated this notification view status";
+    if ($result) {
+        $message_success = "You have successfully updated your target view status to INACTIVE";
     } else {
         $message_error = "Something went wrong. Please try again.";
     }
 }
 
-//select previous notification schedules
+//select previous targets
 $query = "SELECT * FROM admin_targets";
 $numrows = $db_handle->numRows($query);
-$rowsperpage = 10;
+$rowsperpage = 20;
 
 $totalpages = ceil($numrows / $rowsperpage);
 // get the current page or set a default
@@ -118,9 +103,9 @@ $targets = $db_handle->fetchAssoc($result);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Instaforex Nigeria | Admin</title>
-    <meta name="title" content="Instaforex Nigeria | Admin" />
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
+    <meta name="title" content="Instaforex Nigeria | Admin"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
     <?php require_once 'layouts/head_meta.php'; ?>
     <script src="tinymce/tinymce.min.js"></script>
 </head>
@@ -153,10 +138,13 @@ $targets = $db_handle->fetchAssoc($result);
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                <button class="btn btn-sm btn-success pull-right"  data-target="#add_target" data-toggle="modal" title="Click Here to Update or Delete this notification."><strong>ADD TARGET</strong><i class="fa fa-plus"></i></button>
+                                        <button class="btn btn-sm btn-success pull-right" data-target="#add_target"
+                                                data-toggle="modal"
+                                                title="Click Here to Update or Delete this notification."><strong>ADD
+                                                TARGET</strong><i class="fa fa-plus"></i></button>
                                     </div>
-                                    </div>
-                                        <!--Modal - confirmation boxes-->
+                                </div>
+                                <!--Modal - confirmation boxes-->
                                 <div id="add_target" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -169,20 +157,25 @@ $targets = $db_handle->fetchAssoc($result);
                                                 <form class="form-vertical" role="form" method="post" action="">
                                                     <div class="form-group row">
                                                         <div class="col-sm-12">
-                                                            <label for="inputHeading3" class="col-form-label">Target Title/Name:</label>
-                                                            <input name="name" type="text" class="form-control" id="forum_title" placeholder="Enter Target Name or title">
+                                                            <label for="inputHeading3" class="col-form-label">Target
+                                                                Title/Name:</label>
+                                                            <input name="name" type="text" class="form-control"
+                                                                   id="forum_title"
+                                                                   placeholder="Enter Target Name or title">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <div class="col-sm-12">
                                                             <label for="inputHeading3" class="col-form-label">Description</label>
-                                                            <textarea rows="3" name="details" type="text" class="form-control" id="forum_title" placeholder="Enter Detailed Description of the target"></textarea>
+                                                            <textarea rows="3" name="details" type="text"
+                                                                      class="form-control" id="forum_title"
+                                                                      placeholder="Enter Detailed Description of the target"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label>Target Type</label>
-                                                            <select  type="text" name="type" class="form-control " >
+                                                            <select type="text" name="type" class="form-control ">
                                                                 <option value="1">On Boarding</option>
                                                                 <option value="2">Retention</option>
                                                             </select>
@@ -192,49 +185,60 @@ $targets = $db_handle->fetchAssoc($result);
                                                         <label class="col-sm-12">Select Duration</label>
                                                         <div class="col-sm-6">
                                                             <div class="input-group date">
-                                                                <input placeholder="Select Year" name="year" type="text" class="form-control" id="datetimepicker" required>
-                                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                <input placeholder="Select Year" name="year" type="text"
+                                                                       class="form-control" id="datetimepicker"
+                                                                       required>
+                                                                <span class="input-group-addon"><span
+                                                                        class="glyphicon glyphicon-calendar"></span></span>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="input-group date">
-                                                            <select  type="text" name="period" class="form-control" >
-                                                                <option value="1">January</option>
-                                                                <option value="2">February</option>
-                                                                <option value="3">March</option>
-                                                                <option value="4">April</option>
-                                                                <option value="5">May</option>
-                                                                <option value="6">June</option>
-                                                                <option value="7">July</option>
-                                                                <option value="8">August</option>
-                                                                <option value="9">September</option>
-                                                                <option value="10">October</option>
-                                                                <option value="11">November</option>
-                                                                <option value="12">December</option>
-                                                                <option value="1-12">Annual</option>
-                                                                <option value="1-6">First Half</option>
-                                                                <option value="6-12">Second Half</option>
-                                                                <option value="1-3">First Quarter</option>
-                                                                <option value="3-6">Second Quarter</option>
-                                                                <option value="6-9">Third Quarter</option>
-                                                                <option value="9-12">Fourth Quarter</option>
-                                                            </select>
-                                                                </div>
+                                                                <select type="text" name="period" class="form-control">
+                                                                    <option value="1">January</option>
+                                                                    <option value="2">February</option>
+                                                                    <option value="3">March</option>
+                                                                    <option value="4">April</option>
+                                                                    <option value="5">May</option>
+                                                                    <option value="6">June</option>
+                                                                    <option value="7">July</option>
+                                                                    <option value="8">August</option>
+                                                                    <option value="9">September</option>
+                                                                    <option value="10">October</option>
+                                                                    <option value="11">November</option>
+                                                                    <option value="12">December</option>
+                                                                    <option value="1-12">Annual</option>
+                                                                    <option value="1-6">First Half</option>
+                                                                    <option value="7-12">Second Half</option>
+                                                                    <option value="1-3">First Quarter</option>
+                                                                    <option value="4-6">Second Quarter</option>
+                                                                    <option value="7-9">Third Quarter</option>
+                                                                    <option value="10-12">Fourth Quarter</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <script type="text/javascript">
-                                                        $(function () {$('#datetimepicker').datetimepicker({format: 'YYYY'});});
+                                                        $(function () {
+                                                            $('#datetimepicker1').datetimepicker({format: 'YYYY'});
+                                                        });
                                                     </script>
                                                     <div class="form-group row">
                                                         <div class="col-sm-5">
-                                                            <label for="inputHeading3" class="col-form-label">Value</label>
-                                                            <input name="value" type="number" class="form-control" placeholder="Enter Target Value">
+                                                            <label for="inputHeading3"
+                                                                   class="col-form-label">Value</label>
+                                                            <input name="value" type="number" class="form-control"
+                                                                   placeholder="Enter Target Value">
                                                         </div>
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button name="create" type="submit" class="btn btn-success"> CREATE</button></form>
-                                                <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                <button name="create" type="submit" class="btn btn-success"> CREATE
+                                                </button>
+                                                </form>
+                                                <button type="submit" name="close" onClick="window.close();"
+                                                        data-dismiss="modal" class="btn btn-danger">Close!
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -242,8 +246,9 @@ $targets = $db_handle->fetchAssoc($result);
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h5><strong>List of All Targets</strong></h5>
-                                        <?php if(isset($targets) && !empty($targets)):?>
-                                            <table  class="table table-responsive table-striped table-bordered table-hover">
+                                        <?php if (isset($targets) && !empty($targets)): ?>
+                                            <table
+                                                class="table table-responsive table-striped table-bordered table-hover">
                                                 <thead>
                                                 <tr>
                                                     <th>Title</th>
@@ -255,20 +260,24 @@ $targets = $db_handle->fetchAssoc($result);
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <p><i class="fa fa-info-circle"></i> Click Each Target row to Update or Delete Target</p>
+                                                <p><i class="fa fa-info-circle"></i> Click Each Target row to Update
+                                                    Target OR Update Status</p>
                                                 <?php
-                                                foreach ($targets as $row) {extract($row);
+                                                foreach ($targets as $row) {
+                                                extract($row);
                                                 ?>
-                                                <tr data-target="#update<?php echo $row['id']; ?>" data-toggle="modal" title="Click Here to Update or Delete this notification.">
-                                                    <td ><?php echo $name; ?></td>
-                                                    <td ><?php echo $details; ?></td>
-                                                    <td ><?php echo target_period($period); ?></td>
-                                                    <td ><?php echo $year; ?></td>
-                                                    <td ><?php echo $value; ?></td>
-                                                    <td ><?php echo status_snappy_help($status); ?></td>
+                                                <tr data-target="#update<?php echo $row['id']; ?>" data-toggle="modal"
+                                                    title="Click Here to Update or Delete this notification.">
+                                                    <td><?php echo $name; ?></td>
+                                                    <td><?php echo $details; ?></td>
+                                                    <td><?php echo target_period($period); ?></td>
+                                                    <td><?php echo $year; ?></td>
+                                                    <td><?php echo $value; ?></td>
+                                                    <td><?php echo status_snappy_help($status); ?></td>
 
                                                     <!--Modal - confirmation boxes-->
-                                                    <div id="update<?php echo $row['id']; ?>" tabindex="-1" role="dialog"
+                                                    <div id="update<?php echo $row['id']; ?>" tabindex="-1"
+                                                         role="dialog"
                                                          aria-hidden="true" class="modal fade ">
                                                         <div class="modal-dialog modal-md">
                                                             <div class="modal-content">
@@ -277,98 +286,235 @@ $targets = $db_handle->fetchAssoc($result);
                                                                             aria-hidden="true"
                                                                             class="close">&times;
                                                                     </button>
-                                                                    <h4 class="modal-title">Update Target <?php echo ($row['title']); ?> </h4>
+                                                                    <h4 class="modal-title">Update
+                                                                        Target <?php echo($row['title']); ?> </h4>
 
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <div class="pull-right">
+                                                                    <div class="text-center">
                                                                         <span><b>STATUS</b></span>
                                                                         <form data-toggle="validator"
                                                                               class="form-vertical" role="form"
                                                                               method="post" action="">
                                                                             <input name="target_id"
                                                                                    class="form-control" type="hidden"
-                                                                                   value="<?php echo $row['id']; ?>" >
-                                                                            <?php if($row['status'] == 2){?>
-                                                                                <button title="Click Here to Make this notification visible to Users" type="submit" name="status_display" class="btn btn-success" >
-                                                                                    <span class="glyphicon glyphicon-eye-open"></span></button>
-                                                                            <?php }elseif($row['status'] == 1){?>
-                                                                                <button title="Click Here to Hide this notification from Users" type="submit" name="status_hide" class="btn btn-success" >
-                                                                                    <span class="glyphicon glyphicon-eye-close"></span></button>
-                                                                            <?php }?>
+                                                                                   value="<?php echo $row['id']; ?>">
+                                                                            <?php if ($row['status'] == 2) { ?>
+                                                                                <button type="submit"
+                                                                                        name="status_display"
+                                                                                        class="btn btn-success">
+                                                                                    <span
+                                                                                        class="glyphicon glyphicon-eye-open"></span><b>Click
+                                                                                        here to make target Active</b>
+                                                                                </button>
+                                                                            <?php } elseif ($row['status'] == 1) { ?>
+                                                                                <button type="submit" name="status_hide"
+                                                                                        class="btn btn-success">
+                                                                                    <span
+                                                                                        class="glyphicon glyphicon-eye-close"></span><b>Click
+                                                                                        Here to make target Inactive</b>
+                                                                                </button>
+                                                                            <?php } ?>
                                                                         </form>
                                                                     </div>
 
-                                                                    <form class="form-vertical" role="form" method="post" action="">
+                                                                    <form class="form-vertical" role="form"
+                                                                          method="post" action="">
+                                                                        <input name="id"
+                                                                               class="form-control" type="hidden"
+                                                                               value="<?php echo $row['id']; ?>"
+                                                                               required>
                                                                         <div class="form-group row">
                                                                             <div class="col-sm-12">
-                                                                                <label for="inputHeading3" class="col-form-label">Target Title/Name:</label>
-                                                                                <input name="name" value="<?php echo $row['name']?>" type="text" class="form-control" id="forum_title" placeholder="Enter Target Name or title">
+                                                                                <label for="inputHeading3"
+                                                                                       class="col-form-label">Target
+                                                                                    Title/Name:</label>
+                                                                                <input name="name"
+                                                                                       value="<?php echo $row['name'] ?>"
+                                                                                       type="text" class="form-control"
+                                                                                       id="forum_title"
+                                                                                       placeholder="Enter Target Name or title"
+                                                                                       required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group row">
                                                                             <div class="col-sm-12">
-                                                                                <label for="inputHeading3" class="col-form-label">Description</label>
-                                                                                <textarea rows="3" name="details" type="text" class="form-control" id="forum_title" placeholder="Enter Detailed Description of the target"><?php echo $row['details']?></textarea>
+                                                                                <label for="inputHeading3"
+                                                                                       class="col-form-label">Description</label>
+                                                                                <textarea rows="3" name="details"
+                                                                                          type="text"
+                                                                                          class="form-control"
+                                                                                          id="forum_title"
+                                                                                          placeholder="Enter Detailed Description of the target"
+                                                                                          required><?php echo $row['details'] ?></textarea>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group row">
                                                                             <div class="col-sm-6">
                                                                                 <label>Target Type</label>
-                                                                                <select  type="text" name="type" class="form-control " >
-                                                                                    <option value="1" <?php if($row['type'] == 1){echo "selected";}?>>On Boarding</option>
-                                                                                    <option value="2" <?php if($row['type'] == 2){echo "selected";}?>>Retention</option>
+                                                                                <select type="text" name="type"
+                                                                                        class="form-control " disabled>
+                                                                                    <option
+                                                                                        value="1" <?php if ($row['type'] == 1) {
+                                                                                        echo "selected";
+                                                                                    } ?>>On Boarding
+                                                                                    </option>
+                                                                                    <option
+                                                                                        value="2" <?php if ($row['type'] == 2) {
+                                                                                        echo "selected";
+                                                                                    } ?>>Retention
+                                                                                    </option>
                                                                                 </select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group row">
-                                                                            <label class="col-sm-12">Select Duration</label>
+                                                                            <label class="col-sm-12">Select
+                                                                                Duration</label>
                                                                             <div class="col-sm-6">
                                                                                 <div class="input-group date">
-                                                                                    <input placeholder="Select Year" value="<?php echo $row['year'] ?>" name="year" type="text" class="form-control" id="datetimepicker" required>
-                                                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                                    <input placeholder="Select Year"
+                                                                                           value="<?php echo $row['year'] ?>"
+                                                                                           name="year" type="text"
+                                                                                           class="form-control"
+                                                                                           id="datetimepicker" disabled>
+                                                                                    <span
+                                                                                        class="input-group-addon"><span
+                                                                                            class="glyphicon glyphicon-calendar"></span></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-sm-6">
                                                                                 <div class="input-group date">
-                                                                                    <select value="<?php echo $period;?>"  type="text" name="period" class="form-control" >
-                                                                                        <option value="1">January</option>
-                                                                                        <option value="2">February</option>
-                                                                                        <option value="3">March</option>
-                                                                                        <option value="4">April</option>
-                                                                                        <option value="5">May</option>
-                                                                                        <option value="6">June</option>
-                                                                                        <option value="7">July</option>
-                                                                                        <option value="8">August</option>
-                                                                                        <option value="9">September</option>
-                                                                                        <option value="10">October</option>
-                                                                                        <option value="11">November</option>
-                                                                                        <option value="12">December</option>
-                                                                                        <option value="1-12">Annual</option>
-                                                                                        <option value="1-6">First Half</option>
-                                                                                        <option value="6-12">Second Half</option>
-                                                                                        <option value="1-3">First Quarter</option>
-                                                                                        <option value="3-6">Second Quarter</option>
-                                                                                        <option value="6-9">Third Quarter</option>
-                                                                                        <option value="9-12">Fourth Quarter</option>
+                                                                                    <select
+                                                                                        value="<?php echo $period; ?>"
+                                                                                        type="text" name="period"
+                                                                                        class="form-control" disabled>
+                                                                                        <option
+                                                                                            value="1" <?php if ($row['period'] == 1) {
+                                                                                            echo "selected";
+                                                                                        } ?>>January
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="2" <?php if ($row['period'] == 2) {
+                                                                                            echo "selected";
+                                                                                        } ?>>February
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="3" <?php if ($row['period'] == 3) {
+                                                                                            echo "selected";
+                                                                                        } ?>>March
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="4" <?php if ($row['period'] == 4) {
+                                                                                            echo "selected";
+                                                                                        } ?>>April
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="5" <?php if ($row['period'] == 5) {
+                                                                                            echo "selected";
+                                                                                        } ?>>May
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="6" <?php if ($row['period'] == 6) {
+                                                                                            echo "selected";
+                                                                                        } ?>>June
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="7" <?php if ($row['period'] == 7) {
+                                                                                            echo "selected";
+                                                                                        } ?>>July
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="8" <?php if ($row['period'] == 8) {
+                                                                                            echo "selected";
+                                                                                        } ?>>August
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="9" <?php if ($row['period'] == 9) {
+                                                                                            echo "selected";
+                                                                                        } ?>>September
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="10" <?php if ($row['period'] == 10) {
+                                                                                            echo "selected";
+                                                                                        } ?>>October
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="11" <?php if ($row['period'] == 11) {
+                                                                                            echo "selected";
+                                                                                        } ?>>November
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="12" <?php if ($row['period'] == 12) {
+                                                                                            echo "selected";
+                                                                                        } ?>>December
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="1-12" <?php if ($row['period'] == '1-12') {
+                                                                                            echo "selected";
+                                                                                        } ?>>Annual
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="1-6" <?php if ($row['period'] == '1-6') {
+                                                                                            echo "selected";
+                                                                                        } ?>>First Half
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="6-12" <?php if ($row['period'] == '6-12') {
+                                                                                            echo "selected";
+                                                                                        } ?>>Second Half
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="1-3" <?php if ($row['period'] == '1-3') {
+                                                                                            echo "selected";
+                                                                                        } ?>>First Quarter
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="4-6" <?php if ($row['period'] == '4-6') {
+                                                                                            echo "selected";
+                                                                                        } ?>>Second Quarter
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="7-9" <?php if ($row['period'] == '7-9') {
+                                                                                            echo "selected";
+                                                                                        } ?>>Third Quarter
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="10-12" <?php if ($row['period'] == '9-12') {
+                                                                                            echo "selected";
+                                                                                        } ?>>Fourth Quarter
+                                                                                        </option>
                                                                                     </select>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <script type="text/javascript">
-                                                                            $(function () {$('#datetimepicker').datetimepicker({format: 'YYYY'});});
+                                                                            $(function () {
+                                                                                $('#datetimepicker2').datetimepicker({format: 'YYYY'});
+                                                                            });
                                                                         </script>
                                                                         <div class="form-group row">
                                                                             <div class="col-sm-5">
-                                                                                <label for="inputHeading3" class="col-form-label">Value</label>
-                                                                                <input name="value" value="<?php echo $row['value']?>" type="number" class="form-control" placeholder="Enter Target Value">
+                                                                                <label for="inputHeading3"
+                                                                                       class="col-form-label">Value</label>
+                                                                                <input name="value"
+                                                                                       value="<?php echo $row['value'] ?>"
+                                                                                       type="number"
+                                                                                       class="form-control"
+                                                                                       placeholder="Enter Target Value"
+                                                                                       required>
                                                                             </div>
                                                                         </div>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button name="create" type="submit" class="btn btn-success"> UPDATE</button></form>
+                                                                    <button name="update" type="submit"
+                                                                            class="btn btn-success"> UPDATE
+                                                                    </button>
                                                                     </form>
-                                                                    <button type="submit" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                                                    <button type="submit" name="close"
+                                                                            onClick="window.close();"
+                                                                            data-dismiss="modal" class="btn btn-danger">
+                                                                        Close!
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -379,7 +525,11 @@ $targets = $db_handle->fetchAssoc($result);
                                                 </tbody>
                                             </table>
                                         <?php endif; ?>
-                                        <?php if(empty($targets)){echo "No Previous Notification";}else{ require 'layouts/pagination_links.php'; }?>
+                                        <?php if (empty($targets)) {
+                                            echo "No Previous Notification";
+                                        } else {
+                                            require 'layouts/pagination_links.php';
+                                        } ?>
                                     </div>
 
 
@@ -397,6 +547,7 @@ $targets = $db_handle->fetchAssoc($result);
     </div>
     <?php require_once 'layouts/footer.php'; ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
-    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+    <script
+        src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 </body>
 </html>
