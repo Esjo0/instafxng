@@ -322,11 +322,11 @@ $db_handle->closeDB();
                                             <a target="_blank" title="View" class="btn btn-xs btn-info"
                                                href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i
                                                     class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                            <a class="btn btn-primary" title="Send Email"
+                                            <a class="btn btn-xs btn-primary" title="Send Email"
                                                href="campaign_email_single.php?name=<?php $name = $row['full_name'];
                                                echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i
                                                     class="glyphicon glyphicon-envelope"></i></a>
-                                            <a class="btn btn-success" title="Send SMS"
+                                            <a class="btn btn-xs btn-success" title="Send SMS"
                                                href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i
                                                     class="glyphicon glyphicon-phone-alt"></i></a>
                                         </td>
