@@ -7,7 +7,7 @@ if (!$session_admin->is_logged_in()) {
 function black_friday_duplicate($point_date) {
     global $db_handle;
 
-    $query = "SELECT date_earned FROM black_friday_2018 WHERE date_earned = '$point_date'";
+    $query = "SELECT date_earned FROM black_friday_2018_date WHERE date_earned = '$point_date'";
     $result = $db_handle->numRows($query);
 
     return $result ? true : false;
@@ -23,7 +23,7 @@ if (isset($_POST["upload_points"])) {
     } else {
 
         // SELECTING PARTICIPANTS
-        $query = "SELECT user_code FROM black_friday_2018";
+        $query = "SELECT user_code FROM black_friday_2018 WHERE tire IS NOT NULL";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
 
@@ -41,14 +41,14 @@ if (isset($_POST["upload_points"])) {
         }
 
         // INSERT INTO DATE LOG
-        $query = "INSERT INTO black_friday_2018 (date_earned) VALUE ('$point_date')";
+        $query = "INSERT INTO black_friday_2018_date (date_earned) VALUE ('$point_date')";
         $db_handle->runQuery($query);
 
         $message_success = "Commission details has been uploaded into the system";
     }
 }
 
-$query = "SELECT date_earned FROM black_friday_2018 ORDER BY date_earned DESC LIMIT 1";
+$query = "SELECT date_earned FROM black_friday_2018_date ORDER BY date_earned DESC LIMIT 1";
 $result = $db_handle->runQuery($query);
 $last_updated = $db_handle->fetchAssoc($result);
 $last_updated = date_to_text($last_updated[0]['date_earned']);
