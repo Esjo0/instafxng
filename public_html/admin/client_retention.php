@@ -2,6 +2,39 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
+$current_year = date('Y');
+$current_month = date('m');
+$current_month = ltrim($current_month, '0');
+
+$my_dates = $obj_analytics->get_from_to_dates($current_year, $current_month);
+$my_prev_from_date = $my_dates['prev_from_date'];
+$my_prev_to_date = $my_dates['prev_to_date'];
+$my_from_date = $my_dates['from_date'];
+$my_to_date = $my_dates['to_date'];
+
+$the_query = "SELECT u.email
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email";
+$my_clients_to_retain = $db_handle->numRows($the_query);
+
+$the_query = "SELECT u.email
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE (date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date') AND u.user_code IN (
+        SELECT u.user_code
+        FROM trading_commission AS td
+        INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        WHERE date_earned BETWEEN '$my_from_date' AND '$my_to_date' GROUP BY u.email
+    ) GROUP BY u.email";
+//$my_clients_retained = $db_handle->numRows($the_query);
+//$my_clients_not_retained = $my_clients_to_retain - $my_clients_retained;
+//$my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retain) * 100), 2);
+
+
 if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
     if (isset($_POST['retention_tracker'])) {
@@ -138,11 +171,52 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                         </div>
                     </div>
 
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Clients to Retain</strong></header>
+                                <article class="text-center">
+                                    <strong><?php echo number_format($my_clients_to_retain); ?></strong>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Retained</strong></header>
+                                <article class="text-center">
+<!--                                    <strong>--><?php //echo number_format($my_clients_retained); ?><!--</strong>-->
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Not Retained</strong></header>
+                                <article class="text-center">
+<!--                                    <strong>--><?php //echo number_format($my_clients_not_retained); ?><!--</strong>-->
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="super-shadow dashboard-stats">
+                                <header class="text-center"><strong>Retention Rate</strong></header>
+                                <article class="text-center">
+<!--                                    <strong>--><?php //echo number_format($my_retention_rate); ?><!--</strong>-->
+                                </article>
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr style="border: thin dotted #c5c5c5" />
+
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <p>Use the form below to select a year value and the type of retention that you want to
-                                    analyse, the system will display the clients NOT YET RETAINED within the chosen period.</p>
+                                <p>Use the form below to select a year value, period and type. </p>
+                                <p>The analysis above is relative to the current month. <strong>(<?php echo date('M, Y'); ?>)</strong></p>
 
                                 <p><span class="text-danger">Note:</span> Please allow some time for the page to load. The system will be optimized.</p>
 
