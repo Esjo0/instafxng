@@ -362,7 +362,7 @@ $percentage_target = 100 - $percentage_progress;
                                         <td><?php echo datetime_to_text2($date_earned); ?></td>
                                         <td nowrap>
                                             <a target="_blank" title="Comment" class="btn btn-sm btn-success"
-                                               href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'edu_client_training_funded'; ?>&c=<?php echo encrypt('TRAINING CLIENT FUNDED'); ?>&pg=<?php echo $currentpage; ?>"><i
+                                               href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_onboarding'; ?>&c=<?php echo encrypt('CLIENT ON-BOARDING'); ?>&pg=<?php echo $currentpage; ?>"><i
                                                     class="glyphicon glyphicon-comment icon-white"></i> </a>
                                             <a target="_blank" title="View" class="btn btn-sm btn-info"
                                                href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i
