@@ -39,7 +39,7 @@ if (isset($_POST['filter'])) {
     }
 
     //get target value if any
-    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = $period AND status = '1' AND type = '1'";
+    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = $period AND status = '1' AND type = '1' LIMIT 1";
     $result = $db_handle->runQuery($query);
     foreach ($result AS $row) {
         extract($row);
@@ -113,6 +113,9 @@ $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $client_training_funded = $db_handle->fetchAssoc($result);
+
+$percentage_progress = ($numrows / $_SESSION['target']) * 100;
+$percentage_target = 100 - $percentage_progress;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -130,8 +133,8 @@ $client_training_funded = $db_handle->fetchAssoc($result);
         google.charts.load("current", {packages: ["corechart"]});
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-            var total = <?php echo $numrows;?>;
-            var target =  <?php echo $_SESSION['target'];?>;
+            var total = <?php echo $percentage_progress;?>;
+            var target =  <?php echo $percentage_target;?>;
             var data = google.visualization.arrayToDataTable([
                 ['Type', 'Number of clients'],
                 ['Progress', total],
@@ -139,7 +142,7 @@ $client_training_funded = $db_handle->fetchAssoc($result);
             ]);
 
             var options = {
-                title: 'Target Relative to Progress Analysis',
+                title: 'Target Analysis',
                 pieHole: 0.3,
             };
 
@@ -217,7 +220,7 @@ $client_training_funded = $db_handle->fetchAssoc($result);
                         </table>
                         <div class="progress">
                             <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                 aria-valuenow="<?php echo(($numrows / $_SESSION['target']) * 100); ?>"
+                                 aria-valuenow="<?php echo($percentage_progress); ?>"
                                  aria-valuemin="0" aria-valuemax="100"
                                  style="width:<?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?>">
                                 <?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?>

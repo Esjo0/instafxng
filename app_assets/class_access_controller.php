@@ -179,7 +179,8 @@ define("PAGE_CODE", json_encode(array(
     286 => "first_time_transaction_completed.php||",
     287 => "client_retention.php||",
     288 => "admin_targets.php||",
-    289 => "client_onboarding.php||client_not_onboard.php||"
+    289 => "client_onboarding.php||client_not_onboard.php||",
+    290 => "edit_targets.php||"
     )));
 class Access_Controller
 {

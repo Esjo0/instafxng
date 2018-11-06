@@ -217,6 +217,7 @@ $db_handle->closeDB();
             <div class="section-tint super-shadow">
                 <div class="row">
                     <div class="col-sm-12">
+                        <a href="client_onboarding.php"><button class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>GO BACK</button></a>
                         <?php require_once 'layouts/feedback_message.php'; ?>
                         <div class="col-sm-12"></div>
                         <div class="row">
@@ -314,7 +315,6 @@ $db_handle->closeDB();
                                         <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['phone']; ?></td>
                                         <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                        <td><?php echo $row['account_officer_full_name']; ?></td>
                                         <td nowrap="nowrap">
                                             <a title="Comment" class="btn btn-xs btn-success"
                                                href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_unverified'; ?>&c=<?php echo encrypt('UNVERIFIED CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i
