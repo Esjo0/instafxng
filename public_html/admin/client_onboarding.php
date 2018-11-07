@@ -320,8 +320,8 @@ $percentage_target = 100 - $percentage_progress;
                                         <div class="modal-footer">
                                             <input name="filter" type="submit" class="btn btn-sm btn-success"
                                                    value="Proceed">
-                                            <button type="button" name="close" onClick="window.close();"
-                                                    data-dismiss="modal" class="btn btn-sm btn-danger">Close!
+                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                    class="btn btn-sm btn-danger">Close!
                                             </button>
                                         </div>
                                     </div>
