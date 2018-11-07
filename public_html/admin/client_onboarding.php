@@ -18,7 +18,6 @@ if (isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
         FROM trading_commission AS tc
         INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
         INNER JOIN user AS u ON ui.user_code = u.user_code
-        INNER JOIN free_training_campaign AS ftc ON ftc.email = u.email
         WHERE (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
     $_SESSION['query'] = $query;
     $_SESSION['target'] = "NO Target Set.";
