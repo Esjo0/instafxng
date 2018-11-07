@@ -34,7 +34,7 @@ if (isset($_POST['check_acct'])) {
             $check_acct = true;
         }
     } else {
-        $message_error = "This account is not an ILPR account <a target='_blank' href='https://instafxng.com/live_account.php'> Click Here to Open an ILPR account</a>";
+        $message_error = "This account is not an ILPR account. Fill Step 1 and 2 to open an ILPR account<a target='_blank' href='https://instafxng.com/live_account.php'> Click Here NOW</a>";
     }
 }
 
