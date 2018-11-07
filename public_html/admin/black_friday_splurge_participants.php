@@ -41,6 +41,13 @@ if(isset($_POST['filter'])){
           $point = "";
           break;
   }
+    $query = "SELECT SUM(total_points) AS all_points FROM black_friday_2018 WHERE tire = '$filter'";
+    $result = $db_handle->fetchassoc($db_handle->runQuery($query));
+    foreach($result AS $row){
+        extract($row);
+    }
+
+
 }elseif(empty($_SESSION['query']) || isset($_POST['all'])){
 
 $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.user_code, bf.total_points, bf.tire
@@ -49,6 +56,11 @@ $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.pho
     WHERE bf.tire IS NOT NULL
     ORDER BY bf.total_points DESC ";
     $_SESSION['query'] = $query;
+    $query = "SELECT SUM(total_points) AS all_points FROM black_friday_2018 WHERE tire IS NOT NULL";
+    $result = $db_handle->fetchassoc($db_handle->runQuery($query));
+    foreach($result AS $row){
+        extract($row);
+    }
 }
 $query = $_SESSION['query'];
 
@@ -137,7 +149,7 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
             </form>
                         <p>Below is the list of clients that have opted in for the <?php echo $cat?> Category To Make <b><?php echo $point?>
                                 points</b> in the 2018 Black Friday Promotion.</p>
-
+                        <span>All Points = <b><?php if(empty($all_points)){echo "Nill";}else{echo $all_points;} ?></b></span>
                         <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
                             <tr>
