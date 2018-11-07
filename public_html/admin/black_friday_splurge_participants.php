@@ -161,7 +161,7 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
                                     ?>
                                     <tr>
                                         <td><?php echo $row['full_name']; ?></td>
-                                        <td><?php echo $row['total_points']; ?></td>
+                                        <td class="text-center"><?php echo $row['total_points']; ?> <span class="badge"><?php echo black_friday_tire($row['tire']); ?></span></td>
                                         <td><?php if ($target_reached > 1) {
                                                 echo $target_reached . " Times";
                                             } elseif ($target_reached == 1) {
@@ -173,14 +173,14 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
                                         <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['phone']; ?></td>
                                         <td nowrap="nowrap">
-                                            <a target="_blank" title="View" class="btn btn-info"
+                                            <a target="_blank" title="View" class="btn btn-sm btn-info"
                                                href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i
                                                     class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                            <a class="btn btn-primary" title="Send Email"
+                                            <a class="btn btn-sm btn-primary" title="Send Email"
                                                href="campaign_email_single.php?name=<?php $name = $row['full_name'];
                                                echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i
                                                     class="glyphicon glyphicon-envelope"></i></a>
-                                            <a class="btn btn-success" title="Send SMS"
+                                            <a class="btn btn-sm btn-success" title="Send SMS"
                                                href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i
                                                     class="glyphicon glyphicon-phone-alt"></i></a>
                                         </td>
