@@ -113,8 +113,9 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
  * Generate Page Top Analytics
  */
 $current_year = date('Y');
-$current_month = date('m');
-$current_month = ltrim($current_month, '0');
+$main_current_month = date('m');
+$current_month = ltrim($main_current_month, '0');
+$yesterday = date('Y-m-d', strtotime("-1 days"));
 
 $my_dates = $obj_analytics->get_from_to_dates($current_year, $current_month);
 $my_prev_from_date = $my_dates['prev_from_date'];
@@ -130,7 +131,7 @@ $the_query = "SELECT u.email
 $my_clients_to_retain = $db_handle->numRows($the_query);
 
 $my_base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
-    u.email, u.phone, u.created
+    u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
     FROM trading_commission AS td
     INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
     INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -139,7 +140,7 @@ $my_base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum
 $db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients AS " . $my_base_query);
 
 $my_base_query2 = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
-    u.email, u.phone, u.created
+    u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
     FROM trading_commission AS td
     INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
     INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -147,7 +148,7 @@ $my_base_query2 = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS su
 
 $db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients_2 AS " . $my_base_query2);
 
-$the_query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created 
+$the_query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
     FROM my_reference_clients AS rc1
     LEFT JOIN my_reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
     WHERE rc2.user_code IS NOT NULL ";
@@ -156,7 +157,16 @@ $my_clients_retained = $db_handle->numRows($the_query);
 $my_clients_not_retained = $my_clients_to_retain - $my_clients_retained;
 $my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retain) * 100), 2);
 
+$the_query = "SELECT first_trade FROM my_reference_clients_2 WHERE first_trade = '$yesterday'";
+$my_clients_retained_today = $db_handle->numRows($the_query);
+
 ////////////////////////////////////////////////
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '2' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$current_target = $db_handle->fetchAssoc($result)[0]['target'];
+$target_rate = ($my_retention_rate / $current_target) * 100;
+$target_rate = number_format($target_rate, 2);
 
 ?>
 <!DOCTYPE html>
@@ -245,16 +255,7 @@ $my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retai
 
                             <div class="col-sm-3">
                                 <div class="super-shadow dashboard-stats">
-                                    <header class="text-center"><strong>Clients to Retain</strong></header>
-                                    <article class="text-center">
-                                        <strong><?php echo number_format($my_clients_to_retain); ?></strong>
-                                    </article>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-3">
-                                <div class="super-shadow dashboard-stats">
-                                    <header class="text-center"><strong>Retained</strong></header>
+                                    <header class="text-center"><strong>Total Retained</strong></header>
                                     <article class="text-center">
                                         <strong><?php echo number_format($my_clients_retained); ?></strong>
                                     </article>
@@ -266,6 +267,15 @@ $my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retai
                                     <header class="text-center"><strong>Not Retained</strong></header>
                                     <article class="text-center">
                                         <strong><?php echo number_format($my_clients_not_retained); ?></strong>
+                                    </article>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="super-shadow dashboard-stats">
+                                    <header class="text-center"><strong>Retained Yesterday</strong></header>
+                                    <article class="text-center">
+                                        <strong><?php echo number_format($my_clients_retained_today); ?></strong>
                                     </article>
                                 </div>
                             </div>
@@ -284,8 +294,10 @@ $my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retai
                         <div class="row">
                             <div class="col-sm-12">
                                 <br />
+                                <p class="text-center"><strong>Percentage Progress Relative to Target (<?php echo $current_target; ?>)</strong> <br />
+                                    <small>Formula: (Retention Rate / Target) * 100</small></p>
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo number_format($my_retention_rate, 2); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo number_format($my_retention_rate, 2); ?>%"><?php echo number_format($my_retention_rate, 2); ?>%</div>
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $current_target; ?>" style="width: <?php echo $target_rate; ?>%"><?php echo $target_rate; ?>%</div>
                                 </div>
                             </div>
                         </div>
@@ -380,6 +392,7 @@ $my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retai
                                             <th>Volume</th>
                                             <th>Commission</th>
                                             <th>Funding</th>
+                                            <th><?php if($ret_type == '1') { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -400,6 +413,7 @@ $my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retai
                                                 <td><?php echo number_format($row['sum_volume'], 2, ".", ","); ?></td>
                                                 <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
                                                 <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
+                                                <td><?php if($ret_type == '1') { echo $row['last_trade']; } else { echo $row['first_trade']; } ?></td>
                                                 <td nowrap="nowrap">
                                                     <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo encrypt('CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
