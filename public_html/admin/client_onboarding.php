@@ -14,7 +14,7 @@ if (isset($_POST['view'])) {
 //search to display clients on boarding date
 if (isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
-    $query = "SELECT MIN(ud.order_complete_time) AS order_complete_time, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+    $query = "SELECT MIN(tc.date_earned) AS date_earned, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
         FROM user_deposit AS ud
         INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
         INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -32,7 +32,11 @@ if (isset($_POST['filter'])) {
     $year = $_POST['year'];
     $period = $_POST['period'];
     //split to get period range
-    $from = substr($period, 0, 1);
+    if (strlen($period) > 2){
+    $from = substr($period, 0, strpos($period, '-'));
+    }else{
+        $from = $period;
+    }
     $to = substr($period, strrpos($period, '-') + 1);
     if ($to == NULL) {
         $to = $from;
@@ -49,7 +53,7 @@ if (isset($_POST['filter'])) {
     }
     $_SESSION['target'] = $target;
 
-    $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created,
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created,
       MIN(tc.date_earned) AS date_earned FROM trading_commission AS tc
       INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
       INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -58,11 +62,11 @@ if (isset($_POST['filter'])) {
     $_SESSION['query'] = $query;
 }
 
-if (empty($_SESSION['query'])) {
+if (empty($_SESSION['query']) || ($_SESSION['query'] = NULL)) {
     $period = date('m');
     $year = date('Y');
     //get target value
-    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = $period AND status = '1' AND type = '1'";
+    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = $period AND status = '1' AND type = '1' LIMIT 1";
     $result = $db_handle->runQuery($query);
     foreach ($result AS $row) {
         extract($row);
@@ -71,7 +75,7 @@ if (empty($_SESSION['query'])) {
         $target = "NO Target Set.";
     }
     $_SESSION['target'] = $target;
-    $query = "SELECT CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created, MIN(tc.date_earned) AS date_earned
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created, MIN(tc.date_earned) AS date_earned
 FROM trading_commission AS tc
 INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
 INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -112,7 +116,7 @@ if ($prespagehigh > $numrows) {
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$client_training_funded = $db_handle->fetchAssoc($result);
+$client_onboard = $db_handle->fetchAssoc($result);
 
 $percentage_progress = ($numrows / $_SESSION['target']) * 100;
 $percentage_target = 100 - $percentage_progress;
@@ -302,7 +306,7 @@ $percentage_target = 100 - $percentage_progress;
                                                             <option value="1-3">First Quarter</option>
                                                             <option value="3-6">Second Quarter</option>
                                                             <option value="6-9">Third Quarter</option>
-                                                            <option value="9-12">Fourth Quarter</option>
+                                                            <option value="10-12">Fourth Quarter</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -334,7 +338,7 @@ $percentage_target = 100 - $percentage_progress;
                             <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                         <?php } ?>
 
-                        <?php if (isset($client_training_funded) && !empty($client_training_funded)) {
+                        <?php if (isset($client_onboard) && !empty($client_onboard)) {
                             require 'layouts/pagination_links.php';
                         } ?>
 
@@ -351,8 +355,8 @@ $percentage_target = 100 - $percentage_progress;
                             </thead>
                             <tbody>
                             <?php
-                            if (isset($client_training_funded) && !empty($client_training_funded)) {
-                                foreach ($client_training_funded as $row) {
+                            if (isset($client_onboard) && !empty($client_onboard)) {
+                                foreach ($client_onboard as $row) {
                                     extract($row); ?>
                                     <tr>
                                         <td><?php echo $full_name; ?></td>
@@ -383,7 +387,7 @@ $percentage_target = 100 - $percentage_progress;
                             </tbody>
                         </table>
 
-                        <?php if (isset($client_training_funded) && !empty($client_training_funded)) { ?>
+                        <?php if (isset($client_onboard) && !empty($client_onboard)) { ?>
                             <div class="tool-footer text-right">
                                 <p class="pull-left">
                                     Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?>
@@ -393,7 +397,7 @@ $percentage_target = 100 - $percentage_progress;
                     </div>
                 </div>
 
-                <?php if (isset($client_training_funded) && !empty($client_training_funded)) {
+                <?php if (isset($client_onboard) && !empty($client_onboard)) {
                     require 'layouts/pagination_links.php';
                 } ?>
             </div>
