@@ -40,6 +40,11 @@ if(isset($_POST['live_account_ilpr_reg'])) {
         $log_new_ifxaccount = $client_operation->new_user($account_no, $full_name, $email_address, $phone_number, $type = 2, $my_refferer);
 
         if($log_new_ifxaccount) {
+            if(isset($_COOKIE['ifxng_tweeter_lead'])){
+                $user = $client_operation->get_user_by_email($email);
+                $user = encrypt($user);
+                header('Location: https://instafxng.com/tweeter_campaign.php?x='.$user);
+            }
             $page_requested = "live_account_completed_php";
         } else {
             $message_error = "This account could not be enrolled here, please contact support to enrol for ILPR.";
