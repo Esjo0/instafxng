@@ -494,8 +494,8 @@ $i = 0;
                                                     <input onclick="contest_ended()" name="check_acct" type="submit"
                                                            class="btn btn-success" value="SUBMIT">
                                                 <?php } ?>
-                                                <button type="button" name="close" onClick="window.close();"
-                                                        data-dismiss="modal" class="btn btn-danger">Close!
+                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                        class="btn btn-danger">Close!
                                                 </button>
                                             </div>
                                         </div>
