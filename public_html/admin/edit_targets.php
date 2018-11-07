@@ -330,7 +330,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                                                         } ?>>Third Quarter
                                                                                         </option>
                                                                                         <option
-                                                                                            value="10-12" <?php if ($row['period'] == '9-12') {
+                                                                                            value="10-12" <?php if ($row['period'] == '10-12') {
                                                                                             echo "selected";
                                                                                         } ?>>Fourth Quarter
                                                                                         </option>
