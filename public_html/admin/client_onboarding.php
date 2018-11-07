@@ -46,7 +46,7 @@ if (isset($_POST['filter'])) {
       INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
       INNER JOIN user AS u ON ui.user_code = u.user_code
         GROUP BY u.user_code
-        HAVING MONTH(date_earned) BETWEEN $from AND $to ";
+        HAVING MONTH(date_earned) BETWEEN $from AND $to AND YEAR(date_earned) = $year ";
     $_SESSION['query'] = $query;
 }
 
