@@ -2,39 +2,6 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
-$current_year = date('Y');
-$current_month = date('m');
-$current_month = ltrim($current_month, '0');
-
-$my_dates = $obj_analytics->get_from_to_dates($current_year, $current_month);
-$my_prev_from_date = $my_dates['prev_from_date'];
-$my_prev_to_date = $my_dates['prev_to_date'];
-$my_from_date = $my_dates['from_date'];
-$my_to_date = $my_dates['to_date'];
-
-$the_query = "SELECT u.email
-    FROM trading_commission AS td
-    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-    INNER JOIN user AS u ON ui.user_code = u.user_code
-    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email";
-$my_clients_to_retain = $db_handle->numRows($the_query);
-
-$the_query = "SELECT u.email
-    FROM trading_commission AS td
-    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-    INNER JOIN user AS u ON ui.user_code = u.user_code
-    WHERE (date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date') AND u.user_code IN (
-        SELECT u.user_code
-        FROM trading_commission AS td
-        INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        WHERE date_earned BETWEEN '$my_from_date' AND '$my_to_date' GROUP BY u.email
-    ) GROUP BY u.email";
-//$my_clients_retained = $db_handle->numRows($the_query);
-//$my_clients_not_retained = $my_clients_to_retain - $my_clients_retained;
-//$my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retain) * 100), 2);
-
-
 if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
     if (isset($_POST['retention_tracker'])) {
@@ -56,29 +23,31 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
 
+        $base_query2 = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+            u.email, u.phone, u.created
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+
+        $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
+
         if($ret_type == '1') {
             $retention_type = "NOT YET RETAINED";
-            $query = "SELECT sum_volume, sum_commission, user_code, full_name, email, phone, created FROM reference_clients
-                WHERE user_code NOT IN (
-                    SELECT u.user_code
-                    FROM trading_commission AS td
-                    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-                    INNER JOIN user AS u ON ui.user_code = u.user_code
-                    WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY sum_commission DESC
-                ) ";
+            $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created 
+                FROM reference_clients AS rc1
+                LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+                WHERE rc2.user_code IS NULL ";
         } else {
             $retention_type = "RETAINED";
-            $query = "SELECT sum_volume, sum_commission, user_code, full_name, email, phone, created FROM reference_clients
-                WHERE user_code IN (
-                    SELECT u.user_code
-                    FROM trading_commission AS td
-                    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-                    INNER JOIN user AS u ON ui.user_code = u.user_code
-                    WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY sum_commission DESC
-                ) ";
+            $query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created 
+                FROM reference_clients AS rc1
+                LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+                WHERE rc2.user_code IS NOT NULL ";
         }
 
         $_SESSION['client_retention_base_query'] = $base_query;
+        $_SESSION['client_retention_base_query2'] = $base_query2;
         $_SESSION['client_retention_query'] = $query;
         $_SESSION['client_retention_prev_from_date'] = $prev_from_date;
         $_SESSION['client_retention_prev_to_date'] = $prev_to_date;
@@ -86,9 +55,11 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $_SESSION['client_retention_to_date'] = $to_date;
         $_SESSION['client_retention_result_title'] = $result_title;
         $_SESSION['client_retention_type'] = $retention_type;
+        $_SESSION['client_retention_type_selected'] = $ret_type;
     } else {
 
         $base_query = $_SESSION['client_retention_base_query'];
+        $base_query2 = $_SESSION['client_retention_base_query2'];
         $query = $_SESSION['client_retention_query'];
         $prev_from_date = $_SESSION['client_retention_prev_from_date'];
         $prev_to_date = $_SESSION['client_retention_prev_to_date'];
@@ -96,9 +67,10 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $to_date = $_SESSION['client_retention_to_date'];
         $result_title = $_SESSION['client_retention_result_title'];
         $retention_type = $_SESSION['client_retention_type'];
-        $ret_type = $_SESSION['client_retention_type_seleted'];
+        $ret_type = $_SESSION['client_retention_type_selected'];
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
+        $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
     }
 
     $total_to_retain = $db_handle->numRows($base_query);
@@ -110,7 +82,6 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
     } else {
         $total_not_retained = $total_to_retain - $numrows;
     }
-
 
     $total_retained = $total_to_retain - $total_not_retained;
     $retention_rate = number_format((($total_retained / $total_to_retain) * 100), 2);
@@ -137,6 +108,55 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
     $result = $db_handle->runQuery($query);
     $retention_result = $db_handle->fetchAssoc($result);
 }
+
+/**
+ * Generate Page Top Analytics
+ */
+$current_year = date('Y');
+$current_month = date('m');
+$current_month = ltrim($current_month, '0');
+
+$my_dates = $obj_analytics->get_from_to_dates($current_year, $current_month);
+$my_prev_from_date = $my_dates['prev_from_date'];
+$my_prev_to_date = $my_dates['prev_to_date'];
+$my_from_date = $my_dates['from_date'];
+$my_to_date = $my_dates['to_date'];
+
+$the_query = "SELECT u.email
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email";
+$my_clients_to_retain = $db_handle->numRows($the_query);
+
+$my_base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+    u.email, u.phone, u.created
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+
+$db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients AS " . $my_base_query);
+
+$my_base_query2 = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+    u.email, u.phone, u.created
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_from_date' AND '$my_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+
+$db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients_2 AS " . $my_base_query2);
+
+$the_query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created 
+    FROM my_reference_clients AS rc1
+    LEFT JOIN my_reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+    WHERE rc2.user_code IS NOT NULL ";
+
+$my_clients_retained = $db_handle->numRows($the_query);
+$my_clients_not_retained = $my_clients_to_retain - $my_clients_retained;
+$my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retain) * 100), 2);
+
+////////////////////////////////////////////////
 
 ?>
 <!DOCTYPE html>
@@ -171,56 +191,113 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                         </div>
                     </div>
 
-                    <div class="row">
-
-                        <div class="col-sm-3">
-                            <div class="super-shadow dashboard-stats">
-                                <header class="text-center"><strong>Clients to Retain</strong></header>
-                                <article class="text-center">
-                                    <strong><?php echo number_format($my_clients_to_retain); ?></strong>
-                                </article>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3">
-                            <div class="super-shadow dashboard-stats">
-                                <header class="text-center"><strong>Retained</strong></header>
-                                <article class="text-center">
-<!--                                    <strong>--><?php //echo number_format($my_clients_retained); ?><!--</strong>-->
-                                </article>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3">
-                            <div class="super-shadow dashboard-stats">
-                                <header class="text-center"><strong>Not Retained</strong></header>
-                                <article class="text-center">
-<!--                                    <strong>--><?php //echo number_format($my_clients_not_retained); ?><!--</strong>-->
-                                </article>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3">
-                            <div class="super-shadow dashboard-stats">
-                                <header class="text-center"><strong>Retention Rate</strong></header>
-                                <article class="text-center">
-<!--                                    <strong>--><?php //echo number_format($my_retention_rate); ?><!--</strong>-->
-                                </article>
-                            </div>
-                        </div>
-
-                    </div>
-                    <hr style="border: thin dotted #c5c5c5" />
-
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <p>Use the form below to select a year value, period and type. </p>
-                                <p>The analysis above is relative to the current month. <strong>(<?php echo date('M, Y'); ?>)</strong></p>
+                                <p class="text-right"><a data-target="#get-help" data-toggle="modal" class="btn btn-default" title="Help">Help <i class="fa fa-arrow-circle-right"></i></a></p>
 
-                                <p><span class="text-danger">Note:</span> Please allow some time for the page to load. The system will be optimized.</p>
+                                <div id="get-help" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
+                                                <h4 class="modal-title">CLIENT RETENTION TRACKER</h4></div>
+                                            <div class="modal-body">
+                                                <p><strong>Retention</strong></p>
+                                                <p>Retention tracker checks for the number of clients that placed trades in a previous / past period and also
+                                                placed trades in a current period. A period can be monthly, quarterly, half yearly and yearly.</p>
+                                                <p>For example, to get the retention analysis for a month, say JUNE 2018, the system will calculate
+                                                the number of people that placed a trade in a previous month, i.e. MAY 2018 and check those of them
+                                                that have now placed a trade in JUNE.</p>
+                                                <p>To get the retention analysis for a quarter, say APRIL - JUNE 2018, the system will calculate the
+                                                number of people that placed a trade in a previous quarter, i.e. JANUARY - MARCH 2018 and check those
+                                                of them that have now placed a trade in APRIL - JUNE 2018.</p>
+                                                <p><strong>Retention Rate</strong> is the percentage of clients that have been retained.</p>
+                                                <hr />
+                                                <p><strong>Note:</strong> Retention tracker compares any period you choose (taken as <strong>CURRENT PERIOD</strong>)
+                                                    with a <strong>PREVIOUS PERIOD.</strong> For example, if you want to analyze retention for a particular
+                                                month, say JUNE 2018, the CURRENT PERIOD to be analyzed is JUNE 2018, while the PREVIOUS PERIOD to compare with
+                                                is MAY 2018.</p>
+                                                <p>Also, for each search, you can choose to see the <strong>NOT YET RETAINED</strong> clients (i.e. those that placed trades
+                                                    in a previous period but yet to place trade in current period) or the <strong>RETAINED</strong> clients (i.e. those
+                                                    that placed trades in a previous period and have also placed trades in a current period).</p>
+                                                <p>The NOT YET RETAINED table gives the analysis of volume, commission and funding generated by the clients
+                                                in their PREVIOUS PERIOD while the RETAINED table gives the analysis of volume, commission and funding generated
+                                                by the clients in their CURRENT PERIOD.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close!</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <h5><strong>Current Month Analysis - (<?php echo date('F, Y'); ?>)</strong></h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-3">
+                                <div class="super-shadow dashboard-stats">
+                                    <header class="text-center"><strong>Clients to Retain</strong></header>
+                                    <article class="text-center">
+                                        <strong><?php echo number_format($my_clients_to_retain); ?></strong>
+                                    </article>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="super-shadow dashboard-stats">
+                                    <header class="text-center"><strong>Retained</strong></header>
+                                    <article class="text-center">
+                                        <strong><?php echo number_format($my_clients_retained); ?></strong>
+                                    </article>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="super-shadow dashboard-stats">
+                                    <header class="text-center"><strong>Not Retained</strong></header>
+                                    <article class="text-center">
+                                        <strong><?php echo number_format($my_clients_not_retained); ?></strong>
+                                    </article>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="super-shadow dashboard-stats">
+                                    <header class="text-center"><strong>Retention Rate</strong></header>
+                                    <article class="text-center">
+                                        <strong><?php echo number_format($my_retention_rate, 2) . "%"; ?></strong>
+                                    </article>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <br />
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo number_format($my_retention_rate, 2); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo number_format($my_retention_rate, 2); ?>%"><?php echo number_format($my_retention_rate, 2); ?>%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <hr style="border: thin dotted #c5c5c5" />
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>Use the form below to generate retention report by selecting a year value, period and type.</p>
+
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="client_retention.php">
 
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="year_date">Year:</label>
@@ -234,7 +311,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="period">Period:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <select type="text" name="period" id="period" class="form-control">
+                                            <select type="text" name="period" id="period" class="form-control" required>
                                                 <option value=""></option>
                                                 <option value="1">January</option>
                                                 <option value="2">February</option>
@@ -248,9 +325,9 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                                                 <option value="10">October</option>
                                                 <option value="11">November</option>
                                                 <option value="12">December</option>
-<!--                                                <option value="1-12">Annual</option>-->
-<!--                                                <option value="1-6">First Half</option>-->
-<!--                                                <option value="7-12">Second Half</option>-->
+                                                <option value="1-12">Annual</option>
+                                                <option value="1-6">First Half</option>
+                                                <option value="7-12">Second Half</option>
                                                 <option value="1-3">First Quarter</option>
                                                 <option value="4-6">Second Quarter</option>
                                                 <option value="7-9">Third Quarter</option>
@@ -262,7 +339,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="retention_type">Type:</label>
                                         <div class="col-sm-9 col-lg-5">
-                                            <select type="text" name="ret_type" id="retention_type" class="form-control">
+                                            <select type="text" name="ret_type" id="retention_type" class="form-control" required>
                                                 <option value=""></option>
                                                 <option value="1">Not Yet Retained</option>
                                                 <option value="2">Retained</option>
@@ -271,7 +348,10 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-9"><input name="retention_tracker" type="submit" class="btn btn-success" value="Display Result" /></div>
+                                        <div class="col-sm-offset-3 col-sm-9">
+                                            <input name="retention_tracker" type="submit" class="btn btn-success" value="Display Result" />
+                                            <a href="client_retention.php" title="Clear Search Parameter" class="btn btn-danger">Clear Search</a>
+                                        </div>
                                     </div>
                                     <script type="text/javascript">
                                         $(function () {
@@ -304,7 +384,13 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php if(isset($retention_result) && !empty($retention_result)) { foreach ($retention_result as $row) { ?>
+                                        <?php if(isset($retention_result) && !empty($retention_result)) { foreach ($retention_result as $row) {
+                                            if($ret_type == '1') {
+                                                $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $prev_from_date, $prev_to_date);
+                                            } else {
+                                                $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $from_date, $to_date);
+                                            }
+                                        ?>
                                             <tr>
                                                 <td>
                                                     <?php echo $row['full_name']; ?><br />
@@ -313,7 +399,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                                                 </td>
                                                 <td><?php echo number_format($row['sum_volume'], 2, ".", ","); ?></td>
                                                 <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
-                                                <td></td>
+                                                <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
                                                 <td nowrap="nowrap">
                                                     <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo encrypt('CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>

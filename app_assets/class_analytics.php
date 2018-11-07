@@ -201,6 +201,19 @@ class Analytics {
         return 1;
     }
 
+    public function get_client_funding_in_period($user_code, $from_date, $to_date) {
+        global $db_handle;
+
+        $query = "SELECT SUM(ud.real_dollar_equivalent) AS sum_funding
+            FROM user_deposit AS ud
+            INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+            WHERE ui.user_code = '$user_code' AND ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result)[0];
+
+        return $query;
+    }
+
 }
 
 $obj_analytics = new Analytics();
