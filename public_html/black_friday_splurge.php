@@ -545,7 +545,7 @@ $i = 0;
                     </div>
                 </div>
                 <br>
-                <div class="col-sm-12 text-center">
+                <div id="progress" class="col-sm-12 text-center">
                     <span style="background: #d95450; border-radius:5px; padding:10px; color:white"><b>View Your
                             Progress Here</b></span>
                 </div>
