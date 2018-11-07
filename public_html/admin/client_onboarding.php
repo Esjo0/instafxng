@@ -11,17 +11,6 @@ $not_on_board = $db_handle->numRows($query);
 if (isset($_POST['view'])) {
     unset($_SESSION['query']);
 }
-//search to display clients on boarding date
-if (isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
-    $search_text = $_POST['search_text'];
-    $query = "SELECT MIN(tc.date_earned) AS date_earned, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
-        FROM trading_commission AS tc
-        INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        WHERE (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
-    $_SESSION['query'] = $query;
-    $_SESSION['target'] = "NO Target Set.";
-}
 
 //filter parameters
 if (isset($_POST['filter'])) {
@@ -61,7 +50,7 @@ if (isset($_POST['filter'])) {
     $_SESSION['query'] = $query;
 }
 
-if (empty($_SESSION['query']) || ($_SESSION['query'] = NULL)) {
+if (empty($_SESSION['query']) || ($_SESSION['query'] == NULL)) {
     $period = date('m');
     $year = date('Y');
     //get target value
@@ -81,8 +70,20 @@ INNER JOIN user AS u ON ui.user_code = u.user_code
 GROUP BY u.user_code HAVING MONTH(date_earned) = $period AND YEAR(date_earned) = $year ";
     $_SESSION['query'] = $query;
 }
-$query = $_SESSION['query'];
 
+//search to display clients on boarding date
+if (isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
+    $search_text = $_POST['search_text'];
+    $query = "SELECT MIN(tc.date_earned) AS date_earned, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+        FROM trading_commission AS tc
+        INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        WHERE (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
+    $_SESSION['query'] = $query;
+    $_SESSION['target'] = "NO Target Set.";
+}
+
+$query = $_SESSION['query'];
 $numrows = $db_handle->numRows($query);
 // For search, make rows per page equal total rows found, meaning, no pagination
 // for search results
