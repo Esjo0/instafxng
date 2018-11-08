@@ -1,3 +1,18 @@
+CREATE TABLE `admin_targets` (
+ `id` int(10) NOT NULL AUTO_INCREMENT,
+ `name` varchar(100) NOT NULL,
+ `details` varchar(100) NOT NULL,
+ `type` enum('1','2') NOT NULL COMMENT '1-On-boarding, 2-Retention',
+ `period` varchar(10) NOT NULL,
+ `year` year(4) NOT NULL,
+ `value` int(11) NOT NULL,
+ `status` enum('1','2') NOT NULL COMMENT '1-active, 2-InActive',
+ `admin` varchar(11) NOT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated` datetime DEFAULT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1
+
 ALTER TABLE `free_training_campaign` CHANGE `entry_point` `entry_point` ENUM('0','1','2','3','4','5','6','7') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '0. Website 1.  Incoming Calls 2. Whatsapp 3. Support Mails 4.Walk in Clients 5. Facebook Ads 6. Referals 7.Instagram';
 ALTER TABLE `user_deposit_refund` ADD `refund_approve_time` DATETIME NULL AFTER `refund_status`;
 ALTER TABLE `user_deposit_refund` ADD `admin` VARCHAR(10) NOT NULL AFTER `refund_complete_time`;

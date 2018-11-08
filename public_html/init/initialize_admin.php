@@ -48,6 +48,7 @@ require_once(LIB_PATH.DS."class_signal_management.php");
 require_once(LIB_PATH.DS."class_bonus_operations.php");
 require_once(LIB_PATH.DS."class_bonus_conditions.php");
 require_once(LIB_PATH.DS."class_training_schedule.php");
+require_once(LIB_PATH.DS."class_analytics.php");
 
 if(!endsWith(getCurrentURL(), "push_notification_server.php")){add_activity_log();}
 $obj_access_control->validate_access();

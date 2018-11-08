@@ -1,5 +1,77 @@
 <?php
 
+
+/**
+ * Editable schedule mode
+ */
+function target_period($id)
+{
+    switch ($id) {
+        case '1':
+            $period = "January";
+            break;
+        case '2':
+            $period = "February";
+            break;
+        case '3':
+            $period = "March";
+            break;
+        case '4':
+            $period = "April";
+            break;
+        case '5':
+            $period = "May";
+            break;
+        case '6':
+            $period = "June";
+            break;
+        case '7':
+            $period = "July";
+            break;
+        case '8':
+            $period = "August";
+            break;
+        case '9':
+            $period = "September";
+        break;
+        case '10':
+            $period = "October";
+            break;
+        case '11':
+            $period = "November";
+            break;
+        case '12':
+            $period = "December";
+            break;
+        case '1-12':
+            $period = "Annual";
+            break;
+        case '1-6':
+            $period = "First Half";
+            break;
+        case '6-12':
+            $period = "Second Half";
+            break;
+        case '1-3':
+            $period = "First Quarter";
+            break;
+        case '3-6':
+            $period = "Second Quarter";
+            break;
+        case '6-9':
+            $period = "Third Quarter";
+            break;
+        case '9-12':
+            $period = "Fourth Quarter";
+            break;
+        default:
+            $period = "";
+            break;
+    }
+    return $period;
+
+}
+
 /**
  * Black friday tires
  * table black_friday_2018
@@ -975,7 +1047,7 @@ function client_group_campaign_category($status)
             $message = "Last Month Trading Clients";
             break;
         case '67':
-            $message = "Black Friday Splurge 2018";
+            $message = "Splurge participant without tier";
             break;
         default:
             $message = "Unknown";

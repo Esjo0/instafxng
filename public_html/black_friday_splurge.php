@@ -100,7 +100,7 @@ if (isset($_POST['opt_in'])) {
     $terms = $db_handle->sanitizePost($_POST['terms']);
     $user_code = $db_handle->sanitizePost($_POST['user']);
 
-    if ($terms == 1) {
+    if (($terms == 1) && !empty($tire) && $tire != NULL) {
         $query = "UPDATE black_friday_2018 SET tire = '$tire' WHERE user_code = '$user_code'";
         $result = $db_handle->runQuery($query);
 
@@ -114,6 +114,8 @@ if (isset($_POST['opt_in'])) {
         } else {
             $messsage_error = "Kindly try again.";
         }
+    }else{
+        $message_error = "Kindly Ensure you Select A tier and accept the terms and conditions. Please Try Again.";
     }
 }
 $query = "SELECT u.first_name, u.last_name
@@ -598,7 +600,9 @@ $i = 0;
 <?php } ?>
 <script>
     function select_tire(tire) {
+        if(tire >= 1 && tire <= 5){
         document.getElementById("tire").value = tire;
+        }
         if (tire == 1) {
             document.getElementById("platinum").style.display = "block";
             document.getElementById("gold").style.display = "none";
