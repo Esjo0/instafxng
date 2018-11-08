@@ -19,7 +19,7 @@ if (!empty($email)) {
                 $total_points = 0;
             }
             $points_to_target = black_friday_tire_target($tire) - ($total_points % black_friday_tire_target($tire));
-            $target_reached = round($total_points / black_friday_tire_target($tire), 0, PHP_ROUND_HALF_DOWN);
+            $target_reached = floor($total_points / black_friday_tire_target($tire));
         }
     } else {
         $message_error = "You are not enrolled for the black friday Splurge <a data-target=\"#contest-register\" data-toggle=\"modal\"> Click Here to Join</a>";
