@@ -120,6 +120,15 @@ $client_onboard = $db_handle->fetchAssoc($result);
 
 $percentage_progress = ($numrows / $_SESSION['target']) * 100;
 $percentage_target = 100 - $percentage_progress;
+if(isset($_POST['campaign_group'])){
+
+    $recipients = array();
+    foreach($client_onboard AS $row){
+        extract($row);
+        array_push($recipients,"$user_code");
+    }
+    $new_category = $system_object->add_new_campaign_category($title, $description, $campaign_category_status, $campaign_category_no, $client_group);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -254,7 +263,10 @@ $percentage_target = 100 - $percentage_progress;
 
                         <p>All First time Trading Clients
                             in <?php echo target_period($period); ?>  <?php echo $year; ?></p>
-
+                        <form data-toggle="validator" class="form-horizontal" role="form" method="post"
+                              action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                            <button type="submit" name="campaign_group" ><strong>CREATE CAMPAIGN GROUP</strong></button>
+                        </form>
                         <div class="pull-right">
                             <button type="button" data-target="#confirm-add-admin" data-toggle="modal"
                                     class="btn btn-sm btn-default"><i class="glyphicon glyphicon-search"></i> Apply
