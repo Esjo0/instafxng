@@ -19,19 +19,12 @@ if (isset($_POST['filter'])) {
     }
     $year = $_POST['year'];
     $period = $_POST['period'];
-    //split to get period range
-    if (strlen($period) > 2){
-    $from = substr($period, 0, strpos($period, '-'));
-    }else{
-        $from = $period;
-    }
-    $to = substr($period, strrpos($period, '-') + 1);
-    if ($to == NULL) {
-        $to = $from;
-    }
+
+    $dates_selected = $obj_analytics->get_from_to_dates($year, $period);
+    extract($dates_selected);
 
     //get target value if any
-    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = $period AND status = '1' AND type = '1' LIMIT 1";
+    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = '$period' AND status = '1' AND type = '1' LIMIT 1";
     $result = $db_handle->runQuery($query);
     foreach ($result AS $row) {
         extract($row);
@@ -42,32 +35,36 @@ if (isset($_POST['filter'])) {
     $_SESSION['target'] = $target;
 
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created,
-      MIN(tc.date_earned) AS date_earned FROM trading_commission AS tc
-      INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
-      INNER JOIN user AS u ON ui.user_code = u.user_code
+        MIN(tc.date_earned) AS date_earned FROM trading_commission AS tc
+        INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
+        INNER JOIN user AS u ON ui.user_code = u.user_code
         GROUP BY u.user_code
-        HAVING MONTH(date_earned) BETWEEN $from AND $to AND YEAR(date_earned) = $year ";
+        HAVING date_earned BETWEEN '$from_date' AND '$to_date' ";
     $_SESSION['query'] = $query;
 }
 
 if (empty($_SESSION['query']) || ($_SESSION['query'] == NULL)) {
     $period = date('m');
     $year = date('Y');
+
     //get target value
-    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = $period AND status = '1' AND type = '1' LIMIT 1";
+    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = '$period' AND status = '1' AND type = '1' LIMIT 1";
     $result = $db_handle->runQuery($query);
+
     foreach ($result AS $row) {
         extract($row);
     }
+
     if ($target == NULL) {
         $target = "NO Target Set.";
     }
+
     $_SESSION['target'] = $target;
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created, MIN(tc.date_earned) AS date_earned
-FROM trading_commission AS tc
-INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
-INNER JOIN user AS u ON ui.user_code = u.user_code
-GROUP BY u.user_code HAVING MONTH(date_earned) = $period AND YEAR(date_earned) = $year ";
+        FROM trading_commission AS tc
+        INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        GROUP BY u.user_code HAVING MONTH(date_earned) = $period AND YEAR(date_earned) = $year ";
     $_SESSION['query'] = $query;
 }
 
@@ -85,6 +82,7 @@ if (isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
 
 $query = $_SESSION['query'];
 $numrows = $db_handle->numRows($query);
+
 // For search, make rows per page equal total rows found, meaning, no pagination
 // for search results
 if (isset($_POST['search_text'])) {
@@ -120,6 +118,7 @@ $client_onboard = $db_handle->fetchAssoc($result);
 
 $percentage_progress = ($numrows / $_SESSION['target']) * 100;
 $percentage_target = 100 - $percentage_progress;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -302,10 +301,10 @@ $percentage_target = 100 - $percentage_progress;
                                                             <option value="12">December</option>
                                                             <option value="1-12">Annual</option>
                                                             <option value="1-6">First Half</option>
-                                                            <option value="6-12">Second Half</option>
+                                                            <option value="7-12">Second Half</option>
                                                             <option value="1-3">First Quarter</option>
-                                                            <option value="3-6">Second Quarter</option>
-                                                            <option value="6-9">Third Quarter</option>
+                                                            <option value="4-6">Second Quarter</option>
+                                                            <option value="7-9">Third Quarter</option>
                                                             <option value="10-12">Fourth Quarter</option>
                                                         </select>
                                                     </div>
