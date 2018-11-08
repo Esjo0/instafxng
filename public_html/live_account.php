@@ -41,6 +41,10 @@ if(isset($_POST['live_account_ilpr_reg'])) {
 
         if($log_new_ifxaccount) {
             if(isset($_COOKIE['ifxng_tweeter_lead'])){
+                $name = split_name($full_name);
+                extract($name);
+                $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source, interest, created) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', $source, $interest, time())";
+                $result = $db_handle->runQuery($query);
                 $user = $client_operation->get_user_by_email($email);
                 $user = encrypt($user);
                 header('Location: https://instafxng.com/tweeter_campaign.php?x='.$user);
