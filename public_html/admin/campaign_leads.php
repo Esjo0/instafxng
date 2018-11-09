@@ -94,6 +94,14 @@ WHERE CL.email = U.email
 ORDER BY CL.created DESC";
         $msg = "all Signal Campaign leads";
         break;
+    case '7':
+        $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created
+FROM campaign_leads AS CL, user AS U
+WHERE CL.email = U.email
+ AND CL.source = 4
+ORDER BY CL.created DESC";
+        $msg = "all Tweeter Campaign Leads";
+        break;
     default:
         $query = "SELECT CL.f_name, CL.l_name, CL.phone, CL.email, CL.source, CL.interest, U.user_code, CL.created 
 FROM campaign_leads AS CL, user AS U
@@ -211,6 +219,7 @@ function bulk_sms_url($query){
                                             <button class="btn btn-sm <?php if($_SESSION['cat'] == '3'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="3">All ILPR Leads</button>
                                             <button class="btn btn-sm <?php if($_SESSION['cat'] == '5'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="5">All signal Leads</button>
                                             <button class="btn btn-sm <?php if($_SESSION['cat'] == '6'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="6">All Signal Campaign Leads</button>
+                                            <button class="btn btn-sm <?php if($_SESSION['cat'] == '7'){echo 'btn-info';}else{echo 'btn-default';} ?>" name="cat" type="submit" value="7">All Tweeter Leads</button>
                                         </div>
                                     </center>
                                     <br/>

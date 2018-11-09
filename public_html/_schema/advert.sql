@@ -1,3 +1,5 @@
+ALTER TABLE `campaign_leads` CHANGE `source` `source` ENUM('1','2','3','4') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '1-Landing Page 2-Facebook 3-Signals 4-Tweeter';
+
 CREATE TABLE `admin_targets` (
  `id` int(10) NOT NULL AUTO_INCREMENT,
  `name` varchar(100) NOT NULL,
