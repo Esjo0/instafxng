@@ -281,7 +281,7 @@ if(isset($_POST['campaign_category'])){
                 <div class="row">
                     <div class="col-sm-12">
                         <?php require_once 'layouts/feedback_message.php'; ?>
-                        
+
                         <div class="pull-right">
                             <button type="button" data-target="#confirm-add-admin" data-toggle="modal"
                                     class="btn btn-sm btn-default"><i class="glyphicon glyphicon-search"></i> Apply
