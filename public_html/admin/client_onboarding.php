@@ -8,7 +8,7 @@ if (!$session_admin->is_logged_in()) {
 $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0) GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
 $not_on_board = $db_handle->numRows($query);
 
-if (isset($_POST['view'])) {
+if(isset($_POST['view'])){
     unset($_SESSION['query']);
 }
 
@@ -41,6 +41,7 @@ if (isset($_POST['filter'])) {
         GROUP BY u.user_code
         HAVING date_earned BETWEEN '$from_date' AND '$to_date' ";
     $_SESSION['query'] = $query;
+    $total_onboard = $db_handle->numRows($query);
 }
 
 if (empty($_SESSION['query']) || ($_SESSION['query'] == NULL)) {
@@ -66,6 +67,7 @@ if (empty($_SESSION['query']) || ($_SESSION['query'] == NULL)) {
         INNER JOIN user AS u ON ui.user_code = u.user_code
         GROUP BY u.user_code HAVING MONTH(date_earned) = $period AND YEAR(date_earned) = $year ";
     $_SESSION['query'] = $query;
+    $total_onboard = $db_handle->numRows($query);
 }
 
 //search to display clients on boarding date
@@ -78,6 +80,14 @@ if (isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
         WHERE (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
     $_SESSION['query'] = $query;
     $_SESSION['target'] = "NO Target Set.";
+}
+
+if(empty($_SESSION['query']) || ($_SESSION['query'] == NULL)){
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+    $_SESSION['query'] = $query;
 }
 
 $query = $_SESSION['query'];
@@ -114,9 +124,12 @@ if ($prespagehigh > $numrows) {
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-$client_onboard = $db_handle->fetchAssoc($result);
+if(!empty($_SESSION['query']) || ($_SESSION['query'] != NULL)) {
+    $client_onboard = $db_handle->fetchAssoc($result);
+}
+$initial = $db_handle->fetchAssoc($result);
 
-$percentage_progress = ($numrows / $_SESSION['target']) * 100;
+$percentage_progress = ($total_onboard / $_SESSION['target']) * 100;
 $percentage_target = 100 - $percentage_progress;
 
 if(isset($_POST['campaign_category'])){
@@ -217,7 +230,7 @@ if(isset($_POST['campaign_category'])){
                         <table class="table table-border table-responsive table-hover">
                             <tr>
                                 <td>Total No. of clients On board</td>
-                                <td><?php echo $numrows ?></td>
+                                <td><?php echo $total_onboard ?></td>
                             </tr>
                             <tr>
                                 <td>Expected Target</td>
@@ -225,7 +238,7 @@ if(isset($_POST['campaign_category'])){
                             </tr>
                             <tr>
                                 <td>Number of Client to meet 100% target</td>
-                                <td><?php echo $_SESSION['target'] - $numrows ?></td>
+                                <td><?php echo $_SESSION['target'] - $total_onboard ?></td>
                             </tr>
 
                             <tr title="Click Here to view details and list">
@@ -235,7 +248,7 @@ if(isset($_POST['campaign_category'])){
                             </tr>
                             <tr>
                                 <td>Percentage progress compared to target</td>
-                                <td><?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?></td>
+                                <td><?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></td>
                             </tr>
 
                         </table>
@@ -244,21 +257,21 @@ if(isset($_POST['campaign_category'])){
                                  aria-valuenow="<?php echo($percentage_progress); ?>"
                                  aria-valuemin="0" aria-valuemax="100"
                                  style="width:<?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?>">
-                                <?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?>
+                                <?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?>
                             </div>
                         </div>
 
                     </div>
                     <div class="col-sm-6 pull-right">
                         <div id="donutchart"></div>
-                        <div class="input-group input-group-sm <?php if (number_format($numrows) == 0) {
+                        <div class="input-group input-group-sm <?php if (number_format($total_onboard) == 0) {
                             echo 'has-danger';
-                        } elseif (number_format($numrows) > 0) {
+                        } elseif (number_format($total_onboard) > 0) {
                             echo 'has-success';
                         } ?> ">
                             <span
                                 class="input-group-addon">Progress for <?php echo target_period($period); ?>  <?php echo $year; ?></span>
-                            <input value="<?php echo number_format($numrows); ?> of <?php echo $_SESSION['target'] ?>"
+                            <input value="<?php echo number_format($total_onboard); ?> of <?php echo $_SESSION['target'] ?>"
                                    class="form-control" disabled/>
                         </div>
                     </div>
@@ -347,7 +360,7 @@ if(isset($_POST['campaign_category'])){
                         </div>
                         <form class="pull-right" method="post" action="">
                             <button name="view" type="submit" class="btn btn-info btn-sm"><i
-                                    class="glyphicon glyphicon-eye-circle"></i>View Current Month
+                                    class="glyphicon glyphicon-eye-circle"></i>REFRESH
                             </button>
                         </form>
                             <button class="btn btn-sm btn-default pull-right" type="button" data-target="#confirm-campaign" data-toggle="modal">
@@ -400,7 +413,7 @@ if(isset($_POST['campaign_category'])){
                             <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                         <?php } ?>
 
-                        <?php if (isset($client_onboard) && !empty($client_onboard)) {
+                        <?php if ( (isset($client_onboard) && !empty($client_onboard)) || ((isset($initial) && !empty($initial))) ) {
                             require 'layouts/pagination_links.php';
                         } ?>
 
@@ -410,22 +423,19 @@ if(isset($_POST['campaign_category'])){
                                 <th>Full Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Opening Date</th>
-                                <th>1st. Trading Date</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
-                            if (isset($client_onboard) && !empty($client_onboard)) {
-                                foreach ($client_onboard as $row) {
+                            if ((isset($client_onboard) && !empty($client_onboard))  || ((isset($initial) && !empty($initial))) ) {
+                                if(!empty($client_onboard)){$list = $client_onboard;}elseif(!empty($initial)){$list = $initial;}
+                                foreach ($list as $row) {
                                     extract($row); ?>
                                     <tr>
                                         <td><?php echo $full_name; ?></td>
                                         <td><?php echo $email; ?></td>
                                         <td><?php echo $phone; ?></td>
-                                        <td><?php echo datetime_to_text2($created); ?></td>
-                                        <td><?php echo datetime_to_text2($date_earned); ?></td>
                                         <td nowrap>
                                             <a target="_blank" title="Comment" class="btn btn-sm btn-success"
                                                href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_onboarding'; ?>&c=<?php echo encrypt('CLIENT ON-BOARDING'); ?>&pg=<?php echo $currentpage; ?>"><i
