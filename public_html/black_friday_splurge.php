@@ -6,6 +6,11 @@ $user_code_encrypted = $get_params['x'];
 $user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
+if(($get_params['x'] == "tweeter_lead") && (!isset($_COOKIE['ifxng_tweeter_lead'])) ){
+    $cookie_name = "ifxng_tweeter_lead";
+    $cookie_value = time();
+    setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+}
 // checks User account type, log in the black friday table and user get details.
 if (isset($_POST['check_acct'])) {
     $acct_no = $db_handle->sanitizePost($_POST['acct_no']);
