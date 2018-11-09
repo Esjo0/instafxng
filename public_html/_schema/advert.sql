@@ -1,3 +1,18 @@
+CREATE TABLE IF NOT EXISTS `retention_analytics` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `date_today` DATE NOT NULL,
+  `m_client_to_retain` INT(11) NULL DEFAULT 0,
+  `m_client_retained` INT(11) NULL DEFAULT 0,
+  `m_retained_yesterday` INT(11) NULL DEFAULT 0,
+  `q_client_to_retain` INT(11) NULL DEFAULT 0,
+  `q_client_retained` INT(11) NULL DEFAULT 0,
+  `q_retained_yesterday` INT(11) NULL DEFAULT 0,
+  `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `date_today_UNIQUE` (`date_today` ASC))
+ENGINE = InnoDB
+
 ALTER TABLE ``campaign_category`` DROP INDEX ``client_group_UNIQUE``;
 
 ALTER TABLE `campaign_leads` CHANGE `source` `source` ENUM('1','2','3','4') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '1-Landing Page 2-Facebook 3-Signals 4-Tweeter';
