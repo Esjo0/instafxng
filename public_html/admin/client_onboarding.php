@@ -124,7 +124,7 @@ if ($prespagehigh > $numrows) {
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-if(!empty($_SESSION['query']) || ($_SESSION['query'] != NULL)) {
+if(isset($_POST['view'])) {
     $client_onboard = $db_handle->fetchAssoc($result);
 }
 $initial = $db_handle->fetchAssoc($result);
@@ -281,9 +281,6 @@ if(isset($_POST['campaign_category'])){
                 <div class="row">
                     <div class="col-sm-12">
                         <?php require_once 'layouts/feedback_message.php'; ?>
-
-                        <p>All First time Trading Clients
-                            in <?php echo target_period($period); ?>  <?php echo $year; ?></p>
 
                         <div class="pull-right">
                             <button type="button" data-target="#confirm-add-admin" data-toggle="modal"
