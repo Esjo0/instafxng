@@ -1,3 +1,6 @@
+
+ALTER TABLE ``campaign_category`` DROP INDEX ``client_group_UNIQUE``;
+
 CREATE TABLE `admin_targets` (
  `id` int(10) NOT NULL AUTO_INCREMENT,
  `name` varchar(100) NOT NULL,
