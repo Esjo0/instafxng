@@ -2,9 +2,44 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
+if(isset($_GET['r']) && $_GET['r'] == 1) {
+    unset($_SESSION['client_retention_base_query']);
+    unset($_SESSION['client_retention_base_query2']);
+    unset($_SESSION['client_retention_query']);
+    unset($_SESSION['client_retention_prev_from_date']);
+    unset($_SESSION['client_retention_prev_to_date']);
+    unset($_SESSION['client_retention_from_date']);
+    unset($_SESSION['client_retention_to_date']);
+    unset($_SESSION['client_retention_result_title']);
+    unset($_SESSION['client_retention_type']);
+    unset($_SESSION['client_retention_type_selected']);
+
+    redirect_to("client_retention.php");
+}
+
+$current_year = date('Y');
+$main_current_month = date('m');
+$current_month = ltrim($main_current_month, '0');
+$current_quarter = $obj_analytics->get_quarter_code($main_current_month);
+
 // Get the page Analytics
 $retention_analytics = $obj_analytics->get_retention_analytics();
 extract($retention_analytics);
+
+$m_retention_rate = ($m_client_retained / $m_client_to_retain) * 100;
+$q_retention_rate = ($q_client_retained / $q_client_to_retain) * 100;
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '2' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$m_current_target = $db_handle->fetchAssoc($result)[0]['target'];
+$m_target_rate = ($m_retention_rate / $m_current_target) * 100;
+$m_target_rate = number_format($m_target_rate, 2);
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_quarter' AND status = '1' AND type = '2' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$q_current_target = $db_handle->fetchAssoc($result)[0]['target'];
+$q_target_rate = ($q_retention_rate / $q_current_target) * 100;
+$q_target_rate = number_format($q_target_rate, 2);
 
 if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
@@ -60,6 +95,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $_SESSION['client_retention_result_title'] = $result_title;
         $_SESSION['client_retention_type'] = $retention_type;
         $_SESSION['client_retention_type_selected'] = $ret_type;
+
     } else {
 
         $base_query = $_SESSION['client_retention_base_query'];
@@ -75,65 +111,49 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
+
     }
 } else {
 
-//    $dates_selected = $obj_analytics->get_from_to_dates($year_date, $period);
-//    extract($dates_selected);
-//
-//    $from_date = date('Y-m-d', strtotime('first day of 2 months ago'));
-//    $to_date = date('Y-m-d', strtotime('last day of last month'));
-//
-//    $current_year = date('Y');
-//    $main_current_month = date('m');
-//    $current_month = ltrim($main_current_month, '0');
-//    $yesterday = date('Y-m-d', strtotime("-1 days"));
-//
-//    /**
-//     * Generate Page Top Analytics
-//     */
-//    $my_dates = $obj_analytics->get_from_to_dates($current_year, $current_month);
-//    $my_prev_from_date = $my_dates['prev_from_date'];
-//    $my_prev_to_date = $my_dates['prev_to_date'];
-//    $my_from_date = $my_dates['from_date'];
-//    $my_to_date = $my_dates['to_date'];
-//
-//    $clients_to_retain_query = "SELECT u.email
-//    FROM trading_commission AS td
-//    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-//    INNER JOIN user AS u ON ui.user_code = u.user_code
-//    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email";
-//    $my_clients_to_retain = $db_handle->numRows($clients_to_retain_query);
-//
-//    $base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
-//    u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
-//    FROM trading_commission AS td
-//    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-//    INNER JOIN user AS u ON ui.user_code = u.user_code
-//    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
-//
-//    $db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients AS " . $base_query);
-//
-//    $base_query2 = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
-//    u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
-//    FROM trading_commission AS td
-//    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-//    INNER JOIN user AS u ON ui.user_code = u.user_code
-//    WHERE date_earned BETWEEN '$my_from_date' AND '$my_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
-//
-//    $db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients_2 AS " . $base_query2);
-//
-//    $query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
-//    FROM my_reference_clients AS rc1
-//    LEFT JOIN my_reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-//    WHERE rc2.user_code IS NOT NULL ";
-//
-//    $my_clients_retained = $db_handle->numRows($query);
-//    $my_clients_not_retained = $my_clients_to_retain - $my_clients_retained;
-//    $my_retention_rate = number_format((($my_clients_retained / $my_clients_to_retain) * 100), 2);
-//
-//    $the_query = "SELECT first_trade FROM my_reference_clients_2 WHERE first_trade = '$yesterday'";
-//    $my_clients_retained_yesterday = $db_handle->numRows($the_query);
+    $dates_selected = $obj_analytics->get_from_to_dates($current_year, $current_month);
+    extract($dates_selected);
+
+    $base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+            u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+
+    $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
+
+    $base_query2 = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+            u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+
+    $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
+
+    $ret_type = '1';
+    $retention_type = "NOT YET RETAINED";
+    $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
+            FROM reference_clients AS rc1
+            LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+            WHERE rc2.user_code IS NULL ";
+
+
+    $_SESSION['client_retention_base_query'] = $base_query;
+    $_SESSION['client_retention_base_query2'] = $base_query2;
+    $_SESSION['client_retention_query'] = $query;
+    $_SESSION['client_retention_prev_from_date'] = $prev_from_date;
+    $_SESSION['client_retention_prev_to_date'] = $prev_to_date;
+    $_SESSION['client_retention_from_date'] = $from_date;
+    $_SESSION['client_retention_to_date'] = $to_date;
+    $_SESSION['client_retention_result_title'] = $result_title;
+    $_SESSION['client_retention_type'] = $retention_type;
+    $_SESSION['client_retention_type_selected'] = $ret_type;
 }
 
 $total_to_retain = $db_handle->numRows($base_query);
@@ -171,12 +191,6 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $retention_result = $db_handle->fetchAssoc($result);
 
-$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '2' LIMIT 1";
-$result = $db_handle->runQuery($query);
-$current_target = $db_handle->fetchAssoc($result)[0]['target'];
-$target_rate = ($my_retention_rate / $current_target) * 100;
-$target_rate = number_format($target_rate, 2);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -213,7 +227,7 @@ $target_rate = number_format($target_rate, 2);
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="pull-left"><a href="client_retention.php" title="Clear Search Parameter" class="btn btn-default">Refresh <i class="fa fa-recycle"></i></a></div>
+                                <div class="pull-left"><a href="client_retention.php?r=1" title="Clear Search Parameter" class="btn btn-default">Refresh <i class="fa fa-recycle"></i></a></div>
                                 <div class="pull-right"><a data-target="#get-help" data-toggle="modal" class="btn btn-default" title="Help">Help <i class="fa fa-arrow-circle-right"></i></a></div>
 
                                 <div id="get-help" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -264,11 +278,15 @@ $target_rate = number_format($target_rate, 2);
                                     <tr><td>Total Retained</td><td><?php echo number_format($m_client_retained); ?></td></tr>
                                     <tr><td>Not Retained</td><td><?php echo number_format($m_client_to_retain - $m_client_retained); ?></td></tr>
                                     <tr><td>Retained Yesterday</td><td><?php echo number_format($m_retained_yesterday); ?></td></tr>
-                                    <tr><td>Retention Rate</td><td><?php echo number_format($my_retention_rate, 2) . "%"; ?></td></tr>
+                                    <tr><td>Retention Rate</td><td><?php echo number_format($m_retention_rate, 2) . "%"; ?></td></tr>
                                 </table>
 
+                                <hr />
+
+                                <p class="text-center"><strong>Performance progress relative to target (<?php echo $m_current_target; ?>%)</strong></p>
+
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $current_target; ?>" style="width: <?php echo $target_rate; ?>%"><?php echo $target_rate; ?>%</div>
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $m_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $m_current_target; ?>" style="width: <?php echo $m_target_rate; ?>%"><?php echo $m_target_rate; ?>%</div>
                                 </div>
                             </div>
 
@@ -283,8 +301,12 @@ $target_rate = number_format($target_rate, 2);
                                     <tr><td>Retention Rate</td><td><?php echo number_format($q_retention_rate, 2) . "%"; ?></td></tr>
                                 </table>
 
+                                <hr />
+
+                                <p class="text-center"><strong>Performance progress relative to target (<?php echo $q_current_target; ?>%)</strong></p>
+
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $current_target; ?>" style="width: <?php echo $target_rate; ?>%"><?php echo $target_rate; ?>%</div>
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $q_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $q_current_target; ?>" style="width: <?php echo $q_target_rate; ?>%"><?php echo $q_target_rate; ?>%</div>
                                 </div>
                             </div>
                         </div>
@@ -395,7 +417,6 @@ $target_rate = number_format($target_rate, 2);
                                         <thead>
                                         <tr>
                                             <th>Client Detail</th>
-                                            <th>Volume</th>
                                             <th>Commission</th>
                                             <th>Funding</th>
                                             <th><?php if($ret_type == '1') { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
@@ -416,10 +437,9 @@ $target_rate = number_format($target_rate, 2);
                                                     <?php echo $row['email']; ?><br />
                                                     <?php echo $row['phone']; ?>
                                                 </td>
-                                                <td><?php echo number_format($row['sum_volume'], 2, ".", ","); ?></td>
                                                 <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
                                                 <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
-                                                <td><?php if($ret_type == '1') { echo $row['last_trade']; } else { echo $row['first_trade']; } ?></td>
+                                                <td><?php if($ret_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
                                                 <td nowrap="nowrap">
                                                     <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo encrypt('CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
@@ -427,7 +447,7 @@ $target_rate = number_format($target_rate, 2);
                                                     <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
                                                 </td>
                                             </tr>
-                                        <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>
                                     </table>
                                 </div>

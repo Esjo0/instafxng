@@ -209,9 +209,24 @@ class Analytics {
             INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
             WHERE ui.user_code = '$user_code' AND ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'";
         $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result)[0];
+        $fetched_data = $db_handle->fetchAssoc($result)[0]['sum_funding'];
 
         return $fetched_data;
+    }
+
+    public function get_quarter_code($month) {
+
+        if ($month >= 1 && $month <= 3) {
+            $current_quarter = '1-3';
+        } else if ($month >= 4 && $month <= 6) {
+            $current_quarter = '4-6';
+        } else if ($month >= 7 && $month <= 9) {
+            $current_quarter = '7-9';
+        } else if ($month >= 10 && $month <= 12) {
+            $current_quarter = '10-12';
+        }
+
+        return $current_quarter;
     }
 
     public function get_retention_analytics() {
@@ -221,16 +236,7 @@ class Analytics {
         $main_current_month = date('m');
         $today = date('Y-m-d');
 
-        /// Determine the quarter that the current month belongs to
-        if ($main_current_month >= 1 && $main_current_month <= 3) {
-            $current_quarter = '1-3';
-        } else if ($main_current_month >= 4 && $main_current_month <= 6) {
-            $current_quarter = '4-6';
-        } else if ($main_current_month >= 7 && $main_current_month <= 9) {
-            $current_quarter = '7-9';
-        } else if ($main_current_month >= 10 && $main_current_month <= 12) {
-            $current_quarter = '10-12';
-        }
+        $current_quarter = $this->get_quarter_code($main_current_month);
 
         $month_title = $this->get_from_to_dates($current_year, $main_current_month)['result_title'];
         $quarter_title = $this->get_from_to_dates($current_year, $current_quarter)['result_title'];
