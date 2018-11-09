@@ -1,3 +1,19 @@
+CREATE TABLE IF NOT EXISTS `retention_analytics` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `date_today` DATE NOT NULL,
+  `m_client_to_retain` INT(11) NULL DEFAULT 0,
+  `m_client_retained` INT(11) NULL DEFAULT 0,
+  `m_retained_yesterday` INT(11) NULL DEFAULT 0,
+  `q_client_to_retain` INT(11) NULL DEFAULT 0,
+  `q_client_retained` INT(11) NULL DEFAULT 0,
+  `q_retained_yesterday` INT(11) NULL DEFAULT 0,
+  `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `date_today_UNIQUE` (`date_today` ASC))
+ENGINE = InnoDB
+
+
 CREATE TABLE `admin_targets` (
  `id` int(10) NOT NULL AUTO_INCREMENT,
  `name` varchar(100) NOT NULL,

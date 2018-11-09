@@ -211,7 +211,37 @@ class Analytics {
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result)[0];
 
-        return $query;
+        return $fetched_data;
+    }
+
+    public function get_retention_analytics() {
+        global $db_handle;
+
+        $current_year = date('Y');
+        $main_current_month = date('m');
+        $today = date('Y-m-d');
+
+        /// Determine the quarter that the current month belongs to
+        if ($main_current_month >= 1 && $main_current_month <= 3) {
+            $current_quarter = '1-3';
+        } else if ($main_current_month >= 4 && $main_current_month <= 6) {
+            $current_quarter = '4-6';
+        } else if ($main_current_month >= 7 && $main_current_month <= 9) {
+            $current_quarter = '7-9';
+        } else if ($main_current_month >= 10 && $main_current_month <= 12) {
+            $current_quarter = '10-12';
+        }
+
+        $month_title = $this->get_from_to_dates($current_year, $main_current_month)['result_title'];
+        $quarter_title = $this->get_from_to_dates($current_year, $current_quarter)['result_title'];
+
+        $query = "SELECT * FROM retention_analytics WHERE date_today = '$today' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $retention_analytics = $db_handle->fetchAssoc($result)[0];
+
+        $titles = array("month_title" => $month_title, "quarter_title" => $quarter_title);
+
+        return array_merge($retention_analytics, $titles);
     }
 
 }

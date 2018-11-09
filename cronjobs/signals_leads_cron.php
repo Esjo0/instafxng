@@ -123,7 +123,7 @@ function auto_mail_query($query_type) {
 
     switch($query_type) {
         case 1:
-            $query = "SELECT f_name AS first_name, email FROM `campaign_leads` WHERE (DATEDIFF('$today', STR_TO_DATE(created, '%Y-%m-%d')) > '15') AND source = '3' AND interest = '2' GROUP BY email ORDER BY created DESC ";
+            $query = "SELECT f_name AS first_name, email FROM `campaign_leads` WHERE (DATEDIFF('$today', STR_TO_DATE(created, '%Y-%m-%d')) = '15') AND source = '3' AND interest = '2' GROUP BY email ORDER BY created DESC ";
             break;
         case 2:
             $query = "SELECT f_name AS first_name, email FROM `campaign_leads` WHERE (DATEDIFF('$today', STR_TO_DATE(created, '%Y-%m-%d')) = '28') AND source = '3' AND interest = '2' GROUP BY email ORDER BY created DESC ";
