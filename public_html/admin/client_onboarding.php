@@ -119,6 +119,24 @@ $client_onboard = $db_handle->fetchAssoc($result);
 $percentage_progress = ($numrows / $_SESSION['target']) * 100;
 $percentage_target = 100 - $percentage_progress;
 
+if(isset($_POST['campaign_category'])){
+    $recipients = array();
+    foreach($client_onboard AS $row){
+        extract($row);
+        array_push($recipients,"$user_code");
+    }
+    $title = $db_handle->sanitizePost($_POST['name']);
+    $description = $db_handle->sanitizePost($_POST['details']);
+//    $campaign_category_no = "";
+    $new_category = $system_object->add_new_campaign_category($title, $description, '1', $campaign_category_no, '1');
+    if($new_category == true){
+        $message_success = "You Have successfully created a new Campaign group";
+    }else{
+        $message_error = "Not Successful, Kindly Try again";
+    }
+    // Left with how best to store $recipents and retrieve it .
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -332,6 +350,51 @@ $percentage_target = 100 - $percentage_progress;
                                     class="glyphicon glyphicon-eye-circle"></i>View Current Month
                             </button>
                         </form>
+                            <button class="btn btn-sm btn-default pull-right" type="button" data-target="#confirm-campaign" data-toggle="modal">
+                                Create Campaign Category
+                            </button>
+                        <div id="confirm-campaign" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                            <form data-toggle="validator" class="form-horizontal" role="form" method="post"
+                                  action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                <div class="modal-dialog modal-md">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                    class="close">&times;</button>
+                                            <h4 class="modal-title">Create Campaign Category</h4></div>
+                                        <div class="modal-body">
+                                            <p>Enter Title and Description</p>
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <label for="inputHeading3" class="col-form-label">
+                                                        Title/Name:</label>
+                                                    <input name="name" type="text" class="form-control"
+                                                           id="forum_title"
+                                                           placeholder="Enter Target Name or title" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <label for="inputHeading3" class="col-form-label">Description</label>
+                                                            <textarea rows="3" name="details" type="text"
+                                                                      class="form-control" id="forum_title"
+                                                                      placeholder="Enter Detailed Description of this category" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input name="campaign_category" type="submit" class="btn btn-sm btn-success"
+                                                   value="Proceed">
+                                            <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                    class="btn btn-sm btn-danger">Close!
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
 
                         <?php if (isset($numrows)) { ?>
                             <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
