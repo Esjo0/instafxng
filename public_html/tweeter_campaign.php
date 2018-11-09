@@ -47,11 +47,11 @@ $user = $get_params['x'];
                 <div class="col-12 my-auto">
                     <div class="masthead-content text-white py-5 py-md-0">
                         <h1 class="mb-2 text-center">WELCOME!</h1>
-                        <p class="mb-2 text-center"><b> Thank you for Opening an account with us.
+                        <p class="mb-2 text-center"><b>You are all set for the promo.
                                 <br>
                                 <img src="images/Spinner.gif">
                                 <br>
-                                You will be redirected to Our Black Friday splurge page shortly. or you can click <a href="https://instafxng.com/black_friday_splurge.php?x=<?php echo $user; ?>">here</a> to enjoy the splurge now.</p>
+                                You will be redirected to the Black Friday promo in 5 seconds. If not click <a href="https://instafxng.com/black_friday_splurge.php?x=<?php echo $user; ?>">here</a> to join immediately.</p>
                     </div>
 
                 </div>

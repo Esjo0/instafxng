@@ -392,6 +392,7 @@ $i = 0;
                                                                    placeholder="Instaforex Account Number"
                                                                    name="acct_no" type="text" class="form-control"
                                                                    required>
+                                                            <span class="help-block text-center"><i class="fa fa-info-circle"></i> Fill Step 1 and 2 to open an ILPR account<a target='_blank' href='https://instafxng.com/live_account.php'> Click Here NOW</a></span>
                                                         <?php } ?>
 
                                                         <?php if ($opt_in == true) { ?>
