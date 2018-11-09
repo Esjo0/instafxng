@@ -129,7 +129,7 @@ if($db_handle->numOfRows($result) > 0) {
     $db_handle->runQuery($query);
 } else {
     // Run insert query
-    $query = "INSERT INTO retention_analytics (m_client_to_retain, m_client_retained, m_retained_yesterday, q_client_to_retain, q_client_retained, q_retained_yesterday) 
-        VALUES ($month_clients_to_retain, $monthly_clients_retained, $monthly_clients_retained_yesterday, $quarter_clients_to_retain, $quarter_clients_retained, $quarter_clients_retained_yesterday)";
+    $query = "INSERT INTO retention_analytics (date_today, m_client_to_retain, m_client_retained, m_retained_yesterday, q_client_to_retain, q_client_retained, q_retained_yesterday) 
+        VALUES ('$today', $month_clients_to_retain, $monthly_clients_retained, $monthly_clients_retained_yesterday, $quarter_clients_to_retain, $quarter_clients_retained, $quarter_clients_retained_yesterday)";
     $db_handle->runQuery($query);
 }
