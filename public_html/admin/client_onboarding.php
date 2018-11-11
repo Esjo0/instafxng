@@ -61,13 +61,17 @@ if (empty($_SESSION['query']) || ($_SESSION['query'] == NULL)) {
     }
 
     $_SESSION['target'] = $target;
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created, MIN(tc.date_earned) AS date_earned
+    $query_analysis = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created, MIN(tc.date_earned) AS date_earned
         FROM trading_commission AS tc
         INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
         INNER JOIN user AS u ON ui.user_code = u.user_code
         GROUP BY u.user_code HAVING MONTH(date_earned) = $period AND YEAR(date_earned) = $year ";
+    $total_onboard = $db_handle->numRows($query_analysis);
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
     $_SESSION['query'] = $query;
-    $total_onboard = $db_handle->numRows($query);
 }
 
 //search to display clients on boarding date
@@ -80,14 +84,6 @@ if (isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
         WHERE (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
     $_SESSION['query'] = $query;
     $_SESSION['target'] = "NO Target Set.";
-}
-
-if(empty($_SESSION['query']) || ($_SESSION['query'] == NULL)){
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
-FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
-GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
-    $_SESSION['query'] = $query;
 }
 
 $query = $_SESSION['query'];
@@ -124,10 +120,7 @@ if ($prespagehigh > $numrows) {
 $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
-if(isset($_POST['view'])) {
-    $client_onboard = $db_handle->fetchAssoc($result);
-}
-$initial = $db_handle->fetchAssoc($result);
+$client_onboard = $db_handle->fetchAssoc($result);
 
 $percentage_progress = ($total_onboard / $_SESSION['target']) * 100;
 $percentage_target = 100 - $percentage_progress;
@@ -410,7 +403,7 @@ if(isset($_POST['campaign_category'])){
                             <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                         <?php } ?>
 
-                        <?php if ( (isset($client_onboard) && !empty($client_onboard)) || ((isset($initial) && !empty($initial))) ) {
+                        <?php if ( (isset($client_onboard) && !empty($client_onboard))) {
                             require 'layouts/pagination_links.php';
                         } ?>
 
@@ -425,9 +418,8 @@ if(isset($_POST['campaign_category'])){
                             </thead>
                             <tbody>
                             <?php
-                            if ((isset($client_onboard) && !empty($client_onboard))  || ((isset($initial) && !empty($initial))) ) {
-                                if(!empty($client_onboard)){$list = $client_onboard;}elseif(!empty($initial)){$list = $initial;}
-                                foreach ($list as $row) {
+                            if ((isset($client_onboard) && !empty($client_onboard)) ) {
+                                foreach ($client_onboard as $row) {
                                     extract($row); ?>
                                     <tr>
                                         <td><?php echo $full_name; ?></td>
