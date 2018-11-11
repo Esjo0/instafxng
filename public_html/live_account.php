@@ -43,7 +43,7 @@ if(isset($_POST['live_account_ilpr_reg'])) {
             if(isset($_COOKIE['ifxng_tweeter_lead'])){
                 $name = split_name($full_name);
                 extract($name);
-                $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source, interest, created) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '4', '2', time())";
+                $query = "INSERT INTO campaign_leads (f_name, l_name, email, phone, source, interest, created) VALUE ('$first_name', '$last_name', '$email_address', '$phone_number', '4', '2', now())";
                 $result = $db_handle->runQuery($query);
                 $user = $client_operation->get_user_by_email($email);
                 $user = encrypt($user);
