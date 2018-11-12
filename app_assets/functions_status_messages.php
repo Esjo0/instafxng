@@ -1049,6 +1049,9 @@ function client_group_campaign_category($status)
         case '67':
             $message = "Splurge participant without tier";
             break;
+        case '68':
+            $message = "Deposit Completed for current month";
+            break;
         default:
             $message = "Unknown";
             break;
@@ -1062,6 +1065,8 @@ function client_group_campaign_category($status)
  */
 function client_group_query($client_group, $campaign_type)
 {
+    //first day of current month
+    $first_day = date('Y-m') . '-01';
     $from_date = date('Y-m-d', strtotime('first day of last month'));
     $to_date = date('Y-m-d', strtotime('last day of last month'));
 
@@ -1285,6 +1290,9 @@ function client_group_query($client_group, $campaign_type)
             case '67':
                 $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NULL GROUP BY u.user_code ";
                 break;
+            case '68':
+                $query = "SELECT u.first_name, u.email, u.phone, u.user_code FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$first_day' AND '$current_day' AND u.user_code NOT IN (SELECT u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$first_day' AND '$current_day') GROUP BY u.user_code ";
+                break;
             default:
                 $query = false;
                 break;
@@ -1495,6 +1503,9 @@ function client_group_query($client_group, $campaign_type)
                 break;
             case '67':
                 $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NULL GROUP BY u.user_code ";
+                break;
+            case '68':
+                $query = "SELECT u.first_name, u.email, u.phone, u.user_code FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$first_day' AND '$current_day' AND u.user_code NOT IN (SELECT u.user_code FROM user_withdrawal AS uw INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d') BETWEEN '$first_day' AND '$current_day') GROUP BY u.user_code ";
                 break;
             default:
                 $query = false;
