@@ -3010,4 +3010,18 @@ MAIL;
         }
     }
 
+    public function get_splurge_user_point($user_code) {
+        global $db_handle;
+
+        $query = "SELECT total_points, tire FROM black_friday_2018 WHERE user_code = '$user_code' LIMIT 1";
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $total_points = $fetched_data[0]['total_points'];
+        $tier_target = black_friday_tire_target($fetched_data[0]['tire']);
+
+        $result = array("total_points" => $total_points, "tier_target" => $tier_target);
+
+        return $result ? $result : false;
+    }
+
 }

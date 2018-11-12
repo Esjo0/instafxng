@@ -12,8 +12,6 @@ foreach ($settings as $row => $value) {
 $nigeria_states = array('FCT - Abuja','');
 unset($query);
 
-
-
 $client_group_DEFAULT = array(
     "1" => "All Clients",
     "2" => "Last Month New Clients",
@@ -81,7 +79,8 @@ $client_group_DEFAULT = array(
 	"64" => "Student Category 0",
     "65" => "Last Month New Clients not yet funded",
     "66" => "Last Month Trading Clients",
-	"67" => "Splurge participant without tier"
+	"67" => "Splurge participant without tier",
+    "68" => "Main Splurge participant"
 );
 $client_group_DESC = array(
     "1" => "*Consist of all clients that have at anytime come into our system.",
@@ -150,5 +149,6 @@ $client_group_DESC = array(
 	"64" => "*Forex Profit Academy clients who have never logged in.",
     "65" => "Details of unique clients that joined the system last month, But have not yet funded.",
     "66" => "List of clients that placed trades in the previous month.",
-	"67" => "Black Friday Splurge leads who haven't selected a tier."
+	"67" => "Black Friday Splurge leads who haven't selected a tier.",
+    "68" => "Main Splurge participant"
     );

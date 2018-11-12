@@ -1049,6 +1049,9 @@ function client_group_campaign_category($status)
         case '67':
             $message = "Splurge participant without tier";
             break;
+        case '68':
+            $message = "Main Splurge participant";
+            break;
         default:
             $message = "Unknown";
             break;
@@ -1285,6 +1288,9 @@ function client_group_query($client_group, $campaign_type)
             case '67':
                 $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NULL GROUP BY u.user_code ";
                 break;
+            case '68':
+                $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NOT NULL GROUP BY u.user_code ";
+                break;
             default:
                 $query = false;
                 break;
@@ -1495,6 +1501,9 @@ function client_group_query($client_group, $campaign_type)
                 break;
             case '67':
                 $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NULL GROUP BY u.user_code ";
+                break;
+            case '68':
+                $query = "SELECT u.first_name, u.phone, u.email, u.user_code FROM black_friday_2018 AS bf INNER JOIN user AS u ON bf.user_code = u.user_code WHERE bf.tire IS NOT NULL GROUP BY u.user_code ";
                 break;
             default:
                 $query = false;

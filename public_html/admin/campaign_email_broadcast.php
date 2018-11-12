@@ -95,10 +95,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $year_rank_difference = number_format(($year_rank_highest - $year_rank), 2, ".", ",");
             $year_rank_goal = number_format(($year_rank_difference / $days_left_this_month), 2, ".", ",");
 
+            $last_trade_detail = $client_operation->get_last_trade_detail($user_code);
+            $last_trade_volume = $last_trade_detail['volume'];
+            $last_trade_date = $last_trade_detail['date_earned'];
+
             $funded = $client_operation->get_total_funding($user_code, $from_date, $to_date);
             $withdrawn = $client_operation->get_total_withdrawal($user_code, $from_date, $to_date);
 
-            $my_message_new = str_replace('[BFL]', $black_friday_link, $my_message_new);
+            $splurge_detail = $client_operation->get_splurge_user_point($user_code);
+            $splurge_total_points = $splurge_detail['total_points'];
+            $splurge_tier_target = $splurge_detail['tier_target'];
+
             $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
             $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
             $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);
@@ -110,11 +117,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
             $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
             $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
-
+            $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
+            $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
             $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);
             $my_message_new = str_replace('[WITHDRAWN]', $withdrawn, $my_message_new);
-            $my_subject_new = str_replace('[FUNDED]', $funded, $my_subject_new);
-            $my_subject_new = str_replace('[WITHDRAWN]', $withdrawn, $my_subject_new);
+            $my_message_new = str_replace('[BFL]', $black_friday_link, $my_message_new);
+            $my_message_new = str_replace('[SLP]', $splurge_total_points, $my_message_new);
+            $my_message_new = str_replace('[SLL]', $splurge_tier_target, $my_message_new);
 
             $my_message_new = str_replace('[LPMP]', '', $my_message_new);
             $my_message_new = str_replace('[LPMR]', '', $my_message_new);
@@ -127,8 +136,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $my_message_new = str_replace('[LPYG]', '', $my_message_new);
             $my_message_new = str_replace('[LPYD]', '', $my_message_new);
             $my_message_new = str_replace('[UC]', '', $my_message_new);
+            $my_message_new = str_replace('[LTD]', '', $my_message_new);
+            $my_message_new = str_replace('[LTV]', '', $my_message_new);
+            $my_subject_new = str_replace('[FUNDED]', '', $my_subject_new);
+            $my_subject_new = str_replace('[WITHDRAWN]', '', $my_subject_new);
+            $my_message_new = str_replace('[BFL]', '', $my_message_new);
+            $my_message_new = str_replace('[SLP]', '', $my_message_new);
+            $my_message_new = str_replace('[SLL]', '', $my_message_new);
         }
+
         $system_object->send_email($my_subject_new, $my_message_new, $sendto, $client_name, $mail_sender);
+
     }
     
     $message_success = "You have successfully sent the email test.";

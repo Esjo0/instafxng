@@ -87,7 +87,10 @@ if($db_handle->numOfRows($result) > 0) {
                 $funded = $client_operation->get_total_funding($user_code, $from_date, $to_date);
                 $withdrawn = $client_operation->get_total_withdrawal($user_code, $from_date, $to_date);
 
-                $my_message_new = str_replace('[BFL]', $black_friday_link, $my_message_new);
+                $splurge_detail = $client_operation->get_splurge_user_point($user_code);
+                $splurge_total_points = $splurge_detail['total_points'];
+                $splurge_tier_target = $splurge_detail['tier_target'];
+
                 $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
                 $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
                 $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);
@@ -101,11 +104,11 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
                 $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
                 $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
-
                 $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);
                 $my_message_new = str_replace('[WITHDRAWN]', $withdrawn, $my_message_new);
-                $my_subject_new = str_replace('[FUNDED]', $funded, $my_subject_new);
-                $my_subject_new = str_replace('[WITHDRAWN]', $withdrawn, $my_subject_new);
+                $my_message_new = str_replace('[BFL]', $black_friday_link, $my_message_new);
+                $my_message_new = str_replace('[SLP]', $splurge_total_points, $my_message_new);
+                $my_message_new = str_replace('[SLL]', $splurge_tier_target, $my_message_new);
 
                 $my_message_new = str_replace('[LPMP]', '', $my_message_new);
                 $my_message_new = str_replace('[LPMR]', '', $my_message_new);
@@ -120,6 +123,11 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[UC]', '', $my_message_new);
                 $my_message_new = str_replace('[LTD]', '', $my_message_new);
                 $my_message_new = str_replace('[LTV]', '', $my_message_new);
+                $my_subject_new = str_replace('[FUNDED]', '', $my_subject_new);
+                $my_subject_new = str_replace('[WITHDRAWN]', '', $my_subject_new);
+                $my_message_new = str_replace('[BFL]', '', $my_message_new);
+                $my_message_new = str_replace('[SLP]', '', $my_message_new);
+                $my_message_new = str_replace('[SLL]', '', $my_message_new);
             }
 
             $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name, $mail_sender);

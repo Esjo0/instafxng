@@ -174,6 +174,8 @@ if($get_params['x'] == 'duplicate') {
                                     <li>[FUNDED] - Total Amount funded last Month</li>
                                     <li>[WITHDRAWN] - Total Amount withdrawn last Month</li>
                                     <li>[BFL] - Black Friday 2018 link The Splurge</li>
+                                    <li>[SLP] - Points earned by a Splurge Participant</li>
+                                    <li>[SLL] - Target Point in the Tier a Splurge Participant chose</li>
                                 </ul>
                                 
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
