@@ -80,8 +80,10 @@ $client_group_DEFAULT = array(
     "65" => "Last Month New Clients not yet funded",
     "66" => "Last Month Trading Clients",
 	"67" => "Splurge participant without tier",
-    "68" => "Main Splurge participant"
+    "68" => "Main Splurge participant",
+	"69" => "Client with complete deposit in current month"
 );
+
 $client_group_DESC = array(
     "1" => "*Consist of all clients that have at anytime come into our system.",
     "2" => "*All clients that were been added to our system in the last month.",
@@ -150,5 +152,6 @@ $client_group_DESC = array(
     "65" => "Details of unique clients that joined the system last month, But have not yet funded.",
     "66" => "List of clients that placed trades in the previous month.",
 	"67" => "Black Friday Splurge leads who haven't selected a tier.",
-    "68" => "Main Splurge participant"
+    "68" => "Main Splurge participant",
+	"69" => "All clients who have successfuly completed deposit in the current month from the first day till today."
     );
