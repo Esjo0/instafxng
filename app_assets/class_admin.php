@@ -373,8 +373,13 @@ MAIL;
     public function add_new_article($article_no, $title, $type, $description, $tags, $display_picture, $url, $content, $article_status = '2', $admin_code, $date) {
         global $db_handle;
         global $system_object;
+
         if(!empty($article_no)) {
-            $query = "UPDATE article SET title = '{$title}', type = '{$type}', description = '$description', keyword = '$tags', display_image = '$display_picture', content = '$content', url = '$url', status = '$article_status', updated = NOW(), scheduled_date = '$date' WHERE article_id = $article_no LIMIT 1";
+            if(empty($display_picture)) {
+                $query = "UPDATE article SET title = '{$title}', type = '{$type}', description = '$description', keyword = '$tags', content = '$content', url = '$url', status = '$article_status', updated = NOW(), scheduled_date = '$date' WHERE article_id = $article_no LIMIT 1";
+            } else {
+                $query = "UPDATE article SET title = '{$title}', type = '{$type}', description = '$description', keyword = '$tags', display_image = '$display_picture', content = '$content', url = '$url', status = '$article_status', updated = NOW(), scheduled_date = '$date' WHERE article_id = $article_no LIMIT 1";
+            }
 
         } else {
             $query = "INSERT INTO article (admin_code, title, type, description, keyword, display_image, content, url, status, scheduled_date) VALUES ('$admin_code', '$title', '$type', '$description', '$tags', '$display_picture', '$content', '$url', '$article_status', '$date')";

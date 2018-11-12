@@ -53,20 +53,35 @@ if(isset($_POST['update'])){
     $link_text = $db_handle->sanitizePost($_POST['link_text']);
     $link_url = $db_handle->sanitizePost($_POST['link_url']);
     $scheduled_date = $db_handle->sanitizePost($_POST['scheduled_date']);
-    $fileName = basename($_FILES["Filename"]["name"]);
     $previous_image = $db_handle->sanitizePost($_POST['previous_image']);
 
+    if($_FILES["Filename"]["error"] == UPLOAD_ERR_OK) {
+        if(isset($_FILES["Filename"]["name"])) {
+            $tmp_name = $_FILES["Filename"]["tmp_name"];
+            $name = strtolower($_FILES["Filename"]["name"]);
 
-    $target = "../images/";
-    $fileTarget = $target.$fileName;
-    $tempFileName = $_FILES["Filename"]["tmp_name"];
-    $result = move_uploaded_file($tempFileName,$fileTarget);
-    $image_path = "images/".$fileName;
-    if(empty($fileName)){
-    $image_path = $previous_image;
+            // Get file extension of original uploaded file and create a new file name
+            $extension = explode(".", $name);
+
+            new_name:
+            $name_string = rand_string(25);
+            $newfilename = $name_string . '.' . end($extension);
+            $display_picture = "images/" . strtolower($newfilename);
+
+            if(file_exists("../$display_picture")) {
+                goto new_name;
+            }
+
+            move_uploaded_file($tmp_name, "../$display_picture");
+        }
     }
 
-    $query = "UPDATE forum_schedule SET forum_title = '$forum_title',forum_date_details = '$forum_date_details', share_thoughts_header = '$share_thoughts_header',share_thoughts_body = '$share_thoughts_body', link_url = '$link_url',link_text = '$link_text',image_path = '$image_path',scheduled_date = '$scheduled_date',admin = '$admin_code',status = '1' WHERE schedule_id = '$schedule_id'";
+    if(empty($display_picture)) {
+        $query = "UPDATE forum_schedule SET forum_title = '$forum_title', forum_date_details = '$forum_date_details', share_thoughts_header = '$share_thoughts_header', share_thoughts_body = '$share_thoughts_body', link_url = '$link_url', link_text = '$link_text', scheduled_date = '$scheduled_date', admin = '$admin_code', status = '1' WHERE schedule_id = '$schedule_id'";
+    } else {
+        $query = "UPDATE forum_schedule SET forum_title = '$forum_title', forum_date_details = '$forum_date_details', share_thoughts_header = '$share_thoughts_header', share_thoughts_body = '$share_thoughts_body', link_url = '$link_url', link_text = '$link_text', image_path = '$display_picture', scheduled_date = '$scheduled_date', admin = '$admin_code', status = '1' WHERE schedule_id = '$schedule_id'";
+    }
+
     $result = $db_handle->runQuery($query);
     if($result) {
         $message_success = "You have successfully Updates your Schedule";
