@@ -406,7 +406,7 @@ MAIL;
 
                         <!--Card image-->
                         <div class="view overlay">
-                            <img src="img/dress.jpg"
+                            <img src="img/female.png"
                                  class="card-img-top" alt="">
                             <a>
                                 <div class="mask rgba-white-slight"></div>
