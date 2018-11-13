@@ -1,3 +1,19 @@
+ALTER TABLE `dinner_2018` ADD UNIQUE(`user_code`);
+ALTER TABLE `dinner_2018` ADD `gender` ENUM('1','2') NOT NULL COMMENT '1=male 2=femal' AFTER `town`;
+
+CREATE TABLE `dinner_2018` (
+ `id` int(10) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(10) NOT NULL,
+ `choice` enum('1','2','3') NOT NULL COMMENT '1-Yes 2-Maybe 3-No',
+ `title` varchar(10) NOT NULL,
+ `town` varchar(100) NOT NULL,
+ `invite_code` varchar(100) DEFAULT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated` datetime DEFAULT NULL,
+ PRIMARY KEY (`id`)
+)
+
+
 CREATE TABLE IF NOT EXISTS `retention_analytics` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `date_today` DATE NOT NULL,
