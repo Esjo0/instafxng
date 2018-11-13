@@ -100,7 +100,7 @@ $choice = $get_params['z'];
                                         <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;"><b>YOUR SEAT HAS BEEN RESERVED TEMPORARILY CONFIRM YOUR RESRVATION WITHIN THE NEXT 5 DAYS.</b></p>
                                     </div>
                                 </div>
-                                <img style="opacity: 0.7" src="https://mdbootstrap.com/img/Marketing/mdb-press-pack/mdb-main.jpg" class="img-fluid z-depth-1-half" alt="">
+                                <img style="opacity: 0.7" src="img/royal_ball.jpeg" class="img-fluid z-depth-1-half" alt="">
                             <?php }?>
                             <?php if ($choice == 3){?>
                                 <!--Card-->
@@ -111,7 +111,7 @@ $choice = $get_params['z'];
                                         <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;"><b>THANKS YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.</b></p>
                                     </div>
                                 </div>
-                                <img style="opacity: 0.7" src="https://mdbootstrap.com/img/Marketing/mdb-press-pack/mdb-main.jpg" class="img-fluid z-depth-1-half" alt="">
+                                <img style="opacity: 0.7" src="img/royal_ball.jpeg" class="img-fluid z-depth-1-half" alt="">
                             <?php }?>
 
                 </div>
