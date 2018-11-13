@@ -61,7 +61,7 @@ $choice = $get_params['z'];
 <body>
 
 <!-- Full Page Intro -->
-<div class="view full-page-intro" style="background-image: url('img/royal_bg.jpg'); background-repeat: no-repeat; background-size: cover;">
+<div class="view full-page-intro" style="background-image: url('img/royal.jpg'); background-repeat: no-repeat; background-size: cover;">
 
     <!-- Mask & flexbox options-->
     <div class="mask rgba-black-light d-flex justify-content-center align-items-center">

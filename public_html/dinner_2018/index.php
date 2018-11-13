@@ -365,7 +365,7 @@ MAIL;
 
                         <!--Card image-->
                         <div class="view overlay">
-                            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg"
+                            <img src="img/male.jpg"
                                  class="card-img-top" alt="">
                             <a>
                                 <div class="mask rgba-white-slight"></div>
@@ -406,7 +406,7 @@ MAIL;
 
                         <!--Card image-->
                         <div class="view overlay">
-                            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13.jpg"
+                            <img src="img/dress.jpg"
                                  class="card-img-top" alt="">
                             <a>
                                 <div class="mask rgba-white-slight"></div>
