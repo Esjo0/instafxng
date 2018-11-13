@@ -1,3 +1,6 @@
+ALTER TABLE `dinner_2018` ADD UNIQUE(`user_code`);
+ALTER TABLE `dinner_2018` ADD `gender` ENUM('1','2') NOT NULL COMMENT '1=male 2=femal' AFTER `town`;
+
 CREATE TABLE `dinner_2018` (
  `id` int(10) NOT NULL AUTO_INCREMENT,
  `user_code` varchar(10) NOT NULL,
@@ -8,7 +11,7 @@ CREATE TABLE `dinner_2018` (
  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `updated` datetime DEFAULT NULL,
  PRIMARY KEY (`id`)
-) 
+)
 
 
 CREATE TABLE IF NOT EXISTS `retention_analytics` (

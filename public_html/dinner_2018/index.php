@@ -17,7 +17,7 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
     $title = $db_handle->sanitizePost($_POST['title']);
     $town = $db_handle->sanitizePost($_POST['town']);
     if ($choice == 1 && !empty($avatar) && $avatar != NULL) {
-        $query = "INSERT INTO dinner_2018 (user_code, choice, title, town) VALUE('$client_user_code', '$choice', '$title', '$town')";
+        $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar')";
         $db_handle->runQuery($query);
         if($avatar == 1){$gender = "his";}elseif($avatar == 2){$gender = "her";}
         $subject = 'Your seat has been reserved, '.$client_first_name.'!';
@@ -70,7 +70,7 @@ MAIL;
         header('Location: completed.php?z=' . $choice);
     }
     else if ($choice == 2 && !empty($avatar) && $avatar != NULL) {
-        $query = "INSERT INTO dinner_2018 (user_code, choice, title, town) VALUE('$client_user_code', '$choice', '$title', '$town')";
+        $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar')";
         $subject = 'The Ball Will Be Brighter With Your Presence';
         $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -122,7 +122,7 @@ MAIL;
         $db_handle->runQuery($query);
         header('Location: completed.php?z=' . $choice);
     } else if ($choice == 3 && !empty($avatar) && $avatar != NULL ) {
-        $query = "INSERT INTO dinner_2018 (user_code, choice, title, town) VALUE('$client_user_code', '$choice', '$title', '$town')";
+        $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar')";
         $db_handle->runQuery($query);
         $subject = 'The Ball Would have been more fun with you '.$client_first_name.'!';
         $message_final = <<<MAIL
