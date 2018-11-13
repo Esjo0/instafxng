@@ -147,7 +147,7 @@ class Analytics {
                 break;
         }
 
-        $dates = array("result_title" => $title, "from_date" => $from_date, "to_date" => $to_date, "prev_from_date" => $prev_from_date, "prev_to_date" => $prev_to_date);
+        $dates = array("period_title" => $title, "from_date" => $from_date, "to_date" => $to_date, "prev_from_date" => $prev_from_date, "prev_to_date" => $prev_to_date);
         return $dates;
     }
 
@@ -238,8 +238,8 @@ class Analytics {
 
         $current_quarter = $this->get_quarter_code($main_current_month);
 
-        $month_title = $this->get_from_to_dates($current_year, $main_current_month)['result_title'];
-        $quarter_title = $this->get_from_to_dates($current_year, $current_quarter)['result_title'];
+        $month_title = $this->get_from_to_dates($current_year, $main_current_month)['period_title'];
+        $quarter_title = $this->get_from_to_dates($current_year, $current_quarter)['period_title'];
 
         $query = "SELECT * FROM retention_analytics WHERE date_today = '$today' LIMIT 1";
         $result = $db_handle->runQuery($query);
