@@ -6,12 +6,16 @@ if(isset($_GET['r']) && $_GET['r'] == 1) {
     unset($_SESSION['client_retention_base_query']);
     unset($_SESSION['client_retention_base_query2']);
     unset($_SESSION['client_retention_query']);
+    unset($_SESSION['client_retention_query2']);
+    unset($_SESSION['client_retention_main_query']);
     unset($_SESSION['client_retention_prev_from_date']);
     unset($_SESSION['client_retention_prev_to_date']);
     unset($_SESSION['client_retention_from_date']);
     unset($_SESSION['client_retention_to_date']);
-    unset($_SESSION['client_retention_result_title']);
-    unset($_SESSION['client_retention_type']);
+    unset($_SESSION['client_retention_period_title']);
+    unset($_SESSION['client_retention_type_title']);
+    unset($_SESSION['client_retention_type_title2']);
+    unset($_SESSION['client_retention_type_main_title']);
     unset($_SESSION['client_retention_type_selected']);
 
     redirect_to("client_retention.php");
@@ -71,43 +75,76 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
 
-        if($ret_type == '1') {
-            $retention_type = "NOT YET RETAINED";
-            $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
-                FROM reference_clients AS rc1
-                LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-                WHERE rc2.user_code IS NULL ";
-        } else {
-            $retention_type = "RETAINED";
-            $query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
-                FROM reference_clients AS rc1
-                LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-                WHERE rc2.user_code IS NOT NULL ";
-        }
+        $retention_type_title = "NOT YET RETAINED";
+        $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
+            FROM reference_clients AS rc1
+            LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+            WHERE rc2.user_code IS NULL ";
+
+        $retention_type_title2 = "RETAINED";
+        $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+            FROM reference_clients AS rc1
+            LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+            WHERE rc2.user_code IS NOT NULL ";
+
+        $main_query = $query;
+        $retention_type_main_title = $retention_type_title;
 
         $_SESSION['client_retention_base_query'] = $base_query;
         $_SESSION['client_retention_base_query2'] = $base_query2;
         $_SESSION['client_retention_query'] = $query;
+        $_SESSION['client_retention_query2'] = $query2;
+        $_SESSION['client_retention_main_query'] = $query;
         $_SESSION['client_retention_prev_from_date'] = $prev_from_date;
         $_SESSION['client_retention_prev_to_date'] = $prev_to_date;
         $_SESSION['client_retention_from_date'] = $from_date;
         $_SESSION['client_retention_to_date'] = $to_date;
-        $_SESSION['client_retention_result_title'] = $result_title;
-        $_SESSION['client_retention_type'] = $retention_type;
-        $_SESSION['client_retention_type_selected'] = $ret_type;
+        $_SESSION['client_retention_period_title'] = $period_title;
+        $_SESSION['client_retention_type_title'] = $retention_type_title;
+        $_SESSION['client_retention_type_title2'] = $retention_type_title2;
+        $_SESSION['client_retention_type_main_title'] = $retention_type_title;
+        $_SESSION['client_retention_type_selected'] = $retention_type;
 
     } else {
+
+        if (isset($_POST['retention_tracker_switch'])) {
+            foreach ($_POST as $key => $value) {
+                $_POST[$key] = $db_handle->sanitizePost(trim($value));
+            }
+            extract($_POST);
+
+            switch($ret_type) {
+                case '1':
+                    $main_query = $_SESSION['client_retention_query'];
+                    $_SESSION['client_retention_main_query'] = $main_query;
+
+                    $retention_type_main_title = $_SESSION['client_retention_type_title'];
+                    $_SESSION['client_retention_type_main_title'] = $retention_type_main_title;
+                    break;
+                case '2':
+                    $main_query = $_SESSION['client_retention_query2'];
+                    $_SESSION['client_retention_main_query'] = $main_query;
+
+                    $retention_type_main_title = $_SESSION['client_retention_type_title2'];
+                    $_SESSION['client_retention_type_main_title'] = $retention_type_main_title;
+                    break;
+            }
+        }
 
         $base_query = $_SESSION['client_retention_base_query'];
         $base_query2 = $_SESSION['client_retention_base_query2'];
         $query = $_SESSION['client_retention_query'];
+        $query2 = $_SESSION['client_retention_query2'];
+        $main_query = $_SESSION['client_retention_main_query'];
         $prev_from_date = $_SESSION['client_retention_prev_from_date'];
         $prev_to_date = $_SESSION['client_retention_prev_to_date'];
         $from_date = $_SESSION['client_retention_from_date'];
         $to_date = $_SESSION['client_retention_to_date'];
-        $result_title = $_SESSION['client_retention_result_title'];
-        $retention_type = $_SESSION['client_retention_type'];
-        $ret_type = $_SESSION['client_retention_type_selected'];
+        $period_title = $_SESSION['client_retention_period_title'];
+        $retention_type_title = $_SESSION['client_retention_type_title'];
+        $retention_type_title2 = $_SESSION['client_retention_type_title2'];
+        $retention_type_main_title= $_SESSION['client_retention_type_main_title'];
+        $retention_type = $_SESSION['client_retention_type_selected'];
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
@@ -136,31 +173,42 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
     $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
 
-    $ret_type = '1';
-    $retention_type = "NOT YET RETAINED";
+    $retention_type_title = "NOT YET RETAINED";
     $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
             WHERE rc2.user_code IS NULL ";
 
+    $retention_type_title2 = "RETAINED";
+    $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+                FROM reference_clients AS rc1
+                LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+                WHERE rc2.user_code IS NOT NULL ";
+
+    $main_query = $query;
+    $retention_type_main_title = $retention_type_title;
 
     $_SESSION['client_retention_base_query'] = $base_query;
     $_SESSION['client_retention_base_query2'] = $base_query2;
     $_SESSION['client_retention_query'] = $query;
+    $_SESSION['client_retention_query2'] = $query2;
+    $_SESSION['client_retention_main_query'] = $query;
     $_SESSION['client_retention_prev_from_date'] = $prev_from_date;
     $_SESSION['client_retention_prev_to_date'] = $prev_to_date;
     $_SESSION['client_retention_from_date'] = $from_date;
     $_SESSION['client_retention_to_date'] = $to_date;
-    $_SESSION['client_retention_result_title'] = $result_title;
-    $_SESSION['client_retention_type'] = $retention_type;
-    $_SESSION['client_retention_type_selected'] = $ret_type;
+    $_SESSION['client_retention_period_title'] = $period_title;
+    $_SESSION['client_retention_type_title'] = $retention_type_title;
+    $_SESSION['client_retention_type_title2'] = $retention_type_title2;
+    $_SESSION['client_retention_type_main_title'] = $retention_type_title;
+    $_SESSION['client_retention_type_selected'] = $retention_type;
 }
 
 $total_to_retain = $db_handle->numRows($base_query);
 
-$numrows = $db_handle->numRows($query);
+$numrows = $db_handle->numRows($main_query);
 
-if($ret_type == 1) {
+if($retention_type_main_title == "NOT YET RETAINED") {
     $total_not_retained = $numrows;
 } else {
     $total_not_retained = $total_to_retain - $numrows;
@@ -187,8 +235,8 @@ $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
 $offset = ($currentpage - 1) * $rowsperpage;
-$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
-$result = $db_handle->runQuery($query);
+$main_query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$result = $db_handle->runQuery($main_query);
 $retention_result = $db_handle->fetchAssoc($result);
 
 ?>
@@ -202,7 +250,6 @@ $retention_result = $db_handle->fetchAssoc($result);
         <meta name="title" content="Instaforex Nigeria | Admin - Client Retention Tracker" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
-
         <?php require_once 'layouts/head_meta.php'; ?>
     </head>
     <body>
@@ -329,73 +376,62 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                        <p class="modal-title">Fill the form below, choose the year, period and type.</p>
+                                                        <p class="modal-title">Fill the form below, choose the year and period.</p>
                                                     </div>
 
                                                     <div class="modal-body">
                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="client_retention.php">
 
-                                                        <div class="form-group">
-                                                            <label class="control-label col-sm-3" for="year_date">Year:</label>
-                                                            <div class="col-sm-9 col-lg-8">
-                                                                <div class="input-group date">
-                                                                    <input name="year_date" type="text" class="form-control" id="datetimepicker" required>
-                                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-3" for="year_date">Year:</label>
+                                                                <div class="col-sm-9 col-lg-8">
+                                                                    <div class="input-group date">
+                                                                        <input name="year_date" type="text" class="form-control" id="datetimepicker" required>
+                                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="control-label col-sm-3" for="period">Period:</label>
-                                                            <div class="col-sm-9 col-lg-8">
-                                                                <select type="text" name="period" id="period" class="form-control" required>
-                                                                    <option value=""></option>
-                                                                    <option value="1">January</option>
-                                                                    <option value="2">February</option>
-                                                                    <option value="3">March</option>
-                                                                    <option value="4">April</option>
-                                                                    <option value="5">May</option>
-                                                                    <option value="6">June</option>
-                                                                    <option value="7">July</option>
-                                                                    <option value="8">August</option>
-                                                                    <option value="9">September</option>
-                                                                    <option value="10">October</option>
-                                                                    <option value="11">November</option>
-                                                                    <option value="12">December</option>
-                                                                    <option value="1-12">Annual</option>
-                                                                    <option value="1-6">First Half</option>
-                                                                    <option value="7-12">Second Half</option>
-                                                                    <option value="1-3">First Quarter</option>
-                                                                    <option value="4-6">Second Quarter</option>
-                                                                    <option value="7-9">Third Quarter</option>
-                                                                    <option value="10-12">Fourth Quarter</option>
-                                                                </select>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-3" for="period">Period:</label>
+                                                                <div class="col-sm-9 col-lg-8">
+                                                                    <select type="text" name="period" id="period" class="form-control" required>
+                                                                        <option value=""></option>
+                                                                        <option value="1">January</option>
+                                                                        <option value="2">February</option>
+                                                                        <option value="3">March</option>
+                                                                        <option value="4">April</option>
+                                                                        <option value="5">May</option>
+                                                                        <option value="6">June</option>
+                                                                        <option value="7">July</option>
+                                                                        <option value="8">August</option>
+                                                                        <option value="9">September</option>
+                                                                        <option value="10">October</option>
+                                                                        <option value="11">November</option>
+                                                                        <option value="12">December</option>
+                                                                        <option value="1-12">Annual</option>
+                                                                        <option value="1-6">First Half</option>
+                                                                        <option value="7-12">Second Half</option>
+                                                                        <option value="1-3">First Quarter</option>
+                                                                        <option value="4-6">Second Quarter</option>
+                                                                        <option value="7-9">Third Quarter</option>
+                                                                        <option value="10-12">Fourth Quarter</option>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="form-group">
-                                                            <label class="control-label col-sm-3" for="retention_type">Type:</label>
-                                                            <div class="col-sm-9 col-lg-8">
-                                                                <select type="text" name="ret_type" id="retention_type" class="form-control" required>
-                                                                    <option value=""></option>
-                                                                    <option value="1">Not Yet Retained</option>
-                                                                    <option value="2">Retained</option>
-                                                                </select>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-offset-3 col-sm-9">
+                                                                    <input name="retention_tracker" type="submit" class="btn btn-success" value="Display Result" />
+                                                                </div>
                                                             </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <div class="col-sm-offset-3 col-sm-9">
-                                                                <input name="retention_tracker" type="submit" class="btn btn-success" value="Display Result" />
-                                                            </div>
-                                                        </div>
-                                                        <script type="text/javascript">
-                                                            $(function () {
-                                                                $('#datetimepicker, #datetimepicker2').datetimepicker({
-                                                                    format: 'YYYY'
+                                                            <script type="text/javascript">
+                                                                $(function () {
+                                                                    $('#datetimepicker, #datetimepicker2').datetimepicker({
+                                                                        format: 'YYYY'
+                                                                    });
                                                                 });
-                                                            });
-                                                        </script>
-                                                    </form>
+                                                            </script>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
@@ -403,12 +439,29 @@ $retention_result = $db_handle->fetchAssoc($result);
                                     </div>
                                 </div>
 
-                                <?php if(isset($result_title)) { ?>
-                                <p class="text-center"><strong>Period: <?php echo $result_title . " (" . $retention_type . ")"; ?></strong><br />
-                                Retention rate: <?php echo $retention_rate . '%'; ?></p>
-                                <?php } ?>
+                                <?php if(isset($period_title)) { ?>
+                                    <div class="row">
+                                        <div class="col-sm-12 text-center">
+                                            <p><strong>Period: <?php echo $period_title . " (" . $retention_type_main_title . ")"; ?></strong><br />
+                                                Retention rate: <?php echo $retention_rate . '%'; ?></p>
 
-                                <br />
+                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="client_retention.php?pg=1">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <?php if($retention_type_main_title == "NOT YET RETAINED") { ?>
+                                                            <input type="hidden" name="ret_type" value="2" />
+                                                            <input name="retention_tracker_switch" type="submit" class="btn btn-default" value="See Retained List" />
+                                                        <?php } else { ?>
+                                                            <input type="hidden" name="ret_type" value="1" />
+                                                            <input name="retention_tracker_switch" type="submit" class="btn btn-default" value="See Not Yet Retained List" />
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                <?php } ?>
 
                                 <?php if(isset($retention_result) && !empty($retention_result)) { require 'layouts/pagination_links.php'; } ?>
 
@@ -419,13 +472,13 @@ $retention_result = $db_handle->fetchAssoc($result);
                                             <th>Client Detail</th>
                                             <th>Commission</th>
                                             <th>Funding</th>
-                                            <th><?php if($ret_type == '1') { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
+                                            <th><?php if($retention_type == '1') { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php if(isset($retention_result) && !empty($retention_result)) { foreach ($retention_result as $row) {
-                                            if($ret_type == '1') {
+                                            if($retention_type == '1') {
                                                 $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $prev_from_date, $prev_to_date);
                                             } else {
                                                 $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $from_date, $to_date);
@@ -439,7 +492,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                 </td>
                                                 <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
                                                 <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
-                                                <td><?php if($ret_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
+                                                <td><?php if($retention_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
                                                 <td nowrap="nowrap">
                                                     <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo encrypt('CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
