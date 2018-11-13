@@ -187,7 +187,7 @@ MAIL;
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>InstaFxNG Dinner 2018</title>
+    <title>InstaFxNg Dinner 2018</title>
     <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.png">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -235,7 +235,7 @@ MAIL;
 
 <!-- Full Page Intro -->
 <div class="view full-page-intro"
-     style="background-image: url('img/royal_bg.jpg'); background-repeat: no-repeat; background-size: cover;">
+     style="background-image: url('img/royal.jpg'); background-repeat: no-repeat; background-size: cover;">
 
     <!-- Mask & flexbox options-->
     <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
@@ -256,9 +256,9 @@ MAIL;
 
                             <h1><STRONG>INSTAFXNG ROYAL BALL</STRONG></h1>
 
-                            <img style="opacity: 0.7"
-                                 src="https://mdbootstrap.com/img/Marketing/mdb-press-pack/mdb-main.jpg"
-                                 class="img-fluid z-depth-1-half" alt="">
+                            <img style="opacity: 0.8"
+                                 src="img/royal_ball.jpeg" height="300" width="300"
+                                 class="img-fluid z-depth-1-half img img-responsive" alt="">
 
 
                 </div>
@@ -272,8 +272,7 @@ MAIL;
                         <div class="card-body">
                             <p class="text-center"
                                style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;">
-                                <b>KINDLY COMPLETE THE RESERVATION PROCESS TO RESERVE YOUR SEAT AT INSTAFXNG'S ROYAL
-                                    BALL</b>
+                                <b>KINDLY FILL THE FORM BELOW TO RESERVE YOUR SEAT</b>
                             </p>
 
                             <!-- Heading -->
