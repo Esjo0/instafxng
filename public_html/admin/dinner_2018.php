@@ -12,6 +12,9 @@ if(isset($_POST['filter'])){
     WHERE d.choice = '$filter'
     ORDER BY d.created DESC ";
     $_SESSION['query'] = $query;
+    if($filter == 1){$yes = true;}
+    elseif($filter == 2){$maybe = true;}
+    elseif($filter == 3){$no = true;}
 
 
 }elseif(empty($_SESSION['query']) || isset($_POST['all'])){
@@ -61,8 +64,8 @@ $participants = $db_handle->fetchAssoc($result);
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Admin - Black Friday Splurge 2018</title>
-    <meta name="title" content="Instaforex Nigeria | Admin - Black Friday Splurge 2018"/>
+    <title>Instaforex Nigeria | Admin - Dinner 2018</title>
+    <meta name="title" content="Instaforex Nigeria | Admin - Dinner 2018"/>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <?php require_once 'layouts/head_meta.php'; ?>
@@ -94,9 +97,9 @@ $participants = $db_handle->fetchAssoc($result);
             <form action="" method="post" class="form horizontal row">
                 <div class="col-md-6">
                     <select name="filt_val" class="form-control" id="filter" placeholder="Filter by" required>
-                        <option value="1" >Those who Selected Yes</option>
-                        <option value="2" >Those who Selected Maybe</option>
-                        <option value="3">Those who Selsected No</option>
+                        <option value="1" <?php if($yes == true){echo "selected";}?>>Those who Selected Yes</option>
+                        <option value="2" <?php if($maybe == true){echo "selected";}?>>Those who Selected Maybe</option>
+                        <option value="3" <?php if($no == true){echo "selected";}?>>Those who Selsected No</option>
                     </select>
                 </div>
                 <div class="col-md-3">
