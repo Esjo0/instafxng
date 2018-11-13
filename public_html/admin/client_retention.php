@@ -7,6 +7,7 @@ if(isset($_GET['r']) && $_GET['r'] == 1) {
     unset($_SESSION['client_retention_base_query2']);
     unset($_SESSION['client_retention_query']);
     unset($_SESSION['client_retention_query2']);
+    unset($_SESSION['client_retention_main_query']);
     unset($_SESSION['client_retention_prev_from_date']);
     unset($_SESSION['client_retention_prev_to_date']);
     unset($_SESSION['client_retention_from_date']);
@@ -14,6 +15,7 @@ if(isset($_GET['r']) && $_GET['r'] == 1) {
     unset($_SESSION['client_retention_period_title']);
     unset($_SESSION['client_retention_type_title']);
     unset($_SESSION['client_retention_type_title2']);
+    unset($_SESSION['client_retention_type_main_title']);
     unset($_SESSION['client_retention_type_selected']);
 
     redirect_to("client_retention.php");
@@ -52,9 +54,6 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
         extract($_POST);
 
-        // Set retention type to 1 by default to show not yet retained clients
-        $retention_type = '1';
-
         $dates_selected = $obj_analytics->get_from_to_dates($year_date, $period);
         extract($dates_selected);
 
@@ -88,11 +87,14 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
             WHERE rc2.user_code IS NOT NULL ";
 
+        $main_query = $query;
+        $retention_type_main_title = $retention_type_title;
 
         $_SESSION['client_retention_base_query'] = $base_query;
         $_SESSION['client_retention_base_query2'] = $base_query2;
         $_SESSION['client_retention_query'] = $query;
         $_SESSION['client_retention_query2'] = $query2;
+        $_SESSION['client_retention_main_query'] = $query;
         $_SESSION['client_retention_prev_from_date'] = $prev_from_date;
         $_SESSION['client_retention_prev_to_date'] = $prev_to_date;
         $_SESSION['client_retention_from_date'] = $from_date;
@@ -100,6 +102,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $_SESSION['client_retention_period_title'] = $period_title;
         $_SESSION['client_retention_type_title'] = $retention_type_title;
         $_SESSION['client_retention_type_title2'] = $retention_type_title2;
+        $_SESSION['client_retention_type_main_title'] = $retention_type_title;
         $_SESSION['client_retention_type_selected'] = $retention_type;
 
     } else {
@@ -109,13 +112,30 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                 $_POST[$key] = $db_handle->sanitizePost(trim($value));
             }
             extract($_POST);
-            
+
+            switch($ret_type) {
+                case '1':
+                    $main_query = $_SESSION['client_retention_query'];
+                    $_SESSION['client_retention_main_query'] = $main_query;
+
+                    $retention_type_main_title = $_SESSION['client_retention_type_title'];
+                    $_SESSION['client_retention_type_main_title'] = $retention_type_main_title;
+                    break;
+                case '2':
+                    $main_query = $_SESSION['client_retention_query2'];
+                    $_SESSION['client_retention_main_query'] = $main_query;
+
+                    $retention_type_main_title = $_SESSION['client_retention_type_title2'];
+                    $_SESSION['client_retention_type_main_title'] = $retention_type_main_title;
+                    break;
+            }
         }
 
         $base_query = $_SESSION['client_retention_base_query'];
         $base_query2 = $_SESSION['client_retention_base_query2'];
         $query = $_SESSION['client_retention_query'];
         $query2 = $_SESSION['client_retention_query2'];
+        $main_query = $_SESSION['client_retention_main_query'];
         $prev_from_date = $_SESSION['client_retention_prev_from_date'];
         $prev_to_date = $_SESSION['client_retention_prev_to_date'];
         $from_date = $_SESSION['client_retention_from_date'];
@@ -123,6 +143,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $period_title = $_SESSION['client_retention_period_title'];
         $retention_type_title = $_SESSION['client_retention_type_title'];
         $retention_type_title2 = $_SESSION['client_retention_type_title2'];
+        $retention_type_main_title= $_SESSION['client_retention_type_main_title'];
         $retention_type = $_SESSION['client_retention_type_selected'];
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
@@ -152,8 +173,6 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
     $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
 
-    $retention_type = '1';
-
     $retention_type_title = "NOT YET RETAINED";
     $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
@@ -166,10 +185,14 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
                 LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
                 WHERE rc2.user_code IS NOT NULL ";
 
+    $main_query = $query;
+    $retention_type_main_title = $retention_type_title;
+
     $_SESSION['client_retention_base_query'] = $base_query;
     $_SESSION['client_retention_base_query2'] = $base_query2;
     $_SESSION['client_retention_query'] = $query;
     $_SESSION['client_retention_query2'] = $query2;
+    $_SESSION['client_retention_main_query'] = $query;
     $_SESSION['client_retention_prev_from_date'] = $prev_from_date;
     $_SESSION['client_retention_prev_to_date'] = $prev_to_date;
     $_SESSION['client_retention_from_date'] = $from_date;
@@ -177,14 +200,15 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
     $_SESSION['client_retention_period_title'] = $period_title;
     $_SESSION['client_retention_type_title'] = $retention_type_title;
     $_SESSION['client_retention_type_title2'] = $retention_type_title2;
+    $_SESSION['client_retention_type_main_title'] = $retention_type_title;
     $_SESSION['client_retention_type_selected'] = $retention_type;
 }
 
 $total_to_retain = $db_handle->numRows($base_query);
 
-$numrows = $db_handle->numRows($query);
+$numrows = $db_handle->numRows($main_query);
 
-if($retention_type == 1) {
+if($retention_type_main_title == "NOT YET RETAINED") {
     $total_not_retained = $numrows;
 } else {
     $total_not_retained = $total_to_retain - $numrows;
@@ -211,8 +235,8 @@ $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
 $offset = ($currentpage - 1) * $rowsperpage;
-$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
-$result = $db_handle->runQuery($query);
+$main_query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$result = $db_handle->runQuery($main_query);
 $retention_result = $db_handle->fetchAssoc($result);
 
 ?>
@@ -418,13 +442,13 @@ $retention_result = $db_handle->fetchAssoc($result);
                                 <?php if(isset($period_title)) { ?>
                                     <div class="row">
                                         <div class="col-sm-12 text-center">
-                                            <p><strong>Period: <?php echo $period_title . " (" . $retention_type_title . ")"; ?></strong><br />
+                                            <p><strong>Period: <?php echo $period_title . " (" . $retention_type_main_title . ")"; ?></strong><br />
                                                 Retention rate: <?php echo $retention_rate . '%'; ?></p>
 
                                             <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="client_retention.php?pg=1">
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
-                                                        <?php if($retention_type = "1") { ?>
+                                                        <?php if($retention_type_main_title == "NOT YET RETAINED") { ?>
                                                             <input type="hidden" name="ret_type" value="2" />
                                                             <input name="retention_tracker_switch" type="submit" class="btn btn-default" value="See Retained List" />
                                                         <?php } else { ?>
