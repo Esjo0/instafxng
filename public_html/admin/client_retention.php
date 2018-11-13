@@ -368,6 +368,8 @@ $retention_result = $db_handle->fetchAssoc($result);
                                         <br />
 
                                         <p class="text-right">
+                                            <a href="client_month_activity.php" target="_blank" class="btn btn-info" title="Month Activity">Month Activity <i class="fa fa-tasks"></i></a>
+
                                             <a data-target="#search-form" data-toggle="modal" class="btn btn-default" title="Apply Filter">Apply Filter <i class="glyphicon glyphicon-search"></i></a>
                                         </p>
 
