@@ -69,7 +69,7 @@ MAIL;
         $system_object->send_email($subject, $message_final, $client_email, $client_first_name);
         header('Location: completed.php?z=' . $choice);
     }
-    else if ($choice == 2 && !empty($avatar) && $avatar != NULL) {
+    else if ($choice == 2) {
         $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar')";
         $subject = 'The Ball Will Be Brighter With Your Presence';
         $message_final = <<<MAIL
@@ -121,7 +121,7 @@ MAIL;
         $system_object->send_email($subject, $message_final, $client_email, $last_name);
         $db_handle->runQuery($query);
         header('Location: completed.php?z=' . $choice);
-    } else if ($choice == 3 && !empty($avatar) && $avatar != NULL ) {
+    } else if ($choice == 3) {
         $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar')";
         $db_handle->runQuery($query);
         $subject = 'The Ball Would have been more fun with you '.$client_first_name.'!';
@@ -438,7 +438,7 @@ MAIL;
 
                 </div>
                 <!--Grid column-->
-                <input id="avatar" type="hidden" name="avatar" required>
+                <input id="avatar" type="hidden" name="avatar" >
             </div>
             <!--Grid row-->
             <hr class="my-5">
@@ -464,7 +464,7 @@ MAIL;
 
                         <i class="fa fa-title prefix grey-text"> Select Your Title</i>
                         <div class="md-form mb-5">
-                            <select id="title" name="title" class="form-control" required>
+                            <select id="title" name="title" class="form-control" >
                                 <option value="Emperor">Emperor</option>
                                 <option value="King">King</option>
                                 <option value="Duke">Duke</option>
@@ -496,7 +496,7 @@ MAIL;
 
                         <div class="md-form">
                             <i class="fa fa-pencil prefix grey-text"></i>
-                            <textarea name="town" type="text" id="town" class="md-textarea" required></textarea>
+                            <textarea name="town" type="text" id="town" class="md-textarea" ></textarea>
                             <label for="form8">Enter Your Home Town</label>
                         </div>
 
