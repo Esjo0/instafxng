@@ -1,3 +1,5 @@
+ALTER TABLE `dinner_2018` ADD `state` VARCHAR(100) NOT NULL AFTER `invite_code`, ADD `type` ENUM('1','2','3','4') NOT NULL COMMENT '1-Single 2-Double 3-VIP 4-VVIP' AFTER `state`;
+ALTER TABLE `dinner_2018` ADD `name` VARCHAR(100) NULL AFTER `updated`, ADD `email` VARCHAR(100) NULL AFTER `name`, ADD `phone` VARCHAR(100) NULL AFTER `email`;
 ALTER TABLE `dinner_2018` ADD UNIQUE(`user_code`);
 ALTER TABLE `dinner_2018` ADD `gender` ENUM('1','2') NOT NULL COMMENT '1=male 2=femal' AFTER `town`;
 

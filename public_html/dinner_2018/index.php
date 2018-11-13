@@ -16,8 +16,9 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
     $choice = $db_handle->sanitizePost($_POST['choice']);
     $title = $db_handle->sanitizePost($_POST['title']);
     $town = $db_handle->sanitizePost($_POST['town']);
-    if ($choice == 1 && !empty($avatar) && $avatar != NULL) {
-        $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar')";
+    $state = $db_handle->sanitizePost($_POST['state']);
+    if ($choice == 1 && !empty($avatar) && $avatar != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL) {
+        $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender, state, type) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar', '$state', '1')";
         $db_handle->runQuery($query);
         if($avatar == 1){$gender = "his";}elseif($avatar == 2){$gender = "her";}
         $subject = 'Your seat has been reserved, '.$client_first_name.'!';
@@ -70,7 +71,7 @@ MAIL;
         header('Location: completed.php?z=' . $choice);
     }
     else if ($choice == 2) {
-        $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar')";
+        $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
         $subject = 'The Ball Will Be Brighter With Your Presence';
         $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2">
@@ -122,7 +123,7 @@ MAIL;
         $db_handle->runQuery($query);
         header('Location: completed.php?z=' . $choice);
     } else if ($choice == 3) {
-        $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar')";
+        $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
         $db_handle->runQuery($query);
         $subject = 'The Ball Would have been more fun with you '.$client_first_name.'!';
         $message_final = <<<MAIL
@@ -452,13 +453,13 @@ MAIL;
         <section style="display: none" id="select_title"->
 
             <h3 class="h3 text-center mb-5">SELECT YOUR ROYAL TITLE</h3>
-            <p class="help-block text-center"><i class="fa fa-info-circle"></i> Example. The Ooni of Ile-Ife</p>
+            <p class="help-block text-center"><i class="fa fa-info-circle"></i> Example. Emperor of Ile-Ife</p>
 
             <!--Grid row-->
             <div class="row wow fadeIn">
 
                 <!--Grid column-->
-                <div class="col-lg-6 col-md-12 px-4">
+                <div class="col-lg-4 col-md-12 px-4">
 
                     <div class="modal-body mx-3">
 
@@ -490,7 +491,7 @@ MAIL;
                 <!--/Grid column-->
 
                 <!--Grid column-->
-                <div class="col-lg-6 col-md-12">
+                <div class="col-lg-4 col-md-12">
 
                     <div class="modal-body mx-3">
 
@@ -501,6 +502,59 @@ MAIL;
                         </div>
 
                     </div>
+                </div>
+                <!--/Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-12 px-4">
+
+                    <div class="modal-body mx-3">
+
+                        <i class="fa fa-title prefix grey-text"> Select Your Current state of Residence</i>
+                        <div class="md-form mb-5">
+                            <select id="state" name="state" class="form-control" >
+                                <option value="Abia State">Abia State</option>
+                                <option value="Adamawa State">Adamawa State</option>
+                                <option value="Akwa Ibom State">Akwa Ibom State</option>
+                                <option value="Anambra State">Anambra State</option>
+                                <option value="Bauchi State">Bauchi State</option>
+                                <option value="Bayelsa State">Bayelsa State</option>
+                                <option value="Benue State">Benue State</option>
+                                <option value="Borno State">Borno State</option>
+                                <option value="Cross River State">Cross River State</option>
+                                <option value="Delta State">Delta State</option>
+                                <option value="Ebonyi State">Ebonyi State</option>
+                                <option value="Edo State">Edo State</option>
+                                <option value="Ekiti State">Ekiti State</option>
+                                <option value="Enugu State">Enugu State</option>
+                                <option value="FCT Abuja">FCT Abuja</option>
+                                <option value="Gombe State">Gombe State</option>
+                                <option value="Imo State">Imo State</option>
+                                <option value="Jigawa State">Jigawa State</option>
+                                <option value="Kaduna State">Kaduna State</option>
+                                <option value="Kano State">Kano State</option>
+                                <option value="Katsina State">Katsina State</option>
+                                <option value="Kebbi State">Kebbi State</option>
+                                <option value="Kogi State">Kogi State</option>
+                                <option value="Kwara State">Kwara State</option>
+                                <option value="Lagos State">Lagos State</option>
+                                <option value="Nasarawa State">Nasarawa State</option>
+                                <option value="Niger State">Niger State</option>
+                                <option value="Ogun State">Ogun State</option>
+                                <option value="Ondo State">Ondo State</option>
+                                <option value="Osun State">Osun State</option>
+                                <option value="Oyo State">Oyo State</option>
+                                <option value="Plateau State">Plateau State</option>
+                                <option value="Rivers State">Rivers State</option>
+                                <option value="Sokoto State">Sokoto State</option>
+                                <option value="Taraba State">Taraba State</option>
+                                <option value="Yobe State">Yobe State</option>
+                                <option value="Zamfara State">Zamfara State </option>
+                            </select>
+                        </div>
+
+                    </div>
+
                 </div>
                 <!--/Grid column-->
 
@@ -552,6 +606,7 @@ MAIL;
             document.getElementById("avatar").required = true;
             document.getElementById("title").required = true;
             document.getElementById("town").required = true;
+            document.getElementById("state").required = true;
             document.getElementById("submit").style.display = "none";
             document.getElementById("proceed").style.display = "block";
             document.getElementById("select_avatar").style.display = "block";
@@ -569,6 +624,7 @@ MAIL;
             document.getElementById("avatar").required = false;
             document.getElementById("title").required = false;
             document.getElementById("town").required = false;
+            document.getElementById("state").required = false;
         }
     }
 </script>
