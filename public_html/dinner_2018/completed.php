@@ -61,7 +61,7 @@ $choice = $get_params['z'];
 <body>
 
 <!-- Full Page Intro -->
-<div class="view full-page-intro" style="background-image: url('img/royal_bg.jpg'); background-repeat: no-repeat; background-size: cover;">
+<div class="view full-page-intro" style="background-image: url('img/royal.jpg'); background-repeat: no-repeat; background-size: cover;">
 
     <!-- Mask & flexbox options-->
     <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
@@ -100,7 +100,7 @@ $choice = $get_params['z'];
                                         <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;"><b>YOUR SEAT HAS BEEN RESERVED TEMPORARILY CONFIRM YOUR RESRVATION WITHIN THE NEXT 5 DAYS.</b></p>
                                     </div>
                                 </div>
-                                <img style="opacity: 0.7" src="https://mdbootstrap.com/img/Marketing/mdb-press-pack/mdb-main.jpg" class="img-fluid z-depth-1-half" alt="">
+                                <img style="opacity: 0.9" height="450" width="500" src="img/royal_ball.jpeg" class="img-fluid z-depth-1-half" alt="">
                             <?php }?>
                             <?php if ($choice == 3){?>
                                 <!--Card-->
@@ -111,7 +111,7 @@ $choice = $get_params['z'];
                                         <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;"><b>THANKS YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.</b></p>
                                     </div>
                                 </div>
-                                <img style="opacity: 0.7" src="https://mdbootstrap.com/img/Marketing/mdb-press-pack/mdb-main.jpg" class="img-fluid z-depth-1-half" alt="">
+                                <img style="opacity: 0.9" height="450" width="500" src="img/royal_ball.jpeg" class="img-fluid z-depth-1-half" alt="">
                             <?php }?>
 
                 </div>
