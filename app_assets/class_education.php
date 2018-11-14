@@ -129,6 +129,24 @@ MAIL;
         return $fetched_data ? $fetched_data : false;
     }
 
+    // Get max_lesson_id_completed by client
+    public function get_clients_max_lesson_completed($user_code) {
+        global $db_handle;
+
+        $query = "SELECT ueel.lesson_id AS clients_max_lesson_completed
+              FROM user_edu_exercise_log AS ueel
+              INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
+              INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
+              WHERE ueel.user_code = '$user_code' ORDER BY ueel.created DESC LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchArray($result);
+        foreach($fetched_data AS $row){
+            extract($row);
+        }
+
+        return $clients_max_lesson_completed;
+    }
+
     //Get the maximum published lesson available to clients.
     public function get_highest_lesson_published(){
         global $db_handle;
