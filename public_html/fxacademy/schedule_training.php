@@ -7,9 +7,10 @@ if (!$session_client->is_logged_in()) {
 }
 
 $get_learning_position = $education_object->get_learning_position($_SESSION['client_unique_code']);
+extract($get_learning_position);
 $highest_lesson_published = $education_object->get_highest_lesson_published();
 
-if($get_learning_position != $highest_lesson_published){
+if($lesson_id != $highest_lesson_published){
     redirect_to("./");
 }
 
