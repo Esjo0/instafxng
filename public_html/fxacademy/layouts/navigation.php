@@ -36,8 +36,8 @@ $highest_lesson_published = $education_object->get_highest_lesson_published();
                             <li><a href="fxacademy/index.php" title="Dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
                             <li><a href="fxacademy/support_message.php" title=""><i class="fa fa-envelope fa-fw"></i> Messages</a></li>
                             <?php if($max_lesson == $highest_lesson_published){?>
-                            <li><a href="fxacademy/schedule_training.php" title=""><i class="fa fa- fa-fw"></i>Schedule Training</a></li>
-                            <li><a href="fxacademy/certificate.php" title=""><i class="fa fa- fa-fw"></i>Download Certificate</a></li>
+                                <li><a href="fxacademy/schedule_training.php" title=""><i class="fa fa-calendar fa-fw"></i>Schedule Training</a></li>
+                                <li><a href="fxacademy/certificate.php" title=""><i class="fa fa-certificate fa-fw"></i>Download Certificate</a></li>
                             <?php }?>
                             <?php if($initiated_trans) { ?>
                             <li><a href="fxacademy/pay_notify.php" title=""><i class="fa fa-envelope fa-fw"></i> Notification</a></li>
