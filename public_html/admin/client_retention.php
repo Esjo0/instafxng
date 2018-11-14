@@ -62,7 +62,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY last_trade DESC ";
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
 
@@ -71,7 +71,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY first_trade DESC ";
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
 
@@ -79,13 +79,13 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ";
+            WHERE rc2.user_code IS NULL ORDER BY rc1.last_trade DESC ";
 
         $retention_type_title2 = "RETAINED";
         $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NOT NULL ";
+            WHERE rc2.user_code IS NOT NULL ORDER BY rc2.first_trade DESC ";
 
         $main_query = $query;
         $retention_type_main_title = $retention_type_title;
@@ -160,7 +160,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY last_trade DESC ";
 
     $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
 
@@ -169,7 +169,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY first_trade DESC ";
 
     $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
 
@@ -177,13 +177,13 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
     $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ";
+            WHERE rc2.user_code IS NULL ORDER BY rc1.last_trade DESC ";
 
     $retention_type_title2 = "RETAINED";
     $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
-                FROM reference_clients AS rc1
-                LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-                WHERE rc2.user_code IS NOT NULL ";
+            FROM reference_clients AS rc1
+            LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+            WHERE rc2.user_code IS NOT NULL ORDER BY rc2.first_trade DESC ";
 
     $main_query = $query;
     $retention_type_main_title = $retention_type_title;
@@ -474,7 +474,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                             <th>Client Detail</th>
                                             <th>Commission</th>
                                             <th>Funding</th>
-                                            <th><?php if($retention_type == '1') { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
+                                            <th><?php if($retention_type_main_title == "NOT YET RETAINED") { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
