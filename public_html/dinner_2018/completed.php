@@ -97,7 +97,7 @@ $choice = $get_params['z'];
 
                                     <!--Card content-->
                                     <div class="card-body">
-                                        <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;"><b>YOUR SEAT HAS BEEN RESERVED TEMPORARILY CONFIRM YOUR RESRVATION WITHIN THE NEXT 5 DAYS.</b></p>
+                                        <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;"><b>YOUR SEAT HAS BEEN RESERVED TEMPORARILY CONFIRM YOUR RESERVATION WITHIN THE NEXT 5 DAYS.</b></p>
                                     </div>
                                 </div>
                                 <img style="opacity: 0.9" height="450" width="500" src="img/royal_ball.jpeg" class="img-fluid z-depth-1-half" alt="">
