@@ -162,7 +162,7 @@ if ($deposit_process_pending && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST[
 }
 
 //Pend deposit refund
-if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['pending_refund'] == true)) {
+if ($deposit_process_refund_approve && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['pending_refund'] == true)) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
