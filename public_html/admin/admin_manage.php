@@ -295,6 +295,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="228" id="" <?php if (in_array(228, $my_pages)) { echo 'checked="checked"'; } ?>/> New Dinner 2017 Reg</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="229" id="" <?php if (in_array(229, $my_pages)) { echo 'checked="checked"'; } ?>/> All Dinner 2017 Reg</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="230" id="" <?php if (in_array(230, $my_pages)) { echo 'checked="checked"'; } ?>/> Dinner Sign In</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="301" id="" <?php if (in_array(301, $my_pages)) { echo 'checked="checked"'; } ?>/> Dinner 2018</label></div></div>
                                     </div>
                                     <hr/>
 

@@ -167,7 +167,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(228, $my_pages_sidebar)) { ?><li><a href="dinner_2017_new_reg.php" title="New Dinner 2017 Reg">New Dinner 2017 Reg</a></li><?php } ?>
                         <?php if (in_array(229, $my_pages_sidebar)) { ?><li><a href="dinner_2017_all_reg.php" title="All Dinner 2017 Reg">All Dinner 2017 Reg</a></li><?php } ?>
                         <?php if (in_array(230, $my_pages_sidebar)) { ?><li><a href="dinner_2017_signin.php" title="Dinner Sign In">Dinner Sign In</a></li><?php } ?>
-
+                        <?php if (in_array(301, $my_pages_sidebar)) { ?><li><a href="dinner_2018.php" title="Dinner Sign In">Dinner 2018</a></li><?php } ?>
                         <?php //if (in_array(230, $my_pages_sidebar)) { ?><li><a href="rma_lfc.php" title="Predictions">Predictions</a></li><?php //} ?>
                     </ul>
                 </li>
