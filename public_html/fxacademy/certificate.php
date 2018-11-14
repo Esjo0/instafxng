@@ -19,13 +19,14 @@ if($lesson_id != $highest_lesson_published){
     redirect_to("./");
 }
 $full_name = $_SESSION['client_last_name'] . ' ' . $_SESSION['client_first_name'];
+
 $message_final = <<<MAIL
    <body style="background-image: url(../images/cert.jpg);
                 background-repeat: no-repeat;
                 background-size: cover;
                 height: 1200px;
                 width: 650px;">
-    <div style="font-family: 'Times New Roman'; font-size: 30px; margin-left: 450px; padding-top:380px;" id="name">$full_name</div>
+    <div style="font-family: 'Times New Roman'; font-size: 30px; margin-left: 550px; padding-top:380px;" id="name">$full_name</div>
     </body>
 MAIL;
 
