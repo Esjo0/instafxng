@@ -86,7 +86,9 @@ $choice = $get_params['z'];
 
                                 <!--Card content-->
                                 <div class="card-body">
-                                    <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;"><b>YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL</b></p>
+                                    <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;">
+                                        <strong>You have successfully reserved a seat for the Instafxng Royal Ball</strong>
+                                    </p>
                                 </div>
                             </div>
                             <img style="opacity: 0.7" src="img/success_logo.png" class="img-fluid z-depth-1-half" alt="">
@@ -97,7 +99,9 @@ $choice = $get_params['z'];
 
                                     <!--Card content-->
                                     <div class="card-body">
-                                        <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;"><b>YOUR SEAT HAS BEEN RESERVED TEMPORARILY CONFIRM YOUR RESRVATION WITHIN THE NEXT 5 DAYS.</b></p>
+                                        <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;">
+                                            <strong>Your seat has been temporarily reserved, please confirm your reservation within the next 5 days.</strong>
+                                        </p>
                                     </div>
                                 </div>
                                 <img style="opacity: 0.9" height="450" width="500" src="img/royal_ball.jpeg" class="img-fluid z-depth-1-half" alt="">
@@ -108,7 +112,9 @@ $choice = $get_params['z'];
 
                                     <!--Card content-->
                                     <div class="card-body">
-                                        <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;"><b>THANKS YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.</b></p>
+                                        <p class="text-center" style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;">
+                                            <strong>Thank you, we would inform you about future events.</strong>
+                                        </p>
                                     </div>
                                 </div>
                                 <img style="opacity: 0.9" height="450" width="500" src="img/royal_ball.jpeg" class="img-fluid z-depth-1-half" alt="">
