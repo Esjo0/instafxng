@@ -146,334 +146,287 @@ if(isset($_POST['campaign_category'])){
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <base target="_self">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instaforex Nigeria | Admin - Client ON-Boarding</title>
-    <meta name="title" content="Instaforex Nigeria | Admin - Training Clients Funded"/>
-    <meta name="keywords" content=""/>
-    <meta name="description" content=""/>
-    <?php require_once 'layouts/head_meta.php'; ?>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load("current", {packages: ["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            var total = <?php echo $percentage_progress;?>;
-            var target =  <?php echo $percentage_target;?>;
-            var data = google.visualization.arrayToDataTable([
-                ['Type', 'Number of clients'],
-                ['Progress', total],
-                ['Target', target]
-            ]);
+    <head>
+        <base target="_self">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Instaforex Nigeria | Admin - Client ON-Boarding</title>
+        <meta name="title" content="Instaforex Nigeria | Admin - Training Clients Funded"/>
+        <meta name="keywords" content=""/>
+        <meta name="description" content=""/>
+        <?php require_once 'layouts/head_meta.php'; ?>
+    </head>
+    <body>
+        <?php require_once 'layouts/header.php'; ?>
+        <!-- Main Body: The is the main content area of the web site, contains a side bar  -->
+        <div id="main-body" class="container-fluid">
+            <div class="row no-gutter">
+                <!-- Main Body - Side Bar  -->
+                <div id="main-body-side-bar" class="col-md-4 col-lg-3 left-nav">
+                    <?php require_once 'layouts/sidebar.php'; ?>
+                </div>
 
-            var options = {
-                title: 'Target Analysis',
-                pieHole: 0.3,
-            };
+                <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
+                <div id="main-body-content-area" class="col-md-8 col-lg-9">
 
-            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-            chart.draw(data, options);
-        }
-    </script>
-</head>
-<body>
-<?php require_once 'layouts/header.php'; ?>
-<!-- Main Body: The is the main content area of the web site, contains a side bar  -->
-<div id="main-body" class="container-fluid">
-    <div class="row no-gutter">
-        <!-- Main Body - Side Bar  -->
-        <div id="main-body-side-bar" class="col-md-4 col-lg-3 left-nav">
-            <?php require_once 'layouts/sidebar.php'; ?>
-        </div>
-
-        <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
-        <div id="main-body-content-area" class="col-md-8 col-lg-9">
-
-            <!-- Unique Page Content Starts Here
-            ================================================== -->
-            <div class="search-section">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <form data-toggle="validator" class="form-horizontal" role="form" method="post"
-                              action="<?php echo $REQUEST_URI; ?>">
-                            <div class="input-group">
-                                <input type="hidden" name="search_param" value="all" id="search_param">
-                                <input type="text" class="form-control" name="search_text" placeholder="Search term..."
-                                       required>
+                    <!-- Unique Page Content Starts Here
+                    ================================================== -->
+                    <div class="search-section">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post"
+                                      action="<?php echo $REQUEST_URI; ?>">
+                                    <div class="input-group">
+                                        <input type="hidden" name="search_param" value="all" id="search_param">
+                                        <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default" type="submit"><span
-                                                    class="glyphicon glyphicon-search"></span></button>
+                                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                                         </span>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12 text-danger">
-                    <h4><strong>Clients ON-Boarding</strong></h4>
-                </div>
-            </div>
-            <div class="section-tint super-shadow">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <table class="table table-border table-responsive table-hover">
-                            <tr>
-                                <td>Total No. of clients On board</td>
-                                <td><?php echo $total_onboard ?></td>
-                            </tr>
-                            <tr>
-                                <td>Expected Target</td>
-                                <td><?php echo $_SESSION['target'] ?></td>
-                            </tr>
-                            <tr>
-                                <td>Number of Client to meet 100% target</td>
-                                <td><?php echo $_SESSION['target'] - $total_onboard ?></td>
-                            </tr>
-
-                            <tr title="Click Here to view details and list">
-                                <td><a target="_blank" href="client_not_onboard.php">Total No. of Clients Not yet On
-                                        board</a></td>
-                                <td><?php echo $not_on_board; ?></td>
-                            </tr>
-                            <tr>
-                                <td>Percentage progress compared to target</td>
-                                <td><?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></td>
-                            </tr>
-
-                        </table>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                 aria-valuenow="<?php echo($percentage_progress); ?>"
-                                 aria-valuemin="0" aria-valuemax="100"
-                                 style="width:<?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?>">
-                                <?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
                     </div>
-                    <div class="col-sm-6 pull-right">
-                        <div id="donutchart"></div>
-                        <div class="input-group input-group-sm <?php if (number_format($total_onboard) == 0) {
-                            echo 'has-danger';
-                        } elseif (number_format($total_onboard) > 0) {
-                            echo 'has-success';
-                        } ?> ">
-                            <span
-                                class="input-group-addon">Progress for <?php echo target_period($period); ?>  <?php echo $year; ?></span>
-                            <input value="<?php echo number_format($total_onboard); ?> of <?php echo $_SESSION['target'] ?>"
-                                   class="form-control" disabled/>
+
+                    <div class="row">
+                        <div class="col-sm-12 text-danger">
+                            <h4><strong>Clients ON-Boarding</strong></h4>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="section-tint super-shadow">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <?php require_once 'layouts/feedback_message.php'; ?>
+                    <div class="section-tint super-shadow">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h5 class="text-center"><strong>Month Analysis - (<?php echo $month_title; ?>)</strong></h5>
 
-                        <div class="pull-right">
-                            <button type="button" data-target="#confirm-add-admin" data-toggle="modal"
-                                    class="btn btn-sm btn-default"><i class="glyphicon glyphicon-search"></i> Apply
-                                Filter
-                            </button>
+                                <table class="table table-border table-responsive table-hover">
+                                    <tr><td>Total No. of clients On board</td><td><?php echo $total_onboard ?></td></tr>
+                                    <tr><td>Expected Target</td><td><?php echo $_SESSION['target'] ?></td></tr>
+                                    <tr><td>Number of Client to meet 100% target</td><td><?php echo $_SESSION['target'] - $total_onboard ?></td></tr>
+                                    <tr title="Click Here to view details and list"><td><a target="_blank" href="client_not_onboard.php">Total No. of Clients Not yet On board</a></td><td><?php echo $not_on_board; ?></td></tr>
+                                    <tr><td>Percentage progress compared to target</td><td><?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></td></tr>
+                                </table>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo($percentage_progress); ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?>"> <?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <h5 class="text-center"><strong>Quarter Analysis - (<?php echo $quarter_title; ?>)</strong></h5>
+
+                                <table class="table table-border table-responsive table-hover">
+                                    <tr><td>Total No. of clients On board</td><td><?php echo $total_onboard ?></td></tr>
+                                    <tr><td>Expected Target</td><td><?php echo $_SESSION['target'] ?></td></tr>
+                                    <tr><td>Number of Client to meet 100% target</td><td><?php echo $_SESSION['target'] - $total_onboard ?></td></tr>
+                                    <tr title="Click Here to view details and list"><td><a target="_blank" href="client_not_onboard.php">Total No. of Clients Not yet On board</a></td><td><?php echo $not_on_board; ?></td></tr>
+                                    <tr><td>Percentage progress compared to target</td><td><?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></td></tr>
+                                </table>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo($percentage_progress); ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?>"> <?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="section-tint super-shadow">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <?php require_once 'layouts/feedback_message.php'; ?>
 
-                        <!--Modal - confirmation boxes-->
-                        <div id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                            <form data-toggle="validator" class="form-horizontal" role="form" method="post"
-                                  action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                <div class="modal-dialog modal-md">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                    class="close">&times;</button>
-                                            <h4 class="modal-title">Apply Filter</h4></div>
-                                        <div class="modal-body">
-                                            <p>Select Your Desired range</p>
+                                <div class="pull-right">
+                                    <button type="button" data-target="#confirm-add-admin" data-toggle="modal"
+                                            class="btn btn-sm btn-default"><i class="glyphicon glyphicon-search"></i> Apply
+                                        Filter
+                                    </button>
+                                </div>
 
-                                            <div class="form-group row">
-                                                <label class="col-sm-12">Select Duration</label>
-                                                <div class="col-sm-6">
-                                                    <div class="input-group date">
-                                                        <input placeholder="Select Year" name="year" type="text"
-                                                               class="form-control" id="datetimepicker" required>
-                                                        <span class="input-group-addon"><span
-                                                                class="glyphicon glyphicon-calendar"></span></span>
+                                <!--Modal - confirmation boxes-->
+                                <div id="confirm-add-admin" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post"
+                                          action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                        <div class="modal-dialog modal-md">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                            class="close">&times;</button>
+                                                    <h4 class="modal-title">Apply Filter</h4></div>
+                                                <div class="modal-body">
+                                                    <p>Select Your Desired range</p>
+
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-12">Select Duration</label>
+                                                        <div class="col-sm-6">
+                                                            <div class="input-group date">
+                                                                <input placeholder="Select Year" name="year" type="text"
+                                                                       class="form-control" id="datetimepicker" required>
+                                                                <span class="input-group-addon"><span
+                                                                        class="glyphicon glyphicon-calendar"></span></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="input-group date">
+                                                                <select type="text" name="period" class="form-control">
+                                                                    <option value="1">January</option>
+                                                                    <option value="2">February</option>
+                                                                    <option value="3">March</option>
+                                                                    <option value="4">April</option>
+                                                                    <option value="5">May</option>
+                                                                    <option value="6">June</option>
+                                                                    <option value="7">July</option>
+                                                                    <option value="8">August</option>
+                                                                    <option value="9">September</option>
+                                                                    <option value="10">October</option>
+                                                                    <option value="11">November</option>
+                                                                    <option value="12">December</option>
+                                                                    <option value="1-12">Annual</option>
+                                                                    <option value="1-6">First Half</option>
+                                                                    <option value="7-12">Second Half</option>
+                                                                    <option value="1-3">First Quarter</option>
+                                                                    <option value="4-6">Second Quarter</option>
+                                                                    <option value="7-9">Third Quarter</option>
+                                                                    <option value="10-12">Fourth Quarter</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <script type="text/javascript">
+                                                        $(function () {
+                                                            $('#datetimepicker').datetimepicker({format: 'YYYY'});
+                                                        });
+                                                    </script>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input name="filter" type="submit" class="btn btn-sm btn-success"
+                                                           value="Proceed">
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                            class="btn btn-sm btn-danger">Close!
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <form class="pull-right" method="post" action="">
+                                    <button name="view" type="submit" class="btn btn-info btn-sm"><i
+                                            class="glyphicon glyphicon-eye-circle"></i>REFRESH
+                                    </button>
+                                </form>
+                                    <button class="btn btn-sm btn-default pull-right" type="button" data-target="#confirm-campaign" data-toggle="modal">
+                                        Create Campaign Category
+                                    </button>
+                                <div id="confirm-campaign" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post"
+                                          action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                                        <div class="modal-dialog modal-md">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                            class="close">&times;</button>
+                                                    <h4 class="modal-title">Create Campaign Category</h4></div>
+                                                <div class="modal-body">
+                                                    <p>Enter Title and Description</p>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label for="inputHeading3" class="col-form-label">
+                                                                Title/Name:</label>
+                                                            <input name="name" type="text" class="form-control"
+                                                                   id="forum_title"
+                                                                   placeholder="Enter Target Name or title" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label for="inputHeading3" class="col-form-label">Description</label>
+                                                                    <textarea rows="3" name="details" type="text"
+                                                                              class="form-control" id="forum_title"
+                                                                              placeholder="Enter Detailed Description of this category" required></textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <div class="input-group date">
-                                                        <select type="text" name="period" class="form-control">
-                                                            <option value="1">January</option>
-                                                            <option value="2">February</option>
-                                                            <option value="3">March</option>
-                                                            <option value="4">April</option>
-                                                            <option value="5">May</option>
-                                                            <option value="6">June</option>
-                                                            <option value="7">July</option>
-                                                            <option value="8">August</option>
-                                                            <option value="9">September</option>
-                                                            <option value="10">October</option>
-                                                            <option value="11">November</option>
-                                                            <option value="12">December</option>
-                                                            <option value="1-12">Annual</option>
-                                                            <option value="1-6">First Half</option>
-                                                            <option value="7-12">Second Half</option>
-                                                            <option value="1-3">First Quarter</option>
-                                                            <option value="4-6">Second Quarter</option>
-                                                            <option value="7-9">Third Quarter</option>
-                                                            <option value="10-12">Fourth Quarter</option>
-                                                        </select>
-                                                    </div>
+                                                <div class="modal-footer">
+                                                    <input name="campaign_category" type="submit" class="btn btn-sm btn-success"
+                                                           value="Proceed">
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                            class="btn btn-sm btn-danger">Close!
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <script type="text/javascript">
-                                                $(function () {
-                                                    $('#datetimepicker').datetimepicker({format: 'YYYY'});
-                                                });
-                                            </script>
                                         </div>
-                                        <div class="modal-footer">
-                                            <input name="filter" type="submit" class="btn btn-sm btn-success"
-                                                   value="Proceed">
-                                            <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                    class="btn btn-sm btn-danger">Close!
-                                            </button>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div>
-                        <form class="pull-right" method="post" action="">
-                            <button name="view" type="submit" class="btn btn-info btn-sm"><i
-                                    class="glyphicon glyphicon-eye-circle"></i>REFRESH
-                            </button>
-                        </form>
-                            <button class="btn btn-sm btn-default pull-right" type="button" data-target="#confirm-campaign" data-toggle="modal">
-                                Create Campaign Category
-                            </button>
-                        <div id="confirm-campaign" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-                            <form data-toggle="validator" class="form-horizontal" role="form" method="post"
-                                  action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                <div class="modal-dialog modal-md">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                    class="close">&times;</button>
-                                            <h4 class="modal-title">Create Campaign Category</h4></div>
-                                        <div class="modal-body">
-                                            <p>Enter Title and Description</p>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
-                                                    <label for="inputHeading3" class="col-form-label">
-                                                        Title/Name:</label>
-                                                    <input name="name" type="text" class="form-control"
-                                                           id="forum_title"
-                                                           placeholder="Enter Target Name or title" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
-                                                    <label for="inputHeading3" class="col-form-label">Description</label>
-                                                            <textarea rows="3" name="details" type="text"
-                                                                      class="form-control" id="forum_title"
-                                                                      placeholder="Enter Detailed Description of this category" required></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input name="campaign_category" type="submit" class="btn btn-sm btn-success"
-                                                   value="Proceed">
-                                            <button type="button" data-dismiss="modal" aria-hidden="true"
-                                                    class="btn btn-sm btn-danger">Close!
-                                            </button>
-                                        </div>
+
+
+
+                                <?php if (isset($numrows)) { ?>
+                                    <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
+                                <?php } ?>
+
+                                <?php if ( (isset($client_onboard) && !empty($client_onboard))) {
+                                    require 'layouts/pagination_links.php';
+                                } ?>
+
+                                <table class="table table-responsive table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    if ((isset($client_onboard) && !empty($client_onboard)) ) {
+                                        foreach ($client_onboard as $row) {
+                                            extract($row); ?>
+                                            <tr>
+                                                <td><?php echo $full_name; ?></td>
+                                                <td><?php echo $email; ?></td>
+                                                <td><?php echo $phone; ?></td>
+                                                <td nowrap>
+                                                    <a target="_blank" title="Comment" class="btn btn-sm btn-success"
+                                                       href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_onboarding'; ?>&c=<?php echo encrypt('CLIENT ON-BOARDING'); ?>&pg=<?php echo $currentpage; ?>"><i
+                                                            class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-sm btn-info"
+                                                       href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i
+                                                            class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" class="btn btn-sm btn-primary" title="Send Email"
+                                                       href="campaign_email_single.php?name=<?php $name = $row['full_name'];
+                                                       echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i
+                                                            class="glyphicon glyphicon-envelope"></i></a>
+                                                    <a target="_blank" class="btn btn-sm btn-success" title="Send SMS"
+                                                       href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i
+                                                            class="glyphicon glyphicon-phone-alt"></i></a>
+                                                </td>
+                                            </tr>
+                                        <?php }
+                                    } else {
+                                        echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>";
+                                    } ?>
+                                    </tbody>
+                                </table>
+
+                                <?php if (isset($client_onboard) && !empty($client_onboard)) { ?>
+                                    <div class="tool-footer text-right">
+                                        <p class="pull-left">
+                                            Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?>
+                                            entries</p>
                                     </div>
-                                </div>
-                            </form>
+                                <?php } ?>
+                            </div>
                         </div>
 
-
-
-                        <?php if (isset($numrows)) { ?>
-                            <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
-                        <?php } ?>
-
-                        <?php if ( (isset($client_onboard) && !empty($client_onboard))) {
+                        <?php if (isset($client_onboard) && !empty($client_onboard)) {
                             require 'layouts/pagination_links.php';
                         } ?>
-
-                        <table class="table table-responsive table-striped table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            if ((isset($client_onboard) && !empty($client_onboard)) ) {
-                                foreach ($client_onboard as $row) {
-                                    extract($row); ?>
-                                    <tr>
-                                        <td><?php echo $full_name; ?></td>
-                                        <td><?php echo $email; ?></td>
-                                        <td><?php echo $phone; ?></td>
-                                        <td nowrap>
-                                            <a target="_blank" title="Comment" class="btn btn-sm btn-success"
-                                               href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_onboarding'; ?>&c=<?php echo encrypt('CLIENT ON-BOARDING'); ?>&pg=<?php echo $currentpage; ?>"><i
-                                                    class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                            <a target="_blank" title="View" class="btn btn-sm btn-info"
-                                               href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i
-                                                    class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                            <a target="_blank" class="btn btn-sm btn-primary" title="Send Email"
-                                               href="campaign_email_single.php?name=<?php $name = $row['full_name'];
-                                               echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i
-                                                    class="glyphicon glyphicon-envelope"></i></a>
-                                            <a target="_blank" class="btn btn-sm btn-success" title="Send SMS"
-                                               href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i
-                                                    class="glyphicon glyphicon-phone-alt"></i></a>
-                                        </td>
-                                    </tr>
-                                <?php }
-                            } else {
-                                echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>";
-                            } ?>
-                            </tbody>
-                        </table>
-
-                        <?php if (isset($client_onboard) && !empty($client_onboard)) { ?>
-                            <div class="tool-footer text-right">
-                                <p class="pull-left">
-                                    Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?>
-                                    entries</p>
-                            </div>
-                        <?php } ?>
                     </div>
+
+                    <!-- Unique Page Content Ends Here
+                    ================================================== -->
+
                 </div>
 
-                <?php if (isset($client_onboard) && !empty($client_onboard)) {
-                    require 'layouts/pagination_links.php';
-                } ?>
             </div>
-
-            <!-- Unique Page Content Ends Here
-            ================================================== -->
-
         </div>
-
-    </div>
-</div>
-<?php require_once 'layouts/footer.php'; ?>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
-<script
-    src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
-
-</body>
+        <?php require_once 'layouts/footer.php'; ?>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+        <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+    </body>
 </html>
