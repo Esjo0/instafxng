@@ -1,8 +1,33 @@
 <?php
 require_once("../init/initialize_admin.php");
-if (!$session_admin->is_logged_in()) {
-    redirect_to("login.php");
-}
+if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
+
+$current_year = date('Y');
+$main_current_month = date('m');
+$current_month = ltrim($main_current_month, '0');
+$current_quarter = $obj_analytics->get_quarter_code($main_current_month);
+$current_half_year = $obj_analytics->get_half_year_code($main_current_month);
+$current_year_code = "1-12";
+
+// Get the page Analytics
+$onboarding_analytics = $obj_analytics->get_onboarding_analytics();
+extract($onboarding_analytics);
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '1' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$m_current_target = $db_handle->fetchAssoc($result)[0]['target'];
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_quarter' AND status = '1' AND type = '1' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$q_current_target = $db_handle->fetchAssoc($result)[0]['target'];
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_half_year' AND status = '1' AND type = '1' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$h_current_target = $db_handle->fetchAssoc($result)[0]['target'];
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_year_code' AND status = '1' AND type = '1' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$y_current_target = $db_handle->fetchAssoc($result)[0]['target'];
 
 //get number clients not on board
 $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0) GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
@@ -150,8 +175,8 @@ if(isset($_POST['campaign_category'])){
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Admin - Client ON-Boarding</title>
-        <meta name="title" content="Instaforex Nigeria | Admin - Training Clients Funded"/>
+        <title>Instaforex Nigeria | Admin - Client Onboarding Tracker</title>
+        <meta name="title" content="Instaforex Nigeria | Admin - Client Onboarding Tracker"/>
         <meta name="keywords" content=""/>
         <meta name="description" content=""/>
         <?php require_once 'layouts/head_meta.php'; ?>
@@ -174,8 +199,7 @@ if(isset($_POST['campaign_category'])){
                     <div class="search-section">
                         <div class="row">
                             <div class="col-xs-12">
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post"
-                                      action="<?php echo $REQUEST_URI; ?>">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
                                     <div class="input-group">
                                         <input type="hidden" name="search_param" value="all" id="search_param">
                                         <input type="text" class="form-control" name="search_text" placeholder="Search term..." required>
@@ -190,51 +214,118 @@ if(isset($_POST['campaign_category'])){
 
                     <div class="row">
                         <div class="col-sm-12 text-danger">
-                            <h4><strong>Clients ON-Boarding</strong></h4>
+                            <h4><strong>CLIENT ONBOARDING TRACKER</strong></h4>
                         </div>
                     </div>
+
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <h5 class="text-center"><strong>Month Analysis - (<?php echo $month_title; ?>)</strong></h5>
+                            <div class="col-sm-12">
+                                <div id="myAnalytics" class="carousel slide" data-interval="false">
+                                    <!-- Indicators -->
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#myAnalytics" data-slide-to="0" class="active"></li>
+                                        <li data-target="#myAnalytics" data-slide-to="1"></li>
+                                    </ol>
 
-                                <table class="table table-border table-responsive table-hover">
-                                    <tr><td>Total No. of clients On board</td><td><?php echo $total_onboard ?></td></tr>
-                                    <tr><td>Expected Target</td><td><?php echo $_SESSION['target'] ?></td></tr>
-                                    <tr><td>Number of Client to meet 100% target</td><td><?php echo $_SESSION['target'] - $total_onboard ?></td></tr>
-                                    <tr title="Click Here to view details and list"><td><a target="_blank" href="client_not_onboard.php">Total No. of Clients Not yet On board</a></td><td><?php echo $not_on_board; ?></td></tr>
-                                    <tr><td>Percentage progress compared to target</td><td><?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></td></tr>
-                                </table>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo($percentage_progress); ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?>"> <?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <h5 class="text-center"><strong>Quarter Analysis - (<?php echo $quarter_title; ?>)</strong></h5>
+                                    <!-- Wrapper for slides -->
+                                    <div class="carousel-inner" style="height: 300px;">
 
-                                <table class="table table-border table-responsive table-hover">
-                                    <tr><td>Total No. of clients On board</td><td><?php echo $total_onboard ?></td></tr>
-                                    <tr><td>Expected Target</td><td><?php echo $_SESSION['target'] ?></td></tr>
-                                    <tr><td>Number of Client to meet 100% target</td><td><?php echo $_SESSION['target'] - $total_onboard ?></td></tr>
-                                    <tr title="Click Here to view details and list"><td><a target="_blank" href="client_not_onboard.php">Total No. of Clients Not yet On board</a></td><td><?php echo $not_on_board; ?></td></tr>
-                                    <tr><td>Percentage progress compared to target</td><td><?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></td></tr>
-                                </table>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo($percentage_progress); ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo (($numrows / $_SESSION['target']) * 100) . "%"; ?>"> <?php echo (($total_onboard / $_SESSION['target']) * 100) . "%"; ?></div>
+                                        <div class="item active">
+
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Month Analysis - (<?php echo $month_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Month Target</td><td><?php echo number_format($m_current_target); ?></td></tr>
+                                                        <tr><td>Total On board</td><td><?php echo number_format($m_total_onboard); ?></td></tr>
+                                                        <tr><td>Target Deficit</td><td><?php echo number_format($m_current_target - $m_total_onboard) ?></td></tr>
+                                                        <tr><td>Percentage progress</td><td><?php echo number_format((($m_total_onboard / $m_current_target) * 100), 2) . "%"; ?></td></tr>
+                                                    </table>
+                                                    <hr />
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo number_format((($m_total_onboard / $m_current_target) * 100), 2); ?>" aria-valuemin="0" aria-valuemax="<?php echo $m_current_target; ?>" style="width:<?php echo number_format((($m_total_onboard / $m_current_target) * 100), 2) . "%"; ?>"> <?php echo number_format((($m_total_onboard / $m_current_target) * 100), 2) . "%"; ?></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Quarter Analysis - (<?php echo $quarter_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Quarter Target</td><td><?php echo number_format($q_current_target); ?></td></tr>
+                                                        <tr><td>Total On board</td><td><?php echo number_format($q_total_onboard) ?></td></tr>
+                                                        <tr><td>Target Deficit</td><td><?php echo number_format($q_current_target - $q_total_onboard) ?></td></tr>
+                                                        <tr><td>Percentage progress</td><td><?php echo number_format((($q_total_onboard / $q_current_target) * 100), 2) . "%"; ?></td></tr>
+                                                    </table>
+                                                    <hr />
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo number_format((($q_total_onboard / $q_current_target) * 100), 2); ?>" aria-valuemin="0" aria-valuemax="<?php echo $q_current_target; ?>" style="width:<?php echo number_format((($q_total_onboard / $q_current_target) * 100), 2) . "%"; ?>"> <?php echo number_format((($q_total_onboard / $q_current_target) * 100), 2) . "%"; ?></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="item">
+
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Half Year Analysis - (<?php echo $half_year_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Half Year Target</td><td><?php echo number_format($h_current_target); ?></td></tr>
+                                                        <tr><td>Total On board</td><td><?php echo number_format($h_total_onboard) ?></td></tr>
+                                                        <tr><td>Target Deficit</td><td><?php echo number_format($h_current_target - $h_total_onboard) ?></td></tr>
+                                                        <tr><td>Percentage progress</td><td><?php echo number_format((($h_total_onboard / $h_current_target) * 100), 2) . "%"; ?></td></tr>
+                                                    </table>
+                                                    <hr />
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo number_format((($h_total_onboard / $h_current_target) * 100), 2); ?>" aria-valuemin="0" aria-valuemax="<?php echo $h_current_target; ?>" style="width:<?php echo number_format((($h_total_onboard / $h_current_target) * 100), 2) . "%"; ?>"> <?php echo number_format((($h_total_onboard / $h_current_target) * 100), 2) . "%"; ?></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Year Analysis - (<?php echo $year_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Year Target</td><td><?php echo number_format($y_current_target); ?></td></tr>
+                                                        <tr><td>Total On board</td><td><?php echo number_format($y_total_onboard) ?></td></tr>
+                                                        <tr><td>Target Deficit</td><td><?php echo number_format($y_current_target - $y_total_onboard) ?></td></tr>
+                                                        <tr><td>Percentage progress</td><td><?php echo number_format((($y_total_onboard / $y_current_target) * 100), 2) . "%"; ?></td></tr>
+                                                    </table>
+                                                    <hr />
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo number_format((($y_total_onboard / $y_current_target) * 100), 2); ?>" aria-valuemin="0" aria-valuemax="<?php echo $y_current_target; ?>" style="width:<?php echo number_format((($y_total_onboard / $y_current_target) * 100), 2) . "%"; ?>"> <?php echo number_format((($y_total_onboard / $y_current_target) * 100), 2) . "%"; ?></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Left and right controls -->
+                                    <a class="left carousel-control" href="#myAnalytics" data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" href="#myAnalytics" data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
                                 <div class="pull-right">
-                                    <button type="button" data-target="#confirm-add-admin" data-toggle="modal"
-                                            class="btn btn-sm btn-default"><i class="glyphicon glyphicon-search"></i> Apply
-                                        Filter
-                                    </button>
+                                    <button type="button" data-target="#confirm-add-admin" data-toggle="modal" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-search"></i> Apply Filter</button>
                                 </div>
 
                                 <!--Modal - confirmation boxes-->

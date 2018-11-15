@@ -25,6 +25,8 @@ $current_year = date('Y');
 $main_current_month = date('m');
 $current_month = ltrim($main_current_month, '0');
 $current_quarter = $obj_analytics->get_quarter_code($main_current_month);
+$current_half_year = $obj_analytics->get_half_year_code($main_current_month);
+$current_year_code = "1-12";
 
 // Get the page Analytics
 $retention_analytics = $obj_analytics->get_retention_analytics();
@@ -32,6 +34,8 @@ extract($retention_analytics);
 
 $m_retention_rate = ($m_client_retained / $m_client_to_retain) * 100;
 $q_retention_rate = ($q_client_retained / $q_client_to_retain) * 100;
+$h_retention_rate = ($h_client_retained / $h_client_to_retain) * 100;
+$y_retention_rate = ($y_client_retained / $y_client_to_retain) * 100;
 
 $query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '2' LIMIT 1";
 $result = $db_handle->runQuery($query);
@@ -44,6 +48,18 @@ $result = $db_handle->runQuery($query);
 $q_current_target = $db_handle->fetchAssoc($result)[0]['target'];
 $q_target_rate = ($q_retention_rate / $q_current_target) * 100;
 $q_target_rate = number_format($q_target_rate, 2);
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_half_year' AND status = '1' AND type = '2' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$h_current_target = $db_handle->fetchAssoc($result)[0]['target'];
+$h_target_rate = ($h_retention_rate / $h_current_target) * 100;
+$h_target_rate = number_format($h_target_rate, 2);
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_year_code' AND status = '1' AND type = '2' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$y_current_target = $db_handle->fetchAssoc($result)[0]['target'];
+$y_target_rate = ($y_retention_rate / $y_current_target) * 100;
+$y_target_rate = number_format($y_target_rate, 2);
 
 if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
