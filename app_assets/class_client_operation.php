@@ -265,7 +265,7 @@ class clientOperation {
                             <div style="background-color: #EBDEE9;">
                                 <div style="font-size: 11px !important; padding: 15px;">
                                     <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                                         <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                                         <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                                         <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -367,7 +367,7 @@ MAIL;
                             <div style="background-color: #EBDEE9;">
                                 <div style="font-size: 11px !important; padding: 15px;">
                                     <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                                         <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                                         <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                                         <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -439,7 +439,7 @@ MAIL;
                             <div style="background-color: #EBDEE9;">
                                 <div style="font-size: 11px !important; padding: 15px;">
                                     <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                                        <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                                        <a href=><img src="https://instafxng.com/images/Facebook.png"></a>
                                         <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                                         <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                                         <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -800,7 +800,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -850,7 +850,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -1284,7 +1284,7 @@ INVOICE;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -1493,7 +1493,7 @@ click <a href="http://bit.ly/2xT1Mbg" title="Deposit Now">here</a> to make your 
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -1792,7 +1792,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -1847,7 +1847,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -2269,7 +2269,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -2464,7 +2464,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -2616,7 +2616,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -2704,7 +2704,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -2983,7 +2983,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>

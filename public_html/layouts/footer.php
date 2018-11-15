@@ -14,11 +14,11 @@
                                 <br /><strong>Phone:</strong> 08139250268, 08083956750</p>
                             </article>
                         </div>
-                        
+
                         <div class="col-md-3">
                             <header><i class="fa fa-sitemap fa-fw icon-tune"></i> <strong>We're Social</strong></header>
                             <article>
-                                <a href="https://facebook.com/InstaForexNigeria" target="_blank" title="Facebook"><img src="images/Facebook.png"></a>
+                                <a href="https://facebook.com/InstaFxNg" target="_blank" title="Facebook"><img src="images/Facebook.png"></a>
                                 <a href="https://twitter.com/instafxng" target="_blank" title="Twitter"><img src="images/Twitter.png"></a>
                                 <a href="https://www.instagram.com/instafxng/" target="_blank" title="Instagram"><img src="images/instagram.png"></a>
                                 <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw" target="_blank" title="Youtube Channel"><img src="images/Youtube.png"></a>

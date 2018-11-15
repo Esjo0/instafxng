@@ -42,8 +42,8 @@ $thisPage = "Home";
                         <?php  echo htmlspecialchars_decode(stripslashes(trim(file_get_contents("views/general_pages/advert_div.html"))));  ?>
                     </div>
                     <div id="welcome-note" class="section-tint super-shadow">
-                        <h2 class="text-center">Welcome to Instaforex Nigeria</h2>
-                        <p><i class="fa fa-quote-left fa-2x fa-pull-left fa-border"></i> InstaForex, the award winning and international forex broker seeks to serve her Nigerian clients better by the introduction of an InstaForex Nigeria Representative office. InstaFxNg.com is operated by Instant Web-Net Technologies Limited as a Nigerian InstaForex Representative / Introducing Broker Partner.</p>
+                        <h2 class="text-center">Welcome to InstaFxNg</h2>
+                        <p><i class="fa fa-quote-left fa-2x fa-pull-left fa-border"></i> InstaFxNg is the leading Nigerian representative of the award winning and international forex broker InstaForex and through our services, InstaForex seeks to serve her Nigerian clients better. InstaFxNg.com is operated by Instant Web-Net Technologies Limited and serves as a Nigerian InstaForex Representative and Introducing Broker Partner.</p>
                         <p>InstaForex has over the years introduced many client oriented services for clients to fully maximize the many income opportunities in the forex market.
                             Today, InstaForex services are of a great interest for more than 2 million Forex traders all over the world, among them are beginners as well as professionals of Forex currency trading. <a href="live_account.php" title="Open a live account" >Open an account</a> to get access to Forex trading operations, CFD for NYSE shares and also to futures deals of Forex and commodity markets.
                         </p>
