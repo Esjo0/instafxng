@@ -1,3 +1,18 @@
+CREATE TABLE IF NOT EXISTS `onboarding_analytics` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `date_today` DATE NOT NULL,
+  `onboard_yesterday` INT(11) NOT NULL DEFAULT 0,
+  `m_total_onboard` INT(11) NOT NULL DEFAULT 0,
+  `q_total_onboard` INT(11) NOT NULL DEFAULT 0,
+  `h_total_onboard` INT(11) NOT NULL DEFAULT 0,
+  `y_total_onboard` INT(11) NOT NULL DEFAULT 0,
+  `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `date_today_UNIQUE` (`date_today` ASC))
+ENGINE = InnoDB
+
+
 CREATE TABLE `track_top_traders` (
  `id` int(10) NOT NULL AUTO_INCREMENT,
  `user_code` varchar(100) NOT NULL,

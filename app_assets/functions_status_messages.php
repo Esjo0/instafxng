@@ -49,19 +49,19 @@ function target_period($id)
         case '1-6':
             $period = "First Half";
             break;
-        case '6-12':
+        case '7-12':
             $period = "Second Half";
             break;
         case '1-3':
             $period = "First Quarter";
             break;
-        case '3-6':
+        case '4-6':
             $period = "Second Quarter";
             break;
-        case '6-9':
+        case '7-9':
             $period = "Third Quarter";
             break;
-        case '9-12':
+        case '10-12':
             $period = "Fourth Quarter";
             break;
         default:
