@@ -12,6 +12,6 @@
     <li><strong>Fund your Instaforex Account:</strong> You can start trading and making profits 
         from Forex immediately. <a href="deposit_funds.php" title="Click here to fund your account">Click here to fund your account</a>, it is very fast and easy.</li>
 </ol>
-<p>If you encounter any challenge or if you simply want to make an inquiry, please contact our <a href="contact_info.php" target="_blank" title="Instafxng Support Department">support department.</a></p>
+<p>If you encounter any challenge or if you simply want to make an inquiry, please contact our <a href="contact_info.php" target="_blank" title="InstaFxNg Support Department">support department.</a></p>
 <hr>
 <a href="forex_100bonus.php" title="Get 100% Bonus on your next funding"><img src="images/instaforex-100bonus.jpg" alt="Instaforex 100% LFC Partnership Bonus" class="img-responsive" /></a>
