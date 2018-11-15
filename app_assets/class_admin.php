@@ -2,6 +2,18 @@
 
 class AdminUser {
 
+    //get traders tracking status
+    public function get_traders_tracking_status( $user_code ) {
+        global $db_handle;
+        $query = "SELECT status FROM track_top_traders WHERE user_code = '$user_code'";
+        $result = $db_handle->runQuery($query);
+        $fetch_data = $db_handle->fetchAssoc($result);
+        foreach($fetch_data AS $row){
+            extract($row);
+        }
+        return $status;
+    }
+
     //get transaction issues details
     public function get_transaction_issue( $transaction_id ) {
         global $db_handle;

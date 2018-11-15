@@ -4,7 +4,29 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$admin_object = new AdminUser();
 $current_day = date('d');
+
+if(isset($_POST['track_trader'])){
+    $user_code = $db_handle->sanitizePost($_POST['user_code']);
+    $query = "INSERT IGNORE INTO track_top_traders (user_code, status) VALUE('$user_code', '1')";
+    $result = $db_handle->runQuery($query);
+    if($result){
+        $message_success = "Successfully flagged trader as contacted";
+    }else{
+        $message_errror = "Trader not successfully flagged";
+    }
+}
+
+if(isset($_POST['reset_tracker'])){
+    $query = "DELETE FROM track_top_traders WHERE status = '1'";
+    $result = $db_handle->runQuery($query);
+    if($result){
+        $message_success = "Successfully reset tracker";
+    }else{
+        $message_errror = "Rest Not successful";
+    }
+}
 
 if($current_day <= 15) {
     // Date will be from 16 - last day of last month
@@ -23,7 +45,7 @@ $query = "SELECT SUM(td.commission) AS sum_commission, u.email, u.phone, u.creat
     INNER JOIN user AS u ON ui.user_code = u.user_code
     INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
     INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-    WHERE date_earned BETWEEN '$from_date' AND '$to_date' ";
+     WHERE date_earned BETWEEN '$from_date' AND '$to_date' ";
 
 if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $search_text = $_POST['search_text'];
@@ -121,6 +143,31 @@ $clients_top_traders = $db_handle->fetchAssoc($result);
                                 <?php if(isset($numrows)) { ?>
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="pull-right"><button data-target="#reset_contact_stat" data-toggle="modal" class="btn btn-xs btn-default" >Reset Contact List</button></p>
+                                    </div>
+                                </div>
+
+                                <div id="reset_contact_stat" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                                    <h4 class="modal-title">Reset Contact Status</h4></div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to <b class="text-bold text-danger">reset</b> the contact status of this category?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input name="reset_tracker" type="submit" class="btn btn-sm btn-danger" value="Reset">
+                                                    <button type="button" name="close" onClick="window.close();" data-dismiss="modal" class="btn btn-sm btn-danger">Close!</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
 
                                 <?php if(isset($clients_top_traders) && !empty($clients_top_traders)) { require 'layouts/pagination_links.php'; } ?>
 
@@ -144,10 +191,23 @@ $clients_top_traders = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
-                                            <td><?php echo $row['account_officer_full_name']; ?></td>
+                                            <td><?php echo $row['account_officer_full_name']; $user_code = $row['user_code'];?></td>
                                             <td nowrap="nowrap">
-                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_top_traders'; ?>&c=<?php echo encrypt('TOP TRADERS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="Comment" class="btn btn-success btn-xs" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_top_traders'; ?>&c=<?php echo encrypt('TOP TRADERS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-info btn-xs" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+                                                    <div class="input-group">
+                                                        <input type="hidden" name="user_code" value="<?php echo $user_code;?>" >
+                                                  <?php
+                                                  $contact_status = $admin_object->get_traders_tracking_status($user_code);
+                                                  if($contact_status == 1){
+                                                      echo '<i>contacted</i>';
+                                                  }else{
+                                                      echo '<button title="Flag this client as contacted" name="track_trader" type="submit" class="btn btn-group-justified btn-xs btn-info"><i class="fa fa-check"></i></button>';
+
+                                                  }?>
+                                                    </div>
+                                                </form>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
