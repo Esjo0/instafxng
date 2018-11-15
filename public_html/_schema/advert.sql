@@ -1,3 +1,12 @@
+CREATE TABLE `track_top_traders` (
+ `id` int(10) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(100) NOT NULL,
+ `status` enum('1','2') NOT NULL COMMENT '1-Contacted, 2-Not_Contacted',
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `user_code` (`user_code`)
+) 
+
 ALTER TABLE `dinner_2018` ADD `state` VARCHAR(100) NOT NULL AFTER `invite_code`, ADD `type` ENUM('1','2','3','4') NOT NULL COMMENT '1-Single 2-Double 3-VIP 4-VVIP' AFTER `state`;
 ALTER TABLE `dinner_2018` ADD `name` VARCHAR(100) NULL AFTER `updated`, ADD `email` VARCHAR(100) NULL AFTER `name`, ADD `phone` VARCHAR(100) NULL AFTER `email`;
 ALTER TABLE `dinner_2018` ADD UNIQUE(`user_code`);
