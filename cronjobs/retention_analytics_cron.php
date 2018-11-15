@@ -9,6 +9,8 @@ $yesterday = date('Y-m-d', strtotime("-1 days"));
 $today = date('Y-m-d');
 
 $current_quarter = $obj_analytics->get_quarter_code($main_current_month);
+$current_half_year = $obj_analytics->get_half_year_code($main_current_month);
+$current_year_code = "1-12";
 
 /**
  * Generate Page Top Analytics for Month
@@ -104,6 +106,106 @@ $quarter_clients_retained_yesterday = $db_handle->numRows($the_query);
 
 ////////////////////////////////////////////////
 
+
+////////////////////////////////////////////////
+
+/**
+ * Generate Page Top Analytics for current half year
+ */
+$my_dates = $obj_analytics->get_from_to_dates($current_year, $current_half_year);
+
+$my_prev_from_date = $my_dates['prev_from_date'];
+$my_prev_to_date = $my_dates['prev_to_date'];
+$my_from_date = $my_dates['from_date'];
+$my_to_date = $my_dates['to_date'];
+
+$clients_to_retain_query = "SELECT u.email
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email";
+$half_year_clients_to_retain = $db_handle->numRows($clients_to_retain_query);
+
+$base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+    u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+
+$db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients_5 AS " . $base_query);
+
+$base_query2 = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+    u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_from_date' AND '$my_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+
+$db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients_6 AS " . $base_query2);
+
+$query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+    FROM my_reference_clients_5 AS rc1
+    LEFT JOIN my_reference_clients_6 AS rc2 ON rc1.user_code = rc2.user_code
+    WHERE rc2.user_code IS NOT NULL ";
+
+$half_year_clients_retained = $db_handle->numRows($query);
+
+$the_query = "SELECT first_trade FROM my_reference_clients_6 WHERE first_trade = '$yesterday'";
+$half_year_clients_retained_yesterday = $db_handle->numRows($the_query);
+
+////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////
+
+/**
+ * Generate Page Top Analytics for current year
+ */
+$my_dates = $obj_analytics->get_from_to_dates($current_year, $current_year_code);
+
+$my_prev_from_date = $my_dates['prev_from_date'];
+$my_prev_to_date = $my_dates['prev_to_date'];
+$my_from_date = $my_dates['from_date'];
+$my_to_date = $my_dates['to_date'];
+
+$clients_to_retain_query = "SELECT u.email
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email";
+$year_clients_to_retain = $db_handle->numRows($clients_to_retain_query);
+
+$base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+    u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_prev_from_date' AND '$my_prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+
+$db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients_7 AS " . $base_query);
+
+$base_query2 = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+    u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code
+    WHERE date_earned BETWEEN '$my_from_date' AND '$my_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+
+$db_handle->runQuery("CREATE TEMPORARY TABLE my_reference_clients_8 AS " . $base_query2);
+
+$query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+    FROM my_reference_clients_7 AS rc1
+    LEFT JOIN my_reference_clients_8 AS rc2 ON rc1.user_code = rc2.user_code
+    WHERE rc2.user_code IS NOT NULL ";
+
+$year_clients_retained = $db_handle->numRows($query);
+
+$the_query = "SELECT first_trade FROM my_reference_clients_8 WHERE first_trade = '$yesterday'";
+$year_clients_retained_yesterday = $db_handle->numRows($the_query);
+
+////////////////////////////////////////////////
+
 $query = "SELECT * FROM retention_analytics WHERE date_today = '$today' LIMIT 1";
 $result = $db_handle->runQuery($query);
 
@@ -115,12 +217,18 @@ if($db_handle->numOfRows($result) > 0) {
         m_retained_yesterday = $monthly_clients_retained_yesterday, 
         q_client_to_retain = $quarter_clients_to_retain, 
         q_client_retained = $quarter_clients_retained, 
-        q_retained_yesterday = $quarter_clients_retained_yesterday
+        q_retained_yesterday = $quarter_clients_retained_yesterday,
+        h_client_to_retain = $half_year_clients_to_retain, 
+        h_client_retained = $half_year_clients_retained, 
+        h_retained_yesterday = $half_year_clients_retained_yesterday,
+        y_client_to_retain = $year_clients_to_retain, 
+        y_client_retained = $year_clients_retained, 
+        y_retained_yesterday = $year_clients_retained_yesterday
         WHERE date_today = '$today' LIMIT 1";
     $db_handle->runQuery($query);
 } else {
     // Run insert query
-    $query = "INSERT INTO retention_analytics (date_today, m_client_to_retain, m_client_retained, m_retained_yesterday, q_client_to_retain, q_client_retained, q_retained_yesterday) 
-        VALUES ('$today', $month_clients_to_retain, $monthly_clients_retained, $monthly_clients_retained_yesterday, $quarter_clients_to_retain, $quarter_clients_retained, $quarter_clients_retained_yesterday)";
+    $query = "INSERT INTO retention_analytics (date_today, m_client_to_retain, m_client_retained, m_retained_yesterday, q_client_to_retain, q_client_retained, q_retained_yesterday, h_client_to_retain, h_client_retained, h_retained_yesterday, y_client_to_retain, y_client_retained, y_retained_yesterday) 
+        VALUES ('$today', $month_clients_to_retain, $monthly_clients_retained, $monthly_clients_retained_yesterday, $quarter_clients_to_retain, $quarter_clients_retained, $quarter_clients_retained_yesterday, $half_year_clients_to_retain, $half_year_clients_retained, $half_year_clients_retained_yesterday, $year_clients_to_retain, $year_clients_retained, $year_clients_retained_yesterday)";
     $db_handle->runQuery($query);
 }

@@ -7,6 +7,15 @@ if (!$session_admin->is_logged_in()) {
 $from_date = date('Y-m-d', strtotime('first day of this month'));
 $to_date = date('Y-m-d', strtotime('last day of this month')) ;
 
+$query = "SELECT SUM(td.commission) AS sum_commission, u.user_code
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code 
+    WHERE date_earned BETWEEN '$from_date' AND '$to_date'";
+$result = $db_handle->runQuery($query);
+$data_analysis = $db_handle->fetchAssoc($result);
+$sum_of_commission = $data_analysis[0]['sum_commission'];
+
 $query = "SELECT SUM(td.commission) AS sum_commission, u.email, u.phone, u.created,
     CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
     FROM trading_commission AS td
@@ -19,7 +28,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
     $query .= "AND (td.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR td.date_earned LIKE '$search_text%') ";
 }
 
-$query .= "GROUP BY u.email ORDER BY sum_commission DESC ";
+$query .= "GROUP BY u.email ORDER BY last_trade DESC ";
 
 $numrows = $db_handle->numRows($query);
 
@@ -110,7 +119,11 @@ $clients_activity = $db_handle->fetchAssoc($result);
                         <p>The table below displays the list of clients that are trading this month.</p>
 
                         <?php if(isset($numrows)) { ?>
-                            <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
+                            <p>
+                                <strong>Result Found: </strong><?php echo number_format($numrows); ?><br />
+                                <strong>Commission: </strong>&dollar; <?php echo number_format($sum_of_commission, 2, ".", ","); ?><br />
+                                <strong>Deposit: </strong>&dollar; <?php echo number_format($sum_of_funding,2, ".", ","); ?>
+                            </p>
                         <?php } ?>
 
                         <?php if(isset($clients_activity) && !empty($clients_activity)) { require 'layouts/pagination_links.php'; } ?>

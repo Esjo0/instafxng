@@ -169,7 +169,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY first_trade DESC ";
+            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY last_trade DESC ";
 
     $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
 
@@ -177,7 +177,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
     $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ORDER BY rc1.last_trade DESC ";
+            WHERE rc2.user_code IS NULL ORDER BY rc2.last_trade DESC ";
 
     $retention_type_title2 = "RETAINED";
     $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
@@ -317,46 +317,127 @@ $retention_result = $db_handle->fetchAssoc($result);
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-6">
-                                <h5 class="text-center"><strong>Month Analysis - (<?php echo $month_title; ?>)</strong></h5>
+                            <div class="col-sm-12">
+                                <div id="myAnalytics" class="carousel slide" data-interval="false">
+                                    <!-- Indicators -->
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#myAnalytics" data-slide-to="0" class="active"></li>
+                                        <li data-target="#myAnalytics" data-slide-to="1"></li>
+                                    </ol>
 
-                                <table class="table table-border table-responsive table-hover">
-                                    <tr><td>Clients to Retain</td><td><?php echo number_format($m_client_to_retain); ?></td></tr>
-                                    <tr><td>Total Retained</td><td><?php echo number_format($m_client_retained); ?></td></tr>
-                                    <tr><td>Not Retained</td><td><?php echo number_format($m_client_to_retain - $m_client_retained); ?></td></tr>
-                                    <tr><td>Retained Yesterday</td><td><?php echo number_format($m_retained_yesterday); ?></td></tr>
-                                    <tr><td>Retention Rate</td><td><?php echo number_format($m_retention_rate, 2) . "%"; ?></td></tr>
-                                </table>
+                                    <!-- Wrapper for slides -->
+                                    <div class="carousel-inner" style="height: 350px;">
 
-                                <hr />
+                                        <div class="item active">
 
-                                <p class="text-center"><strong>Performance progress relative to target (<?php echo $m_current_target; ?>%)</strong></p>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Month Analysis - (<?php echo $month_title; ?>)</strong></h5>
 
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $m_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $m_current_target; ?>" style="width: <?php echo $m_target_rate; ?>%"><?php echo $m_target_rate; ?>%</div>
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Clients to Retain</td><td><?php echo number_format($m_client_to_retain); ?></td></tr>
+                                                        <tr><td>Total Retained</td><td><?php echo number_format($m_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($m_client_to_retain - $m_client_retained); ?></td></tr>
+                                                        <tr><td>Retained Yesterday</td><td><?php echo number_format($m_retained_yesterday); ?></td></tr>
+                                                        <tr><td>Retention Rate</td><td><?php echo number_format($m_retention_rate, 2) . "%"; ?></td></tr>
+                                                    </table>
+
+                                                    <hr />
+
+                                                    <p class="text-center"><strong>Performance progress relative to target (<?php echo $m_current_target; ?>%)</strong></p>
+
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $m_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $m_current_target; ?>" style="width: <?php echo $m_target_rate; ?>%"><?php echo $m_target_rate; ?>%</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Quarter Analysis - (<?php echo $quarter_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Clients to Retain</td><td><?php echo number_format($q_client_to_retain); ?></td></tr>
+                                                        <tr><td>Total Retained</td><td><?php echo number_format($q_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($q_client_to_retain - $q_client_retained); ?></td></tr>
+                                                        <tr><td>Retained Yesterday</td><td><?php echo number_format($q_retained_yesterday); ?></td></tr>
+                                                        <tr><td>Retention Rate</td><td><?php echo number_format($q_retention_rate, 2) . "%"; ?></td></tr>
+                                                    </table>
+
+                                                    <hr />
+
+                                                    <p class="text-center"><strong>Performance progress relative to target (<?php echo $q_current_target; ?>%)</strong></p>
+
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $q_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $q_current_target; ?>" style="width: <?php echo $q_target_rate; ?>%"><?php echo $q_target_rate; ?>%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="item">
+
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Half Year Analysis - (<?php echo $half_year_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Clients to Retain</td><td><?php echo number_format($h_client_to_retain); ?></td></tr>
+                                                        <tr><td>Total Retained</td><td><?php echo number_format($h_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($h_client_to_retain - $m_client_retained); ?></td></tr>
+                                                        <tr><td>Retained Yesterday</td><td><?php echo number_format($h_retained_yesterday); ?></td></tr>
+                                                        <tr><td>Retention Rate</td><td><?php echo number_format($h_retention_rate, 2) . "%"; ?></td></tr>
+                                                    </table>
+
+                                                    <hr />
+
+                                                    <p class="text-center"><strong>Performance progress relative to target (<?php echo $h_current_target; ?>%)</strong></p>
+
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $h_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $h_current_target; ?>" style="width: <?php echo $h_target_rate; ?>%"><?php echo $h_target_rate; ?>%</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Year Analysis - (<?php echo $year_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Clients to Retain</td><td><?php echo number_format($y_client_to_retain); ?></td></tr>
+                                                        <tr><td>Total Retained</td><td><?php echo number_format($y_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($y_client_to_retain - $q_client_retained); ?></td></tr>
+                                                        <tr><td>Retained Yesterday</td><td><?php echo number_format($y_retained_yesterday); ?></td></tr>
+                                                        <tr><td>Retention Rate</td><td><?php echo number_format($y_retention_rate, 2) . "%"; ?></td></tr>
+                                                    </table>
+
+                                                    <hr />
+
+                                                    <p class="text-center"><strong>Performance progress relative to target (<?php echo $y_current_target; ?>%)</strong></p>
+
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $y_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $y_current_target; ?>" style="width: <?php echo $y_target_rate; ?>%"><?php echo $y_target_rate; ?>%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                    <!-- Left and right controls -->
+                                    <a class="left carousel-control" href="#myAnalytics" data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" href="#myAnalytics" data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
                                 </div>
-                            </div>
 
-                            <div class="col-sm-6">
-                                <h5 class="text-center"><strong>Quarter Analysis - (<?php echo $quarter_title; ?>)</strong></h5>
-
-                                <table class="table table-border table-responsive table-hover">
-                                    <tr><td>Clients to Retain</td><td><?php echo number_format($q_client_to_retain); ?></td></tr>
-                                    <tr><td>Total Retained</td><td><?php echo number_format($q_client_retained); ?></td></tr>
-                                    <tr><td>Not Retained</td><td><?php echo number_format($q_client_to_retain - $q_client_retained); ?></td></tr>
-                                    <tr><td>Retained Yesterday</td><td><?php echo number_format($q_retained_yesterday); ?></td></tr>
-                                    <tr><td>Retention Rate</td><td><?php echo number_format($q_retention_rate, 2) . "%"; ?></td></tr>
-                                </table>
-
-                                <hr />
-
-                                <p class="text-center"><strong>Performance progress relative to target (<?php echo $q_current_target; ?>%)</strong></p>
-
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $q_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $q_current_target; ?>" style="width: <?php echo $q_target_rate; ?>%"><?php echo $q_target_rate; ?>%</div>
-                                </div>
                             </div>
                         </div>
+
+
 
                         <hr style="border: thin dotted #c5c5c5" />
 
