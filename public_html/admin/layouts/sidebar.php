@@ -276,9 +276,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(256, $my_pages_sidebar)) { ?><li><a href="campaign_analytics.php">Campaign Analytics</a></li><?php } ?>
                         <div class="divider"></div>
                         <?php if (in_array(287, $my_pages_sidebar)) { ?><li><a href="client_retention.php">Client - Retention</a></li><?php } ?>
-                        <?php if (in_array(289, $my_pages_sidebar)) { ?><li><a href="client_onboarding.php">Client ON-Boarding</a></li><?php } ?>
-                        <?php if (in_array(289, $my_pages_sidebar)) { ?><li><a href="client_not_onboard.php">Clients Not On-Board</a></li><?php } ?>
-
+                        <?php if (in_array(289, $my_pages_sidebar)) { ?><li><a href="client_onboarding.php">Client - Onboarding</a></li><?php } ?>
                     </ul>
                 </li>
 

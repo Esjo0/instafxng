@@ -453,8 +453,6 @@ $retention_result = $db_handle->fetchAssoc($result);
                             </div>
                         </div>
 
-
-
                         <hr style="border: thin dotted #c5c5c5" />
 
                         <div class="row">

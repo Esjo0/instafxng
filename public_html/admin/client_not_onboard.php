@@ -222,36 +222,23 @@ $db_handle->closeDB();
                         <div class="col-sm-12"></div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <form data-toggle="validator" class="form-horizontal" role="form" method="post"
-                                      action="<?php echo $REQUEST_URI; ?>">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $REQUEST_URI; ?>">
                                     <div class="input-group input-group-sm">
-                                        <input value="<?php echo $filter_category; ?>" id="filter_display" readonly
-                                               type="text" name="filter_val" class="form-control">
+                                        <input value="<?php echo $filter_category; ?>" id="filter_display" readonly type="text" name="filter_val" class="form-control" />
                                         <div class="input-group-btn input-group-select">
-                                            <button type="button" class="btn btn-default dropdown-toggle"
-                                                    data-toggle="dropdown">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                 <span class="concept">Filter</span> <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
-                                                <li><a onclick="filter('all', 'All Clients Not ON Board')"
-                                                       href="javascript:void(0);">All Clients Not ON-Board</a></li>
-                                                <li><a onclick="filter('funded', 'Clients FUNDED but not on board')"
-                                                       href="javascript:void(0);">Clients who Have FUNDED and are Not
-                                                        ON-Board</a></li>
-                                                <li>
-                                                    <a onclick="filter('ilpr', 'Clients With ILPR Accounts But not On board')"
-                                                       href="javascript:void(0);">Clients With ILPR Accounts Not
-                                                        ON-Board</a></li>
-                                                <li>
-                                                    <a onclick="filter('nonilpr', 'Clients With NON-ILPR Accounts and not On board')"
-                                                       href="javascript:void(0);">Clients With NON-ILPR Accounts Not
-                                                        ON-Board</a></li>
-                                                <li><a onclick="filter('training', 'Training Clients Not on board')"
-                                                       href="javascript:void(0);">Training Clients Not ON-Board</a></li>
+                                                <li><a onclick="filter('all', 'All Clients Not ON Board')" href="javascript:void(0);">All Clients Not ON-Board</a></li>
+                                                <li><a onclick="filter('funded', 'Clients FUNDED but not on board')" href="javascript:void(0);">Clients who Have FUNDED and are Not ON-Board</a></li>
+                                                <li><a onclick="filter('ilpr', 'Clients With ILPR Accounts But not On board')" href="javascript:void(0);">Clients With ILPR Accounts Not ON-Board</a></li>
+                                                <li><a onclick="filter('nonilpr', 'Clients With NON-ILPR Accounts and not On board')" href="javascript:void(0);">Clients With NON-ILPR Accounts Not ON-Board</a></li>
+                                                <li><a onclick="filter('training', 'Training Clients Not on board')" href="javascript:void(0);">Training Clients Not ON-Board</a></li>
                                             </ul>
-                                            <input id="filter_trigger" style="display: none" name="filter"
-                                                   type="submit">
-                                            <input id="filter_value" name="filter_value" type="hidden">
+
+                                            <input id="filter_value" name="filter_value" type="hidden" />
+                                            <input id="filter_trigger" style="display: none" name="filter" type="submit" />
                                         </div>
                                     </div>
                                 </form>
