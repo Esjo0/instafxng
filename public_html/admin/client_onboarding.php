@@ -2,6 +2,11 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
+if(isset($_GET['r']) && $_GET['r'] == 1) {
+    unset($_SESSION['client_onboarding_query']);
+    redirect_to("client_onboarding.php");
+}
+
 $current_year = date('Y');
 $main_current_month = date('m');
 $current_month = ltrim($main_current_month, '0');
@@ -29,93 +34,95 @@ $query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year'
 $result = $db_handle->runQuery($query);
 $y_current_target = $db_handle->fetchAssoc($result)[0]['target'];
 
-//get number clients not on board
-$query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0) GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
-$not_on_board = $db_handle->numRows($query);
+if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['filter'])) {
 
-if(isset($_POST['view'])){
-    unset($_SESSION['query']);
-}
+    if (isset($_POST['onboarding_tracker'])) {
+        foreach ($_POST as $key => $value) {
+            $_POST[$key] = $db_handle->sanitizePost(trim($value));
+        }
 
-//filter parameters
-if (isset($_POST['filter'])) {
-    foreach ($_POST as $key => $value) {
-        $_POST[$key] = $db_handle->sanitizePost(trim($value));
+        extract($_POST);
+
+        $dates_selected = $obj_analytics->get_from_to_dates($year_date, $period);
+        extract($dates_selected);
+
+        $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created,
+            MIN(tc.date_earned) AS date_earned FROM trading_commission AS tc
+            INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            GROUP BY u.user_code
+            HAVING date_earned BETWEEN '$from_date' AND '$to_date' ";
+
+        $_SESSION['client_onboarding_query'] = $query;
+
+    } elseif (isset($_POST['filter'])) {
+        foreach ($_POST as $key => $value) {
+            $_POST[$key] = $db_handle->sanitizePost(trim($value));
+        }
+
+        extract($_POST);
+
+        switch ($filter_value) {
+            case 'all':
+                $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created 
+                    FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code 
+                    WHERE ui.ifx_acct_no NOT IN (
+                    SELECT ifx_acct_no FROM trading_commission WHERE commission > 0
+                    ) 
+                    GROUP BY u.email 
+                    ORDER BY u.created DESC, u.last_name ASC ";
+                $filter_category = "All clients not on board";
+                $display_msg = "Below is a table listing all clients not yet on board.";
+                break;
+
+            case 'funded':
+                $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+                    FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                    INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+                    WHERE ud.status = '8' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                $filter_category = "Clients not yet on board but have funded their accounts";
+                $display_msg = "Below is a table listing all clients not yet on board but have completed funding transactions.";
+                break;
+
+            case 'ilpr':
+                $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+                    FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                    WHERE ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                $filter_category = "Clients not yet On-Board With ILPR Accounts";
+                $display_msg = "Below is a table listing all clients not yet on board with ILPR account numbers.";
+                break;
+
+            case 'nonilpr':
+                $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+                    FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                    WHERE ui.type = '2' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                $filter_category = "Clients not yet On-Board having NON-ILPR Accounts";
+                $display_msg = "Below is a table listing all clients not yet on board and don't have ILPR account numbers.";
+                break;
+
+            case 'training':
+                $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+                    FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                    WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    AND  u.user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
+                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                $filter_category = "Training Clients Not yet ON-Board";
+                $display_msg = "Below is a table listing all clients not yet on board but have enrolled in the FxAcademy.";
+                break;
+        }
+
+        $_SESSION['client_onboarding_query'] = $query;
+
+    } else {
+        $query = $_SESSION['client_onboarding_query'];
     }
-    $year = $_POST['year'];
-    $period = $_POST['period'];
-
-    $dates_selected = $obj_analytics->get_from_to_dates($year, $period);
-    extract($dates_selected);
-
-    //get target value if any
-    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = '$period' AND status = '1' AND type = '1' LIMIT 1";
-    $result = $db_handle->runQuery($query);
-    foreach ($result AS $row) {
-        extract($row);
-    }
-    if ($target == NULL) {
-        $target = "NO Target Set.";
-    }
-    $_SESSION['target'] = $target;
-
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created,
-        MIN(tc.date_earned) AS date_earned FROM trading_commission AS tc
-        INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        GROUP BY u.user_code
-        HAVING date_earned BETWEEN '$from_date' AND '$to_date' ";
-    $_SESSION['query'] = $query;
-    $total_onboard = $db_handle->numRows($query);
-}
-
-if (empty($_SESSION['query']) || ($_SESSION['query'] == NULL)) {
-    $period = date('m');
-    $year = date('Y');
-
-    //get target value
-    $query = "SELECT value AS target FROM admin_targets WHERE year = '$year' AND period = '$period' AND status = '1' AND type = '1' LIMIT 1";
-    $result = $db_handle->runQuery($query);
-
-    foreach ($result AS $row) {
-        extract($row);
-    }
-
-    if ($target == NULL) {
-        $target = "NO Target Set.";
-    }
-
-    $_SESSION['target'] = $target;
-    $query_analysis = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, u.created, MIN(tc.date_earned) AS date_earned
-        FROM trading_commission AS tc
-        INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        GROUP BY u.user_code HAVING MONTH(date_earned) = $period AND YEAR(date_earned) = $year ";
-    $total_onboard = $db_handle->numRows($query_analysis);
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
-FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
-GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
-    $_SESSION['query'] = $query;
-}
-
-//search to display clients on boarding date
-if (isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
-    $search_text = $_POST['search_text'];
-    $query = "SELECT MIN(tc.date_earned) AS date_earned, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
-        FROM trading_commission AS tc
-        INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        WHERE (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%') GROUP BY u.email ORDER BY u.created DESC ";
-    $_SESSION['query'] = $query;
-    $_SESSION['target'] = "NO Target Set.";
-}
-
-$query = $_SESSION['query'];
-
-if (isset($_POST['onboarding_tracker']) || isset($_GET['pg'])) {
-    
 } else {
+
+    $result_title = "Not Onboard Category";
+
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created 
           FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code 
           WHERE ui.ifx_acct_no NOT IN (
@@ -124,6 +131,13 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg'])) {
           GROUP BY u.email 
           ORDER BY u.created DESC, u.last_name ASC ";
 
+    $filter_category = "All clients not on board";
+    $display_msg = "Below is a table listing all clients not yet on board.";
+
+    $_SESSION['client_onboarding_query'] = $query;
+    $_SESSION['client_onboarding_filter_category'] = $filter_category;
+    $_SESSION['client_onboarding_display_msg'] = $display_msg;
+    $_SESSION['client_onboarding_result_title'] = $result_title;
 }
 
 $numrows = $db_handle->numRows($query);
@@ -186,6 +200,13 @@ if(isset($_POST['campaign_category'])){
         <meta name="keywords" content=""/>
         <meta name="description" content=""/>
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script>
+            function filter(value, heading) {
+                document.getElementById('filter_display').value = heading;
+                document.getElementById('filter_value').value = value;
+                document.getElementById('filter_trigger').click();
+            }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -225,6 +246,12 @@ if(isset($_POST['campaign_category'])){
                     </div>
 
                     <div class="section-tint super-shadow">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="pull-left"><a href="client_onboarding.php?r=1" title="Clear Search Parameter" class="btn btn-default">Refresh <i class="fa fa-recycle"></i></a></div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <div id="myAnalytics" class="carousel slide" data-interval="false">
@@ -323,15 +350,41 @@ if(isset($_POST['campaign_category'])){
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="section-tint super-shadow">
+                        <hr style="border: thin dotted #c5c5c5; margin-bottom: 5px;" />
+
                         <div class="row">
-                            <div class="col-sm-12">
-                                <?php require_once 'layouts/feedback_message.php'; ?>
+                            <div class="col-sm-12"><br /></div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="client_onboarding.php">
+                                    <div class="input-group">
+                                        <input value="<?php echo $filter_category; ?>" id="filter_display" readonly type="text" name="filter_val" class="form-control" />
+                                        <div class="input-group-btn input-group-select">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                <span class="concept">Not Onboard Filter</span> <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a onclick="filter('all', 'All Clients Not ON Board')" href="javascript:void(0);">All Clients Not ON-Board</a></li>
+                                                <li><a onclick="filter('funded', 'Clients FUNDED but not on board')" href="javascript:void(0);">Clients who Have FUNDED and are Not ON-Board</a></li>
+                                                <li><a onclick="filter('ilpr', 'Clients With ILPR Accounts But not On board')" href="javascript:void(0);">Clients With ILPR Accounts Not ON-Board</a></li>
+                                                <li><a onclick="filter('nonilpr', 'Clients With NON-ILPR Accounts and not On board')" href="javascript:void(0);">Clients With NON-ILPR Accounts Not ON-Board</a></li>
+                                                <li><a onclick="filter('training', 'Training Clients Not on board')" href="javascript:void(0);">Training Clients Not ON-Board</a></li>
+                                            </ul>
+
+                                            <input id="filter_value" name="filter_value" type="hidden" />
+                                            <input id="filter_trigger" style="display: none" name="filter" type="submit" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="col-sm-6">
                                 <div class="pull-right">
-                                    <button type="button" data-target="#onboarding-filter" data-toggle="modal" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-search"></i> Apply Filter</button>
+                                    <a data-target="#confirm-campaign" data-toggle="modal" class="btn btn-default" title="Create Campaign Category">Create Campaign Category</a>
+                                    <a data-target="#onboarding-filter" data-toggle="modal" class="btn btn-default" title="Filter clients already onboard">Onboard Filter <i class="glyphicon glyphicon-search"></i></a>
                                 </div>
 
                                 <div id="onboarding-filter" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -339,11 +392,11 @@ if(isset($_POST['campaign_category'])){
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                <p class="modal-title">Fill the form below, choose the year and period.</p>
+                                                <p class="modal-title">Fill the form below to filter clients that are already onboard, choose the year and period.</p>
                                             </div>
 
                                             <div class="modal-body">
-                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="client_retention.php">
+                                                <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="client_onboarding.php">
 
                                                     <div class="form-group">
                                                         <label class="control-label col-sm-3" for="year_date">Year:</label>
@@ -400,11 +453,6 @@ if(isset($_POST['campaign_category'])){
                                     </div>
                                 </div>
 
-                                <form class="pull-right" method="post" action="">
-                                    <button name="view" type="submit" class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-circle"></i>Refresh</button>
-                                </form>
-                                <button class="btn btn-sm btn-default pull-right" type="button" data-target="#confirm-campaign" data-toggle="modal">Create Campaign Category</button>
-
                                 <div id="confirm-campaign" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                     <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                         <div class="modal-dialog modal-md">
@@ -437,6 +485,12 @@ if(isset($_POST['campaign_category'])){
                                     </form>
                                 </div>
 
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+
                                 <?php if (isset($numrows)) { ?>
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
@@ -447,9 +501,7 @@ if(isset($_POST['campaign_category'])){
                                     <table class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>
                                         <tr>
-                                            <th>Full Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
+                                            <th>Client Detail</th>
                                             <th>Reg. Date</th>
                                             <th>Action</th>
                                         </tr>
@@ -457,18 +509,20 @@ if(isset($_POST['campaign_category'])){
                                         <tbody>
                                         <?php if ((isset($onboarding_result) && !empty($onboarding_result)) ) { foreach ($onboarding_result as $row) { extract($row); ?>
                                             <tr>
-                                                <td><?php echo $full_name; ?></td>
-                                                <td><?php echo $email; ?></td>
-                                                <td><?php echo $phone; ?></td>
-                                                <td><?php echo $created; ?></td>
+                                                <td>
+                                                    <?php echo $full_name; ?><br />
+                                                    <?php echo $email; ?><br />
+                                                    <?php echo $phone; ?>
+                                                </td>
+                                                <td><?php echo datetime_to_text2($created); ?></td>
                                                 <td nowrap>
-                                                    <a target="_blank" title="Comment" class="btn btn-sm btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_onboarding'; ?>&c=<?php echo encrypt('CLIENT ON-BOARDING'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a target="_blank" title="View" class="btn btn-sm btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                                    <a target="_blank" class="btn btn-sm btn-primary" title="Send Email" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
-                                                    <a target="_blank" class="btn btn-sm btn-success" title="Send SMS" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                    <a target="_blank" title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_onboarding'; ?>&c=<?php echo encrypt('CLIENT ON-BOARDING'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" title="Send Email" class="btn btn-xs btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
+                                                    <a target="_blank" title="Send SMS" class="btn btn-xs btn-success" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
                                                 </td>
                                             </tr>
-                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                        <?php } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>
                                     </table>
                                 </div>
