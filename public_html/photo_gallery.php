@@ -35,7 +35,7 @@ $thisPage = "About";
                     <div class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-sm-12 text-danger">
-                                <h4><strong>Instaforex Nigeria - Photo Gallery</strong></h4>
+                                <h4><strong>InstaFxNg - Photo Gallery</strong></h4>
                             </div>
                         </div>
                         
