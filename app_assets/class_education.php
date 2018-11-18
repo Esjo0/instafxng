@@ -77,7 +77,7 @@ class Education {
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -127,6 +127,24 @@ MAIL;
         $fetched_data = $fetched_data[0];
 
         return $fetched_data ? $fetched_data : false;
+    }
+
+    // Get max_lesson_id_completed by client
+    public function get_clients_max_lesson_completed($user_code) {
+        global $db_handle;
+
+        $query = "SELECT ueel.lesson_id AS clients_max_lesson_completed
+              FROM user_edu_exercise_log AS ueel
+              INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
+              INNER JOIN edu_course AS ec ON el.course_id = ec.edu_course_id
+              WHERE ueel.user_code = '$user_code' ORDER BY ueel.created DESC LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchArray($result);
+        foreach($fetched_data AS $row){
+            extract($row);
+        }
+
+        return $clients_max_lesson_completed;
     }
 
     //Get the maximum published lesson available to clients.
@@ -662,7 +680,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -808,7 +826,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -1016,7 +1034,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -1122,7 +1140,7 @@ MAIL;
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>

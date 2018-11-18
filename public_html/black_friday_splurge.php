@@ -517,7 +517,17 @@ $i = 0;
 
         <div id="main-body-side-bar" class="col-md-5 col-md-pull-7 col-lg-4 col-lg-pull-8 left-nav">
             <div class="col-sm-12 section-tint super-shadow nav-display super-shadow">
-
+                <div class="section-tint super-shadow" style="background-color: black;border-radius:10px">
+                    <div class="row">
+                        <div class="col-md-12"><h1><i class="fa fa-exclamation-triangle"></i> <b>Get ready for Round 2</b></h1></div>
+                        <div class="col-sm-12 text-lg-center text-center" id="time-counter" style="color: white; font-size: 20px;">
+                            <span  id="day"></span>
+                            <span  id="hour"></span>
+                            <span  id="min"></span>
+                            <span  id="sec"></span>
+                        </div>
+                    </div>
+                </div>
                 <h5>Total Number of Participant : <?php echo $total_participants; ?></h5>
                 <div class="row">
                     <div class="col-sm-12" style="max-height: 600px; overflow: scroll;">
@@ -582,16 +592,6 @@ $i = 0;
                         <div id="progress"></div>
                     </div>
                 </div>
-<!--                <div class="section-tint super-shadow" style="background-color: black;border-radius:10px">-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-sm-12 text-lg-center text-center" id="time-counter" style="color: white; font-size: 18px;">-->
-<!--                            <span  id="day"></span>-->
-<!--                            <span  id="hour"></span>-->
-<!--                            <span  id="min"></span>-->
-<!--                            <span  id="sec"></span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--            </div>-->
         </div>
     </div>
 </div>
@@ -657,7 +657,7 @@ $i = 0;
 <!-- Time Counter -->
 <script type="text/javascript">
     // Set the date we're counting down to
-    var countDownDate = new Date('2018-11-05');
+    var countDownDate = new Date('2018-11-19');
     countDownDate.setDate(countDownDate.getDate());
 
     // Update the count down every 1 second
@@ -670,12 +670,12 @@ $i = 0;
         var distance = countDownDate - now;
 
         // Time calculations for days, hours, minutes and seconds
-//        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-//        document.getElementById("day").innerHTML = days + "Days  ";
+        document.getElementById("day").innerHTML = days + "Days  ";
         document.getElementById("hour").innerHTML = hours + "Hours  ";
         document.getElementById("min").innerHTML = minutes + "Mins  ";
         document.getElementById("sec").innerHTML = seconds + "Secs  ";

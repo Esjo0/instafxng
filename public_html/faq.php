@@ -104,7 +104,7 @@ $thisPage = "Support";
                                         <div class="panel-heading"><h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse8">How long does it take for my account to be funded?</a></h5></div>
                                         <div id="collapse8" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p>Funding is Instant</p>
+                                                <p>Your funding transaction will be completed in a maximum of 24 hours</p>
                                             </div>
                                         </div>
                                     </div>
@@ -115,7 +115,6 @@ $thisPage = "Support";
                                             <div class="panel-body">
                                                 <p>Funding your InstaForex account with us is fast and easy. You can credit your IFX account in Naira using any of the following methods:</p>
                                                 <ul class="fa-ul">
-                                                    <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Paga account</li>
                                                     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Verve, MasterCard or Visa</li>
                                                     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Cash Payment to the bank</li>
                                                     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Internet bank transfer</li>

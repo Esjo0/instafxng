@@ -1,3 +1,27 @@
+CREATE TABLE IF NOT EXISTS `onboarding_analytics` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `date_today` DATE NOT NULL,
+  `onboard_yesterday` INT(11) NOT NULL DEFAULT 0,
+  `m_total_onboard` INT(11) NOT NULL DEFAULT 0,
+  `q_total_onboard` INT(11) NOT NULL DEFAULT 0,
+  `h_total_onboard` INT(11) NOT NULL DEFAULT 0,
+  `y_total_onboard` INT(11) NOT NULL DEFAULT 0,
+  `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `date_today_UNIQUE` (`date_today` ASC))
+ENGINE = InnoDB
+
+
+CREATE TABLE `track_top_traders` (
+ `id` int(10) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(100) NOT NULL,
+ `status` enum('1','2') NOT NULL COMMENT '1-Contacted, 2-Not_Contacted',
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `user_code` (`user_code`)
+) 
+
 ALTER TABLE `dinner_2018` ADD `state` VARCHAR(100) NOT NULL AFTER `invite_code`, ADD `type` ENUM('1','2','3','4') NOT NULL COMMENT '1-Single 2-Double 3-VIP 4-VVIP' AFTER `state`;
 ALTER TABLE `dinner_2018` ADD `name` VARCHAR(100) NULL AFTER `updated`, ADD `email` VARCHAR(100) NULL AFTER `name`, ADD `phone` VARCHAR(100) NULL AFTER `email`;
 ALTER TABLE `dinner_2018` ADD UNIQUE(`user_code`);

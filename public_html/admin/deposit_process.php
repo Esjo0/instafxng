@@ -162,7 +162,7 @@ if ($deposit_process_pending && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST[
 }
 
 //Pend deposit refund
-if ($deposit_process_refund && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['pending_refund'] == true)) {
+if ($deposit_process_refund_approve && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['pending_refund'] == true)) {
     foreach($_POST as $key => $value) {
         $_POST[$key] = $db_handle->sanitizePost(trim($value));
     }
@@ -223,7 +223,7 @@ if ($deposit_process_notified && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>

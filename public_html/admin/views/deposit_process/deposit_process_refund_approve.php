@@ -18,7 +18,7 @@
                             <span><strong>Amount Deposited : </strong>&#8358;<?php echo $amount_paid; ?></span>
                             <span><strong>Payment method : </strong><?php echo status_user_deposit_pay_method($payment_method); ?></span>
                             <span><strong>Date Refund was Requested : </strong> <?php echo datetime_to_text($created); ?></span>
-                            <span><a href="/home/tboy9/models/refund_declarations/<?php echo $transaction_id; ?> - Refund Declaration.pdf" download="<?php echo $transaction_id; ?> - Refund Declaration.pdf"><button class="btn btn-success btn-sm" type="button">View Clients Declaration</button></a></span>
+                            <span><a href="/home/tboy9/models/refund_declarations/<?php echo $transaction_id; ?> - Refund Declaration.pdf" download><button class="btn btn-success btn-sm" type="button">View Clients Declaration</button></a></span>
                             <hr>
                             <p>Client Account Details</p>
                             <span><strong>Clients Bank Name : </strong><?php echo $user_bank_name; ?></span>

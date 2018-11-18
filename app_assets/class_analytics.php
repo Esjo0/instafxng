@@ -147,7 +147,7 @@ class Analytics {
                 break;
         }
 
-        $dates = array("result_title" => $title, "from_date" => $from_date, "to_date" => $to_date, "prev_from_date" => $prev_from_date, "prev_to_date" => $prev_to_date);
+        $dates = array("period_title" => $title, "from_date" => $from_date, "to_date" => $to_date, "prev_from_date" => $prev_from_date, "prev_to_date" => $prev_to_date);
         return $dates;
     }
 
@@ -229,6 +229,17 @@ class Analytics {
         return $current_quarter;
     }
 
+    public function get_half_year_code($month) {
+
+        if ($month >= 1 && $month <= 6) {
+            $current_half_year = '1-6';
+        } else if ($month >= 7 && $month <= 12) {
+            $current_half_year = '7-12';
+        }
+
+        return $current_half_year;
+    }
+
     public function get_retention_analytics() {
         global $db_handle;
 
@@ -237,17 +248,46 @@ class Analytics {
         $today = date('Y-m-d');
 
         $current_quarter = $this->get_quarter_code($main_current_month);
+        $current_half_year = $this->get_half_year_code($main_current_month);
+        $current_year_code = "1-12";
 
-        $month_title = $this->get_from_to_dates($current_year, $main_current_month)['result_title'];
-        $quarter_title = $this->get_from_to_dates($current_year, $current_quarter)['result_title'];
+        $month_title = $this->get_from_to_dates($current_year, $main_current_month)['period_title'];
+        $quarter_title = $this->get_from_to_dates($current_year, $current_quarter)['period_title'];
+        $half_year_title = $this->get_from_to_dates($current_year, $current_half_year)['period_title'];
+        $year_title = $this->get_from_to_dates($current_year, $current_year_code)['period_title'];
 
         $query = "SELECT * FROM retention_analytics WHERE date_today = '$today' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $retention_analytics = $db_handle->fetchAssoc($result)[0];
 
-        $titles = array("month_title" => $month_title, "quarter_title" => $quarter_title);
+        $titles = array("month_title" => $month_title, "quarter_title" => $quarter_title, "half_year_title" => $half_year_title, "year_title" => $year_title);
 
         return array_merge($retention_analytics, $titles);
+    }
+
+    public function get_onboarding_analytics() {
+        global $db_handle;
+
+        $current_year = date('Y');
+        $main_current_month = date('m');
+        $today = date('Y-m-d');
+
+        $current_quarter = $this->get_quarter_code($main_current_month);
+        $current_half_year = $this->get_half_year_code($main_current_month);
+        $current_year_code = "1-12";
+
+        $month_title = $this->get_from_to_dates($current_year, $main_current_month)['period_title'];
+        $quarter_title = $this->get_from_to_dates($current_year, $current_quarter)['period_title'];
+        $half_year_title = $this->get_from_to_dates($current_year, $current_half_year)['period_title'];
+        $year_title = $this->get_from_to_dates($current_year, $current_year_code)['period_title'];
+
+        $query = "SELECT * FROM onboarding_analytics WHERE date_today = '$today' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $onboarding_analytics = $db_handle->fetchAssoc($result)[0];
+
+        $titles = array("month_title" => $month_title, "quarter_title" => $quarter_title, "half_year_title" => $half_year_title, "year_title" => $year_title);
+
+        return array_merge($onboarding_analytics, $titles);
     }
 
 }

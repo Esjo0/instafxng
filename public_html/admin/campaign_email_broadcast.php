@@ -140,8 +140,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $my_message_new = str_replace('[UC]', '', $my_message_new);
             $my_message_new = str_replace('[LTD]', '', $my_message_new);
             $my_message_new = str_replace('[LTV]', '', $my_message_new);
-            $my_subject_new = str_replace('[FUNDED]', '', $my_message_new);
-            $my_subject_new = str_replace('[WITHDRAWN]', '', $my_message_new);
+            $my_message_new = str_replace('[FUNDED]', '', $my_message_new);
+            $my_message_new = str_replace('[WITHDRAWN]', '', $my_message_new);
             $my_message_new = str_replace('[BFL]', '', $my_message_new);
             $my_message_new = str_replace('[SLP]', '', $my_message_new);
             $my_message_new = str_replace('[SLL]', '', $my_message_new);

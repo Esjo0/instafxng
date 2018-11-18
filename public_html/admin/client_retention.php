@@ -6,12 +6,16 @@ if(isset($_GET['r']) && $_GET['r'] == 1) {
     unset($_SESSION['client_retention_base_query']);
     unset($_SESSION['client_retention_base_query2']);
     unset($_SESSION['client_retention_query']);
+    unset($_SESSION['client_retention_query2']);
+    unset($_SESSION['client_retention_main_query']);
     unset($_SESSION['client_retention_prev_from_date']);
     unset($_SESSION['client_retention_prev_to_date']);
     unset($_SESSION['client_retention_from_date']);
     unset($_SESSION['client_retention_to_date']);
-    unset($_SESSION['client_retention_result_title']);
-    unset($_SESSION['client_retention_type']);
+    unset($_SESSION['client_retention_period_title']);
+    unset($_SESSION['client_retention_type_title']);
+    unset($_SESSION['client_retention_type_title2']);
+    unset($_SESSION['client_retention_type_main_title']);
     unset($_SESSION['client_retention_type_selected']);
 
     redirect_to("client_retention.php");
@@ -21,6 +25,8 @@ $current_year = date('Y');
 $main_current_month = date('m');
 $current_month = ltrim($main_current_month, '0');
 $current_quarter = $obj_analytics->get_quarter_code($main_current_month);
+$current_half_year = $obj_analytics->get_half_year_code($main_current_month);
+$current_year_code = "1-12";
 
 // Get the page Analytics
 $retention_analytics = $obj_analytics->get_retention_analytics();
@@ -28,6 +34,8 @@ extract($retention_analytics);
 
 $m_retention_rate = ($m_client_retained / $m_client_to_retain) * 100;
 $q_retention_rate = ($q_client_retained / $q_client_to_retain) * 100;
+$h_retention_rate = ($h_client_retained / $h_client_to_retain) * 100;
+$y_retention_rate = ($y_client_retained / $y_client_to_retain) * 100;
 
 $query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '2' LIMIT 1";
 $result = $db_handle->runQuery($query);
@@ -40,6 +48,18 @@ $result = $db_handle->runQuery($query);
 $q_current_target = $db_handle->fetchAssoc($result)[0]['target'];
 $q_target_rate = ($q_retention_rate / $q_current_target) * 100;
 $q_target_rate = number_format($q_target_rate, 2);
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_half_year' AND status = '1' AND type = '2' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$h_current_target = $db_handle->fetchAssoc($result)[0]['target'];
+$h_target_rate = ($h_retention_rate / $h_current_target) * 100;
+$h_target_rate = number_format($h_target_rate, 2);
+
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_year_code' AND status = '1' AND type = '2' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$y_current_target = $db_handle->fetchAssoc($result)[0]['target'];
+$y_target_rate = ($y_retention_rate / $y_current_target) * 100;
+$y_target_rate = number_format($y_target_rate, 2);
 
 if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
 
@@ -58,7 +78,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY last_trade DESC ";
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
 
@@ -67,47 +87,80 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY first_trade DESC ";
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
 
-        if($ret_type == '1') {
-            $retention_type = "NOT YET RETAINED";
-            $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
-                FROM reference_clients AS rc1
-                LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-                WHERE rc2.user_code IS NULL ";
-        } else {
-            $retention_type = "RETAINED";
-            $query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
-                FROM reference_clients AS rc1
-                LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-                WHERE rc2.user_code IS NOT NULL ";
-        }
+        $retention_type_title = "NOT YET RETAINED";
+        $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
+            FROM reference_clients AS rc1
+            LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+            WHERE rc2.user_code IS NULL ORDER BY rc1.last_trade DESC ";
+
+        $retention_type_title2 = "RETAINED";
+        $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+            FROM reference_clients AS rc1
+            LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+            WHERE rc2.user_code IS NOT NULL ORDER BY rc2.first_trade DESC ";
+
+        $main_query = $query;
+        $retention_type_main_title = $retention_type_title;
 
         $_SESSION['client_retention_base_query'] = $base_query;
         $_SESSION['client_retention_base_query2'] = $base_query2;
         $_SESSION['client_retention_query'] = $query;
+        $_SESSION['client_retention_query2'] = $query2;
+        $_SESSION['client_retention_main_query'] = $query;
         $_SESSION['client_retention_prev_from_date'] = $prev_from_date;
         $_SESSION['client_retention_prev_to_date'] = $prev_to_date;
         $_SESSION['client_retention_from_date'] = $from_date;
         $_SESSION['client_retention_to_date'] = $to_date;
-        $_SESSION['client_retention_result_title'] = $result_title;
-        $_SESSION['client_retention_type'] = $retention_type;
-        $_SESSION['client_retention_type_selected'] = $ret_type;
+        $_SESSION['client_retention_period_title'] = $period_title;
+        $_SESSION['client_retention_type_title'] = $retention_type_title;
+        $_SESSION['client_retention_type_title2'] = $retention_type_title2;
+        $_SESSION['client_retention_type_main_title'] = $retention_type_title;
+        $_SESSION['client_retention_type_selected'] = $retention_type;
 
     } else {
+
+        if (isset($_POST['retention_tracker_switch'])) {
+            foreach ($_POST as $key => $value) {
+                $_POST[$key] = $db_handle->sanitizePost(trim($value));
+            }
+            extract($_POST);
+
+            switch($ret_type) {
+                case '1':
+                    $main_query = $_SESSION['client_retention_query'];
+                    $_SESSION['client_retention_main_query'] = $main_query;
+
+                    $retention_type_main_title = $_SESSION['client_retention_type_title'];
+                    $_SESSION['client_retention_type_main_title'] = $retention_type_main_title;
+                    break;
+                case '2':
+                    $main_query = $_SESSION['client_retention_query2'];
+                    $_SESSION['client_retention_main_query'] = $main_query;
+
+                    $retention_type_main_title = $_SESSION['client_retention_type_title2'];
+                    $_SESSION['client_retention_type_main_title'] = $retention_type_main_title;
+                    break;
+            }
+        }
 
         $base_query = $_SESSION['client_retention_base_query'];
         $base_query2 = $_SESSION['client_retention_base_query2'];
         $query = $_SESSION['client_retention_query'];
+        $query2 = $_SESSION['client_retention_query2'];
+        $main_query = $_SESSION['client_retention_main_query'];
         $prev_from_date = $_SESSION['client_retention_prev_from_date'];
         $prev_to_date = $_SESSION['client_retention_prev_to_date'];
         $from_date = $_SESSION['client_retention_from_date'];
         $to_date = $_SESSION['client_retention_to_date'];
-        $result_title = $_SESSION['client_retention_result_title'];
-        $retention_type = $_SESSION['client_retention_type'];
-        $ret_type = $_SESSION['client_retention_type_selected'];
+        $period_title = $_SESSION['client_retention_period_title'];
+        $retention_type_title = $_SESSION['client_retention_type_title'];
+        $retention_type_title2 = $_SESSION['client_retention_type_title2'];
+        $retention_type_main_title= $_SESSION['client_retention_type_main_title'];
+        $retention_type = $_SESSION['client_retention_type_selected'];
 
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
         $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
@@ -123,7 +176,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY last_trade DESC ";
 
     $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
 
@@ -132,35 +185,46 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
-            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY sum_commission DESC ";
+            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY last_trade DESC ";
 
     $db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
 
-    $ret_type = '1';
-    $retention_type = "NOT YET RETAINED";
+    $retention_type_title = "NOT YET RETAINED";
     $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ";
+            WHERE rc2.user_code IS NULL ORDER BY rc2.last_trade DESC ";
 
+    $retention_type_title2 = "RETAINED";
+    $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+            FROM reference_clients AS rc1
+            LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+            WHERE rc2.user_code IS NOT NULL ORDER BY rc2.first_trade DESC ";
+
+    $main_query = $query;
+    $retention_type_main_title = $retention_type_title;
 
     $_SESSION['client_retention_base_query'] = $base_query;
     $_SESSION['client_retention_base_query2'] = $base_query2;
     $_SESSION['client_retention_query'] = $query;
+    $_SESSION['client_retention_query2'] = $query2;
+    $_SESSION['client_retention_main_query'] = $query;
     $_SESSION['client_retention_prev_from_date'] = $prev_from_date;
     $_SESSION['client_retention_prev_to_date'] = $prev_to_date;
     $_SESSION['client_retention_from_date'] = $from_date;
     $_SESSION['client_retention_to_date'] = $to_date;
-    $_SESSION['client_retention_result_title'] = $result_title;
-    $_SESSION['client_retention_type'] = $retention_type;
-    $_SESSION['client_retention_type_selected'] = $ret_type;
+    $_SESSION['client_retention_period_title'] = $period_title;
+    $_SESSION['client_retention_type_title'] = $retention_type_title;
+    $_SESSION['client_retention_type_title2'] = $retention_type_title2;
+    $_SESSION['client_retention_type_main_title'] = $retention_type_title;
+    $_SESSION['client_retention_type_selected'] = $retention_type;
 }
 
 $total_to_retain = $db_handle->numRows($base_query);
 
-$numrows = $db_handle->numRows($query);
+$numrows = $db_handle->numRows($main_query);
 
-if($ret_type == 1) {
+if($retention_type_main_title == "NOT YET RETAINED") {
     $total_not_retained = $numrows;
 } else {
     $total_not_retained = $total_to_retain - $numrows;
@@ -187,8 +251,8 @@ $prespagehigh = $currentpage * $rowsperpage;
 if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
 
 $offset = ($currentpage - 1) * $rowsperpage;
-$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
-$result = $db_handle->runQuery($query);
+$main_query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$result = $db_handle->runQuery($main_query);
 $retention_result = $db_handle->fetchAssoc($result);
 
 ?>
@@ -202,7 +266,6 @@ $retention_result = $db_handle->fetchAssoc($result);
         <meta name="title" content="Instaforex Nigeria | Admin - Client Retention Tracker" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
-
         <?php require_once 'layouts/head_meta.php'; ?>
     </head>
     <body>
@@ -270,44 +333,123 @@ $retention_result = $db_handle->fetchAssoc($result);
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-6">
-                                <h5 class="text-center"><strong>Month Analysis - (<?php echo $month_title; ?>)</strong></h5>
+                            <div class="col-sm-12">
+                                <div id="myAnalytics" class="carousel slide" data-interval="false">
+                                    <!-- Indicators -->
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#myAnalytics" data-slide-to="0" class="active"></li>
+                                        <li data-target="#myAnalytics" data-slide-to="1"></li>
+                                    </ol>
 
-                                <table class="table table-border table-responsive table-hover">
-                                    <tr><td>Clients to Retain</td><td><?php echo number_format($m_client_to_retain); ?></td></tr>
-                                    <tr><td>Total Retained</td><td><?php echo number_format($m_client_retained); ?></td></tr>
-                                    <tr><td>Not Retained</td><td><?php echo number_format($m_client_to_retain - $m_client_retained); ?></td></tr>
-                                    <tr><td>Retained Yesterday</td><td><?php echo number_format($m_retained_yesterday); ?></td></tr>
-                                    <tr><td>Retention Rate</td><td><?php echo number_format($m_retention_rate, 2) . "%"; ?></td></tr>
-                                </table>
+                                    <!-- Wrapper for slides -->
+                                    <div class="carousel-inner" style="height: 350px;">
 
-                                <hr />
+                                        <div class="item active">
 
-                                <p class="text-center"><strong>Performance progress relative to target (<?php echo $m_current_target; ?>%)</strong></p>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Month Analysis - (<?php echo $month_title; ?>)</strong></h5>
 
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $m_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $m_current_target; ?>" style="width: <?php echo $m_target_rate; ?>%"><?php echo $m_target_rate; ?>%</div>
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Clients to Retain</td><td><?php echo number_format($m_client_to_retain); ?></td></tr>
+                                                        <tr><td>Total Retained</td><td><?php echo number_format($m_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($m_client_to_retain - $m_client_retained); ?></td></tr>
+                                                        <tr><td>Retained Yesterday</td><td><?php echo number_format($m_retained_yesterday); ?></td></tr>
+                                                        <tr><td>Retention Rate</td><td><?php echo number_format($m_retention_rate, 2) . "%"; ?></td></tr>
+                                                    </table>
+
+                                                    <hr />
+
+                                                    <p class="text-center"><strong>Performance progress relative to target (<?php echo $m_current_target; ?>%)</strong></p>
+
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $m_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $m_current_target; ?>" style="width: <?php echo $m_target_rate; ?>%"><?php echo $m_target_rate; ?>%</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Quarter Analysis - (<?php echo $quarter_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Clients to Retain</td><td><?php echo number_format($q_client_to_retain); ?></td></tr>
+                                                        <tr><td>Total Retained</td><td><?php echo number_format($q_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($q_client_to_retain - $q_client_retained); ?></td></tr>
+                                                        <tr><td>Retained Yesterday</td><td><?php echo number_format($q_retained_yesterday); ?></td></tr>
+                                                        <tr><td>Retention Rate</td><td><?php echo number_format($q_retention_rate, 2) . "%"; ?></td></tr>
+                                                    </table>
+
+                                                    <hr />
+
+                                                    <p class="text-center"><strong>Performance progress relative to target (<?php echo $q_current_target; ?>%)</strong></p>
+
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $q_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $q_current_target; ?>" style="width: <?php echo $q_target_rate; ?>%"><?php echo $q_target_rate; ?>%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="item">
+
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Half Year Analysis - (<?php echo $half_year_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Clients to Retain</td><td><?php echo number_format($h_client_to_retain); ?></td></tr>
+                                                        <tr><td>Total Retained</td><td><?php echo number_format($h_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($h_client_to_retain - $m_client_retained); ?></td></tr>
+                                                        <tr><td>Retained Yesterday</td><td><?php echo number_format($h_retained_yesterday); ?></td></tr>
+                                                        <tr><td>Retention Rate</td><td><?php echo number_format($h_retention_rate, 2) . "%"; ?></td></tr>
+                                                    </table>
+
+                                                    <hr />
+
+                                                    <p class="text-center"><strong>Performance progress relative to target (<?php echo $h_current_target; ?>%)</strong></p>
+
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $h_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $h_current_target; ?>" style="width: <?php echo $h_target_rate; ?>%"><?php echo $h_target_rate; ?>%</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <h5 class="text-center"><strong>Year Analysis - (<?php echo $year_title; ?>)</strong></h5>
+
+                                                    <table class="table table-border table-responsive table-hover">
+                                                        <tr><td>Clients to Retain</td><td><?php echo number_format($y_client_to_retain); ?></td></tr>
+                                                        <tr><td>Total Retained</td><td><?php echo number_format($y_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($y_client_to_retain - $q_client_retained); ?></td></tr>
+                                                        <tr><td>Retained Yesterday</td><td><?php echo number_format($y_retained_yesterday); ?></td></tr>
+                                                        <tr><td>Retention Rate</td><td><?php echo number_format($y_retention_rate, 2) . "%"; ?></td></tr>
+                                                    </table>
+
+                                                    <hr />
+
+                                                    <p class="text-center"><strong>Performance progress relative to target (<?php echo $y_current_target; ?>%)</strong></p>
+
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $y_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $y_current_target; ?>" style="width: <?php echo $y_target_rate; ?>%"><?php echo $y_target_rate; ?>%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                    <!-- Left and right controls -->
+                                    <a class="left carousel-control" href="#myAnalytics" data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" href="#myAnalytics" data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
                                 </div>
-                            </div>
 
-                            <div class="col-sm-6">
-                                <h5 class="text-center"><strong>Quarter Analysis - (<?php echo $quarter_title; ?>)</strong></h5>
-
-                                <table class="table table-border table-responsive table-hover">
-                                    <tr><td>Clients to Retain</td><td><?php echo number_format($q_client_to_retain); ?></td></tr>
-                                    <tr><td>Total Retained</td><td><?php echo number_format($q_client_retained); ?></td></tr>
-                                    <tr><td>Not Retained</td><td><?php echo number_format($q_client_to_retain - $q_client_retained); ?></td></tr>
-                                    <tr><td>Retained Yesterday</td><td><?php echo number_format($q_retained_yesterday); ?></td></tr>
-                                    <tr><td>Retention Rate</td><td><?php echo number_format($q_retention_rate, 2) . "%"; ?></td></tr>
-                                </table>
-
-                                <hr />
-
-                                <p class="text-center"><strong>Performance progress relative to target (<?php echo $q_current_target; ?>%)</strong></p>
-
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $q_target_rate; ?>" aria-valuemin="0" aria-valuemax="<?php echo $q_current_target; ?>" style="width: <?php echo $q_target_rate; ?>%"><?php echo $q_target_rate; ?>%</div>
-                                </div>
                             </div>
                         </div>
 
@@ -321,6 +463,8 @@ $retention_result = $db_handle->fetchAssoc($result);
                                         <br />
 
                                         <p class="text-right">
+                                            <a href="client_month_activity.php" target="_blank" class="btn btn-info" title="Month Activity">Month Activity <i class="fa fa-tasks"></i></a>
+
                                             <a data-target="#search-form" data-toggle="modal" class="btn btn-default" title="Apply Filter">Apply Filter <i class="glyphicon glyphicon-search"></i></a>
                                         </p>
 
@@ -329,73 +473,62 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" data-dismiss="modal" aria-hidden="true"  class="close">&times;</button>
-                                                        <p class="modal-title">Fill the form below, choose the year, period and type.</p>
+                                                        <p class="modal-title">Fill the form below, choose the year and period.</p>
                                                     </div>
 
                                                     <div class="modal-body">
                                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="client_retention.php">
 
-                                                        <div class="form-group">
-                                                            <label class="control-label col-sm-3" for="year_date">Year:</label>
-                                                            <div class="col-sm-9 col-lg-8">
-                                                                <div class="input-group date">
-                                                                    <input name="year_date" type="text" class="form-control" id="datetimepicker" required>
-                                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-3" for="year_date">Year:</label>
+                                                                <div class="col-sm-9 col-lg-8">
+                                                                    <div class="input-group date">
+                                                                        <input name="year_date" type="text" class="form-control" id="datetimepicker" required>
+                                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="control-label col-sm-3" for="period">Period:</label>
-                                                            <div class="col-sm-9 col-lg-8">
-                                                                <select type="text" name="period" id="period" class="form-control" required>
-                                                                    <option value=""></option>
-                                                                    <option value="1">January</option>
-                                                                    <option value="2">February</option>
-                                                                    <option value="3">March</option>
-                                                                    <option value="4">April</option>
-                                                                    <option value="5">May</option>
-                                                                    <option value="6">June</option>
-                                                                    <option value="7">July</option>
-                                                                    <option value="8">August</option>
-                                                                    <option value="9">September</option>
-                                                                    <option value="10">October</option>
-                                                                    <option value="11">November</option>
-                                                                    <option value="12">December</option>
-                                                                    <option value="1-12">Annual</option>
-                                                                    <option value="1-6">First Half</option>
-                                                                    <option value="7-12">Second Half</option>
-                                                                    <option value="1-3">First Quarter</option>
-                                                                    <option value="4-6">Second Quarter</option>
-                                                                    <option value="7-9">Third Quarter</option>
-                                                                    <option value="10-12">Fourth Quarter</option>
-                                                                </select>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-3" for="period">Period:</label>
+                                                                <div class="col-sm-9 col-lg-8">
+                                                                    <select type="text" name="period" id="period" class="form-control" required>
+                                                                        <option value=""></option>
+                                                                        <option value="1">January</option>
+                                                                        <option value="2">February</option>
+                                                                        <option value="3">March</option>
+                                                                        <option value="4">April</option>
+                                                                        <option value="5">May</option>
+                                                                        <option value="6">June</option>
+                                                                        <option value="7">July</option>
+                                                                        <option value="8">August</option>
+                                                                        <option value="9">September</option>
+                                                                        <option value="10">October</option>
+                                                                        <option value="11">November</option>
+                                                                        <option value="12">December</option>
+                                                                        <option value="1-12">Annual</option>
+                                                                        <option value="1-6">First Half</option>
+                                                                        <option value="7-12">Second Half</option>
+                                                                        <option value="1-3">First Quarter</option>
+                                                                        <option value="4-6">Second Quarter</option>
+                                                                        <option value="7-9">Third Quarter</option>
+                                                                        <option value="10-12">Fourth Quarter</option>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="form-group">
-                                                            <label class="control-label col-sm-3" for="retention_type">Type:</label>
-                                                            <div class="col-sm-9 col-lg-8">
-                                                                <select type="text" name="ret_type" id="retention_type" class="form-control" required>
-                                                                    <option value=""></option>
-                                                                    <option value="1">Not Yet Retained</option>
-                                                                    <option value="2">Retained</option>
-                                                                </select>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-offset-3 col-sm-9">
+                                                                    <input name="retention_tracker" type="submit" class="btn btn-success" value="Display Result" />
+                                                                </div>
                                                             </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <div class="col-sm-offset-3 col-sm-9">
-                                                                <input name="retention_tracker" type="submit" class="btn btn-success" value="Display Result" />
-                                                            </div>
-                                                        </div>
-                                                        <script type="text/javascript">
-                                                            $(function () {
-                                                                $('#datetimepicker, #datetimepicker2').datetimepicker({
-                                                                    format: 'YYYY'
+                                                            <script type="text/javascript">
+                                                                $(function () {
+                                                                    $('#datetimepicker, #datetimepicker2').datetimepicker({
+                                                                        format: 'YYYY'
+                                                                    });
                                                                 });
-                                                            });
-                                                        </script>
-                                                    </form>
+                                                            </script>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
@@ -403,12 +536,29 @@ $retention_result = $db_handle->fetchAssoc($result);
                                     </div>
                                 </div>
 
-                                <?php if(isset($result_title)) { ?>
-                                <p class="text-center"><strong>Period: <?php echo $result_title . " (" . $retention_type . ")"; ?></strong><br />
-                                Retention rate: <?php echo $retention_rate . '%'; ?></p>
-                                <?php } ?>
+                                <?php if(isset($period_title)) { ?>
+                                    <div class="row">
+                                        <div class="col-sm-12 text-center">
+                                            <p><strong>Period: <?php echo $period_title . " (" . $retention_type_main_title . ")"; ?></strong><br />
+                                                Retention rate: <?php echo $retention_rate . '%'; ?></p>
 
-                                <br />
+                                            <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="client_retention.php?pg=1">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <?php if($retention_type_main_title == "NOT YET RETAINED") { ?>
+                                                            <input type="hidden" name="ret_type" value="2" />
+                                                            <input name="retention_tracker_switch" type="submit" class="btn btn-default" value="See Retained List" />
+                                                        <?php } else { ?>
+                                                            <input type="hidden" name="ret_type" value="1" />
+                                                            <input name="retention_tracker_switch" type="submit" class="btn btn-default" value="See Not Yet Retained List" />
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                <?php } ?>
 
                                 <?php if(isset($retention_result) && !empty($retention_result)) { require 'layouts/pagination_links.php'; } ?>
 
@@ -419,13 +569,13 @@ $retention_result = $db_handle->fetchAssoc($result);
                                             <th>Client Detail</th>
                                             <th>Commission</th>
                                             <th>Funding</th>
-                                            <th><?php if($ret_type == '1') { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
+                                            <th><?php if($retention_type_main_title == "NOT YET RETAINED") { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php if(isset($retention_result) && !empty($retention_result)) { foreach ($retention_result as $row) {
-                                            if($ret_type == '1') {
+                                            if($retention_type == '1') {
                                                 $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $prev_from_date, $prev_to_date);
                                             } else {
                                                 $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $from_date, $to_date);
@@ -439,7 +589,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                 </td>
                                                 <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
                                                 <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
-                                                <td><?php if($ret_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
+                                                <td><?php if($retention_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
                                                 <td nowrap="nowrap">
                                                     <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo encrypt('CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>

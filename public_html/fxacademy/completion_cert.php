@@ -5,13 +5,12 @@ $thisPage = "";
 if (!$session_client->is_logged_in()) {
     redirect_to("login.php");
 }
-$get_learning_position = $education_object->get_learning_position($_SESSION['client_unique_code']);
+$get_learning_position = $education_object->get_clients_max_lesson_completed($_SESSION['client_unique_code']);
 $highest_lesson_published = $education_object->get_highest_lesson_published();
 
 if($get_learning_position != $highest_lesson_published){
     redirect_to("./");
 }
-
 
 ?>
 <!DOCTYPE html>

@@ -117,6 +117,18 @@ if(isset($_POST['selector']))
                 GROUP BY u.email ";
             $display_msg = "Details of unique clients that joined the system last month, But have not yet funded.";
             break;
+        case 9:
+            $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, 
+                u.phone, MIN(td.created) AS first_trade, u.created
+                FROM user AS u 
+                INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                INNER JOIN trading_commission AS td ON td.ifx_acct_no = ui.ifx_acct_no
+                WHERE (STR_TO_DATE(u.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') 
+                GROUP BY u.user_code
+                HAVING (STR_TO_DATE(first_trade, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date')
+                ORDER BY u.created DESC ";
+            $display_msg = "Details of unique clients that joined the system last month and also placed trades last month.";
+            break;
         default:
             $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone 
                 FROM user AS u
@@ -190,6 +202,7 @@ $clients = $db_handle->fetchAssoc($result);
                                                     <option <?php if($filter == 6){echo "selected";} ?> value="6">Last Month New Clients not yet funded above $50</option>
                                                     <option <?php if($filter == 7){echo "selected";} ?> value="7">Last Month New Clients funded above $50</option>
                                                     <option <?php if($filter == 8){echo "selected";} ?> value="8">Last Month New Clients not yet funded</option>
+                                                    <option <?php if($filter == 9){echo "selected";} ?> value="9">Last Month New Clients - Also Traded Last Month</option>
                                                 </select>
                                                 <button style="display: none" id="_selector" name="selector" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                                             </div>

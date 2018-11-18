@@ -178,7 +178,7 @@ if (isset($_POST['login'])) {
             </a>
         </li>
         <li class="list-unstyled-item" >
-            <a href="https://facebook.com/InstaForexNigeria" target="_blank">
+            <a href="https://facebook.com/InstaFxNg" target="_blank">
                 <i class="fa fa-facebook"></i>
             </a>
         </li>
