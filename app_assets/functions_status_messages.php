@@ -87,12 +87,15 @@ function black_friday_tire($id)
             $tire = "GOLD";
             break;
         case '3':
-            $tire = "SILVER";
+            $tire = "SILVER PRO";
             break;
         case '4':
-            $tire = "BRONZE PRO";
+            $tire = "SILVER LITE";
             break;
         case '5':
+            $tire = "BRONZE PRO";
+            break;
+        case '6':
             $tire = "BRONZE LITE";
             break;
         default:
@@ -120,6 +123,9 @@ function black_friday_tire_target($id)
             break;
         case '5':
             $tire = 100;
+            break;
+        case '6':
+            $tire = 50;
             break;
         default:
             $tire = " ";
