@@ -1380,7 +1380,7 @@ MAIL;
         $fetched_data = $db_handle->fetchAssoc($result);
         $trans_detail = $fetched_data[0];
 
-        if(!empty($trans_detail)) {
+        if(!empty($trans_detail) && $trans_detail['status'] != '8') {
             $naira_total_payable = $trans_detail['naira_total_payable'];
             $amount = $naira_total_payable * 100;
 
