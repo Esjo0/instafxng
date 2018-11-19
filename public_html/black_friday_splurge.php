@@ -85,7 +85,8 @@ if (!empty($user_code_encrypted) || $check_acct = true) {
         } elseif ($total_commission <= 299) {
             $platinum = true;
             $gold = true;
-            $silver = true;
+            $silver_pro = true;
+            $silver_lite = true;
             $bronze_pro = true;
             $bronze_lite = true;
         }
