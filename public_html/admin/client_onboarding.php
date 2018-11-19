@@ -1,5 +1,6 @@
 <?php
 require_once("../init/initialize_admin.php");
+
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
 if(isset($_GET['r']) && $_GET['r'] == 1) {
@@ -75,14 +76,24 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
                 $display_msg = "Below is a table listing all clients not yet on board.";
                 break;
 
-            case 'funded':
+            case 'funded_ilpr':
                 $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-                    WHERE ud.status = '8' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    WHERE ud.status = '8' AND ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
                     GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
-                $filter_category = "Clients not yet on board but have funded their accounts";
-                $display_msg = "Below is a table listing all clients not yet on board but have completed funding transactions.";
+                $filter_category = "Clients not yet on board but have funded their ILPR accounts";
+                $display_msg = "Below is a table listing all clients not yet on board but have completed funding transactions on a ILPR account.";
+                break;
+
+            case 'funded_nonilpr':
+                $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
+                    FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                    INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+                    WHERE ud.status = '8' AND ui.type = '2' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                $filter_category = "Clients not yet on board but have funded their Non-ILPR accounts";
+                $display_msg = "Below is a table listing all clients not yet on board but have completed funding transactions on a Non-ILPR account.";
                 break;
 
             case 'ilpr':
@@ -367,11 +378,12 @@ if(isset($_POST['campaign_category'])){
                                                 <span class="concept">Not Onboard Filter</span> <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
-                                                <li><a onclick="filter('all', 'All Clients Not ON Board')" href="javascript:void(0);">All Clients Not ON-Board</a></li>
-                                                <li><a onclick="filter('funded', 'Clients FUNDED but not on board')" href="javascript:void(0);">Clients who Have FUNDED and are Not ON-Board</a></li>
-                                                <li><a onclick="filter('ilpr', 'Clients With ILPR Accounts But not On board')" href="javascript:void(0);">Clients With ILPR Accounts Not ON-Board</a></li>
-                                                <li><a onclick="filter('nonilpr', 'Clients With NON-ILPR Accounts and not On board')" href="javascript:void(0);">Clients With NON-ILPR Accounts Not ON-Board</a></li>
-                                                <li><a onclick="filter('training', 'Training Clients Not on board')" href="javascript:void(0);">Training Clients Not ON-Board</a></li>
+                                                <li><a onclick="filter('all', 'All clients not onboard')" href="javascript:void(0);">All clients not onboard</a></li>
+                                                <li><a onclick="filter('funded_ilpr', 'FUNDED ILPR account but not onboard')" href="javascript:void(0);">FUNDED ILPR account but not onboard</a></li>
+                                                <li><a onclick="filter('funded_nonilpr', 'FUNDED Non-ILPR account but not onboard')" href="javascript:void(0);">FUNDED Non-ILPR account but not onboard</a></li>
+                                                <li><a onclick="filter('ilpr', 'ILPR accounts and not onboard')" href="javascript:void(0);">ILPR accounts and not onboard</a></li>
+                                                <li><a onclick="filter('nonilpr', 'NON-ILPR accounts and not onboard')" href="javascript:void(0);">NON-ILPR accounts and not onboard</a></li>
+                                                <li><a onclick="filter('training', 'Training clients not onboard')" href="javascript:void(0);">Training clients not onboard</a></li>
                                             </ul>
 
                                             <input id="filter_value" name="filter_value" type="hidden" />
