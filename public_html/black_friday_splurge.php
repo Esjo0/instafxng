@@ -64,6 +64,7 @@ if (!empty($user_code_encrypted) || $check_acct = true) {
 
         if ($total_commission >= 6000) {
             $platinum = true;
+            $gold = true;
         } elseif ($total_commission >= 2000 AND $total_commission <= 5999) {
             $platinum = true;
             $gold = true;
@@ -316,6 +317,9 @@ $i = 0;
                                                         a qualifying account.</a>
                                                     </p>
                                                     <ul>
+                                                        <li>
+                                                            Round 2 has Started! Ensure to Opt-In to participate in the final lap of this promo.
+                                                        </li>
                                                         <li>Participant would get rewarded every time he/she hits the
                                                             set target before the promo ends, so the more you hit
                                                             your target the more money you earn!
@@ -340,10 +344,6 @@ $i = 0;
                                                         </li>
                                                         <li>Prizes won will be paid into your InstaForex Account and cannot be converted into loyalty
                                                             points, during and after the promo season.
-                                                        </li>
-                                                        <li>
-                                                            Participation in the second round will not be automatic,
-                                                            you will be required to Opt-In to round 2 upon the completion of round one.
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -429,7 +429,7 @@ $i = 0;
                                                                             class="btn btn-default"
                                                                             style="background-color: #d7d7d7; width:300px; margin-bottom: 8px;">SILVER PRO -
                                                                         (500 loyalty points)
-                                                                    </button><label><b id="silver"
+                                                                    </button><label><b id="silver_pro"
                                                                                        style="display:none; background-color: #d7d7d7; border-radius:8px; color:green !important; box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)""><span class="glyphicon glyphicon-ok"></span></b>
                                                                        </label>
                                                                     <br>
@@ -440,7 +440,7 @@ $i = 0;
                                                                             class="btn btn-default"
                                                                             style="background-color: #d7d7d7; width:300px; margin-bottom: 8px;">SILVER LITE -
                                                                         (200 loyalty points)
-                                                                    </button><label><b id="silver"
+                                                                    </button><label><b id="silver_lite"
                                                                                        style="display:none; background-color: #d7d7d7; border-radius:8px; color:green !important; box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)""><span class="glyphicon glyphicon-ok"></span></b>
                                                                     </label>
                                                                     <br>
@@ -470,6 +470,9 @@ $i = 0;
 
                                                             <p class="text-center">
                                                             <ul>
+                                                                <li>
+                                                                    Round 2 has Started! Ensure to Opt-In to participate in the final lap of this promo.
+                                                                </li>
                                                                 <li>Only ILPR enrolled accounts are qualified for this
                                                                     contest.
                                                                 </li>
@@ -493,10 +496,6 @@ $i = 0;
                                                                 </li>
                                                                 <li>Contest starts on Monday 19th November 2018 and
                                                                     ends by 11:59pm on Friday 30th November, 2018.
-                                                                </li>
-                                                                <li>
-                                                                    Participation in the second round will not be automatic,
-                                                                    you will be required to Opt-In to round 2 upon the completion of round one.
                                                                 </li>
                                                             </ul>
                                                             <input id="tire" type="hidden" name="tire" value=""
@@ -627,7 +626,8 @@ $i = 0;
         if (tire == 1) {
             document.getElementById("platinum").style.display = "block";
             document.getElementById("gold").style.display = "none";
-            document.getElementById("silver").style.display = "none";
+            document.getElementById("silver_pro").style.display = "none";
+            document.getElementById("silver_lite").style.display = "none";
             document.getElementById("pro").style.display = "none";
             document.getElementById("lite").style.display = "none";
 
@@ -642,28 +642,40 @@ $i = 0;
         else if (tire == 3) {
             document.getElementById("platinum").style.display = "none";
             document.getElementById("gold").style.display = "none";
-            document.getElementById("silver").style.display = "block";
+            document.getElementById("silver_pro").style.display = "block";
+            document.getElementById("silver_lite").style.display = "none";
             document.getElementById("pro").style.display = "none";
             document.getElementById("lite").style.display = "none";
         }
         else if (tire == 4) {
             document.getElementById("platinum").style.display = "none";
             document.getElementById("gold").style.display = "none";
-            document.getElementById("silver").style.display = "none";
-            document.getElementById("pro").style.display = "block";
+            document.getElementById("silver_pro").style.display = "none";
+            document.getElementById("silver_lite").style.display = "block";
+            document.getElementById("pro").style.display = "none";
             document.getElementById("lite").style.display = "none";
         }
         else if (tire == 5) {
             document.getElementById("platinum").style.display = "none";
             document.getElementById("gold").style.display = "none";
-            document.getElementById("silver").style.display = "none";
+            document.getElementById("silver_pro").style.display = "none";
+            document.getElementById("silver_lite").style.display = "none";
+            document.getElementById("pro").style.display = "block";
+            document.getElementById("lite").style.display = "none";
+        }
+        else if (tire == 6) {
+            document.getElementById("platinum").style.display = "none";
+            document.getElementById("gold").style.display = "none";
+            document.getElementById("silver_pro").style.display = "none";
+            document.getElementById("silver_lite").style.display = "none";
             document.getElementById("pro").style.display = "none";
             document.getElementById("lite").style.display = "block";
         }
         else {
             document.getElementById("platinum").style.display = "none";
             document.getElementById("gold").style.display = "none";
-            document.getElementById("silver").style.display = "none";
+            document.getElementById("silver_pro").style.display = "none";
+            document.getElementById("silver_lite").style.display = "none";
             document.getElementById("pro").style.display = "none";
             document.getElementById("lite").style.display = "none";
         }
