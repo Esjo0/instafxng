@@ -1,3 +1,15 @@
+
+CREATE TABLE `black_friday_2018_2` (
+ `id` int(10) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(100) NOT NULL,
+ `tire` enum('0','1','2','3','4','5') DEFAULT NULL COMMENT '1- Platinum 2 - Gold 3- Silver 4 - Bronzr 1 5- Bronze2',
+ `total_points` int(11) DEFAULT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `user_code` (`user_code`) USING BTREE
+)
+
 CREATE TABLE IF NOT EXISTS `onboarding_analytics` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `date_today` DATE NOT NULL,
