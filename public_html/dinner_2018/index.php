@@ -228,6 +228,10 @@ MAIL;
     <link href="css/mdb.min.css" rel="stylesheet">
     <!-- Your custom styles (optional) -->
     <link href="css/style.min.css" rel="stylesheet">
+
+    <link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Patua One' rel='stylesheet'>
     <style type="text/css">
         html,
         body,
@@ -262,21 +266,21 @@ MAIL;
     </style>
 </head>
 
-<body style="background-color: #ff8fe7; background-image: url('img/doodles.png');">
+<body>
 
 <!-- Full Page Intro -->
 <div class="view full-page-intro"
-     style=" background-color: transparent; background-repeat: no-repeat; background-size: cover;">
+     style="background-image: url('img/purple.jpg');">
 <a href="https//:instafxng.com">
     <div id="page_reloader"
-         style="border-radius: 10px; z-index: 5; max-width:500px; position: fixed; top: 20px; left: 30px; background-image: url('img/gilt.jpg');">
+         style="border-radius: 10px; z-index: 5; max-width:500px; position: fixed; top: 20px; left: 30px;">
         <img
             src="img/ifxlogo.png"
             class="img-fluid img img-responsive" alt="">
     </div>
     </a>
     <!-- Mask & flexbox options-->
-    <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+    <div class="mask d-flex justify-content-center align-items-center">
 
         <!-- Content -->
         <div class="container">
@@ -285,104 +289,12 @@ MAIL;
             <div class="row wow fadeIn">
 
                 <!--Grid column-->
-                <div class="col-md-12 mb-3 white-text text-center" style=" background-color: transparent; ">
-
-                    <hr class="hr-light">
-                    <center><img
-                            src="img/roll.png"
-                            class="img-fluid img img-responsive" alt=""></center>
-                    <strong>
-                        <hr class="hr-light">
-                    </strong>
-
-                    <div class="row">
-                        <div class="col-md-4"></div>
-                        <!--Card-->
-                        <div class="card col-md-4"
-                             style=" background-color: transparent;background-image: url('img/form_bg.png');">
-                            <!--Card content-->
-                            <div class="card-body">
-                                <p class="text-center"
-                                   style="font-family: cursive !important; font-size:15px; border-radius:5px; background-color: rgba(205, 151, 37, 0.89); color: black;">
-                                    <b>Complete the form below to reserve your seat.</b>
-                                </p>
-
-                                <!-- Heading -->
-                                <?php include '../layouts/feedback_message.php'; ?>
-                                <hr>
-                                <form style="color: black;" class="form-horizontal" role="form" method="post" action="">
-                                    <strong>
-                                        <div class="md-form text-left">
-                                            <i class="fa fa-user prefix grey-text"></i>
-                                            <input style="padding-left:10px; background-color:white; color:black; "
-                                                   value="<?php echo $client_full_name; ?>" type="text" id="form3"
-                                                   class="form-control" disabled>
-                                            <label for="form3">Your name</label>
-                                        </div>
-                                        <div class="md-form text-left">
-                                            <i class="fa fa-envelope prefix grey-text"></i>
-                                            <input style="padding-left:10px; background-color:white; color:black; "
-                                                   value="<?php echo $client_email; ?>" type="text" id="form2"
-                                                   class="form-control"
-                                                   disabled>
-                                            <label for="form2">Your email</label>
-                                        </div>
-                                    </strong>
-                                    <p class="text-center"><b>Would You Be in attendance?</b></p>
-                                    <b>
-                                        <div class="row">
-                                            <div class="col-md-2"></div>
-                                            <!-- Group of default radios - option 1 -->
-                                            <div class="col-md-3 custom-control custom-radio">
-                                                <input onchange="you('1')" value="1" type="radio"
-                                                       class="custom-control-input"
-                                                       id="defaultGroupExample1" name="choice">
-                                                <label class="custom-control-label"
-                                                       for="defaultGroupExample1">YES</label>
-                                            </div>
-
-                                            <!-- Group of default radios - option 2 -->
-                                            <div class="col-md-3 custom-control custom-radio">
-                                                <input onchange="you('2')" value="2" type="radio"
-                                                       class="custom-control-input"
-                                                       id="defaultGroupExample2" name="choice">
-                                                <label class="custom-control-label"
-                                                       for="defaultGroupExample2">MAYBE</label>
-                                            </div>
-
-                                            <!-- Group of default radios - option 3 -->
-                                            <div class="col-md-3 custom-control custom-radio">
-                                                <input onchange="you('3')" value="3" type="radio"
-                                                       class="custom-control-input"
-                                                       id="defaultGroupExample3" name="choice">
-                                                <label class="custom-control-label"
-                                                       for="defaultGroupExample3">NO</label>
-                                            </div>
-                                            <div class="col-md-1"></div>
-
-                                        </div>
-
-
-
-                                        <div class="text-center" id="proceed" style="display: none;">
-                                            <a href="#continue" class="btn btn-indigo">PROCEED <i
-                                                    class="fa fa-arrow-down"></i></a>
-                                            <hr>
-                                        </div>
-                                        <div class="text-center" style="display: none;" id="submit">
-                                            <button name="submit1" type="submit" class="btn btn-indigo">SUBMIT</button>
-                                            <hr>
-                                        </div>
-                                    </b>
-                            </div>
-                        </div>
-                        <!--/.Card-->
-                        <div class="col-md-4"></div>
-
-                    </div>
-
+                <div class="col-md-12 white-text text-center" style=" background-color: transparent; ">
+                    <h1 style="color:#db281f"><span style="font-family: Patua One;">InstaFxNg </span><span style="font-family: Pacifico;">Royal Ball</span></h1>
+                    <?php include '../layouts/feedback_message.php'; ?>
+                    <button class="btn btn-indigo" data-toggle="modal" data-target="#reg"><strong>CLICK HERE TO RESERVE YOUR SEAT</strong></button>
                 </div>
-                <!--Grid column-->
+
             </div>
             <!--Grid row-->
 
@@ -394,31 +306,203 @@ MAIL;
 
 </div>
 <!-- Full Page Intro -->
+<!-- To change the direction of the modal animation change .right class -->
+<div class="modal fade" id="reg" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
 
+    <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!--Card-->
+                    <div class="card col-md-12"
+                         style="color:black; background-color: transparent;background-image: url('img/form_bg.png');">
+                        <!--Card content-->
+                        <div class="card-body">
+                            <p class="text-center"
+                               style="font-family: cursive !important; font-size:15px; border-radius:5px; background-color: rgba(205, 151, 37, 0.89); color: black;">
+                                <b>Complete the form below to reserve your seat.</b>
+                            </p>
+
+                            <!-- Heading -->
+
+                            <hr>
+                            <form style="color: black;" class="form-horizontal" role="form" method="post" action="">
+                                <strong>
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-user prefix grey-text"></i>
+                                        <input style="padding-left:10px; background-color:white; color:black; "
+                                               value="<?php echo $client_full_name; ?>" type="text" id="form3"
+                                               class="form-control" disabled>
+                                        <label for="form3">Your name</label>
+                                    </div>
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-envelope prefix grey-text"></i>
+                                        <input style="padding-left:10px; background-color:white; color:black; "
+                                               value="<?php echo $client_email; ?>" type="text" id="form2"
+                                               class="form-control"
+                                               disabled>
+                                        <label for="form2">Your email</label>
+                                    </div>
+                                </strong>
+                                <p class="text-center"><b>Would You Be in attendance?</b></p>
+                                <b>
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <!-- Group of default radios - option 1 -->
+                                        <div class="col-md-3 custom-control custom-radio">
+                                            <input onchange="you('1')" value="1" type="radio"
+                                                   class="custom-control-input"
+                                                   id="defaultGroupExample1" name="choice">
+                                            <label class="custom-control-label"
+                                                   for="defaultGroupExample1">YES</label>
+                                        </div>
+
+                                        <!-- Group of default radios - option 2 -->
+                                        <div class="col-md-3 custom-control custom-radio">
+                                            <input onchange="you('2')" value="2" type="radio"
+                                                   class="custom-control-input"
+                                                   id="defaultGroupExample2" name="choice">
+                                            <label class="custom-control-label"
+                                                   for="defaultGroupExample2">MAYBE</label>
+                                        </div>
+
+                                        <!-- Group of default radios - option 3 -->
+                                        <div class="col-md-3 custom-control custom-radio">
+                                            <input onchange="you('3')" value="3" type="radio"
+                                                   class="custom-control-input"
+                                                   id="defaultGroupExample3" name="choice">
+                                            <label class="custom-control-label"
+                                                   for="defaultGroupExample3">NO</label>
+                                        </div>
+                                        <div class="col-md-1"></div>
+
+                                    </div>
+
+                                    <div class="text-center" style="display: none;" id="submit">
+                                        <button name="submit1" type="submit" class="btn btn-indigo">SUBMIT</button>
+                                        <hr>
+                                    </div>
+                                    <div class="text-center" id="proceed" style="display: none;">
+                                        <hr>
+                                    <div class="md-form mb-5">
+                                        <div class="form-append">Select Your Title</div>
+                                        <select id="title" name="title" class="form-control">
+                                            <option value="Emperor">Emperor</option>
+                                            <option value="King">King</option>
+                                            <option value="Duke">Duke</option>
+                                            <option value="Prince">Prince</option>
+                                            <option value="Knight">Knight</option>
+                                            <option value="Sir">Sir</option>
+                                            <option value="Viscount">Viscount</option>
+                                            <option value="Lord">Lord</option>
+                                            <option value="Empress">Empress</option>
+                                            <option value="Queen">Queen</option>
+                                            <option value="Princess">Princess</option>
+                                            <option value="Duchess">Duchess</option>
+                                            <option value="Lady">Lady</option>
+                                            <option value="Baronet">Baronet</option>
+                                            <option value="Earldom">Earldom</option>
+                                            <option value="Viscountess">Viscountess</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="md-form">
+                                        <i class="fa fa-pencil prefix grey-text"></i>
+                                        <textarea name="town" type="text" id="town" class="md-textarea"></textarea>
+                                        <label for="form8">Enter Your Home Town</label>
+                                    </div>
+                                    <div class="md-form mb-5">
+                                        <div class="form-append">Select Your Current state of Residence</div>
+                                        <select id="state" name="state" class="form-control">
+                                            <option value="Abia State">Abia State</option>
+                                            <option value="Adamawa State">Adamawa State</option>
+                                            <option value="Akwa Ibom State">Akwa Ibom State</option>
+                                            <option value="Anambra State">Anambra State</option>
+                                            <option value="Bauchi State">Bauchi State</option>
+                                            <option value="Bayelsa State">Bayelsa State</option>
+                                            <option value="Benue State">Benue State</option>
+                                            <option value="Borno State">Borno State</option>
+                                            <option value="Cross River State">Cross River State</option>
+                                            <option value="Delta State">Delta State</option>
+                                            <option value="Ebonyi State">Ebonyi State</option>
+                                            <option value="Edo State">Edo State</option>
+                                            <option value="Ekiti State">Ekiti State</option>
+                                            <option value="Enugu State">Enugu State</option>
+                                            <option value="FCT Abuja">FCT Abuja</option>
+                                            <option value="Gombe State">Gombe State</option>
+                                            <option value="Imo State">Imo State</option>
+                                            <option value="Jigawa State">Jigawa State</option>
+                                            <option value="Kaduna State">Kaduna State</option>
+                                            <option value="Kano State">Kano State</option>
+                                            <option value="Katsina State">Katsina State</option>
+                                            <option value="Kebbi State">Kebbi State</option>
+                                            <option value="Kogi State">Kogi State</option>
+                                            <option value="Kwara State">Kwara State</option>
+                                            <option value="Lagos State">Lagos State</option>
+                                            <option value="Nasarawa State">Nasarawa State</option>
+                                            <option value="Niger State">Niger State</option>
+                                            <option value="Ogun State">Ogun State</option>
+                                            <option value="Ondo State">Ondo State</option>
+                                            <option value="Osun State">Osun State</option>
+                                            <option value="Oyo State">Oyo State</option>
+                                            <option value="Plateau State">Plateau State</option>
+                                            <option value="Rivers State">Rivers State</option>
+                                            <option value="Sokoto State">Sokoto State</option>
+                                            <option value="Taraba State">Taraba State</option>
+                                            <option value="Yobe State">Yobe State</option>
+                                            <option value="Zamfara State">Zamfara State</option>
+                                        </select>
+                                    </div>
+                                        <div class="text-center">
+                                            <button name="submit2" type="submit" class="btn btn-indigo">SUBMIT</button>
+                                            <hr>
+                                        </div>
+                                        </div>
+                                </b>
+                        </div>
+                        </form>
+                    </div>
+                    <!--/.Card-->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Side Modal Top Right -->
 <!--Main layout-->
-<main>
-    <div class="container-fluid">
+    <div class="">
         <div id="continue"></div>
 
         <!--Section: Main info-->
-        <section class="card container mt-5 wow fadeIn" style="border-radius:25px; background-color: #ff8fe7;">
+        <section class="view full-page-intro wow fadeIn" style=" background-color: whitesmoke;">
             <!--Grid row-->
             <div class="row wow fadeIn text-center">
 
                 <!--Grid column-->
-                <div class="col-lg-6 col-md-6 mb-4">
+                <div class="col-lg-6 col-md-6">
 
                     <img
-                        src="img/ball_logo.png"
+                        src="img/balls_logo.png"
                         class="img-fluid img img-responsive" alt="">
 
                 </div>
                 <!--Grid column-->
 
                 <!--Grid column-->
-                <div class=" col-lg-6 col-md-6 mb-4 text-lg-center">
-                    <h3 style="background-color: rgba(128, 128, 128, 0.15); font-family: Sofia"
-                        class="h3 text-center mb-5">About the Event</h3>
+                <div class=" col-lg-6 col-md-6 text-lg-center" style="margin-top:100px;">
+                    <h3 style=" font-family: Sofia"
+                        class="h3 text-center mt-6">About the Event</h3>
                     <strong style="font-size:18px;">
 
                         <p>The InstaFxNg 2018 dinner event is themed ‘Royal Ball’ in celebration of your loyalty and
@@ -439,9 +523,9 @@ MAIL;
         <!--Section: Main info-->
 
         <!--Section: Main info-->
-        <section id="select_avatar" class="mt-5 container-fluid wow fadeIn" title="Click on an image to select your style"
-                 style="margin:0px; padding:0px; display:none; background-color:white;">
-            <h3 style="background-color: rgba(128, 128, 128, 0.15); font-family: Sofia" class="h3 text-center mb-5">
+        <section id="select_avatar" class=" view wow fadeIn" title="Click on an image to select your style"
+                 style="margin:0px; padding:0px; background-color:white;">
+            <h3 style="background-color: rgba(128, 128, 128, 0.15); font-family: Sofia" class="h3 text-center">
                 Select Your Style</h3>
             <div class="row">
                 <div class="col-md-3"></div>
@@ -452,7 +536,8 @@ MAIL;
             <!--Grid row-->
             <div class="row wow fadeIn text-center">
                 <!--Grid column-->
-                <div class="col-md-6 text-center">
+                <div class="col-md-1"></div>
+                <div class="col-md-5 text-center">
 
                     <div class="row text-center" style="padding:50px">
                         <!--Card-->
@@ -461,7 +546,7 @@ MAIL;
                             <!--Card image-->
                             <div data-toggle="modal" data-target="#sideModalTR3">
                                 <img src="img/male3.png"
-                                     class="card-img-top" alt="" style="height:200px; width:150px;">
+                                     class="card-img-top" alt="" style="height:100px; width:100px;">
                             </div>
                             <!--Card image-->
                             <!-- Side Modal Top Right -->
@@ -483,8 +568,6 @@ MAIL;
                                         <div class="modal-body">
                                             <img src="img/male3.png"
                                                  class="card-img-top" alt="">
-                                            <span data-dismiss="modal" onclick="select_avatar('1')"
-                                                  class="btn btn-indigo">SELECT</span>
 
                                         </div>
                                     </div>
@@ -500,7 +583,7 @@ MAIL;
                             <!--Card image-->
                             <div data-toggle="modal" data-target="#sideModalTR4">
                                 <img src="img/male4.png"
-                                     class="card-img-top" alt="" style="height:200px; width:150px;">
+                                     class="card-img-top" alt="" style="height:100px; width:100px;">
                             </div>
                             <!--Card image-->
                             <!-- Side Modal Top Right -->
@@ -522,8 +605,6 @@ MAIL;
                                         <div class="modal-body">
                                             <img src="img/male4.png"
                                                  class="card-img-top" alt="">
-                                            <span data-dismiss="modal" onclick="select_avatar('1')"
-                                                  class="btn btn-indigo">SELECT</span>
 
                                         </div>
                                     </div>
@@ -534,12 +615,12 @@ MAIL;
                         </div>
                         <!--Card-->
                         <!--Card-->
-                        <div class=" btn">
+                        <div class="btn">
 
                             <!--Card image-->
                             <div data-toggle="modal" data-target="#sideModalTR9">
                                 <img src="img/male9.png"
-                                     class="card-img-top" alt="" style="height:200px; width:150px;">
+                                     class="card-img-top" alt="" style="height:100px; width:100px;">
                             </div>
                             <!--Card image-->
                             <!-- Side Modal Top Right -->
@@ -561,8 +642,6 @@ MAIL;
                                         <div class="modal-body">
                                             <img src="img/male9.png"
                                                  class="card-img-top" alt="">
-                                            <span data-dismiss="modal" onclick="select_avatar('1')"
-                                                  class="btn btn-indigo">SELECT</span>
                                         </div>
                                     </div>
                                 </div>
@@ -577,7 +656,7 @@ MAIL;
                             <!--Card image-->
                             <div data-toggle="modal" data-target="#sideModalTR10">
                                 <img src="img/male10.jpg"
-                                     class="card-img-top" alt="" style="height:200px; width:150px;">
+                                     class="card-img-top" alt="" style="height:100px; width:100px;">
                             </div>
                             <!--Card image-->
                             <!-- Side Modal Top Right -->
@@ -599,8 +678,6 @@ MAIL;
                                         <div class="modal-body">
                                             <img src="img/male10.jpg"
                                                  class="card-img-top" alt="">
-                                            <span data-dismiss="modal" onclick="select_avatar('1')"
-                                                  class="btn btn-indigo">SELECT</span>
                                         </div>
                                     </div>
                                 </div>
@@ -610,22 +687,11 @@ MAIL;
                         </div>
                         <!--Card-->
                     </div>
-                    <h5>
-                        <strong>
-                            <a href="" class="text-center dark-grey-text">
-                                <b id="duke"
-                                   style="display:none; background-color: #d7d7d7;
-                                               border-radius:8px; color:green !important;
-                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                <span class="fa fa-check"></span></b>
-                            </a>
-                        </strong>
-                    </h5>
                 </div>
                 <!--Grid column-->
 
                 <!--Grid column-->
-                <div class="col-md-6 text-center">
+                <div class="col-md-5 text-center">
 
                     <div class="row text-center" style="padding:50px">
                         <!--Card-->
@@ -634,7 +700,7 @@ MAIL;
                             <!--Card image-->
                             <div data-toggle="modal" data-target="#sideModalTf1">
                                 <img src="img/ball1.jpg"
-                                     class="card-img-top" style="height:200px; width:150px;" alt="">
+                                     class="card-img-top" style="height:100px; width:100px;" alt="">
                             </div>
                             <!--Card image-->
                             <!-- Side Modal Top Right -->
@@ -673,7 +739,7 @@ MAIL;
                             <!--Card image-->
                             <div data-toggle="modal" data-target="#sideModalTf3">
                                 <img src="img/ball3.jpg"
-                                     class="card-img-top" alt="" style="height:200px; width:150px;">
+                                     class="card-img-top" alt="" style="height:100px; width:100px;">
                             </div>
                             <!--Card image-->
                             <!-- Side Modal Top Right -->
@@ -712,7 +778,7 @@ MAIL;
                             <!--Card image-->
                             <div data-toggle="modal" data-target="#sideModalTf6">
                                 <img src="img/ball6.jpg"
-                                     class="card-img-top" alt="" style="height:200px; width:150px;">
+                                     class="card-img-top" alt="" style="height:100px; width:100px;">
                             </div>
                             <!--Card image-->
                             <!-- Side Modal Top Right -->
@@ -751,7 +817,7 @@ MAIL;
                             <!--Card image-->
                             <div data-toggle="modal" data-target="#sideModalTf9">
                                 <img src="img/ball9.jpg"
-                                     class="card-img-top" alt="" style="height:200px; width:150px;">
+                                     class="card-img-top" alt="" style="height:100px; width:100px;">
                             </div>
                             <!--Card image-->
                             <!-- Side Modal Top Right -->
@@ -797,150 +863,32 @@ MAIL;
                     </h5>
                 </div>
                 <!--Grid column-->
-
-                <input id="avatar" type="hidden" name="avatar">
+                <div class="col-md-1"></div>
             </div>
             <!--Grid row-->
-            <hr class="my-5">
+            <hr>
         </section>
         <!--Section: Main info-->
 
 
         <!--Section: Main features & Quick Start-->
-        <section class="container card" style="display: none; background:white; border-radius:25px; " id="select_title">
-            <br>
-            <h3 class="h3 text-center mb-5">SELECT YOUR ROYAL TITLE</h3>
-            <p class="help-block text-center"><i class="fa fa-info-circle"></i> Example. Emperor of Ile-Ife</p>
-
+        <section class="view full-page-intro" style=" background:whitesmoke; ">
             <!--Grid row-->
-            <div class="row wow fadeIn">
+            <div class="row wow fadeIn text-center">
 
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-12 px-4">
-
-                    <div class="modal-body mx-3">
-
-                        <i class="fa fa-title prefix grey-text"> Select Your Title</i>
-                        <div class="md-form mb-5">
-                            <select id="title" name="title" class="form-control">
-                                <option value="Emperor">Emperor</option>
-                                <option value="King">King</option>
-                                <option value="Duke">Duke</option>
-                                <option value="Prince">Prince</option>
-                                <option value="Knight">Knight</option>
-                                <option value="Sir">Sir</option>
-                                <option value="Viscount">Viscount</option>
-                                <option value="Lord">Lord</option>
-                                <option value="Empress">Empress</option>
-                                <option value="Queen">Queen</option>
-                                <option value="Princess">Princess</option>
-                                <option value="Duchess">Duchess</option>
-                                <option value="Lady">Lady</option>
-                                <option value="Baronet">Baronet</option>
-                                <option value="Earldom">Earldom</option>
-                                <option value="Viscountess">Viscountess</option>
-                            </select>
-                        </div>
-
+                    <div class="text-center embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/6H2j_4cwnYE" frameborder="0" allowfullscreen></iframe>
                     </div>
-
-                </div>
-                <!--/Grid column-->
-
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-12">
-
-                    <div class="modal-body mx-3">
-
-                        <div class="md-form">
-                            <i class="fa fa-pencil prefix grey-text"></i>
-                            <textarea name="town" type="text" id="town" class="md-textarea"></textarea>
-                            <label for="form8">Enter Your Home Town</label>
-                        </div>
-
-                    </div>
-                </div>
-                <!--/Grid column-->
-
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-12 px-4">
-
-                    <div class="modal-body mx-3">
-
-                        <i class="fa fa-title prefix grey-text"> Select Your Current state of Residence</i>
-                        <div class="md-form mb-5">
-                            <select id="state" name="state" class="form-control">
-                                <option value="Abia State">Abia State</option>
-                                <option value="Adamawa State">Adamawa State</option>
-                                <option value="Akwa Ibom State">Akwa Ibom State</option>
-                                <option value="Anambra State">Anambra State</option>
-                                <option value="Bauchi State">Bauchi State</option>
-                                <option value="Bayelsa State">Bayelsa State</option>
-                                <option value="Benue State">Benue State</option>
-                                <option value="Borno State">Borno State</option>
-                                <option value="Cross River State">Cross River State</option>
-                                <option value="Delta State">Delta State</option>
-                                <option value="Ebonyi State">Ebonyi State</option>
-                                <option value="Edo State">Edo State</option>
-                                <option value="Ekiti State">Ekiti State</option>
-                                <option value="Enugu State">Enugu State</option>
-                                <option value="FCT Abuja">FCT Abuja</option>
-                                <option value="Gombe State">Gombe State</option>
-                                <option value="Imo State">Imo State</option>
-                                <option value="Jigawa State">Jigawa State</option>
-                                <option value="Kaduna State">Kaduna State</option>
-                                <option value="Kano State">Kano State</option>
-                                <option value="Katsina State">Katsina State</option>
-                                <option value="Kebbi State">Kebbi State</option>
-                                <option value="Kogi State">Kogi State</option>
-                                <option value="Kwara State">Kwara State</option>
-                                <option value="Lagos State">Lagos State</option>
-                                <option value="Nasarawa State">Nasarawa State</option>
-                                <option value="Niger State">Niger State</option>
-                                <option value="Ogun State">Ogun State</option>
-                                <option value="Ondo State">Ondo State</option>
-                                <option value="Osun State">Osun State</option>
-                                <option value="Oyo State">Oyo State</option>
-                                <option value="Plateau State">Plateau State</option>
-                                <option value="Rivers State">Rivers State</option>
-                                <option value="Sokoto State">Sokoto State</option>
-                                <option value="Taraba State">Taraba State</option>
-                                <option value="Yobe State">Yobe State</option>
-                                <option value="Zamfara State">Zamfara State</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-                </div>
-                <!--/Grid column-->
 
             </div>
-            <!--/Grid row-->
-            <hr class="my-5">
         </section>
         <!--Section: Main features & Quick Start-->
 
-
-        <!--Section: Not enough-->
-        <section id="complete" style="display: none;">
-
-            <h2 class="my-5 h3 text-center">
-                <div class="text-center">
-                    <button name="submit2" type="submit" class="btn btn-indigo">SUBMIT</button>
-                    <hr>
-                </div>
-            </h2>
-        </section>
-        <!--Section: Not enough-->
 
         <!-- Form -->
 
 
     </div>
-</main>
 <!--Main layout-->
-</form>
 <!--Footer-->
 <footer class="page-footer text-center font-small mt-4 wow fadeIn">
 
@@ -954,33 +902,21 @@ MAIL;
 </footer>
 <!--/.Footer-->
 <!-- SCRIPTS -->
-<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
 <script>
     function you(type) {
         console.log(type);
         if (type == '1') {
-            document.getElementById("avatar").required = true;
+            document.getElementById("submit").style.display = "none";
+            document.getElementById("proceed").style.display = "block";
             document.getElementById("title").required = true;
             document.getElementById("town").required = true;
             document.getElementById("state").required = true;
-            document.getElementById("submit").style.display = "none";
-            document.getElementById("proceed").style.display = "block";
-            document.getElementById("select_avatar").style.display = "block";
-            document.getElementById("select_title").style.display = "block";
-            document.getElementById("complete").style.display = "block";
-
 
         }
         else if (type == '2' || type == '3') {
             document.getElementById("submit").style.display = "block";
             document.getElementById("proceed").style.display = "none";
-            document.getElementById("select_avatar").style.display = "none";
-            document.getElementById("select_title").style.display = "none";
-            document.getElementById("complete").style.display = "none";
             document.getElementById("avatar").required = false;
-            document.getElementById("title").required = false;
-            document.getElementById("town").required = false;
-            document.getElementById("state").required = false;
         }
     }
 </script>
