@@ -15,8 +15,11 @@ if (isset($_POST['create'])) {
     $year = $db_handle->sanitizePost($_POST['year']);
     $type = $db_handle->sanitizePost($_POST['type']);
 
+    $commission_target = $db_handle->sanitizePost($_POST['commission_target']);
+    $deposit_target = $db_handle->sanitizePost($_POST['deposit_target']);
 
-    $query = "INSERT into admin_targets(name, details, period, value, year, type, status, admin) VALUES('$name','$details', '$period','$value', '$year', '$type', '1','$admin_code')";
+
+    $query = "INSERT into admin_targets(name, details, period, value, commission_target, deposit_target, year, type, status, admin) VALUES('$name','$details', '$period','$value', $commission_target, $deposit_target, '$year', '$type', '1','$admin_code')";
     $result = $db_handle->runQuery($query);
     if ($result) {
         $message_success = "You have successfully created a new Target";
@@ -32,7 +35,10 @@ if (isset($_POST['update'])) {
     $value = $db_handle->sanitizePost($_POST['value']);
     $id = $db_handle->sanitizePost($_POST['id']);
 
-    $query = "UPDATE admin_targets SET name = '$name', details = '$details', value = '$value', updated = now() WHERE id = '$id'";
+    $commission_target = $db_handle->sanitizePost($_POST['commission_target']);
+    $deposit_target = $db_handle->sanitizePost($_POST['deposit_target']);
+
+    $query = "UPDATE admin_targets SET name = '$name', details = '$details', value = '$value', commission_target = $commission_target, deposit_target = $deposit_target, updated = now() WHERE id = '$id'";
     $result = $db_handle->runQuery($query);
     if ($result) {
         $message_success = "You have successfully updated your target";
@@ -225,10 +231,22 @@ $targets = $db_handle->fetchAssoc($result);
                                                             </script>
                                                             <div class="form-group row">
                                                                 <div class="col-sm-5">
-                                                                    <label for="inputHeading3"
-                                                                           class="col-form-label">Value</label>
-                                                                    <input name="target" type="number" class="form-control"
-                                                                           placeholder="Enter Target Value" required>
+                                                                    <label for="inputHeading3" class="col-form-label">Value</label>
+                                                                    <input name="target" type="number" class="form-control" placeholder="Enter Target Value" required>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-5">
+                                                                    <label for="inputHeading3" class="col-form-label">Commission Target</label>
+                                                                    <input name="commission_target" type="number" class="form-control" placeholder="Retention Commission Target" required>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-5">
+                                                                    <label for="inputHeading3" class="col-form-label">Funding Target</label>
+                                                                    <input name="deposit_target" type="number" class="form-control" placeholder="Retention Funding Target" required>
                                                                 </div>
                                                             </div>
                                                     </div>
