@@ -62,21 +62,33 @@ if (!empty($user_code_encrypted) || $check_acct = true) {
 
         extract($selected_data);
 
-        if ($total_commission >= 1000) {
+        if ($total_commission >= 6000) {
+            $platinum = true;
+        } elseif ($total_commission >= 2000 AND $total_commission <= 5999) {
             $platinum = true;
             $gold = true;
-        } elseif ($total_commission >= 500 AND $total_commission <= 999) {
+        } elseif ($total_commission >= 1000 AND $total_commission <= 1999) {
             $platinum = true;
             $gold = true;
-        } elseif ($total_commission >= 300 AND $total_commission <= 499) {
+            $silver_pro = true;
+        }elseif ($total_commission >= 500 AND $total_commission <= 999) {
             $platinum = true;
             $gold = true;
-            $silver = true;
+            $silver_pro = true;
+            $silver_lite = true;
+        }elseif ($total_commission >= 300 AND $total_commission <= 499) {
+            $platinum = true;
+            $gold = true;
+            $silver_pro = true;
+            $silver_lite = true;
+            $bronze_pro = true;
         } elseif ($total_commission <= 299) {
             $platinum = true;
             $gold = true;
-            $silver = true;
-            $bronze = true;
+            $silver_pro = true;
+            $silver_lite = true;
+            $bronze_pro = true;
+            $bronze_lite = true;
         }
     } else {
 
@@ -214,7 +226,7 @@ $i = 0;
                     <div class="col-sm-12 text-center">
                         <h3 style=" color: #000000 !important">The
                             Blackest Friday Splurge is Here, Up to 150% Extra up for Grabs.</h3>
-                        <p class="text-danger">First Round <i class="fa fa-arrow-right"></i> Starts on Monday 5th November, 2018 To Friday 16th November, 2018.</p>
+                        <p class="text-danger">Second Round <i class="fa fa-arrow-right"></i> Starts on Monday 19th November, 2018 To Friday 30th November, 2018.</p>
                         <a data-target="#contest-register" data-toggle="modal" class="btn btn-success"
                            style="cursor: pointer;"><strong>Click Here to Join the Splurge.</strong></a>
                         <br/>
@@ -228,25 +240,16 @@ $i = 0;
                                 <h4><strong>Your Map For The Splurge Season!</strong></h4>
                             </div>
                                 <div class="col-sm-12" id="details">
-                                    <p>This year’s black Friday promo is themed the splurge, as we intend to reward you with more money this promo period!</p>
-                                    <p>What is the highest points you have earned in the loyalty reward promo so far, can you beat your previous points? Yes! We are set to reward you every step of the way.</p>
-                                    <p>The promo is divided into 2 rounds, the first round begins on the 5th of November and ends by 11:59pm on the 16th of November, while the second round begins by 12am on the 19th of November and ends by 11:59pm on the 30th of November 2018.</p>
-                                    <p>To participate in this promo, we have created different categories with targets for you. You only need to choose from the set targets and work towards hitting and surpassing it. </p>
-                                    <p>The more time you hit your target the more rewards you get.</p>
-                                    <p>For instance, if your target is to get 1000 points in the first round, once you get to 1000 points you will be rewarded with $150 in addition to the 1000 points you have. 1000 points equals $100 so the total becomes $250.</p>
-                                    <div class="row">
-                                        <div class="col-md-3"></div>
-                                        <div class="col-md-6">
-                                            <strong><h5 class="text-center"><u>The Breakdown</u></h5></strong>
-                                        <p class="text-center">
-                                            Trade 1000 points to get $150<br>
-                                        The same 1000 points equals $100.<br>
-                                        Total Reward - $100 + $150 = $250</p>
-                                            </div>
-                                        <div class="col-md-3"></div>
-                                    </div>
-                                    <p>From the example above, if you choose to redeem your win and the points accrued for the promo season, you will be receiving a total of $250 extra cash!</p>
+                                    <p>The First Round of the Black Friday Splurge was the bomb!</p>
 
+                                    <p>It was a massive season of Splurge for all the traders who participated in the round.</p>
+
+                                    <p>The second round has started! It's on from Monday 19th November 2018 and ends by 11: 59pm on the 30th of November, 2018.</p>
+
+                                    <p>Here's another chance to set a new record  beat and get rewarded every step of the way!</p>
+
+                                    <p>The more time you hit your target the more rewards you get.</p>
+                                    <p>For instance, if your target is to get 1000 points in this  round, once you get to 1000 points you will be rewarded with $150 in addition to the 1000 points you have. 1000 points equals $100 so the total becomes $250.</p>
                                     <p>However, you can also choose to claim only your win of $150 and keep the 1000 points which will help you rank higher in the yearly reward programme and position you to secure your share of the yearly N2.250 Million pool by 30th November, 2018.
                                     <p>Whatever your choice is, you remain a winner!</p>
                                     <p><strong>How To Earn Points.</strong> For the purpose of this promo, both your funding and trading activity will earn you loyalty points, which will be published by 10am the following day.</p>
@@ -421,31 +424,43 @@ $i = 0;
                                                                     <br>
                                                                 <?php } ?>
 
-                                                                <?php if ($silver == true) { ?>
+                                                                <?php if ($silver_pro == true) { ?>
                                                                     <button onclick="select_tire('3')"
                                                                             class="btn btn-default"
-                                                                            style="background-color: #d7d7d7; width:300px; margin-bottom: 8px;">SILVER -
+                                                                            style="background-color: #d7d7d7; width:300px; margin-bottom: 8px;">SILVER PRO -
                                                                         (500 loyalty points)
                                                                     </button><label><b id="silver"
                                                                                        style="display:none; background-color: #d7d7d7; border-radius:8px; color:green !important; box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)""><span class="glyphicon glyphicon-ok"></span></b>
                                                                        </label>
                                                                     <br>
                                                                 <?php } ?>
-                                                                <?php if ($bronze == true) { ?>
+
+                                                                <?php if ($silver_lite == true) { ?>
                                                                     <button onclick="select_tire('4')"
+                                                                            class="btn btn-default"
+                                                                            style="background-color: #d7d7d7; width:300px; margin-bottom: 8px;">SILVER LITE -
+                                                                        (200 loyalty points)
+                                                                    </button><label><b id="silver"
+                                                                                       style="display:none; background-color: #d7d7d7; border-radius:8px; color:green !important; box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)""><span class="glyphicon glyphicon-ok"></span></b>
+                                                                    </label>
+                                                                    <br>
+                                                                <?php } ?>
+
+                                                                <?php if ($bronze_pro == true) { ?>
+                                                                    <button onclick="select_tire('5')"
                                                                             class="btn btn-danger"
                                                                             style="background-color: saddlebrown; width:300px; margin-bottom: 8px;">
-                                                                        BRONZE PRO - (200 loyalty points)
+                                                                        BRONZE PRO - (100 loyalty points)
                                                                     </button><label><b id="pro"
                                                                                        style="display:none; background-color: #d7d7d7; border-radius:8px; color:green !important; box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)""><span class="glyphicon glyphicon-ok"></span></b>
                                                                        </label>
                                                                     <br>
                                                                 <?php } ?>
-                                                                <?php if ($bronze == true) { ?>
-                                                                    <button onclick="select_tire('5')"
+                                                                <?php if ($bronze_lite == true) { ?>
+                                                                    <button onclick="select_tire('6')"
                                                                             class="btn btn-danger"
                                                                             style="background-color: sienna; width:300px;">BRONZE
-                                                                        LITE - (100 loyalty points)
+                                                                        LITE - (50 loyalty points)
                                                                     </button><label>
                                                                         <b id="lite"
                                                                            style="display:none; background-color: #d7d7d7; border-radius:8px; color:green !important; box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)""><span class="glyphicon glyphicon-ok"></span></b></label>
@@ -476,8 +491,8 @@ $i = 0;
                                                                     automatically generated by our system and added
                                                                     before 10am the next day.
                                                                 </li>
-                                                                <li>Contest starts on Monday 5th November 2018 and
-                                                                    ends by 11:59pm on Friday 16th November, 2018.
+                                                                <li>Contest starts on Monday 19th November 2018 and
+                                                                    ends by 11:59pm on Friday 30th November, 2018.
                                                                 </li>
                                                                 <li>
                                                                     Participation in the second round will not be automatic,
@@ -517,17 +532,17 @@ $i = 0;
 
         <div id="main-body-side-bar" class="col-md-5 col-md-pull-7 col-lg-4 col-lg-pull-8 left-nav">
             <div class="col-sm-12 section-tint super-shadow nav-display super-shadow">
-                <div class="section-tint super-shadow" style="background-color: black;border-radius:10px">
-                    <div class="row">
-                        <div class="col-md-12"><h1><i class="fa fa-exclamation-triangle"></i> <b>Get ready for Round 2</b></h1></div>
-                        <div class="col-sm-12 text-lg-center text-center" id="time-counter" style="color: white; font-size: 20px;">
-                            <span  id="day"></span>
-                            <span  id="hour"></span>
-                            <span  id="min"></span>
-                            <span  id="sec"></span>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="section-tint super-shadow" style="background-color: black;border-radius:10px">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-12"><h1><i class="fa fa-exclamation-triangle"></i> <b>Get ready for Round 2</b></h1></div>-->
+<!--                        <div class="col-sm-12 text-lg-center text-center" id="time-counter" style="color: white; font-size: 20px;">-->
+<!--                            <span  id="day"></span>-->
+<!--                            <span  id="hour"></span>-->
+<!--                            <span  id="min"></span>-->
+<!--                            <span  id="sec"></span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <h5>Total Number of Participant : <?php echo $total_participants; ?></h5>
                 <div class="row">
                     <div class="col-sm-12" style="max-height: 600px; overflow: scroll;">
