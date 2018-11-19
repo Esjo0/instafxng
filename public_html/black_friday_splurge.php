@@ -29,7 +29,7 @@ if (isset($_POST['check_acct'])) {
     if ($details) {
         foreach ($details AS $row) {
             extract($row);
-            $query = "INSERT IGNORE INTO black_friday_2018_2 (user_code) VALUE ('$user_code')";
+            $query = "INSERT IGNORE INTO black_friday_2018 (user_code) VALUE ('$user_code')";
             $result = $db_handle->runQuery($query);
             $check_acct = true;
         }
@@ -41,7 +41,7 @@ if (isset($_POST['check_acct'])) {
 //flag the tire user can see
 if (!empty($user_code_encrypted) || $check_acct = true) {
 
-    $query = "SELECT * FROM black_friday_2018_2 WHERE user_code = '$user_code' AND tire IS NULL ";
+    $query = "SELECT * FROM black_friday_2018 WHERE user_code = '$user_code' AND tire IS NULL ";
     $num_rows = $db_handle->numRows($query);
 
     if ($num_rows == 1) {
@@ -80,7 +80,7 @@ if (!empty($user_code_encrypted) || $check_acct = true) {
         }
     } else {
 
-        $query = "SELECT tire FROM black_friday_2018_2 WHERE user_code = '$user_code'";
+        $query = "SELECT tire FROM black_friday_2018 WHERE user_code = '$user_code'";
         $result = $db_handle->runQuery($query);
         $result = $db_handle->fetchArray($result);
 
@@ -106,7 +106,7 @@ if (isset($_POST['opt_in'])) {
     $user_code = $db_handle->sanitizePost($_POST['user']);
 
     if (($terms == 1) && !empty($tire) && $tire != NULL) {
-        $query = "UPDATE black_friday_2018_2 SET tire = '$tire' WHERE user_code = '$user_code'";
+        $query = "UPDATE black_friday_2018 SET tire = '$tire' WHERE user_code = '$user_code'";
         $result = $db_handle->runQuery($query);
 
         if ($result) {
@@ -124,7 +124,7 @@ if (isset($_POST['opt_in'])) {
     }
 }
 $query = "SELECT u.first_name, u.last_name
-    FROM black_friday_2018_2 AS bf
+    FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code
     WHERE bf.tire IS NOT NULL
     ORDER BY bf.created";
@@ -133,7 +133,7 @@ $total_participants = $db_handle->numRows($query);
 
 // Get all participants
 $query = "SELECT u.first_name, u.last_name
-    FROM black_friday_2018_2 AS bf
+    FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code
     WHERE bf.tire IS NOT NULL 
     ORDER BY bf.created DESC LIMIT 10";

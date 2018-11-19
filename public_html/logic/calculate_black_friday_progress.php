@@ -6,7 +6,7 @@
 if (!empty($email)) {
     $query = "SELECT bf.total_points, CONCAT(u.last_name, SPACE(1), u.first_name) AS name, bf.tire
             FROM user AS u
-            INNER JOIN black_friday_2018_2 AS bf ON u.user_code = bf.user_code
+            INNER JOIN black_friday_2018 AS bf ON u.user_code = bf.user_code
             WHERE u.email = '$email' AND bf.tire IS NOT NULL";
     $result = $db_handle->runQuery($query);
     $details = $db_handle->fetchAssoc($result);
