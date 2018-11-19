@@ -4,8 +4,17 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+$current_year = date('Y');
+$main_current_month = date('m');
+
 $from_date = date('Y-m-d', strtotime('first day of this month'));
-$to_date = date('Y-m-d', strtotime('last day of this month')) ;
+$to_date = date('Y-m-d', strtotime('last day of this month'));
+
+$query = "SELECT commission_target, deposit_target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '2' LIMIT 1";
+$result = $db_handle->runQuery($query);
+$selected_targets = $db_handle->fetchAssoc($result)[0];
+$commission_target = $selected_targets['commission_target'];
+$deposit_target = $selected_targets['deposit_target'];
 
 $query = "SELECT SUM(td.commission) AS sum_commission, u.user_code
     FROM trading_commission AS td
@@ -15,6 +24,16 @@ $query = "SELECT SUM(td.commission) AS sum_commission, u.user_code
 $result = $db_handle->runQuery($query);
 $data_analysis = $db_handle->fetchAssoc($result);
 $sum_of_commission = $data_analysis[0]['sum_commission'];
+
+$query = "SELECT SUM(ud.real_dollar_equivalent) AS sum_deposit, u.user_code
+    FROM trading_commission AS td
+    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+    INNER JOIN user AS u ON ui.user_code = u.user_code 
+    LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
+    WHERE ud.status = '8' AND (STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date') AND date_earned BETWEEN '$from_date' AND '$to_date'";
+$result = $db_handle->runQuery($query);
+$data_analysis = $db_handle->fetchAssoc($result);
+$sum_of_funding = $data_analysis[0]['sum_deposit'];
 
 $query = "SELECT SUM(td.commission) AS sum_commission, u.email, u.phone, u.created,
     CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.user_code, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
@@ -121,8 +140,8 @@ $clients_activity = $db_handle->fetchAssoc($result);
                         <?php if(isset($numrows)) { ?>
                             <p>
                                 <strong>Result Found: </strong><?php echo number_format($numrows); ?><br />
-                                <strong>Commission: </strong>&dollar; <?php echo number_format($sum_of_commission, 2, ".", ","); ?><br />
-                                <strong>Deposit: </strong>&dollar; <?php echo number_format($sum_of_funding,2, ".", ","); ?>
+                                <strong>Commission: </strong>&dollar; <?php echo number_format($sum_of_commission, 2, ".", ","); ?> (Target: &dollar; <?php echo number_format($commission_target,2, ".", ","); ?>)<br />
+                                <strong>Deposit: </strong>&dollar; <?php echo number_format($sum_of_funding,2, ".", ","); ?> (Target: &dollar; <?php echo number_format($deposit_target,2, ".", ","); ?>)
                             </p>
                         <?php } ?>
 
