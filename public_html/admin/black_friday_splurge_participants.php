@@ -24,16 +24,20 @@ if(isset($_POST['filter'])){
           $point = "1000";
           break;
       case '3':
-          $cat = "SILVER";
+          $cat = "SILVER PRO";
           $point = "500";
           break;
       case '4':
-          $cat = "BRONZE PRO";
+          $cat = "SILVER LITE";
           $point = "200";
           break;
       case '5':
-          $cat = "BRONZE LITE";
+          $cat = "BRONZE PRO";
           $point = "100";
+          break;
+      case '6':
+          $cat = "BRONZE LITE";
+          $point = "50";
           break;
 
       default:
@@ -135,9 +139,10 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
                     <select name="filt_val" class="form-control" id="filter" placeholder="Filter by" required>
                         <option value="1" >Platinum</option>
                         <option value="2" >Gold</option>
-                        <option value="3">Silver</option>
-                        <option value="4">Bronze Pro</option>
-                        <option value="5">Bronze Lite</option>
+                        <option value="3">Silver Pro</option>
+                        <option value="4">Silver Lite</option>
+                        <option value="5">Bronze Pro</option>
+                        <option value="6">Bronze Lite</option>
                     </select>
                 </div>
                 <div class="col-md-3">
