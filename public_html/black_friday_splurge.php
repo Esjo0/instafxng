@@ -635,7 +635,8 @@ $i = 0;
         else if (tire == 2) {
             document.getElementById("platinum").style.display = "none";
             document.getElementById("gold").style.display = "block";
-            document.getElementById("silver").style.display = "none";
+            document.getElementById("silver_pro").style.display = "none";
+            document.getElementById("silver_lite").style.display = "none";
             document.getElementById("pro").style.display = "none";
             document.getElementById("lite").style.display = "none";
         }
