@@ -874,9 +874,10 @@ MAIL;
         <!--Section: Main features & Quick Start-->
         <section class="view full-page-intro" style=" background:whitesmoke; ">
             <!--Grid row-->
-            <div class="row wow fadeIn">
+            <div class="row wow fadeIn text-center">
 
-                <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tdHp4WGw7YE" frameborder="0" allowfullscreen></iframe></div>
+                    <div class="text-center embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/6H2j_4cwnYE" frameborder="0" allowfullscreen></iframe>
+                    </div>
 
             </div>
         </section>
