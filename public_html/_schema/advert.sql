@@ -1,4 +1,4 @@
-ALTER TABLE `black_friday_2018` CHANGE `tire` `tire` ENUM('0','1','2','3','4','5') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT '1- Platinum 2 - Gold 3- Silver1 4- Silver2 5 - Bronzr1 6- Bronze2';
+ALTER TABLE `black_friday_2018` CHANGE `tire` `tire` ENUM('0','1','2','3','4','5', '6') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT '1- Platinum 2 - Gold 3- Silver1 4- Silver2 5 - Bronzr1 6- Bronze2';
 
 CREATE TABLE IF NOT EXISTS `onboarding_analytics` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
