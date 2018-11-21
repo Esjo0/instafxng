@@ -21,7 +21,7 @@ if (isset($_POST['schedule'])) {
 
 }
 
-if (isset($_POST['schedul'])) {
+if (isset($_POST['schedule'])) {
     $date = $db_handle->sanitizePost($_POST['date']);
     $date_ = date_create($date);
     if(datetime_to_textday($date) != 'Tue'){
@@ -48,7 +48,25 @@ Dear $client_name,
 
 Congratulations on the successful completion of the Fxacademy, we are so proud of you!
 
-Kindly be informed that, your personalized training with the analyst has been successfully scheduled for $_date.
+Kindly be informed that, your personalized training with the analyst has been successfully scheduled for.
+<table class="table table-responsive hover">
+<tr>
+<th></th>
+<th></th>
+</tr>
+<tr>
+<td>First Class</td>
+<td>$_date</td>
+</tr>
+<tr>
+<td>Follow Up Class</td>
+<td>$_date_follow</td>
+</tr>
+<tr>
+<td>Final Class</td>
+<td>$_date_final</td>
+</tr>
+</table>
 
 We look forward to hosting you.
 MAIL;
