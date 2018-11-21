@@ -2,33 +2,53 @@
 require_once '../init/initialize_client.php';
 $thisPage = "";
 
-if (!$session_client->is_logged_in()) {
-    redirect_to("login.php");
-}
-
-$get_learning_position = $education_object->get_clients_max_lesson_completed($_SESSION['client_unique_code']);
-$highest_lesson_published = $education_object->get_highest_lesson_published();
-
-if($get_learning_position  != $highest_lesson_published){
-    redirect_to("./");
-}
+//if (!$session_client->is_logged_in()) {
+//    redirect_to("login.php");
+//}
+//
+//$get_learning_position = $education_object->get_clients_max_lesson_completed($_SESSION['client_unique_code']);
+//$highest_lesson_published = $education_object->get_highest_lesson_published();
+//
+//if($get_learning_position  != $highest_lesson_published){
+//    redirect_to("./");
+//}
 
 $user_code = $_SESSION['client_unique_code'];
+$user_code  = 'hYu456a';
 
 if (isset($_POST['schedule'])) {
     $date = $db_handle->sanitizePost($_POST['date']);
+
+}
+
+if (isset($_POST['schedul'])) {
+    $date = $db_handle->sanitizePost($_POST['date']);
+    $date_ = date_create($date);
+    if(datetime_to_textday($date) != 'Tue'){
+        date_add($date_, date_interval_create_from_date_string('8 days'));
+        $follow_date = date_format($date_, 'Y-m-d H:i:s');
+        date_add($date_, date_interval_create_from_date_string('7 days'));
+        $final_date = date_format($date_, 'Y-m-d H:i:s');
+    }elseif(datetime_to_textday($date) == 'Tue'){
+        date_add($date_, date_interval_create_from_date_string('9 days'));
+        $follow_date = date_format($date_, 'Y-m-d H:i:s');
+        date_add($date_, date_interval_create_from_date_string('7 days'));
+        $final_date = date_format($date_, 'Y-m-d H:i:s');
+    }
     $id = $db_handle->sanitizePost($_POST['id']);
     $client_name = $_SESSION['first_name'];
     $client_email = $_SESSION['client_email'];
 
     $subject = "Congratulations $client_name! You have been scheduled.";
     $_date = datetime_to_textday($date) . " " . datetime_to_text($date);
+    $_date_follow = datetime_to_textday($follow_date) . " " . datetime_to_text($follow_date);
+    $_date_final = datetime_to_textday($final_date) . " " . datetime_to_text($final_date);
     $core_msg = <<<MAIL
 Dear $client_name,
 
 Congratulations on the successful completion of the Fxacademy, we are so proud of you!
 
-Kindly be informed that, your personalized training with the analyst has been successfully scheduled for $date.
+Kindly be informed that, your personalized training with the analyst has been successfully scheduled for $_date.
 
 We look forward to hosting you.
 MAIL;
@@ -148,6 +168,10 @@ $schedules = $db_handle->fetchArray($result);
                                                 extract($row);
                                                 if ($schedule_mode == 2) {
                                                     $venue = "<span class='text-center'><b>Training Venue</b> - " . office_addresses($location) . "</span><br>";
+                                                }elseif($schedule_mode == 1){
+                                                    $venue = "<span>Download & Install the ZOOM App from <a target='_blank' href='https://zoom.us'>www.zoom.us</a> , from Google PlayStore,
+                                        or the Apple Store. You will be contacted by your Instructor for the Meeting ID to
+                                        join the Online Training Class at the exact scheduled time.</span>";
                                                 } ?>
                                                 <div class="col-sm-4">
                                                     <div class="row">
@@ -185,8 +209,12 @@ $schedules = $db_handle->fetchArray($result);
                                 <div class="panel-heading"><b><?php echo datetime_to_textday($schedule_date) . " " . datetime_to_text($schedule_date)?></b></div>
                                 <div class="panel-body">
                                     <?php echo "<span class='text-center'><b>Training Type</b> - " . training_mode($schedule_mode) . "</span><hr>"?>
-                                    <?php if ($schedule_mode == 2) {
+                                    <?php if ($schedule_mode == '2') {
                                          echo "<span class='text-center'><b>Training Venue</b> - " . office_addresses($location) . "</span><br>";
+                                    }elseif($schedule_mode == '1'){
+                                        echo "<span>Download & Install the ZOOM App from <a target='_blank' href='https://zoom.us'>www.zoom.us</a> , from Google PlayStore,
+                                        or the Apple Store. You will be contacted by your Instructor for the Meeting ID to
+                                        join the Online Training Class at the exact scheduled time.</span>";
                                     }?>
                                 </div>
                             </div>
