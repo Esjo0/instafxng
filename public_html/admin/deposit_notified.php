@@ -265,7 +265,7 @@ $notified_deposit_requests = $db_handle->fetchAssoc($result);
                                                             } ?>
                                                         </span>
                                                     </div>
-                                                    <div class="col-xs-4"><span style="text-align: right"><a class="btn btn-info" href="deposit_process.php?x=notified&id=<?php echo encrypt($row['trans_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Process</a></span></div>
+                                                    <div class="col-xs-4"><span style="text-align: right"><a class="btn btn-info" href="deposit_process.php?x=notified&id=<?php echo encrypt_ssl($row['trans_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Process</a></span></div>
                                                 </div>
                                             </div>
                                         </div>
