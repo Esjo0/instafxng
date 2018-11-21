@@ -108,7 +108,7 @@ $pending_deposit_requests = $db_handle->fetchAssoc($result);
                                         <td><?php echo datetime_to_text($row['created']); ?></td>
                                         <td class="nowrap">
                                             <a class="btn btn-info" href="deposit_pay_notify.php?id=<?php echo encrypt($row['trans_id']); ?>" title="Payment Notification"><i class="fa fa-bell-o" aria-hidden="true"></i></a>
-                                            <a class="btn btn-info" href="deposit_process.php?x=pending&id=<?php echo encrypt($row['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
+                                            <a class="btn btn-info" href="deposit_process.php?x=pending&id=<?php echo encrypt_ssl($row['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
                                 <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

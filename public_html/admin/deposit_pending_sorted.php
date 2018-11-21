@@ -214,7 +214,7 @@ function bulk_sms_url($from, $to)
                                     <td><?php echo datetime_to_text($transactions[0]['created']); ?></td>
                                     <td class="nowrap">
                                         <a class="btn btn-xs btn-info" href="deposit_pay_notify.php?id=<?php echo encrypt($transactions[0]['trans_id']); ?>" title="Payment Notification"><i class="fa fa-bell-o" aria-hidden="true"></i></a>
-                                        <a class="btn btn-xs btn-info" href="deposit_process.php?x=pending&id=<?php echo encrypt($transactions[0]['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
+                                        <a class="btn btn-xs btn-info" href="deposit_process.php?x=pending&id=<?php echo encrypt_ssl($transactions[0]['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
                                         <form data-toggle="validator" role="form" method="post" action="">
                                             <input type="hidden" name="trans_id" value="<?php echo $transactions[0]['trans_id'] ?>" />
                                             <input type="hidden" name="sort_value" value="<?php if($transactions[0]['sort'] == "0"){echo "1";}else{echo "0";} ?>" />
@@ -238,7 +238,7 @@ function bulk_sms_url($from, $to)
                                             <td><?php echo datetime_to_text($key['created']); ?></td>
                                             <td class="nowrap">
                                                 <a class="btn btn-xs btn-info" href="deposit_pay_notify.php?id=<?php echo encrypt($key['trans_id']); ?>" title="Payment Notification"><i class="fa fa-bell-o" aria-hidden="true"></i></a>
-                                                <a class="btn btn-xs btn-info" href="deposit_process.php?x=pending&id=<?php echo encrypt($key['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
+                                                <a class="btn btn-xs btn-info" href="deposit_process.php?x=pending&id=<?php echo encrypt_ssl($key['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
                                                 <form data-toggle="validator" role="form" method="post" action="">
                                                     <input type="hidden" name="trans_id" value="<?php echo $key['trans_id'] ?>" />
                                                     <input type="hidden" name="sort_value" value="<?php if($key['sort'] == "0"){echo "1";}else{echo "0";} ?>" />

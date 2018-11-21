@@ -399,7 +399,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                     <table class="table table-border table-responsive table-hover">
                                                         <tr><td>Clients to Retain</td><td><?php echo number_format($h_client_to_retain); ?></td></tr>
                                                         <tr><td>Total Retained</td><td><?php echo number_format($h_client_retained); ?></td></tr>
-                                                        <tr><td>Not Retained</td><td><?php echo number_format($h_client_to_retain - $m_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($h_client_to_retain - $h_client_retained); ?></td></tr>
                                                         <tr><td>Retained Yesterday</td><td><?php echo number_format($h_retained_yesterday); ?></td></tr>
                                                         <tr><td>Retention Rate</td><td><?php echo number_format($h_retention_rate, 2) . "%"; ?></td></tr>
                                                     </table>
@@ -419,7 +419,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                     <table class="table table-border table-responsive table-hover">
                                                         <tr><td>Clients to Retain</td><td><?php echo number_format($y_client_to_retain); ?></td></tr>
                                                         <tr><td>Total Retained</td><td><?php echo number_format($y_client_retained); ?></td></tr>
-                                                        <tr><td>Not Retained</td><td><?php echo number_format($y_client_to_retain - $q_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($y_client_to_retain - $y_client_retained); ?></td></tr>
                                                         <tr><td>Retained Yesterday</td><td><?php echo number_format($y_retained_yesterday); ?></td></tr>
                                                         <tr><td>Retention Rate</td><td><?php echo number_format($y_retention_rate, 2) . "%"; ?></td></tr>
                                                     </table>
