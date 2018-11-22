@@ -18,11 +18,6 @@ $user_code  = 'hYu456a';
 
 if (isset($_POST['schedule'])) {
     $date = $db_handle->sanitizePost($_POST['date']);
-
-}
-
-if (isset($_POST['schedule'])) {
-    $date = $db_handle->sanitizePost($_POST['date']);
     $date_ = date_create($date);
     if(datetime_to_textday($date) != 'Tue'){
         date_add($date_, date_interval_create_from_date_string('8 days'));
@@ -36,6 +31,8 @@ if (isset($_POST['schedule'])) {
         $final_date = date_format($date_, 'Y-m-d H:i:s');
     }
     $id = $db_handle->sanitizePost($_POST['id']);
+    $mode = $db_handle->sanitizePost($_POST['mode']);
+    $mode = training_mode($mode);
     $client_name = $_SESSION['first_name'];
     $client_email = $_SESSION['client_email'];
 
@@ -48,11 +45,11 @@ Dear $client_name,
 
 Congratulations on the successful completion of the Fxacademy, we are so proud of you!
 
-Kindly be informed that, your personalized training with the analyst has been successfully scheduled for.
+Kindly be informed that, your personalized $mode training with the analyst has been successfully scheduled as listed below.
 <table class="table table-responsive hover">
 <tr>
-<th></th>
-<th></th>
+<th>Classes</th>
+<th>Time</th>
 </tr>
 <tr>
 <td>First Class</td>
@@ -70,6 +67,7 @@ Kindly be informed that, your personalized training with the analyst has been su
 
 We look forward to hosting you.
 MAIL;
+    echo $core_msg;
     $body =
         <<<MAIL
         <div style="background-color: #F3F1F2">
@@ -110,10 +108,11 @@ MAIL;
     </div>
 </div>
 MAIL;
+    echo $body;
     $query = "SELECT * FROM training_schedule_students WHERE user_code = '$user_code' AND status = '0'";
     $result = $db_handle->numRows($query);
     if ($result == 0) {
-        $query = "INSERT IGNORE INTO training_schedule_students (user_code, schedule_id, status) VALUE('$user_code', $id, '0')";
+        $query = "INSERT IGNORE INTO training_schedule_students (user_code, schedule_id, follow_up_class, final_class, status) VALUE('$user_code',  $id, '$follow_date', '$final_date', '0')";
         $result2 = $db_handle->runQuery($query);
         if ($result2) {
             $system_object->send_email($subject, $body, $client_email, $client_name);
@@ -132,7 +131,7 @@ $query = "SELECT schedule_id,schedule_date, location, schedule_mode, location FR
 $result = $db_handle->runQuery($query);
 $available_dates = $db_handle->fetchArray($result);
 
-$query = "SELECT  tsd.schedule_mode, tsd.location, tsd.schedule_type, tss.id, tss.status, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, tsd.schedule_date, u.user_code
+$query = "SELECT tss.follow_up_class, tss.final_class, tsd.schedule_mode, tsd.location, tsd.schedule_type, tss.id, tss.status, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, tsd.schedule_date, u.user_code
     FROM training_schedule_students AS tss
     INNER JOIN user AS u ON u.user_code = tss.user_code
     INNER JOIN training_schedule_dates AS tsd ON tsd.schedule_id = tss.schedule_id
@@ -199,6 +198,7 @@ $schedules = $db_handle->fetchArray($result);
                                                             <input type="radio" name="id"
                                                                    value="<?php echo $schedule_id; ?>" required/>
                                                         </div>
+                                                        <input value="<?php echo $schedule_mode; ?>" name="mode" type="hidden">
                                                         <div class="col-md-10">
 
                                                             <?php echo "<h5>" . datetime_to_textday($schedule_date) . " " . datetime_to_text($schedule_date) . " </h5><br><span class='text-center'><b>Training Type</b> - " . training_mode($schedule_mode) . "</span><br><br>" . $venue; ?>
@@ -234,6 +234,18 @@ $schedules = $db_handle->fetchArray($result);
                                         or the Apple Store. You will be contacted by your Instructor for the Meeting ID to
                                         join the Online Training Class at the exact scheduled time.</span>";
                                     }?>
+                                    <?php ?>
+                                    <table class="table table-responsive hover">
+                                        <tr>
+                                            <td>Follow Up Class</td>
+                                            <td><?php echo datetime_to_textday($follow_up_class) . " " . datetime_to_text($follow_up_class) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Final Class</td>
+                                            <td><?php echo datetime_to_textday($final_class) . " " . datetime_to_text($final_class) ?></td>
+                                        </tr>
+                                    </table>
+
                                 </div>
                             </div>
 
