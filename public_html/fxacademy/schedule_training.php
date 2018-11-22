@@ -2,19 +2,18 @@
 require_once '../init/initialize_client.php';
 $thisPage = "";
 
-//if (!$session_client->is_logged_in()) {
-//    redirect_to("login.php");
-//}
-//
-//$get_learning_position = $education_object->get_clients_max_lesson_completed($_SESSION['client_unique_code']);
-//$highest_lesson_published = $education_object->get_highest_lesson_published();
-//
-//if($get_learning_position  != $highest_lesson_published){
-//    redirect_to("./");
-//}
+if (!$session_client->is_logged_in()) {
+    redirect_to("login.php");
+}
+
+$get_learning_position = $education_object->get_clients_max_lesson_completed($_SESSION['client_unique_code']);
+$highest_lesson_published = $education_object->get_highest_lesson_published();
+
+if($get_learning_position  != $highest_lesson_published){
+    redirect_to("./");
+}
 
 $user_code = $_SESSION['client_unique_code'];
-$user_code  = 'hYu456a';
 
 if (isset($_POST['schedule'])) {
     $date = $db_handle->sanitizePost($_POST['date']);
@@ -66,8 +65,7 @@ Kindly be informed that, your personalized $mode training with the analyst has b
 </table>
 
 We look forward to hosting you.
-MAIL;
-    echo $core_msg;
+MAIL;;
     $body =
         <<<MAIL
         <div style="background-color: #F3F1F2">
@@ -108,8 +106,7 @@ MAIL;
     </div>
 </div>
 MAIL;
-    echo $body;
-    $query = "SELECT * FROM training_schedule_students WHERE user_code = '$user_code' AND status = '0'";
+    $query = "SELECT * FROM training_schedule_students WHERE user_code = '$user_code' AND status = '0' OR '5'";
     $result = $db_handle->numRows($query);
     if ($result == 0) {
         $query = "INSERT IGNORE INTO training_schedule_students (user_code, schedule_id, follow_up_class, final_class, status) VALUE('$user_code',  $id, '$follow_date', '$final_date', '0')";
@@ -234,7 +231,7 @@ $schedules = $db_handle->fetchArray($result);
                                         or the Apple Store. You will be contacted by your Instructor for the Meeting ID to
                                         join the Online Training Class at the exact scheduled time.</span>";
                                     }?>
-                                    <?php ?>
+                                    <?php if($follow_up_class != NULL && !empty($follow_up_class)){?>
                                     <table class="table table-responsive hover">
                                         <tr>
                                             <td>Follow Up Class</td>
@@ -245,7 +242,7 @@ $schedules = $db_handle->fetchArray($result);
                                             <td><?php echo datetime_to_textday($final_class) . " " . datetime_to_text($final_class) ?></td>
                                         </tr>
                                     </table>
-
+                                    <?php }?>
                                 </div>
                             </div>
 
