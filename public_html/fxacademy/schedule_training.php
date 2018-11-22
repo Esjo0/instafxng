@@ -17,21 +17,55 @@ $user_code = $_SESSION['client_unique_code'];
 
 if (isset($_POST['schedule'])) {
     $date = $db_handle->sanitizePost($_POST['date']);
+    $date_ = date_create($date);
+    if(datetime_to_textday($date) != 'Tue'){
+        date_add($date_, date_interval_create_from_date_string('8 days'));
+        $follow_date = date_format($date_, 'Y-m-d H:i:s');
+        date_add($date_, date_interval_create_from_date_string('7 days'));
+        $final_date = date_format($date_, 'Y-m-d H:i:s');
+    }elseif(datetime_to_textday($date) == 'Tue'){
+        date_add($date_, date_interval_create_from_date_string('9 days'));
+        $follow_date = date_format($date_, 'Y-m-d H:i:s');
+        date_add($date_, date_interval_create_from_date_string('7 days'));
+        $final_date = date_format($date_, 'Y-m-d H:i:s');
+    }
     $id = $db_handle->sanitizePost($_POST['id']);
+    $mode = $db_handle->sanitizePost($_POST['mode']);
+    $mode = training_mode($mode);
     $client_name = $_SESSION['first_name'];
     $client_email = $_SESSION['client_email'];
 
     $subject = "Congratulations $client_name! You have been scheduled.";
     $_date = datetime_to_textday($date) . " " . datetime_to_text($date);
+    $_date_follow = datetime_to_textday($follow_date) . " " . datetime_to_text($follow_date);
+    $_date_final = datetime_to_textday($final_date) . " " . datetime_to_text($final_date);
     $core_msg = <<<MAIL
 Dear $client_name,
 
 Congratulations on the successful completion of the Fxacademy, we are so proud of you!
 
-Kindly be informed that, your personalized training with the analyst has been successfully scheduled for $date.
+Kindly be informed that, your personalized $mode training with the analyst has been successfully scheduled as listed below.
+<table class="table table-responsive hover">
+<tr>
+<th>Classes</th>
+<th>Time</th>
+</tr>
+<tr>
+<td>First Class</td>
+<td>$_date</td>
+</tr>
+<tr>
+<td>Follow Up Class</td>
+<td>$_date_follow</td>
+</tr>
+<tr>
+<td>Final Class</td>
+<td>$_date_final</td>
+</tr>
+</table>
 
 We look forward to hosting you.
-MAIL;
+MAIL;;
     $body =
         <<<MAIL
         <div style="background-color: #F3F1F2">
@@ -72,10 +106,10 @@ MAIL;
     </div>
 </div>
 MAIL;
-    $query = "SELECT * FROM training_schedule_students WHERE user_code = '$user_code' AND status = '0'";
+    $query = "SELECT * FROM training_schedule_students WHERE user_code = '$user_code' AND status = '0' OR '5'";
     $result = $db_handle->numRows($query);
     if ($result == 0) {
-        $query = "INSERT IGNORE INTO training_schedule_students (user_code, schedule_id, status) VALUE('$user_code', $id, '0')";
+        $query = "INSERT IGNORE INTO training_schedule_students (user_code, schedule_id, follow_up_class, final_class, status) VALUE('$user_code',  $id, '$follow_date', '$final_date', '0')";
         $result2 = $db_handle->runQuery($query);
         if ($result2) {
             $system_object->send_email($subject, $body, $client_email, $client_name);
@@ -94,7 +128,7 @@ $query = "SELECT schedule_id,schedule_date, location, schedule_mode, location FR
 $result = $db_handle->runQuery($query);
 $available_dates = $db_handle->fetchArray($result);
 
-$query = "SELECT  tsd.schedule_mode, tsd.location, tsd.schedule_type, tss.id, tss.status, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, tsd.schedule_date, u.user_code
+$query = "SELECT tss.follow_up_class, tss.final_class, tsd.schedule_mode, tsd.location, tsd.schedule_type, tss.id, tss.status, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, tsd.schedule_date, u.user_code
     FROM training_schedule_students AS tss
     INNER JOIN user AS u ON u.user_code = tss.user_code
     INNER JOIN training_schedule_dates AS tsd ON tsd.schedule_id = tss.schedule_id
@@ -148,6 +182,10 @@ $schedules = $db_handle->fetchArray($result);
                                                 extract($row);
                                                 if ($schedule_mode == 2) {
                                                     $venue = "<span class='text-center'><b>Training Venue</b> - " . office_addresses($location) . "</span><br>";
+                                                }elseif($schedule_mode == 1){
+                                                    $venue = "<span>Download & Install the ZOOM App from <a target='_blank' href='https://zoom.us'>www.zoom.us</a> , from Google PlayStore,
+                                        or the Apple Store. You will be contacted by your Instructor for the Meeting ID to
+                                        join the Online Training Class at the exact scheduled time.</span>";
                                                 } ?>
                                                 <div class="col-sm-4">
                                                     <div class="row">
@@ -157,6 +195,7 @@ $schedules = $db_handle->fetchArray($result);
                                                             <input type="radio" name="id"
                                                                    value="<?php echo $schedule_id; ?>" required/>
                                                         </div>
+                                                        <input value="<?php echo $schedule_mode; ?>" name="mode" type="hidden">
                                                         <div class="col-md-10">
 
                                                             <?php echo "<h5>" . datetime_to_textday($schedule_date) . " " . datetime_to_text($schedule_date) . " </h5><br><span class='text-center'><b>Training Type</b> - " . training_mode($schedule_mode) . "</span><br><br>" . $venue; ?>
@@ -185,9 +224,25 @@ $schedules = $db_handle->fetchArray($result);
                                 <div class="panel-heading"><b><?php echo datetime_to_textday($schedule_date) . " " . datetime_to_text($schedule_date)?></b></div>
                                 <div class="panel-body">
                                     <?php echo "<span class='text-center'><b>Training Type</b> - " . training_mode($schedule_mode) . "</span><hr>"?>
-                                    <?php if ($schedule_mode == 2) {
+                                    <?php if ($schedule_mode == '2') {
                                          echo "<span class='text-center'><b>Training Venue</b> - " . office_addresses($location) . "</span><br>";
+                                    }elseif($schedule_mode == '1'){
+                                        echo "<span>Download & Install the ZOOM App from <a target='_blank' href='https://zoom.us'>www.zoom.us</a> , from Google PlayStore,
+                                        or the Apple Store. You will be contacted by your Instructor for the Meeting ID to
+                                        join the Online Training Class at the exact scheduled time.</span>";
                                     }?>
+                                    <?php if($follow_up_class != NULL && !empty($follow_up_class)){?>
+                                    <table class="table table-responsive hover">
+                                        <tr>
+                                            <td>Follow Up Class</td>
+                                            <td><?php echo datetime_to_textday($follow_up_class) . " " . datetime_to_text($follow_up_class) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Final Class</td>
+                                            <td><?php echo datetime_to_textday($final_class) . " " . datetime_to_text($final_class) ?></td>
+                                        </tr>
+                                    </table>
+                                    <?php }?>
                                 </div>
                             </div>
 
