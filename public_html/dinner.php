@@ -58,7 +58,6 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
                                 <p>Compliment of the season</p>
                                 <br /><br />
                                 <p>Best Regards,</p>
-
                                 <p>The InstaFxNg Team,<br />
                                    www.instafxng.com</p>
                                 <br /><br />
@@ -114,8 +113,7 @@ MAIL;
                             <p>This ball will be one to remember forever… We look forward to hosting your royalty.</p>
                                 <br /><br />
                                 <p>Best Regards,</p>
-                                <p>Mercy,</p>
-                                <p>Client Relationship Manager</p>
+                                <p>Best Regards,</p>
                                 <p>The InstaFxNg Team,<br />
                                    www.instafxng.com</p>
                                 <br /><br />
@@ -173,9 +171,7 @@ MAIL;
                                 <p>Compliment of the season.</p>
                                 <br /><br />
                                 <p>Best Regards,</p>
-                                <p>Mercy,</p>
-                                <p>Client Relationship Manager</p>
-                                <p>InstaFxNg Team,<br />
+                                <p>The InstaFxNg Team,<br />
                                    www.instafxng.com</p>
                                 <br /><br />
                             </div>
