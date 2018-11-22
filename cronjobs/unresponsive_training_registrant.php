@@ -36,7 +36,7 @@ $my_message_1 =
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -108,7 +108,7 @@ $my_message_2 =
             <p>Best Regards,</p>
 
             <p>Your friend,<br />Mercy,<br />Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -170,7 +170,7 @@ $my_message_3 =
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>

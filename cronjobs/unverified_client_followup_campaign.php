@@ -9,7 +9,7 @@ $my_message_1 =
 <p>Hello [NAME]</p>
 <p>How are you today?</p>
 <p>Been a while I heard from you</p>
-<p>This is Mercy, from InstaForex Nigeria I thought to check up on you since I haven't seen you lately.</p>
+<p>This is Mercy, from InstaFxNg I thought to check up on you since I haven't seen you lately.</p>
 <p>Hope you're doing really great.</p>
 <p>As you know, there are endless opportunities to earn from the Forex market and I would want you to take the best of these opportunities as they come</p>
 <p>I'm ready to work with you to make this journey a very profitable one so let's consider it our little project.</p>
@@ -122,7 +122,7 @@ function mail_template($core_msg) {
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
