@@ -66,7 +66,7 @@ if($db_handle->numOfRows($result) > 0) {
 
                 $encrypted_user_code = encrypt($user_code);
                 $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
-                $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner_2018/index.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
+                $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
                 $found_position_month = in_array_r($user_code, $found_loyalty_month);
                 $month_position = $found_position_month['position'];
                 $month_rank = number_format(($found_position_month['rank']), 2, ".", ",");
