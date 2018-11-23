@@ -59,10 +59,10 @@ if (empty($choice) || $choice == NULL) {
             <div class="card-body">
                 <p class="text-center"
                    style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black; font-family: 'Josefin Sans', sans-serif !important;">
-                    <b>YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL .<br> YOUR INVITE WILL BE SENT TO YOU SOONEST!</br></p>
+                    <b>YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL .<br> YOUR INVITE WILL BE SENT TO YOU SOONEST!</b></p>
             </div>
         </div>
-        <img style="opacity: 0.5" src="images/success_logo.png" class="img-fluid z-depth-1-half" alt="">
+        <center><img style="opacity: 0.5" src="images/success_logo.png" class="img img-responsive text-center" alt=""></center>
     <?php } ?>
     <?php if ($choice == 2) { ?>
         <!--Card-->
@@ -76,7 +76,7 @@ if (empty($choice) || $choice == NULL) {
                         5 DAYS.</b></p>
             </div>
         </div>
-        <img src="images/royal_ball_image.jpg" class="img img-responsive" alt="">
+    <center><img src="images/royal_ball_image.jpg" class="img img-responsive" alt=""></center>
     <?php } ?>
     <?php if ($choice == 3) { ?>
         <!--Card-->
@@ -89,7 +89,7 @@ if (empty($choice) || $choice == NULL) {
                     <b>THANK YOU. WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.</b></p>
             </div>
         </div>
-        <img src="images/royal_ball_image.jpg" class="img img-responsive" alt="">
+    <center><img src="images/royal_ball_image.jpg" class="img img-responsive" alt=""></center>
     <?php } ?>
 </section>
 <!-- Full Page Intro -->
