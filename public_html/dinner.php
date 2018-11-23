@@ -47,10 +47,10 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
                 $subject = 'Your seat has been reserved, ' . $client_first_name . '!';
                 $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana Cursive; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                                 <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
-                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
                                 <p>All hail <b>$title</b> $client_full_name, the first of $gender name from <b>the house of $town</b></p>
                                 <p>It is our pleasure to receive your consent to attend the Royal Ball</p>
                                 <p>Your seat has been reserved and your dynasty is being prepared to receive your presence.</p>
@@ -101,10 +101,10 @@ MAIL;
                 $subject = 'The Ball Will Be Brighter With Your Presence';
                 $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana Cursive; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                                 <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
-                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
                             <p>Your royal highness,</p>
                             <p>It will be a pleasure to receive you at this year's Royal ball.</p>
                             <p>However, we understand that the season is very eventful and you are quite uncertain of your attendance.</p>
@@ -159,10 +159,10 @@ MAIL;
                 $subject = 'The Ball Would have been more fun with you ' . $client_first_name . '!';
                 $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana Cursive; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
-                            <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
                                 <p>Dear $client_first_name,</p>
                                 <p>The ball would be incomplete without your presence!</p>
                                 <p>Even though our desire is to have you grace this year's grand dinner, we understand that there are other pertinent tasks that will require your time this season, hence your inability to attend this event.</p>
@@ -445,12 +445,16 @@ MAIL;
                                      src="images/male4.png"
                                      class="card-img-top" ></center>
                                 <strong>
-                                    <a href="" class="text-center dark-grey-text">
-                                        <b id="duke2"
-                                           style="display:none; background-color: #d7d7d7;
+                                    <a  id="duke2" style="display:none;" href="" class="text-center dark-grey-text">
+                                        <b
+                                            style="background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                        <span class="fa fa-check"></span></b>
+                                        <span class="fa fa-check"></span>
+                                        </b>
+                                        <div class="text-center">
+                                            <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                        </div>
                                     </a>
                                 </strong>
                             <!--Card image-->
@@ -491,12 +495,16 @@ MAIL;
                                 <center><img  data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR9" src="images/male9.png"
                                      class="img img-responsive" ></center>
                                 <strong>
-                                    <a href="" class="text-center dark-grey-text">
-                                        <b id="duke3"
-                                           style="display:none; background-color: #d7d7d7;
+                                    <a id="duke3" style="display:none;" href="" class="text-center dark-grey-text">
+                                        <b
+                                           style="background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                        <span class="fa fa-check"></span></b>
+                                        <span class="fa fa-check"></span>
+                                        </b>
+                                        <div class="text-center">
+                                            <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                        </div>
                                     </a>
                                 </strong>
                             <!--Card image-->
@@ -536,12 +544,16 @@ MAIL;
                                      src="images/male10.jpg"
                                      class="img img-responsive"></center>
                                 <strong>
-                                    <a href="" class="text-center dark-grey-text">
-                                        <b id="duke4"
-                                           style="display:none; background-color: #d7d7d7;
+                                    <a id="duke4" style="display:none;" href="" class="text-center dark-grey-text">
+                                        <b
+                                           style="background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                        <span class="fa fa-check"></span></b>
+                                        <span class="fa fa-check"></span>
+                                        </b>
+                                        <div class="text-center">
+                                            <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                        </div>
                                     </a>
                                 </strong>
                             <!--Card image-->
@@ -582,12 +594,16 @@ MAIL;
                                          src="images/male3.png"
                                          class="img img-responsive" ><center>
                                     <strong>
-                                        <a href="" class="text-center dark-grey-text">
-                                            <b id="duke1"
-                                               style="display:none; background-color: #d7d7d7;
+                                        <a id="duke1" style="display:none;" href="" class="text-center dark-grey-text">
+                                            <b
+                                               style=" background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                            <span class="fa fa-check"></span></b>
+                                            <span class="fa fa-check"></span>
+                                            </b>
+                                            <div class="text-center">
+                                                <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                            </div>
                                         </a>
                                     </strong>
                                     <!--Card image-->
@@ -636,12 +652,16 @@ MAIL;
                                              src="images/ball1.jpg"
                                              class="card-img-top" ></center>
                                 <strong>
-                                    <a href="" class="text-center dark-grey-text">
-                                        <b id="duch1"
-                                           style="display:none; background-color: #d7d7d7;
+                                    <a id="duch1" style="display:none;" href="" class="text-center dark-grey-text">
+                                        <b
+                                           style=" background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                        <span class="fa fa-check"></span></b>
+                                        <span class="fa fa-check"></span>
+                                        </b>
+                                        <div class="text-center">
+                                            <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                        </div>
                                     </a>
                                 </strong>
                                 <!--Card image-->
@@ -683,12 +703,16 @@ MAIL;
                                               data-target="#sideModalTR12" src="images/ball3.jpg"
                                               class="img img-responsive" ></center>
                                 <strong>
-                                    <a href="" class="text-center dark-grey-text">
-                                        <b id="duch2"
-                                           style="display:none; background-color: #d7d7d7;
+                                    <a id="duch2" style="display:none;" href="" class="text-center dark-grey-text">
+                                        <b
+                                           style=" background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                        <span class="fa fa-check"></span></b>
+                                        <span class="fa fa-check"></span>
+                                        </b>
+                                        <div class="text-center">
+                                            <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                        </div>
                                     </a>
                                 </strong>
                                 <!--Card image-->
@@ -728,12 +752,16 @@ MAIL;
                                               src="images/ball6.jpg"
                                               class="img img-responsive"></center>
                                 <strong>
-                                    <a href="" class="text-center dark-grey-text">
-                                        <b id="duch3"
-                                           style="display:none; background-color: #d7d7d7;
+                                    <a id="duch3" style="display:none;" href="" class="text-center dark-grey-text">
+                                        <b
+                                           style=" background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                        <span class="fa fa-check"></span></b>
+                                        <span class="fa fa-check"></span>
+                                        </b>
+                                        <div class="text-center">
+                                            <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                        </div>
                                     </a>
                                 </strong>
                                 <!--Card image-->
@@ -774,12 +802,16 @@ MAIL;
                                              src="images/ball9.jpg"
                                              class="img img-responsive" ><center>
                                         <strong>
-                                            <a href="" class="text-center dark-grey-text">
-                                                <b id="duch4"
-                                                   style="display:none; background-color: #d7d7d7;
+                                            <a id="duch4" style="display:none;" href="" class="text-center dark-grey-text">
+                                                <b
+                                                   style=" background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                                <span class="fa fa-check"></span></b>
+                                                <span class="fa fa-check"></span>
+                                                </b>
+                                                <div class="text-center">
+                                                    <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                                </div>
                                             </a>
                                         </strong>
                                         <!--Card image-->
@@ -821,9 +853,6 @@ MAIL;
             <!--Grid row-->
             <br>
             <hr>
-            <div class="text-center">
-                <button name="submit2" type="submit" class="btn btn-lg btn-success">SUBMIT</button>
-            </div>
             </div>
 
         </section>
