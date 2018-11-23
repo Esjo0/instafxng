@@ -51,11 +51,11 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
                                 <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
                             <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>All hail <b>$title</b> $client_full_name, the first of $gender name from <b>the house of $town</b></p>
-                                <p>It is our pleasure to receive your consent to attend the Royal Ball</p>
+                                <p>All hail <b>$title</b> $client_full_name, the first of $gender name from <b>the house of $town.</b></p>
+                                <p>It is our pleasure to receive your consent to attend the Royal Ball.</p>
                                 <p>Your seat has been reserved and your dynasty is being prepared to receive your presence.</p>
                                 <p>The royal invite will be sent when all is set, brace up it's going to be a ball to remember.</p>
-                                <p>Compliment of the season</p>
+                                <p>Compliment of the season!</p>
                                 <br /><br />
                                 <p>Best Regards,</p>
                                 <p>The InstaFxNg Team,<br />
@@ -108,11 +108,10 @@ MAIL;
                             <p>Your royal highness,</p>
                             <p>It will be a pleasure to receive you at this year's Royal ball.</p>
                             <p>However, we understand that the season is very eventful and you are quite uncertain of your attendance.</p>
-                            <p>To this end, our dynasty has decided to reserve your spot for the next 5 nights!</p>
+                            <p>To this end, our dynasty has decided to reserve your spot for the next 5 nights.</p>
                             <p>The royal raven will be back to get your final decision by the fifth night.</p>
                             <p>This ball will be one to remember forever… We look forward to hosting your royalty.</p>
                                 <br /><br />
-                                <p>Best Regards,</p>
                                 <p>Best Regards,</p>
                                 <p>The InstaFxNg Team,<br />
                                    www.instafxng.com</p>
@@ -164,7 +163,7 @@ MAIL;
                             <hr />
                             <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
                                 <p>Dear $client_first_name,</p>
-                                <p>The ball would be incomplete without your presence!</p>
+                                <p>The ball would be incomplete without your presence.</p>
                                 <p>Even though our desire is to have you grace this year's grand dinner, we understand that there are other pertinent tasks that will require your time this season, hence your inability to attend this event.</p>
                                 <p>We look forward to celebrating a greater feat with you next year.</p>
                                 <p>Your invite for this year's ball has been canceled.</p>

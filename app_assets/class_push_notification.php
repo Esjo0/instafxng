@@ -80,7 +80,9 @@ class Push_Notification_System
         foreach ($result as $row)
         {
             $access = explode(',', $row['allowed_pages']);
-            if(in_array($access_id, $access))
+
+            // Remove PERCY UTOMUDO FROM NOTIFICATION
+            if(in_array($access_id, $access) && $row['admin_code'] != 'nyAEh' && $row['admin_code'] != 'V2Uu9')
             {
                 $recipients.= $row['admin_code'].',';
             }
