@@ -90,6 +90,7 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
 MAIL;
                 $system_object->send_email($subject, $message_final, $client_email, $client_first_name);
                 $message_success = "YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL";
+                header('Location: dinner_completed.php?z=' . $choice);
             } else {
                 $message_error = "Reservation Not Successful Kindly Try Again";
             }
@@ -148,6 +149,7 @@ MAIL;
 
                 $message_success = "YOUR SEAT HAS BEEN TEMPORARILY RESERVED. KINDLY CONFIRM YOUR RESERVATION WITHIN THE NEXT
                                         5 DAYS.";
+                header('Location: dinner_completed.php?z=' . $choice);
             } else {
                 $message_error = "Reservation Not Successful Kindly Try Again";
             }
@@ -203,6 +205,7 @@ MAIL;
 MAIL;
                 $system_object->send_email($subject, $message_final, $client_email, $last_name);
                 $message_success = "THANK YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.";
+                header('Location: dinner_completed.php?z=' . $choice);
             } else {
                 $message_error = "Reservation Not Successful Kindly Try Again";
             }
@@ -422,8 +425,8 @@ MAIL;
         </section>
         <!--Section: Main info-->
         <section id="select_avatar" class=" view wow fadeIn" title="Click on an image to select your style"
-                 style="display:none; margin:0px; padding:0px; onclick="select_avatar(1)"">
-            <h3 style="background-color: rgba(128, 128, 128, 0.15); font-family: Sofia" class="h3 text-center">
+                 style="display:none; margin:0px; padding:0px;">
+            <h3 style="background-color: rgba(128, 128, 128, 0.15); font-family: Sofia;" class="h3 text-center">
                 Select Your Style</h3>
             <div class="row">
                 <div class="col-md-3"></div>
