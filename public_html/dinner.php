@@ -47,7 +47,7 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
                 $subject = 'Your seat has been reserved, ' . $client_first_name . '!';
                 $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana Cursive; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Comic Sans MS, cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                                 <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
                             <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
@@ -101,7 +101,7 @@ MAIL;
                 $subject = 'The Ball Will Be Brighter With Your Presence';
                 $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana Cursive; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Comic Sans MS, cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                                 <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
                             <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
@@ -159,7 +159,7 @@ MAIL;
                 $subject = 'The Ball Would have been more fun with you ' . $client_first_name . '!';
                 $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana Cursive; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
+                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-family: Comic Sans MS, cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
                             <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
@@ -335,6 +335,7 @@ MAIL;
                         <div class="text-center row" id="proceed" style="display: none;">
                             <p class="row" style="margin-bottom:20px;">
                             <label class="col-md-12 text-center" for="form8">Select Your Royal Title</label>
+                                <br/>
                             <i class="col-md-12 text-center">Example: Emperor of Ile-Ife</i>
                             </p>
                             <div class="col-md-4">
@@ -363,7 +364,7 @@ MAIL;
                             </div>
 
                             <div class="col-md-4">
-                                <div class="form-append">Enter Your<br> Home Town</div>
+                                <div class="form-append">Enter Your Home Town</div>
                                 <input name="town" type="text" id="town" class="form-control" required/>
                             </div>
                             <div class="col-md-4">
