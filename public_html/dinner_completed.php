@@ -62,7 +62,7 @@ if (empty($choice) || $choice == NULL) {
                     <b>YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL</b></p>
             </div>
         </div>
-        <img style="opacity: 0.5" src="img/success_logo.png" class="img-fluid z-depth-1-half" alt="">
+        <img style="opacity: 0.5" src="images/success_logo.png" class="img-fluid z-depth-1-half" alt="">
     <?php } ?>
     <?php if ($choice == 2) { ?>
         <!--Card-->
@@ -76,6 +76,7 @@ if (empty($choice) || $choice == NULL) {
                         5 DAYS.</b></p>
             </div>
         </div>
+        <img src="images/royal_ball_image.jpg" class="img img-responsive" alt="">
     <?php } ?>
     <?php if ($choice == 3) { ?>
         <!--Card-->
@@ -88,6 +89,7 @@ if (empty($choice) || $choice == NULL) {
                     <b>THANK YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.</b></p>
             </div>
         </div>
+        <img src="images/royal_ball_image.jpg" class="img img-responsive" alt="">
     <?php } ?>
 </section>
 <!-- Full Page Intro -->
