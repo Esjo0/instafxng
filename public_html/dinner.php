@@ -335,7 +335,8 @@ MAIL;
                         <div class="text-center row" id="proceed" style="display: none;">
                             <p class="row" style="margin-bottom:20px;">
                             <label class="col-md-12 text-center" for="form8">Select Your Royal Title</label>
-                                <br/>
+                                <br>
+                                <span class="fa fa-info-circle"></span>
                             <i class="col-md-12 text-center">Example: Emperor of Ile-Ife</i>
                             </p>
                             <div class="col-md-4">
