@@ -58,8 +58,8 @@ if (empty($choice) || $choice == NULL) {
             <!--Card content-->
             <div class="card-body">
                 <p class="text-center"
-                   style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black; font-family: cursive !important;">
-                    <b>YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL</b></p>
+                   style="border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black; font-family: 'Josefin Sans', sans-serif !important;">
+                    <b>YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL .<br> YOUR INVITE WILL BE SENT TO YOU SOONEST!</br></p>
             </div>
         </div>
         <img style="opacity: 0.5" src="images/success_logo.png" class="img-fluid z-depth-1-half" alt="">
@@ -71,8 +71,8 @@ if (empty($choice) || $choice == NULL) {
             <!--Card content-->
             <div class="card-body">
                 <p class="text-center"
-                   style="font-family: cursive !important; border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;">
-                    <b>YOUR SEAT HAS BEEN TEMPORARILY RESERVED. KINDLY CONFIRM YOUR RESERVATION WITHIN THE NEXT
+                   style="font-family: 'Josefin Sans', sans-serif !important; border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;">
+                    <b>YOUR SEAT HAS BEEN TEMPORARILY RESERVED. <br>KINDLY CONFIRM YOUR RESERVATION WITHIN THE NEXT
                         5 DAYS.</b></p>
             </div>
         </div>
@@ -85,8 +85,8 @@ if (empty($choice) || $choice == NULL) {
             <!--Card content-->
             <div class="card-body">
                 <p class="text-center"
-                   style="font-family: cursive !important; border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;">
-                    <b>THANK YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.</b></p>
+                   style="font-family: 'Josefin Sans', sans-serif !important; border-radius:5px; background-color: rgba(255, 194, 36, 0.29); color: black;">
+                    <b>THANK YOU. WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.</b></p>
             </div>
         </div>
         <img src="images/royal_ball_image.jpg" class="img img-responsive" alt="">
