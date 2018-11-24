@@ -5,7 +5,7 @@ $thisPage = "Careers";
 $get_params = allowed_get_params(['c']);
 $job_code_encrypted = $get_params['c'];
 
-$job_code = decrypt(str_replace(" ", "+", $job_code_encrypted));
+$job_code = decrypt_ssl(str_replace(" ", "+", $job_code_encrypted));
 $job_code = preg_replace("/[^A-Za-z0-9 ]/", '', $job_code);
 
 if(!$obj_careers->is_valid_job_code($job_code)) {

@@ -27,7 +27,7 @@ $c_full_name = $_SESSION['cu_first_name'] . ' ' . $_SESSION['cu_last_name'];
             <td>
                 <?php if($application_editable) { ?>
                 <form role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                    <input name="application_no" type="hidden" value="<?php echo encrypt($my_application['career_user_application_id']); ?>" />
+                    <input name="application_no" type="hidden" value="<?php echo encrypt_ssl($my_application['career_user_application_id']); ?>" />
 
                     <button type="button" data-target="#confirm-final-submit" data-toggle="modal" class="btn btn-success">Submit</button>
 

@@ -64,7 +64,7 @@ if($db_handle->numOfRows($result) > 0) {
             if(array_key_exists('user_code', $row)) {
                 $user_code = $row['user_code'];
 
-                $encrypted_user_code = encrypt($user_code);
+                $encrypted_user_code = encrypt_ssl($user_code);
                 $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
                 $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
                 $found_position_month = in_array_r($user_code, $found_loyalty_month);
@@ -103,7 +103,7 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[LPYHR]', $year_rank_highest, $my_message_new);
                 $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
                 $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
-                $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
+                $my_message_new = str_replace('[UC]', encrypt_ssl($user_code), $my_message_new);
                 $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
                 $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
                 $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);

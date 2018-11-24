@@ -9,7 +9,7 @@ $client_operation = new clientOperation();
 $get_params = allowed_get_params(['id']);
 $trans_id_encrypted = $get_params['id'];
 
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
+$trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
 $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 $trans_id_detail = $client_operation->get_deposit_transaction($trans_id);
 
@@ -25,7 +25,7 @@ if (isset($_POST['process'])) {
 
     extract($_POST);
 
-    $trans_id = decrypt(str_replace(" ", "+", $trans_id));
+    $trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id));
     $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
     $admin_full_name = $_SESSION['admin_last_name'] . " " . $_SESSION['admin_first_name'] ;
     $remarks = $admin_full_name . ": " . $remarks;

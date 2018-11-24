@@ -7,11 +7,11 @@ if (!$session_admin->is_logged_in()) {
 $get_params = allowed_get_params(['type', 'id']);
 
 $id_encrypted = $get_params['id'];
-$id = decrypt(str_replace(" ", "+", $id_encrypted));
+$id = decrypt_ssl(str_replace(" ", "+", $id_encrypted));
 $id = preg_replace("/[^A-Za-z0-9 ]/", '', $id);
 
 $type_encrypted = $get_params['type'];
-$type = decrypt(str_replace(" ", "+", $type_encrypted));
+$type = decrypt_ssl(str_replace(" ", "+", $type_encrypted));
 $type = preg_replace("/[^A-Za-z0-9 ]/", '', $type);
 
 
@@ -106,7 +106,7 @@ if(isset($id) && !empty($id))
                                 </div>
                                 <div class="pull-right">
                                     <p>
-                                        <a class="btn btn-default" href="support_email_compose.php?id=<?php echo encrypt($email_content['email_id'])?>">
+                                        <a class="btn btn-default" href="support_email_compose.php?id=<?php echo encrypt_ssl($email_content['email_id'])?>">
                                             Reply <i class="fa fa-arrow-circle-right"></i>
                                         </a>
                                     </p>
@@ -123,7 +123,7 @@ if(isset($id) && !empty($id))
                                     </div>
                                     <div class="pull-right">
                                         <p>
-                                            <a class="btn btn-default" href="support_email_compose.php?id=<?php echo encrypt($email_content['email_id'])?>">
+                                            <a class="btn btn-default" href="support_email_compose.php?id=<?php echo encrypt_ssl($email_content['email_id'])?>">
                                                 Reply <i class="fa fa-arrow-circle-right"></i>
                                             </a>
                                         </p>
@@ -141,7 +141,7 @@ if(isset($id) && !empty($id))
                                         </div>
                                         <div class="pull-right">
                                             <p>
-                                                <a class="btn btn-default" href="support_email_compose.php?id=<?php echo encrypt($email_content['email_id'])?>">
+                                                <a class="btn btn-default" href="support_email_compose.php?id=<?php echo encrypt_ssl($email_content['email_id'])?>">
                                                     Reply <i class="fa fa-arrow-circle-right"></i>
                                                 </a>
                                             </p>

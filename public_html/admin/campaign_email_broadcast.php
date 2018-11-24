@@ -26,7 +26,7 @@ $found_loyalty_year = $db_handle->fetchAssoc($result);
 
 $get_params = allowed_get_params(['x', 'id']);
 $campaign_email_id_encrypted = $get_params['id'];
-$campaign_email_id = decrypt(str_replace(" ", "+", $campaign_email_id_encrypted));
+$campaign_email_id = decrypt_ssl(str_replace(" ", "+", $campaign_email_id_encrypted));
 $campaign_email_id = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_email_id);
 
 if(!empty($campaign_email_id)) {
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
         if(array_key_exists('user_code', $selected_member)) {
             $user_code = $selected_member['user_code'];
 
-            $encrypted_user_code = encrypt($user_code);
+            $encrypted_user_code = encrypt_ssl($user_code);
             $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
             $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
             $found_position_month = in_array_r($user_code, $found_loyalty_month);
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $my_message_new = str_replace('[LPYHR]', $year_rank_highest, $my_message_new);
             $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
             $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
-            $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
+            $my_message_new = str_replace('[UC]', encrypt_ssl($user_code), $my_message_new);
             $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
             $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
             $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);

@@ -88,7 +88,7 @@ $val_contest_pages = $db_handle->fetchAssoc($result);
                                             <tr>
                                                 <td><?php echo $row['full_name']; ?></td>
                                                 <td><a target="_blank" class="btn btn-info" href="https://instafxng.com/my_val/id/<?php echo $row['user_val_2017_id']; ?>/" target="_blank" title="Click to visit page"><i class="glyphicon glyphicon-eye-open icon-white"> View</i></a></td>
-                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='2' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>

@@ -14,7 +14,7 @@ if (isset($_POST['process'])) {
 
     extract($_POST);
 
-    $user_code = decrypt(str_replace(" ", "+", $client_id));
+    $user_code = decrypt_ssl(str_replace(" ", "+", $client_id));
     $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
     $profile_modified = $client_operation->update_user_status($user_code, $client_status);
@@ -28,7 +28,7 @@ if (isset($_POST['process'])) {
 
 $get_params = allowed_get_params(['id']);
 $user_code_encrypted = $get_params['id'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
+$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
 if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {

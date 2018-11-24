@@ -8,7 +8,7 @@ $page_requested = "";
 
 $get_params = allowed_get_params(['id','action']);
 $system_message_id_encrypted = $get_params['id'];
-$system_message_id = decrypt(str_replace(" ", "+", $system_message_id_encrypted));
+$system_message_id = decrypt_ssl(str_replace(" ", "+", $system_message_id_encrypted));
 $system_message_id = preg_replace("/[^A-Za-z0-9 ]/", '', $system_message_id);
 $action = $get_params['action'];
 

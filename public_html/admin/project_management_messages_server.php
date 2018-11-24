@@ -16,7 +16,7 @@ $title = "New Project Message";
 $message1 = "Project Title - ".$project_details['project_title']."<br/>Message: $message";
 $recipients = $project_details['recipients'];
 $author = $admin_object->get_admin_name_by_code($author_code);
-$source_url = "https://instafxng.com/admin/project_management_project_view.php?x=".encrypt($project_code);
+$source_url = "https://instafxng.com/admin/project_management_project_view.php?x=".encrypt_ssl($project_code);
 $notify_support = $obj_push_notification->add_new_notification($title, $message1, $recipients, $author, $source_url);
 
 $created = date('y-m-d');

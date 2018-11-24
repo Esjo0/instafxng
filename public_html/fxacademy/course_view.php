@@ -8,7 +8,7 @@ if (!$session_client->is_logged_in()) {
 
 $get_params = allowed_get_params(['id']);
 $course_id_encrypted = $get_params['id'];
-$course_id = decrypt(str_replace(" ", "+", $course_id_encrypted));
+$course_id = decrypt_ssl(str_replace(" ", "+", $course_id_encrypted));
 $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
 
 $selected_course = $education_object->get_active_course_by_id($course_id);
@@ -78,7 +78,7 @@ if(empty($selected_course)) {
                                             $check_assessment = $education_object->taken_lesson_assessment($row['edu_lesson_id'], $_SESSION['client_unique_code']);
                                             if($check_assessment) {
                                     ?>
-                                        <li class="list-group-item list-group-item-warning"><a title="Click to view lesson again" href="fxacademy/lesson_view.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><?php echo $row['title']; ?></a></li>
+                                        <li class="list-group-item list-group-item-warning"><a title="Click to view lesson again" href="fxacademy/lesson_view.php?cid=<?php echo encrypt_ssl($course_id); ?>&lid=<?php echo encrypt_ssl($row['edu_lesson_id']); ?>"><?php echo $row['title']; ?></a></li>
                                 <?php } else { ?>
                                         <li class="list-group-item list-group-item-warning"><?php echo $row['title']; ?></li>
                                     <?php } } ?>
@@ -90,7 +90,7 @@ if(empty($selected_course)) {
 
                                 <?php if($course_lessons) { ?>
                                 <ul class="pager">
-                                    <li class="next"><a href="fxacademy/lesson_view.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($course_lessons[0]['edu_lesson_id']); ?>"><?php echo $course_lessons[0]['title']; ?> &rarr;</a></li>
+                                    <li class="next"><a href="fxacademy/lesson_view.php?cid=<?php echo encrypt_ssl($course_id); ?>&lid=<?php echo encrypt_ssl($course_lessons[0]['edu_lesson_id']); ?>"><?php echo $course_lessons[0]['title']; ?> &rarr;</a></li>
                                 </ul>
                                 <?php } ?>
 
@@ -99,7 +99,7 @@ if(empty($selected_course)) {
                             <div class="col-md-6">
                                 <p><strong>Course Cost:</strong> &#8358; <?php echo number_format(($selected_course['course_cost']), 2, ".", ","); ?></p>
                                 <p>This is a paid course, to access this course, please follow the button below to quickly make payment.</p>
-                                <a href="fxacademy/course_payment.php?id=<?php echo encrypt($course_id); ?>" title="Click to make payment" class="btn btn-success btn-lg">Make Payment</a>
+                                <a href="fxacademy/course_payment.php?id=<?php echo encrypt_ssl($course_id); ?>" title="Click to make payment" class="btn btn-success btn-lg">Make Payment</a>
 
                                 <hr />
                                 <p><strong>Course Outline:</strong></p>

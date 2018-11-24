@@ -134,8 +134,8 @@ $withdrawal_insight = $db_handle->fetchAssoc($result);
                                                 <td><?php echo number_format($row['sum_withdraw_ordered']); ?></td>
                                                 <td><?php echo $row['withdraw_frequency']; ?></td>
                                                 <td nowrap="nowrap">
-                                                    <a title="View" class="btn btn-success" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'insight/last_month_withdrawal'; ?>&c=<?php echo encrypt('LAST MONTH WITHDRAWAL'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
-                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a title="View" class="btn btn-success" href="client_reach.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'insight/last_month_withdrawal'; ?>&c=<?php echo encrypt_ssl('LAST MONTH WITHDRAWAL'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                 </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

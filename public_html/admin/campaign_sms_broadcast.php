@@ -6,7 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $campaign_sms_id_encrypted = $get_params['id'];
-$campaign_sms_id = decrypt(str_replace(" ", "+", $campaign_sms_id_encrypted));
+$campaign_sms_id = decrypt_ssl(str_replace(" ", "+", $campaign_sms_id_encrypted));
 $campaign_sms_id = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_sms_id);
 
 if(!empty($campaign_sms_id)) {
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
         if(!empty($selected_member)) {
             $client_phone = ucwords(strtolower(trim($selected_member[0]['phone'])));
             $user_code = strtolower(trim($row['user_code']));
-            $my_message = str_replace('[UC]', encrypt($user_code), $my_message);
+            $my_message = str_replace('[UC]', encrypt_ssl($user_code), $my_message);
             $my_message_new = str_replace('[UC]', '', $my_message);
             $system_object->send_sms($client_phone, $my_message_new);
         }

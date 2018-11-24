@@ -97,7 +97,7 @@ $selected_years = $db_handle->fetchAssoc($result);
                                                                 <td><?php echo $row['full_name']; ?></td>
                                                                 <td><?php echo $row['phone']; ?></td>
                                                                 <td><?php echo number_format(($row['point_earned']), 2, ".", ","); ?></td>
-                                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                                             </tr>
                                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                                     </tbody>
@@ -156,7 +156,7 @@ $selected_years = $db_handle->fetchAssoc($result);
                                                                 <td><?php echo $row['full_name']; ?></td>
                                                                 <td><?php echo $row['phone']; ?></td>
                                                                 <td><?php echo number_format(($row['point_earned']), 2, ".", ","); ?></td>
-                                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                                             </tr>
                                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                                     </tbody>

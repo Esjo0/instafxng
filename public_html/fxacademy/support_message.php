@@ -12,7 +12,7 @@ if (isset($_POST['submit_reply'])) {
     }
     extract($_POST);
 
-    $support_id = decrypt(str_replace(" ", "+", $support_id));
+    $support_id = decrypt_ssl(str_replace(" ", "+", $support_id));
     $support_id = preg_replace("/[^A-Za-z0-9 ]/", '', $support_id);
 
     $question_reply = $education_object->set_lesson_support_reply('1', $support_id, $comment_reply, $_SESSION['client_unique_code'], '1');
@@ -26,7 +26,7 @@ if (isset($_POST['submit_reply'])) {
 
 $get_params = allowed_get_params(['id']);
 $support_request_encrypted = $get_params['id'];
-$support_request_code = decrypt(str_replace(" ", "+", $support_request_encrypted));
+$support_request_code = decrypt_ssl(str_replace(" ", "+", $support_request_encrypted));
 $support_request_code = preg_replace("/[^A-Za-z0-9 ]/", '', $support_request_code);
 
 if(!empty($support_request_code)) {
@@ -86,7 +86,7 @@ array_sort_by_column_desc($all_support_request, 'last_reply_date');
                                             <div class="col-sm-12">
                                                 <div class="<?php if($row['support_request_code'] == $support_request_code) { echo 'transaction-remarks-1'; } else { echo 'transaction-remarks'; } ?>">
                                                     <span id="trans_remark"><?php echo substr(trim($row['request']), 0, 150); ?>...
-                                                        <a href="fxacademy/support_message.php?id=<?php echo encrypt($row['support_request_code']); ?>">View Replies</a>
+                                                        <a href="fxacademy/support_message.php?id=<?php echo encrypt_ssl($row['support_request_code']); ?>">View Replies</a>
                                                         <br />
                                                         <strong>Status: <?php if($row['status'] == '1') { echo 'Open'; } else { echo 'Closed'; } ?></strong>
                                                         <hr /></span>
@@ -194,7 +194,7 @@ array_sort_by_column_desc($all_support_request, 'last_reply_date');
 
                                     <hr />
                                     <form class="form-horizontal" role="form" method="post" action="">
-                                        <input type="hidden" name="support_id" value="<?php echo encrypt($selected_support['user_edu_support_request_id']); ?>" />
+                                        <input type="hidden" name="support_id" value="<?php echo encrypt_ssl($selected_support['user_edu_support_request_id']); ?>" />
                                         <div class="form-group text-center">
                                             <label for="question">Post a reply:</label>
                                             <div class="col-sm-12"><textarea name="comment_reply" class="form-control" rows="5" id="question"></textarea></div>

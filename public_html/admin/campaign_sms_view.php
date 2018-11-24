@@ -95,13 +95,13 @@ $all_campaign_sms = $db_handle->fetchAssoc($result);
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td class="nowrap">
                                                 <?php if($row['send_status'] == '2' && ($row['status'] == '1' || $row['status'] == '2')) { // allow edit if campaign has not been sent ?>
-                                                    <a title="Edit" class="btn btn-default" href="campaign_sms.php?x=edit&id=<?php echo encrypt($row['campaign_sms_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
+                                                    <a title="Edit" class="btn btn-default" href="campaign_sms.php?x=edit&id=<?php echo encrypt_ssl($row['campaign_sms_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
                                                 <?php } ?>
 
-                                                <a title="Send Test" class="btn btn-info" href="campaign_sms_broadcast.php?x=test&id=<?php echo encrypt($row['campaign_sms_id']); ?>"><i class="fa fa-paper-plane fa-fw"></i> </a>
+                                                <a title="Send Test" class="btn btn-info" href="campaign_sms_broadcast.php?x=test&id=<?php echo encrypt_ssl($row['campaign_sms_id']); ?>"><i class="fa fa-paper-plane fa-fw"></i> </a>
 
                                                 <?php if($row['status'] == '2' && $row['send_status'] == '2') { ?>
-                                                    <a title="Broadcast" class="btn btn-success" href="campaign_sms_broadcast.php?x=send&id=<?php echo encrypt($row['campaign_sms_id']); ?>"><i class="fa fa-bullhorn fa-fw"></i> </a>
+                                                    <a title="Broadcast" class="btn btn-success" href="campaign_sms_broadcast.php?x=send&id=<?php echo encrypt_ssl($row['campaign_sms_id']); ?>"><i class="fa fa-bullhorn fa-fw"></i> </a>
                                                 <?php } ?>
                                             </td>
                                         </tr>

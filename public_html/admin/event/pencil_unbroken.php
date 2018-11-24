@@ -113,7 +113,7 @@ $reg_by_non_clients = $numrows - $reg_by_clients;
                                         <td><?php echo datetime_to_text($row['created']); ?></td>
                                         <td>
                                             <?php if(!empty($row['user_code'])) { ?>
-                                            <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                            <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             <?php } ?>
                                         </td>
                                     </tr>

@@ -1,5 +1,5 @@
 <?php
-//$trans_id_encrypted = encrypt($client_trans_id);
+//$trans_id_encrypted = encrypt_ssl($client_trans_id);
 $client_naira_total_kobo = $client_naira_total * 100; // Convert to Kobo, required by GTPay
 
 // GTPay hashing instruction using hash id provide by GTPay

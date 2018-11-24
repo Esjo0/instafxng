@@ -25,7 +25,7 @@ if (isset($_POST['system_settings'])) {
 $get_params = allowed_get_params(['id']);
 $settings_id_encrypted = $get_params['id'];
 
-$settings_id = decrypt(str_replace(" ", "+", $settings_id_encrypted));
+$settings_id = decrypt_ssl(str_replace(" ", "+", $settings_id_encrypted));
 $settings_id = preg_replace("/[^A-Za-z0-9 ]/", '', $settings_id);
 $settings_detail = $system_object->get_settings_by_id($settings_id);
 ?>

@@ -264,7 +264,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
         $origin_of_deposit = '1'; // Originates online
         $stamp_duty = CBN_STAMP_DUTY;
         $trans_id = "D" . time();
-        $trans_id_encrypted = encrypt($trans_id);
+        $trans_id_encrypted = encrypt_ssl($trans_id);
         $service_charge = $ifx_naira_amount * DSERVCHARGE;
         $vat = $service_charge * DVAT;
         $total_payable = CBN_STAMP_DUTY + $vat + $service_charge + $ifx_naira_amount;
@@ -289,7 +289,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
 // This section processes - views/deposit_funds_finalize.php
 if(isset($_POST['deposit_funds_finalize'])) {
     $trans_id_encrypted = $db_handle->sanitizePost($_POST['transaction_no']);
-    $trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
+    $trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
     $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
     
     $client_operation = new clientOperation();
@@ -299,7 +299,7 @@ if(isset($_POST['deposit_funds_finalize'])) {
     {
         extract($transaction);
         $page_requested = 'deposit_funds_pay_type_php';
-        $trans_id_encrypted = encrypt($client_trans_id);
+        $trans_id_encrypted = encrypt_ssl($client_trans_id);
 
     } else {
         $message_error = "Something went wrong, please try again.";
@@ -312,7 +312,7 @@ if(isset($_POST['deposit_funds_pay_type'])) {
     $client_operation = new clientOperation();
 
     $trans_id_encrypted = $db_handle->sanitizePost($_POST['transaction_no']);
-    $trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
+    $trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
     $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
     
     $pay_type = $db_handle->sanitizePost($_POST['pay_type']);

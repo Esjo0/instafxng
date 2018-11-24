@@ -6,7 +6,7 @@ if (empty($user_code_encrypted)) {
     redirect_to("https://instafxng.com");
     exit;
 }
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
+$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 $client_operation = new clientOperation();
 $details = $client_operation->get_user_by_code($user_code);

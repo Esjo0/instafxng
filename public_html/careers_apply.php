@@ -5,7 +5,7 @@ $thisPage = "Careers";
 $get_params = allowed_get_params(['c']);
 $job_code_encrypted = $get_params['c'];
 
-$job_code = decrypt(str_replace(" ", "+", $job_code_encrypted));
+$job_code = decrypt_ssl(str_replace(" ", "+", $job_code_encrypted));
 $job_code = preg_replace("/[^A-Za-z0-9 ]/", '', $job_code);
 
 if(!$obj_careers->is_valid_job_code($job_code)) {
@@ -88,7 +88,7 @@ $job_detail = $obj_careers->get_job_by_code($job_code);
 
                 <div class="row">
                     <div class="col-sm-6 text-right" style="margin-bottom: 7px !important;">
-                        <a title="Apply Now" class="btn btn-success btn-block" href="careers_register.php?c=<?php echo encrypt($job_detail['job_code']); ?>">New? Register Account</a>
+                        <a title="Apply Now" class="btn btn-success btn-block" href="careers_register.php?c=<?php echo encrypt_ssl($job_detail['job_code']); ?>">New? Register Account</a>
                     </div>
                     <div class="col-sm-6 text-left" style="margin-bottom: 7px !important;">
                         <a title="Login" class="btn btn-success btn-block" href="careers_login.php">Existing? Login Account</a>

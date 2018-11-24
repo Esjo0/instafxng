@@ -17,7 +17,7 @@ if (isset($_POST['delete_lesson'])) {
 
 $get_params = allowed_get_params(['id']);
 $course_id_encrypted = $get_params['id'];
-$course_id = decrypt(str_replace(" ", "+", $course_id_encrypted));
+$course_id = decrypt_ssl(str_replace(" ", "+", $course_id_encrypted));
 $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
 
 $selected_course = $education_object->get_course_by_id($course_id);
@@ -77,7 +77,7 @@ if(empty($selected_course)) {
                                             <div class="col-sm-6">
                                                 <!-- Display Course Details -->
 
-                                                <p><a href="edu_course_new.php?x=edit&id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Edit Course"><i class="fa fa-edit"></i> Edit Course</a></p>
+                                                <p><a href="edu_course_new.php?x=edit&id=<?php echo encrypt_ssl($course_id); ?>" class="btn btn-default" title="Edit Course"><i class="fa fa-edit"></i> Edit Course</a></p>
                                                 <table class="table table-responsive table-striped table-bordered table-hover">
 
                                                     <tbody>
@@ -95,7 +95,7 @@ if(empty($selected_course)) {
                                                 <!-- Display Course Metrics and button to create lesson -->
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <p class="text-right"><a href="edu_lesson_new.php?cid=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Create new lesson for this course">Create New Lesson <i class="fa fa-arrow-circle-right"></i></a></p>
+                                                        <p class="text-right"><a href="edu_lesson_new.php?cid=<?php echo encrypt_ssl($course_id); ?>" class="btn btn-default" title="Create new lesson for this course">Create New Lesson <i class="fa fa-arrow-circle-right"></i></a></p>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -137,9 +137,9 @@ if(empty($selected_course)) {
                                                         <div class="dropdown">
                                                             <a class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Action <span class="caret"></span></a>
                                                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                                                <li role="presentation"><a role="menuitem" tabindex="-1" title="View Lesson Details" href="edu_lesson_view.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><i class="fa fa-eye fa-fw"></i> View Lesson</a></li>
-                                                                <li role="presentation"><a role="menuitem" tabindex="-1" title="Edit Lesson" href="edu_lesson_new.php?cid=<?php echo encrypt($course_id); ?>&x=edit&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><i class="fa fa-edit fa-fw"></i> Edit Lesson</a></li>
-                                                                <li role="presentation"><a role="menuitem" tabindex="-1" title="Create Exercise" href="edu_exercise_new.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($row['edu_lesson_id']); ?>"><i class="fa fa-question-circle fa-fw"></i> Create Exercise</a></li>
+                                                                <li role="presentation"><a role="menuitem" tabindex="-1" title="View Lesson Details" href="edu_lesson_view.php?cid=<?php echo encrypt_ssl($course_id); ?>&lid=<?php echo encrypt_ssl($row['edu_lesson_id']); ?>"><i class="fa fa-eye fa-fw"></i> View Lesson</a></li>
+                                                                <li role="presentation"><a role="menuitem" tabindex="-1" title="Edit Lesson" href="edu_lesson_new.php?cid=<?php echo encrypt_ssl($course_id); ?>&x=edit&lid=<?php echo encrypt_ssl($row['edu_lesson_id']); ?>"><i class="fa fa-edit fa-fw"></i> Edit Lesson</a></li>
+                                                                <li role="presentation"><a role="menuitem" tabindex="-1" title="Create Exercise" href="edu_exercise_new.php?cid=<?php echo encrypt_ssl($course_id); ?>&lid=<?php echo encrypt_ssl($row['edu_lesson_id']); ?>"><i class="fa fa-question-circle fa-fw"></i> Create Exercise</a></li>
                                                                 <li role="presentation">
                                                                     <a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#delete-lesson-confirm<?php echo $row['edu_lesson_id']; ?>" title="Delete Lesson" href="#"><i class="fa fa-trash fa-fw"></i> Delete Lesson</a>
                                                                 </li>

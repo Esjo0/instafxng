@@ -66,7 +66,7 @@ if (isset($_POST['schedule_private_paid'])) {
     $total_payable_card = $card_processing + $total_payable;
     $course_name = "One on One Forex Training";
     $trans_id = "FPA" . time();
-    $trans_id_encrypted = encrypt($trans_id);
+    $trans_id_encrypted = encrypt_ssl($trans_id);
     $client_name = $full_name;
     $client_email = $email;
     $schedule_type = 3;
@@ -635,10 +635,10 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                            href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i
                                                 class="glyphicon glyphicon-phone-alt"></i></a>
                                         <a target="_blank" title="View" class="btn btn-info btn-sm"
-                                           href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i
+                                           href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i
                                                 class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                         <a target="_blank" title="Comment" class="btn btn-success btn-sm"
-                                           href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'training_schedule'; ?>&c=<?php echo encrypt('TRAINING SCHEDULE'); ?>&pg=<?php echo $currentpage; ?>"><i
+                                           href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'training_schedule'; ?>&c=<?php echo encrypt_ssl('TRAINING SCHEDULE'); ?>&pg=<?php echo $currentpage; ?>"><i
                                                 class="glyphicon glyphicon-comment icon-white"></i> </a>
                                         <a class="btn btn-default btn-sm" data-toggle="modal" title="Re-schedule"
                                            data-target="#re<?php echo($row['id']) ?>"><i

@@ -36,7 +36,7 @@
 you make.</p>
 <!-- Form for document upload --->
 <form data-toggle="validator" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>" enctype="multipart/form-data">
-    <input type="hidden" name="user_no" value="<?php if(isset($user_code)) { echo encrypt($user_code); } ?>" />
+    <input type="hidden" name="user_no" value="<?php if(isset($user_code)) { echo encrypt_ssl($user_code); } ?>" />
 
     <div class="form-group">
         <label class="control-label">ID (National ID Card, Driver's license, International Passport or Recognized ID Card):</label>
