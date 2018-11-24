@@ -53,3 +53,5 @@ if($db_handle->numOfRows($result) > 0) {
         }
     }
 }
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

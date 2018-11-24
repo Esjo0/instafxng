@@ -4,3 +4,5 @@ require_once 'initialize_admin.php';
 clear_transactions();
 
 //Set this script for 30 mins interval
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

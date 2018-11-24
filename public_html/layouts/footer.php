@@ -135,4 +135,4 @@
             ga('send', 'pageview');
         </script>
         
-        <?php if($db_handle) { mysqli_close($db_handle); } ?>
+        <?php if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); } ?>

@@ -250,3 +250,5 @@ $interval_5 = 28;
 $query_5 = mail_query(2, $interval_5, 5);
 $get_mail_5 = mail_template($my_message_5);
 $send_message_5 = auto_mail_send($query_5, $my_subject_5, $get_mail_5, 5);
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

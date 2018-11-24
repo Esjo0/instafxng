@@ -232,3 +232,14 @@ if($db_handle->numOfRows($result) > 0) {
         VALUES ('$today', $month_clients_to_retain, $monthly_clients_retained, $monthly_clients_retained_yesterday, $quarter_clients_to_retain, $quarter_clients_retained, $quarter_clients_retained_yesterday, $half_year_clients_to_retain, $half_year_clients_retained, $half_year_clients_retained_yesterday, $year_clients_to_retain, $year_clients_retained, $year_clients_retained_yesterday)";
     $db_handle->runQuery($query);
 }
+
+$db_handle->runQuery("DROP TEMPORARY TABLE IF EXISTS my_reference_clients");
+$db_handle->runQuery("DROP TEMPORARY TABLE IF EXISTS my_reference_clients_2");
+$db_handle->runQuery("DROP TEMPORARY TABLE IF EXISTS my_reference_clients_3");
+$db_handle->runQuery("DROP TEMPORARY TABLE IF EXISTS my_reference_clients_4");
+$db_handle->runQuery("DROP TEMPORARY TABLE IF EXISTS my_reference_clients_5");
+$db_handle->runQuery("DROP TEMPORARY TABLE IF EXISTS my_reference_clients_6");
+$db_handle->runQuery("DROP TEMPORARY TABLE IF EXISTS my_reference_clients_7");
+$db_handle->runQuery("DROP TEMPORARY TABLE IF EXISTS my_reference_clients_8");
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

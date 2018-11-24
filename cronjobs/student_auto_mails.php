@@ -511,3 +511,5 @@ $send_message_3d = student_auto_mail_send($query_3d, $my_subject_3d, $get_mail_3
 $query_4d = student_auto_mail_query(4, $interval_4);
 $get_mail_4d = student_auto_mail_template($my_message_4d);
 $send_message_4d = student_auto_mail_send($query_4d, $my_subject_4d, $get_mail_4d);
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

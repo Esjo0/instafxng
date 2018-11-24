@@ -308,3 +308,5 @@ foreach ($fetched_data as $row) {
 
     $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name);
 }
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

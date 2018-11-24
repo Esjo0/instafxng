@@ -103,3 +103,5 @@ foreach ($all_clients as $row) {
     }
 
 }
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }
