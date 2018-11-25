@@ -20,7 +20,7 @@ function get_dinner_reg_remark($reg_id) {
 $get_params = allowed_get_params(['x', 'id']);
 
 $reg_id_encrypted = $get_params['id'];
-$reg_id = decrypt(str_replace(" ", "+", $reg_id_encrypted));
+$reg_id = decrypt_ssl(str_replace(" ", "+", $reg_id_encrypted));
 $reg_id = preg_replace("/[^A-Za-z0-9 ]/", '', $reg_id);
 
 // Process comment

@@ -8,3 +8,5 @@ $today = date('Y-m-d');
 
 $query = "INSERT INTO active_client (clients, accounts, date) VALUES ($total_active_clients, $total_active_accounts, '$today')";
 $db_handle->runQuery($query);
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

@@ -1,6 +1,6 @@
 <?php
 $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
-$user_code_encrypted = encrypt($user_code);
+$user_code_encrypted = encrypt_ssl($user_code);
 ?>
 <ul class="fa-ul">
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter Pass Code and click the submit button</li>

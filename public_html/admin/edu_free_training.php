@@ -243,7 +243,7 @@ $all_registrations = $db_handle->fetchAssoc($result);
                                             </td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a title="View" class="btn btn-info" href="edu_free_training_view.php?x=<?php echo encrypt($row['free_training_campaign_id']); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
+                                                <a title="View" class="btn btn-info" href="edu_free_training_view.php?x=<?php echo encrypt_ssl($row['free_training_campaign_id']); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

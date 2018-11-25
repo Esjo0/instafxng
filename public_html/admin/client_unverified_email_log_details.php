@@ -6,7 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['id']);
 $user_code_encrypted = $get_params['id'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
+$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
 
@@ -209,7 +209,7 @@ $mail_detailss = $db_handle->fetchAssoc($results);
                                                     <tbody>
                                                     <?php if(isset($latest_funding) && !empty($latest_funding)) { foreach ($latest_funding as $row) { ?>
                                                         <tr>
-                                                            <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                                            <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                                             <td><?php echo $row['ifx_acct_no']; ?></td>
                                                             <td>&dollar; <?php echo $row['dollar_ordered']; ?></td>
                                                             <td><?php echo status_user_deposit($row['status']); ?></td>
@@ -233,7 +233,7 @@ $mail_detailss = $db_handle->fetchAssoc($results);
                                                     <tbody>
                                                     <?php if(isset($latest_withdrawal) && !empty($latest_withdrawal)) { foreach ($latest_withdrawal as $row) { ?>
                                                         <tr>
-                                                            <td><a target="_blank" title="View" href="withdrawal_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                                            <td><a target="_blank" title="View" href="withdrawal_search_view.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                                             <td><?php echo $row['ifx_acct_no']; ?></td>
                                                             <td>&dollar; <?php echo $row['dollar_withdraw']; ?></td>
                                                             <td><?php echo status_user_withdrawal($row['status']); ?></td>

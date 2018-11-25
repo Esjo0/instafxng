@@ -6,7 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['id', 'x']);
 $trans_id_encrypted = $get_params['id'];
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
+$trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
 $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 
 switch ($get_params['x']) {
@@ -31,7 +31,7 @@ if (isset($_POST['edu_deposit_notify'])) {
     }
     extract($_POST);
 
-    $transaction_no = decrypt(str_replace(" ", "+", $transaction_no));
+    $transaction_no = decrypt_ssl(str_replace(" ", "+", $transaction_no));
     $transaction_no = preg_replace("/[^A-Za-z0-9 ]/", '', $transaction_no);
 
     $payment_notified = $education_object->submit_payment_notification($transaction_no, $pay_date, $naira_amount, $admin_comment, $_SESSION['admin_unique_code']);
@@ -104,7 +104,7 @@ if (empty($trans_detail)) {
                                     <div class="col-sm-7">
                                         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
 
-                                            <input name="transaction_no" type="hidden" value="<?php if (isset($trans_id)) { echo encrypt($trans_id); } ?>">
+                                            <input name="transaction_no" type="hidden" value="<?php if (isset($trans_id)) { echo encrypt_ssl($trans_id); } ?>">
 
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4" for="transaction_id">Transaction ID:</label>

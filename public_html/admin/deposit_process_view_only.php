@@ -9,7 +9,7 @@ $client_operation = new clientOperation();
 $get_params = allowed_get_params(['x', 'id']);
 
 $trans_id_encrypted = $get_params['id'];
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
+$trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
 $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 
 switch($get_params['x']) {
@@ -119,7 +119,7 @@ if ($deposit_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POS
         $client_operation->update_loyalty_point($points_claimed_id, $point_status);
     }
 
-    $trans_id_encrypted = encrypt($transaction_id);
+    $trans_id_encrypted = encrypt_ssl($transaction_id);
     header("Location: deposit_view_details.php?id=$trans_id_encrypted");
 }
 

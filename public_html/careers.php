@@ -86,9 +86,9 @@ $years = date('Y') - 2010;
                                         </div>
                                         <div id="collapse<?php echo $count; ?>" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p class="text-right"><a title="Apply Now" class="btn btn-success btn-bg" href="careers_apply.php?c=<?php echo encrypt($row['job_code']); ?>"><i class="fa fa-paper-plane-o icon-white"></i> Apply Now</a></p>
+                                                <p class="text-right"><a title="Apply Now" class="btn btn-success btn-bg" href="careers_apply.php?c=<?php echo encrypt_ssl($row['job_code']); ?>"><i class="fa fa-paper-plane-o icon-white"></i> Apply Now</a></p>
                                                 <?php echo $row['detail']; ?>
-                                                <p class="text-right"><a title="Apply Now" class="btn btn-success btn-bg" href="careers_apply.php?c=<?php echo encrypt($row['job_code']); ?>"><i class="fa fa-paper-plane-o icon-white"></i> Apply Now</a></p>
+                                                <p class="text-right"><a title="Apply Now" class="btn btn-success btn-bg" href="careers_apply.php?c=<?php echo encrypt_ssl($row['job_code']); ?>"><i class="fa fa-paper-plane-o icon-white"></i> Apply Now</a></p>
                                             </div>
                                         </div>
                                     </div>

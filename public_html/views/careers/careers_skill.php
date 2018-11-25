@@ -35,7 +35,7 @@ $all_competency = array(
 <p>Add Another Skill</p>
 
 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-    <input name="client_no" type="hidden" value="<?php echo encrypt($_SESSION['cu_unique_code']); ?>" />
+    <input name="client_no" type="hidden" value="<?php echo encrypt_ssl($_SESSION['cu_unique_code']); ?>" />
 
     <div class="form-group">
         <label class="control-label col-sm-3" for="c_skill_title">Skill Title:</label>

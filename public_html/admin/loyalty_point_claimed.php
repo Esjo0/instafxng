@@ -111,7 +111,7 @@ $loyalty_points_claimed = $db_handle->fetchAssoc($result);
                                         <td><?php echo $row['point_claimed']; ?></td>
                                         <td>&dollar; <?php echo $row['dollar_amount']; ?></td>
                                         <td><?php echo datetime_to_text($row['created']); ?></td>
-                                        <td><a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                        <td><a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                     </tr>
                                 <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                             </tbody>

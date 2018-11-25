@@ -15,7 +15,7 @@ $my_message_1 =
 
             <p>How are you today?</p>
 
-            <p>My name is Mercy, a client relations manager from InstaForex Nigeria and
+            <p>My name is Mercy, a client relations manager from InstaFxNg and
             I would love to inform you that we miss you.</p>
 
             <p>We miss you a lot and I'm particularly worried about you.</p>
@@ -49,7 +49,7 @@ $my_message_1 =
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -131,7 +131,7 @@ $my_message_2 =
             <p>Best Regards,</p>
 
             <p>Your friend,<br />Mercy,<br />Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -191,7 +191,7 @@ $my_message_3 =
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -264,7 +264,7 @@ $my_message_4 =
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>

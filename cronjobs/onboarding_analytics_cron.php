@@ -111,3 +111,5 @@ if($db_handle->numOfRows($result) > 0) {
         VALUES ('$today', onboard_yesterday, m_total_onboard, q_total_onboard, h_total_onboard, y_total_onboard)";
     $db_handle->runQuery($query);
 }
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

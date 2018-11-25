@@ -143,8 +143,8 @@ $selected_bronze_comm_clients = $db_handle->fetchAssoc($result);
                                     <td><?php echo datetime_to_text2($row['created']); ?></td>
                                     <td><?php echo $row['account_officer_full_name']; ?></td>
                                     <td nowrap="nowrap">
-                                        <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_comm_bronze'; ?>&c=<?php echo encrypt('BRONZE COMMISSION CLIENTS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                        <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                        <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'client_comm_bronze'; ?>&c=<?php echo encrypt_ssl('BRONZE COMMISSION CLIENTS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                        <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                     </td>
                                 </tr>
                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

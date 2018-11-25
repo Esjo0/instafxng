@@ -36,7 +36,7 @@ $my_message_1 =
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -108,7 +108,7 @@ $my_message_2 =
             <p>Best Regards,</p>
 
             <p>Your friend,<br />Mercy,<br />Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -170,7 +170,7 @@ $my_message_3 =
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -308,3 +308,5 @@ foreach ($fetched_data as $row) {
 
     $system_object->send_email($my_subject_new, $my_message_new, $client_email, $client_name);
 }
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

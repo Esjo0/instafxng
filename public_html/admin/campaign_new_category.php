@@ -6,7 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['id']);
 $campaign_category_id_encrypted = $get_params['id'];
-$campaign_id = decrypt(str_replace(" ", "+", $campaign_category_id_encrypted));
+$campaign_id = decrypt_ssl(str_replace(" ", "+", $campaign_category_id_encrypted));
 $campaign_id = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_id);
 
 if (isset($_POST['process'])) {

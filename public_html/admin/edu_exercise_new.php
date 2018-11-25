@@ -6,15 +6,15 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'cid', 'lid', 'eid']);
 $course_id_encrypted = $get_params['cid'];
-$course_id = decrypt(str_replace(" ", "+", $course_id_encrypted));
+$course_id = decrypt_ssl(str_replace(" ", "+", $course_id_encrypted));
 $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
 
 $course_lesson_id_encrypted = $get_params['lid'];
-$course_lesson_id = decrypt(str_replace(" ", "+", $course_lesson_id_encrypted));
+$course_lesson_id = decrypt_ssl(str_replace(" ", "+", $course_lesson_id_encrypted));
 $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
 
 $exercise_id_encrypted = $get_params['eid'];
-$exercise_id = decrypt(str_replace(" ", "+", $exercise_id_encrypted));
+$exercise_id = decrypt_ssl(str_replace(" ", "+", $exercise_id_encrypted));
 $exercise_id = preg_replace("/[^A-Za-z0-9 ]/", '', $exercise_id);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -43,7 +43,7 @@ $selected_course = $education_object->get_course_by_id($course_id);
 $selected_lesson = $education_object->get_single_course_lesson_id($course_lesson_id);
 
 if(empty($selected_lesson)) {
-    $back_url = "edu_course_view.php?id=" . encrypt($course_id);
+    $back_url = "edu_course_view.php?id=" . encrypt_ssl($course_id);
     redirect_to($back_url); // cannot find lesson or URL tampered
 }
 
@@ -52,7 +52,7 @@ if($get_params['x'] == 'edit' && isset($exercise_id)) {
     $selected_exercise = $education_object->get_single_exercise_by_id($exercise_id);
 
     if(empty($selected_exercise)) {
-        $back_url = "edu_course_view.php?id=" . encrypt($course_id);
+        $back_url = "edu_course_view.php?id=" . encrypt_ssl($course_id);
         redirect_to($back_url); // cannot find lesson or URL tampered
     }
 }
@@ -98,9 +98,9 @@ if($get_params['x'] == 'edit' && isset($exercise_id)) {
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
                                 <?php if($selected_exercise) { ?>
-                                <p><a href="edu_lesson_view.php?cid=<?php echo encrypt($course_id); ?>&lid=<?php echo encrypt($course_lesson_id); ?>" class="btn btn-default" title="Go Back To Selected Lesson"><i class="fa fa-arrow-circle-left"></i> Go Back To Selected Lesson</a></p>
+                                <p><a href="edu_lesson_view.php?cid=<?php echo encrypt_ssl($course_id); ?>&lid=<?php echo encrypt_ssl($course_lesson_id); ?>" class="btn btn-default" title="Go Back To Selected Lesson"><i class="fa fa-arrow-circle-left"></i> Go Back To Selected Lesson</a></p>
                                 <?php } else { ?>
-                                <p><a href="edu_course_view.php?id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Go Back To Selected Course"><i class="fa fa-arrow-circle-left"></i> Go Back To Selected Course</a></p>
+                                <p><a href="edu_course_view.php?id=<?php echo encrypt_ssl($course_id); ?>" class="btn btn-default" title="Go Back To Selected Course"><i class="fa fa-arrow-circle-left"></i> Go Back To Selected Course</a></p>
                                 <?php } ?>
 
                                 <p><strong><span class="text-danger">Course Title:</span> <?php echo $selected_course['title']; ?></strong></p>

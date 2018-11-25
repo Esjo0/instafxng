@@ -149,8 +149,8 @@ $education_deposit = $db_handle->fetchAssoc($result);
                                                             <td class="nowrap">&#8358; <?php echo number_format($total_amount, 2, ".", ","); ?></td>
                                                             <td><?php echo datetime_to_text($data['created']); ?></td>
                                                             <td class="nowrap">
-                                                                <a class="btn btn-info" href="edu_deposit_pay_notify.php?x=initiated&id=<?php echo encrypt($data['trans_id']); ?>" title="Payment Notification"><i class="fa fa-bell-o" aria-hidden="true"></i></a>
-                                                                <a class="btn btn-info" href="edu_deposit_process.php?x=initiated&id=<?php echo encrypt($data['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
+                                                                <a class="btn btn-info" href="edu_deposit_pay_notify.php?x=initiated&id=<?php echo encrypt_ssl($data['trans_id']); ?>" title="Payment Notification"><i class="fa fa-bell-o" aria-hidden="true"></i></a>
+                                                                <a class="btn btn-info" href="edu_deposit_process.php?x=initiated&id=<?php echo encrypt_ssl($data['trans_id']); ?>" title="Comment"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
                                                             </td>
                                                         </tr>
                                                     <?php } } ?>

@@ -32,7 +32,7 @@ if (isset($_POST['process'])) {
     extract($_POST);
 
     if(!empty($client_user_code)) {
-        $client_user_code = decrypt(str_replace(" ", "+", $client_user_code));
+        $client_user_code = decrypt_ssl(str_replace(" ", "+", $client_user_code));
         $client_user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $client_user_code);
     }
 
@@ -53,7 +53,7 @@ if (isset($_POST['process'])) {
 
 $get_params = allowed_get_params(['x']);
 $selected_id_encrypted = $get_params['x'];
-$selected_id = decrypt(str_replace(" ", "+", $selected_id_encrypted));
+$selected_id = decrypt_ssl(str_replace(" ", "+", $selected_id_encrypted));
 $selected_id = preg_replace("/[^A-Za-z0-9 ]/", '', $selected_id);
 
 if(isset($_GET['selector']) && $_GET['selector'] == '1')
@@ -162,7 +162,7 @@ if(!empty($selected_detail['user_code'])) {
                                             <input type="hidden" name="training_phone" value="<?php if(isset($selected_detail['phone'])) { echo $selected_detail['phone']; } ?>" />
                                             <input type="hidden" name="training_first_name" value="<?php if(isset($selected_detail['first_name'])) { echo $selected_detail['first_name']; } ?>" />
                                             <input type="hidden" name="training_last_name" value="<?php if(isset($selected_detail['last_name'])) { echo $selected_detail['last_name']; } ?>" />
-                                            <input type="hidden" name="client_user_code" value="<?php if(isset($selected_detail['email'])) { echo encrypt($selected_detail['user_code']); } ?>" />
+                                            <input type="hidden" name="client_user_code" value="<?php if(isset($selected_detail['email'])) { echo encrypt_ssl($selected_detail['user_code']); } ?>" />
 
                                             <div class="form-group">
                                                 <label class="control-label col-sm-3" for="full_name">Full Name:</label>

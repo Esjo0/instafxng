@@ -82,7 +82,7 @@ $system_settings_schedules = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['description']; ?></td>
                                             <td><?php echo $row['value']; ?></td>
                                             <td>
-                                                <a target="_blank" class="btn btn-info" href="settings_edit.php?id=<?php echo encrypt($row['system_setting_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Edit</a>
+                                                <a target="_blank" class="btn btn-info" href="settings_edit.php?id=<?php echo encrypt_ssl($row['system_setting_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Edit</a>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

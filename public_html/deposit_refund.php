@@ -9,7 +9,7 @@ $all_banks = $system_object->get_all_banks();
 $get_params = allowed_get_params(['x', 'id']);
 
 $trans_id_encrypted = $get_params['id'];
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
+$trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
 $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 
 $refund_type = $get_params['x'];
@@ -65,7 +65,7 @@ if (isset($_POST['deposit_refund'])) {
 
         if ($request == true) {
             $message_success = "Your Request has been submitted successfully";
-            $refund_url = "https://instafxng.com/refund_declaration.php?x=" . $refund_type . "&id=" . encrypt($trans_id);
+            $refund_url = "https://instafxng.com/refund_declaration.php?x=" . $refund_type . "&id=" . encrypt_ssl($trans_id);
 
             header("Location: $refund_url");
         } else {

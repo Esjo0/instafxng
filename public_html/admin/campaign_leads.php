@@ -298,11 +298,11 @@ function bulk_sms_url($query){
                                                 <td>
                                                     <!--<input data-toggle="toggle" type="checkbox">
                                                     <br/>-->
-                                                    <a title="View" class="btn btn-xs btn-success" href="client_reach.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'campaign_leads'; ?>&c=<?php echo encrypt('NEW CAMPAIGN LEADS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                                    <a title="View" class="btn btn-xs btn-success" href="client_reach.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'campaign_leads'; ?>&c=<?php echo encrypt_ssl('NEW CAMPAIGN LEADS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
                                                     <br/><br/>
-                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <br/><br/>
-                                                    <a title="View" class="btn btn-xs btn-info" href="edu_free_training_view.php?x=<?php echo encrypt($row['lead_id']); ?>&pg=<?php echo $currentpage; ?>&selector=1"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
+                                                    <a title="View" class="btn btn-xs btn-info" href="edu_free_training_view.php?x=<?php echo encrypt_ssl($row['lead_id']); ?>&pg=<?php echo $currentpage; ?>&selector=1"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
                                                     <br/><br/>
                                                     <a class="btn btn-xs btn-info" title="Send Email" href="campaign_email_single.php?name=<?php $name = $row['f_name']." ".$row['m_name']." ".$row['l_name']; echo  encrypt_ssl($name).'&email='.encrypt_ssl($row['email']);?>" ><i class="glyphicon glyphicon-envelope"></i></a>
                                                     <br/><br/>

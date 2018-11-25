@@ -16,12 +16,12 @@ $client_operation = new clientOperation();
 $get_params = allowed_get_params(['x', 'r', 'c', 'pg']);
 
 $selected_id_encrypted = $get_params['x'];
-$selected_id = decrypt(str_replace(" ", "+", $selected_id_encrypted));
+$selected_id = decrypt_ssl(str_replace(" ", "+", $selected_id_encrypted));
 $selected_id = preg_replace("/[^A-Za-z0-9 ]/", '', $selected_id);
 $selected_detail = $client_operation->get_user_by_code($selected_id);
 
 $referral_url = $get_params['r'];
-$referral_title_encrypted = $get_params['c']; $referral_title = decrypt(str_replace(" ", "+", $referral_title_encrypted)); $referral_title = preg_replace("/[^A-Za-z0-9 ]/", '', $referral_title);
+$referral_title_encrypted = $get_params['c']; $referral_title = decrypt_ssl(str_replace(" ", "+", $referral_title_encrypted)); $referral_title = preg_replace("/[^A-Za-z0-9 ]/", '', $referral_title);
 $referral_pagination = $get_params['pg'];
 
 // get the current page or set a default

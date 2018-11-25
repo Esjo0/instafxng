@@ -83,7 +83,7 @@ $my_message_template =
 
             <p>Bukola,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -175,3 +175,5 @@ $send_message_2 = auto_mail_send($query_2, $my_subject_2, $get_mail_2);
 $query_3 = auto_mail_query(3);
 $get_mail_3 = auto_mail_template($my_message_3);
 $send_message_3 = auto_mail_send($query_3, $my_subject_3, $get_mail_3);
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

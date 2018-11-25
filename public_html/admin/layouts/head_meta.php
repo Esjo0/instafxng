@@ -22,12 +22,14 @@
         <script src="../js/instafx_admin.js"></script>
         <!-- NOTIFICATION CSS -->
         <script src="../js/class_push_notification.js"></script>
-        <script>
+
+        <?php if($_SESSION['admin_unique_code'] != 'nyAEh' && $_SESSION['admin_unique_code'] != 'V2Uu9') { ?>
+            <script>
                 $(document).ready(function()
                 {
-                        push_notifications.count_notifications();
-                        setInterval(function(){push_notifications.load_last_notification();}, 30000);//TODO: Fix this back to 5000
-                        push_notifications.count_notifications();
+                    push_notifications.count_notifications();
+                    setInterval(function(){push_notifications.load_last_notification();}, 30000);//TODO: Fix this back to 5000
+                    push_notifications.count_notifications();
                 });
-        </script>
-
+            </script>
+        <?php } ?>

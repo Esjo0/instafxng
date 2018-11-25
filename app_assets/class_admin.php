@@ -544,7 +544,7 @@ MAIL;
             <td align="center">
                 <table border="0" align="center" width="590" cellpadding="0" cellspacing="0" class="container590">
 MAIL;
-                $old_posts = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM article WHERE status = 1 ORDER BY created DESC LIMIT 2, 3"));
+                $old_posts = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM article WHERE status = 1 ORDER BY created DESC LIMIT 1, 3"));
                 foreach($old_posts as $row)
                 {
                     $_title = $row['title'];

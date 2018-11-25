@@ -33,7 +33,7 @@ if (isset($_POST['process'])) {
 
 $get_params = allowed_get_params(['x']);
 $trans_id_encrypted = $get_params['x'];
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
+$trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
 $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 
 $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created, ud.naira_total_payable, ud.real_dollar_equivalent, ud.real_naira_confirmed,

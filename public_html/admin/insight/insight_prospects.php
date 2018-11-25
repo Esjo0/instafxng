@@ -212,7 +212,7 @@ $log_of_dates = $db_handle->fetchAssoc($result);
 
                                                     foreach ($row as $value) {
                                                 ?>
-                                                <a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($value); ?>"><?php echo $value; ?></a>,&nbsp;
+                                                <a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt_ssl($value); ?>"><?php echo $value; ?></a>,&nbsp;
                                                 <?php } } ?>
                                             </td>
                                         </tr>

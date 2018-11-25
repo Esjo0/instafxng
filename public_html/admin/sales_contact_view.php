@@ -13,10 +13,10 @@ if (!$session_admin->is_logged_in()) {
 $get_params = allowed_get_params(['x', 'r', 'c', 'pg']);
 
 $user_code_encrypted = $get_params['x'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
+$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 $referral_url = $get_params['r'];
-$referral_title_encrypted = $get_params['c']; $referral_title = decrypt(str_replace(" ", "+", $referral_title_encrypted)); $referral_title = preg_replace("/[^A-Za-z0-9 ]/", '', $referral_title);
+$referral_title_encrypted = $get_params['c']; $referral_title = decrypt_ssl(str_replace(" ", "+", $referral_title_encrypted)); $referral_title = preg_replace("/[^A-Za-z0-9 ]/", '', $referral_title);
 $referral_pagination = $get_params['pg'];
 
 // get the current page or set a default

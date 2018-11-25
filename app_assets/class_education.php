@@ -189,7 +189,7 @@ MAIL;
         if(($lesson_position + 1) < $lesson_count) {
             $next_lesson_key = $lesson_position + 1;
 
-            $next_lesson_url = "fxacademy/lesson_view.php?cid=" . encrypt($course_id) . "&lid=" . encrypt($selected_lessons[$next_lesson_key]);
+            $next_lesson_url = "fxacademy/lesson_view.php?cid=" . encrypt_ssl($course_id) . "&lid=" . encrypt_ssl($selected_lessons[$next_lesson_key]);
             $next_lesson_name = "Next Lesson";
         } else {
             // Go to Course Level
@@ -208,7 +208,7 @@ MAIL;
             if(($course_position + 1) < $course_count) {
                 $next_course_key = $course_position + 1;
 
-                $next_lesson_url = "fxacademy/course_view.php?id=" . encrypt($selected_courses[$next_course_key]);
+                $next_lesson_url = "fxacademy/course_view.php?id=" . encrypt_ssl($selected_courses[$next_course_key]);
                 $next_lesson_name = "Next Course";
             } else {
                 $next_lesson_url = "fxacademy/completion_cert.php";
@@ -254,7 +254,7 @@ MAIL;
         if(($lesson_position - 1) < $lesson_count) {
             if($selected_lessons[$lesson_position - 1]){
                 $previous_lesson_key = $lesson_position - 1;
-                $previous_lesson_url = "fxacademy/lesson_view.php?cid=" . encrypt($course_id) . "&lid=" . encrypt($selected_lessons[$previous_lesson_key]);
+                $previous_lesson_url = "fxacademy/lesson_view.php?cid=" . encrypt_ssl($course_id) . "&lid=" . encrypt_ssl($selected_lessons[$previous_lesson_key]);
                 $previous_lesson_name = "Previous Lesson";
             }
 
@@ -279,7 +279,7 @@ MAIL;
                 if($selected_courses[$course_position - 1]) {
                     $previous_course_key = $course_position - 1;
 
-                    $previous_lesson_url = "fxacademy/course_view.php?id=" . encrypt($selected_courses[$previous_course_key]);
+                    $previous_lesson_url = "fxacademy/course_view.php?id=" . encrypt_ssl($selected_courses[$previous_course_key]);
                     $previous_lesson_name = "Previous Course";
                 }
             } else {
@@ -998,7 +998,7 @@ MAIL;
         $fetched_data = $db_handle->fetchAssoc($result);
         $support_request_code = $fetched_data[0]['support_request_code'];
 
-        $return_url = "https://instafxng.com/fxacademy/index.php?se=" . $client_email . "&sid=" . encrypt($support_request_code) . "&c=" . encrypt("1");
+        $return_url = "https://instafxng.com/fxacademy/index.php?se=" . $client_email . "&sid=" . encrypt_ssl($support_request_code) . "&c=" . encrypt_ssl("1");
 
         $query = "INSERT INTO user_edu_support_answer (author, category, request_id, response) VALUES ('$unique_code', '$category', $support_id, '$comment_reply')";
         $db_handle->runQuery($query);

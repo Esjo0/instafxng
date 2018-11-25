@@ -1,6 +1,11 @@
+
 ALTER TABLE `dinner_2018` CHANGE `type` `type` ENUM('1','2','3','4','5','6') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '1-Single 2-Double 3-VIP 4-VVIP 5-Team 6-Vendor';
 ALTER TABLE `dinner_2018` ADD UNIQUE(`email`);
 ALTER TABLE `dinner_2018` CHANGE `user_code` `user_code` VARCHAR(11) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
+
+ALTER TABLE `training_schedule_students` CHANGE `status` `status` ENUM('0','1','2','3','4','5') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '0-scheduled, 1-completed, 2-rescheduled, 3-follow-up, 4-Followup completed, 5-final_completed';
+ALTER TABLE `training_schedule_students` ADD `follow_up_class` DATETIME NULL AFTER `schedule_id`, ADD `final_class` DATETIME NULL AFTER `follow_up_class`;
+
 
 ALTER TABLE `black_friday_2018` CHANGE `tire` `tire` ENUM('0','1','2','3','4','5') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT '1- Platinum 2 - Gold 3- Silver1 4- Silver2 5 - Bronzr1 6- Bronze2';
 

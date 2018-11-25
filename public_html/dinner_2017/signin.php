@@ -19,7 +19,7 @@ if(isset($_POST['login']))
         }
         else
         {
-            $url = "index.php?id=".encrypt($attendee_detail['reservation_code']);
+            $url = "index.php?id=".encrypt_ssl($attendee_detail['reservation_code']);
             redirect_to($url);
         }
     }
