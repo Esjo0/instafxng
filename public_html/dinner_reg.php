@@ -1,12 +1,11 @@
 <?php
 require_once 'init/initialize_general.php';
 
-$dinner_emails = array("joshua@instafxng.com", "binaryvs@yahoo.com", "amazuci@yahoo.com", "bouqi4life2009@yahoo.com", "ighosam@yahoo.com", "semmymails@yahoo.com", "tochukwuo@yahoo.com");
+$dinner_emails = array("joshua@instafxng.com", "binaryvs@yahoo.com", "amazuci@yahoo.com", "bouqi4life2009@yahoo.com", "ighosam@yahoo.com", "semmymails@yahoo.com", "tochukwuo@yahoo.com", "junglyjungle1@yahoo.com");
 
 if(isset($_POST['submit3'])){
     $email = $db_handle->sanitizePost($_POST['email']);
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-var_dump($email);
     if(in_array($email, $dinner_emails) ) {
 $query  = "SELECT user_code FROM user WHERE email = '$email'";
         $result = $db_handle->runQuery($query);
