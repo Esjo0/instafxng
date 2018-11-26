@@ -43,13 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
     $arr1 = explode(',', $email);
 
     foreach($arr1 as $sendto) {
-        $query = "SELECT phone FROM user WHERE email = '$sendto' LIMIT 1";
+        $query = "SELECT phone, user_code FROM user WHERE email = '$sendto' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $selected_member = $db_handle->fetchAssoc($result);
 
         if(!empty($selected_member)) {
             $client_phone = ucwords(strtolower(trim($selected_member[0]['phone'])));
-            $user_code = strtolower(trim($row['user_code']));
+            $user_code = strtolower(trim($selected_member[0]['user_code']));
             $my_message = str_replace('[UC]', encrypt_ssl($user_code), $my_message);
             $my_message_new = str_replace('[UC]', '', $my_message);
             $system_object->send_sms($client_phone, $my_message_new);
