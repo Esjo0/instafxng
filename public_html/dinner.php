@@ -34,7 +34,7 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
             if ($maybe == true) {
                 $query = "UPDATE dinner_2018 SET choice = '$choice' WHERE user_code = '$user_code'";
             } else {
-                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender, state, type) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar', '$state', '1')";
+                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender, state, type, name, phone, email) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar', '$state', '1', '$client_full_name', '$client_phone_number', '$client_email')";
 
             }
             $result = $db_handle->runQuery($query);
