@@ -1,7 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
 
-$dinner_emails = array("joshua@instafxng.com", "binaryvs@yahoo.com", "amazuci@yahoo.com", "bouqi4life2009@yahoo.com", "ighosam@yahoo.com", "semmymails@yahoo.com", "tochukwuo@yahoo.com");
+$dinner_emails = array("joshua@instafxng.com", "binaryvs@yahoo.com", "amazuci@yahoo.com", "bouqi4life2009@yahoo.com", "ighosam@yahoo.com", "semmymails@yahoo.com", "tochukwuo@yahoo.com", "junglyjungle1@yahoo.com");
 
 if(isset($_POST['submit3'])){
     $email = $db_handle->sanitizePost($_POST['email']);
