@@ -26,7 +26,14 @@ $dinner_emails = array(
 	"ighosam@yahoo.com",
 	"augustineugochukwu@gmail.com",
 	"uchennaegbejiogu@gmail.com",
-	"eniola.abdul@gmail.com"	
+	"eniola.abdul@gmail.com",
+    "efurumibeezinna@yahoo.com",
+    "akinsipesilas@hotmail.com",
+    "icjustine@yahoo.com",
+    "oldroger69@yahoo.com",
+    "krisokenta@yahoo.com",
+    "seyi.fowobaje@yahoo.com",
+    "ighosam@yahoo.com"
 	);
 
 if(isset($_POST['submit3'])){
