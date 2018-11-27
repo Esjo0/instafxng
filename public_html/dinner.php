@@ -280,6 +280,7 @@ MAIL;
                     <center><img src="images/royal_ball_image.jpg" alt="" class="img img-responsive" /></center>
                 </div>
 
+                <?php if($total_seats_taken <= 60){?>
                 <div class="col-sm-6">
 
                 <div class="row">
@@ -428,6 +429,12 @@ MAIL;
                     <div class="col-md-1"></div>
                 </div>
                 </div>
+                <?php }else{?>
+                    <div class="col-md-6 text-center " style="margin-top:100px">
+                        <h3>ALL SEATS HAVE BEEN RESERVED</h3>
+                    </div>
+                <?php }?>
+
         </section>
         <!--Section: Main info-->
         <section id="select_avatar" class=" view wow fadeIn" title="Click on an image to select your style"
