@@ -10,8 +10,11 @@ $total_seats_taken = $db_handle->numRows($query_count);
 
 if (isset($_POST['search_text'])){
     $search = $db_handle->sanitizePost($_POST['search_text']);
-    $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
+    $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice,
+u.email AS client_email, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+                u.phone AS client_phone_number
     FROM dinner_2018 AS d
+    INNER JOIN user AS u ON d.user_code = u.user_code
     WHERE name LIKE '%$search%' OR email LIKE '%$search%' OR phone LIKE '%$search%'
     ORDER BY d.created DESC ";
     $_SESSION['query_dinner'] = $query;
@@ -273,8 +276,11 @@ if(isset($_POST['filter'])){
     }
 
 
-        $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
+        $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice,
+u.email AS client_email, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+                u.phone AS client_phone_number
     FROM dinner_2018 AS d
+    INNER JOIN user AS u ON d.user_code = u.user_code
     WHERE $filter
     ORDER BY d.created DESC ";
 
@@ -282,8 +288,11 @@ if(isset($_POST['filter'])){
 
 }elseif(empty($_SESSION['query_dinner']) || isset($_POST['all'])){
 
-$query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
+$query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice,
+u.email AS client_email, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+                u.phone AS client_phone_number
     FROM dinner_2018 AS d
+    INNER JOIN user AS u ON d.user_code = u.user_code
     WHERE d.choice IS NOT NULL
     ORDER BY d.created DESC ";
     $_SESSION['query_dinner'] = $query;
@@ -334,6 +343,7 @@ if($numrows > 0) {
     $recipients = $db_handle->fetchAssoc($result);
     foreach ($recipients as $sendto) {
         extract($sendto);
+        if(empty($email)){$email = $client_email;}
         $query = "SELECT user_code, first_name FROM user WHERE email = '$email' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
@@ -739,7 +749,12 @@ if($numrows > 0) {
                             <?php
                             if (isset($participants) && !empty($participants)) {
                                 foreach ($participants as $row) {
-                                    extract($row)?>
+                                    extract($row);
+                                        if(empty($name)){$name = $client_full_name;}
+                                        if(empty($phone)){$phone = $client_phone_number;}
+                                        if(empty($email)){$email = $client_email;}
+
+                                        ?>
                                     <tr>
                                         <td><?php echo $name; ?>
                                             <span class="badge" title="Ticket Type">
@@ -762,10 +777,10 @@ if($numrows > 0) {
                                             }?>
                                                 </span>
                                         </td>
-                                        <td><?php echo $email; ?></td>
-                                        <td><?php echo $phone; ?></td>
-                                        <td><?php echo $title." of ".$town; ?></td>
-                                        <td><?php echo $state; ?></td>
+                                        <td><?php echo $email ; ?></td>
+                                        <td><?php echo $phone ; ?></td>
+                                        <td><?php if(!empty($title)){echo $title." of ".$town;}else{ echo "Nill"; }?></td>
+                                        <td><?php if(!empty($state)){echo $state;}else{ echo "Nill"; }?></td>
                                         <td nowrap="nowrap">
                                             <?php if($user_code != NULL){?><a target="_blank" title="View" class="btn btn-sm btn-info"
                                                href="client_detail.php?id=<?php echo encrypt($user_code); ?>"><i
