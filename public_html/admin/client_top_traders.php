@@ -147,8 +147,9 @@ $clients_top_traders = $db_handle->fetchAssoc($result);
                                 if(isset($clients_top_traders) && !empty($clients_top_traders)) {
                                     foreach ($clients_top_traders as $row) {
                                         extract($row);
+                                        $sum_of_commission += $sum_commission;
                                     }
-                                    echo "<p><strong>Total Commissions: </strong>".number_format($sum_commission)."</p>";
+                                    echo "<p><strong>Total Commissions: </strong>".number_format($sum_of_commission)."</p>";
                                 }?>
                                 <div class="row">
                                     <div class="col-sm-12">
