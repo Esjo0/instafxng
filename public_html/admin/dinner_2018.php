@@ -5,13 +5,16 @@ if (!$session_admin->is_logged_in()) {
 }
 $client_operation = new clientOperation();
 
+$query_count = "SELECT * FROM dinner_2018 WHERE choice = '1'";
+$total_seats_taken = $db_handle->numRows($query_count);
+
 if (isset($_POST['search_text'])){
     $search = $db_handle->sanitizePost($_POST['search_text']);
     $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE name LIKE '%$search%' OR email LIKE '%$search%' OR phone LIKE '%$search%'
     ORDER BY d.created DESC ";
-    $_SESSION['query'] = $query;
+    $_SESSION['query_dinner'] = $query;
 }
 if (isset($_POST['edit'])) {
     $gender = $db_handle->sanitizePost($_POST['gender']);
@@ -275,17 +278,17 @@ if(isset($_POST['filter'])){
     WHERE $filter
     ORDER BY d.created DESC ";
 
-    $_SESSION['query'] = $query;
+    $_SESSION['query_dinner'] = $query;
 
-}elseif(empty($_SESSION['query']) || isset($_POST['all'])){
+}elseif(empty($_SESSION['query_dinner']) || isset($_POST['all'])){
 
 $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE d.choice IS NOT NULL
     ORDER BY d.created DESC ";
-    $_SESSION['query'] = $query;
+    $_SESSION['query_dinner'] = $query;
 }
-$query = $_SESSION['query'];
+$query = $_SESSION['query_dinner'];
 
 $numrows = $db_handle->numRows($query);
 
@@ -326,7 +329,7 @@ if($numrows > 0) {
     $my_message = stripslashes($selected_campaign_email['content']);
     $mail_sender = trim($selected_campaign_email['sender']);
 
-    $query = $_SESSION['query'];
+    $query = $_SESSION['query_dinner'];
     $result = $db_handle->runQuery($query);
     $recipients = $db_handle->fetchAssoc($result);
     foreach ($recipients as $sendto) {
@@ -509,6 +512,7 @@ if($numrows > 0) {
                                 </div>
                             </div>
                         </div>
+                        <h3 class="text-center">Total Seats Taken <?php echo $total_seats_taken?></h3>
                 <div class="col-md-7 pull-right">
                     <form action="" method="post">
                         <button class="btn btn-default  btn-sm pull-left" type="submit" name="all">View All</button></form>
