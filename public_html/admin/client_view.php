@@ -71,7 +71,7 @@ $all_clients = $db_handle->fetchAssoc($result);
 
 
 // Admin Allowed: Toye, Lekan, Demola, Bunmi
-$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6");
+$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6", "AjybU");
 $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allowed) ? true : false;
 
 ?>
@@ -86,6 +86,14 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script>
+            $(function () {
+                $('[data-toggle="popover"]').popover()
+            })
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -160,11 +168,12 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                 <td><?php echo $row['account_officer_full_name']; ?></td>
                                                 <td nowrap="nowrap">
-                                                    <a target="_blank" title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'client_view'; ?>&c=<?php echo encrypt_ssl('CLIENT VIEW'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" title="Comment" class="btn btn-success btn-sm" href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'client_view'; ?>&c=<?php echo encrypt_ssl('CLIENT VIEW'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-info btn-sm" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <?php if($allowed_update_profile) { ?>
-                                                        <a target="_blank" title="Update" class="btn btn-info" href="client_update.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
+                                                        <a target="_blank" title="Update" class="btn btn-info btn-sm" href="client_update.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
                                                     <?php } ?>
+                                                    <?php call_log_status($row['user_code']);?>
                                                 </td>
                                             </tr>
                                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

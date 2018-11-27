@@ -892,3 +892,107 @@ MAIL;
     echo $markup;
 }
 #Edu_Sales_Tracker Functions
+
+/*
+ * Clients Call Log
+ * Track Clients that have been contacted and thosde that need follow up
+ */
+function call_log_status($user_code){
+    global $db_handle;
+    $user_code_encrypted = encrypt_ssl($user_code);
+
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' LIMIT 1";
+    $result = $db_handle->runQuery($query);
+    $result = $db_handle->fetchArray($result);
+    $numrows = $db_handle->numRows($result);
+    if($numrows == 1){
+    foreach($result AS $row){
+        extract($row);
+        $date = datetime_to_text($created);
+        if($status == 1){
+            $display = <<<CONTACT
+<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+<div class="input-group">
+<input type="hidden" name="user_code" value="{$user_code}" >
+<i data-toggle="tooltip" data-placement="top" title="Contacted on {$date}">contacted</i>
+<button title="Click to follow client up" type="button" data-toggle="modal" data-target="#{$user_code_encrypted}" class="btn btn-sm"></button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="{$user_code_encrypted}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add A comment to log client for a follow up call or a call back</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <textarea name="follow_up_comment" placeholder="Enter Commment"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button name="follow_up" type="submit" class="btn btn-primary">SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal End -->
+</form>
+CONTACT;
+
+        }elseif($status == 2){
+            $display = <<<CONTACT
+<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+<div class="input-group">
+<input type="hidden" name="user_code" value="{$user_code}" >
+<button name="called" title="Flag As Contacted" type="submit" class="btn btn-secondary">
+<i class="glyphicon glyphicon-check icon-white"></i>
+</button>
+<i data-toggle="popover" title="Comment" data-content="{$follow_up_comment}">
+Follow Up
+</i>
+</div>
+</form>
+CONTACT;
+        }
+    }
+
+    }elseif($numrows == 0){
+        $display = <<<CONTACT
+<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+<div class="input-group">
+<input type="hidden" name="user_code" value="{$user_code}" >
+<button name="called" title="Flag As Contacted" type="submit" class="btn btn-secondary">
+<i class="glyphicon glyphicon-check icon-white"></i>
+</button>
+<button class="btn btn-secondary" title="Click to follow client up or call back" type="button" data-toggle="modal" data-target="#{$user_code}" class="btn btn-sm">
+<i class="glyphicon glyphicon-phone icon-white"></i>
+</button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="{$user_code}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add A comment to log client for a follow up call or a call back</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <textarea rows="3" class="form-control" name="follow_up_comment" placeholder="Enter Commment"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button name="follow_up" type="submit" class="btn btn-primary">SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal End -->
+</form>
+CONTACT;
+    }
+    echo $display;
+}
