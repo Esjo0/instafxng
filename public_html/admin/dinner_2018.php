@@ -343,7 +343,8 @@ if($numrows > 0) {
     $recipients = $db_handle->fetchAssoc($result);
     foreach ($recipients as $sendto) {
         extract($sendto);
-        $query = "SELECT user_code, first_name FROM user WHERE email = '$client_email' LIMIT 1";
+        if(empty($email)){$email = $client_email;}
+        $query = "SELECT user_code, first_name FROM user WHERE email = '$email' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
         $selected_member = $fetched_data[0];
