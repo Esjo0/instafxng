@@ -899,12 +899,11 @@ MAIL;
  */
 function call_log_status($user_code){
     global $db_handle;
-    $user_code_encrypted = encrypt_ssl($user_code);
 
     $query = "SELECT * FROM call_log WHERE user_code = '$user_code' LIMIT 1";
     $result = $db_handle->runQuery($query);
     $result = $db_handle->fetchArray($result);
-    $numrows = $db_handle->numRows($result);
+    $numrows = $db_handle->numRows($query);
     if($numrows == 1){
     foreach($result AS $row){
         extract($row);
@@ -915,7 +914,7 @@ function call_log_status($user_code){
 <div class="input-group">
 <input type="hidden" name="user_code" value="{$user_code}" >
 <i data-toggle="tooltip" data-placement="top" title="Contacted on {$date}">contacted</i>
-<button class="btn btn-secondary" title="Click to follow client up or call back" type="button" data-toggle="modal" data-target="#{$user_code}" class="btn btn-sm">
+<button  class="btn btn-secondary" title="Click to follow client up or call back" type="button" data-toggle="modal" data-target="#{$user_code}" class="btn btn-sm">
 <i class="glyphicon glyphicon-phone icon-white"></i>
 </button>
 </div>
@@ -930,7 +929,7 @@ function call_log_status($user_code){
         </button>
       </div>
       <div class="modal-body">
-       <textarea rows="3" class="form-control" name="follow_up_comment" placeholder="Enter Commment"></textarea>
+       <textarea rows="3" class="form-control" name="comment" placeholder="Enter Commment"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -951,7 +950,7 @@ CONTACT;
 <button name="called" title="Flag As Contacted" type="submit" class="btn btn-secondary">
 <i class="glyphicon glyphicon-check icon-white"></i>
 </button>
-<i data-toggle="popover" title="Comment" data-content="{$follow_up_comment}">
+<i data-toggle="tooltip" data-placement="top" title="{$follow_up_comment}">
 Follow Up
 </i>
 </div>
@@ -983,7 +982,7 @@ CONTACT;
         </button>
       </div>
       <div class="modal-body">
-       <textarea rows="3" class="form-control" name="follow_up_comment" placeholder="Enter Commment"></textarea>
+       <textarea rows="3" class="form-control" name="comment" placeholder="Enter Commment"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
