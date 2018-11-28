@@ -30,7 +30,7 @@
                             <li><a href="withdraw_funds.php" title="Withdraw Funds">Withdraw Funds</a></li>
                             <li><a href="deposit_notify.php" title="Payment Notification">Payment Notification</a></li>
                             <li><a href="forex_bonus.php" title="30% Bonus On Deposit">30% Bonus On Deposit</a></li>
-                            <li><a href="view_signal.php" title="Free Forex Signals">Forex Signals</a></li>
+                            <li><a href="signal_schedules.php" title="Free Forex Signals">Forex Signals</a></li>
                             <li><a href="instaforex_tv.php" title="Instaforex TV">Instaforex TV</a></li>
                             <li><a href="https://www.instaforex.com/55bonus.php?x=BBLR" title="55% Deposit Bonus" target="_blank">55% Deposit Bonus</a></li>
                             <li><a href="https://www.instaforex.com/nodeposit_bonus.php?x=BBLR" title="No Deposit Bonus" target="_blank">No Deposit Bonus</a></li>
