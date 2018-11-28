@@ -915,10 +915,12 @@ function call_log_status($user_code){
 <div class="input-group">
 <input type="hidden" name="user_code" value="{$user_code}" >
 <i data-toggle="tooltip" data-placement="top" title="Contacted on {$date}">contacted</i>
-<button title="Click to follow client up" type="button" data-toggle="modal" data-target="#{$user_code_encrypted}" class="btn btn-sm"></button>
+<button class="btn btn-secondary" title="Click to follow client up or call back" type="button" data-toggle="modal" data-target="#{$user_code}" class="btn btn-sm">
+<i class="glyphicon glyphicon-phone icon-white"></i>
+</button>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="{$user_code_encrypted}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="{$user_code}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-sm modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -928,7 +930,7 @@ function call_log_status($user_code){
         </button>
       </div>
       <div class="modal-body">
-       <textarea name="follow_up_comment" placeholder="Enter Commment"></textarea>
+       <textarea rows="3" class="form-control" name="follow_up_comment" placeholder="Enter Commment"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
