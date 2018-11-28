@@ -85,7 +85,7 @@ if (isset($_POST['process'])) {
                                 <p>Modify the selected transaction, email already sent to client.</p>
 
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                    <input name="trans_id" type="hidden" value="<?php echo $trans_id_encrypted; ?>">
+                                    <input name="trans_id" type="hidden" value="<?php echo encrypt_ssl($trans_id); ?>">
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="full_name">Full Name:</label>
                                         <div class="col-sm-9 col-lg-5">
