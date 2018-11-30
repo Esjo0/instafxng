@@ -280,9 +280,8 @@ MAIL;
                     <center><img src="images/royal_ball_image.jpg" alt="" class="img img-responsive" /></center>
                 </div>
 
-                <?php if($total_seats_taken <= 60){?>
+                <?php if($total_seats_taken <= 60 || $maybe == true){?>
                 <div class="col-sm-6">
-
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-10">

@@ -1,3 +1,5 @@
+`ALTER TABLE ``dinner_2018`` DROP INDEX ``email``;`
+
 CREATE TABLE `call_log` (
  `call_id` int(11) NOT NULL AUTO_INCREMENT,
  `user_code` varchar(11) NOT NULL,
