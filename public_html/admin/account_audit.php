@@ -117,7 +117,7 @@ $participants = $db_handle->fetchAssoc($result);
                                             } ?></td>
                                         <td><?php echo datetime_to_text($created); ?></td>
                                         <td nowrap="nowrap">
-                                            <a target="_blank" title="View" class="btn btn-info"
+                                            <a target="_blank" title="View" class="btn btn-sm btn-info"
                                                href="client_detail.php?id=<?php echo encrypt_ssl($user_code); ?>"><i
                                                     class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             <a class="btn btn-sm btn-primary" target="_blank" title="Send Email"

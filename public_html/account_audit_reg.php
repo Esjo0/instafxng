@@ -46,6 +46,17 @@ if (isset($_POST['reserve_seat'])) {
     <link rel="stylesheet" href="css/free_seminar.css">
     <?php require_once 'layouts/head_meta.php'; ?>
     <link rel="stylesheet" href="css/prettyPhoto.css">
+    <script>
+        function select_date(enter){
+            if (enter == 1){
+                document.getElementById("entry1").style.display = "block";
+                document.getElementById("entry2").style.display = "none";
+            }else if (enter == 2){
+                document.getElementById("entry1").style.display = "none";
+                document.getElementById("entry2").style.display = "block";
+            }
+        }
+    </script>
 </head>
 <body>
 <?php require_once 'layouts/header.php'; ?>
@@ -116,20 +127,20 @@ if (isset($_POST['reserve_seat'])) {
                                     <div class="form-group">
                                         <label for="venue" class="control-label">Choose your venue</label>
                                         <div class="radio">
-                                            <label><input id="venue" type="radio" name="venue"
+                                            <label><input onchange="select_date(1)" id="venue" type="radio" name="venue"
                                                           value="1" required>Block 1A, Plot
                                                 8, Diamond Estate, LASU/Isheri road, Isheri Olofin,
                                                 Lagos.</label>
                                         </div>
                                         <div class="radio">
-                                            <label><input id="venue" type="radio" name="venue"
+                                            <label><input onchange="select_date(1)" id="venue" type="radio" name="venue"
                                                           value="2" required>Block A3, Suite 508/509
                                                 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout,
                                                 along Lekki - Epe expressway, Lagos.</label>
                                         </div>
                                         <div class="radio">
-                                            <label><input id="3" type="radio" name="venue"
-                                                          value="Online" required>Online -- Download Zoom Video
+                                                <label><input onchange="select_date(2)" id="online" type="radio" name="venue"
+                                                          value="3" required>Online -- Download Zoom Video
                                                 Conferencing app from
                                                 <a href="http://zoom.us">zoom.us</a> You will contacted and given the
                                                 meeting ID before
@@ -143,30 +154,56 @@ if (isset($_POST['reserve_seat'])) {
                                         <label for="entry_channel" class="control-label">Select your convenient audit
                                             date</label>
 
-                                        <div class="form_group">
+                                        <div class="form_group" id="entry1" style="display:none;">
                                             <select id="entry_channel" class="form-control" name="date"
                                                     required='required'>
                                                 <option value="">Choose a date</option>
-                                                <option value="2018-12-03 10:30:00">10:30am - 12:30pm Monday 3rd
+                                                <option value="2018-12-03 10:30:00">10:30am - 11:30pm Monday 3rd
                                                     December 2018
                                                 </option>
-                                                <option value="2018-12-04 10:30:00">10:30am - 12:30pm Tuesday 4th
+                                                <option value="2018-12-04 10:30:00">10:30am - 11:30pm Tuesday 4th
                                                     December 2018
                                                 </option>
-                                                <option value="2018-12-05 10:30:00">10:30am - 12:30pm Wednesday 5th
+                                                <option value="2018-12-05 10:30:00">10:30am - 11:30pm Wednesday 5th
                                                     December 2018
                                                 </option>
-                                                <option value="2018-12-10 10:30:00">10:30am - 12:30pm Monday 10th
+                                                <option value="2018-12-10 10:30:00">10:30am - 11:30pm Monday 10th
                                                     December 2018
                                                 </option>
-                                                <option value="2018-12-11 10:30:00">10:30am - 12:30pm Tuesday 11th
+                                                <option value="2018-12-11 10:30:00">10:30am - 11:30pm Tuesday 11th
                                                     December 2018
                                                 </option>
-                                                <option value="2018-12-12 10:30:00">10:30am - 12:30pm Wednesday 12th
+                                                <option value="2018-12-12 10:30:00">10:30am - 11:30pm Wednesday 12th
                                                     December 2018
                                                 </option>
                                             </select>
                                         </div>
+
+                                        <div class="form_group" id="entry2" style="display:none;">
+                                            <select id="entry_channel" class="form-control" name="date"
+                                                    required='required'>
+                                                <option value="">Choose a date</option>
+                                                <option value="2018-12-03 11:30:00">11:30am - 12:30pm Monday 3rd
+                                                    December 2018 Online
+                                                </option>
+                                                <option value="2018-12-04 11:30:00">11:30am - 12:30pm Tuesday 4th
+                                                    December 2018 Online
+                                                </option>
+                                                <option value="2018-12-05 11:30:00">11:30am - 12:30pm Wednesday 5th
+                                                    December 2018 Online
+                                                </option>
+                                                <option value="2018-12-10 11:30:00">11:30am - 12:30pm Monday 10th
+                                                    December 2018 Online
+                                                </option>
+                                                <option value="2018-12-11 11:30:00">11:30am - 12:30pm Tuesday 11th
+                                                    December 2018 Online
+                                                </option>
+                                                <option value="2018-12-12 11:30:00">11:30am - 12:30pm Wednesday 12th
+                                                    December 2018 Online
+                                                </option>
+                                            </select>
+                                        </div>
+
 
                                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 
@@ -200,5 +237,6 @@ if (isset($_POST['reserve_seat'])) {
     </div>
 </div>
 <?php require_once 'layouts/footer.php'; ?>
+
 </body>
 </html>
