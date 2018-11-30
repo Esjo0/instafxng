@@ -115,7 +115,7 @@ $participants = $db_handle->fetchAssoc($result);
                                             } elseif ($audit_location == 3) {
                                                 echo "Online";
                                             } ?></td>
-                                        <td><?php echo datetime_to_text($created); ?></td>
+                                        <td><?php echo datetime_to_text($audit_date); ?></td>
                                         <td nowrap="nowrap">
                                             <a target="_blank" title="View" class="btn btn-sm btn-info"
                                                href="client_detail.php?id=<?php echo encrypt_ssl($user_code); ?>"><i

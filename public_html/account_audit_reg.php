@@ -142,7 +142,7 @@ if (isset($_POST['reserve_seat'])) {
                                                 <label><input onchange="select_date(2)" id="online" type="radio" name="venue"
                                                           value="3" required>Online -- Download Zoom Video
                                                 Conferencing app from
-                                                <a href="http://zoom.us" target="_blank">zoom.us</a> You will contacted and given the
+                                                <a target="_blank" href="http://zoom.us">zoom.us</a> You will contacted and given the
                                                 meeting ID before
                                                 the session starts
                                             </label>
