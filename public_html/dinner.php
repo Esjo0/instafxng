@@ -11,10 +11,13 @@ $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 $client_operation = new clientOperation();
 $details = $client_operation->get_user_by_code($user_code);
 extract($details);
-if (empty($details) || $details = NULL) {
+if (empty($client_email) || $client_email == NULL ) {
     redirect_to("https://instafxng.com");
     exit;
 }
+$query = "SELECT * FROM dinner_2018 WHERE choice = '1'";
+$total_seats_taken = $db_handle->numRows($query);
+
 $query = "SELECT * FROM dinner_2018 WHERE user_code = '$user_code' AND choice = '2'";
 $numrows = $db_handle->numRows($query);
 if($numrows == 1){
@@ -29,23 +32,24 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
     $state = $db_handle->sanitizePost($_POST['state']);
     $query = "SELECT * FROM dinner_2018 WHERE user_code = '$user_code' AND (choice = '1' OR choice = '3')";
     $numrows = $db_handle->numRows($query);
-    if ($numrows == 0) {
-        if ($choice == 1 && !empty($avatar) && $avatar != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL) {
-            if ($maybe == true) {
-                $query = "UPDATE dinner_2018 SET choice = '$choice' WHERE user_code = '$user_code'";
-            } else {
-                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender, state, type, name, phone, email) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar', '$state', '1', '$client_full_name', '$client_phone_number', '$client_email')";
+    if($total_seats_taken <= 60) {
+        if ($numrows == 0) {
+            if ($choice == 1 && !empty($avatar) && $avatar != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL) {
+                if ($maybe == true) {
+                    $query = "UPDATE dinner_2018 SET choice = '$choice' WHERE user_code = '$user_code'";
+                } else {
+                    $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender, state, type, name, phone, email) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar', '$state', '1', '$client_full_name', '$client_phone_number', '$client_email')";
 
-            }
-            $result = $db_handle->runQuery($query);
-            if ($result) {
-                if ($avatar == 1) {
-                    $gender = "his";
-                } elseif ($avatar == 2) {
-                    $gender = "her";
                 }
-                $subject = 'Your seat has been reserved, ' . $client_first_name . '!';
-                $message_final = <<<MAIL
+                $result = $db_handle->runQuery($query);
+                if ($result) {
+                    if ($avatar == 1) {
+                        $gender = "his";
+                    } elseif ($avatar == 2) {
+                        $gender = "her";
+                    }
+                    $subject = 'Your seat has been reserved, ' . $client_first_name . '!';
+                    $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                                 <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -88,19 +92,19 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
                         </div>
                     </div>
 MAIL;
-                $system_object->send_email($subject, $message_final, $client_email, $client_first_name);
-                $message_success = "YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL";
-                header('Location: dinner_completed.php?z=' . $choice);
-            } else {
-                $message_error = "Reservation Not Successful Kindly Try Again";
+                    $system_object->send_email($subject, $message_final, $client_email, $client_first_name);
+                    $message_success = "YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL";
+                    header('Location: dinner_completed.php?z=' . $choice);
+                } else {
+                    $message_error = "Reservation Not Successful Kindly Try Again";
+                }
             }
-        }
-        if ($choice == 2) {
-            $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
-            $result = $db_handle->runQuery($query);
-            if ($result) {
-                $subject = 'The Ball Will Be Brighter With Your Presence';
-                $message_final = <<<MAIL
+            if ($choice == 2) {
+                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
+                $result = $db_handle->runQuery($query);
+                if ($result) {
+                    $subject = 'The Ball Will Be Brighter With Your Presence';
+                    $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                                 <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -144,21 +148,21 @@ MAIL;
                         </div>
                     </div>
 MAIL;
-                $system_object->send_email($subject, $message_final, $client_email, $last_name);
+                    $system_object->send_email($subject, $message_final, $client_email, $last_name);
 
-                $message_success = "YOUR SEAT HAS BEEN TEMPORARILY RESERVED. KINDLY CONFIRM YOUR RESERVATION WITHIN THE NEXT
+                    $message_success = "YOUR SEAT HAS BEEN TEMPORARILY RESERVED. KINDLY CONFIRM YOUR RESERVATION WITHIN THE NEXT
                                         5 DAYS.";
-                header('Location: dinner_completed.php?z=' . $choice);
-            } else {
-                $message_error = "Reservation Not Successful Kindly Try Again";
+                    header('Location: dinner_completed.php?z=' . $choice);
+                } else {
+                    $message_error = "Reservation Not Successful Kindly Try Again";
+                }
             }
-        }
-        if ($choice == 3) {
-            $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
-            $result = $db_handle->runQuery($query);
-            if ($result) {
-                $subject = 'The Ball Would have been more fun with you ' . $client_first_name . '!';
-                $message_final = <<<MAIL
+            if ($choice == 3) {
+                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
+                $result = $db_handle->runQuery($query);
+                if ($result) {
+                    $subject = 'The Ball Would have been more fun with you ' . $client_first_name . '!';
+                    $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
@@ -202,16 +206,19 @@ MAIL;
                         </div>
                     </div>
 MAIL;
-                $system_object->send_email($subject, $message_final, $client_email, $last_name);
-                $message_success = "THANK YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.";
-                header('Location: dinner_completed.php?z=' . $choice);
-            } else {
-                $message_error = "Reservation Not Successful Kindly Try Again";
+                    $system_object->send_email($subject, $message_final, $client_email, $last_name);
+                    $message_success = "THANK YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.";
+                    header('Location: dinner_completed.php?z=' . $choice);
+                } else {
+                    $message_error = "Reservation Not Successful Kindly Try Again";
+                }
             }
-        }
-    }else {
-        $message_error = "You have completed the reservation process Earlier!!!.";
+        } else {
+            $message_error = "You have completed the reservation process Earlier!!!.";
 
+        }
+    }else{
+        $message_error = "All seat Have been reserved.";
     }
 }
 
@@ -273,12 +280,12 @@ MAIL;
                     <center><img src="images/royal_ball_image.jpg" alt="" class="img img-responsive" /></center>
                 </div>
 
+                <?php if($total_seats_taken <= 60 || $maybe == true){?>
                 <div class="col-sm-6">
-
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-10">
-                        <p>Please complete the form below to reserve your seat.</p>
+                        <p class="text-center">Please complete the form below to reserve your seat.</p>
                         <div class="form-group col-sm-12">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
@@ -421,6 +428,12 @@ MAIL;
                     <div class="col-md-1"></div>
                 </div>
                 </div>
+                <?php }else{?>
+                    <div class="col-md-6 text-center " style="margin-top:100px">
+                        <h3>ALL SEATS HAVE BEEN RESERVED</h3>
+                    </div>
+                <?php }?>
+
         </section>
         <!--Section: Main info-->
         <section id="select_avatar" class=" view wow fadeIn" title="Click on an image to select your style"

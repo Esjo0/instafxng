@@ -16,6 +16,60 @@ if (isset($_POST['apply_filter'])) {
     $_SESSION['account_officer_filter'] = $account_officer;
 }
 
+
+if(isset($_POST['called'])){
+    $user_code = $db_handle->sanitizePost($_POST['user_code']);
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
+    $numrows = $db_handle->numRows($query);
+    if($numrows == 0){
+        $query = "INSERT INTO call_log (user_code, status) VALUES ('$user_code', '1')";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully updated as contacted";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }elseif($numrows == 1){
+        $query = "UPDATE call_log SET status = '1' WHERE user_code = '$user_code'";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully updated as contacted";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }
+
+}
+
+if(isset($_POST['follow_up'])){
+    $user_code = $db_handle->sanitizePost($_POST['user_code']);
+    $comment = $db_handle->sanitizePost($_POST['comment']);
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
+    $numrows = $db_handle->numRows($query);
+    if($numrows == 0){
+        $query = "INSERT INTO call_log (user_code, status, follow_up_comment) VALUES ('$user_code', '2', '$comment')";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully saved for follow-up call";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }elseif($numrows == 1){
+        $query = "UPDATE call_log SET status = '2', follow_up_comment = '$comment' WHERE user_code = '$user_code'";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully saved for follow-up call";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }
+
+}
+
+if(isset($_POST['reset'])){
+
+}
+
 $one_day = 24 * 60 * 60;
 $yesterday = time() - $one_day;
 $date_today = date('Y-m-d');
@@ -44,6 +98,34 @@ if(isset($_SESSION['account_officer_filter']) && $_SESSION['account_officer_filt
         LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
         LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' ORDER BY u.created DESC ";
+}
+
+if(isset($_POST['contacted'])){
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+        u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+        FROM user AS u
+        INNER JOIN call_log AS cl ON u.user_code = cl.user_code
+        LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+        LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
+        WHERE u.status = '1' AND cl.status = '1' ORDER BY cl.created DESC ";
+}
+//if(isset($_POST['not_contacted'])){
+//    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+//        u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+//        FROM user AS u
+//        INNER JOIN call_log AS cl ON u.user_code <> cl.user_code
+//        LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+//        LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
+//        WHERE u.status = '1'  ORDER BY u.created DESC ";
+//}
+if(isset($_POST['follow_up'])){
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+        u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+        FROM user AS u
+        INNER JOIN call_log AS cl ON u.user_code = cl.user_code
+        LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+        LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
+        WHERE u.status = '1' AND cl.status = '2' ORDER BY u.created DESC ";
 }
 
 $numrows = $db_handle->numRows($query);
@@ -86,6 +168,14 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script>
+            $(function () {
+                $('[data-toggle="popover"]').popover()
+            })
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -114,7 +204,8 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
                                 <?php $all_account_officers = $admin_object->get_all_account_officers(); ?>
-                                <form data-toggle="validator" class="form-inline" role="form" method="post" action="">
+                                <div class="row">
+                                <form data-toggle="validator" class="col-md-6 form-inline" role="form" method="post" action="">
                                     <div class="form-group">
                                         <label for="account_officer">Filter By Account Officer:</label>
                                         <select name="account_officer" class="form-control" id="account_officer" required>
@@ -126,6 +217,12 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                     </div>
                                     <input name="apply_filter" type="submit" class="btn btn-primary" value="Apply Filter">
                                 </form>
+                                <form method="post" action="" class="col-md-6 form form-horizontal">
+                                    <button type="submit" name="contacted" class="btn btn-default btn-sm">Clients Contacted</button>
+<!--                                    <button type="submit" name="not_contacted" class="btn btn-default btn-sm">Clients Not Contacted</button>-->
+                                    <button type="submit" name="follow_up" class="btn btn-default btn-sm">Follow-up/call back</button>
+                                </form>
+                                </div>
 
                                 <p>Below is a table of all clients.</p>
                                 <p>
@@ -160,11 +257,12 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                 <td><?php echo $row['account_officer_full_name']; ?></td>
                                                 <td nowrap="nowrap">
-                                                    <a target="_blank" title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'client_view'; ?>&c=<?php echo encrypt_ssl('CLIENT VIEW'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" title="Comment" class="btn btn-success btn-sm" href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'client_view'; ?>&c=<?php echo encrypt_ssl('CLIENT VIEW'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-info btn-sm" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <?php if($allowed_update_profile) { ?>
-                                                        <a target="_blank" title="Update" class="btn btn-info" href="client_update.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
+                                                        <a target="_blank" title="Update" class="btn btn-info btn-sm" href="client_update.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
                                                     <?php } ?>
+                                                    <?php call_log_status($row['user_code']);?>
                                                 </td>
                                             </tr>
                                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
