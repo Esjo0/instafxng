@@ -15,5 +15,4 @@ if($user_code != NULL) {
                           WHERE user_code = '$user_code'";
     $result = $db_handle->runQuery($query);
 }
-}
-?>
+}?>
