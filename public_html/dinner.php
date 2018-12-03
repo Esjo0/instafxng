@@ -32,7 +32,7 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
     $state = $db_handle->sanitizePost($_POST['state']);
     $query = "SELECT * FROM dinner_2018 WHERE user_code = '$user_code' AND (choice = '1' OR choice = '3')";
     $numrows = $db_handle->numRows($query);
-    if($total_seats_taken <= 60) {
+    if($total_seats_taken <= 60  || $maybe == true) {
         if ($numrows == 0) {
             if ($choice == 1 && !empty($avatar) && $avatar != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL) {
                 if ($maybe == true) {
