@@ -8,19 +8,40 @@ $additional_msg = $get_params['x'];
 if($additional_msg == 'msg')
 {
     $special_msg = <<<msg
-        <p>Our double combo <a href="http://bit.ly/2JysCvT" target="_blank">Free Daily 85% Accurate High Precision trading signals</a> +
-        <a href="http://bit.ly/2CSUjAz" target="_blank">High - Impact News Release</a> will help you hit your
-        profit target this month!</p>
+        <p>We have a target to make over 2000 pips this month so you can have enough to ball this festive season!</p>
 
-        <p>This duo has consistently booked traders between 100-200 pips daily.</p>
+        <p>Are you in?</p>
 
-        <p>Here's what some of our clients had to say about the signals.</p>
+        <p>The 2018 round of the Loyalty Program and Rewards Ended on 30th November,2018 with 10 emerging winners of the 2.250 Million Naira annual reward.</p>
         <br />
 
-        <div class="row">
-            <div class="col-sm-6"><img class="img-responsive" src="images/testimony-1.png" /></div>
-            <div class="col-sm-6"><img class="img-responsive" src="images/testimony-2.png" /></div>
-        </div>
+        <table>
+        <tr>
+        <th>Name</th>
+        <th>Prize In Naira(#)</th>
+        <th>Point to withdraw as Fund($)</th>
+        </tr>
+        <tr>
+        <td>Chinedu Ibekwe</td>
+        <td>1,000,000</td>
+        <td>1 000 000</td>
+        </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        </table>
 
         <br />
 
