@@ -228,6 +228,30 @@ function decrypt($data){
     return mcrypt_decrypt(MCRYPT_RIJNDAEL_128, KEY, $decode, MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
 }
 
+function dec_enc($action, $string) {
+    $output = false;
+
+    $encrypt_method = "AES-256-CBC";
+    $secret_key = '35b9979b151f225c6c7ff136cd13b0ff';
+    $secret_iv = '1234567890123456';
+
+    // hash
+    $key = hash('sha256', $secret_key);
+
+    // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+    $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+    if( $action == 'encrypt' ) {
+        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+        $output = base64_encode($output);
+    }
+    else if( $action == 'decrypt' ){
+        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+    }
+
+    return $output;
+}
+
 /// check the below functions much later
 
 function is_odd($n){
