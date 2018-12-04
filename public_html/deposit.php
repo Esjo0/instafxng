@@ -12,7 +12,7 @@ if($additional_msg == 'msg')
 
         <p>Are you in?</p>
 
-        <p>The 2018 round of the Loyalty Program and Rewards Ended on 30th November,2018 with 10 emerging winners of the 2.250 Million Naira annual reward.</p>
+        <p>The 2018 round of the Loyalty Program and Rewards Ended on 30th November, 2018 with 10 emerging winners of the 2.250 Million Naira annual reward.</p>
         <br />
 
         <div class="row" style="background: url('images/form_bg.png') repeat;">
@@ -25,7 +25,7 @@ if($additional_msg == 'msg')
                                 <div class="item active" >
                                     <img src="https://instafxng.com/imgsource/ilpr_winners/Ibe_kwe.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
                                     <div class="text-center">
-                                        <h3>Prize: 1,000,000</h3>
+                                        <h3>Prize: &#8358;1,000,000</h3>
                                         <h5>Points: 9,360.50</h5>
                                         <b style="background-color: #DD4A68; color:white;" > Chinedu </b>
                                     </div>
@@ -66,7 +66,7 @@ if($additional_msg == 'msg')
                                 <img src="https://instafxng.com/imgsource/ilpr_winners/iduh.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
                                     <div class="text-center">
                                         <h3>Prize: &#8358;50,000</h3>
-                                        <h5>Points: 1,834.41</h5>
+                                        <h5>Points: 1,834.12</h5>
                                         <b style="background-color: #DD4A68; color:white;"> Iduh </b>
                                     </div>
 
@@ -127,7 +127,7 @@ if($additional_msg == 'msg')
                                     <div class="text-center">
                                         <h3>Prize: &#8358;50,000</h3>
                                         <h5>Points: 2,213.42</h5>
-                                        <b style="background-color: #DD4A68; color:white;"> Ilori </b>
+                                        <b style="background-color: #DD4A68; color:white;"> Benson </b>
 
                                     </div>
                                 </div>
