@@ -16,6 +16,8 @@ if($additional_msg == 'msg')
         <br />
 
         <div class="row" style="background: url('images/form_bg.png') repeat;">
+
+                        <h3 class="col-sm-12 text-center">Meet the Winners</h3>
                         <div id="winners1" class="carousel slide col-sm-6" data-ride="carousel">
                             <!-- Indicators -->
 
