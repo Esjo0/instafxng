@@ -416,7 +416,7 @@ switch($page_requested) {
                                     <?php if(!$special_msg) { ?>
                                         <h4><strong>Fund Your Instaforex Account</strong></h4>
                                     <?php } else { ?>
-                                        <h4><strong>Make Over 1000 pips more before September runs out!!!</strong></h4>
+                                        <h4><strong>Make the Rest of the Year the Best!!!</strong></h4>
                                     <?php } ?>
 
                                 </div>
