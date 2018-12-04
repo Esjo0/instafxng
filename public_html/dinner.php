@@ -457,7 +457,7 @@ MAIL;
                     <div class="row text-center" >
 
                         <!--Card-->
-                        <div class="col-md-6 text-center" style="margin-top:20px">
+                        <div class="col-md-3 text-center" style="margin-top:20px">
 
                             <!--Card image-->
                                 <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR4"
@@ -508,7 +508,7 @@ MAIL;
                         </div>
                         <!--Card-->
                         <!--Card-->
-                        <div class="col-md-6 text-center" style="margin-top:20px">
+                        <div class="col-md-3 text-center" style="margin-top:20px">
 
                             <!--Card image-->
                                 <center><img  data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR9" src="images/male9.png"
@@ -556,7 +556,7 @@ MAIL;
                         </div>
                         <!--Card-->
                         <!--Card-->
-                        <div class="col-md-6 text-center" style="margin-top:20px">
+                        <div class="col-md-3 text-center" style="margin-top:20px">
 
                             <!--Card image-->
                                <center> <img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR10"
@@ -606,7 +606,7 @@ MAIL;
                         </div>
                         <!--Card-->
                         <!--Card-->
-                        <div class="col-md-6 text-center" style="margin-top:20px">
+                        <div class="col-md-3 text-center" style="margin-top:20px">
 
                             <!--Card image-->
                             <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR3"
@@ -616,6 +616,404 @@ MAIL;
                                         <a id="duke1" style="display:none;" href="" class="text-center dark-grey-text">
                                             <b
                                                style=" background-color: #d7d7d7;
+                                               border-radius:8px; color:green !important;
+                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
+                                            <span class="fa fa-check"></span>
+                                            </b>
+                                            <div class="text-center">
+                                                <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                            </div>
+                                        </a>
+                                    </strong>
+                                    <!--Card image-->
+                                    <!-- Side Modal Top Right -->
+
+                                    <!-- To change the direction of the modal animation change .right class -->
+                                    <div class="modal"  id="sideModalTR3" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel" aria-hidden="true" >
+
+                                        <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+                                        <div class="modal-dialog" role="document" >
+
+
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="background-color:transparent">
+                                                    <button class="btn btn-primary" onclick="select_avatar(1,1)" data-dismiss="modal" >SELECT</button>
+                                                    <br/>
+                                                    <img src="images/male3.png"
+                                                         class="img img-responsive" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Side Modal Top Right -->
+
+                        </div>
+                        <!--Card-->
+                        <!--Card-->
+                        <div class="col-md-3 text-center" style="margin-top:20px">
+
+                            <!--Card image-->
+                            <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR4"
+                                         src="images/male4.png"
+                                         class="card-img-top" ></center>
+                            <strong>
+                                <a  id="duke2" style="display:none;" href="" class="text-center dark-grey-text">
+                                    <b
+                                        style="background-color: #d7d7d7;
+                                               border-radius:8px; color:green !important;
+                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
+                                    <span class="fa fa-check"></span>
+                                    </b>
+                                    <div class="text-center">
+                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                    </div>
+                                </a>
+                            </strong>
+                            <!--Card image-->
+                            <!-- Side Modal Top Right -->
+
+                            <!-- To change the direction of the modal animation change .right class -->
+                            <div class="modal" id="sideModalTR4" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+                                <div class="modal-dialog" role="document">
+
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <button class="btn btn-primary" onclick="select_avatar(1,2)" data-dismiss="modal" >SELECT</button>
+                                            <br/>
+                                            <img src="images/male4.png"
+                                                 class="img img-responsive" alt="">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Side Modal Top Right -->
+
+                        </div>
+                        <!--Card-->
+                        <!--Card-->
+                        <div class="col-md-3 text-center" style="margin-top:20px">
+
+                            <!--Card image-->
+                            <center><img  data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR9" src="images/male9.png"
+                                          class="img img-responsive" ></center>
+                            <strong>
+                                <a id="duke3" style="display:none;" href="" class="text-center dark-grey-text">
+                                    <b
+                                        style="background-color: #d7d7d7;
+                                               border-radius:8px; color:green !important;
+                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
+                                    <span class="fa fa-check"></span>
+                                    </b>
+                                    <div class="text-center">
+                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                    </div>
+                                </a>
+                            </strong>
+                            <!--Card image-->
+                            <!-- Side Modal Top Right -->
+
+                            <!-- To change the direction of the modal animation change .right class -->
+                            <div class="modal" id="sideModalTR9" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+                                <div class="modal-dialog" role="document">
+
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <button class="btn btn-primary" onclick="select_avatar(1,3)" data-dismiss="modal" >SELECT</button>
+                                            <br/>
+                                            <img src="images/male9.png"
+                                                 class="img img-responsive" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Side Modal Top Right -->
+                        </div>
+                        <!--Card-->
+                        <!--Card-->
+                        <div class="col-md-3 text-center" style="margin-top:20px">
+
+                            <!--Card image-->
+                            <center> <img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR10"
+                                          src="images/male10.jpg"
+                                          class="img img-responsive"></center>
+                            <strong>
+                                <a id="duke4" style="display:none;" href="" class="text-center dark-grey-text">
+                                    <b
+                                        style="background-color: #d7d7d7;
+                                               border-radius:8px; color:green !important;
+                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
+                                    <span class="fa fa-check"></span>
+                                    </b>
+                                    <div class="text-center">
+                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                    </div>
+                                </a>
+                            </strong>
+                            <!--Card image-->
+                            <!-- Side Modal Top Right -->
+
+                            <!-- To change the direction of the modal animation change .right class -->
+                            <div class="modal" id="sideModalTR10" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+                                <div class="modal-dialog" role="document">
+
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <button class="btn btn-primary" onclick="select_avatar(1,4)" data-dismiss="modal" >SELECT</button>
+                                            <br/>
+                                            <img src="images/male10.jpg"
+                                                 class="img img-responsive" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Side Modal Top Right -->
+
+                        </div>
+                        <!--Card-->
+                        <!--Card-->
+                        <div class="col-md-3 text-center" style="margin-top:20px">
+
+                            <!--Card image-->
+                            <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR3"
+                                         src="images/male3.png"
+                                         class="img img-responsive" ><center>
+                                    <strong>
+                                        <a id="duke1" style="display:none;" href="" class="text-center dark-grey-text">
+                                            <b
+                                                style=" background-color: #d7d7d7;
+                                               border-radius:8px; color:green !important;
+                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
+                                            <span class="fa fa-check"></span>
+                                            </b>
+                                            <div class="text-center">
+                                                <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                            </div>
+                                        </a>
+                                    </strong>
+                                    <!--Card image-->
+                                    <!-- Side Modal Top Right -->
+
+                                    <!-- To change the direction of the modal animation change .right class -->
+                                    <div class="modal"  id="sideModalTR3" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel" aria-hidden="true" >
+
+                                        <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+                                        <div class="modal-dialog" role="document" >
+
+
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="background-color:transparent">
+                                                    <button class="btn btn-primary" onclick="select_avatar(1,1)" data-dismiss="modal" >SELECT</button>
+                                                    <br/>
+                                                    <img src="images/male3.png"
+                                                         class="img img-responsive" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Side Modal Top Right -->
+
+                        </div>
+                        <!--Card-->
+                        <!--Card-->
+                        <div class="col-md-3 text-center" style="margin-top:20px">
+
+                            <!--Card image-->
+                            <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR4"
+                                         src="images/male4.png"
+                                         class="card-img-top" ></center>
+                            <strong>
+                                <a  id="duke2" style="display:none;" href="" class="text-center dark-grey-text">
+                                    <b
+                                        style="background-color: #d7d7d7;
+                                               border-radius:8px; color:green !important;
+                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
+                                    <span class="fa fa-check"></span>
+                                    </b>
+                                    <div class="text-center">
+                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                    </div>
+                                </a>
+                            </strong>
+                            <!--Card image-->
+                            <!-- Side Modal Top Right -->
+
+                            <!-- To change the direction of the modal animation change .right class -->
+                            <div class="modal" id="sideModalTR4" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+                                <div class="modal-dialog" role="document">
+
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <button class="btn btn-primary" onclick="select_avatar(1,2)" data-dismiss="modal" >SELECT</button>
+                                            <br/>
+                                            <img src="images/male4.png"
+                                                 class="img img-responsive" alt="">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Side Modal Top Right -->
+
+                        </div>
+                        <!--Card-->
+                        <!--Card-->
+                        <div class="col-md-3 text-center" style="margin-top:20px">
+
+                            <!--Card image-->
+                            <center><img  data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR9" src="images/male9.png"
+                                          class="img img-responsive" ></center>
+                            <strong>
+                                <a id="duke3" style="display:none;" href="" class="text-center dark-grey-text">
+                                    <b
+                                        style="background-color: #d7d7d7;
+                                               border-radius:8px; color:green !important;
+                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
+                                    <span class="fa fa-check"></span>
+                                    </b>
+                                    <div class="text-center">
+                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                    </div>
+                                </a>
+                            </strong>
+                            <!--Card image-->
+                            <!-- Side Modal Top Right -->
+
+                            <!-- To change the direction of the modal animation change .right class -->
+                            <div class="modal" id="sideModalTR9" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+                                <div class="modal-dialog" role="document">
+
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <button class="btn btn-primary" onclick="select_avatar(1,3)" data-dismiss="modal" >SELECT</button>
+                                            <br/>
+                                            <img src="images/male9.png"
+                                                 class="img img-responsive" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Side Modal Top Right -->
+                        </div>
+                        <!--Card-->
+                        <!--Card-->
+                        <div class="col-md-3 text-center" style="margin-top:20px">
+
+                            <!--Card image-->
+                            <center> <img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR10"
+                                          src="images/male10.jpg"
+                                          class="img img-responsive"></center>
+                            <strong>
+                                <a id="duke4" style="display:none;" href="" class="text-center dark-grey-text">
+                                    <b
+                                        style="background-color: #d7d7d7;
+                                               border-radius:8px; color:green !important;
+                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
+                                    <span class="fa fa-check"></span>
+                                    </b>
+                                    <div class="text-center">
+                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
+                                    </div>
+                                </a>
+                            </strong>
+                            <!--Card image-->
+                            <!-- Side Modal Top Right -->
+
+                            <!-- To change the direction of the modal animation change .right class -->
+                            <div class="modal" id="sideModalTR10" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
+                                <div class="modal-dialog" role="document">
+
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <button class="btn btn-primary" onclick="select_avatar(1,4)" data-dismiss="modal" >SELECT</button>
+                                            <br/>
+                                            <img src="images/male10.jpg"
+                                                 class="img img-responsive" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Side Modal Top Right -->
+
+                        </div>
+                        <!--Card-->
+                        <!--Card-->
+                        <div class="col-md-3 text-center" style="margin-top:20px">
+
+                            <!--Card image-->
+                            <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR3"
+                                         src="images/male3.png"
+                                         class="img img-responsive" ><center>
+                                    <strong>
+                                        <a id="duke1" style="display:none;" href="" class="text-center dark-grey-text">
+                                            <b
+                                                style=" background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
                                             <span class="fa fa-check"></span>
