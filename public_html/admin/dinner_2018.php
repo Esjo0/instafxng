@@ -5,7 +5,7 @@ if (!$session_admin->is_logged_in()) {
 }
 $client_operation = new clientOperation();
 
-$query_count = "SELECT * FROM dinner_2018 WHERE choice = '1'";
+$query_count = "SELECT * FROM dinner_2018 WHERE choice = '1' AND type <> '6'";
 $total_seats_taken = $db_handle->numRows($query_count);
 
 if (isset($_POST['search_text'])){
@@ -726,10 +726,8 @@ if($numrows > 0) {
                        <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Client Name</th>
+                                <th>Client Details</th>
                                 <th>Date</th>
-                                <th>Email Address</th>
-                                <th>Phone Number</th>
                                 <th>Title</th>
                                 <th>Residence</th>
                                 <th></th>
@@ -747,6 +745,10 @@ if($numrows > 0) {
                                         ?>
                                     <tr>
                                         <td><?php echo $name; ?>
+                                            <br>
+                                            <?php echo $email ; ?>
+                                            <br>
+                                            <?php echo $phone ; ?>
                                             <span class="badge" title="Ticket Type">
                                                 <?php if($type == 1){echo 'Single';}?>
                                                 <?php if($type == 2){echo 'Double';}?>
@@ -767,8 +769,6 @@ if($numrows > 0) {
                                             }?>
                                                 </span>
                                         </td>
-                                        <td><?php echo $email ; ?></td>
-                                        <td><?php echo $phone ; ?></td>
                                         <td><?php if(!empty($title)){echo $title." of ".$town;}else{ echo "Nill"; }?></td>
                                         <td><?php if(!empty($state)){echo $state;}else{ echo "Nill"; }?></td>
                                         <td nowrap="nowrap">
