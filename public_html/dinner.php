@@ -34,7 +34,7 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
     $state = $db_handle->sanitizePost($_POST['state']);
     $query = "SELECT * FROM dinner_2018 WHERE user_code = '$user_code' AND (choice = '1' OR choice = '3')";
     $numrows = $db_handle->numRows($query);
-    if($total_seats_taken <= 80  || $maybe == true || (in_array($client_email, $dinner_emails))) {
+    if($total_seats_taken <= 82  || $maybe == true || (in_array($client_email, $dinner_emails))) {
         if ($numrows == 0) {
             if ($choice == 1 && !empty($avatar) && $avatar != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL) {
                 if ($maybe == true) {
@@ -282,7 +282,7 @@ MAIL;
                     <center><img src="images/royal_ball_image.jpg" alt="" class="img img-responsive" /></center>
                 </div>
 
-                <?php if($total_seats_taken <= 80 || $maybe == true || (in_array($client_email, $dinner_emails))){?>
+                <?php if($total_seats_taken <= 82 || $maybe == true || (in_array($client_email, $dinner_emails))){?>
                 <div class="col-sm-6">
                 <div class="row">
                     <div class="col-md-1"></div>
