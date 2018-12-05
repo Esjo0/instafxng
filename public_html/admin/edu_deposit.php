@@ -114,7 +114,7 @@ $education_deposit = $db_handle->fetchAssoc($result);
                                             <td><?php echo status_edu_deposit($row['status']); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a title="View" class="btn btn-info" href="edu_deposit_process.php?id=<?php echo encrypt($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="View" class="btn btn-info" href="edu_deposit_process.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

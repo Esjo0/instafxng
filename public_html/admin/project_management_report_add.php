@@ -6,7 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x']);
 $project_code_encrypted = $get_params['x'];
-$project_code = decrypt(str_replace(" ", "+", $project_code_encrypted));
+$project_code = decrypt_ssl(str_replace(" ", "+", $project_code_encrypted));
 $project_code = preg_replace("/[^A-Za-z0-9 ]/", '', $project_code);
 
 $query = "SELECT

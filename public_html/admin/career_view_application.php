@@ -25,7 +25,7 @@ if (isset($_POST['process_application'])) {
 
 $get_params = allowed_get_params(['id']);
 $application_id_encrypted = $get_params['id'];
-$application_id = decrypt(str_replace(" ", "+", $application_id_encrypted));
+$application_id = decrypt_ssl(str_replace(" ", "+", $application_id_encrypted));
 $application_id = preg_replace("/[^A-Za-z0-9 ]/", '', $application_id);
 
 if(is_null($application_id_encrypted) || empty($application_id_encrypted)) {

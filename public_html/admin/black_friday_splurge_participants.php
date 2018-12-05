@@ -191,7 +191,7 @@ $black_friday_splurge_promo = $db_handle->fetchAssoc($result);
                                         <td><?php echo $row['phone']; ?></td>
                                         <td nowrap="nowrap">
                                             <a target="_blank" title="View" class="btn btn-sm btn-info"
-                                               href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i
+                                               href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i
                                                     class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             <a class="btn btn-sm btn-primary" title="Send Email"
                                                href="campaign_email_single.php?name=<?php $name = $row['full_name'];

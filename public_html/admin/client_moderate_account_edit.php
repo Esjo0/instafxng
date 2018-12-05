@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $user_ilpr_enrolment_id_encrypted = $get_params['id'];
-$user_ilpr_enrolment_id = decrypt(str_replace(" ", "+", $user_ilpr_enrolment_id_encrypted));
-$user_ilpr_enrolment_id = preg_replace("/[^A-Za-z0-9 ]/", '', $user_ilpr_enrolment_id);
+$user_ilpr_enrolment_id = dec_enc('decrypt', $user_ilpr_enrolment_id_encrypted);
 
 $query = "SELECT ui.ifx_acct_no
         FROM user_ilpr_enrolment AS uie
@@ -102,7 +101,7 @@ if($get_params['x'] == 'edit') {
                                         <label class="control-label col-sm-2" for=""></label>
                                         <div class="col-sm-10 col-lg-6">
                                             <p>
-                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($client_user_code); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($client_user_code); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
 
                                                 <?php if($client_operation->account_flagged($client_user_code)) { ?>
                                                     <img class="center-block" src="../images/red-flag.png" alt="" title="This client has an account flagged.">

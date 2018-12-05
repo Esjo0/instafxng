@@ -66,14 +66,14 @@ if (isset($_POST['schedule_private_paid'])) {
     $total_payable_card = $card_processing + $total_payable;
     $course_name = "One on One Forex Training";
     $trans_id = "FPA" . time();
-    $trans_id_encrypted = encrypt($trans_id);
+    $trans_id_encrypted = encrypt_ssl($trans_id);
     $client_name = $full_name;
     $client_email = $email;
     $schedule_type = 3;
 
     $payment = $education_object->log_course_deposit($user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
 
-    $schedule_public = $obj_training->schedule_private_time($date, $mode, $email, $admin_code, $location, $schedule_type);
+    $schedule_public = $obj_training->schedule_private_time($date, $mode, $client_email, $admin_code, $location, $schedule_type);
     $admin_details = $admin_object->get_admin_detail_by_code($admin_code);
     foreach ($admin_details AS $row) {
         extract($row);
@@ -119,6 +119,30 @@ if (isset($_POST['completed'])) {
         $message_error = "Schedule not successfully submitted. Kindly Try again.";
     }
 }
+
+if (isset($_POST['follow_completed'])) {
+    $id = $db_handle->sanitizePost($_POST['training_id']);
+    $query = "UPDATE training_schedule_students SET status = '4' WHERE id = $id ";
+    $result = $db_handle->runQuery($query);
+    if ($result == true) {
+        $message_success = "Successfully Completed";
+    } else {
+        $message_error = "Schedule not successfully submitted. Kindly Try again.";
+    }
+}
+
+if (isset($_POST['final_completed'])) {
+    $id = $db_handle->sanitizePost($_POST['training_id']);
+    $query = "UPDATE training_schedule_students SET status = '5' WHERE id = $id ";
+    $result = $db_handle->runQuery($query);
+    if ($result == true) {
+        $message_success = "Successfully Completed";
+    } else {
+        $message_error = "Schedule not successfully submitted. Kindly Try again.";
+    }
+}
+
+//0-scheduled, 1-completed, 2-rescheduled, 3-follow-up, 4-Followup completed, 5-final_completed
 
 if (isset($_POST['delete_schedule'])) {
     $del_id = $db_handle->sanitizePost($_POST['del_id']);
@@ -167,7 +191,8 @@ if (!empty($filter) || ($filter != null)) {
 $filter_val = $_SESSION['filter'];
 
 
-$query = "SELECT  tsd.location, tsd.schedule_type, tss.id, tss.status, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, tsd.schedule_date, u.user_code
+$query = "SELECT tss.follow_up_class, tss.final_class, tsd.location, tsd.schedule_type, tss.id, tss.status,
+CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone, u.email, tsd.schedule_date, u.user_code, tsd.schedule_mode
     FROM training_schedule_students AS tss
     INNER JOIN user AS u ON u.user_code = tss.user_code
     INNER JOIN training_schedule_dates AS tsd ON tsd.schedule_id = tss.schedule_id
@@ -440,6 +465,7 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                                         </select>
                                                     </div>
                                                 </div>
+
                                                 <div class="modal-footer">
                                                     <input name="schedule_private_paid" type="submit"
                                                            class="btn btn-sm btn-default" value="SUBMIT">
@@ -546,6 +572,8 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                                         <option value="1">Completed Trainings</option>
                                                         <option value="2">Re-Scheduled Trainings</option>
                                                         <option value="3">Follow-up Trainings</option>
+                                                        <option value="4">Follow-up Trainings Completed</option>
+                                                        <option value="5">Final Trainings Completed</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -580,7 +608,9 @@ $training_schedules = $db_handle->fetchAssoc($result);
                             foreach ($training_schedules as $row) {
                                 ?>
                                 <tr>
-                                    <td><?php echo $row['full_name']; ?></td>
+                                    <td><?php echo $row['full_name']; ?>
+                                        <?php echo "<span class=\"badge badge-light\">".training_mode($row['schedule_mode'])."</span>"; ?>
+                                    </td>
                                     <td><?php echo datetime_to_text($row['schedule_date']); ?></td>
                                     <td><?php if ($row['schedule_type'] == '2') {
                                             echo " <span class=\"badge badge-light\">Private</span>";
@@ -605,10 +635,10 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                            href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i
                                                 class="glyphicon glyphicon-phone-alt"></i></a>
                                         <a target="_blank" title="View" class="btn btn-info btn-sm"
-                                           href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i
+                                           href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i
                                                 class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                         <a target="_blank" title="Comment" class="btn btn-success btn-sm"
-                                           href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'training_schedule'; ?>&c=<?php echo encrypt('TRAINING SCHEDULE'); ?>&pg=<?php echo $currentpage; ?>"><i
+                                           href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'training_schedule'; ?>&c=<?php echo encrypt_ssl('TRAINING SCHEDULE'); ?>&pg=<?php echo $currentpage; ?>"><i
                                                 class="glyphicon glyphicon-comment icon-white"></i> </a>
                                         <a class="btn btn-default btn-sm" data-toggle="modal" title="Re-schedule"
                                            data-target="#re<?php echo($row['id']) ?>"><i
@@ -621,18 +651,29 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                                     <div class="modal-header">
                                                         <button type="button" data-dismiss="modal" aria-hidden="true"
                                                                 class="close">&times;</button>
-                                                        <form class="text-center" method="post" action=""><input
+                                                        <form class="form-inline text-center" method="post" action=""><input
                                                                 name="training_id" type="hidden"
                                                                 value="<?php echo $row['id']; ?>">
                                                             <button title="Click Here if trainiing is completed"
                                                                     name="completed" type="submit"
-                                                                    class="btn btn-success btn-sm"><strong>TRAINING
+                                                                    class="btn btn-success btn-sm"><strong>FIRST TRAINING
+                                                                    COMPLETED</strong><i
+                                                                    class="glyphicon glyphicon-ok-circle"></i></button>
+                                                            <button title="Click Here if trainiing is completed"
+                                                                    name="follow_completed" type="submit"
+                                                                    class="btn btn-success btn-sm"><strong>FOLLOW-UP CLASS
+                                                                    COMPLETED</strong><i
+                                                                    class="glyphicon glyphicon-ok-circle"></i></button>
+                                                            <button title="Click Here if trainiing is completed"
+                                                                    name="final_completed" type="submit"
+                                                                    class="btn btn-success btn-sm"><strong>FINAL CLASS
                                                                     COMPLETED</strong><i
                                                                     class="glyphicon glyphicon-ok-circle"></i></button>
                                                         </form>
                                                         <h4 class="modal-title">Re-Schedule Personal Training Time</h4>
                                                     </div>
                                                     <div class="modal-body">
+
                                                         <form class="form-inline text-center" role="form" method="post"
                                                               action="">
 
@@ -684,10 +725,24 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                                                     </select>
                                                                 </div>
                                                             </div>
+                                                            <?php if($row['follow_up_class'] != NULL && !empty($row['follow_up_class'])){?>
+                                                                <table class="table table-responsive hover">
+                                                                    <tr>
+                                                                        <td>Follow Up Class</td>
+                                                                        <td><?php echo datetime_to_textday($row['follow_up_class']) . " " . datetime_to_text($row['follow_up_class']) ?></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Final Class</td>
+                                                                        <td><?php echo datetime_to_textday($row['final_class']) . " " . datetime_to_text($row['final_class']) ?></td>
+                                                                    </tr>
+                                                                </table>
+                                                            <?php }?>
+
                                                             <div class="modal-footer">
                                                                 <input name="reschedule" type="submit"
                                                                        class="btn btn-sm btn-default" value="SUBMIT">
                                                         </form>
+
                                                         <button type="button" name="close" onClick="window.close();"
                                                                 data-dismiss="modal" class="btn btn-sm btn-danger">
                                                             Close!
@@ -708,6 +763,12 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                         } ?>
                                         <?php if ($row['status'] == '3') {
                                             echo "<i>Follow-up</i>";
+                                        } ?>
+                                        <?php if ($row['status'] == '4') {
+                                            echo "<i>Follow-up Completed</i>";
+                                        } ?>
+                                        <?php if ($row['status'] == '5') {
+                                            echo "<i>Final Completed</i>";
                                         } ?>
                                     </td>
                                 </tr>

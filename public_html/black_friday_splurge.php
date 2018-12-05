@@ -3,7 +3,7 @@ require_once 'init/initialize_general.php';
 $thisPage = "Promotion";
 $get_params = allowed_get_params(['x']);
 $user_code_encrypted = $get_params['x'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
+$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
 if(($get_params['x'] == "tweeter_lead") && (!isset($_COOKIE['ifxng_tweeter_lead'])) ){

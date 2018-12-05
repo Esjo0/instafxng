@@ -6,11 +6,11 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'lid', 'cid']);
 $course_id_encrypted = $get_params['cid'];
-$course_id = decrypt(str_replace(" ", "+", $course_id_encrypted));
+$course_id = decrypt_ssl(str_replace(" ", "+", $course_id_encrypted));
 $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
 
 $course_lesson_id_encrypted = $get_params['lid'];
-$course_lesson_id = decrypt(str_replace(" ", "+", $course_lesson_id_encrypted));
+$course_lesson_id = decrypt_ssl(str_replace(" ", "+", $course_lesson_id_encrypted));
 $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -47,7 +47,7 @@ if($get_params['x'] == 'edit' && isset($course_lesson_id)) {
     $selected_lesson = $education_object->get_single_course_lesson_id($course_lesson_id);
 
     if(empty($selected_lesson)) {
-        $back_url = "edu_course_view.php?id=" . encrypt($course_id);
+        $back_url = "edu_course_view.php?id=" . encrypt_ssl($course_id);
         redirect_to($back_url); // cannot find lesson or URL tampered
     }
 }
@@ -116,7 +116,7 @@ if($get_params['x'] == 'edit' && isset($course_lesson_id)) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p><a href="edu_course_view.php?id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Go Back To Selected Course"><i class="fa fa-arrow-circle-left"></i> Go Back To Selected Course</a></p>
+                                <p><a href="edu_course_view.php?id=<?php echo encrypt_ssl($course_id); ?>" class="btn btn-default" title="Go Back To Selected Course"><i class="fa fa-arrow-circle-left"></i> Go Back To Selected Course</a></p>
 
                                 <p><strong>Course Title: <?php if(isset($selected_course['title'])) { echo $selected_course['title']; } ?></strong></p>
 

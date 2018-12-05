@@ -34,7 +34,7 @@ if($db_handle->numOfRows($result) > 0) {
         {
             $client_phone = strtolower(trim($row['phone']));
             $user_code = strtolower(trim($row['user_code']));
-            $my_message = str_replace('[UC]', encrypt($user_code), $my_message);
+            $my_message = str_replace('[UC]', encrypt_ssl($user_code), $my_message);
             $my_message_new = str_replace('[UC]', '', $my_message);
             $system_object->send_sms($client_phone, $my_message_new);
         }
@@ -53,3 +53,5 @@ if($db_handle->numOfRows($result) > 0) {
         }
     }
 }
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

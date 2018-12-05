@@ -8,7 +8,7 @@ $admin_code = $_SESSION['admin_unique_code'];
 
 $get_params = allowed_get_params(['x', 'id']);
 $user_credential_id_encrypted = $get_params['id'];
-$user_credential_id = decrypt(str_replace(" ", "+", $user_credential_id_encrypted));
+$user_credential_id = decrypt_ssl(str_replace(" ", "+", $user_credential_id_encrypted));
 $user_credential_id = preg_replace("/[^A-Za-z0-9 ]/", '', $user_credential_id);
 
 $client_operation = new clientOperation();
@@ -28,10 +28,10 @@ if (isset($_POST['pending_with_mail'])) {
     }
     extract($_POST);
 
-    $credential_id = decrypt(str_replace(" ", "+", $credential_id));
+    $credential_id = decrypt_ssl(str_replace(" ", "+", $credential_id));
     $credential_id = preg_replace("/[^A-Za-z0-9 ]/", '', $credential_id);
 
-    $meta_id = decrypt(str_replace(" ", "+", $meta_id));
+    $meta_id = decrypt_ssl(str_replace(" ", "+", $meta_id));
     $meta_id = preg_replace("/[^A-Za-z0-9 ]/", '', $meta_id);
 
     if(is_null($passport_status) || is_null($id_card_status) || is_null($signature_status) || is_null($address_status) || is_null($remarks)) {
@@ -60,10 +60,10 @@ if (isset($_POST['pending'])) {
     }
     extract($_POST);
 
-    $credential_id = decrypt(str_replace(" ", "+", $credential_id));
+    $credential_id = decrypt_ssl(str_replace(" ", "+", $credential_id));
     $credential_id = preg_replace("/[^A-Za-z0-9 ]/", '', $credential_id);
 
-    $meta_id = decrypt(str_replace(" ", "+", $meta_id));
+    $meta_id = decrypt_ssl(str_replace(" ", "+", $meta_id));
     $meta_id = preg_replace("/[^A-Za-z0-9 ]/", '', $meta_id);
 
     if(is_null($passport_status) || is_null($id_card_status) || is_null($signature_status) || is_null($address_status) || is_null($remarks)) {
@@ -91,10 +91,10 @@ if (isset($_POST['process'])) {
     
     extract($_POST);
 
-    $credential_id = decrypt(str_replace(" ", "+", $credential_id));
+    $credential_id = decrypt_ssl(str_replace(" ", "+", $credential_id));
     $credential_id = preg_replace("/[^A-Za-z0-9 ]/", '', $credential_id);
 
-    $meta_id = decrypt(str_replace(" ", "+", $meta_id));
+    $meta_id = decrypt_ssl(str_replace(" ", "+", $meta_id));
     $meta_id = preg_replace("/[^A-Za-z0-9 ]/", '', $meta_id);
 
     if(is_null($passport_status) || is_null($id_card_status) || is_null($signature_status) || is_null($address_status) || is_null($remarks)) {
@@ -157,13 +157,13 @@ if (isset($_POST['process'])) {
                                 <p>Verify the client document and address, you can approve individual document. Please note that the remark you entered will
                                 be emailed to the client.</p>
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                    <input type="hidden" name="credential_id" value="<?php echo encrypt($selected_user_docs['user_credential_id']); ?>" />
-                                    <input type="hidden" name="meta_id" value="<?php echo encrypt($selected_user_docs['user_meta_id']); ?>" />
+                                    <input type="hidden" name="credential_id" value="<?php echo encrypt_ssl($selected_user_docs['user_credential_id']); ?>" />
+                                    <input type="hidden" name="meta_id" value="<?php echo encrypt_ssl($selected_user_docs['user_meta_id']); ?>" />
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for=""></label>
                                         <div class="col-sm-10 col-lg-6">
                                             <p>
-                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($selected_user_docs['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($selected_user_docs['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
 
                                             <?php if($client_operation->account_flagged($selected_user_docs['user_code'])) { ?>
                                                 <img class="center-block" src="../images/red-flag.png" alt="" title="This client has an account flagged.">

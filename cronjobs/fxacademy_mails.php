@@ -391,7 +391,7 @@ function student_auto_mail_template($core_msg) {
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -643,3 +643,5 @@ $interval_5d = 26;
 $query_5d = student_auto_mail_query(5, $interval_5d);
 $get_mail_5d = student_auto_mail_template($my_message_5d);
 $send_message_5d = student_auto_mail_send($query_5d, $my_subject_5d, $get_mail_5d);
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

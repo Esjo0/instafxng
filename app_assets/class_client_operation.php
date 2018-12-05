@@ -1380,7 +1380,7 @@ MAIL;
         $fetched_data = $db_handle->fetchAssoc($result);
         $trans_detail = $fetched_data[0];
 
-        if(!empty($trans_detail)) {
+        if(!empty($trans_detail) && $trans_detail['status'] != '8') {
             $naira_total_payable = $trans_detail['naira_total_payable'];
             $amount = $naira_total_payable * 100;
 
@@ -1426,7 +1426,7 @@ MAIL;
     public function log_withdrawal($trans_id, $ifx_acc_id, $exchange, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, $phone_password) {
         global $db_handle;
 
-        $phone_password_encrypted = encrypt($phone_password);
+        $phone_password_encrypted = encrypt_ssl($phone_password);
 
         $query = "INSERT INTO user_withdrawal (trans_id, ifxaccount_id, exchange_rate, dollar_withdraw, naira_equivalent_dollar_withdraw, naira_service_charge, naira_vat_charge, naira_total_withdrawable, client_phone_password)
             VALUES ('$trans_id', $ifx_acc_id, $exchange, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, '$phone_password_encrypted')";
@@ -1744,7 +1744,7 @@ MAIL;
         global $db_handle;
         global $system_object;
         
-        $user_code_encrypted = encrypt($client_user_code);
+        $user_code_encrypted = encrypt_ssl($client_user_code);
 
         $sms_code = generate_sms_code();
         $sms_message = "Your activation number is: $sms_code A message has been sent to your email, click the activation link in it and enter this number.";
@@ -2430,7 +2430,7 @@ MAIL;
         global $system_object;
 
         $reset_code = rand_string(20);
-        $user_code_encrypted = encrypt($user_code);
+        $user_code_encrypted = encrypt_ssl($user_code);
 
         $query = "UPDATE user SET reset_code = '$reset_code', reset_expiry = NOW() + INTERVAL 1 HOUR WHERE user_code = '$user_code' LIMIT 1";
         $db_handle->runQuery($query);

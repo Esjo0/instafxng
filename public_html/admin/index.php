@@ -299,7 +299,7 @@ $failed_sms_code = $system_object->get_failed_sms_code();
                                 ?>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <p><a href="bulletin_read.php?id=<?php echo encrypt($row['admin_bulletin_id']); ?>" title="<?php echo $row['title']; ?>"><?php echo $row['title']; ?></a></p>
+                                        <p><a href="bulletin_read.php?id=<?php echo encrypt_ssl($row['admin_bulletin_id']); ?>" title="<?php echo $row['title']; ?>"><?php echo $row['title']; ?></a></p>
                                         <em><strong>Author:</strong> <?php echo $row['bulletin_author']; ?></em><br/>
                                         <em><strong>Posted:</strong> <?php echo datetime_to_text($row['created']); ?></em><br/><br/>
                                         <hr/>

@@ -7,7 +7,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['id', 'x']);
 $trans_id_encrypted = $get_params['id'];
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
+$trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
 $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 
 switch ($get_params['x']) {
@@ -41,7 +41,7 @@ if (isset($_POST['edu_deposit_process_comment'])) {
     }
     extract($_POST);
 
-    $trans_id = decrypt(str_replace(" ", "+", $transaction_no));
+    $trans_id = decrypt_ssl(str_replace(" ", "+", $transaction_no));
     $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
 
     $update_deposit_comment = $education_object->log_edu_deposit_comment($_SESSION['admin_unique_code'], $trans_id, $admin_comment);
@@ -61,13 +61,13 @@ if (isset($_POST['edu_deposit_process_notified'])) {
     }
     extract($_POST);
 
-    $transaction_no = decrypt(str_replace(" ", "+", $transaction_no));
+    $transaction_no = decrypt_ssl(str_replace(" ", "+", $transaction_no));
     $transaction_no = preg_replace("/[^A-Za-z0-9 ]/", '', $transaction_no);
 
-    $course_no = decrypt(str_replace(" ", "+", $course_no));
+    $course_no = decrypt_ssl(str_replace(" ", "+", $course_no));
     $course_no = preg_replace("/[^A-Za-z0-9 ]/", '', $course_no);
 
-    $user_no = decrypt(str_replace(" ", "+", $user_no));
+    $user_no = decrypt_ssl(str_replace(" ", "+", $user_no));
     $user_no = preg_replace("/[^A-Za-z0-9 ]/", '', $user_no);
 
     $update_deposit = $education_object->modify_edu_deposit_order($transaction_no, $course_no, $user_no, $deposit_status, $admin_comment, $_SESSION['admin_unique_code']);

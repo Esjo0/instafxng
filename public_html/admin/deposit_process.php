@@ -9,8 +9,7 @@ $client_operation = new clientOperation();
 $get_params = allowed_get_params(['x', 'id']);
 
 $trans_id_encrypted = $get_params['id'];
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
-$trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+$trans_id = dec_enc('decrypt', $trans_id_encrypted);
 
 switch($get_params['x']) {
     case 'pending': $deposit_process_pending = true; $page_title = '- PENDING'; break;
@@ -140,7 +139,7 @@ if ($deposit_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POS
         $client_operation->update_loyalty_point($points_claimed_id, $point_status);
     }
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    $trans_id_encrypted = encrypt($transaction_id);
+    $trans_id_encrypted = encrypt_ssl($transaction_id);
     header("Location: deposit_view_details.php?id=$trans_id_encrypted");
     exit;
 }
@@ -191,7 +190,7 @@ if ($deposit_process_notified && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST
     $refund_type = $_POST['refund_type'];
     $subject = "Deposit Transaction with REF: $transaction_id was rejected.";
 
-    $refund_url = "https://instafxng.com/deposit_refund.php?x=" . $refund_type . "&id=" . encrypt($transaction_id);
+    $refund_url = "https://instafxng.com/deposit_refund.php?x=" . $refund_type . "&id=" . encrypt_ssl($transaction_id);
     $refund_type = refund_type($refund_type);
 
     $my_message = <<<MAIL

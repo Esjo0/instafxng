@@ -298,7 +298,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                             <tbody>
                             <?php if(isset($latest_funding) && !empty($latest_funding)) { foreach ($latest_funding as $row) { ?>
                                 <tr>
-                                    <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                    <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                     <td><?php echo $row['ifx_acct_no']; ?></td>
                                     <td>&dollar; <?php echo $row['dollar_ordered']; ?></td>
                                     <td><?php echo status_user_deposit($row['status']); ?></td>
@@ -322,7 +322,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                             <tbody>
                             <?php if(isset($latest_withdrawal) && !empty($latest_withdrawal)) { foreach ($latest_withdrawal as $row) { ?>
                                 <tr>
-                                    <td><a target="_blank" title="View" href="withdrawal_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                    <td><a target="_blank" title="View" href="withdrawal_search_view.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                     <td><?php echo $row['ifx_acct_no']; ?></td>
                                     <td>&dollar; <?php echo $row['dollar_withdraw']; ?></td>
                                     <td><?php echo status_user_withdrawal($row['status']); ?></td>

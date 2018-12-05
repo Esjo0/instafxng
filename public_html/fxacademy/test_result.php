@@ -9,11 +9,11 @@ if (!$session_client->is_logged_in())
 
 $get_params = allowed_get_params(['lid', 'cid']);
 $course_id_encrypted = $get_params['cid'];
-$course_id = decrypt(str_replace(" ", "+", $course_id_encrypted));
+$course_id = decrypt_ssl(str_replace(" ", "+", $course_id_encrypted));
 $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
 
 $course_lesson_id_encrypted = $get_params['lid'];
-$course_lesson_id = decrypt(str_replace(" ", "+", $course_lesson_id_encrypted));
+$course_lesson_id = decrypt_ssl(str_replace(" ", "+", $course_lesson_id_encrypted));
 $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
 
 $confirm_second_time_assessment = $education_object->confirm_second_time_assessment($course_lesson_id, $_SESSION['client_unique_code']);
@@ -33,9 +33,9 @@ if (isset($_POST['process_test']))
     unset($_POST['process_test']);
     $question_answered = $_POST;
 
-    $course_id = decrypt(str_replace(" ", "+", $course_no));
+    $course_id = decrypt_ssl(str_replace(" ", "+", $course_no));
     $course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
-    $course_lesson_id = decrypt(str_replace(" ", "+", $lesson_no));
+    $course_lesson_id = decrypt_ssl(str_replace(" ", "+", $lesson_no));
     $course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
 
 //    $education_object->set_lesson_rating($_SESSION['client_unique_code'],$course_lesson_id,$course_id,$_POST['rating'],$_POST['comments']);
@@ -97,7 +97,7 @@ $previous_lesson = $education_object->get_previous_lesson($course_id, $course_le
                     <div id="main-container" class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-md-12">
-                                <p><a href="fxacademy/course_view.php?id=<?php echo encrypt($course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
+                                <p><a href="fxacademy/course_view.php?id=<?php echo encrypt_ssl($course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
 
                                 <h3 class="text-center">Lesson Assessment</h3>
                                 <p><span class="text-danger"><?php echo $selected_course['title']; ?></span></p>

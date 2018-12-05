@@ -8,7 +8,7 @@ $client_operation = new clientOperation();
 
 $get_params = allowed_get_params(['id', 'p']);
 $user_code_encrypted = $get_params['id'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
+$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
 $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
 $page_url = "client_update.php?id=" . $user_code_encrypted;
@@ -21,7 +21,7 @@ $page_requested = $get_params['p'];
 if (isset($_POST['contact_update'])) {
 
     $user_code_encrypted = $_POST["client_unique"];
-    $user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
+    $user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
     $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
     $email_address = $db_handle->sanitizePost($_POST["email_address"]);
@@ -50,7 +50,7 @@ if (isset($_POST['contact_update'])) {
 if (isset($_POST['account_update'])) {
 
     $user_code_encrypted = $_POST["client_unique"];
-    $user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
+    $user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
     $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
 
     $bank_id = $_POST["bank_name"];
@@ -86,7 +86,7 @@ if(isset($_POST['document_update'])) {
 
     extract($_POST);
 
-    $user_code_value = decrypt(str_replace(" ", "+", $user_no));
+    $user_code_value = decrypt_ssl(str_replace(" ", "+", $user_no));
     $user_code_value = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code_value);
 
     if($_FILES["pictures_id_card"]["error"] == UPLOAD_ERR_OK) {
