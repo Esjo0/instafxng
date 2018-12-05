@@ -2,7 +2,8 @@
 require_once 'init/initialize_general.php';
 
 $dinner_emails = array(
-	"joshua@instafxng.com", 
+    "ukpedorpromise@gmail.com",
+	"joshua@instafxng.com",
 	"binaryvs@yahoo.com", 
 	"amazuci@yahoo.com", 
 	"bouqi4life2009@yahoo.com", 
