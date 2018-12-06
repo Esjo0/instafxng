@@ -165,8 +165,8 @@ if (isset($_POST['reserve_seat'])) {
                                                 <option value="">Choose a date</option>
                                                 <option value="2018-12-10 11:30:00">11:30am - 12:30pm Monday 10th December 2018</option>
                                                 <option value="2018-12-11 11:30:00">11:30am - 12:30pm Tuesday 11th December 2018</option>
-                                                <option value="2018-12-03 11:30:00">11:30am - 12:30pm Monday 17th December 2018</option>
-                                                <option value="2018-12-04 11:30:00">11:30am - 12:30pm Tuesday 18th December 2018 </option>
+                                                <option value="2018-12-17 11:30:00">11:30am - 12:30pm Monday 17th December 2018</option>
+                                                <option value="2018-12-18 11:30:00">11:30am - 12:30pm Tuesday 18th December 2018 </option>
                                             </select>
                                         </div>
 
@@ -177,8 +177,8 @@ if (isset($_POST['reserve_seat'])) {
                                                 <option value="2018-12-06 11:30:00">11:30am - 12:30pm Thursday 6th December 2018</option>
                                                 <option value="2018-12-12 11:30:00">11:30am - 12:30pm Wednesday 12th December 2018</option>
                                                 <option value="2018-12-13 11:30:00">11:30am - 12:30pm Thursday 13th December 2018</option>
-                                                <option value="2018-12-12 11:30:00">11:30am - 12:30pm Wednesday 19th December 2018</option>
-                                                <option value="2018-12-13 11:30:00">11:30am - 12:30pm Thursday 20th December 2018</option>
+                                                <option value="2018-12-19 11:30:00">11:30am - 12:30pm Wednesday 19th December 2018</option>
+                                                <option value="2018-12-20 11:30:00">11:30am - 12:30pm Thursday 20th December 2018</option>
                                             </select>
                                         </div>
 
