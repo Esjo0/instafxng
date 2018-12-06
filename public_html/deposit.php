@@ -4,6 +4,9 @@ $thisPage = "Traders";
 
 $get_params = allowed_get_params(['x']);
 $additional_msg = $get_params['x'];
+if($additional_msg == 'msg_link'){
+    $additional_msg = 'msg';
+}
 
 if($additional_msg == 'msg')
 {
