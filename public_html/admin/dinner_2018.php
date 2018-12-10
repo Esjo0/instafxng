@@ -272,7 +272,7 @@ if(isset($_POST['filter'])){
     }
 
 
-        $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
+        $query = "SELECT d.invite_code, d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE $filter
     ORDER BY d.created DESC ";
@@ -281,7 +281,7 @@ if(isset($_POST['filter'])){
 
 }elseif(empty($_SESSION['query_dinner']) || isset($_POST['all'])){
 
-$query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
+$query = "SELECT d.invite_code, d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE d.choice IS NOT NULL
     ORDER BY d.created DESC ";
@@ -757,6 +757,7 @@ if($numrows > 0) {
                                                 <?php if($type == 5){echo 'TEAM MEMBER';}?>
                                                 <?php if($type == 6){echo 'VENDOR';}?>
                                             </span>
+
                                         </td>
                                         <td><?php echo datetime_to_text($created)?>
                                             <span class="badge" title="Attendance Status">
@@ -881,6 +882,10 @@ if($numrows > 0) {
                                                 </form>
                                             </div>
                                             <!--                        Modal end-->
+                                            <br>
+                                            <span class="badge" title="INVITE CODE">
+                                                <?php if($invite_code != NULL){echo $invite_code;}?>
+                                                </span>
                                         </td>
                                     </tr>
                                 <?php }
