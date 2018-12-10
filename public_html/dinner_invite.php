@@ -6,15 +6,21 @@
  * Time: 7:06 AM
  */
 require_once 'init/initialize_client.php';
+$get_params = allowed_get_params(['i']);
+$code_encrypted = $get_params['i'];
+if (empty($code_encrypted)) {
+    redirect_to("https://instafxng.com");
+    exit;
+}
 $thisPage = "";
+$code = decrypt_ssl(str_replace(" ", "+", $code_encrypted));
+$code = preg_replace("/[^A-Za-z0-9 ]/", '', $code);
 
 $date_now = datetime_to_text(date('Y-m-d H:i:s'));
 
 
 if(isset($_POST['invite'])){
-    $email = $db_handle->sanitizePost($_POST['email']);
-    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-    $query = "SELECT invite_code,title,town,name FROM dinner_2018 WHERE email = '$email' AND invite_code IS NOT NULL LIMIT 1";
+    $query = "SELECT invite_code,title,town,name FROM dinner_2018 WHERE id = '$code' AND invite_code IS NOT NULL LIMIT 1";
     $result = $db_handle->runQuery($query);
     $numrows = $db_handle->numRows($query);
     $result = $db_handle->fetchAssoc($result);
