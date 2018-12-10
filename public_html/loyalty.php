@@ -104,7 +104,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-12">
-                                <img style="" src="images/Loyalty_Points_Images/ilpr_landing_image.jpg" alt="" class="img-thumbnail img img-responsive" />
+                                <img style="" src="https://instafxng.com/imgsource/ilpr2019.jpg" alt="" class="img-thumbnail img img-responsive" />
                             </div>
                             <div class="col-sm-12">
                                 <center><h2>Instafxng Point Based Loyalty Program and Reward</h2>
