@@ -15,6 +15,17 @@ set_error_handler("customError");
  * @param type $marked_string
  * @return type mixed $clean_string
  */
+
+function get_ticket_id($email){
+    global $db_handle;
+    $query = "SELECT id from dinner_2018 WHERE email = '$email' AND choice = '1'";
+    $result = $db_handle->runQuery($query);
+    $id = $db_handle->fetchArray($result);
+    foreach($id AS $row){
+        extract($row);
+    }
+    return $id;
+}
 function strip_zeros_from_date( $marked_string="" ) {
   // first remove the marked zeros
   $no_zeros = str_replace('*0', '', $marked_string);

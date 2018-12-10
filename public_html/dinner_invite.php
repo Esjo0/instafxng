@@ -6,15 +6,23 @@
  * Time: 7:06 AM
  */
 require_once 'init/initialize_client.php';
+$get_params = allowed_get_params(['i']);
+$code_encrypted = $get_params['i'];
+if (empty($code_encrypted) || $code_encrypted == NULL) {
+    redirect_to("https://instafxng.com");
+    exit;
+}
 $thisPage = "";
-
+$code = dec_enc('decrypt', $code_encrypted);
+if (empty($code) || $code == NULL) {
+    redirect_to("https://instafxng.com");
+    exit;
+}
 $date_now = datetime_to_text(date('Y-m-d H:i:s'));
 
 
 if(isset($_POST['invite'])){
-    $email = $db_handle->sanitizePost($_POST['email']);
-    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-    $query = "SELECT invite_code,title,town,name FROM dinner_2018 WHERE email = '$email' AND invite_code IS NOT NULL LIMIT 1";
+    $query = "SELECT invite_code,title,town,name FROM dinner_2018 WHERE id = '$code' AND invite_code IS NOT NULL LIMIT 1";
     $result = $db_handle->runQuery($query);
     $numrows = $db_handle->numRows($query);
     $result = $db_handle->fetchAssoc($result);
@@ -113,16 +121,10 @@ MAIL;
     <div class="row">
         <div class="col-sm-4"></div>
         <form class="col-sm-4" action="" method="post">
-            <label class="text-center">Kindly Input you email address to download your invite.</label>
-            <div class="form-group col-sm-12">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
-                    <input name="email" type="text" id="" value="<?php echo $client_email; ?>" class="form-control" placeholder="Your email address" required/>
-                </div>
-            </div>
+            <label class="text-center">Kindly Click on the button below to download your invite.</label>
             <div class="text-center" id="submit">
                 <hr>
-                <button name="invite" type="submit" class="btn btn-success">DOWNLOAD INVITE</button>
+                <button name="invite" type="submit" class="btn btn-lg btn-success">DOWNLOAD INVITE</button>
                 </hr>
             </div>
             <div class="col-sm-4"></div>

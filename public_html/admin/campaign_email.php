@@ -177,6 +177,7 @@ if($get_params['x'] == 'duplicate') {
                                     <li>[SLP] - Points earned by a Splurge Participant</li>
                                     <li>[SLL] - Target Point in the Tier a Splurge Participant chose</li>
                                     <li>[DINNER] - Dinner Reservation Link</li>
+                                    <li>[DINNER-INVITE] - Dinner invite download Link</li>
 
 
                                 </ul>
