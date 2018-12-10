@@ -153,7 +153,7 @@ $all_clients = $db_handle->fetchAssoc($result);
 
 
 // Admin Allowed: Toye, Lekan, Demola, Bunmi
-$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6", "AjybU");
+$update_allowed = array("FgI5p", "FWJK4", "5xVvl", "43am6");
 $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allowed) ? true : false;
 
 ?>

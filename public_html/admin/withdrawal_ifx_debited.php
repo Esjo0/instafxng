@@ -265,7 +265,7 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                             } ?>
                                                         </span>
                                                     </div>
-                                                    <div class="col-xs-4"><span style="text-align: right"><a class="btn btn-info" href="withdraw_process.php?x=debited&id=<?php echo encrypt_ssl($row['trans_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Process</a></span></div>
+                                                    <div class="col-xs-4"><span style="text-align: right"><a class="btn btn-info" href="withdraw_process.php?x=debited&id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Process</a></span></div>
                                                 </div>
                                             </div>
                                         </div>

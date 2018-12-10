@@ -104,7 +104,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-12">
-                                <img style="" src="images/Loyalty_Points_Images/ilpr_landing_image.jpg" alt="" class="img-thumbnail img img-responsive" />
+                                <img style="" src="https://instafxng.com/imgsource/ilpr2019.jpg" alt="" class="img-thumbnail img img-responsive" />
                             </div>
                             <div class="col-sm-12">
                                 <center><h2>Instafxng Point Based Loyalty Program and Reward</h2>
@@ -123,9 +123,131 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <p>Our new unified reward program which rewards every single one
                                     of our loyal clients daily, monthly and annually.</p>
                                 <p>The first round of the InstaFxNg Point Based Loyalty Program and Reward ended on the 30th of
-                                    November, 2017 with 10 amazing winners who got cash prizes ranging from N50, 000 up to
+                                    November, 2018 with 10 amazing winners who got cash prizes ranging from N50, 000 up to
                                     N1 000 000.</p>
-                                <center><img src="images/Loyalty_Points_Images/ILPR_Collage.jpg" class="img-responsive img-thumbnail"></center>
+                                <div class="row" style="background: url('images/form_bg.png') repeat;">
+
+                                    <h3 class="col-sm-12 text-center">Meet the Winners</h3>
+                                    <div id="winners1" class="carousel slide col-sm-6" data-ride="carousel">
+                                        <!-- Indicators -->
+
+                                        <!-- Wrapper for slides -->
+                                        <div class="carousel-inner">
+
+                                            <div class="item active" >
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Ibe_kwe.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;1,000,000</h3>
+                                                    <h5>Points: 9,360.50</h5>
+                                                    <b style="background-color: #DD4A68; color:white;" > Chinedu </b>
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Ehinomen.png" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;250,000</h3>
+                                                    <h5>Points: 5,868.63</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Ehinomen </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Semawon.png" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;100,000</h3>
+                                                    <h5>Points: 3,952.71</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Henry </b>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Solo_mon.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 3,106.65</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Solomon </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/iduh.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 1,834.12</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Iduh </b>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div id="winner2" class="carousel slide col-sm-6" data-ride="carousel">
+                                        <!-- Indicators -->
+
+                                        <!-- Wrapper for slides -->
+                                        <div class="carousel-inner">
+
+                                            <div class="item active">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Debole.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;500,000</h3>
+                                                    <h5>Points: 6,044.72</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Debole </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Circleflow.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;150,000</h3>
+                                                    <h5>Points: 5,174.00</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Circleflow </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Ola%20Abdullahi.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 3,910.06</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Ola </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Nwabuzor_lucky.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 1,622.72</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Lucky </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Benson.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 2,213.42</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Benson </b>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
                                 <p>What is thrilling is about the Loyalty rewards how much you can get without doing anything
                                     extra other than just trading as usual.</p>
                                 <p>You do not enter for a draw or trade a particular lot size to qualify <b>"Just Trade!"</b></p>

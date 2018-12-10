@@ -100,7 +100,7 @@ $first_time_transaction = $db_handle->fetchAssoc($result);
                                             <td>&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>
                                             <td><?php echo financial_trans_type($row['trans_type']); ?></td>
                                             <td>
-                                                <a title="Edit" class="btn btn-info" href="compliance/first_time_transaction_view.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
+                                                <a title="Edit" class="btn btn-info" href="compliance/first_time_transaction_view.php?id=<?php echo dec_enc('encrypt',$row['trans_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

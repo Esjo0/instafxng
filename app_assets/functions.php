@@ -15,6 +15,17 @@ set_error_handler("customError");
  * @param type $marked_string
  * @return type mixed $clean_string
  */
+
+function get_ticket_id($email){
+    global $db_handle;
+    $query = "SELECT id from dinner_2018 WHERE email = '$email' AND choice = '1'";
+    $result = $db_handle->runQuery($query);
+    $id = $db_handle->fetchArray($result);
+    foreach($id AS $row){
+        extract($row);
+    }
+    return $id;
+}
 function strip_zeros_from_date( $marked_string="" ) {
   // first remove the marked zeros
   $no_zeros = str_replace('*0', '', $marked_string);
@@ -226,6 +237,30 @@ function encrypt($data){
 function decrypt($data){
     $decode = base64_decode($data);
     return mcrypt_decrypt(MCRYPT_RIJNDAEL_128, KEY, $decode, MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
+}
+
+function dec_enc($action, $string) {
+    $output = false;
+
+    $encrypt_method = "AES-256-CBC";
+    $secret_key = '35b9979b151f225c6c7ff136cd13b0ff';
+    $secret_iv = '1234567890123456';
+
+    // hash
+    $key = hash('sha256', $secret_key);
+
+    // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+    $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+    if( $action == 'encrypt' ) {
+        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+        $output = base64_encode($output);
+    }
+    else if( $action == 'decrypt' ){
+        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+    }
+
+    return $output;
 }
 
 /// check the below functions much later

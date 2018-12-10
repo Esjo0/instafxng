@@ -3,12 +3,12 @@ require_once 'init/initialize_general.php';
 $thisPage = "Promotion";
 
 // Select all the archived months
-$query = "SELECT start_date FROM point_ranking_log WHERE type = '1' GROUP BY start_date DESC";
+$query = "SELECT start_date, end_date FROM point_ranking_log WHERE type = '1' GROUP BY start_date DESC";
 $result = $db_handle->runQuery($query);
 $selected_months = $db_handle->fetchAssoc($result);
 
 // Select all the archived years
-$query = "SELECT start_date FROM point_ranking_log WHERE type = '2' GROUP BY start_date DESC";
+$query = "SELECT start_date, end_date FROM point_ranking_log WHERE type = '2' GROUP BY start_date DESC";
 $result = $db_handle->runQuery($query);
 $selected_years = $db_handle->fetchAssoc($result);
 
@@ -63,10 +63,11 @@ $selected_years = $db_handle->fetchAssoc($result);
                                     $count = 1;
                                     foreach ($selected_years as $row) {
                                         $start_date = $row['start_date'];
+                                        $end_date = $row['end_date'];
                                         ?>
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
-                                                <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse_year<?php echo $count; ?>">Top 20 Rank in 2017</a></h5>
+                                                <h5 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse_year<?php echo $count; ?>">Top 20 Rank in <?php echo date('Y', strtotime($end_date)); ?></a></h5>
                                             </div>
                                             <div id="collapse_year<?php echo $count; ?>" class="panel-collapse collapse">
                                                 <div class="panel-body">

@@ -78,10 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
 
         if(array_key_exists('user_code', $selected_member)) {
             $user_code = $selected_member['user_code'];
+            $encode_dinner_id = dec_enc('encrypt', get_ticket_id($client_email));
 
             $encrypted_user_code = encrypt_ssl($user_code);
             $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
             $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
+            $dinner_invite_2018 = "<a title='Click Here to Download your invite' href='https://instafxng.com/dinner_invite.php?i=$encode_dinner_id'><strong>Click Here to Download Your Royal Invite</strong></a>";
             $found_position_month = in_array_r($user_code, $found_loyalty_month);
             $month_position = $found_position_month['position'];
             $month_rank = number_format(($found_position_month['rank']), 2, ".", ",");
@@ -108,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
             $splurge_tier_target = $splurge_detail['tier_target'];
 
             $my_message_new = str_replace('[DINNER]', $dinner_2018, $my_message_new);
+            $my_message_new = str_replace('[DINNER-INVITE]', $dinner_invite_2018, $my_message_new);
             $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
             $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
             $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);

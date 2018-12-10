@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $user_ilpr_enrolment_id_encrypted = $get_params['id'];
-$user_ilpr_enrolment_id = decrypt_ssl(str_replace(" ", "+", $user_ilpr_enrolment_id_encrypted));
-$user_ilpr_enrolment_id = preg_replace("/[^A-Za-z0-9 ]/", '', $user_ilpr_enrolment_id);
+$user_ilpr_enrolment_id = dec_enc('decrypt', $user_ilpr_enrolment_id_encrypted);
 
 $query = "SELECT ui.ifx_acct_no
         FROM user_ilpr_enrolment AS uie

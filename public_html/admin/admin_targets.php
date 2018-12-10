@@ -18,6 +18,8 @@ if (isset($_POST['create'])) {
     $commission_target = $db_handle->sanitizePost($_POST['commission_target']);
     $deposit_target = $db_handle->sanitizePost($_POST['deposit_target']);
 
+    if(is_null($commission_target) || empty($commission_target)) { $commission_target = 0; }
+    if(is_null($deposit_target)  || empty($deposit_target)) { $deposit_target = 0; }
 
     $query = "INSERT into admin_targets(name, details, period, value, commission_target, deposit_target, year, type, status, admin) VALUES('$name','$details', '$period','$value', $commission_target, $deposit_target, '$year', '$type', '1','$admin_code')";
     $result = $db_handle->runQuery($query);
@@ -239,14 +241,14 @@ $targets = $db_handle->fetchAssoc($result);
                                                             <div class="form-group row">
                                                                 <div class="col-sm-5">
                                                                     <label for="inputHeading3" class="col-form-label">Commission Target</label>
-                                                                    <input name="commission_target" type="number" class="form-control" placeholder="Retention Commission Target" required>
+                                                                    <input name="commission_target" type="number" class="form-control" placeholder="Retention Commission Target">
                                                                 </div>
                                                             </div>
 
                                                             <div class="form-group row">
                                                                 <div class="col-sm-5">
                                                                     <label for="inputHeading3" class="col-form-label">Funding Target</label>
-                                                                    <input name="deposit_target" type="number" class="form-control" placeholder="Retention Funding Target" required>
+                                                                    <input name="deposit_target" type="number" class="form-control" placeholder="Retention Funding Target">
                                                                 </div>
                                                             </div>
                                                     </div>

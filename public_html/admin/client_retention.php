@@ -95,7 +95,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ORDER BY rc1.last_trade DESC ";
+            WHERE rc2.user_code IS NULL ORDER BY rc1.first_trade DESC ";
 
         $retention_type_title2 = "RETAINED";
         $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
@@ -193,7 +193,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
     $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ORDER BY rc2.last_trade DESC ";
+            WHERE rc2.user_code IS NULL ORDER BY rc1.first_trade DESC ";
 
     $retention_type_title2 = "RETAINED";
     $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
