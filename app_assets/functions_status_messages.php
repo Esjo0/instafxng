@@ -1588,41 +1588,40 @@ function client_group_query($client_group, $campaign_type)
                     WHERE ui.ifx_acct_no NOT IN (
                 SELECT ifx_acct_no FROM trading_commission WHERE commission > 0
                     )
-                    GROUP BY u.email
-                    ORDER BY u.created DESC, u.last_name ASC";
+                    GROUP BY u.user_code ";
                 break;
             case '71':
                 $query = "SELECT u.user_code, u.first_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
                     WHERE ud.status = '8' AND ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
-                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                    GROUP BY u.user_code ";
                 break;
             case '72':
                 $query = "SELECT u.user_code, u.first_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
                     WHERE ud.status = '8' AND ui.type = '2' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
-                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                    GROUP BY u.user_code ";
                 break;
             case '73':
                 $query = "SELECT u.user_code, u.first_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     WHERE ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
-                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                    GROUP BY u.user_code ";
                 break;
             case '74':
                 $query = "SELECT u.user_code, u.first_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     WHERE ui.type = '2' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
-                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                    GROUP BY u.user_code ";
                 break;
             case '75':
                 $query = "SELECT u.user_code, u.first_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
                     AND  u.user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
-                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                    GROUP BY u.user_code ";
                 break;
             default:
                 $query = false;
