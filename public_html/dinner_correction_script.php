@@ -1,6 +1,6 @@
 <?php
 require_once 'init/initialize_general.php';
-
+// script to correct dinner invites having usercode only.
 $client_operation = new clientOperation();
 
 $query = "SELECT * FROM dinner_2018";
