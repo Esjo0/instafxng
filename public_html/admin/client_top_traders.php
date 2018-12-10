@@ -143,6 +143,14 @@ $clients_top_traders = $db_handle->fetchAssoc($result);
                                 <?php if(isset($numrows)) { ?>
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
+                                <?php
+                                if(isset($clients_top_traders) && !empty($clients_top_traders)) {
+                                    foreach ($clients_top_traders as $row) {
+                                        extract($row);
+                                        $sum_of_commission += $sum_commission;
+                                    }
+                                    echo "<p><strong>Total Commissions: </strong>".number_format($sum_of_commission)."</p>";
+                                }?>
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <p class="pull-right"><button data-target="#reset_contact_stat" data-toggle="modal" class="btn btn-xs btn-default" >Reset Contact List</button></p>

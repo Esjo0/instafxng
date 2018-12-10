@@ -5,13 +5,16 @@ if (!$session_admin->is_logged_in()) {
 }
 $client_operation = new clientOperation();
 
+$query_count = "SELECT * FROM dinner_2018 WHERE choice = '1' AND type <> '6'";
+$total_seats_taken = $db_handle->numRows($query_count);
+
 if (isset($_POST['search_text'])){
     $search = $db_handle->sanitizePost($_POST['search_text']);
     $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE name LIKE '%$search%' OR email LIKE '%$search%' OR phone LIKE '%$search%'
     ORDER BY d.created DESC ";
-    $_SESSION['query'] = $query;
+    $_SESSION['query_dinner'] = $query;
 }
 if (isset($_POST['edit'])) {
     $gender = $db_handle->sanitizePost($_POST['gender']);
@@ -50,9 +53,8 @@ if (isset($_POST['add'])) {
     $phone = $db_handle->sanitizePost($_POST['phone']);
     $email = $db_handle->sanitizePost($_POST['email']);
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-    $query = "SELECT * FROM dinner_2018 WHERE email = '$email'";
-    $numrows = $db_handle->numRows($query);
-    if ($email != false && $numrows == 0) {
+
+    if (!empty($name) && !empty($choice) && !empty($type)) {
         if ($choice == 1 && !empty($gender) && $gender != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL && !empty($name) && $name != NULL) {
             $query = "INSERT INTO dinner_2018 (name, email, choice, title, town, gender, state, type, phone) VALUE('$name', '$email', '$choice', '$title', '$town', '$gender', '$state', '$type', '$phone')";
             $result = $db_handle->runQuery($query);
@@ -113,7 +115,7 @@ MAIL;
             }
         }
         if ($choice == 2) {
-            $query = "INSERT IGNORE INTO dinner_2018 (email, choice) VALUE('$email', '$choice')";
+            $query = "INSERT INTO dinner_2018 (name, email, choice, title, town, gender, state, type, phone) VALUE('$name', '$email', '$choice', '$title', '$town', '$gender', '$state', '$type', '$phone')";
             $result = $db_handle->runQuery($query);
             if ($result) {
                 $subject = 'The Ball Will Be Brighter With Your Presence';
@@ -171,7 +173,7 @@ MAIL;
             }
         }
         if ($choice == 3) {
-            $query = "INSERT IGNORE INTO dinner_2018 (email, choice) VALUE('$email', '$choice')";
+            $query = "INSERT INTO dinner_2018 (name, email, choice, title, town, gender, state, type, phone) VALUE('$name', '$email', '$choice', '$title', '$town', '$gender', '$state', '$type', '$phone')";
             $result = $db_handle->runQuery($query);
             if ($result) {
                 $subject = 'The Ball Would have been more fun with you ' . $first_name . '!';
@@ -226,7 +228,7 @@ MAIL;
             }
         }
     }else {
-        $message_error = "Client has reserved a seat Earlier!!!.";
+        $message_error = "Kindly ensure you fill Participant Name Choice and ticket type";
 
     }
 }
@@ -275,17 +277,17 @@ if(isset($_POST['filter'])){
     WHERE $filter
     ORDER BY d.created DESC ";
 
-    $_SESSION['query'] = $query;
+    $_SESSION['query_dinner'] = $query;
 
-}elseif(empty($_SESSION['query']) || isset($_POST['all'])){
+}elseif(empty($_SESSION['query_dinner']) || isset($_POST['all'])){
 
 $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE d.choice IS NOT NULL
     ORDER BY d.created DESC ";
-    $_SESSION['query'] = $query;
+    $_SESSION['query_dinner'] = $query;
 }
-$query = $_SESSION['query'];
+$query = $_SESSION['query_dinner'];
 
 $numrows = $db_handle->numRows($query);
 
@@ -326,11 +328,12 @@ if($numrows > 0) {
     $my_message = stripslashes($selected_campaign_email['content']);
     $mail_sender = trim($selected_campaign_email['sender']);
 
-    $query = $_SESSION['query'];
+    $query = $_SESSION['query_dinner'];
     $result = $db_handle->runQuery($query);
     $recipients = $db_handle->fetchAssoc($result);
     foreach ($recipients as $sendto) {
         extract($sendto);
+        if(empty($email)){$email = $client_email;}
         $query = "SELECT user_code, first_name FROM user WHERE email = '$email' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
@@ -509,6 +512,7 @@ if($numrows > 0) {
                                 </div>
                             </div>
                         </div>
+                        <h3 class="text-center">Total Seats Taken <?php echo $total_seats_taken?></h3>
                 <div class="col-md-7 pull-right">
                     <form action="" method="post">
                         <button class="btn btn-default  btn-sm pull-left" type="submit" name="all">View All</button></form>
@@ -536,7 +540,7 @@ if($numrows > 0) {
                                             <div class="form-group mx-sm-4 mb-2">
                                                 <div for="input" class="sr-only">Email Address</div>
                                                 <input name="email" type="text" class="form-control"
-                                                       placeholder="Enter Client Email " required>
+                                                       placeholder="Enter Client Email ">
                                             </div>
                                             <div class="form-group mx-sm-4 mb-2">
                                                 <input name="name" type="text" class="form-control"
@@ -722,10 +726,8 @@ if($numrows > 0) {
                        <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Client Name</th>
+                                <th>Client Details</th>
                                 <th>Date</th>
-                                <th>Email Address</th>
-                                <th>Phone Number</th>
                                 <th>Title</th>
                                 <th>Residence</th>
                                 <th></th>
@@ -735,9 +737,18 @@ if($numrows > 0) {
                             <?php
                             if (isset($participants) && !empty($participants)) {
                                 foreach ($participants as $row) {
-                                    extract($row)?>
+                                    extract($row);
+                                        if(empty($name)){$name = $client_full_name;}
+                                        if(empty($phone)){$phone = $client_phone_number;}
+                                        if(empty($email)){$email = $client_email;}
+
+                                        ?>
                                     <tr>
                                         <td><?php echo $name; ?>
+                                            <br>
+                                            <?php echo $email ; ?>
+                                            <br>
+                                            <?php echo $phone ; ?>
                                             <span class="badge" title="Ticket Type">
                                                 <?php if($type == 1){echo 'Single';}?>
                                                 <?php if($type == 2){echo 'Double';}?>
@@ -758,13 +769,11 @@ if($numrows > 0) {
                                             }?>
                                                 </span>
                                         </td>
-                                        <td><?php echo $email; ?></td>
-                                        <td><?php echo $phone; ?></td>
-                                        <td><?php echo $title." of ".$town; ?></td>
-                                        <td><?php echo $state; ?></td>
+                                        <td><?php if(!empty($title)){echo $title." of ".$town;}else{ echo "Nill"; }?></td>
+                                        <td><?php if(!empty($state)){echo $state;}else{ echo "Nill"; }?></td>
                                         <td nowrap="nowrap">
                                             <?php if($user_code != NULL){?><a target="_blank" title="View" class="btn btn-sm btn-info"
-                                               href="client_detail.php?id=<?php echo encrypt($user_code); ?>"><i
+                                               href="client_detail.php?id=<?php echo encrypt_ssl($user_code); ?>"><i
                                                     class="glyphicon glyphicon-eye-open icon-white"></i> </a><?php }?>
                                             <a class="btn btn-sm btn-primary" title="Send Email"
                                                href="campaign_email_single.php?name=<?php $name;
@@ -794,7 +803,7 @@ if($numrows > 0) {
                                                                 <label>Email</label>
                                                                 <div class="form-group mx-sm-4 mb-2">
                                                                     <input value="<?php echo $email; ?>" name="email" type="text" class="form-control"
-                                                                           placeholder="Enter Client Email " required/>
+                                                                           placeholder="Enter Client Email "/>
                                                                 </div>
                                                                 <label>Name</label>
                                                                 <div class="form-group mx-sm-4 mb-2">

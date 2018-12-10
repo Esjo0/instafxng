@@ -228,6 +228,30 @@ function decrypt($data){
     return mcrypt_decrypt(MCRYPT_RIJNDAEL_128, KEY, $decode, MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
 }
 
+function dec_enc($action, $string) {
+    $output = false;
+
+    $encrypt_method = "AES-256-CBC";
+    $secret_key = '35b9979b151f225c6c7ff136cd13b0ff';
+    $secret_iv = '1234567890123456';
+
+    // hash
+    $key = hash('sha256', $secret_key);
+
+    // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+    $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+    if( $action == 'encrypt' ) {
+        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+        $output = base64_encode($output);
+    }
+    else if( $action == 'decrypt' ){
+        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+    }
+
+    return $output;
+}
+
 /// check the below functions much later
 
 function is_odd($n){
@@ -892,3 +916,108 @@ MAIL;
     echo $markup;
 }
 #Edu_Sales_Tracker Functions
+
+/*
+ * Clients Call Log
+ * Track Clients that have been contacted and thosde that need follow up
+ */
+function call_log_status($user_code){
+    global $db_handle;
+
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' LIMIT 1";
+    $result = $db_handle->runQuery($query);
+    $result = $db_handle->fetchArray($result);
+    $numrows = $db_handle->numRows($query);
+    if($numrows == 1){
+    foreach($result AS $row){
+        extract($row);
+        $date = datetime_to_text($created);
+        if($status == 1){
+            $display = <<<CONTACT
+<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+<div class="input-group">
+<input type="hidden" name="user_code" value="{$user_code}" >
+<i data-toggle="tooltip" data-placement="top" title="Contacted on {$date}">contacted</i>
+<button  class="btn btn-secondary" title="Click to follow client up or call back" type="button" data-toggle="modal" data-target="#{$user_code}" class="btn btn-sm">
+<i class="glyphicon glyphicon-phone icon-white"></i>
+</button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="{$user_code}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add A comment to log client for a follow up call or a call back</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <textarea rows="3" class="form-control" name="comment" placeholder="Enter Commment"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button name="follow_up" type="submit" class="btn btn-primary">SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal End -->
+</form>
+CONTACT;
+
+        }elseif($status == 2){
+            $display = <<<CONTACT
+<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+<div class="input-group">
+<input type="hidden" name="user_code" value="{$user_code}" >
+<button name="called" title="Flag As Contacted" type="submit" class="btn btn-secondary">
+<i class="glyphicon glyphicon-check icon-white"></i>
+</button>
+<i data-toggle="tooltip" data-placement="top" title="{$follow_up_comment}">
+Follow Up
+</i>
+</div>
+</form>
+CONTACT;
+        }
+    }
+
+    }elseif($numrows == 0){
+        $display = <<<CONTACT
+<form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
+<div class="input-group">
+<input type="hidden" name="user_code" value="{$user_code}" >
+<button name="called" title="Flag As Contacted" type="submit" class="btn btn-secondary">
+<i class="glyphicon glyphicon-check icon-white"></i>
+</button>
+<button class="btn btn-secondary" title="Click to follow client up or call back" type="button" data-toggle="modal" data-target="#{$user_code}" class="btn btn-sm">
+<i class="glyphicon glyphicon-phone icon-white"></i>
+</button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="{$user_code}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add A comment to log client for a follow up call or a call back</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <textarea rows="3" class="form-control" name="comment" placeholder="Enter Commment"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button name="follow_up" type="submit" class="btn btn-primary">SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal End -->
+</form>
+CONTACT;
+    }
+    echo $display;
+}

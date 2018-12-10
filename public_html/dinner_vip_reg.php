@@ -1,48 +1,23 @@
 <?php
 require_once 'init/initialize_general.php';
-$get_params = allowed_get_params(['r']);
-$user_code_encrypted = $get_params['r'];
-if (empty($user_code_encrypted)) {
-    redirect_to("https://instafxng.com");
-    exit;
-}
-
-$dinner_emails = array("joshua@instafxng.com","austin.albert@circleflowmgt.com","semmymails@yahoo.com","abdulfx1@gmail.com","uchennaegbejiogu@gmail.com","icjustine@yahoo.com","shukrahbiz@gmail.com");
-$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
-$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
-$client_operation = new clientOperation();
-$details = $client_operation->get_user_by_code($user_code);
-extract($details);
-if (empty($client_email) || $client_email == NULL ) {
-    redirect_to("https://instafxng.com");
-    exit;
-}
-$query = "SELECT * FROM dinner_2018 WHERE choice = '1'";
-$total_seats_taken = $db_handle->numRows($query);
-
-$query = "SELECT * FROM dinner_2018 WHERE user_code = '$user_code' AND choice = '2'";
-$numrows = $db_handle->numRows($query);
-if($numrows == 1){
-    $maybe = true;
-}
 
 if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
     $avatar = $db_handle->sanitizePost($_POST['avatar']);
     $choice = $db_handle->sanitizePost($_POST['choice']);
+    $name = $db_handle->sanitizePost($_POST['name']);
+    $email = $db_handle->sanitizePost($_POST['email']);
+    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+    $phone = $db_handle->sanitizePost($_POST['phone']);
     $title = $db_handle->sanitizePost($_POST['title']);
     $town = $db_handle->sanitizePost($_POST['town']);
     $state = $db_handle->sanitizePost($_POST['state']);
-    $query = "SELECT * FROM dinner_2018 WHERE user_code = '$user_code' AND (choice = '1' OR choice = '3')";
+    $split_name = split_name($name);
+    extract($split_name);
+    $query = "SELECT * FROM dinner_2018 WHERE email = '$email' AND (choice = '1' OR choice = '3')";
     $numrows = $db_handle->numRows($query);
-    if($total_seats_taken <= 82  || $maybe == true || (in_array($client_email, $dinner_emails))) {
-        if ($numrows == 0) {
-            if ($choice == 1 && !empty($avatar) && $avatar != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL) {
-                if ($maybe == true) {
-                    $query = "UPDATE dinner_2018 SET choice = '$choice' WHERE user_code = '$user_code'";
-                } else {
-                    $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender, state, type, name, phone, email) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar', '$state', '1', '$client_full_name', '$client_phone_number', '$client_email')";
-
-                }
+        if ($numrows == 0 ) {
+            if ($choice == 1 && $email == true && !empty($avatar) && $avatar != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL) {
+                    $query = "INSERT IGNORE INTO dinner_2018 (choice, title, town, gender, state, type, name, phone, email) VALUE('$choice', '$title', '$town', '$avatar', '$state', '3', '$name', '$phone', '$email')";
                 $result = $db_handle->runQuery($query);
                 if ($result) {
                     if ($avatar == 1) {
@@ -50,14 +25,14 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
                     } elseif ($avatar == 2) {
                         $gender = "her";
                     }
-                    $subject = 'Your seat has been reserved, ' . $client_first_name . '!';
+                    $subject = 'Your seat has been reserved, ' . $first_name . '!';
                     $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
-                                <img src="https://instafxng.com/images/ifxlogo.png" />
+                                <img ps://instafxng.src="httcom/images/ifxlogo.png" />
                             <hr />
                             <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>All hail <b>$title</b> $client_full_name, the first of $gender name from <b>the house of $town.</b></p>
+                                <p>All hail <b>$title</b> $name, the first of $gender name from <b>the house of $town.</b></p>
                                 <p>It is our pleasure to receive your consent to attend the Royal Ball.</p>
                                 <p>Your seat has been reserved and your dynasty is being prepared to receive your presence.</p>
                                 <p>The royal invite will be sent when all is set, brace up it's going to be a ball to remember.</p>
@@ -94,83 +69,25 @@ if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
                         </div>
                     </div>
 MAIL;
-                    $system_object->send_email($subject, $message_final, $client_email, $client_first_name);
+                    $system_object->send_email($subject, $message_final, $email, $first_name);
                     $message_success = "YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL";
                     header('Location: dinner_completed.php?z=' . $choice);
                 } else {
                     $message_error = "Reservation Not Successful Kindly Try Again";
                 }
             }
-            if ($choice == 2) {
-                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
-                $result = $db_handle->runQuery($query);
-                if ($result) {
-                    $subject = 'The Ball Will Be Brighter With Your Presence';
-                    $message_final = <<<MAIL
-                    <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
-                                <img src="https://instafxng.com/images/ifxlogo.png" />
-                            <hr />
-                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
-                            <p>Your royal highness,</p>
-                            <p>It will be a pleasure to receive you at this year's Royal ball.</p>
-                            <p>However, we understand that the season is very eventful and you are quite uncertain of your attendance.</p>
-                            <p>To this end, our dynasty has decided to reserve your spot for the next 5 nights.</p>
-                            <p>The royal raven will be back to get your final decision by the fifth night.</p>
-                            <p>This ball will be one to remember forever… We look forward to hosting your royalty.</p>
-                                <br /><br />
-                                <p>Best Regards,</p>
-                                <p>The InstaFxNg Team,<br />
-                                   www.instafxng.com</p>
-                                <br /><br />
-                            </div>
-                            <hr />
-                            <div style="background-color: #EBDEE9;">
-                                <div style="font-size: 11px !important; padding: 15px;">
-                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                                        <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
-                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-                                    </p>
-                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
-                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
-                                    <br />
-                                </div>
-                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                                        official Nigerian Representative of Instaforex, operator and administrator
-                                        of the website www.instafxng.com</p>
-                                    <p>To ensure you continue to receive special offers and updates from us,
-                                        please add support@instafxng.com to your address book.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-MAIL;
-                    $system_object->send_email($subject, $message_final, $client_email, $last_name);
-
-                    $message_success = "YOUR SEAT HAS BEEN TEMPORARILY RESERVED. KINDLY CONFIRM YOUR RESERVATION WITHIN THE NEXT
-                                        5 DAYS.";
-                    header('Location: dinner_completed.php?z=' . $choice);
-                } else {
-                    $message_error = "Reservation Not Successful Kindly Try Again";
-                }
-            }
             if ($choice == 3) {
-                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
+                $query = "INSERT IGNORE INTO dinner_2018 (email, name, phone, choice) VALUE('$email', '$name', '$phone', '$choice')";
                 $result = $db_handle->runQuery($query);
                 if ($result) {
-                    $subject = 'The Ball Would have been more fun with you ' . $client_first_name . '!';
+                    $subject = 'The Ball Would have been more fun with you ' . $first_name . '!';
                     $message_final = <<<MAIL
                     <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
                         <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
                             <img src="https://instafxng.com/images/ifxlogo.png" />
                             <hr />
                             <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>Dear $client_first_name,</p>
+                                <p>Dear $first_name,</p>
                                 <p>The ball would be incomplete without your presence.</p>
                                 <p>Even though our desire is to have you grace this year's grand dinner, we understand that there are other pertinent tasks that will require your time this season, hence your inability to attend this event.</p>
                                 <p>We look forward to celebrating a greater feat with you next year.</p>
@@ -208,7 +125,7 @@ MAIL;
                         </div>
                     </div>
 MAIL;
-                    $system_object->send_email($subject, $message_final, $client_email, $last_name);
+                    $system_object->send_email($subject, $message_final, $email, $last_name);
                     $message_success = "THANK YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.";
                     header('Location: dinner_completed.php?z=' . $choice);
                 } else {
@@ -219,9 +136,6 @@ MAIL;
             $message_error = "You have completed the reservation process Earlier!!!.";
 
         }
-    }else{
-        $message_error = "All seat Have been reserved.";
-    }
 }
 
 ?>
@@ -256,7 +170,7 @@ MAIL;
             <div class="container-fluid no-gutter masthead">
                 <div class="row">
                     <div id="main-logo" class="col-sm-12 col-md-5">
-                        <a href="./" title="Home Page"><img src="images/ifxlogo.png" alt="Instaforex Nigeria Logo" /></a>
+                        <a href="./" title="Home Page"><img src="images/ifxlogo-xmas.png" alt="Instaforex Nigeria Logo" /></a>
                     </div>
 
                 </div>
@@ -281,8 +195,6 @@ MAIL;
                 <div class="col-sm-6" style="padding: 0 !important;">
                     <center><img src="images/royal_ball_image.jpg" alt="" class="img img-responsive" /></center>
                 </div>
-
-                <?php if($total_seats_taken <= 82 || $maybe == true || (in_array($client_email, $dinner_emails))){?>
                 <div class="col-sm-6">
                 <div class="row">
                     <div class="col-md-1"></div>
@@ -291,25 +203,32 @@ MAIL;
                         <div class="form-group col-sm-12">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                <input name="full_name" type="text" id="" value="<?php echo $client_full_name; ?>" class="form-control" placeholder="Your Full Name" required disabled/>
-                            </div>
+                                <input name="name" type="text" id="" class="form-control" placeholder="Your Full Name" required/>
+                        </div>
                         </div>
 
                         <div class="form-group col-sm-12">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
-                                <input name="email" type="text" id="" value="<?php echo $client_email; ?>" class="form-control" placeholder="Your email address" required disabled/>
+                                <input name="email" type="text" id=""  class="form-control" placeholder="Your email address" required/>
                             </div>
                         </div>
 
                         <div class="form-group col-sm-12">
-                            <small class="text-center"><strong>Will you be in attendance?</strong></small>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
+                                <input name="phone" type="text" id=""  class="form-control" placeholder="Your phone number" required/>
+                            </div>
                         </div>
 
-                        <div class="row">
+                        <div class="form-group text-center col-sm-12">
+                            <small ><strong>Will you be in attendance?</strong></small>
+                        </div>
+
+                        <div class="row text-center">
                             <div class="col-md-2"></div>
                             <!-- Group of default radios - option 1 -->
-                            <div class="col-md-3 ">
+                            <div class="col-md-4">
                                 <input onchange="you('1')" value="1" type="radio"
                                        class="custom-control-input"
                                        id="defaultGroupExample1" name="choice">
@@ -317,24 +236,15 @@ MAIL;
                                        for="defaultGroupExample1">YES</label>
                             </div>
 
-                            <!-- Group of default radios - option 2 -->
-                            <div class="col-md-3 custom-control custom-radio">
-                                <input onchange="you('2')" value="2" type="radio"
-                                       class="custom-control-input"
-                                       id="defaultGroupExample2" name="choice">
-                                <label class="custom-control-label"
-                                       for="defaultGroupExample2">MAYBE</label>
-                            </div>
-
                             <!-- Group of default radios - option 3 -->
-                            <div class="col-md-3 custom-control custom-radio">
+                            <div class="col-md-4 custom-control custom-radio">
                                 <input onchange="you('3')" value="3" type="radio"
                                        class="custom-control-input"
                                        id="defaultGroupExample3" name="choice">
                                 <label class="custom-control-label"
                                        for="defaultGroupExample3">NO</label>
                             </div>
-                            <div class="col-md-1"></div>
+                            <div class="col-md-2"></div>
 
                         </div>
 
@@ -430,11 +340,6 @@ MAIL;
                     <div class="col-md-1"></div>
                 </div>
                 </div>
-                <?php }else{?>
-                    <div class="col-md-6 text-center " style="margin-top:100px">
-                        <h3>ALL SEATS HAVE BEEN RESERVED</h3>
-                    </div>
-                <?php }?>
 
         </section>
         <!--Section: Main info-->
@@ -457,7 +362,7 @@ MAIL;
                     <div class="row text-center" >
 
                         <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
+                        <div class="col-md-6 text-center" style="margin-top:20px">
 
                             <!--Card image-->
                                 <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR4"
@@ -508,7 +413,7 @@ MAIL;
                         </div>
                         <!--Card-->
                         <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
+                        <div class="col-md-6 text-center" style="margin-top:20px">
 
                             <!--Card image-->
                                 <center><img  data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR9" src="images/male9.png"
@@ -556,7 +461,7 @@ MAIL;
                         </div>
                         <!--Card-->
                         <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
+                        <div class="col-md-6 text-center" style="margin-top:20px">
 
                             <!--Card image-->
                                <center> <img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR10"
@@ -606,7 +511,7 @@ MAIL;
                         </div>
                         <!--Card-->
                         <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
+                        <div class="col-md-6 text-center" style="margin-top:20px">
 
                             <!--Card image-->
                             <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR3"
@@ -616,404 +521,6 @@ MAIL;
                                         <a id="duke1" style="display:none;" href="" class="text-center dark-grey-text">
                                             <b
                                                style=" background-color: #d7d7d7;
-                                               border-radius:8px; color:green !important;
-                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                            <span class="fa fa-check"></span>
-                                            </b>
-                                            <div class="text-center">
-                                                <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
-                                            </div>
-                                        </a>
-                                    </strong>
-                                    <!--Card image-->
-                                    <!-- Side Modal Top Right -->
-
-                                    <!-- To change the direction of the modal animation change .right class -->
-                                    <div class="modal"  id="sideModalTR3" tabindex="-1" role="dialog"
-                                         aria-labelledby="myModalLabel" aria-hidden="true" >
-
-                                        <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-                                        <div class="modal-dialog" role="document" >
-
-
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body" style="background-color:transparent">
-                                                    <button class="btn btn-primary" onclick="select_avatar(1,1)" data-dismiss="modal" >SELECT</button>
-                                                    <br/>
-                                                    <img src="images/male3.png"
-                                                         class="img img-responsive" alt="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Side Modal Top Right -->
-
-                        </div>
-                        <!--Card-->
-                        <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
-
-                            <!--Card image-->
-                            <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR4"
-                                         src="images/male4.png"
-                                         class="card-img-top" ></center>
-                            <strong>
-                                <a  id="duke2" style="display:none;" href="" class="text-center dark-grey-text">
-                                    <b
-                                        style="background-color: #d7d7d7;
-                                               border-radius:8px; color:green !important;
-                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                    <span class="fa fa-check"></span>
-                                    </b>
-                                    <div class="text-center">
-                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
-                                    </div>
-                                </a>
-                            </strong>
-                            <!--Card image-->
-                            <!-- Side Modal Top Right -->
-
-                            <!-- To change the direction of the modal animation change .right class -->
-                            <div class="modal" id="sideModalTR4" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel" aria-hidden="true">
-
-                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-                                <div class="modal-dialog" role="document">
-
-
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <button class="btn btn-primary" onclick="select_avatar(1,2)" data-dismiss="modal" >SELECT</button>
-                                            <br/>
-                                            <img src="images/male4.png"
-                                                 class="img img-responsive" alt="">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Side Modal Top Right -->
-
-                        </div>
-                        <!--Card-->
-                        <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
-
-                            <!--Card image-->
-                            <center><img  data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR9" src="images/male9.png"
-                                          class="img img-responsive" ></center>
-                            <strong>
-                                <a id="duke3" style="display:none;" href="" class="text-center dark-grey-text">
-                                    <b
-                                        style="background-color: #d7d7d7;
-                                               border-radius:8px; color:green !important;
-                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                    <span class="fa fa-check"></span>
-                                    </b>
-                                    <div class="text-center">
-                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
-                                    </div>
-                                </a>
-                            </strong>
-                            <!--Card image-->
-                            <!-- Side Modal Top Right -->
-
-                            <!-- To change the direction of the modal animation change .right class -->
-                            <div class="modal" id="sideModalTR9" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel" aria-hidden="true">
-
-                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-                                <div class="modal-dialog" role="document">
-
-
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <button class="btn btn-primary" onclick="select_avatar(1,3)" data-dismiss="modal" >SELECT</button>
-                                            <br/>
-                                            <img src="images/male9.png"
-                                                 class="img img-responsive" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Side Modal Top Right -->
-                        </div>
-                        <!--Card-->
-                        <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
-
-                            <!--Card image-->
-                            <center> <img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR10"
-                                          src="images/male10.jpg"
-                                          class="img img-responsive"></center>
-                            <strong>
-                                <a id="duke4" style="display:none;" href="" class="text-center dark-grey-text">
-                                    <b
-                                        style="background-color: #d7d7d7;
-                                               border-radius:8px; color:green !important;
-                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                    <span class="fa fa-check"></span>
-                                    </b>
-                                    <div class="text-center">
-                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
-                                    </div>
-                                </a>
-                            </strong>
-                            <!--Card image-->
-                            <!-- Side Modal Top Right -->
-
-                            <!-- To change the direction of the modal animation change .right class -->
-                            <div class="modal" id="sideModalTR10" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel" aria-hidden="true">
-
-                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-                                <div class="modal-dialog" role="document">
-
-
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <button class="btn btn-primary" onclick="select_avatar(1,4)" data-dismiss="modal" >SELECT</button>
-                                            <br/>
-                                            <img src="images/male10.jpg"
-                                                 class="img img-responsive" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Side Modal Top Right -->
-
-                        </div>
-                        <!--Card-->
-                        <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
-
-                            <!--Card image-->
-                            <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR3"
-                                         src="images/male3.png"
-                                         class="img img-responsive" ><center>
-                                    <strong>
-                                        <a id="duke1" style="display:none;" href="" class="text-center dark-grey-text">
-                                            <b
-                                                style=" background-color: #d7d7d7;
-                                               border-radius:8px; color:green !important;
-                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                            <span class="fa fa-check"></span>
-                                            </b>
-                                            <div class="text-center">
-                                                <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
-                                            </div>
-                                        </a>
-                                    </strong>
-                                    <!--Card image-->
-                                    <!-- Side Modal Top Right -->
-
-                                    <!-- To change the direction of the modal animation change .right class -->
-                                    <div class="modal"  id="sideModalTR3" tabindex="-1" role="dialog"
-                                         aria-labelledby="myModalLabel" aria-hidden="true" >
-
-                                        <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-                                        <div class="modal-dialog" role="document" >
-
-
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body" style="background-color:transparent">
-                                                    <button class="btn btn-primary" onclick="select_avatar(1,1)" data-dismiss="modal" >SELECT</button>
-                                                    <br/>
-                                                    <img src="images/male3.png"
-                                                         class="img img-responsive" alt="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Side Modal Top Right -->
-
-                        </div>
-                        <!--Card-->
-                        <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
-
-                            <!--Card image-->
-                            <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR4"
-                                         src="images/male4.png"
-                                         class="card-img-top" ></center>
-                            <strong>
-                                <a  id="duke2" style="display:none;" href="" class="text-center dark-grey-text">
-                                    <b
-                                        style="background-color: #d7d7d7;
-                                               border-radius:8px; color:green !important;
-                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                    <span class="fa fa-check"></span>
-                                    </b>
-                                    <div class="text-center">
-                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
-                                    </div>
-                                </a>
-                            </strong>
-                            <!--Card image-->
-                            <!-- Side Modal Top Right -->
-
-                            <!-- To change the direction of the modal animation change .right class -->
-                            <div class="modal" id="sideModalTR4" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel" aria-hidden="true">
-
-                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-                                <div class="modal-dialog" role="document">
-
-
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <button class="btn btn-primary" onclick="select_avatar(1,2)" data-dismiss="modal" >SELECT</button>
-                                            <br/>
-                                            <img src="images/male4.png"
-                                                 class="img img-responsive" alt="">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Side Modal Top Right -->
-
-                        </div>
-                        <!--Card-->
-                        <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
-
-                            <!--Card image-->
-                            <center><img  data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR9" src="images/male9.png"
-                                          class="img img-responsive" ></center>
-                            <strong>
-                                <a id="duke3" style="display:none;" href="" class="text-center dark-grey-text">
-                                    <b
-                                        style="background-color: #d7d7d7;
-                                               border-radius:8px; color:green !important;
-                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                    <span class="fa fa-check"></span>
-                                    </b>
-                                    <div class="text-center">
-                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
-                                    </div>
-                                </a>
-                            </strong>
-                            <!--Card image-->
-                            <!-- Side Modal Top Right -->
-
-                            <!-- To change the direction of the modal animation change .right class -->
-                            <div class="modal" id="sideModalTR9" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel" aria-hidden="true">
-
-                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-                                <div class="modal-dialog" role="document">
-
-
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <button class="btn btn-primary" onclick="select_avatar(1,3)" data-dismiss="modal" >SELECT</button>
-                                            <br/>
-                                            <img src="images/male9.png"
-                                                 class="img img-responsive" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Side Modal Top Right -->
-                        </div>
-                        <!--Card-->
-                        <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
-
-                            <!--Card image-->
-                            <center> <img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR10"
-                                          src="images/male10.jpg"
-                                          class="img img-responsive"></center>
-                            <strong>
-                                <a id="duke4" style="display:none;" href="" class="text-center dark-grey-text">
-                                    <b
-                                        style="background-color: #d7d7d7;
-                                               border-radius:8px; color:green !important;
-                                               box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
-                                    <span class="fa fa-check"></span>
-                                    </b>
-                                    <div class="text-center">
-                                        <button name="submit2" type="submit" class="btn btn-success">SUBMIT</button>
-                                    </div>
-                                </a>
-                            </strong>
-                            <!--Card image-->
-                            <!-- Side Modal Top Right -->
-
-                            <!-- To change the direction of the modal animation change .right class -->
-                            <div class="modal" id="sideModalTR10" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel" aria-hidden="true">
-
-                                <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-                                <div class="modal-dialog" role="document">
-
-
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <button class="btn btn-primary" onclick="select_avatar(1,4)" data-dismiss="modal" >SELECT</button>
-                                            <br/>
-                                            <img src="images/male10.jpg"
-                                                 class="img img-responsive" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Side Modal Top Right -->
-
-                        </div>
-                        <!--Card-->
-                        <!--Card-->
-                        <div class="col-md-3 text-center" style="margin-top:20px">
-
-                            <!--Card image-->
-                            <center><img data-toggle="modal" style="background-color: white; height:150px; width:150px;" data-target="#sideModalTR3"
-                                         src="images/male3.png"
-                                         class="img img-responsive" ><center>
-                                    <strong>
-                                        <a id="duke1" style="display:none;" href="" class="text-center dark-grey-text">
-                                            <b
-                                                style=" background-color: #d7d7d7;
                                                border-radius:8px; color:green !important;
                                                box-shadow: 0 4px 8px 0 rgb(0, 128, 0), 0 6px 20px 0 rgba(255, 11, 0, 0.83)"">
                                             <span class="fa fa-check"></span>

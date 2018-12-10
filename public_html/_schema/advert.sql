@@ -1,3 +1,26 @@
+`ALTER TABLE ``dinner_2018`` DROP INDEX ``email``;`
+
+CREATE TABLE `call_log` (
+ `call_id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(11) NOT NULL,
+ `status` enum('1','2') NOT NULL,
+ `follow_up_comment` text,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ PRIMARY KEY (`call_id`),
+ UNIQUE KEY `user_code` (`user_code`)
+) DEFAULT CHARSET=latin1
+
+
+
+CREATE TABLE `account_audit` (
+ `id` int(10) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(11) NOT NULL,
+ `audit_location` enum('1','2','3') NOT NULL,
+ `audit_date` datetime NOT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+)
 
 ALTER TABLE `dinner_2018` CHANGE `type` `type` ENUM('1','2','3','4','5','6') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '1-Single 2-Double 3-VIP 4-VVIP 5-Team 6-Vendor';
 ALTER TABLE `dinner_2018` ADD UNIQUE(`email`);
