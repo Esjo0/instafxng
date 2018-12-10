@@ -181,115 +181,115 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $onboarding_result = $db_handle->fetchAssoc($result);
 
-if (isset($_POST['send_bulk']) ) {
-    if($numrows > 0 && $numrows <= 200) {
-        $campaign_email_id = $_POST['campaign_email_id'];
-        $selected_campaign_email = $system_object->get_campaign_email_by_id($campaign_email_id);
-
-        $my_subject = trim($selected_campaign_email['subject']);
-        $my_message = stripslashes($selected_campaign_email['content']);
-        $mail_sender = trim($selected_campaign_email['sender']);
-
-        $query = $_SESSION['client_onboarding_query'];
-        $result = $db_handle->runQuery($query);
-        $recipients = $db_handle->fetchAssoc($result);
-        foreach ($recipients as $sendto) {
-            extract($sendto);
-            $query = "SELECT user_code, first_name FROM user WHERE email = '$email' LIMIT 1";
-            $result = $db_handle->runQuery($query);
-            $fetched_data = $db_handle->fetchAssoc($result);
-            $selected_member = $fetched_data[0];
-
-            $client_name = ucwords(strtolower(trim($selected_member['first_name'])));
-
-            // Replace [NAME] with clients full name
-            $my_message_new = str_replace('[NAME]', $client_name, $my_message);
-            $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
-
-            if (array_key_exists('user_code', $selected_member)) {
-                $user_code = $selected_member['user_code'];
-
-                $encrypted_user_code = encrypt($user_code);
-                $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
-                $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
-                $found_position_month = in_array_r($user_code, $found_loyalty_month);
-                $month_position = $found_position_month['position'];
-                $month_rank = number_format(($found_position_month['rank']), 2, ".", ",");
-                $month_rank_highest = number_format(($found_loyalty_month[0]['rank']), 2, ".", ",");
-                $month_rank_difference = number_format(($month_rank_highest - $month_rank), 2, ".", ",");
-                $month_rank_goal = number_format(($month_rank_difference / $days_left_this_month), 2, ".", ",");
-
-                $found_position_year = in_array_r($user_code, $found_loyalty_year);
-                $year_position = $found_position_year['position'];
-                $year_rank = number_format(($found_position_year['rank']), 2, ".", ",");
-                $year_rank_highest = number_format(($found_loyalty_year[0]['rank']), 2, ".", ",");
-                $year_rank_difference = number_format(($year_rank_highest - $year_rank), 2, ".", ",");
-                $year_rank_goal = number_format(($year_rank_difference / $days_left_this_month), 2, ".", ",");
-
-                $last_trade_detail = $client_operation->get_last_trade_detail($user_code);
-                $last_trade_volume = $last_trade_detail['volume'];
-                $last_trade_date = $last_trade_detail['date_earned'];
-
-                $funded = $client_operation->get_total_funding($user_code, $from_date, $to_date);
-                $withdrawn = $client_operation->get_total_withdrawal($user_code, $from_date, $to_date);
-
-                $splurge_detail = $client_operation->get_splurge_user_point($user_code);
-                $splurge_total_points = $splurge_detail['total_points'];
-                $splurge_tier_target = $splurge_detail['tier_target'];
-
-                $my_message_new = str_replace('[DINNER]', $dinner_2018, $my_message_new);
-                $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
-                $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
-                $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);
-                $my_message_new = str_replace('[LPMD]', $month_rank_difference, $my_message_new);
-                $my_message_new = str_replace('[LPMG]', $month_rank_goal, $my_message_new);
-                $my_message_new = str_replace('[LPYP]', $year_position, $my_message_new);
-                $my_message_new = str_replace('[LPYR]', $year_rank, $my_message_new);
-                $my_message_new = str_replace('[LPYHR]', $year_rank_highest, $my_message_new);
-                $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
-                $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
-                $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
-                $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
-                $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
-                $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);
-                $my_message_new = str_replace('[WITHDRAWN]', $withdrawn, $my_message_new);
-                $my_message_new = str_replace('[BFL]', $black_friday_link, $my_message_new);
-                $my_message_new = str_replace('[SLP]', $splurge_total_points, $my_message_new);
-                $my_message_new = str_replace('[SLL]', $splurge_tier_target, $my_message_new);
-
-                $my_message_new = str_replace('[LPMP]', '', $my_message_new);
-                $my_message_new = str_replace('[LPMR]', '', $my_message_new);
-                $my_message_new = str_replace('[LPMHR]', '', $my_message_new);
-                $my_message_new = str_replace('[LPMD]', '', $my_message_new);
-                $my_message_new = str_replace('[LPMG]', '', $my_message_new);
-                $my_message_new = str_replace('[LPYP]', '', $my_message_new);
-                $my_message_new = str_replace('[LPYR]', '', $my_message_new);
-                $my_message_new = str_replace('[LPYHR]', '', $my_message_new);
-                $my_message_new = str_replace('[LPYG]', '', $my_message_new);
-                $my_message_new = str_replace('[LPYD]', '', $my_message_new);
-                $my_message_new = str_replace('[UC]', '', $my_message_new);
-                $my_message_new = str_replace('[LTD]', '', $my_message_new);
-                $my_message_new = str_replace('[LTV]', '', $my_message_new);
-                $my_message_new = str_replace('[FUNDED]', '', $my_message_new);
-                $my_message_new = str_replace('[WITHDRAWN]', '', $my_message_new);
-                $my_message_new = str_replace('[BFL]', '', $my_message_new);
-                $my_message_new = str_replace('[SLP]', '', $my_message_new);
-                $my_message_new = str_replace('[SLL]', '', $my_message_new);
-            }
-
-            $system_object->send_email($my_subject_new, $my_message_new, $email, $client_name, $mail_sender);
-
-        }
-        $message_success = "You have successfully sent the single email.";
-    }elseif($numrows > 200) {
-        $message_error = "You can only send bulk mail to a maximum of 200 recipients";
-    }elseif($numrows == 0) {
-        $message_error = "No Participant Selected";
-    }else{
-        $message_error = "Please Kindly use the single Email Button.";
-
-    }
-}
+//if (isset($_POST['send_bulk']) ) {
+//    if($numrows > 0 && $numrows <= 200) {
+//        $campaign_email_id = $_POST['campaign_email_id'];
+//        $selected_campaign_email = $system_object->get_campaign_email_by_id($campaign_email_id);
+//
+//        $my_subject = trim($selected_campaign_email['subject']);
+//        $my_message = stripslashes($selected_campaign_email['content']);
+//        $mail_sender = trim($selected_campaign_email['sender']);
+//
+//        $query = $_SESSION['client_onboarding_query'];
+//        $result = $db_handle->runQuery($query);
+//        $recipients = $db_handle->fetchAssoc($result);
+//        foreach ($recipients as $sendto) {
+//            extract($sendto);
+//            $query = "SELECT user_code, first_name FROM user WHERE email = '$email' LIMIT 1";
+//            $result = $db_handle->runQuery($query);
+//            $fetched_data = $db_handle->fetchAssoc($result);
+//            $selected_member = $fetched_data[0];
+//
+//            $client_name = ucwords(strtolower(trim($selected_member['first_name'])));
+//
+//            // Replace [NAME] with clients full name
+//            $my_message_new = str_replace('[NAME]', $client_name, $my_message);
+//            $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
+//
+//            if (array_key_exists('user_code', $selected_member)) {
+//                $user_code = $selected_member['user_code'];
+//
+//                $encrypted_user_code = encrypt($user_code);
+//                $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
+//                $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
+//                $found_position_month = in_array_r($user_code, $found_loyalty_month);
+//                $month_position = $found_position_month['position'];
+//                $month_rank = number_format(($found_position_month['rank']), 2, ".", ",");
+//                $month_rank_highest = number_format(($found_loyalty_month[0]['rank']), 2, ".", ",");
+//                $month_rank_difference = number_format(($month_rank_highest - $month_rank), 2, ".", ",");
+//                $month_rank_goal = number_format(($month_rank_difference / $days_left_this_month), 2, ".", ",");
+//
+//                $found_position_year = in_array_r($user_code, $found_loyalty_year);
+//                $year_position = $found_position_year['position'];
+//                $year_rank = number_format(($found_position_year['rank']), 2, ".", ",");
+//                $year_rank_highest = number_format(($found_loyalty_year[0]['rank']), 2, ".", ",");
+//                $year_rank_difference = number_format(($year_rank_highest - $year_rank), 2, ".", ",");
+//                $year_rank_goal = number_format(($year_rank_difference / $days_left_this_month), 2, ".", ",");
+//
+//                $last_trade_detail = $client_operation->get_last_trade_detail($user_code);
+//                $last_trade_volume = $last_trade_detail['volume'];
+//                $last_trade_date = $last_trade_detail['date_earned'];
+//
+//                $funded = $client_operation->get_total_funding($user_code, $from_date, $to_date);
+//                $withdrawn = $client_operation->get_total_withdrawal($user_code, $from_date, $to_date);
+//
+//                $splurge_detail = $client_operation->get_splurge_user_point($user_code);
+//                $splurge_total_points = $splurge_detail['total_points'];
+//                $splurge_tier_target = $splurge_detail['tier_target'];
+//
+//                $my_message_new = str_replace('[DINNER]', $dinner_2018, $my_message_new);
+//                $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
+//                $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
+//                $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);
+//                $my_message_new = str_replace('[LPMD]', $month_rank_difference, $my_message_new);
+//                $my_message_new = str_replace('[LPMG]', $month_rank_goal, $my_message_new);
+//                $my_message_new = str_replace('[LPYP]', $year_position, $my_message_new);
+//                $my_message_new = str_replace('[LPYR]', $year_rank, $my_message_new);
+//                $my_message_new = str_replace('[LPYHR]', $year_rank_highest, $my_message_new);
+//                $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
+//                $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
+//                $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
+//                $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
+//                $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
+//                $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);
+//                $my_message_new = str_replace('[WITHDRAWN]', $withdrawn, $my_message_new);
+//                $my_message_new = str_replace('[BFL]', $black_friday_link, $my_message_new);
+//                $my_message_new = str_replace('[SLP]', $splurge_total_points, $my_message_new);
+//                $my_message_new = str_replace('[SLL]', $splurge_tier_target, $my_message_new);
+//
+//                $my_message_new = str_replace('[LPMP]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPMR]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPMHR]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPMD]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPMG]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYP]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYR]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYHR]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYG]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYD]', '', $my_message_new);
+//                $my_message_new = str_replace('[UC]', '', $my_message_new);
+//                $my_message_new = str_replace('[LTD]', '', $my_message_new);
+//                $my_message_new = str_replace('[LTV]', '', $my_message_new);
+//                $my_message_new = str_replace('[FUNDED]', '', $my_message_new);
+//                $my_message_new = str_replace('[WITHDRAWN]', '', $my_message_new);
+//                $my_message_new = str_replace('[BFL]', '', $my_message_new);
+//                $my_message_new = str_replace('[SLP]', '', $my_message_new);
+//                $my_message_new = str_replace('[SLL]', '', $my_message_new);
+//            }
+//
+//            $system_object->send_email($my_subject_new, $my_message_new, $email, $client_name, $mail_sender);
+//
+//        }
+//        $message_success = "You have successfully sent the single email.";
+//    }elseif($numrows > 200) {
+//        $message_error = "You can only send bulk mail to a maximum of 200 recipients";
+//    }elseif($numrows == 0) {
+//        $message_error = "No Participant Selected";
+//    }else{
+//        $message_error = "Please Kindly use the single Email Button.";
+//
+//    }
+//}
 if(isset($_POST['campaign_category'])){
     $recipients = array();
     foreach($onboarding_result AS $row){
@@ -512,9 +512,9 @@ if(isset($_POST['campaign_category'])){
                             <div class="col-sm-6">
                                 <div class="pull-right">
                                     <form action="" method="post">
-                                    <button class="btn btn-default" type="button"
-                                            data-target="#mail" data-toggle="modal">SEND BULK MAIL
-                                    </button>
+<!--                                    <button class="btn btn-default" type="button"-->
+<!--                                            data-target="#mail" data-toggle="modal">SEND BULK MAIL-->
+<!--                                    </button>-->
                                         <a data-target="#confirm-campaign" data-toggle="modal" class="btn btn-default" title="Create Campaign Category">Create Category</a>
                                         <a data-target="#onboarding-filter" data-toggle="modal" class="btn btn-default" title="Filter clients already onboard">Onboard Filter <i class="glyphicon glyphicon-search"></i></a>
                                     </form>
