@@ -58,7 +58,6 @@ MAIL;
             $mpdf->showWatermarkText = true;
             $mpdf->watermark_font = 'DejaVuSansCondensed';
             $mpdf->watermarkTextAlpha = 0.1;
-            $mpdf->SetFooter("Date Generated: " . $date_now);
 
             $mpdf->Output('InstaFxNg Royal Invite.pdf', \Mpdf\Output\Destination::DOWNLOAD);
         }
