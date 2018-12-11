@@ -22,7 +22,7 @@ $date_now = datetime_to_text(date('Y-m-d H:i:s'));
 
 
 if(isset($_POST['invite'])){
-    $query = "SELECT invite_code,title,town,name FROM dinner_2018 WHERE id = '$code' AND invite_code IS NOT NULL LIMIT 1";
+    $query = "SELECT type,invite_code,title,town,name FROM dinner_2018 WHERE id = '$code' AND invite_code IS NOT NULL LIMIT 1";
     $result = $db_handle->runQuery($query);
     $numrows = $db_handle->numRows($query);
     $result = $db_handle->fetchAssoc($result);
@@ -31,6 +31,7 @@ if(isset($_POST['invite'])){
             extract($row);
             $name = split_name($name);
             extract($name);
+            if($type == '1'){
             $message_final = <<<MAIL
    <body style="background-image: url(images/invite.jpg);
                 background-repeat: no-repeat;
@@ -39,6 +40,16 @@ if(isset($_POST['invite'])){
                                                          <div style="font-size: 20px; font-family: 'Parisienne', cursive; margin-left: 250px; margin-top:315px;"><b>$invite_code</b></div>
     </body>
 MAIL;
+            }else{
+                $message_final = <<<MAIL
+   <body style="background-image: url(images/invite_2.jpg);
+                background-repeat: no-repeat;
+                 background-size: cover;">
+                    <center><div style="color:#645e44; font-size: 25px; font-family:'Times New Roman' cursive;margin-left: 172px; padding-top:365px;" id="name"><i>$title $first_name of $town</i></div></center>
+                                                         <div style="font-size: 20px; font-family: 'Parisienne', cursive; margin-left: 250px; margin-top:315px;"><b>$invite_code</b></div>
+    </body>
+MAIL;
+            }
 
             $mpdf = new \Mpdf\Mpdf([
                 'margin_left' => 15,
