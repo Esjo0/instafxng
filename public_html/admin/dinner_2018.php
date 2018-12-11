@@ -10,7 +10,7 @@ $total_seats_taken = $db_handle->numRows($query_count);
 
 if (isset($_POST['search_text'])){
     $search = $db_handle->sanitizePost($_POST['search_text']);
-    $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
+    $query = "SELECT d.invite_code, d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE name LIKE '%$search%' OR email LIKE '%$search%' OR phone LIKE '%$search%'
     ORDER BY d.created DESC ";

@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
 
         if(array_key_exists('user_code', $selected_member)) {
             $user_code = $selected_member['user_code'];
-            $encode_dinner_id = dec_enc('encrypt', get_ticket_id($send_to));
+            $encode_dinner_id = dec_enc('encrypt', get_ticket_id($sendto));
 
             $encrypted_user_code = encrypt_ssl($user_code);
             $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";

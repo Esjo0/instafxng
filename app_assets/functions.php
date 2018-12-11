@@ -18,13 +18,13 @@ set_error_handler("customError");
 
 function get_ticket_id($email){
     global $db_handle;
-    $query = "SELECT id from dinner_2018 WHERE email = '$email' AND choice = '1'";
+    $query = "SELECT id from dinner_2018 WHERE email = '$email' AND choice = '1' AND invite_code IS NOT NULL";
     $result = $db_handle->runQuery($query);
     $id = $db_handle->fetchArray($result);
     foreach($id AS $row){
         extract($row);
+        return $id;
     }
-    return $id;
 }
 function strip_zeros_from_date( $marked_string="" ) {
   // first remove the marked zeros
