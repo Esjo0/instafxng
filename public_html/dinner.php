@@ -26,203 +26,203 @@ if($numrows == 1){
     $maybe = true;
 }
 
-if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
-    $avatar = $db_handle->sanitizePost($_POST['avatar']);
-    $choice = $db_handle->sanitizePost($_POST['choice']);
-    $title = $db_handle->sanitizePost($_POST['title']);
-    $town = $db_handle->sanitizePost($_POST['town']);
-    $state = $db_handle->sanitizePost($_POST['state']);
-    $query = "SELECT * FROM dinner_2018 WHERE user_code = '$user_code' AND (choice = '1' OR choice = '3')";
-    $numrows = $db_handle->numRows($query);
-    if($total_seats_taken <= 82  || $maybe == true || (in_array($client_email, $dinner_emails))) {
-        if ($numrows == 0) {
-            if ($choice == 1 && !empty($avatar) && $avatar != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL) {
-                if ($maybe == true) {
-                    $query = "UPDATE dinner_2018 SET choice = '$choice' WHERE user_code = '$user_code'";
-                } else {
-                    $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender, state, type, name, phone, email) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar', '$state', '1', '$client_full_name', '$client_phone_number', '$client_email')";
-
-                }
-                $result = $db_handle->runQuery($query);
-                if ($result) {
-                    if ($avatar == 1) {
-                        $gender = "his";
-                    } elseif ($avatar == 2) {
-                        $gender = "her";
-                    }
-                    $subject = 'Your seat has been reserved, ' . $client_first_name . '!';
-                    $message_final = <<<MAIL
-                    <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
-                                <img src="https://instafxng.com/images/ifxlogo.png" />
-                            <hr />
-                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>All hail <b>$title</b> $client_full_name, the first of $gender name from <b>the house of $town.</b></p>
-                                <p>It is our pleasure to receive your consent to attend the Royal Ball.</p>
-                                <p>Your seat has been reserved and your dynasty is being prepared to receive your presence.</p>
-                                <p>The royal invite will be sent when all is set, brace up it's going to be a ball to remember.</p>
-                                <p>Compliment of the season!</p>
-                                <br /><br />
-                                <p>Best Regards,</p>
-                                <p>The InstaFxNg Team,<br />
-                                   www.instafxng.com</p>
-                                <br /><br />
-                            </div>
-                            <hr />
-                            <div style="background-color: #EBDEE9;">
-                                <div style="font-size: 11px !important; padding: 15px;">
-                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                                        <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
-                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-                                    </p>
-                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
-                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
-                                    <br />
-                                </div>
-                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                                        official Nigerian Representative of Instaforex, operator and administrator
-                                        of the website www.instafxng.com</p>
-                                    <p>To ensure you continue to receive special offers and updates from us,
-                                        please add support@instafxng.com to your address book.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-MAIL;
-                    $system_object->send_email($subject, $message_final, $client_email, $client_first_name);
-                    $message_success = "YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL";
-                    header('Location: dinner_completed.php?z=' . $choice);
-                } else {
-                    $message_error = "Reservation Not Successful Kindly Try Again";
-                }
-            }
-            if ($choice == 2) {
-                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
-                $result = $db_handle->runQuery($query);
-                if ($result) {
-                    $subject = 'The Ball Will Be Brighter With Your Presence';
-                    $message_final = <<<MAIL
-                    <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
-                                <img src="https://instafxng.com/images/ifxlogo.png" />
-                            <hr />
-                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
-                            <p>Your royal highness,</p>
-                            <p>It will be a pleasure to receive you at this year's Royal ball.</p>
-                            <p>However, we understand that the season is very eventful and you are quite uncertain of your attendance.</p>
-                            <p>To this end, our dynasty has decided to reserve your spot for the next 5 nights.</p>
-                            <p>The royal raven will be back to get your final decision by the fifth night.</p>
-                            <p>This ball will be one to remember forever… We look forward to hosting your royalty.</p>
-                                <br /><br />
-                                <p>Best Regards,</p>
-                                <p>The InstaFxNg Team,<br />
-                                   www.instafxng.com</p>
-                                <br /><br />
-                            </div>
-                            <hr />
-                            <div style="background-color: #EBDEE9;">
-                                <div style="font-size: 11px !important; padding: 15px;">
-                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                                        <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
-                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-                                    </p>
-                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
-                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
-                                    <br />
-                                </div>
-                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                                        official Nigerian Representative of Instaforex, operator and administrator
-                                        of the website www.instafxng.com</p>
-                                    <p>To ensure you continue to receive special offers and updates from us,
-                                        please add support@instafxng.com to your address book.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-MAIL;
-                    $system_object->send_email($subject, $message_final, $client_email, $last_name);
-
-                    $message_success = "YOUR SEAT HAS BEEN TEMPORARILY RESERVED. KINDLY CONFIRM YOUR RESERVATION WITHIN THE NEXT
-                                        5 DAYS.";
-                    header('Location: dinner_completed.php?z=' . $choice);
-                } else {
-                    $message_error = "Reservation Not Successful Kindly Try Again";
-                }
-            }
-            if ($choice == 3) {
-                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
-                $result = $db_handle->runQuery($query);
-                if ($result) {
-                    $subject = 'The Ball Would have been more fun with you ' . $client_first_name . '!';
-                    $message_final = <<<MAIL
-                    <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
-                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
-                            <img src="https://instafxng.com/images/ifxlogo.png" />
-                            <hr />
-                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
-                                <p>Dear $client_first_name,</p>
-                                <p>The ball would be incomplete without your presence.</p>
-                                <p>Even though our desire is to have you grace this year's grand dinner, we understand that there are other pertinent tasks that will require your time this season, hence your inability to attend this event.</p>
-                                <p>We look forward to celebrating a greater feat with you next year.</p>
-                                <p>Your invite for this year's ball has been canceled.</p>
-                                <p>Compliment of the season.</p>
-                                <br /><br />
-                                <p>Best Regards,</p>
-                                <p>The InstaFxNg Team,<br />
-                                   www.instafxng.com</p>
-                                <br /><br />
-                            </div>
-                            <hr />
-                            <div style="background-color: #EBDEE9;">
-                                <div style="font-size: 11px !important; padding: 15px;">
-                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                                        <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
-                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-                                    </p>
-                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
-                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
-                                    <br />
-                                </div>
-                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                                        official Nigerian Representative of Instaforex, operator and administrator
-                                        of the website www.instafxng.com</p>
-                                    <p>To ensure you continue to receive special offers and updates from us,
-                                        please add support@instafxng.com to your address book.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-MAIL;
-                    $system_object->send_email($subject, $message_final, $client_email, $last_name);
-                    $message_success = "THANK YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.";
-                    header('Location: dinner_completed.php?z=' . $choice);
-                } else {
-                    $message_error = "Reservation Not Successful Kindly Try Again";
-                }
-            }
-        } else {
-            $message_error = "You have completed the reservation process Earlier!!!.";
-
-        }
-    }else{
-        $message_error = "All seat Have been reserved.";
-    }
-}
+//if (isset($_POST['submit1']) || isset($_POST['submit2'])) {
+//    $avatar = $db_handle->sanitizePost($_POST['avatar']);
+//    $choice = $db_handle->sanitizePost($_POST['choice']);
+//    $title = $db_handle->sanitizePost($_POST['title']);
+//    $town = $db_handle->sanitizePost($_POST['town']);
+//    $state = $db_handle->sanitizePost($_POST['state']);
+//    $query = "SELECT * FROM dinner_2018 WHERE user_code = '$user_code' AND (choice = '1' OR choice = '3')";
+//    $numrows = $db_handle->numRows($query);
+//    if($total_seats_taken <= 82  || $maybe == true || (in_array($client_email, $dinner_emails))) {
+//        if ($numrows == 0) {
+//            if ($choice == 1 && !empty($avatar) && $avatar != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL) {
+//                if ($maybe == true) {
+//                    $query = "UPDATE dinner_2018 SET choice = '$choice' WHERE user_code = '$user_code'";
+//                } else {
+//                    $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice, title, town, gender, state, type, name, phone, email) VALUE('$client_user_code', '$choice', '$title', '$town', '$avatar', '$state', '1', '$client_full_name', '$client_phone_number', '$client_email')";
+//
+//                }
+//                $result = $db_handle->runQuery($query);
+//                if ($result) {
+//                    if ($avatar == 1) {
+//                        $gender = "his";
+//                    } elseif ($avatar == 2) {
+//                        $gender = "her";
+//                    }
+//                    $subject = 'Your seat has been reserved, ' . $client_first_name . '!';
+//                    $message_final = <<<MAIL
+//                    <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
+//                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
+//                                <img src="https://instafxng.com/images/ifxlogo.png" />
+//                            <hr />
+//                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
+//                                <p>All hail <b>$title</b> $client_full_name, the first of $gender name from <b>the house of $town.</b></p>
+//                                <p>It is our pleasure to receive your consent to attend the Royal Ball.</p>
+//                                <p>Your seat has been reserved and your dynasty is being prepared to receive your presence.</p>
+//                                <p>The royal invite will be sent when all is set, brace up it's going to be a ball to remember.</p>
+//                                <p>Compliment of the season!</p>
+//                                <br /><br />
+//                                <p>Best Regards,</p>
+//                                <p>The InstaFxNg Team,<br />
+//                                   www.instafxng.com</p>
+//                                <br /><br />
+//                            </div>
+//                            <hr />
+//                            <div style="background-color: #EBDEE9;">
+//                                <div style="font-size: 11px !important; padding: 15px;">
+//                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+//                                        <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
+//                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+//                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+//                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+//                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+//                                    </p>
+//                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+//                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+//                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+//                                    <br />
+//                                </div>
+//                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+//                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+//                                        official Nigerian Representative of Instaforex, operator and administrator
+//                                        of the website www.instafxng.com</p>
+//                                    <p>To ensure you continue to receive special offers and updates from us,
+//                                        please add support@instafxng.com to your address book.</p>
+//                                </div>
+//                            </div>
+//                        </div>
+//                    </div>
+//MAIL;
+//                    $system_object->send_email($subject, $message_final, $client_email, $client_first_name);
+//                    $message_success = "YOU HAVE SUCCESSFULLY RESERVED A SEAT FOR THE INSTAFXNG ROYAL BALL";
+//                    header('Location: dinner_completed.php?z=' . $choice);
+//                } else {
+//                    $message_error = "Reservation Not Successful Kindly Try Again";
+//                }
+//            }
+//            if ($choice == 2) {
+//                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
+//                $result = $db_handle->runQuery($query);
+//                if ($result) {
+//                    $subject = 'The Ball Will Be Brighter With Your Presence';
+//                    $message_final = <<<MAIL
+//                    <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
+//                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
+//                                <img src="https://instafxng.com/images/ifxlogo.png" />
+//                            <hr />
+//                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
+//                            <p>Your royal highness,</p>
+//                            <p>It will be a pleasure to receive you at this year's Royal ball.</p>
+//                            <p>However, we understand that the season is very eventful and you are quite uncertain of your attendance.</p>
+//                            <p>To this end, our dynasty has decided to reserve your spot for the next 5 nights.</p>
+//                            <p>The royal raven will be back to get your final decision by the fifth night.</p>
+//                            <p>This ball will be one to remember forever… We look forward to hosting your royalty.</p>
+//                                <br /><br />
+//                                <p>Best Regards,</p>
+//                                <p>The InstaFxNg Team,<br />
+//                                   www.instafxng.com</p>
+//                                <br /><br />
+//                            </div>
+//                            <hr />
+//                            <div style="background-color: #EBDEE9;">
+//                                <div style="font-size: 11px !important; padding: 15px;">
+//                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+//                                        <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
+//                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+//                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+//                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+//                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+//                                    </p>
+//                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+//                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+//                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+//                                    <br />
+//                                </div>
+//                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+//                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+//                                        official Nigerian Representative of Instaforex, operator and administrator
+//                                        of the website www.instafxng.com</p>
+//                                    <p>To ensure you continue to receive special offers and updates from us,
+//                                        please add support@instafxng.com to your address book.</p>
+//                                </div>
+//                            </div>
+//                        </div>
+//                    </div>
+//MAIL;
+//                    $system_object->send_email($subject, $message_final, $client_email, $last_name);
+//
+//                    $message_success = "YOUR SEAT HAS BEEN TEMPORARILY RESERVED. KINDLY CONFIRM YOUR RESERVATION WITHIN THE NEXT
+//                                        5 DAYS.";
+//                    header('Location: dinner_completed.php?z=' . $choice);
+//                } else {
+//                    $message_error = "Reservation Not Successful Kindly Try Again";
+//                }
+//            }
+//            if ($choice == 3) {
+//                $query = "INSERT IGNORE INTO dinner_2018 (user_code, choice) VALUE('$client_user_code', '$choice')";
+//                $result = $db_handle->runQuery($query);
+//                if ($result) {
+//                    $subject = 'The Ball Would have been more fun with you ' . $client_first_name . '!';
+//                    $message_final = <<<MAIL
+//                    <div style="background-color: #F3F1F2;  background-image: url('https://instafxng.com/imgsource/dinner-seamless-doodle.png');">
+//                        <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-family: 'Comic Sans MS', cursive, sans-serif; background-image: url('https://instafxng.com/imgsource/Mail%20Images/full-bloom.png');">
+//                            <img src="https://instafxng.com/images/ifxlogo.png" />
+//                            <hr />
+//                            <div style="background-color: transparent; padding: 15px; margin: 5px 0 5px 0;">
+//                                <p>Dear $client_first_name,</p>
+//                                <p>The ball would be incomplete without your presence.</p>
+//                                <p>Even though our desire is to have you grace this year's grand dinner, we understand that there are other pertinent tasks that will require your time this season, hence your inability to attend this event.</p>
+//                                <p>We look forward to celebrating a greater feat with you next year.</p>
+//                                <p>Your invite for this year's ball has been canceled.</p>
+//                                <p>Compliment of the season.</p>
+//                                <br /><br />
+//                                <p>Best Regards,</p>
+//                                <p>The InstaFxNg Team,<br />
+//                                   www.instafxng.com</p>
+//                                <br /><br />
+//                            </div>
+//                            <hr />
+//                            <div style="background-color: #EBDEE9;">
+//                                <div style="font-size: 11px !important; padding: 15px;">
+//                                    <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
+//                                        <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
+//                                        <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+//                                        <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+//                                        <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+//                                        <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+//                                    </p>
+//                                    <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+//                                    <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+//                                    <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
+//                                    <br />
+//                                </div>
+//                                <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+//                                    <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+//                                        official Nigerian Representative of Instaforex, operator and administrator
+//                                        of the website www.instafxng.com</p>
+//                                    <p>To ensure you continue to receive special offers and updates from us,
+//                                        please add support@instafxng.com to your address book.</p>
+//                                </div>
+//                            </div>
+//                        </div>
+//                    </div>
+//MAIL;
+//                    $system_object->send_email($subject, $message_final, $client_email, $last_name);
+//                    $message_success = "THANK YOU WE WILL SURELY INVITE YOU FOR SUBSEQUENT EVENTS.";
+//                    header('Location: dinner_completed.php?z=' . $choice);
+//                } else {
+//                    $message_error = "Reservation Not Successful Kindly Try Again";
+//                }
+//            }
+//        } else {
+//            $message_error = "You have completed the reservation process Earlier!!!.";
+//
+//        }
+//    }else{
+//        $message_error = "All seat Have been reserved.";
+//    }
+//}
 
 ?>
 <!DOCTYPE html>
@@ -282,159 +282,159 @@ MAIL;
                     <center><img src="images/royal_ball_image.jpg" alt="" class="img img-responsive" /></center>
                 </div>
 
-                <?php if($total_seats_taken <= 82 || $maybe == true || (in_array($client_email, $dinner_emails))){?>
-                <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-10">
-                        <p class="text-center">Please complete the form below to reserve your seat.</p>
-                        <div class="form-group col-sm-12">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                <input name="full_name" type="text" id="" value="<?php echo $client_full_name; ?>" class="form-control" placeholder="Your Full Name" required disabled/>
-                            </div>
-                        </div>
-
-                        <div class="form-group col-sm-12">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
-                                <input name="email" type="text" id="" value="<?php echo $client_email; ?>" class="form-control" placeholder="Your email address" required disabled/>
-                            </div>
-                        </div>
-
-                        <div class="form-group col-sm-12">
-                            <small class="text-center"><strong>Will you be in attendance?</strong></small>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-2"></div>
-                            <!-- Group of default radios - option 1 -->
-                            <div class="col-md-3 ">
-                                <input onchange="you('1')" value="1" type="radio"
-                                       class="custom-control-input"
-                                       id="defaultGroupExample1" name="choice">
-                                <label class="custom-control-label"
-                                       for="defaultGroupExample1">YES</label>
-                            </div>
-
-                            <!-- Group of default radios - option 2 -->
-                            <div class="col-md-3 custom-control custom-radio">
-                                <input onchange="you('2')" value="2" type="radio"
-                                       class="custom-control-input"
-                                       id="defaultGroupExample2" name="choice">
-                                <label class="custom-control-label"
-                                       for="defaultGroupExample2">MAYBE</label>
-                            </div>
-
-                            <!-- Group of default radios - option 3 -->
-                            <div class="col-md-3 custom-control custom-radio">
-                                <input onchange="you('3')" value="3" type="radio"
-                                       class="custom-control-input"
-                                       id="defaultGroupExample3" name="choice">
-                                <label class="custom-control-label"
-                                       for="defaultGroupExample3">NO</label>
-                            </div>
-                            <div class="col-md-1"></div>
-
-                        </div>
-
-                        <div class="text-center" style="display: none;" id="submit">
-                            <hr>
-                            <button name="submit1" type="submit" class="btn btn-success">SUBMIT</button>
-                            </hr>
-                        </div>
-                        <div class="text-center row" id="proceed" style="display: none;">
-                            <p class="row" style="margin-bottom:20px;">
-                            <label class="col-md-12 text-center" for="form8">Select Your Royal Title</label>
-                                <br>
-                                <span class="fa fa-info-circle"></span>
-                            <i class="col-md-12 text-center">Example: Emperor of Ile-Ife</i>
-                            </p>
-                            <div class="col-md-4">
-                                <div class="form-append">Select Your Prefered Royal Title</div>
-                                <select id="title" name="title" class="form-control" required>
-                                    <option value="">  </option>
-                                    <optgroup label="Titles">
-                                    <option value="Emperor">Emperor</option>
-                                    <option value="King">King</option>
-                                    <option value="Duke">Duke</option>
-                                    <option value="Prince">Prince</option>
-                                    <option value="Knight">Knight</option>
-                                    <option value="Sir">Sir</option>
-                                    <option value="Viscount">Viscount</option>
-                                    <option value="Lord">Lord</option>
-                                    <option value="Empress">Empress</option>
-                                    <option value="Queen">Queen</option>
-                                    <option value="Princess">Princess</option>
-                                    <option value="Duchess">Duchess</option>
-                                    <option value="Lady">Lady</option>
-                                    <option value="Baronet">Baronet</option>
-                                    <option value="Earldom">Earldom</option>
-                                    <option value="Viscountess">Viscountess</option>
-                                        </optgroup>
-                                </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-append">Enter Your Home Town</div>
-                                <input name="town" type="text" id="town" class="form-control" required/>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-append">Select Your State of Residence</div>
-                                <select id="state" name="state" class="form-control" required>
-                                    <option value="">  </option>
-                                    <optgroup label="Nigerian States">
-                                    <option value="Abia State">Abia State</option>
-                                    <option value="Adamawa State">Adamawa State</option>
-                                    <option value="Akwa Ibom State">Akwa Ibom State</option>
-                                    <option value="Anambra State">Anambra State</option>
-                                    <option value="Bauchi State">Bauchi State</option>
-                                    <option value="Bayelsa State">Bayelsa State</option>
-                                    <option value="Benue State">Benue State</option>
-                                    <option value="Borno State">Borno State</option>
-                                    <option value="Cross River State">Cross River State</option>
-                                    <option value="Delta State">Delta State</option>
-                                    <option value="Ebonyi State">Ebonyi State</option>
-                                    <option value="Edo State">Edo State</option>
-                                    <option value="Ekiti State">Ekiti State</option>
-                                    <option value="Enugu State">Enugu State</option>
-                                    <option value="FCT Abuja">FCT Abuja</option>
-                                    <option value="Gombe State">Gombe State</option>
-                                    <option value="Imo State">Imo State</option>
-                                    <option value="Jigawa State">Jigawa State</option>
-                                    <option value="Kaduna State">Kaduna State</option>
-                                    <option value="Kano State">Kano State</option>
-                                    <option value="Katsina State">Katsina State</option>
-                                    <option value="Kebbi State">Kebbi State</option>
-                                    <option value="Kogi State">Kogi State</option>
-                                    <option value="Kwara State">Kwara State</option>
-                                    <option value="Lagos State">Lagos State</option>
-                                    <option value="Nasarawa State">Nasarawa State</option>
-                                    <option value="Niger State">Niger State</option>
-                                    <option value="Ogun State">Ogun State</option>
-                                    <option value="Ondo State">Ondo State</option>
-                                    <option value="Osun State">Osun State</option>
-                                    <option value="Oyo State">Oyo State</option>
-                                    <option value="Plateau State">Plateau State</option>
-                                    <option value="Rivers State">Rivers State</option>
-                                    <option value="Sokoto State">Sokoto State</option>
-                                    <option value="Taraba State">Taraba State</option>
-                                    <option value="Yobe State">Yobe State</option>
-                                    <option value="Zamfara State">Zamfara State</option>
-                                        </optgroup>
-                                </select>
-                            </div>
-                            <a href="#select_avatar" class="text-center btn btn-primary">Proceed</a>
-                        </div>
-                    </div>
-                    <div class="col-md-1"></div>
-                </div>
-                </div>
-                <?php }else{?>
+<!--                --><?php //if($total_seats_taken <= 82 || $maybe == true || (in_array($client_email, $dinner_emails))){?>
+<!--                <div class="col-sm-6">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-1"></div>-->
+<!--                    <div class="col-md-10">-->
+<!--                        <p class="text-center">Please complete the form below to reserve your seat.</p>-->
+<!--                        <div class="form-group col-sm-12">-->
+<!--                            <div class="input-group">-->
+<!--                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>-->
+<!--                                <input name="full_name" type="text" id="" value="--><?php //echo $client_full_name; ?><!--" class="form-control" placeholder="Your Full Name" required disabled/>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!---->
+<!--                        <div class="form-group col-sm-12">-->
+<!--                            <div class="input-group">-->
+<!--                                <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>-->
+<!--                                <input name="email" type="text" id="" value="--><?php //echo $client_email; ?><!--" class="form-control" placeholder="Your email address" required disabled/>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!---->
+<!--                        <div class="form-group col-sm-12">-->
+<!--                            <small class="text-center"><strong>Will you be in attendance?</strong></small>-->
+<!--                        </div>-->
+<!---->
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-2"></div>-->
+<!--                            <!-- Group of default radios - option 1 -->-->
+<!--                            <div class="col-md-3 ">-->
+<!--                                <input onchange="you('1')" value="1" type="radio"-->
+<!--                                       class="custom-control-input"-->
+<!--                                       id="defaultGroupExample1" name="choice">-->
+<!--                                <label class="custom-control-label"-->
+<!--                                       for="defaultGroupExample1">YES</label>-->
+<!--                            </div>-->
+<!---->
+<!--                            <!-- Group of default radios - option 2 -->-->
+<!--                            <div class="col-md-3 custom-control custom-radio">-->
+<!--                                <input onchange="you('2')" value="2" type="radio"-->
+<!--                                       class="custom-control-input"-->
+<!--                                       id="defaultGroupExample2" name="choice">-->
+<!--                                <label class="custom-control-label"-->
+<!--                                       for="defaultGroupExample2">MAYBE</label>-->
+<!--                            </div>-->
+<!---->
+<!--                            <!-- Group of default radios - option 3 -->-->
+<!--                            <div class="col-md-3 custom-control custom-radio">-->
+<!--                                <input onchange="you('3')" value="3" type="radio"-->
+<!--                                       class="custom-control-input"-->
+<!--                                       id="defaultGroupExample3" name="choice">-->
+<!--                                <label class="custom-control-label"-->
+<!--                                       for="defaultGroupExample3">NO</label>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-1"></div>-->
+<!---->
+<!--                        </div>-->
+<!---->
+<!--                        <div class="text-center" style="display: none;" id="submit">-->
+<!--                            <hr>-->
+<!--                            <button name="submit1" type="submit" class="btn btn-success">SUBMIT</button>-->
+<!--                            </hr>-->
+<!--                        </div>-->
+<!--                        <div class="text-center row" id="proceed" style="display: none;">-->
+<!--                            <p class="row" style="margin-bottom:20px;">-->
+<!--                            <label class="col-md-12 text-center" for="form8">Select Your Royal Title</label>-->
+<!--                                <br>-->
+<!--                                <span class="fa fa-info-circle"></span>-->
+<!--                            <i class="col-md-12 text-center">Example: Emperor of Ile-Ife</i>-->
+<!--                            </p>-->
+<!--                            <div class="col-md-4">-->
+<!--                                <div class="form-append">Select Your Prefered Royal Title</div>-->
+<!--                                <select id="title" name="title" class="form-control" required>-->
+<!--                                    <option value="">  </option>-->
+<!--                                    <optgroup label="Titles">-->
+<!--                                    <option value="Emperor">Emperor</option>-->
+<!--                                    <option value="King">King</option>-->
+<!--                                    <option value="Duke">Duke</option>-->
+<!--                                    <option value="Prince">Prince</option>-->
+<!--                                    <option value="Knight">Knight</option>-->
+<!--                                    <option value="Sir">Sir</option>-->
+<!--                                    <option value="Viscount">Viscount</option>-->
+<!--                                    <option value="Lord">Lord</option>-->
+<!--                                    <option value="Empress">Empress</option>-->
+<!--                                    <option value="Queen">Queen</option>-->
+<!--                                    <option value="Princess">Princess</option>-->
+<!--                                    <option value="Duchess">Duchess</option>-->
+<!--                                    <option value="Lady">Lady</option>-->
+<!--                                    <option value="Baronet">Baronet</option>-->
+<!--                                    <option value="Earldom">Earldom</option>-->
+<!--                                    <option value="Viscountess">Viscountess</option>-->
+<!--                                        </optgroup>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!---->
+<!--                            <div class="col-md-4">-->
+<!--                                <div class="form-append">Enter Your Home Town</div>-->
+<!--                                <input name="town" type="text" id="town" class="form-control" required/>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4">-->
+<!--                                <div class="form-append">Select Your State of Residence</div>-->
+<!--                                <select id="state" name="state" class="form-control" required>-->
+<!--                                    <option value="">  </option>-->
+<!--                                    <optgroup label="Nigerian States">-->
+<!--                                    <option value="Abia State">Abia State</option>-->
+<!--                                    <option value="Adamawa State">Adamawa State</option>-->
+<!--                                    <option value="Akwa Ibom State">Akwa Ibom State</option>-->
+<!--                                    <option value="Anambra State">Anambra State</option>-->
+<!--                                    <option value="Bauchi State">Bauchi State</option>-->
+<!--                                    <option value="Bayelsa State">Bayelsa State</option>-->
+<!--                                    <option value="Benue State">Benue State</option>-->
+<!--                                    <option value="Borno State">Borno State</option>-->
+<!--                                    <option value="Cross River State">Cross River State</option>-->
+<!--                                    <option value="Delta State">Delta State</option>-->
+<!--                                    <option value="Ebonyi State">Ebonyi State</option>-->
+<!--                                    <option value="Edo State">Edo State</option>-->
+<!--                                    <option value="Ekiti State">Ekiti State</option>-->
+<!--                                    <option value="Enugu State">Enugu State</option>-->
+<!--                                    <option value="FCT Abuja">FCT Abuja</option>-->
+<!--                                    <option value="Gombe State">Gombe State</option>-->
+<!--                                    <option value="Imo State">Imo State</option>-->
+<!--                                    <option value="Jigawa State">Jigawa State</option>-->
+<!--                                    <option value="Kaduna State">Kaduna State</option>-->
+<!--                                    <option value="Kano State">Kano State</option>-->
+<!--                                    <option value="Katsina State">Katsina State</option>-->
+<!--                                    <option value="Kebbi State">Kebbi State</option>-->
+<!--                                    <option value="Kogi State">Kogi State</option>-->
+<!--                                    <option value="Kwara State">Kwara State</option>-->
+<!--                                    <option value="Lagos State">Lagos State</option>-->
+<!--                                    <option value="Nasarawa State">Nasarawa State</option>-->
+<!--                                    <option value="Niger State">Niger State</option>-->
+<!--                                    <option value="Ogun State">Ogun State</option>-->
+<!--                                    <option value="Ondo State">Ondo State</option>-->
+<!--                                    <option value="Osun State">Osun State</option>-->
+<!--                                    <option value="Oyo State">Oyo State</option>-->
+<!--                                    <option value="Plateau State">Plateau State</option>-->
+<!--                                    <option value="Rivers State">Rivers State</option>-->
+<!--                                    <option value="Sokoto State">Sokoto State</option>-->
+<!--                                    <option value="Taraba State">Taraba State</option>-->
+<!--                                    <option value="Yobe State">Yobe State</option>-->
+<!--                                    <option value="Zamfara State">Zamfara State</option>-->
+<!--                                        </optgroup>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                            <a href="#select_avatar" class="text-center btn btn-primary">Proceed</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-1"></div>-->
+<!--                </div>-->
+<!--                </div>-->
+<!--                --><?php //}else{?>
                     <div class="col-md-6 text-center " style="margin-top:100px">
                         <h3>ALL SEATS HAVE BEEN RESERVED</h3>
                     </div>
-                <?php }?>
+<!--                --><?php //}?>
 
         </section>
         <!--Section: Main info-->
