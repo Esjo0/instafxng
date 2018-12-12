@@ -24,8 +24,7 @@ if (isset($_POST['process'])) {
 
     extract($_POST);
 
-    $trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id));
-    $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+    $trans_id = dec_enc('decrypt',  $trans_id);
     $admin_full_name = $_SESSION['admin_last_name'] . " " . $_SESSION['admin_first_name'] ;
     $remarks = $admin_full_name . ": " . $remarks;
 
@@ -84,7 +83,7 @@ if (isset($_POST['process'])) {
                                 <p>Modify the selected transaction, email already sent to client.</p>
 
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
-                                    <input name="trans_id" type="hidden" value="<?php echo encrypt_ssl($trans_id); ?>">
+                                    <input name="trans_id" type="hidden" value="<?php echo dec_enc('encrypt', $trans_id); ?>">
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="full_name">Full Name:</label>
                                         <div class="col-sm-9 col-lg-5">

@@ -11,8 +11,7 @@ if (isset($_POST['delete_campaign'])) {
     }
 
     extract($_POST);
-    $campaign_id = decrypt_ssl(str_replace(" ", "+", $campaign_id));
-    $campaign_id = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_id);
+    $campaign_id = dec_enc('decrypt',  $campaign_id);
     $system_object->delete_campaign_by_id($campaign_id);
 }
 
@@ -110,16 +109,16 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                                     <a class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Action <span class="caret"></span></a>
                                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                                         <?php if($row['campaign_send_status'] == '2' && ($row['campaign_status'] == '1' || $row['campaign_status'] == '2')) { // allow edit if campaign has not been sent ?>
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" title="Edit Campaign" href="campaign_email.php?x=edit&id=<?php echo encrypt_ssl($row['campaign_id']); ?>"><i class="fa fa-edit fa-fw"></i> Edit</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" title="Edit Campaign" href="campaign_email.php?x=edit&id=<?php echo dec_enc('encrypt', $row['campaign_id']); ?>"><i class="fa fa-edit fa-fw"></i> Edit</a></li>
                                                             <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#delete-campaign-confirm<?php echo $row['campaign_id']; ?>" title="Delete Campaign" href="#"><i class="fa fa-trash fa-fw"></i> Delete</a></li>
                                                         <?php } ?>
 
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Send Test" href="campaign_email_broadcast.php?x=test&id=<?php echo encrypt_ssl($row['campaign_id']); ?>"><i class="fa fa-paper-plane fa-fw"></i> Send Test</a></li>
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Duplicate Campaign" href="campaign_email.php?x=duplicate&id=<?php echo encrypt_ssl($row['campaign_id']); ?>"><i class="fa fa-save fa-fw"></i> Duplicate</a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Send Test" href="campaign_email_broadcast.php?x=test&id=<?php echo dec_enc('encrypt', $row['campaign_id']); ?>"><i class="fa fa-paper-plane fa-fw"></i> Send Test</a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" title="Duplicate Campaign" href="campaign_email.php?x=duplicate&id=<?php echo dec_enc('encrypt', $row['campaign_id']); ?>"><i class="fa fa-save fa-fw"></i> Duplicate</a></li>
                                                         <li role="presentation"><a role="menuitem" tabindex="-1" title="View Recipients" href="javascript:void(0);" data-toggle="modal" data-target="#recipients_<?php echo $row['campaign_id']; ?>"><i class="fa fa-check fa-fw"></i> View Recipients</a></li>
 
                                                         <?php if($row['campaign_status'] == '2' && $row['campaign_send_status'] == '2') { ?>
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" title="Broadcast" href="campaign_email_broadcast.php?x=send&id=<?php echo encrypt_ssl($row['campaign_id']); ?>"><i class="fa fa-bullhorn fa-fw"></i> Broadcast</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" title="Broadcast" href="campaign_email_broadcast.php?x=send&id=<?php echo dec_enc('encrypt', $row['campaign_id']); ?>"><i class="fa fa-bullhorn fa-fw"></i> Broadcast</a></li>
                                                         <?php } ?>
                                                     </ul>
                                                 </div>
@@ -147,9 +146,9 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                                                     <?php foreach ($recipient_list as $key)
                                                                     {
                                                                         $key = explode('/***/', $key);
-                                                                        $name = decrypt_ssl($key[0]);
-                                                                        $email = decrypt_ssl($key[1]);
-                                                                        $date_time = decrypt_ssl($key[2]);
+                                                                        $name = dec_enc('decrypt', $key[0]);
+                                                                        $email = dec_enc('decrypt', $key[1]);
+                                                                        $date_time = dec_enc('decrypt', $key[2]);
                                                                         ?>
                                                                         <tr>
                                                                             <td><?php echo $name; ?></td>
@@ -178,7 +177,7 @@ $all_campaign_email = $db_handle->fetchAssoc($result);
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <form class="form-horizontal" role="form" method="post" action="">
-                                                                    <input type="hidden" name="campaign_id" value="<?php echo encrypt_ssl($row['campaign_id']); ?>" />
+                                                                    <input type="hidden" name="campaign_id" value="<?php echo dec_enc('encrypt', $row['campaign_id']); ?>" />
                                                                     <input name="delete_campaign" type="submit" class="btn btn-danger" value="Delete Campaign">
                                                                     <button type="submit" name="decline" data-dismiss="modal" class="btn btn-default">Cancel</button>
                                                                 </form>

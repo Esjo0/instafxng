@@ -8,8 +8,8 @@ if (empty($user_code_encrypted)) {
 }
 
 $dinner_emails = array("joshua@instafxng.com","austin.albert@circleflowmgt.com","semmymails@yahoo.com","abdulfx1@gmail.com","uchennaegbejiogu@gmail.com","icjustine@yahoo.com","shukrahbiz@gmail.com","paulinwahab@gmail.com","temidayomabinuola@gmail.com");
-$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
-$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
+$user_code = dec_enc('decrypt',  $user_code_encrypted));
+
 $client_operation = new clientOperation();
 $details = $client_operation->get_user_by_code($user_code);
 extract($details);

@@ -104,7 +104,7 @@ $all_deposit_requests = $db_handle->fetchAssoc($result);
                                                 <td class="nowrap">&#8358; <?php echo number_format($row['naira_total_payable'], 2, ".", ","); ?></td>
                                                 <td><?php echo status_user_deposit($row['deposit_status']); ?></td>
                                                 <td><?php echo datetime_to_text($row['created']); ?></td>
-                                                <td><a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                                <td><a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>

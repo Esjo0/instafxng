@@ -11,8 +11,7 @@ if (isset($_POST['submit_reply'])) {
     }
     extract($_POST);
 
-    $support_id = decrypt_ssl(str_replace(" ", "+", $support_id));
-    $support_id = preg_replace("/[^A-Za-z0-9 ]/", '', $support_id);
+    $support_id = dec_enc('decrypt',  $support_id);
 
     $question_reply = $education_object->set_lesson_support_reply('2', $support_id, $comment_reply, $_SESSION['admin_unique_code'], '2', $client_email, $client_name);
 
@@ -25,8 +24,7 @@ if (isset($_POST['submit_reply'])) {
 
 $get_params = allowed_get_params(['id']);
 $support_request_encrypted = $get_params['id'];
-$support_request_code = decrypt_ssl(str_replace(" ", "+", $support_request_encrypted));
-$support_request_code = preg_replace("/[^A-Za-z0-9 ]/", '', $support_request_code);
+$support_request_code = dec_enc('decrypt',  $support_request_encrypted);
 
 if(!empty($support_request_code)) {
     $selected_support = $education_object->get_support_request_by_code($support_request_code);
@@ -133,7 +131,7 @@ if(!empty($support_request_code)) {
                                         <form role="form" method="post" action="">
                                             <input type="hidden" name="client_email" value="<?php echo $selected_support['email']; ?>" />
                                             <input type="hidden" name="client_name" value="<?php echo $selected_support['full_name']; ?>" />
-                                            <input type="hidden" name="support_id" value="<?php echo encrypt_ssl($selected_support['user_edu_support_request_id']); ?>" />
+                                            <input type="hidden" name="support_id" value="<?php echo dec_enc('encrypt', $selected_support['user_edu_support_request_id']); ?>" />
                                             <div class="form-group">
                                                 <label for="comment_reply">Post a reply:</label>
                                                 <textarea name="comment_reply" class="form-control" rows="5" id="comment_reply"></textarea>

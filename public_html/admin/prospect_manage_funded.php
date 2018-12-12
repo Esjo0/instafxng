@@ -190,7 +190,7 @@ $all_prospect = $db_handle->fetchAssoc($result);
                                         <td><?php echo $row['source_name']; ?></td>
                                         <td><?php echo datetime_to_text2($row['created']); ?></td>
                                         <td>
-<!--                                            <a title="Comment" class="btn btn-success" href="prospect_sales.php?x=--><?php //echo encrypt_ssl($row['prospect_biodata_id']); ?><!--&pg=--><?php //echo $currentpage; ?><!--"><i class="glyphicon glyphicon-comment icon-white"></i> </a>-->
+<!--                                            <a title="Comment" class="btn btn-success" href="prospect_sales.php?x=--><?php //echo dec_enc('encrypt', $row['prospect_biodata_id']); ?><!--&pg=--><?php //echo $currentpage; ?><!--"><i class="glyphicon glyphicon-comment icon-white"></i> </a>-->
                                             <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                         </td>
                                     </tr>

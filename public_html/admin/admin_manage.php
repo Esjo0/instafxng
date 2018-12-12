@@ -13,8 +13,7 @@ if (isset($_POST['process'])) {
 
     extract($_POST);
     
-    $admin_id = decrypt_ssl(str_replace(" ", "+", $admin_id));
-    $admin_code = preg_replace("/[^A-Za-z0-9 ]/", '', $admin_id);
+    $admin_id = dec_enc('decrypt',  $admin_id);
     
     $profile_modified = $admin_object->modify_admin_profile($admin_code, $first_name, $last_name, $admin_status);
     
@@ -28,8 +27,8 @@ if (isset($_POST['process'])) {
 if (isset($_POST['approve'])) {
     
     $admin_id = $_POST["admin_id"];
-    $admin_id = decrypt_ssl(str_replace(" ", "+", $admin_id));
-    $admin_code = preg_replace("/[^A-Za-z0-9 ]/", '', $admin_id);
+    $admin_id = dec_enc('decrypt',  $admin_id);
+    $admin_code = $admin_id;
     $pageid = $_POST["pageid"];
     
     for ($i = 0; $i < count($pageid); $i++) {
@@ -51,8 +50,7 @@ if (isset($_POST['approve'])) {
 $get_params = allowed_get_params(['id']);
 $admin_code_encrypted = $get_params['id'];
 
-$admin_code = decrypt_ssl(str_replace(" ", "+", $admin_code_encrypted));
-$admin_code = preg_replace("/[^A-Za-z0-9 ]/", '', $admin_code);
+$admin_code = dec_enc('decrypt',  $admin_code_encrypted);
 $admin_detail = $admin_object->get_admin_detail_by_code($admin_code);
 
 if(!$admin_detail) {

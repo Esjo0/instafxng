@@ -93,7 +93,7 @@ $all_partner_payout = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['partner_code']; ?></td>
                                             <td><?php echo $row['amount']; ?></td>
                                             <td>
-<!--                                                <a class="btn btn-success" href="partner_payout_history_details.php?action=view&id=--><?php //echo encrypt_ssl($row['partner_withdrawal_id']); ?><!--"><i class="glyphicon glyphicon-zoom-in icon-white"></i> View</a>-->
+<!--                                                <a class="btn btn-success" href="partner_payout_history_details.php?action=view&id=--><?php //echo dec_enc('encrypt', $row['partner_withdrawal_id']); ?><!--"><i class="glyphicon glyphicon-zoom-in icon-white"></i> View</a>-->
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

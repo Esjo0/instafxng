@@ -75,7 +75,7 @@ $all_bulletin = $db_handle->fetchAssoc($result);
                             <div class="col-lg-4">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <p><a href="bulletin_read.php?id=<?php echo encrypt_ssl($row['admin_bulletin_id']); ?>" title="<?php echo $row['title']; ?>"><?php echo $row['title']; ?></a></p>
+                                        <p><a href="bulletin_read.php?id=<?php echo dec_enc('encrypt', $row['admin_bulletin_id']); ?>" title="<?php echo $row['title']; ?>"><?php echo $row['title']; ?></a></p>
                                         <em><strong>Author:</strong> <?php echo $admin_object->get_admin_name_by_code($row['admin_code']); ?></em><br/>
                                         <em><strong>Posted:</strong> <?php echo datetime_to_text($row['created']); ?></em><br/><br/>
                                         <hr/>

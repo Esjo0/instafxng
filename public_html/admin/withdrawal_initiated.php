@@ -255,7 +255,7 @@ $initiated_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                         <span><strong>Phone Password:</strong>
                                                             <?php
                                                             $phone_password_encrypted = $row['client_phone_password'];
-                                                            $client_phone_password = decrypt_ssl($phone_password_encrypted);
+                                                            $client_phone_password = dec_enc('decrypt', $phone_password_encrypted);
                                                             echo trim($client_phone_password);
                                                             ?>
                                                         </span>

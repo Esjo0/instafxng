@@ -136,7 +136,7 @@ $funding_insight = $db_handle->fetchAssoc($result);
                                                 <td><?php echo number_format($row['sum_funding_ordered']); ?></td>
                                                 <td><?php echo $row['deposit_frequency']; ?></td>
                                                 <td nowrap="nowrap">
-                                                    <a title="View" class="btn btn-success" href="client_reach.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'insight/last_month_funding'; ?>&c=<?php echo encrypt_ssl('LAST MONTH FUNDING'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                                    <a title="View" class="btn btn-success" href="client_reach.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'insight/last_month_funding'; ?>&c=<?php echo dec_enc('encrypt', 'LAST MONTH FUNDING'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
                                                     <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                 </td>
                                             </tr>

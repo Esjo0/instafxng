@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $snappy_id_encrypted = $get_params['id'];
-$snappy_id = decrypt_ssl(str_replace(" ", "+", $snappy_id_encrypted));
-$snappy_id = preg_replace("/[^A-Za-z0-9 ]/", '', $snappy_id);
+$snappy_id = dec_enc('decrypt',  $snappy_id_encrypted);
 
 if (isset($_POST['process'])) {
     foreach($_POST as $key => $value) {

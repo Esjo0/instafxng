@@ -59,7 +59,7 @@ $query  = "SELECT user_code FROM user WHERE email = '$email'";
         $user_code = $db_handle->fetchArray($result);
         foreach($user_code AS $row){
             extract($row);
-            $encrypted_user_code = encrypt_ssl($user_code);
+            $encrypted_user_code = dec_enc('encrypt', $user_code);
             header('Location: dinner.php?r=' . $encrypted_user_code);
         }
     }else{

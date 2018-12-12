@@ -184,7 +184,7 @@ $packages = $db_handle->fetchAssoc($result);
                                                 </div>
                                             </td>
                                             <td><?php echo datetime_to_text($row['created'])?></td>
-                                            <td class="nowrap"><a class="btn-xs btn btn-default" href="bonus_view.php?package_code=<?php echo encrypt_ssl($row['bonus_code']);?>"><i class="glyphicon glyphicon-arrow-right"></i></a></td>
+                                            <td class="nowrap"><a class="btn-xs btn btn-default" href="bonus_view.php?package_code=<?php echo dec_enc('encrypt', $row['bonus_code']);?>"><i class="glyphicon glyphicon-arrow-right"></i></a></td>
                                         </tr>
                                         <?php } ?>
                                     <?php } ?>

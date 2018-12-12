@@ -264,7 +264,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
         $origin_of_deposit = '1'; // Originates online
         $stamp_duty = CBN_STAMP_DUTY;
         $trans_id = "D" . time();
-        $trans_id_encrypted = encrypt_ssl($trans_id);
+        $trans_id_encrypted = dec_enc('encrypt', $trans_id);
         $service_charge = $ifx_naira_amount * DSERVCHARGE;
         $vat = $service_charge * DVAT;
         $total_payable = CBN_STAMP_DUTY + $vat + $service_charge + $ifx_naira_amount;
@@ -289,8 +289,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
 // This section processes - views/deposit_funds_finalize.php
 if(isset($_POST['deposit_funds_finalize'])) {
     $trans_id_encrypted = $db_handle->sanitizePost($_POST['transaction_no']);
-    $trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
-    $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+    $trans_id = dec_enc('decrypt',  $trans_id_encrypted);
     
     $client_operation = new clientOperation();
     $transaction = $client_operation->get_deposit_by_id_mini($trans_id);
@@ -299,7 +298,7 @@ if(isset($_POST['deposit_funds_finalize'])) {
     {
         extract($transaction);
         $page_requested = 'deposit_funds_pay_type_php';
-        $trans_id_encrypted = encrypt_ssl($client_trans_id);
+        $trans_id_encrypted = dec_enc('encrypt', $client_trans_id);
 
     } else {
         $message_error = "Something went wrong, please try again.";
@@ -312,8 +311,7 @@ if(isset($_POST['deposit_funds_pay_type'])) {
     $client_operation = new clientOperation();
 
     $trans_id_encrypted = $db_handle->sanitizePost($_POST['transaction_no']);
-    $trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
-    $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+    $trans_id = dec_enc('decrypt',  $trans_id_encrypted);
     
     $pay_type = $db_handle->sanitizePost($_POST['pay_type']);
     $client_operation->log_deposit_pay_method($trans_id, $pay_type); // Update payment method selected

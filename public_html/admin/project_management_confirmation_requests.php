@@ -106,7 +106,7 @@ $projects = $db_handle->fetchAssoc($result);
                                         <td><?php echo $row['report_submission_date']; ?></td>
                                         <td><?php echo $row['author_name']; ?></td>
                                         <td>
-                                            <a href="project_management_report_view.php?x=<?php echo encrypt_ssl($row['report_code']); ?>"><button class="btn btn-success"><i class="glyphicon glyphicon-eye-open"></i></button></a>
+                                            <a href="project_management_report_view.php?x=<?php echo dec_enc('encrypt', $row['report_code']); ?>"><button class="btn btn-success"><i class="glyphicon glyphicon-eye-open"></i></button></a>
                                         </td>
                                     </tr>
                                     <?php

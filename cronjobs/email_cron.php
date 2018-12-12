@@ -65,7 +65,7 @@ if($db_handle->numOfRows($result) > 0) {
                 $user_code = $selected_member['user_code'];
                 $encode_dinner_id = dec_enc('encrypt', get_ticket_id($client_email));
 
-                $encrypted_user_code = encrypt_ssl($user_code);
+                $encrypted_user_code = dec_enc('encrypt', $user_code);
                 $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
                 $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
                 $dinner_invite_2018 = "<a title='Click Here to Download your invite' href='https://instafxng.com/dinner_invite.php?i=$encode_dinner_id'><strong>Click Here to Download Your Royal Invite</strong></a>";
@@ -106,7 +106,7 @@ if($db_handle->numOfRows($result) > 0) {
                 $my_message_new = str_replace('[LPYHR]', $year_rank_highest, $my_message_new);
                 $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
                 $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
-                $my_message_new = str_replace('[UC]', encrypt_ssl($user_code), $my_message_new);
+                $my_message_new = str_replace('[UC]', dec_enc('encrypt', $user_code), $my_message_new);
                 $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
                 $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
                 $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);

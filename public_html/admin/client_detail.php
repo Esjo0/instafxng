@@ -114,7 +114,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                 <!------------- Contact Section --->
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <p><a target="_blank" title="Download Client Information" class="btn btn-info" href="client_life.php?id=<?php echo encrypt_ssl($user_code); ?>">Download Client Information </a></p>
+                                        <p><a target="_blank" title="Download Client Information" class="btn btn-info" href="client_life.php?id=<?php echo dec_enc('encrypt', $user_code); ?>">Download Client Information </a></p>
                                         <h5>Client Information</h5>
                                         <span class="span-title text-right">Account Officer</span>
                                         <p class="text-right"><em><?php echo $account_officer_full_name; ?></em></p>
@@ -344,7 +344,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                                     <tbody>
                                                     <?php if(isset($latest_funding) && !empty($latest_funding)) { foreach ($latest_funding as $row) { ?>
                                                         <tr>
-                                                            <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                                            <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                                             <td><?php echo $row['ifx_acct_no']; ?></td>
                                                             <td>&dollar; <?php echo $row['dollar_ordered']; ?></td>
                                                             <td><?php echo status_user_deposit($row['status']); ?></td>
@@ -368,7 +368,7 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                                     <tbody>
                                                     <?php if(isset($latest_withdrawal) && !empty($latest_withdrawal)) { foreach ($latest_withdrawal as $row) { ?>
                                                         <tr>
-                                                            <td><a target="_blank" title="View" href="withdrawal_search_view.php?id=<?php echo encrypt_ssl($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                                            <td><a target="_blank" title="View" href="withdrawal_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                                             <td><?php echo $row['ifx_acct_no']; ?></td>
                                                             <td>&dollar; <?php echo $row['dollar_withdraw']; ?></td>
                                                             <td><?php echo status_user_withdrawal($row['status']); ?></td>

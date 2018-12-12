@@ -12,7 +12,7 @@ if(isset($_POST['reviewed'])){
     $hello ? $message_success = "Operation Successful" : $message_warning = "Operation Failed: Please review this bonus profile afresh.";
 }
 
-$app_id = decrypt_ssl(str_replace(" ", "+", $_GET['app_id']));
+$app_id = dec_enc('decrypt',  $_GET['app_id']));
 $app_details = $bonus_operations->get_app_by_id($app_id);
 if(empty($app_details)) {redirect_to("bonus_app_moderation.php");}
 $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code']);

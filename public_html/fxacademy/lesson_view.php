@@ -8,12 +8,10 @@ if (!$session_client->is_logged_in()) {
 
 $get_params = allowed_get_params(['lid', 'cid']);
 $course_id_encrypted = $get_params['cid'];
-$course_id = decrypt_ssl(str_replace(" ", "+", $course_id_encrypted));
-$course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
+$course_id = dec_enc('decrypt',  $course_id_encrypted);
 
 $course_lesson_id_encrypted = $get_params['lid'];
-$course_lesson_id = decrypt_ssl(str_replace(" ", "+", $course_lesson_id_encrypted));
-$course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
+$course_lesson_id = dec_enc('decrypt',  $course_lesson_id_encrypted);
 
 $selected_course = $education_object->get_active_course_by_id($course_id);
 $selected_lesson = $education_object->get_single_course_lesson_id($course_lesson_id);
@@ -23,7 +21,7 @@ if(empty($selected_course)) {
     redirect_to("fxacademy/"); // cannot find course or URL tampered
 } else {
     if(empty($selected_lesson)) {
-        $back_url = "course_view.php?id=" . encrypt_ssl($course_id);
+        $back_url = "course_view.php?id=" . dec_enc('encrypt', $course_id);
         redirect_to($back_url); // cannot find lesson or URL tampered
     }
 }
@@ -88,7 +86,7 @@ $previous_lesson = $education_object->get_previous_lesson($course_id, $course_le
                     <div id="main-container" class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-md-12 lesson_reader">
-                                <p><a href="fxacademy/course_view.php?id=<?php echo encrypt_ssl($course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
+                                <p><a href="fxacademy/course_view.php?id=<?php echo dec_enc('encrypt', $course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
                                 <p><span class="text-danger"><?php echo $selected_course['title']; ?></span></p>
                                 <h3 class="text-center"><strong><?php echo $selected_lesson['title']; ?></strong></h3>
 
@@ -109,7 +107,7 @@ $previous_lesson = $education_object->get_previous_lesson($course_id, $course_le
                                         <?php if(!empty($previous_lesson['previous_lesson_url']) || !empty($previous_lesson['previous_lesson_name'])): ?>
                                             <li class="previous"><a href="<?php echo $previous_lesson['previous_lesson_url']; ?>">&larr; <?php echo $previous_lesson['previous_lesson_name']; ?> </a></li>
                                         <?php endif; ?>
-                                        <li class="next"><a href="fxacademy/test_view.php?cid=<?php echo encrypt_ssl($course_id); ?>&lid=<?php echo encrypt_ssl($course_lesson_id); ?>">Proceed: Take Lesson Assessment &rarr;</a></li>
+                                        <li class="next"><a href="fxacademy/test_view.php?cid=<?php echo dec_enc('encrypt', $course_id); ?>&lid=<?php echo dec_enc('encrypt', $course_lesson_id); ?>">Proceed: Take Lesson Assessment &rarr;</a></li>
                                     <?php } ?>
                                 </ul>
                                 <hr />

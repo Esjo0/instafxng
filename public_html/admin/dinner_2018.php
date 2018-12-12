@@ -782,10 +782,10 @@ if($numrows > 0) {
                                                     class="glyphicon glyphicon-eye-open icon-white"></i> </a><?php }?>
                                             <a class="btn btn-sm btn-primary" title="Send Email"
                                                href="campaign_email_single.php?name=<?php $name;
-                                               echo encrypt_ssl($name) . '&email=' . encrypt_ssl($email); ?>"><i
+                                               echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $email); ?>"><i
                                                     class="glyphicon glyphicon-envelope"></i></a>
                                             <a class="btn btn-sm btn-success" title="Send SMS"
-                                               href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($phone) ?>"><i
+                                               href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $phone) ?>"><i
                                                     class="glyphicon glyphicon-phone-alt"></i></a>
                                             <button class="btn btn-primary btn-sm" type="button"
                                                     data-target="#edit<?php echo $id; ?>" data-toggle="modal" title="Edit Participants Ticket" >

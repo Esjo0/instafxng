@@ -7,11 +7,11 @@
     <div class="col-sm-7">
         <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
 
-            <input name="transaction_no" type="hidden" value="<?php if (isset($trans_id)) { echo encrypt_ssl($trans_id); } ?>">
-            <input name="user_no" type="hidden" value="<?php if (isset($trans_detail['user_code'])) { echo encrypt_ssl($trans_detail['user_code']); } ?>">
+            <input name="transaction_no" type="hidden" value="<?php if (isset($trans_id)) { echo dec_enc('encrypt', $trans_id); } ?>">
+            <input name="user_no" type="hidden" value="<?php if (isset($trans_detail['user_code'])) { echo dec_enc('encrypt', $trans_detail['user_code']); } ?>">
             <input name="course_no" type="hidden"
                    value="<?php if (isset($trans_detail['edu_course_id'])) {
-                       echo encrypt_ssl($trans_detail['edu_course_id']);
+                       echo dec_enc('encrypt', $trans_detail['edu_course_id']);
                    } ?>">
 
             <div class="form-group">

@@ -11,8 +11,7 @@ if (!$session_admin->is_logged_in()) {
 $get_params = allowed_get_params(['x', 'pg']);
 
 $prospect_id_encrypted = $get_params['x'];
-$prospect_id = decrypt_ssl(str_replace(" ", "+", $prospect_id_encrypted));
-$prospect_id = preg_replace("/[^A-Za-z0-9 ]/", '', $prospect_id);
+$prospect_id = dec_enc('decrypt',  $prospect_id_encrypted);
 $referral_pagination = $get_params['pg'];
 
 // get the current page or set a default

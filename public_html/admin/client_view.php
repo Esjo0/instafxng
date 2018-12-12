@@ -257,10 +257,10 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                 <td><?php echo $row['account_officer_full_name']; ?></td>
                                                 <td nowrap="nowrap">
-                                                    <a target="_blank" title="Comment" class="btn btn-success btn-sm" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_view'; ?>&c=<?php echo encrypt_ssl('CLIENT VIEW'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a target="_blank" title="Comment" class="btn btn-success btn-sm" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_view'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT VIEW'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                     <a target="_blank" title="View" class="btn btn-info btn-sm" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <?php if($allowed_update_profile) { ?>
-                                                        <a target="_blank" title="Update" class="btn btn-info btn-sm" href="client_update.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
+                                                        <a target="_blank" title="Update" class="btn btn-info btn-sm" href="client_update.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
                                                     <?php } ?>
                                                     <?php call_log_status($row['user_code']);?>
                                                 </td>

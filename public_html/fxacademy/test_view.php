@@ -9,12 +9,10 @@ if (!$session_client->is_logged_in())
 
 $get_params = allowed_get_params(['lid', 'cid']);
 $course_id_encrypted = $get_params['cid'];
-$course_id = decrypt_ssl(str_replace(" ", "+", $course_id_encrypted));
-$course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
+$course_id = dec_enc('decrypt',  $course_id_encrypted);
 
 $course_lesson_id_encrypted = $get_params['lid'];
-$course_lesson_id = decrypt_ssl(str_replace(" ", "+", $course_lesson_id_encrypted));
-$course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
+$course_lesson_id = dec_enc('decrypt',  $course_lesson_id_encrypted);
 
 $confirm_second_time_assessment = $education_object->confirm_second_time_assessment($course_lesson_id, $_SESSION['client_unique_code']);
 
@@ -35,7 +33,7 @@ else
 {
     if(empty($selected_lesson))
     {
-        $back_url = "course_view.php?id=" . encrypt_ssl($course_id);
+        $back_url = "course_view.php?id=" . dec_enc('encrypt', $course_id);
         redirect_to($back_url); // cannot find lesson or URL tampered
     }
 }
@@ -74,7 +72,7 @@ else
                     <div id="main-container" class="section-tint super-shadow">
                         <div class="row">
                             <div class="col-md-12">
-                                <p><a href="fxacademy/course_view.php?id=<?php echo encrypt_ssl($course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
+                                <p><a href="fxacademy/course_view.php?id=<?php echo dec_enc('encrypt', $course_id); ?>" class="btn btn-default" title="Course Outline"><i class="fa fa-arrow-circle-left"></i> Course Outline</a></p>
 
                                 <h3 class="text-center">Lesson Assessment</h3>
                                 <p><span class="text-danger"><?php echo $selected_course['title']; ?></span></p>

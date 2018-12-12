@@ -7,8 +7,7 @@ $client_operation = new clientOperation();
 $get_params = allowed_get_params(['x', 'app_id']);
 
 $app_id_encrypted = $get_params['app_id'];
-$app_id = decrypt_ssl(str_replace(" ", "+", $app_id_encrypted));
-$app_id = preg_replace("/[^A-Za-z0-9 ]/", '', $app_id);
+$app_id = dec_enc('decrypt',  $app_id_encrypted);
 
 #Process Transaction Release
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['release_transaction'])){

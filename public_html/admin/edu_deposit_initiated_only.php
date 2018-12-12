@@ -128,7 +128,7 @@ $education_deposit = $db_handle->fetchAssoc($result);
                                             if(isset($selected_trans)) { foreach ($selected_trans as $data) {
                                                 ?>
                                                 <td>
-                                                    <a class="btn btn-info" href="edu_deposit_process.php?x=initiated&id=<?php echo encrypt_ssl($data['trans_id']); ?>" title="Comment on Students last Transaction"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
+                                                    <a class="btn btn-info" href="edu_deposit_process.php?x=initiated&id=<?php echo dec_enc('encrypt', $data['trans_id']); ?>" title="Comment on Students last Transaction"><i class="fa fa-comments-o" aria-hidden="true"></i></a>
                                                 </td>
                                             <?php } } ?>
                                         </tr>

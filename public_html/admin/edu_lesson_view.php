@@ -6,13 +6,10 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'cid', 'lid', 'eid']);
 $course_id_encrypted = $get_params['cid'];
-$course_id = decrypt_ssl(str_replace(" ", "+", $course_id_encrypted));
-$course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
+$course_id = dec_enc('decrypt',  $course_id_encrypted);
 
 $course_lesson_id_encrypted = $get_params['lid'];
-$course_lesson_id = decrypt_ssl(str_replace(" ", "+", $course_lesson_id_encrypted));
-$course_lesson_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_lesson_id);
-
+$course_lesson_id = dec_enc('decrypt',  $course_lesson_id_encrypted);
 
 $selected_course = $education_object->get_course_by_id($course_id);
 
@@ -23,7 +20,7 @@ if(empty($selected_course)) {
 $selected_lesson = $education_object->get_single_course_lesson_id($course_lesson_id);
 
 if(empty($selected_lesson)) {
-    $back_url = "edu_course_view.php?id=" . encrypt_ssl($course_id);
+    $back_url = "edu_course_view.php?id=" . dec_enc('encrypt', $course_id);
     redirect_to($back_url); // cannot find lesson or URL tampered
 } else {
     $lesson_exercises = $education_object->get_lessons_exercises_id($course_lesson_id);
@@ -68,7 +65,7 @@ if(empty($selected_lesson)) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p><a href="edu_course_view.php?id=<?php echo encrypt_ssl($course_id); ?>" class="btn btn-default" title="All Courses"><i class="fa fa-arrow-circle-left"></i> Go Back To Course</a></p>
+                                <p><a href="edu_course_view.php?id=<?php echo dec_enc('encrypt', $course_id); ?>" class="btn btn-default" title="All Courses"><i class="fa fa-arrow-circle-left"></i> Go Back To Course</a></p>
                                 <p><strong><span class="text-danger">Course Title:</span> <?php echo $selected_course['title']; ?></strong></p>
                                 <p><strong><span class="text-danger">Lesson:</span> <?php echo $selected_lesson['title']; ?></strong></p>
 
@@ -103,7 +100,7 @@ if(empty($selected_lesson)) {
                                                     <td><?php echo $row['option_d']; ?></td>
                                                     <td><?php echo $row['right_option']; ?></td>
                                                     <td class="nowrap">
-                                                        <a title="Edit Exercise" class="btn btn-default" href="edu_exercise_new.php?eid=<?php echo encrypt_ssl($row['edu_lesson_exercise_id']); ?>&cid=<?php echo encrypt_ssl($course_id); ?>&lid=<?php echo encrypt_ssl($course_lesson_id); ?>&x=edit"><i class="fa fa-edit"></i> </a>
+                                                        <a title="Edit Exercise" class="btn btn-default" href="edu_exercise_new.php?eid=<?php echo dec_enc('encrypt', $row['edu_lesson_exercise_id']); ?>&cid=<?php echo dec_enc('encrypt', $course_id); ?>&lid=<?php echo dec_enc('encrypt', $course_lesson_id); ?>&x=edit"><i class="fa fa-edit"></i> </a>
                                                     </td>
                                                 </tr>
                                             <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No exercise found for this lesson</em></td></tr>"; } ?>

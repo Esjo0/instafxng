@@ -136,8 +136,7 @@
                         <span><strong>Phone Password:</strong>
                             <?php
                             $phone_password_encrypted = $trans_detail['client_phone_password'];
-                            $client_phone_password = decrypt_ssl(str_replace(" ", "+", $phone_password_encrypted));
-                            $client_phone_password = preg_replace("/[^A-Za-z0-9 ]/", '', $client_phone_password);
+                            $client_phone_password = dec_enc('decrypt',  $phone_password_encrypted);
                             echo $client_phone_password;
                             ?>
                         </span>

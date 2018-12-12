@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $ifxaccount_id_encrypted = $get_params['id'];
-$ifxaccount_id = decrypt_ssl(str_replace(" ", "+", $ifxaccount_id_encrypted));
-$ifxaccount_id = preg_replace("/[^A-Za-z0-9 ]/", '', $ifxaccount_id);
+$ifxaccount_id = dec_enc('decrypt',  $ifxaccount_id_encrypted);
 
 if (isset($_POST['process'])) {
     foreach($_POST as $key => $value) {
