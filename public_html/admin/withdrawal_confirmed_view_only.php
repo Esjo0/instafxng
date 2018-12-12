@@ -118,7 +118,7 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                         <td> &dollar; <?php echo $row['dollar_withdraw']; ?> - &#8358; <?php echo number_format($row['naira_total_withdrawable'], 2, ".", ","); ?></td>
                                                         <td><?php echo datetime_to_text($row['created']); ?></td>
                                                         <td>
-                                                            <a href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-user"></i></a>
+                                                            <a href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-user"></i></a>
                                                             <a href="withdraw_process_view_only.php?x=confirmed&id=<?php echo encrypt_ssl($row['trans_id']); ?>" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a>
 
                                                             <!--<button type="button" data-target="#client_profile_<?php /*echo $row['user_code'];*/?>" data-toggle="modal" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-user"></i></button>-->

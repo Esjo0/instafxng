@@ -138,7 +138,7 @@ if(!empty($transaction_access['holder'])){
                                             <div class="trans_item_content">
                                                 <div class="row">
                                                     <div class="col-sm-4 trans_item-thumb">
-                                                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($trans_detail['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
+                                                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $trans_detail['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
                                                         <?php
                                                         if(!empty($app_detail['passport'])) { $file_location = "../userfiles/" . $app_detail['passport']; }
 

@@ -300,7 +300,7 @@ function bulk_sms_url($query){
                                                     <br/>-->
                                                     <a title="View" class="btn btn-xs btn-success" href="client_reach.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'campaign_leads'; ?>&c=<?php echo encrypt_ssl('NEW CAMPAIGN LEADS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
                                                     <br/><br/>
-                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <br/><br/>
                                                     <a title="View" class="btn btn-xs btn-info" href="edu_free_training_view.php?x=<?php echo encrypt_ssl($row['lead_id']); ?>&pg=<?php echo $currentpage; ?>&selector=1"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
                                                     <br/><br/>

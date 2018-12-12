@@ -118,7 +118,7 @@ $confirmed_deposit_requests = $db_handle->fetchAssoc($result);
                                                 <td> &dollar; <?php echo $row['dollar_ordered']; ?> - &#8358; <?php echo number_format($row['naira_total_payable'], 2, ".", ","); ?></td>
                                                 <td><?php echo datetime_to_text($row['created']); ?></td>
                                                 <td>
-                                                    <a href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>" target="_blank"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-user"></i></a>
+                                                    <a href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>" target="_blank"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-user"></i></a>
                                                     <a href="deposit_process_view_only.php?x=confirmed&id=<?php echo encrypt_ssl($row['trans_id']) ?>" target="_blank" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a>
                                                     <!--<button type="button" data-target="#client_profile_<?php /*echo $row['user_code'];*/?>" data-toggle="modal" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-user"></i></button>-->
                                                     <div id="client_profile_<?php echo $row['user_code'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal modal-lg fade">

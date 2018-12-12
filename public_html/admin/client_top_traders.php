@@ -201,8 +201,8 @@ $clients_top_traders = $db_handle->fetchAssoc($result);
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; $user_code = $row['user_code'];?></td>
                                             <td nowrap="nowrap">
-                                                <a title="Comment" class="btn btn-success btn-xs" href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'client_top_traders'; ?>&c=<?php echo encrypt_ssl('TOP TRADERS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                <a target="_blank" title="View" class="btn btn-info btn-xs" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="Comment" class="btn btn-success btn-xs" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_top_traders'; ?>&c=<?php echo encrypt_ssl('TOP TRADERS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-info btn-xs" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
                                                     <div class="input-group">
                                                         <input type="hidden" name="user_code" value="<?php echo $user_code;?>" >

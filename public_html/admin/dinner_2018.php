@@ -778,7 +778,7 @@ if($numrows > 0) {
                                         <td><?php if(!empty($state)){echo $state;}else{ echo "Nill"; }?></td>
                                         <td nowrap="nowrap">
                                             <?php if($user_code != NULL){?><a target="_blank" title="View" class="btn btn-sm btn-info"
-                                               href="client_detail.php?id=<?php echo encrypt_ssl($user_code); ?>"><i
+                                               href="client_detail.php?id=<?php echo dec_enc('encrypt', $user_code); ?>"><i
                                                     class="glyphicon glyphicon-eye-open icon-white"></i> </a><?php }?>
                                             <a class="btn btn-sm btn-primary" title="Send Email"
                                                href="campaign_email_single.php?name=<?php $name;

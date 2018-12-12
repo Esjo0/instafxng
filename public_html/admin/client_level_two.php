@@ -136,7 +136,7 @@ $selected_lev2_clients = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
-                                            <td nowrap="nowrap"><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                            <td nowrap="nowrap"><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>

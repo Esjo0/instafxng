@@ -89,7 +89,7 @@ if($get_params['x'] == 'edit') {
                                         <label class="control-label col-sm-2" for=""></label>
                                         <div class="col-sm-10 col-lg-6">
                                             <p>
-                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($selected_bank_account['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $selected_bank_account['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
 
                                                 <?php if($client_operation->account_flagged($selected_bank_account['user_code'])) { ?>
                                                     <img class="center-block" src="../images/red-flag.png" alt="" title="This client has an account flagged.">

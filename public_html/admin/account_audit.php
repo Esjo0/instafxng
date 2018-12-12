@@ -118,7 +118,7 @@ $participants = $db_handle->fetchAssoc($result);
                                         <td><?php echo datetime_to_text($audit_date); ?></td>
                                         <td nowrap="nowrap">
                                             <a target="_blank" title="View" class="btn btn-sm btn-info"
-                                               href="client_detail.php?id=<?php echo encrypt_ssl($user_code); ?>"><i
+                                               href="client_detail.php?id=<?php echo dec_enc('encrypt', $user_code); ?>"><i
                                                     class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             <a class="btn btn-sm btn-primary" target="_blank" title="Send Email"
                                                href="campaign_email_single.php?name=<?php $name;

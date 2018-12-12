@@ -635,10 +635,10 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                            href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i
                                                 class="glyphicon glyphicon-phone-alt"></i></a>
                                         <a target="_blank" title="View" class="btn btn-info btn-sm"
-                                           href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i
+                                           href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i
                                                 class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                         <a target="_blank" title="Comment" class="btn btn-success btn-sm"
-                                           href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'training_schedule'; ?>&c=<?php echo encrypt_ssl('TRAINING SCHEDULE'); ?>&pg=<?php echo $currentpage; ?>"><i
+                                           href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'training_schedule'; ?>&c=<?php echo encrypt_ssl('TRAINING SCHEDULE'); ?>&pg=<?php echo $currentpage; ?>"><i
                                                 class="glyphicon glyphicon-comment icon-white"></i> </a>
                                         <a class="btn btn-default btn-sm" data-toggle="modal" title="Re-schedule"
                                            data-target="#re<?php echo($row['id']) ?>"><i

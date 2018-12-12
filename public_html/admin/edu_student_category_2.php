@@ -204,8 +204,8 @@ $education_students = edu_sales_filter($education_students, $_SESSION['cat']);
                                             <td><?php echo datetime_to_text($row['academy_signup']); ?></td>
                                             <td><?php echo $row['account_officer_full_name']; ?></td>
                                             <td nowrap="nowrap">
-                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'edu_student_category_2'; ?>&c=<?php echo encrypt_ssl('STUDENT CATEGORY 2'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'edu_student_category_2'; ?>&c=<?php echo encrypt_ssl('STUDENT CATEGORY 2'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                 <br/><br/>
                                                 <?php UI_sale_status($row['user_code'], $this_cat); ?>
                                             </td>
