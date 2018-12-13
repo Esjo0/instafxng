@@ -8,6 +8,10 @@ $client_operation = new clientOperation();
 $query_count = "SELECT * FROM dinner_2018 WHERE choice = '1' AND type <> '6'";
 $total_seats_taken = $db_handle->numRows($query_count);
 
+// number of clients who attended last year
+$query_count_17 = "SELECT * FROM dinner_2018 AS d8 INNER JOIN dinner_2017 AS d7 ON d8.email = d7.email WHERE d8.choice = '1'";
+$total_17 = $db_handle->numRows($query_count_17);
+
 if (isset($_POST['search_text'])){
     $search = $db_handle->sanitizePost($_POST['search_text']);
     $query = "SELECT d.invite_code, d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
@@ -35,7 +39,7 @@ if (isset($_POST['edit'])) {
                           WHERE id = '$id'";
         $result = $db_handle->runQuery($query);
         if ($result) {
-            $message_success = "Sucessfully Update $name's ticket";
+            $message_success = "Successfully Update $name's ticket";
         } else {
             $message_error = "Edit Not Successful";
         }
@@ -431,6 +435,10 @@ if($numrows > 0) {
 
 }
 }
+
+$query = $_SESSION['query_dinner'];
+$result = $db_handle->runQuery($query);
+$export = $db_handle->fetchAssoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -443,6 +451,110 @@ if($numrows > 0) {
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <?php require_once 'layouts/head_meta.php'; ?>
+    <script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+    <script>
+        (function () {
+            var
+                form = $('#output'),
+                cache_width = form.width(),
+                a4 = [595.28, 841.89]; // for a4 size paper width and height
+
+            $('#create_pdf').on('click', function () {
+                $('body').scrollTop(0);
+                createPDF();
+            });
+            //create pdf
+            function createPDF() {
+                getCanvas().then(function (canvas) {
+                    var
+                        img = canvas.toDataURL("image/png"),
+                        doc = new jsPDF({ unit: 'px',     format: 'a4'    });
+                    doc.addImage(img, 'JPEG', 20, 20);
+                    var filename = 'requisition_reports_'+Math.floor(Date.now() / 1000);
+                    doc.save(filename+'.pdf');
+                    form.width(cache_width);
+                });
+            }
+
+            // create canvas object
+            function getCanvas() {
+                form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+                return html2canvas(form, {
+                    imageTimeout: 2000,
+                    removeContainer: true
+                });
+            }
+
+        }());
+    </script>
+    <script>
+        /*
+         * jQuery helper plugin for examples and tests
+         */
+        (function ($) {
+            $.fn.html2canvas = function (options) {
+                var date = new Date(),
+                    $message = null,
+                    timeoutTimer = false,
+                    timer = date.getTime();
+                html2canvas.logging = options && options.logging;
+                html2canvas.Preload(this[0], $.extend({
+                    complete: function (images) {
+                        var queue = html2canvas.Parse(this[0], images, options),
+                            $canvas = $(html2canvas.Renderer(queue, options)),
+                            finishTime = new Date();
+
+                        $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
+                        $canvas.siblings().toggle();
+
+                        $(window).click(function () {
+                            if (!$canvas.is(':visible')) {
+                                $canvas.toggle().siblings().toggle();
+                                throwMessage("Canvas Render visible");
+                            } else {
+                                $canvas.siblings().toggle();
+                                $canvas.toggle();
+                                throwMessage("Canvas Render hidden");
+                            }
+                        });
+                        throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
+                    }
+                }, options));
+
+                function throwMessage(msg, duration) {
+                    window.clearTimeout(timeoutTimer);
+                    timeoutTimer = window.setTimeout(function () {
+                        $message.fadeOut(function () {
+                            $message.remove();
+                        });
+                    }, duration || 2000);
+                    if ($message)
+                        $message.remove();
+                    $message = $('<div ></div>').html(msg).css({
+                        margin: 0,
+                        padding: 10,
+                        background: "#000",
+                        opacity: 0.7,
+                        position: "fixed",
+                        top: 10,
+                        right: 10,
+                        fontFamily: 'Tahoma',
+                        color: '#fff',
+                        fontSize: 12,
+                        borderRadius: 12,
+                        width: 'auto',
+                        height: 'auto',
+                        textAlign: 'center',
+                        textDecoration: 'none'
+                    }).hide().fadeIn().appendTo('body');
+                }
+            };
+        })(jQuery);
+
+    </script>
     <script>
         function proceed(){
             document.getElementById("proceed").style.display = "block";
@@ -517,6 +629,7 @@ if($numrows > 0) {
                             </div>
                         </div>
                         <h3 class="text-center">Total Seats Taken <?php echo $total_seats_taken?></h3>
+                        <h6 class="text-center">Clients From 2017 = <?php echo $total_17?></h6>
                 <div class="col-md-7 pull-right">
                     <form action="" method="post">
                         <button class="btn btn-default  btn-sm pull-left" type="submit" name="all">View All</button></form>
@@ -726,6 +839,44 @@ if($numrows > 0) {
                                 </div>
                             </form>
                         </div>
+                        <a type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export Result to Excel</a>
+                        <table id="output" class="table table-responsive table-striped table-bordered table-hover" style="display:none;">
+                            <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Name</th>
+                                <th>Invite Code</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            if (isset($export) && !empty($export)) {
+                            foreach ($export as $row_export) {
+                                if ($row_export['type'] == '1' || $row_export['type'] == '2') {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $row_export['id']; ?></td>
+                                        <td><?php echo $row_export['name']; ?></td>
+                                        <td><?php echo $row_export['invite_code']; ?></td>
+                                        <td></td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            } else {
+                                echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>";
+                            } ?>
+                            </tbody>
+                            <script>
+                                window.exportExcel =     function exportExcel()
+                                {
+                                    var filename = 'Royal_Ball_Invite_list'+Math.floor(Date.now() / 1000);
+                                    alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#output",{headers:true})');
+                                }
+                            </script>
+                        </table>
+
                         <!--                        Modal end-->
                        <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
@@ -742,11 +893,11 @@ if($numrows > 0) {
                             if (isset($participants) && !empty($participants)) {
                                 foreach ($participants as $row) {
                                     extract($row);
-                                        if(empty($name)){$name = $client_full_name;}
-                                        if(empty($phone)){$phone = $client_phone_number;}
-                                        if(empty($email)){$email = $client_email;}
+                                    if(empty($name)){$name = $client_full_name;}
+                                    if(empty($phone)){$phone = $client_phone_number;}
+                                    if(empty($email)){$email = $client_email;}
 
-                                        ?>
+                                    ?>
                                     <tr>
                                         <td><?php echo $name; ?>
                                             <br>
