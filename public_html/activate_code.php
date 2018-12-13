@@ -16,7 +16,7 @@ if (isset($_POST['submit_code']) && !empty($_POST['submit_code'])) {
     $sms_code = $db_handle->sanitizePost($_POST['sms_code']);
     
     $user_code_encrypted = $db_handle->sanitizePost($_POST['uuc']);
-    $user_code = dec_enc('decrypt',  $user_code_encrypted));
+    $user_code = dec_enc('decrypt',  $user_code_encrypted);
     
     
     if(empty($pass_code) || empty($sms_code)) {

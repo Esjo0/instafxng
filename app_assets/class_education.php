@@ -24,15 +24,13 @@ class Education {
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Great job $client_name,</p>
-            <p>You are right on track!</p>
-            <p>Kindly take note of the following information to ensure an easy payment process:</p>
+            <p>Dear $client_name,</p>
 
             <p>NOTE: This is a CONFIDENTIAL Document. Information herein should
             never be shared with anyone.</p>
 
-            <p>Also, please note that THIS INVOICE IS VALID ONLY FOR 24 HOUR and upon expiration,
-            you will be required to submit a new order.</p>
+            <p>THIS INVOICE IS VALID ONLY FOR 24 HOURS. IF PAYMENT IS NOT MADE BY THEN,
+            YOU MUST SUBMIT ANOTHER ORDER.</p>
 
             <p>====================</p>
 
@@ -40,27 +38,26 @@ class Education {
 
             <p>The details of your order are as follows:</p>
 
-            <ol>
-            <li>
             <p>Payment for Forex Profit Optimizer Course: (N $total_payment)</p>
 
-            <p>To complete your order, please follow these 2 easy steps:</p>
+            <p>To complete your order, please make your payment as follows:</p>
 
             <p>Pay (N $total_payment) into our account listed below.</p>
 
-            <p style="color: red">NOTE: Kindly ensure that you cross check the account number before making payment to avoid mistakes.</p>
+            <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
-           <p>Any Branch of Guaranty Trust Bank (GTB)<br />
+            <ol>
+                <li>Any Branch of Guaranty Trust Bank (GTB)<br />
                 Account Name: Instant Web-Net Technologies Ltd<br />
                 Account Number: 0174516696
-           </p>
-           </li>
-           <li>
-            <p>After making the payment, visit <a href='https://instafxng.com/fxacademy'>https://instafxng.com/fxacademy</a> and click on NOTIFICATION.</p>
-            <p>Fill in the column as stated on the page.</p>
+                </li>
+                <li>After making the payment, visit <a href='https://instafxng.com/fxacademy'>https://instafxng.com/fxacademy</a> and click on NOTIFICATION.</li>
+                <li>Fill in the column as stated on the page.</li>
+            </ol>
+
             <p>Upon receipt of payment, you will be granted access to the Forex Profit Optimizer Course</p>
 
-            <p>PLEASE TAKE NOTE:</p>
+            <p>NOTE:</p>
             <ul>
                 <li>Third party payments are not allowed.</li>
                 <li>When making payment through internet banking platform, fill in your transaction ID $trans_id
@@ -68,8 +65,6 @@ class Education {
                 <li>You will only be given access to the Forex Profit Optimizer course after you have completed
                 <a href='https://instafxng.com/fxacademy'>payment notification</a> as advised in (2) above.</li>
             </ul>
-            </li>
-            </ol>
 
 
             <br /><br />
@@ -194,7 +189,7 @@ MAIL;
         if(($lesson_position + 1) < $lesson_count) {
             $next_lesson_key = $lesson_position + 1;
 
-            $next_lesson_url = "fxacademy/lesson_view.php?cid=" . encrypt_ssl($course_id) . "&lid=" . encrypt_ssl($selected_lessons[$next_lesson_key]);
+            $next_lesson_url = "fxacademy/lesson_view.php?cid=" . dec_enc('encrypt', $course_id) . "&lid=" . dec_enc('encrypt', $selected_lessons[$next_lesson_key]);
             $next_lesson_name = "Next Lesson";
         } else {
             // Go to Course Level
@@ -213,7 +208,7 @@ MAIL;
             if(($course_position + 1) < $course_count) {
                 $next_course_key = $course_position + 1;
 
-                $next_lesson_url = "fxacademy/course_view.php?id=" . encrypt_ssl($selected_courses[$next_course_key]);
+                $next_lesson_url = "fxacademy/course_view.php?id=" . dec_enc('encrypt', $selected_courses[$next_course_key]);
                 $next_lesson_name = "Next Course";
             } else {
                 $next_lesson_url = "fxacademy/completion_cert.php";
@@ -259,7 +254,7 @@ MAIL;
         if(($lesson_position - 1) < $lesson_count) {
             if($selected_lessons[$lesson_position - 1]){
                 $previous_lesson_key = $lesson_position - 1;
-                $previous_lesson_url = "fxacademy/lesson_view.php?cid=" . encrypt_ssl($course_id) . "&lid=" . encrypt_ssl($selected_lessons[$previous_lesson_key]);
+                $previous_lesson_url = "fxacademy/lesson_view.php?cid=" . dec_enc('encrypt', $course_id) . "&lid=" . dec_enc('encrypt', $selected_lessons[$previous_lesson_key]);
                 $previous_lesson_name = "Previous Lesson";
             }
 
@@ -284,7 +279,7 @@ MAIL;
                 if($selected_courses[$course_position - 1]) {
                     $previous_course_key = $course_position - 1;
 
-                    $previous_lesson_url = "fxacademy/course_view.php?id=" . encrypt_ssl($selected_courses[$previous_course_key]);
+                    $previous_lesson_url = "fxacademy/course_view.php?id=" . dec_enc('encrypt', $selected_courses[$previous_course_key]);
                     $previous_lesson_name = "Previous Course";
                 }
             } else {
@@ -1003,7 +998,7 @@ MAIL;
         $fetched_data = $db_handle->fetchAssoc($result);
         $support_request_code = $fetched_data[0]['support_request_code'];
 
-        $return_url = "https://instafxng.com/fxacademy/index.php?se=" . $client_email . "&sid=" . encrypt_ssl($support_request_code) . "&c=" . encrypt_ssl("1");
+        $return_url = "https://instafxng.com/fxacademy/index.php?se=" . $client_email . "&sid=" . dec_enc('encrypt', $support_request_code) . "&c=" . dec_enc('encrypt', "1");
 
         $query = "INSERT INTO user_edu_support_answer (author, category, request_id, response) VALUES ('$unique_code', '$category', $support_id, '$comment_reply')";
         $db_handle->runQuery($query);
