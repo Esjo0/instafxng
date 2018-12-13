@@ -1082,7 +1082,15 @@ INVOICE;
 <ol>
 <li><p>Visit any bank ATM.</p></li>
 
-<li><p>Transfer =N= $client_naira_total into our account listed below.</p></li>
+<li><p>Transfer =N= $client_naira_total into our account listed below.</p>
+
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
+    <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+    </p>
+</li>
 
    <li><p>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</p></li>
 </ol>
@@ -1117,7 +1125,15 @@ INVOICE;
 If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 </li>
 
-<li><p>Pay =N= $client_naira_total into our account listed below.</p></li>
+<li><p>Pay =N= $client_naira_total into our account listed below.</p>
+
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
+    <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+    </p>
+</li>
 
    <li><p>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</p></li>
 </ol>
@@ -1207,7 +1223,15 @@ INVOICE;
 ($client_trans_id - $client_full_name - $client_account) <br />
 If you don't fill it as stated, your order will be unnecessarily delayed.</p>
 </li>
-<li><p>Pay =N= $client_naira_total into our account listed below.</p></li>
+<li><p>Pay =N= $client_naira_total into our account listed below.</p>
+
+<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+
+    <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+    </p>
+</li>
 
 <li><p>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</p></li>
 </ol>
