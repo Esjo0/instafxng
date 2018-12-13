@@ -13,7 +13,7 @@ if (isset($_POST['process'])&& $_POST['process'] == 'Proceed') {
 
     extract($_POST);
     
-    $partner_id = decrypt_ssl(str_replace(" ", "+", $partner_id));
+    $partner_id = dec_enc('decrypt',  $partner_id);
     $application_modified = $partner_object->modify_partner_application($partner_id, $partner_status);
     
     if($application_modified) {
@@ -28,7 +28,7 @@ if (isset($_POST['process'])&& $_POST['process'] == 'Proceed') {
 $get_params = allowed_get_params(['id']);
 $partner_code_encrypted = $get_params['id'];
 
-$partner_code = decrypt_ssl(str_replace(" ", "+", $partner_code_encrypted));
+$partner_code = dec_enc('decrypt',  $partner_code_encrypted);
 $partner_application = $partner_object->get_partner_by_code($partner_code);
 
 if(!$partner_application) {

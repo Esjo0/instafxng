@@ -199,7 +199,7 @@ if(($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['iv_mail'] == true))
 
         if($ivs)
         {
-            $r_code = encrypt_ssl($reservation_code);
+            $r_code = dec_enc('encrypt', $reservation_code);
             $target_file = str_replace('../dinner_2017/', '', $target_file);
             $ticket_url = str_replace('ivs/', '', $target_file);
             $from_name ="";
@@ -484,7 +484,7 @@ $dinner_reg = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['state_of_residence']; ?></td>
                                             <td><?php if(strlen(nl2br(htmlspecialchars($row['comments']))) > 40){echo "<a href='#' data-toggle='tooltip' title='".nl2br(htmlspecialchars($row['comments']))."'>".substr(nl2br(htmlspecialchars($row['comments'])), 0, 40)."...";} else {echo nl2br(htmlspecialchars($row['comments']));}?></td>
                                             <td>
-                                                <a title="View" class="btn btn-info" href="dinner_2017_view_reg.php?id=<?php echo encrypt_ssl($row['reservation_code']); ?>"><i class="glyphicon glyphicon-arrow-right icon-white"></i></a>
+                                                <a title="View" class="btn btn-info" href="dinner_2017_view_reg.php?id=<?php echo dec_enc('encrypt', $row['reservation_code']); ?>"><i class="glyphicon glyphicon-arrow-right icon-white"></i></a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

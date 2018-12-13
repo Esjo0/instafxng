@@ -95,7 +95,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ORDER BY rc1.last_trade DESC ";
+            WHERE rc2.user_code IS NULL ORDER BY rc1.first_trade DESC ";
 
         $retention_type_title2 = "RETAINED";
         $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
@@ -193,7 +193,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
     $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ORDER BY rc2.last_trade DESC ";
+            WHERE rc2.user_code IS NULL ORDER BY rc1.first_trade DESC ";
 
     $retention_type_title2 = "RETAINED";
     $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
@@ -591,10 +591,10 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                 <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
                                                 <td><?php if($retention_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
                                                 <td nowrap="nowrap">
-                                                    <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                                    <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo encrypt_ssl('CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
-                                                    <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                    <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
+                                                    <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
                                                 </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

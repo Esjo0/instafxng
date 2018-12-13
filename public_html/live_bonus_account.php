@@ -2,7 +2,7 @@
 require_once 'init/initialize_general.php';
 $thisPage = "";
 $bonus_operations = new Bonus_Operations();
-$package_code = decrypt_ssl(str_replace(" ", "+", $_GET['pc']));
+$package_code = dec_enc('decrypt',  $_GET['pc']));
 $package_details = $bonus_operations->get_package_by_code($package_code);
 
 $page_requested = '';

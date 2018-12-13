@@ -7,14 +7,13 @@ if (!$session_admin->is_logged_in()) {
 $get_params = allowed_get_params(['x', 'id']);
 
 $reg_id_encrypted = $get_params['id'];
-$reg_id = decrypt_ssl(str_replace(" ", "+", $reg_id_encrypted));
-$reg_id = preg_replace("/[^A-Za-z0-9 ]/", '', $reg_id);
+$reg_id = dec_enc('decrypt',  $reg_id_encrypted);
 
 $attendee_detail = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM dinner_2016 WHERE id_dinner_2016 = $reg_id"));
 $attendee_detail = $attendee_detail[0];
 
 extract($attendee_detail);
-$id_encrypt = encrypt_ssl($id_dinner_2016);
+$id_encrypt = dec_enc('encrypt', $id_dinner_2016);
 
 $subject = "You're Specially Invited";
 $message =

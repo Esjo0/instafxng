@@ -5,8 +5,7 @@ $bonus_operations = new Bonus_Operations();
 
 $get_params = allowed_get_params(['bc']);
 $bonus_code_encrypted = $get_params['bc'];
-$bonus_code = decrypt_ssl(str_replace(" ", "+", $bonus_code_encrypted));
-$bonus_code = preg_replace("/[^A-Za-z0-9 ]/", '', $bonus_code);
+$bonus_code = dec_enc('decrypt',  $bonus_code_encrypted);
 $package_details = $bonus_operations->get_package_by_code($bonus_code);
 if(!$package_details || empty($package_details)) { redirect_to("bonus.php"); die();}
 extract($package_details);

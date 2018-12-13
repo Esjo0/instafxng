@@ -1,5 +1,5 @@
 <?php
-$user_code_encrypted = encrypt_ssl($user_code);
+$user_code_encrypted = dec_enc('encrypt', $user_code);
 ?>
 <ul class="fa-ul">
     <li><i class="fa-li fa fa-check-square-o icon-tune"></i>Enter the quantity that you want to fund..</li>

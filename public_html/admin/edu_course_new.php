@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $course_id_encrypted = $get_params['id'];
-$course_id = decrypt_ssl(str_replace(" ", "+", $course_id_encrypted));
-$course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
+$course_id = dec_enc('decrypt',  $course_id_encrypted);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -105,7 +104,7 @@ if($get_params['x'] == 'edit') {
                                 <?php require_once 'layouts/feedback_message.php'; ?>
 
                                 <?php if(isset($selected_course)) { ?>
-                                    <p><a href="edu_course_view.php?id=<?php echo encrypt_ssl($course_id); ?>" class="btn btn-default" title="Go Back To Selected Course"><i class="fa fa-arrow-circle-left"></i> Go Back To Selected Course</a></p>
+                                    <p><a href="edu_course_view.php?id=<?php echo dec_enc('encrypt', $course_id); ?>" class="btn btn-default" title="Go Back To Selected Course"><i class="fa fa-arrow-circle-left"></i> Go Back To Selected Course</a></p>
                                 <?php } else { ?>
                                     <p><a href="edu_course.php" class="btn btn-default" title="All Courses"><i class="fa fa-arrow-circle-left"></i> All Courses</a></p>
                                 <?php } ?>

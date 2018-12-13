@@ -7,7 +7,7 @@ $all_conditions = $bonus_conditions->BONUS_CONDITIONS;
 
 $get_params = allowed_get_params(['package_code']);
 $package_code_encrypted = $get_params['package_code'];
-$package_code = decrypt_ssl(str_replace(" ", "+", $package_code_encrypted));
+$package_code = dec_enc('decrypt',  $package_code_encrypted));
 
 if(isset($_POST['process'])) {
     $bonus_title = $db_handle->sanitizePost(trim($_POST['bonus_title']));

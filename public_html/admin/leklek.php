@@ -3,6 +3,9 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$client_operation = new clientOperation();
+$result = $client_operation->requery_webpay_deposit("D1544623089");
+var_dump($result);
 
 /*
  * Period: One year ago

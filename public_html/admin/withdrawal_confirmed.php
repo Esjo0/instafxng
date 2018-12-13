@@ -128,7 +128,7 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-4 trans_item-thumb">
-                                                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
+                                                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
                                                         <?php
                                                         if(!empty($row['passport'])) { $file_location = "../userfiles/" . $row['passport']; }
 
@@ -248,8 +248,7 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                         <span><strong>Phone Password:</strong> 
                                                             <?php 
                                                                 $phone_password_encrypted = $row['client_phone_password'];
-                                                                $client_phone_password = decrypt_ssl(str_replace(" ", "+", $phone_password_encrypted));
-                                                                $client_phone_password = preg_replace("/[^A-Za-z0-9 ]/", '', $client_phone_password);
+                                                                $client_phone_password = dec_enc('decrypt',  $phone_password_encrypted);
                                                                 echo $client_phone_password;
                                                             ?>
                                                         </span>
@@ -266,7 +265,7 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                             } ?>
                                                         </span>
                                                     </div>
-                                                    <div class="col-xs-4"><span style="text-align: right"><a class="btn btn-info" href="withdraw_process.php?x=confirmed&id=<?php echo encrypt_ssl($row['trans_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Process</a></span></div>
+                                                    <div class="col-xs-4"><span style="text-align: right"><a class="btn btn-info" href="withdraw_process.php?x=confirmed&id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Process</a></span></div>
                                                 </div>
                                             </div>
                                         </div>

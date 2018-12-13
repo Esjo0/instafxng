@@ -9,8 +9,8 @@ if(empty($user_code_encrypted))
     redirect_to("signin.php");
     exit;
 }
-$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
-$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
+$user_code = dec_enc('decrypt',  $user_code_encrypted));
+
 $attendee_detail = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM dinner_2017 WHERE reservation_code = '$user_code'"));
 $attendee_detail = $attendee_detail[0];
 if(empty($attendee_detail))

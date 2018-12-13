@@ -55,6 +55,25 @@ $thisPage = "Promotion";
 
                     <div class="section-tint super-shadow">
                         <div class="row">
+                            <div class="col-sm-12"><h5>INSTAFXNG Blackest Friday Splurge</h5></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <a href="forex_bmw_contest.php" title="click for full details" target="_blank"><img src="https://instafxng.com/imgsource/the_splurge_website.jpg" alt="" class="img-responsive" /></a>
+                            </div>
+                            <div class="col-sm-8">
+                                <p>Get over $1000 extra in the Black Friday Promo!
+
+                                    No contest! No battle! Just set your target, hit it and get 150% of the loyalty points accrued during the promo.
+
+                                    You get rewarded every time you hit your target during the promo.</p>
+                                    <a class="btn btn-success" href="black_friday_splurge.php" title="click for full details" target="_blank">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-tint super-shadow">
+                        <div class="row">
                             <div class="col-sm-12"><h5>INSTAFXNG INDEPENDENCE TRADE CONTEST</h5></div>
                         </div>
                         <div class="row">
@@ -115,7 +134,7 @@ $thisPage = "Promotion";
                                 <a href="forex_bmw_contest.php" title="click for full details" target="_blank"><img src="images/instaforex-bmw-x6.jpg" alt="" class="img-responsive" /></a>
                             </div>
                             <div class="col-sm-8">
-                                <p>Be the winner of Instaforex sporty and stylish car 
+                                <p>Be the winner of Instaforex sporty and stylish car
                                     in the new super campaign Win BMW X6 from InstaForex, with the main prize – powerful luxury cross-over BMW X6.</p>
                                 <a class="btn btn-success" href="forex_bmw_contest.php" title="click for full details" target="_blank">More Details</a>
                             </div>

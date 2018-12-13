@@ -135,7 +135,7 @@ function bulk_sms_url($query){
     $nos = array();
     foreach ($result as $row) {$nos[count($nos)] = $row['phone'];}
     $phone_nos = implode(',', $nos);
-    $url = "campaign_sms_single.php?lead_phone=".encrypt_ssl($phone_nos);
+    $url = "campaign_sms_single.php?lead_phone=".dec_enc('encrypt', $phone_nos);
     return $url;
 }
 ?>
@@ -298,15 +298,15 @@ function bulk_sms_url($query){
                                                 <td>
                                                     <!--<input data-toggle="toggle" type="checkbox">
                                                     <br/>-->
-                                                    <a title="View" class="btn btn-xs btn-success" href="client_reach.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'campaign_leads'; ?>&c=<?php echo encrypt_ssl('NEW CAMPAIGN LEADS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
+                                                    <a title="View" class="btn btn-xs btn-success" href="client_reach.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'campaign_leads'; ?>&c=<?php echo dec_enc('encrypt', 'NEW CAMPAIGN LEADS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i></a>
                                                     <br/><br/>
-                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <br/><br/>
-                                                    <a title="View" class="btn btn-xs btn-info" href="edu_free_training_view.php?x=<?php echo encrypt_ssl($row['lead_id']); ?>&pg=<?php echo $currentpage; ?>&selector=1"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
+                                                    <a title="View" class="btn btn-xs btn-info" href="edu_free_training_view.php?x=<?php echo dec_enc('encrypt', $row['lead_id']); ?>&pg=<?php echo $currentpage; ?>&selector=1"><i class="glyphicon glyphicon-eye-open icon-white"></i></a>
                                                     <br/><br/>
-                                                    <a class="btn btn-xs btn-info" title="Send Email" href="campaign_email_single.php?name=<?php $name = $row['f_name']." ".$row['m_name']." ".$row['l_name']; echo  encrypt_ssl($name).'&email='.encrypt_ssl($row['email']);?>" ><i class="glyphicon glyphicon-envelope"></i></a>
+                                                    <a class="btn btn-xs btn-info" title="Send Email" href="campaign_email_single.php?name=<?php $name = $row['f_name']." ".$row['m_name']." ".$row['l_name']; echo  dec_enc('encrypt', $name).'&email='.dec_enc('encrypt', $row['email']);?>" ><i class="glyphicon glyphicon-envelope"></i></a>
                                                     <br/><br/>
-                                                    <a class="btn btn-xs btn-info" title="Send SMS" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                    <a class="btn btn-xs btn-info" title="Send SMS" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
                                                 </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='2' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

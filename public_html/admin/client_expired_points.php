@@ -161,7 +161,7 @@ $clients_expired_points = $db_handle->fetchAssoc($result);
                                             <td><?php echo number_format($row['total_expired_point'], 2, ".", ","); ?></td>
                                             <td><?php echo datetime_to_text2($row['created']); ?></td>
                                             <td nowrap="nowrap">
-                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

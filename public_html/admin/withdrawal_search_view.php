@@ -8,8 +8,7 @@ $client_operation = new clientOperation();
 
 $get_params = allowed_get_params(['id']);
 $trans_id_encrypted = $get_params['id'];
-$trans_id = decrypt_ssl(str_replace(" ", "+", $trans_id_encrypted));
-$trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+$trans_id = dec_enc('decrypt',  $trans_id_encrypted);
 
 $query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.naira_equivalent_dollar_withdraw,
         uw.created, uw.naira_total_withdrawable,

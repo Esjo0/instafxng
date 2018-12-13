@@ -5,13 +5,20 @@ if (!$session_admin->is_logged_in()) {
 }
 $client_operation = new clientOperation();
 
+$query_count = "SELECT * FROM dinner_2018 WHERE choice = '1' AND type <> '6'";
+$total_seats_taken = $db_handle->numRows($query_count);
+
+// number of clients who attended last year
+$query_count_17 = "SELECT * FROM dinner_2018 AS d8 INNER JOIN dinner_2017 AS d7 ON d8.email = d7.email WHERE d8.choice = '1'";
+$total_17 = $db_handle->numRows($query_count_17);
+
 if (isset($_POST['search_text'])){
     $search = $db_handle->sanitizePost($_POST['search_text']);
-    $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
+    $query = "SELECT d.invite_code, d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE name LIKE '%$search%' OR email LIKE '%$search%' OR phone LIKE '%$search%'
     ORDER BY d.created DESC ";
-    $_SESSION['query'] = $query;
+    $_SESSION['query_dinner'] = $query;
 }
 if (isset($_POST['edit'])) {
     $gender = $db_handle->sanitizePost($_POST['gender']);
@@ -32,7 +39,7 @@ if (isset($_POST['edit'])) {
                           WHERE id = '$id'";
         $result = $db_handle->runQuery($query);
         if ($result) {
-            $message_success = "Sucessfully Update $name's ticket";
+            $message_success = "Successfully Update $name's ticket";
         } else {
             $message_error = "Edit Not Successful";
         }
@@ -50,9 +57,8 @@ if (isset($_POST['add'])) {
     $phone = $db_handle->sanitizePost($_POST['phone']);
     $email = $db_handle->sanitizePost($_POST['email']);
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-    $query = "SELECT * FROM dinner_2018 WHERE email = '$email'";
-    $numrows = $db_handle->numRows($query);
-    if ($email != false && $numrows == 0) {
+
+    if (!empty($name) && !empty($choice) && !empty($type)) {
         if ($choice == 1 && !empty($gender) && $gender != NULL && !empty($town) && $town != NULL && !empty($state) && $state != NULL && !empty($title) && $title != NULL && !empty($name) && $name != NULL) {
             $query = "INSERT INTO dinner_2018 (name, email, choice, title, town, gender, state, type, phone) VALUE('$name', '$email', '$choice', '$title', '$town', '$gender', '$state', '$type', '$phone')";
             $result = $db_handle->runQuery($query);
@@ -113,7 +119,7 @@ MAIL;
             }
         }
         if ($choice == 2) {
-            $query = "INSERT IGNORE INTO dinner_2018 (email, choice) VALUE('$email', '$choice')";
+            $query = "INSERT INTO dinner_2018 (name, email, choice, title, town, gender, state, type, phone) VALUE('$name', '$email', '$choice', '$title', '$town', '$gender', '$state', '$type', '$phone')";
             $result = $db_handle->runQuery($query);
             if ($result) {
                 $subject = 'The Ball Will Be Brighter With Your Presence';
@@ -171,7 +177,7 @@ MAIL;
             }
         }
         if ($choice == 3) {
-            $query = "INSERT IGNORE INTO dinner_2018 (email, choice) VALUE('$email', '$choice')";
+            $query = "INSERT INTO dinner_2018 (name, email, choice, title, town, gender, state, type, phone) VALUE('$name', '$email', '$choice', '$title', '$town', '$gender', '$state', '$type', '$phone')";
             $result = $db_handle->runQuery($query);
             if ($result) {
                 $subject = 'The Ball Would have been more fun with you ' . $first_name . '!';
@@ -226,7 +232,7 @@ MAIL;
             }
         }
     }else {
-        $message_error = "Client has reserved a seat Earlier!!!.";
+        $message_error = "Kindly ensure you fill Participant Name Choice and ticket type";
 
     }
 }
@@ -270,22 +276,22 @@ if(isset($_POST['filter'])){
     }
 
 
-        $query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
+        $query = "SELECT d.invite_code, d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE $filter
     ORDER BY d.created DESC ";
 
-    $_SESSION['query'] = $query;
+    $_SESSION['query_dinner'] = $query;
 
-}elseif(empty($_SESSION['query']) || isset($_POST['all'])){
+}elseif(empty($_SESSION['query_dinner']) || isset($_POST['all'])){
 
-$query = "SELECT d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
+$query = "SELECT d.invite_code, d.type, d.id, d.state, d.title, d.town, d.created, d.name, d.phone, d.email, d.user_code, d.choice
     FROM dinner_2018 AS d
     WHERE d.choice IS NOT NULL
     ORDER BY d.created DESC ";
-    $_SESSION['query'] = $query;
+    $_SESSION['query_dinner'] = $query;
 }
-$query = $_SESSION['query'];
+$query = $_SESSION['query_dinner'];
 
 $numrows = $db_handle->numRows($query);
 
@@ -326,11 +332,12 @@ if($numrows > 0) {
     $my_message = stripslashes($selected_campaign_email['content']);
     $mail_sender = trim($selected_campaign_email['sender']);
 
-    $query = $_SESSION['query'];
+    $query = $_SESSION['query_dinner'];
     $result = $db_handle->runQuery($query);
     $recipients = $db_handle->fetchAssoc($result);
     foreach ($recipients as $sendto) {
         extract($sendto);
+        if(empty($email)){$email = $client_email;}
         $query = "SELECT user_code, first_name FROM user WHERE email = '$email' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $fetched_data = $db_handle->fetchAssoc($result);
@@ -344,10 +351,12 @@ if($numrows > 0) {
 
         if (array_key_exists('user_code', $selected_member)) {
             $user_code = $selected_member['user_code'];
+            $encode_dinner_id = dec_enc('encrypt', get_ticket_id($email));
 
             $encrypted_user_code = encrypt($user_code);
             $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
             $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
+            $dinner_invite_2018 = "<a title='Click Here to Download your invite' href='https://instafxng.com/dinner_invite.php?i=$encode_dinner_id'><strong>Click Here to Download Your Royal Invite</strong></a>";
             $found_position_month = in_array_r($user_code, $found_loyalty_month);
             $month_position = $found_position_month['position'];
             $month_rank = number_format(($found_position_month['rank']), 2, ".", ",");
@@ -374,6 +383,8 @@ if($numrows > 0) {
             $splurge_tier_target = $splurge_detail['tier_target'];
 
             $my_message_new = str_replace('[DINNER]', $dinner_2018, $my_message_new);
+            $my_message_new = str_replace('[DINNER-INVITE]', $dinner_invite_2018, $my_message_new);
+
             $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
             $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
             $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);
@@ -424,6 +435,10 @@ if($numrows > 0) {
 
 }
 }
+
+$query = $_SESSION['query_dinner'];
+$result = $db_handle->runQuery($query);
+$export = $db_handle->fetchAssoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -436,6 +451,110 @@ if($numrows > 0) {
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <?php require_once 'layouts/head_meta.php'; ?>
+    <script src="//cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+    <script>
+        (function () {
+            var
+                form = $('#output'),
+                cache_width = form.width(),
+                a4 = [595.28, 841.89]; // for a4 size paper width and height
+
+            $('#create_pdf').on('click', function () {
+                $('body').scrollTop(0);
+                createPDF();
+            });
+            //create pdf
+            function createPDF() {
+                getCanvas().then(function (canvas) {
+                    var
+                        img = canvas.toDataURL("image/png"),
+                        doc = new jsPDF({ unit: 'px',     format: 'a4'    });
+                    doc.addImage(img, 'JPEG', 20, 20);
+                    var filename = 'requisition_reports_'+Math.floor(Date.now() / 1000);
+                    doc.save(filename+'.pdf');
+                    form.width(cache_width);
+                });
+            }
+
+            // create canvas object
+            function getCanvas() {
+                form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+                return html2canvas(form, {
+                    imageTimeout: 2000,
+                    removeContainer: true
+                });
+            }
+
+        }());
+    </script>
+    <script>
+        /*
+         * jQuery helper plugin for examples and tests
+         */
+        (function ($) {
+            $.fn.html2canvas = function (options) {
+                var date = new Date(),
+                    $message = null,
+                    timeoutTimer = false,
+                    timer = date.getTime();
+                html2canvas.logging = options && options.logging;
+                html2canvas.Preload(this[0], $.extend({
+                    complete: function (images) {
+                        var queue = html2canvas.Parse(this[0], images, options),
+                            $canvas = $(html2canvas.Renderer(queue, options)),
+                            finishTime = new Date();
+
+                        $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
+                        $canvas.siblings().toggle();
+
+                        $(window).click(function () {
+                            if (!$canvas.is(':visible')) {
+                                $canvas.toggle().siblings().toggle();
+                                throwMessage("Canvas Render visible");
+                            } else {
+                                $canvas.siblings().toggle();
+                                $canvas.toggle();
+                                throwMessage("Canvas Render hidden");
+                            }
+                        });
+                        throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
+                    }
+                }, options));
+
+                function throwMessage(msg, duration) {
+                    window.clearTimeout(timeoutTimer);
+                    timeoutTimer = window.setTimeout(function () {
+                        $message.fadeOut(function () {
+                            $message.remove();
+                        });
+                    }, duration || 2000);
+                    if ($message)
+                        $message.remove();
+                    $message = $('<div ></div>').html(msg).css({
+                        margin: 0,
+                        padding: 10,
+                        background: "#000",
+                        opacity: 0.7,
+                        position: "fixed",
+                        top: 10,
+                        right: 10,
+                        fontFamily: 'Tahoma',
+                        color: '#fff',
+                        fontSize: 12,
+                        borderRadius: 12,
+                        width: 'auto',
+                        height: 'auto',
+                        textAlign: 'center',
+                        textDecoration: 'none'
+                    }).hide().fadeIn().appendTo('body');
+                }
+            };
+        })(jQuery);
+
+    </script>
     <script>
         function proceed(){
             document.getElementById("proceed").style.display = "block";
@@ -509,6 +628,8 @@ if($numrows > 0) {
                                 </div>
                             </div>
                         </div>
+                        <h3 class="text-center">Total Seats Taken <?php echo $total_seats_taken?></h3>
+                        <h6 class="text-center">Clients From 2017 = <?php echo $total_17?></h6>
                 <div class="col-md-7 pull-right">
                     <form action="" method="post">
                         <button class="btn btn-default  btn-sm pull-left" type="submit" name="all">View All</button></form>
@@ -536,7 +657,7 @@ if($numrows > 0) {
                                             <div class="form-group mx-sm-4 mb-2">
                                                 <div for="input" class="sr-only">Email Address</div>
                                                 <input name="email" type="text" class="form-control"
-                                                       placeholder="Enter Client Email " required>
+                                                       placeholder="Enter Client Email ">
                                             </div>
                                             <div class="form-group mx-sm-4 mb-2">
                                                 <input name="name" type="text" class="form-control"
@@ -718,14 +839,50 @@ if($numrows > 0) {
                                 </div>
                             </form>
                         </div>
+                        <a type="button" class="btn btn-sm btn-info" onclick="window.exportExcel()">Export Result to Excel</a>
+                        <table id="output" class="table table-responsive table-striped table-bordered table-hover" style="display:none;">
+                            <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Name</th>
+                                <th>Invite Code</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            if (isset($export) && !empty($export)) {
+                            foreach ($export as $row_export) {
+                                if ($row_export['type'] == '1' || $row_export['type'] == '2') {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $row_export['id']; ?></td>
+                                        <td><?php echo $row_export['name']; ?></td>
+                                        <td><?php echo $row_export['invite_code']; ?></td>
+                                        <td></td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            } else {
+                                echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>";
+                            } ?>
+                            </tbody>
+                            <script>
+                                window.exportExcel =     function exportExcel()
+                                {
+                                    var filename = 'Royal_Ball_Invite_list'+Math.floor(Date.now() / 1000);
+                                    alasql('SELECT * INTO XLSX("'+filename+'.xlsx",{headers:true}) FROM HTML("#output",{headers:true})');
+                                }
+                            </script>
+                        </table>
+
                         <!--                        Modal end-->
                        <table class="table table-responsive table-striped table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Client Name</th>
+                                <th>Client Details</th>
                                 <th>Date</th>
-                                <th>Email Address</th>
-                                <th>Phone Number</th>
                                 <th>Title</th>
                                 <th>Residence</th>
                                 <th></th>
@@ -735,9 +892,18 @@ if($numrows > 0) {
                             <?php
                             if (isset($participants) && !empty($participants)) {
                                 foreach ($participants as $row) {
-                                    extract($row)?>
+                                    extract($row);
+                                    if(empty($name)){$name = $client_full_name;}
+                                    if(empty($phone)){$phone = $client_phone_number;}
+                                    if(empty($email)){$email = $client_email;}
+
+                                    ?>
                                     <tr>
                                         <td><?php echo $name; ?>
+                                            <br>
+                                            <?php echo $email ; ?>
+                                            <br>
+                                            <?php echo $phone ; ?>
                                             <span class="badge" title="Ticket Type">
                                                 <?php if($type == 1){echo 'Single';}?>
                                                 <?php if($type == 2){echo 'Double';}?>
@@ -746,6 +912,7 @@ if($numrows > 0) {
                                                 <?php if($type == 5){echo 'TEAM MEMBER';}?>
                                                 <?php if($type == 6){echo 'VENDOR';}?>
                                             </span>
+
                                         </td>
                                         <td><?php echo datetime_to_text($created)?>
                                             <span class="badge" title="Attendance Status">
@@ -758,20 +925,18 @@ if($numrows > 0) {
                                             }?>
                                                 </span>
                                         </td>
-                                        <td><?php echo $email; ?></td>
-                                        <td><?php echo $phone; ?></td>
-                                        <td><?php echo $title." of ".$town; ?></td>
-                                        <td><?php echo $state; ?></td>
+                                        <td><?php if(!empty($title)){echo $title." of ".$town;}else{ echo "Nill"; }?></td>
+                                        <td><?php if(!empty($state)){echo $state;}else{ echo "Nill"; }?></td>
                                         <td nowrap="nowrap">
                                             <?php if($user_code != NULL){?><a target="_blank" title="View" class="btn btn-sm btn-info"
-                                               href="client_detail.php?id=<?php echo encrypt($user_code); ?>"><i
+                                               href="client_detail.php?id=<?php echo dec_enc('encrypt', $user_code); ?>"><i
                                                     class="glyphicon glyphicon-eye-open icon-white"></i> </a><?php }?>
                                             <a class="btn btn-sm btn-primary" title="Send Email"
                                                href="campaign_email_single.php?name=<?php $name;
-                                               echo encrypt_ssl($name) . '&email=' . encrypt_ssl($email); ?>"><i
+                                               echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $email); ?>"><i
                                                     class="glyphicon glyphicon-envelope"></i></a>
                                             <a class="btn btn-sm btn-success" title="Send SMS"
-                                               href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($phone) ?>"><i
+                                               href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $phone) ?>"><i
                                                     class="glyphicon glyphicon-phone-alt"></i></a>
                                             <button class="btn btn-primary btn-sm" type="button"
                                                     data-target="#edit<?php echo $id; ?>" data-toggle="modal" title="Edit Participants Ticket" >
@@ -794,7 +959,7 @@ if($numrows > 0) {
                                                                 <label>Email</label>
                                                                 <div class="form-group mx-sm-4 mb-2">
                                                                     <input value="<?php echo $email; ?>" name="email" type="text" class="form-control"
-                                                                           placeholder="Enter Client Email " required/>
+                                                                           placeholder="Enter Client Email "/>
                                                                 </div>
                                                                 <label>Name</label>
                                                                 <div class="form-group mx-sm-4 mb-2">
@@ -872,6 +1037,10 @@ if($numrows > 0) {
                                                 </form>
                                             </div>
                                             <!--                        Modal end-->
+                                            <br>
+                                            <span class="badge" title="INVITE CODE">
+                                                <?php if($invite_code != NULL){echo $invite_code;}?>
+                                                </span>
                                         </td>
                                     </tr>
                                 <?php }

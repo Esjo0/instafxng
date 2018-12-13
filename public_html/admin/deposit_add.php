@@ -114,7 +114,7 @@ if (isset($_POST['deposit_add_qty'])) {
         }
         $stamp_duty = 0.00;
         $trans_id = "D" . time();
-        $trans_id_encrypted = encrypt_ssl($trans_id);
+        $trans_id_encrypted = dec_enc('encrypt', $trans_id);
         $service_charge = 0.00;
         $vat = 0.00;
         $total_payable = $vat + $service_charge + $ifx_naira_amount;

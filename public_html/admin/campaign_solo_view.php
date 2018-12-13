@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $campaign_email_id_encrypted = $get_params['id'];
-$campaign_email_id = decrypt_ssl(str_replace(" ", "+", $campaign_email_id_encrypted));
-$campaign_email_id = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_email_id);
+$campaign_email_id = dec_enc('decrypt',  $campaign_email_id_encrypted);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Save this campaign email

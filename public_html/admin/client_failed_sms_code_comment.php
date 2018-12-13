@@ -31,8 +31,8 @@ if (isset($_POST['process'])) {
 
 $get_params = allowed_get_params(['x']);
 $user_code_encrypted = $get_params['x'];
-$user_code = decrypt_ssl(str_replace(" ", "+", $user_code_encrypted));
-$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
+$user_code = dec_enc('decrypt',  $user_code_encrypted);
+
 
 $query = "SELECT first_name, last_name, email, phone FROM user WHERE user_code = '$user_code' LIMIT 1";
 $result = $db_handle->runQuery($query);

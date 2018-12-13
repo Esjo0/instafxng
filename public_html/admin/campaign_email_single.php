@@ -6,7 +6,7 @@ if (!$session_admin->is_logged_in()) {
 //extract($_GET);
 $params = array();
 foreach($_GET as $key => $value) {
-    $params[$key] = decrypt_ssl(str_replace(" ", "+", $value));
+    $params[$key] = dec_enc('decrypt',  $value);
 }
 extract($params);
 

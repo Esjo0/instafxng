@@ -1,7 +1,54 @@
 <?php
 require_once 'init/initialize_general.php';
 
-$dinner_emails = array("joshua@instafxng.com", "binaryvs@yahoo.com", "amazuci@yahoo.com", "bouqi4life2009@yahoo.com", "ighosam@yahoo.com", "semmymails@yahoo.com", "tochukwuo@yahoo.com", "junglyjungle1@yahoo.com");
+$dinner_emails = array(
+    "ukpedorpromise@gmail.com",
+	"joshua@instafxng.com",
+	"binaryvs@yahoo.com", 
+	"amazuci@yahoo.com", 
+	"bouqi4life2009@yahoo.com", 
+	"ighosam@yahoo.com", 
+	"semmymails@yahoo.com", 
+	"tochukwuo@yahoo.com", 
+	"junglyjungle1@yahoo.com",
+	"austin.albert@circleflowmgt.com",
+	"abdulfx1@gmail.com",
+	"gabriel.iduh@gmail.com",
+	"emmanuelonyegbula11@gmail.com",
+	"perdecius@gmail.com",
+	"charlybest2002@gmail.com",
+	"solonzoability@gmail.com",
+	"amazuci@yahoo.com",
+	"alphabase001@yahoo.com",
+	"semmymails@yahoo.com",
+	"binaryvs@yahoo.com",
+	"bj_solution@live.com",
+	"ibekwe.agozie@gmail.com",
+	"ighosam@yahoo.com",
+	"augustineugochukwu@gmail.com",
+	"uchennaegbejiogu@gmail.com",
+	"eniola.abdul@gmail.com",
+    "efurumibeezinna@yahoo.com",
+    "akinsipesilas@hotmail.com",
+    "icjustine@yahoo.com",
+    "oldroger69@yahoo.com",
+    "krisokenta@yahoo.com",
+    "seyi.fowobaje@yahoo.com",
+    "ighosam@yahoo.com",
+    "wasevictory@gmail.com",
+    "kindeageh@gmail.com",
+    "famuyiwa.hakeem@gmail.com",
+    "evans630@gmail.com",
+    "udombat@yahoo.com",
+    "sonyochie@gmail.com",
+    "fortunechikamadu@gmail.com",
+    "efurumibeezinna@yahoo.com",
+    "charlybest2002@gmail.com",
+    "austin.albert@circleflowmgt.com",
+    "semmymails@yahoo.com",
+    "abdulfx1@gmail.com",
+    "uchennaegbejiogu@gmail.com"
+	);
 
 if(isset($_POST['submit3'])){
     $email = $db_handle->sanitizePost($_POST['email']);
@@ -12,7 +59,7 @@ $query  = "SELECT user_code FROM user WHERE email = '$email'";
         $user_code = $db_handle->fetchArray($result);
         foreach($user_code AS $row){
             extract($row);
-            $encrypted_user_code = encrypt_ssl($user_code);
+            $encrypted_user_code = dec_enc('encrypt', $user_code);
             header('Location: dinner.php?r=' . $encrypted_user_code);
         }
     }else{

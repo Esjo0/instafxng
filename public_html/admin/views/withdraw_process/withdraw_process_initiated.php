@@ -6,7 +6,7 @@
             <div class="trans_item_content">
                 <div class="row">
                     <div class="col-sm-4 trans_item-thumb">
-                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($trans_detail['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
+                        <p class="text-center"><a target="_blank" title="View Client Profile" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $trans_detail['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></p>
                         <?php
                         if(!empty($trans_detail['passport'])) {
                             $file_location = "../userfiles/" . $trans_detail['passport'];
@@ -136,8 +136,7 @@
                         <span><strong>Phone Password:</strong>
                             <?php
                             $phone_password_encrypted = $trans_detail['client_phone_password'];
-                            $client_phone_password = decrypt_ssl(str_replace(" ", "+", $phone_password_encrypted));
-                            $client_phone_password = preg_replace("/[^A-Za-z0-9 ]/", '', $client_phone_password);
+                            $client_phone_password = dec_enc('decrypt',  $phone_password_encrypted);
                             echo $client_phone_password;
                             ?>
                         </span>

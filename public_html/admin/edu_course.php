@@ -94,7 +94,7 @@ $education_courses = $db_handle->fetchAssoc($result);
                                     <td><?php echo $row['course_cost']; ?></td>
                                     <td><?php echo status_edu_course($row['status']); ?></td>
                                     <td>
-                                        <a title="View" class="btn btn-info" href="edu_course_view.php?id=<?php echo encrypt_ssl($row['edu_course_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                        <a title="View" class="btn btn-info" href="edu_course_view.php?id=<?php echo dec_enc('encrypt', $row['edu_course_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                     </td>
                                 </tr>
                             <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

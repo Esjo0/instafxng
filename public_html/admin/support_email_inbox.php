@@ -87,7 +87,7 @@ $all_emails = $db_handle->fetchAssoc($result);
                                                 <td><?php echo $row['email_sender']; ?></td>
                                                 <td><?php echo datetime_to_text($row['email_created']); ?></td>
                                                 <td>
-                                                    <a href="support_email_view.php?id=<?php echo encrypt_ssl($row['email_id']); ?>&type=<?php echo encrypt_ssl('inbox'); ?>"><button class="btn btn-success"><i class="glyphicon glyphicon-arrow-right"></i></button></a>
+                                                    <a href="support_email_view.php?id=<?php echo dec_enc('encrypt', $row['email_id']); ?>&type=<?php echo dec_enc('encrypt', 'inbox'); ?>"><button class="btn btn-success"><i class="glyphicon glyphicon-arrow-right"></i></button></a>
                                                 </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

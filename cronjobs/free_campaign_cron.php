@@ -15,7 +15,7 @@ $day_difference = $today - $created;
 foreach ($fetched_data as $row) {
     $client_name = ucwords(strtolower(trim($row['first_name'])));
     $client_email = strtolower(trim($row['email']));
-    $client_email_encrypted = encrypt_ssl($client_email);
+    $client_email_encrypted = dec_enc('encrypt', $client_email);
     $created = strtotime($row['created']);
     
     $day_diff = $today - $created;
@@ -56,7 +56,7 @@ $day_difference = $today - $created;
 foreach ($fetched_data as $row) {
     $client_name = ucwords(strtolower(trim($row['first_name'])));
     $client_email = strtolower(trim($row['email']));
-    $client_email_encrypted = encrypt_ssl($client_email);
+    $client_email_encrypted = dec_enc('encrypt', $client_email);
     $created = strtotime($row['created']);
 
     $day_diff = $today - $created;

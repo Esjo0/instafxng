@@ -142,9 +142,9 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3 || isset($_
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                 <td><?php echo $row['account_officer_full_name']; ?></td>
                                                 <td>
-                                                    <a target="_blank" title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt_ssl($row['user_code']); ?>&r=<?php echo 'client_search'; ?>&c=<?php echo encrypt_ssl('CLIENT SEARCH'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                                    <a target="_blank" title="Update" class="btn btn-info" href="client_update.php?id=<?php echo encrypt_ssl($row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
+                                                    <a target="_blank" title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_search'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT SEARCH'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" title="Update" class="btn btn-info" href="client_update.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
                                                 </td>
                                             </tr>
                                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

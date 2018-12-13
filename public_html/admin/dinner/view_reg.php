@@ -20,8 +20,7 @@ function get_dinner_reg_remark($reg_id) {
 $get_params = allowed_get_params(['x', 'id']);
 
 $reg_id_encrypted = $get_params['id'];
-$reg_id = decrypt_ssl(str_replace(" ", "+", $reg_id_encrypted));
-$reg_id = preg_replace("/[^A-Za-z0-9 ]/", '', $reg_id);
+$reg_id = dec_enc('decrypt',  $reg_id_encrypted);
 
 // Process comment
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true) {

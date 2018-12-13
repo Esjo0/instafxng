@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x']);
 $project_code_encrypted = $get_params['x'];
-$project_code = decrypt_ssl(str_replace(" ", "+", $project_code_encrypted));
-$project_code = preg_replace("/[^A-Za-z0-9 ]/", '', $project_code);
+$project_code = dec_enc('decrypt',  $project_code_encrypted);
 
 $admin_code = $_SESSION['admin_unique_code'];
 
@@ -357,7 +356,7 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                 <?php echo project_management_status($project_details['status']);?>
                                             </p>
                                             <hr/>
-                                            <a href="project_management_report_add.php?x=<?php echo encrypt_ssl($project_details['project_code']); ?>">
+                                            <a href="project_management_report_add.php?x=<?php echo dec_enc('encrypt', $project_details['project_code']); ?>">
                                                 <button class="btn btn-success btn-sm">Report</button>
                                             </a>
                                             <?php
@@ -558,7 +557,7 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                                 <td><?php echo datetime_to_text($row['report_submission_date']); ?></td>
                                                                 <td><?php echo $row['report_comments']; ?></td>
                                                                 <td><?php echo $row['report_status']; ?></td>
-                                                                <td><a href="project_management_report_view.php?x=<?php echo encrypt_ssl($row['report_code']); ?>"><button class="btn btn-xs btn-success"><i class="glyphicon glyphicon-arrow-right"></i></button></a></td>
+                                                                <td><a href="project_management_report_view.php?x=<?php echo dec_enc('encrypt', $row['report_code']); ?>"><button class="btn btn-xs btn-success"><i class="glyphicon glyphicon-arrow-right"></i></button></a></td>
                                                             </tr>
                                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                                     </tbody>
