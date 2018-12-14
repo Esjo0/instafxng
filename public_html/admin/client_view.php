@@ -47,6 +47,10 @@ if(isset($_POST['follow_up'])){
     $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
     $numrows = $db_handle->numRows($query);
     if($numrows == 0){
+        $sales_comment = "CLIENT VIEW:" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
         $query = "INSERT INTO call_log (user_code, status, follow_up_comment) VALUES ('$user_code', '2', '$comment')";
         $result = $db_handle->runQuery($query);
         if($result){
@@ -55,6 +59,10 @@ if(isset($_POST['follow_up'])){
             $message_error = "Contact Update Not Successful.";
         }
     }elseif($numrows == 1){
+        $sales_comment = "CLIENT VIEW:" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
         $query = "UPDATE call_log SET status = '2', follow_up_comment = '$comment' WHERE user_code = '$user_code'";
         $result = $db_handle->runQuery($query);
         if($result){
