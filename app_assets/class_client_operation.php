@@ -1035,111 +1035,120 @@ MAIL;
             case '2':
                 $mail_body = <<<INVOICE
 <p>To complete your order, please make your payment as follows:</p>
-
-<p>Log into your bank internet banking platform</p>
+<ol>
+<li><p>Log into your bank internet banking platform</p>
 <p>When making your payment on your internet banking platform, fill in your transaction ID, account number <br />
 ($client_trans_id - $client_account) in the REMARK column.<br />
 If you don't fill it as stated, your order will be delayed, becuase it will be difficult
 to track your payment.</p>
-
-<p>Pay =N= $client_naira_total into our account listed below.</p>
+</li>
+<li><p>Pay =N= $client_naira_total into our account listed below.</p>
 
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
-<ol>
-    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
     Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
-    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
-    <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
-    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
-    the invoice.</li>
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+    </p>
+</li>
+
+   <li><p>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</p></li>
 </ol>
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+<p>The funding process will be completed within 5 minutes to 2
+hours on work days. Funding is completed normally within the same day
+and if there will be any delay we will inform you promptly.</p>
 
-<p>NOTE:</p>
+<p>Disclaimer:</p>
 <ul>
     <li>Third party payments are not allowed.</li>
     <li>REMARK section must be written as<br />
     ($client_trans_id - $client_account)</li>
-    <li>Your account can only be funded after you have completed payment notification
-    as advised in (2) above.</li>
+    <li>Failure to pay into the account number generated on your
+    invoice can result into a delay of 6 months to 1 year.</li>
+    <li>Your account will only be funded
+    after you have completed the funding and notification process.</li>
 </ul>
 
 <p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
 And please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
 INVOICE;
                 break;
             case '3':
                 $mail_body = <<<INVOICE
 <p>To complete your order, please make your payment as follows:</p>
+<ol>
+<li><p>Visit any bank ATM.</p></li>
 
-<p>Visit any bank ATM.</p>
-
-<p>Transfer =N= $client_naira_total into our account listed below.</p>
+<li><p>Transfer =N= $client_naira_total into our account listed below.</p>
 
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
-<ol>
-    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
     Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
-    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
-    <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION,
-    Type in the location where you made the payment in the comment box, <strong>e.g. Apapa Lagos</strong>.
-    If you do not fill it as stated, your order will be delayed, because it will be difficult to track
-    your payment.</li>
-    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
-    the invoice.</li>
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+    </p>
+</li>
+
+   <li><p>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</p></li>
 </ol>
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+<p>The funding process will be completed within 5 minutes to 2
+hours on work days. Funding is completed normally within the same day
+and if there will be any delay we will inform you promptly.</p>
 
-<p>NOTE:</p>
+<p>Disclaimer:</p>
 <ul>
     <li>Third party payments are not allowed.</li>
-    <li>Your account can only be funded after you have completed payment notification
-    as advised in (2) above.</li>
+    <li>REMARK section must be written as<br />
+    ($client_trans_id - $client_account)</li>
+    <li>Failure to pay into the account number generated on your
+    invoice can result into a delay of 6 months to 1 year.</li>
+    <li>Your account will only be funded
+    after you have completed the funding and notification process.</li>
 </ul>
 
 <p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
 And please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
 INVOICE;
                 break;
             case '4':
                 $mail_body = <<<INVOICE
 <p>To complete your order, please make your payment as follows:</p>
-
-<p>When making your payment through the banking application, fill in the transfer memo/ description/ narration as <br />
+<ol>
+<li><p>When making your payment through the banking application, fill in the transfer memo/ description/ narration as <br />
 ($client_trans_id - $client_full_name - $client_account) <br />
 If you don't fill it as stated, your order will be unnecessarily delayed.</p>
+</li>
 
-<p>Pay =N= $client_naira_total into our account listed below.</p>
+<li><p>Pay =N= $client_naira_total into our account listed below.</p>
 
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
-<ol>
-    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
     Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
-    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
-    <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
-    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
-    the invoice.</li>
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+    </p>
+</li>
+
+   <li><p>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</p></li>
 </ol>
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+<p>The funding process will be completed within 5 minutes to 2
+hours on work days. Funding is completed normally within the same day
+and if there will be any delay we will inform you promptly.</p>
 
-<p>NOTE:</p>
+<p>Disclaimer:</p>
 <ul>
     <li>Third party payments are not allowed.</li>
     <li>Depositor Name / Transfer Memo / Description / Narration must be written as<br />
     ($client_trans_id - $client_full_name - $client_account)</li>
+    <li>Failure to pay into the account number generated on
+    your invoice can result into a delay of 6 months to 1 year.</li>
     <li>Your account can only be funded after you have completed payment notification
     as advised in (2) above.</li>
 </ul>
@@ -1147,7 +1156,7 @@ normally within the same day. If there is any delay we will inform you.</p>
 <p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
 And please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
 INVOICE;
                 break;
             case '9':
@@ -1168,8 +1177,9 @@ for your bank, find your bank USSD below.</p>
     the invoice.</li>
 </ol>
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+<p>
+The funding process will be completed within 5 minutes to 2 hours on work days. Funding is completed
+normally within the same day. if there will be any delay we will inform you promptly.</p>
 
 <p>NOTE:</p>
 <ul>
@@ -1202,46 +1212,50 @@ normally within the same day. If there is any delay we will inform you.</p>
 <p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
 And please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
 INVOICE;
                 break;
             default:
                 $mail_body = <<<INVOICE
 <p>To complete your order, please make your payment as follows:</p>
-
-<p>When making your payment at the bank, fill in the depositor name as <br />
+<ol>
+<li><p>When making your payment at the bank, fill in the depositor name as <br />
 ($client_trans_id - $client_full_name - $client_account) <br />
 If you don't fill it as stated, your order will be unnecessarily delayed.</p>
-
-<p>Pay =N= $client_naira_total into our account listed below.</p>
+</li>
+<li><p>Pay =N= $client_naira_total into our account listed below.</p>
 
 <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
 
-<ol>
-    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+    <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
     Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
-    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
-    <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
-    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
-    the invoice.</li>
+    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+    </p>
+</li>
+
+<li><p>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</p></li>
 </ol>
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+<p>The funding process will be completed within 5 minutes to 2
+hours on work days. Funding is completed normally within the same day
+and if there will be any delay we will inform you promptly.</p>
 
-<p>NOTE:</p>
+<p>Disclaimer:</p>
 <ul>
     <li>Third party payments are not allowed.</li>
-    <li>Depositor Name / Transfer Memo must be written as<br />
-    ($client_trans_id - $client_full_name - $client_account)</li>
-    <li>Your account can only be funded after you have completed payment notification
-    as advised in (2) above.</li>
+    <li>REMARK section must be written as<br />
+    ($client_trans_id - $client_account)</li>
+    <li>Failure to pay into the account number generated on your
+    invoice can result into a delay of 6 months to 1 year.</li>
+    <li>Your account will only be funded
+    after you have completed the funding and notification process.</li>
 </ul>
 
 <p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
 And please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
+
 INVOICE;
                 break;
         }
@@ -1257,6 +1271,10 @@ INVOICE;
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Dear $client_full_name,</p>
 
+            <p>Thank you for using our services.</p>
+
+            <p>For you to enjoy a fast, easy and stress free service, kindly take note of the information below:</p>
+
             <p>NOTE: This is a CONFIDENTIAL Document. Information herein should
             never be shared with anyone.</p>
 
@@ -1265,9 +1283,9 @@ INVOICE;
 
             <p>====================</p>
 
-            <p>Your Transaction ID for this order is $client_trans_id</p>
-
             <p>The details of your order are as follows:</p>
+
+            <p>Your Transaction ID for this order is $client_trans_id</p>
 
             <p>Amount of InstaForex Funding ordered: USD $client_dollar
             Equivalent cost in Naira: =N= $client_naira_total</p>
