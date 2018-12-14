@@ -4,7 +4,23 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT u.user_code, a.audit_location, a.audit_date, a.created, u.email AS email, u.phone AS phone, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
+if(isset($_POST['update'])){
+
+    $id = $db_handle->sanitizePost($_POST['id']);
+    $venue = $db_handle->sanitizePost($_POST['venue']);
+    if($venue == 1){$date = $db_handle->sanitizePost($_POST['date1']);}
+    if($venue == 2){$date = $db_handle->sanitizePost($_POST['date2']);}
+    if($venue == 3){$date = $db_handle->sanitizePost($_POST['date3']);}
+    $query = "UPDATE account_audit SET audit_date = '$date', audit_location = '$venue' WHERE id = $id";
+    $result = $db_handle->runQuery($query);
+    if($result){
+        $message_success = "Successfully Update Client Audit date";
+    }else{
+        $message_error = "Not successful.";
+    }
+}
+
+$query = "SELECT a.id, u.user_code, a.audit_location, a.audit_date, a.created, u.email AS email, u.phone AS phone, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
     FROM account_audit AS a
 INNER JOIN user AS u ON a.user_code = u.user_code
     ORDER BY a.audit_date DESC ";
@@ -59,6 +75,7 @@ $participants = $db_handle->fetchAssoc($result);
             document.getElementById("pro").style.display = "none";
         }
     </script>
+
 </head>
 <body>
 <?php require_once 'layouts/header.php'; ?>
@@ -127,6 +144,96 @@ $participants = $db_handle->fetchAssoc($result);
                                             <a class="btn btn-sm btn-success" target="_blank" title="Send SMS"
                                                href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $phone) ?>"><i
                                                     class="glyphicon glyphicon-phone-alt"></i></a>
+                                            <button class="btn btn-primary btn-sm" type="button"
+                                                    data-target="#edit<?php echo $id; ?>" data-toggle="modal" title="Edit Participants Ticket" >
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </button>
+                                            <!-- Modal -->
+                                            <div id="edit<?php echo $id; ?>" tabindex="-1" role="dialog" aria-hidden="true"
+                                                 class="modal fade">
+                                                <form class="form-vertical text-center" role="form" method="post" action="">
+                                                    <input type="hidden" name="id" value="<?php echo $id?>">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                                        class="close">&times;</button>
+                                                                <h4 class="modal-title">Edit Audit date</h4>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label for="venue" class="control-label">Choose venue</label>
+                                                                    <div class="radio">
+                                                                        <label><input id="offline1<?php echo $id;?>" type="radio" name="venue"
+                                                                                      value="1" required>Block 1A, Plot
+                                                                            8, Diamond Estate, LASU/Isheri road, Isheri Olofin,
+                                                                            Lagos.</label>
+                                                                    </div>
+                                                                    <div class="form_group" id="entry1<?php echo $id;?>" >
+                                                                        <select id="entry_channel1" class="form-control" name="date1">
+                                                                            <option value="">Choose a date</option>
+                                                                            <option value="2018-12-10 11:30:00">11:30am - 12:30pm Monday 10th December 2018</option>
+                                                                            <option value="2018-12-11 11:30:00">11:30am - 12:30pm Tuesday 11th December 2018</option>
+                                                                            <option value="2018-12-17 11:30:00">11:30am - 12:30pm Monday 17th December 2018</option>
+                                                                            <option value="2018-12-18 11:30:00">11:30am - 12:30pm Tuesday 18th December 2018 </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="radio">
+                                                                        <label><input id="offline2<?php echo $id;?>" type="radio" name="venue"
+                                                                                      value="2" required>Block A3, Suite 508/509
+                                                                            Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout,
+                                                                            along Lekki - Epe expressway, Lagos.</label>
+                                                                    </div>
+
+                                                                    <div class="form_group" id="entry2<?php echo $id;?>" >
+                                                                        <select id="entry_channel2" class="form-control" name="date2" >
+                                                                            <option value="">Choose a date</option>
+                                                                            <option value="2018-12-05 11:30:00">11:30am - 12:30pm Wednesday 5th December 2018</option>
+                                                                            <option value="2018-12-06 11:30:00">11:30am - 12:30pm Thursday 6th December 2018</option>
+                                                                            <option value="2018-12-12 11:30:00">11:30am - 12:30pm Wednesday 12th December 2018</option>
+                                                                            <option value="2018-12-13 11:30:00">11:30am - 12:30pm Thursday 13th December 2018</option>
+                                                                            <option value="2018-12-19 11:30:00">11:30am - 12:30pm Wednesday 19th December 2018</option>
+                                                                            <option value="2018-12-20 11:30:00">11:30am - 12:30pm Thursday 20th December 2018</option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="radio">
+                                                                        <label><input id="online<?php echo $id;?>" type="radio" name="venue"
+                                                                                      value="3" required>Online -- Download Zoom Video
+                                                                            Conferencing app from
+                                                                            <a target="_blank" href="http://zoom.us">zoom.us</a> You will contacted and given the
+                                                                            meeting ID before
+                                                                            the session starts
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div class="form_group" id="entry3<?php echo $id;?>" >
+                                                                        <select id="entry_channel3" class="form-control" name="date3" >
+                                                                            <option value="">Choose a date</option>
+                                                                            <option value="2018-12-05 10:30:00">10:30am - 11:30am Wednesday 5th December 2018 Online</option>
+                                                                            <option value="2018-12-06 10:30:00">10:30am - 11:30am Thursday 6th December 2018 Online</option>
+                                                                            <option value="2018-12-10 10:30:00">10:30am - 11:30am Monday 10th December 2018 Online</option>
+                                                                            <option value="2018-12-11 10:30:00">10:30am - 11:30am Tuesday 11th December 2018 Online</option>
+                                                                            <option value="2018-12-12 10:30:00">10:30am - 11:30am Wednesday 12th December 2018 Online</option>
+                                                                            <option value="2018-12-13 10:30:00">10:30am - 11:30am Thursday 13th December 2018 Online</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <input name="update" type="submit"
+                                                                       class="btn btn-sm btn-default" value="SUBMIT">
+                                                                <button type="button" name="close"
+                                                                        data-dismiss="modal" class="btn btn-sm btn-danger">Close!
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+
                                         </td>
                                     </tr>
                                 <?php }
