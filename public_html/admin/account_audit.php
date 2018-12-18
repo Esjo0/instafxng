@@ -217,6 +217,8 @@ $participants = $db_handle->fetchAssoc($result);
                                                                             <option value="2018-12-11 10:30:00">10:30am - 11:30am Tuesday 11th December 2018 Online</option>
                                                                             <option value="2018-12-12 10:30:00">10:30am - 11:30am Wednesday 12th December 2018 Online</option>
                                                                             <option value="2018-12-13 10:30:00">10:30am - 11:30am Thursday 13th December 2018 Online</option>
+                                                                            <option value="2018-12-19 10:30:00">10:30am - 11:30am Wednesday 19th December 2018 Online</option>
+                                                                            <option value="2018-12-20 10:30:00">10:30am - 11:30am Thursday 20th December 2018 Online</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
