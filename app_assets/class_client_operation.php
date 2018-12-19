@@ -184,16 +184,16 @@ class clientOperation {
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
                                 <p>It's official! Welcome to the money making gang! lol</p>
-                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You've just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
                                 <p>You have made a fantastic decision $last_name!</p>
                                 <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
-                                <p>This is what’s happening right now...</p>
+                                <p>This is what's happening right now...</p>
                                 <p>Your Welcome bonus is here!</p>
                                 <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
                                 <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
                                 <p>Let me quickly explain how to get the bonus...</p>
                                 <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
-                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Isn't this amazing? You bet!</p>
                                 <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
                                 <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
                                 <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
@@ -286,16 +286,16 @@ MAIL;
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
                                 <p>It's official! Welcome to the money making gang! lol</p>
-                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You've just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
                                 <p>You have made a fantastic decision $last_name!</p>
                                 <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
-                                <p>This is what’s happening right now…</p>
+                                <p>This is what's happening right now...</p>
                                 <p>Your Welcome bonus is here!</p>
                                 <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
                                 <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
                                 <p>Let me quickly explain how to get the bonus...</p>
                                 <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
-                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Isn't this amazing? You bet!</p>
                                 <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
                                 <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
                                 <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
