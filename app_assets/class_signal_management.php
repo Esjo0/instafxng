@@ -890,7 +890,7 @@ MAIL;
             <p>Regards,</p>
             <p>Bukola,</p>
             <p>Client Relations Manager,</p>
-            <p>InstaForex Nigeria</p>
+            <p>InstaFxNg Nigeria</p>
             <p>www.instafxng.com</p>
             <br /><br />
         </div>
@@ -945,7 +945,7 @@ MAIL;
             <p>Regards,</p>
             <p>Bukola,</p>
             <p>Client Relations Manager,</p>
-            <p>InstaForex Nigeria</p>
+            <p>InstaFxNg Nigeria</p>
             <p>www.instafxng.com</p>
             <br /><br />
         </div>
