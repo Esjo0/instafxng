@@ -255,31 +255,28 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                     <table class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Full Name</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
+                                                <th>Contact Details</th>
                                                 <th>Reg Date</th>
                                                 <th>Account Officer</th>
                                                 <th>Action</th>
-                                                <th>Call log</th>
+                                                <th>Call Log</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php if(isset($all_clients) && !empty($all_clients)) { foreach ($all_clients as $row) { ?>
                                             <tr>
-                                                <td><?php echo $row['full_name']; ?></td>
-                                                <td><?php echo $row['email']; ?></td>
-                                                <td><?php echo $row['phone']; ?></td>
+                                                <td><?php echo $row['full_name']; ?>
+                                                <br><?php echo $row['email']; ?><br>
+                                                <?php echo $row['phone']; ?></td>
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                 <td><?php echo $row['account_officer_full_name']; ?></td>
-                                                <td nowrap="nowrap">
+                                                <td nowrap>
                                                     <a target="_blank" title="Comment" class="btn btn-success btn-sm" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_view'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT VIEW'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                     <a target="_blank" title="View" class="btn btn-info btn-sm" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                                     <?php if($allowed_update_profile) { ?>
                                                         <a target="_blank" title="Update" class="btn btn-info btn-sm" href="client_update.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
-                                                    <?php } ?>
-                                                </td>
-                                                <td nowrap><?php call_log_status($row['user_code']);?></td>
+                                                    <?php } ?></td>
+                                                <td><?php call_log_status($row['user_code']);?></td>
                                             </tr>
                                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>
