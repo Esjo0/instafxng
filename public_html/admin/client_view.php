@@ -99,6 +99,7 @@ if(isset($_SESSION['account_officer_filter']) && $_SESSION['account_officer_filt
         LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
         LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' AND ao.account_officers_id = $account_officer_filter ORDER BY u.created DESC ";
+    $_SESSION['query_client_view'] = $query;
 } else {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
         u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
@@ -106,6 +107,7 @@ if(isset($_SESSION['account_officer_filter']) && $_SESSION['account_officer_filt
         LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
         LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' ORDER BY u.created DESC ";
+    $_SESSION['query_client_view'] = $query;
 }
 
 if(isset($_POST['contacted'])){
@@ -116,6 +118,7 @@ if(isset($_POST['contacted'])){
         LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
         LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' AND cl.status = '1' ORDER BY cl.created DESC ";
+    $_SESSION['query_client_view'] = $query;
 }
 if(isset($_POST['not_contacted'])){
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
@@ -124,6 +127,7 @@ if(isset($_POST['not_contacted'])){
         LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
         LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' AND u.user_code NOT IN (SELECT user_code FROM call_log) ORDER BY u.created DESC ";
+    $_SESSION['query_client_view'] = $query;
 }
 if(isset($_POST['follow_up'])){
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
@@ -133,7 +137,11 @@ if(isset($_POST['follow_up'])){
         LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
         LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' AND cl.status = '2' ORDER BY u.created DESC ";
+    $_SESSION['query_client_view'] = $query;
 }
+
+
+$query = $_SESSION['query_client_view'] ;
 
 $numrows = $db_handle->numRows($query);
 
