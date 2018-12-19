@@ -94,8 +94,76 @@ $participants = $db_handle->fetchAssoc($result);
 
             <div class="row">
 
-                <div class="col-sm-12 text-danger">
+                <div class="col-sm-8 text-danger">
                     <h4><strong>List of Clients who have registered for account audit</strong></h4>
+                </div>
+
+                <div class="pull-right">
+                    <button type="button" data-target="#schedule_date" data-toggle="modal"
+                            class="btn btn-sm btn-success"> Schedule Audit date
+                    </button>
+                </div>
+
+                <!--Modal - confirmation boxes-->
+                <div id="schedule_date" tabindex="-1" role="dialog" aria-hidden="true"
+                     class="modal fade">
+                    <form class="form-inline text-center" role="form" method="post" action="">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                                            class="close">&times;</button>
+                                    <h4 class="modal-title">Schedule Personal Training Time</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group mx-sm-4 mb-2">
+                                        <label for="input" class="sr-only">Training Time</label>
+                                        <input name="schedule_time_private" type="text"
+                                               id="pickdateprivate" class="form-control"
+                                               placeholder="Enter Training Date" required>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $('#pickdateprivate').datetimepicker({
+                                                format: 'YYYY-MM-DD HH:mm'
+                                            });
+                                        });
+                                    </script>
+
+                                    <div class="form-group mx-sm-4 mb-2">
+                                        <select type="text" name="location" class="form-control "
+                                                id="location">
+                                            <?php
+                                            $query = "SELECT * FROM facility_location";
+                                            $result = $db_handle->runQuery($query);
+                                            $result = $db_handle->fetchAssoc($result);
+                                            foreach ($result as $row_loc) {
+                                                extract($row_loc)
+                                                ?>
+                                                <option
+                                                    value="<?php echo $location_id; ?>"><?php echo $location; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-4 mb-2">
+                                        <select name="mode" id="mode" class="form-control" required>
+                                            <option value="">Select Training Type</option>
+                                            <option value="1">Online</option>
+                                            <option value="2">Offline</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input name="schedule_private" type="submit"
+                                           class="btn btn-sm btn-default" value="SUBMIT">
+                                    <button type="button" name="close" onClick="window.close();"
+                                            data-dismiss="modal" class="btn btn-sm btn-danger">Close!
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
