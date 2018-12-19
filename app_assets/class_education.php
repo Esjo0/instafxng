@@ -24,13 +24,15 @@ class Education {
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $client_name,</p>
+            <p>Great job $client_name,</p>
 
-            <p>NOTE: This is a CONFIDENTIAL Document. Information herein should
-            never be shared with anyone.</p>
+            <p>You are right on track!</p>
 
-            <p>THIS INVOICE IS VALID ONLY FOR 24 HOURS. IF PAYMENT IS NOT MADE BY THEN,
-            YOU MUST SUBMIT ANOTHER ORDER.</p>
+            <p>Kindly take note of the following information to ensure an easy payment process:</p>
+
+            <p>This Document is CONFIDENTIAL and Information herein should never be shared with anyone.</p>
+
+            <p>Also, please note that THIS INVOICE IS VALID ONLY FOR 24 HOUR and upon expiration, you will be required to submit a new order.</p>
 
             <p>====================</p>
 
@@ -40,32 +42,36 @@ class Education {
 
             <p>Payment for Forex Profit Optimizer Course: (N $total_payment)</p>
 
-            <p>To complete your order, please make your payment as follows:</p>
-
-            <p>Pay (N $total_payment) into our account listed below.</p>
-
-            <p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
+            <p>To complete your order, please follow these 2 easy steps:</p>
 
             <ol>
-                <li>Any Branch of Guaranty Trust Bank (GTB)<br />
-                Account Name: Instant Web-Net Technologies Ltd<br />
-                Account Number: 0174516696
+                <li>
+                    <p>Pay (N $total_payment) into our account listed below.</p>
+
+            <p style="color: red">NOTE: Kindly ensure that you cross check the account number before making payment to avoid mistakes.</p>
+
+            <p>Any Branch of Guaranty Trust Bank (GTB)<br />
+                    Account Name: Instant Web-Net Technologies Ltd<br />
+                    Account Number: 0174516696
+                </p>
+
                 </li>
                 <li>After making the payment, visit <a href='https://instafxng.com/fxacademy'>https://instafxng.com/fxacademy</a> and click on NOTIFICATION.</li>
-                <li>Fill in the column as stated on the page.</li>
-            </ol>
+                <p>Fill in the column as stated on the page.</p>
 
-            <p>Upon receipt of payment, you will be granted access to the Forex Profit Optimizer Course</p>
 
-            <p>NOTE:</p>
+            <p>Upon receipt of payment, you will be granted access to the Forex Profit Optimizer Course by our team.</p>
+
+            <p style="color:red;">PLEASE TAKE NOTE:</p>
             <ul>
                 <li>Third party payments are not allowed.</li>
-                <li>When making payment through internet banking platform, fill in your transaction ID $trans_id
-                in the REMARK column.</li>
-                <li>You will only be given access to the Forex Profit Optimizer course after you have completed
-                <a href='https://instafxng.com/fxacademy'>payment notification</a> as advised in (2) above.</li>
+                <li>If you will be making payment through internet banking platform, fill in your transaction ID $trans_id
+                    in the REMARK column.</li>
+                <li>
+                    Your access to the training will only be granted after you have completed the 2 steps mentioned above,
+                    kindly ensure to complete the payment and notification process.</li>
             </ul>
-
+            </ol>
 
             <br /><br />
             <p>Best Regards,</p>
