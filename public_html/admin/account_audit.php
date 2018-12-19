@@ -3,6 +3,7 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$admin_code = $_SESSION['admin_unique_code'];
 
 if(isset($_POST['update'])){
 
@@ -17,6 +18,18 @@ if(isset($_POST['update'])){
         $message_success = "Successfully Update Client Audit date";
     }else{
         $message_error = "Not successful.";
+    }
+}
+
+if(isset($_POST['add_date'])){
+    $date = $db_handle->sanitizePost($_POST['date']);
+    $venue = $db_handle->sanitizePost($_POST['venue']);
+    $query = "INSERT INTO account_audit_date (audit_date, venue, admin) VALUE('$date', '$venue', '$admin_code') ";
+    $result = $db_handle->runQuery($query);
+    if($result){
+        $message_success = "Successfully Added an Audit date";
+    }else{
+        $message_error = "Date addition not successful";
     }
 }
 
@@ -56,6 +69,8 @@ $offset = ($currentpage - 1) * $rowsperpage;
 $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $participants = $db_handle->fetchAssoc($result);
+
+
 
 ?>
 <!DOCTYPE html>
@@ -108,19 +123,19 @@ $participants = $db_handle->fetchAssoc($result);
                 <div id="schedule_date" tabindex="-1" role="dialog" aria-hidden="true"
                      class="modal fade">
                     <form class="form-inline text-center" role="form" method="post" action="">
-                        <div class="modal-dialog modal-lg">
+                        <div class="modal-dialog modal-md">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" data-dismiss="modal" aria-hidden="true"
                                             class="close">&times;</button>
-                                    <h4 class="modal-title">Schedule Personal Training Time</h4>
+                                    <h4 class="modal-title">Schedule Audit Date Available to users</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group mx-sm-4 mb-2">
                                         <label for="input" class="sr-only">Training Time</label>
-                                        <input name="schedule_time_private" type="text"
+                                        <input name="date" type="text"
                                                id="pickdateprivate" class="form-control"
-                                               placeholder="Enter Training Date" required>
+                                               placeholder="Enter Audit Date" required>
                                     </div>
                                     <script type="text/javascript">
                                         $(function () {
@@ -131,31 +146,16 @@ $participants = $db_handle->fetchAssoc($result);
                                     </script>
 
                                     <div class="form-group mx-sm-4 mb-2">
-                                        <select type="text" name="location" class="form-control "
-                                                id="location">
-                                            <?php
-                                            $query = "SELECT * FROM facility_location";
-                                            $result = $db_handle->runQuery($query);
-                                            $result = $db_handle->fetchAssoc($result);
-                                            foreach ($result as $row_loc) {
-                                                extract($row_loc)
-                                                ?>
-                                                <option
-                                                    value="<?php echo $location_id; ?>"><?php echo $location; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group mx-sm-4 mb-2">
-                                        <select name="mode" id="mode" class="form-control" required>
-                                            <option value="">Select Training Type</option>
-                                            <option value="1">Online</option>
-                                            <option value="2">Offline</option>
+                                        <select name="venue" id="mode" class="form-control" required>
+                                            <option value=" ">Select Venue</option>
+                                            <option value="1">Diamond Estate</option>
+                                            <option value="2">HFP eastline</option>
+                                            <option value="3">Online(Zoom)</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input name="schedule_private" type="submit"
+                                    <input name="add_date" type="submit"
                                            class="btn btn-sm btn-default" value="SUBMIT">
                                     <button type="button" name="close" onClick="window.close();"
                                             data-dismiss="modal" class="btn btn-sm btn-danger">Close!
@@ -335,6 +335,9 @@ $participants = $db_handle->fetchAssoc($result);
 
     </div>
 </div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+<script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+
 <?php require_once 'layouts/footer.php'; ?>
 </body>
 </html>
