@@ -245,6 +245,16 @@ $participants = $db_handle->fetchAssoc($result);
                                                                             <option value="2018-12-11 11:30:00">11:30am - 12:30pm Tuesday 11th December 2018</option>
                                                                             <option value="2018-12-17 11:30:00">11:30am - 12:30pm Monday 17th December 2018</option>
                                                                             <option value="2018-12-18 11:30:00">11:30am - 12:30pm Tuesday 18th December 2018 </option>
+                                                                            <?php
+                                                                            $query = "SELECT * FROM facility_location";
+                                                                            $result = $db_handle->runQuery($query);
+                                                                            $result = $db_handle->fetchAssoc($result);
+                                                                            foreach ($result as $row_loc) {
+                                                                                extract($row_loc)
+                                                                                ?>
+                                                                                <option
+                                                                                    value="<?php echo $location_id; ?>"><?php echo $location; ?></option>
+                                                                            <?php } ?>
                                                                         </select>
                                                                     </div>
                                                                     <div class="radio">
