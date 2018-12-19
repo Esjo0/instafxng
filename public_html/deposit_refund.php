@@ -11,13 +11,16 @@ $get_params = allowed_get_params(['x', 'id']);
 $trans_id_encrypted = $get_params['id'];
 $trans_id = dec_enc('decrypt',  $trans_id_encrypted);
 
-$refund_type = $get_params['x'];
-
 //Ensure only those that have an initiated refund can access this page
-if (!empty($trans_id_encrypted) && !empty($refund_type)) {
+if (!empty($trans_id_encrypted)) {
     //since GET values are set, we will confirm if its a true refund transaction
     $query = "SELECT * FROM user_deposit_refund WHERE transaction_id = '$trans_id' AND refund_status = '0' LIMIT 1";
-    $num_rows = $db_handle->numRows($query);
+    $result = $db_handle->runQuery($query);
+    $selected_refund = $db_handle->fetchAssoc($result)[0];
+
+    $refund_type = $selected_refund['refund_type'];
+
+    $num_rows = $db_handle->numOfRows($result);
 
     if($num_rows != 1) {
         // No record found. Redirect to the home page.

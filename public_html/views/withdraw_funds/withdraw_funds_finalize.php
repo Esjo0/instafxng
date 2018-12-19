@@ -9,7 +9,7 @@
         our office and has to be sent to InstaForex office. Withdrawal requests in this category can take
         up to 3 Business days.</p>
     <p>If your withdrawal request falls within this category, we will inform you immediately.</p>
-    <p>Thank you for choosing InstaForex.</p>
+    <p>Thank you for choosing InstaFxNg.</p>
     <p class='text-danger' style='font-size: 1.3em'><strong>NOTE: </strong>Your payment will be made based on the rate as at the time the fund
         is debited from your Instaforex account.</p>
 </div>

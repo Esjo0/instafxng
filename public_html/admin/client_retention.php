@@ -233,7 +233,7 @@ if($retention_type_main_title == "NOT YET RETAINED") {
 $total_retained = $total_to_retain - $total_not_retained;
 $retention_rate = number_format((($total_retained / $total_to_retain) * 100), 2);
 
-$rowsperpage = 20;
+$rowsperpage = 50;
 
 $totalpages = ceil($numrows / $rowsperpage);
 
