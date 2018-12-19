@@ -47,6 +47,10 @@ if(isset($_POST['follow_up'])){
     $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
     $numrows = $db_handle->numRows($query);
     if($numrows == 0){
+        $sales_comment = "CLIENT VIEW:" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
         $query = "INSERT INTO call_log (user_code, status, follow_up_comment) VALUES ('$user_code', '2', '$comment')";
         $result = $db_handle->runQuery($query);
         if($result){
@@ -55,6 +59,10 @@ if(isset($_POST['follow_up'])){
             $message_error = "Contact Update Not Successful.";
         }
     }elseif($numrows == 1){
+        $sales_comment = "CLIENT VIEW:" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
         $query = "UPDATE call_log SET status = '2', follow_up_comment = '$comment' WHERE user_code = '$user_code'";
         $result = $db_handle->runQuery($query);
         if($result){
@@ -109,15 +117,14 @@ if(isset($_POST['contacted'])){
         LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' AND cl.status = '1' ORDER BY cl.created DESC ";
 }
-//if(isset($_POST['not_contacted'])){
-//    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
-//        u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
-//        FROM user AS u
-//        INNER JOIN call_log AS cl ON u.user_code <> cl.user_code
-//        LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
-//        LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
-//        WHERE u.status = '1'  ORDER BY u.created DESC ";
-//}
+if(isset($_POST['not_contacted'])){
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+        u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
+        FROM user AS u
+        LEFT JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+        LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
+        WHERE u.status = '1' AND u.user_code NOT IN (SELECT user_code FROM call_log) ORDER BY u.created DESC ";
+}
 if(isset($_POST['follow_up'])){
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
         u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
@@ -219,7 +226,7 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                 </form>
                                 <form method="post" action="" class="col-md-6 form form-horizontal">
                                     <button type="submit" name="contacted" class="btn btn-default btn-sm">Clients Contacted</button>
-<!--                                    <button type="submit" name="not_contacted" class="btn btn-default btn-sm">Clients Not Contacted</button>-->
+                                    <button type="submit" name="not_contacted" class="btn btn-default btn-sm">Clients Not Contacted</button>
                                     <button type="submit" name="follow_up" class="btn btn-default btn-sm">Follow-up/call back</button>
                                 </form>
                                 </div>

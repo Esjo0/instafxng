@@ -13,7 +13,9 @@ $links = array(
     8 => array('url' => 'https://cabinet.instaforex.com/client/login?x=BBLR', 'desc' => 'Instaforex Client Cabinet'),
     9 => array('url' => 'https://secure.instaforex.com/en/agreement/bonus100?x=BBLR', 'desc' => '<b>Instaforex LFC Bonus</b><br/>This is for clients who wish to claim 100% LFC bonus on deposit. Encourage clients to read and understand the terms before claiming the bonus'),
     10 => array('url' => 'https://secure.instaforex.com/en/deposits?x=BBLR', 'desc' => '<b>Instaforex Account Deposit</b><br/>This should be made available for clients who wish to make use of Bank wire using their domiciliary account to make a deposit into their Instaforex account.'),
-    11 => array('url' => 'https://secure.instaforex.com/withdrawals?x=BBLR', 'desc' => '<b>Instaforex Account Withdrawals</b>')
+    11 => array('url' => 'https://secure.instaforex.com/withdrawals?x=BBLR', 'desc' => '<b>Instaforex Account Withdrawals</b>'),
+    12 => array('url' => 'https://secure.instaforex.com/en/agreement/bonus30?x=BBLR', 'desc' => '<b>Instaforex 30% Bonus</b>')
+
 
 );
 ?>

@@ -12,7 +12,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN user AS u ON ui.user_code = u.user_code
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
+            WHERE date_earned BETWEEN '2017-12-01' AND '2018-11-30' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
             GROUP BY u.email
             HAVING total_commission >= 1000
             ORDER BY total_commission DESC ";
@@ -24,7 +24,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN user AS u ON ui.user_code = u.user_code
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' 
+            WHERE date_earned BETWEEN '2017-12-01' AND '2018-11-30' 
             GROUP BY u.email
             HAVING total_commission >= 1000
             ORDER BY total_commission DESC ";
@@ -113,7 +113,7 @@ $selected_platinum_comm_clients = $db_handle->fetchAssoc($result);
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 
-                                <p>The list of clients that produced $1k commission and above between December 1, 2017 to September 30, 2018</p>
+                                <p>The list of clients that produced $1k commission and above between December 1, 2017 to November 30, 2018</p>
 
                                 <?php if(isset($numrows)) { ?>
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
