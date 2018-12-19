@@ -261,6 +261,7 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <th>Reg Date</th>
                                                 <th>Account Officer</th>
                                                 <th>Action</th>
+                                                <th>Call log</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -277,8 +278,8 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                     <?php if($allowed_update_profile) { ?>
                                                         <a target="_blank" title="Update" class="btn btn-info btn-sm" href="client_update.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
                                                     <?php } ?>
-                                                    <?php call_log_status($row['user_code']);?>
                                                 </td>
+                                                <td nowrap><?php call_log_status($row['user_code']);?></td>
                                             </tr>
                                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>
