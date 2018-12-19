@@ -948,7 +948,7 @@ function call_log_status($user_code){
 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="">
 <div class="input-group">
 <input type="hidden" name="user_code" value="{$user_code}" >
-<i data-toggle="tooltip" data-placement="top" title="Contacted on {$date}">contacted</i>
+<i data-toggle="tooltip" data-placement="top" title="Contacted on {$date}">Contacted</i>
 <button  class="btn btn-secondary" title="Click to follow client up or call back" type="button" data-toggle="modal" data-target="#{$user_code}" class="btn btn-sm">
 <i class="glyphicon glyphicon-phone icon-white"></i>
 </button>
