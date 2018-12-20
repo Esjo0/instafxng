@@ -100,7 +100,7 @@ if(isset($_SESSION['account_officer_filter']) && $_SESSION['account_officer_filt
         LEFT JOIN admin AS a ON ao.admin_code = a.admin_code
         WHERE u.status = '1' AND ao.account_officers_id = $account_officer_filter ORDER BY u.created DESC ";
     $_SESSION['query_client_view'] = $query;
-} else {
+} else if(empty($_SESSION['query_client_view'])) {
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
         u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
         FROM user AS u
