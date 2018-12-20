@@ -1,3 +1,13 @@
+CREATE TABLE `account_audit_date` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `audit_date` datetime NOT NULL,
+ `venue` enum('1','2','3') NOT NULL COMMENT '1- Diamond Estate 2- HFP 3-Online',
+ `admin` varchar(100) NOT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ UNIQUE KEY `id` (`id`)
+)
+
+
 ALTER TABLE `account_audit` ADD `status` ENUM('1') NULL DEFAULT NULL COMMENT '1-Completed' AFTER `audit_date`;
 
 SELECT u.email FROM account_audit AS a INNER JOIN user AS u ON u.user_code = a.user_code WHERE u.email IN ('oo.bukky@gmail.com', 'joshua@instafxng.com', 'olasomimercy@gmail.com', 'joshuaesan1@gmail.com', 'kingsleyifoga@gmail.com');
