@@ -3,6 +3,8 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$admin_code = $_SESSION['admin_unique_code'];
+$today = date("Y-m-d");
 
 if(isset($_POST['update'])){
 
@@ -17,6 +19,18 @@ if(isset($_POST['update'])){
         $message_success = "Successfully Update Client Audit date";
     }else{
         $message_error = "Not successful.";
+    }
+}
+
+if(isset($_POST['add_date'])){
+    $date = $db_handle->sanitizePost($_POST['date']);
+    $venue = $db_handle->sanitizePost($_POST['venue']);
+    $query = "INSERT INTO account_audit_date (audit_date, venue, admin) VALUE('$date', '$venue', '$admin_code') ";
+    $result = $db_handle->runQuery($query);
+    if($result){
+        $message_success = "Successfully Added an Audit date";
+    }else{
+        $message_error = "Date addition not successful";
     }
 }
 
@@ -57,6 +71,8 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $participants = $db_handle->fetchAssoc($result);
 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,8 +110,61 @@ $participants = $db_handle->fetchAssoc($result);
 
             <div class="row">
 
-                <div class="col-sm-12 text-danger">
+                <div class="col-sm-8 text-danger">
                     <h4><strong>List of Clients who have registered for account audit</strong></h4>
+                </div>
+
+                <div class="pull-right">
+                    <button type="button" data-target="#schedule_date" data-toggle="modal"
+                            class="btn btn-sm btn-success"> Schedule Audit date
+                    </button>
+                </div>
+
+                <!--Modal - confirmation boxes-->
+                <div id="schedule_date" tabindex="-1" role="dialog" aria-hidden="true"
+                     class="modal fade">
+                    <form class="form-inline text-center" role="form" method="post" action="">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                                            class="close">&times;</button>
+                                    <h4 class="modal-title">Schedule Audit Date Available to users</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group mx-sm-4 mb-2">
+                                        <label for="input" class="sr-only">Training Time</label>
+                                        <input name="date" type="text"
+                                               id="pickdateprivate" class="form-control"
+                                               placeholder="Enter Audit Date" required>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $('#pickdateprivate').datetimepicker({
+                                                format: 'YYYY-MM-DD HH:mm'
+                                            });
+                                        });
+                                    </script>
+
+                                    <div class="form-group mx-sm-4 mb-2">
+                                        <select name="venue" id="mode" class="form-control" required>
+                                            <option value=" ">Select Venue</option>
+                                            <option value="1">Diamond Estate</option>
+                                            <option value="2">HFP eastline</option>
+                                            <option value="3">Online(Zoom)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input name="add_date" type="submit"
+                                           class="btn btn-sm btn-default" value="SUBMIT">
+                                    <button type="button" name="close" onClick="window.close();"
+                                            data-dismiss="modal" class="btn btn-sm btn-danger">Close!
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -173,10 +242,15 @@ $participants = $db_handle->fetchAssoc($result);
                                                                     <div class="form_group" id="entry1<?php echo $id;?>" >
                                                                         <select id="entry_channel1" class="form-control" name="date1">
                                                                             <option value="">Choose a date</option>
-                                                                            <option value="2018-12-10 11:30:00">11:30am - 12:30pm Monday 10th December 2018</option>
-                                                                            <option value="2018-12-11 11:30:00">11:30am - 12:30pm Tuesday 11th December 2018</option>
-                                                                            <option value="2018-12-17 11:30:00">11:30am - 12:30pm Monday 17th December 2018</option>
-                                                                            <option value="2018-12-18 11:30:00">11:30am - 12:30pm Tuesday 18th December 2018 </option>
+                                                                            <?php
+                                                                            $query1 = "SELECT * FROM account_audit_date WHERE venue = '1' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= $today";
+                                                                            $result1 = $db_handle->runQuery($query1);
+                                                                            $result1 = $db_handle->fetchAssoc($result1);
+                                                                            foreach ($result1 as $row1) {
+                                                                                extract($row1);
+                                                                                ?>
+                                                                                <option value="<?php echo $audit_date; ?>"><?php echo datetime_to_textday($audit_date) . " " . datetime_to_text($audit_date) ?></option>
+                                                                            <?php } ?>
                                                                         </select>
                                                                     </div>
                                                                     <div class="radio">
@@ -189,12 +263,15 @@ $participants = $db_handle->fetchAssoc($result);
                                                                     <div class="form_group" id="entry2<?php echo $id;?>" >
                                                                         <select id="entry_channel2" class="form-control" name="date2" >
                                                                             <option value="">Choose a date</option>
-                                                                            <option value="2018-12-05 11:30:00">11:30am - 12:30pm Wednesday 5th December 2018</option>
-                                                                            <option value="2018-12-06 11:30:00">11:30am - 12:30pm Thursday 6th December 2018</option>
-                                                                            <option value="2018-12-12 11:30:00">11:30am - 12:30pm Wednesday 12th December 2018</option>
-                                                                            <option value="2018-12-13 11:30:00">11:30am - 12:30pm Thursday 13th December 2018</option>
-                                                                            <option value="2018-12-19 11:30:00">11:30am - 12:30pm Wednesday 19th December 2018</option>
-                                                                            <option value="2018-12-20 11:30:00">11:30am - 12:30pm Thursday 20th December 2018</option>
+                                                                            <?php
+                                                                            $query = "SELECT * FROM account_audit_date WHERE venue = '2' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today'";
+                                                                            $result = $db_handle->runQuery($query);
+                                                                            $result = $db_handle->fetchAssoc($result);
+                                                                            foreach ($result as $row2) {
+                                                                                extract($row2);
+                                                                                ?>
+                                                                                <option value="<?php echo $audit_date; ?>"><?php echo datetime_to_textday($audit_date) . " " . datetime_to_text($audit_date) ?></option>
+                                                                            <?php } ?>
                                                                         </select>
                                                                     </div>
 
@@ -211,14 +288,17 @@ $participants = $db_handle->fetchAssoc($result);
                                                                     <div class="form_group" id="entry3<?php echo $id;?>" >
                                                                         <select id="entry_channel3" class="form-control" name="date3" >
                                                                             <option value="">Choose a date</option>
-                                                                            <option value="2018-12-05 10:30:00">10:30am - 11:30am Wednesday 5th December 2018 Online</option>
-                                                                            <option value="2018-12-06 10:30:00">10:30am - 11:30am Thursday 6th December 2018 Online</option>
-                                                                            <option value="2018-12-10 10:30:00">10:30am - 11:30am Monday 10th December 2018 Online</option>
-                                                                            <option value="2018-12-11 10:30:00">10:30am - 11:30am Tuesday 11th December 2018 Online</option>
-                                                                            <option value="2018-12-12 10:30:00">10:30am - 11:30am Wednesday 12th December 2018 Online</option>
-                                                                            <option value="2018-12-13 10:30:00">10:30am - 11:30am Thursday 13th December 2018 Online</option>
-                                                                            <option value="2018-12-19 10:30:00">10:30am - 11:30am Wednesday 19th December 2018 Online</option>
-                                                                            <option value="2018-12-20 10:30:00">10:30am - 11:30am Thursday 20th December 2018 Online</option>
+                                                                            <?php
+                                                                            var_dump($audit_date);
+                                                                            $query = "SELECT * FROM account_audit_date WHERE venue = '3' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today'";
+                                                                            $result = $db_handle->runQuery($query);
+                                                                            $result = $db_handle->fetchAssoc($result);
+                                                                            foreach ($result as $row3) {
+                                                                                extract($row3);
+                                                                                ?>
+                                                                                <option
+                                                                                    value="<?php echo $audit_date; ?>"><?php echo datetime_to_textday($audit_date) . " " . datetime_to_text($audit_date) ?></option>
+                                                                            <?php } ?>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -267,6 +347,9 @@ $participants = $db_handle->fetchAssoc($result);
 
     </div>
 </div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+<script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+
 <?php require_once 'layouts/footer.php'; ?>
 </body>
 </html>
