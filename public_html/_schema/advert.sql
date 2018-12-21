@@ -1,13 +1,13 @@
 CREATE TABLE `unified_bonus_withdrawals` (
  `id` int(100) NOT NULL AUTO_INCREMENT,
  `transaction_id` varchar(50) NOT NULL,
+ `name` varchar(100) NOT NULL,
  `amount_naira` int(11) NOT NULL,
- `amount_dollar` int(11) NOT NULL,
  `rate` int(11) NOT NULL,
  `admin` varchar(11) NOT NULL,
  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`id`)
-)
+) 
 
 
 
