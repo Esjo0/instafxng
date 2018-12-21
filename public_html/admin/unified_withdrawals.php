@@ -4,10 +4,22 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+//Gets Administrator code
+$admin_code = $_SESSION['admin_unique_code'];
 
 if(isset($_POST['create'])){
-    $_SESSION['UNIFIED_BONUS'] = 2018;
-    redirect_to("http://instafxng.com/withdraw_funds.php");
+    $trans_id = "WIT" . time();
+    $amount = $db_handle->sanitizePost(trim($_POST['amount']));
+    $rate = WITHDRATE;
+    $amount_dollars = $amount * WITHDRATE;
+    $query = "INSERT INTO unified_bonus_withdrawals (trans_id, amount_naira, amount_dollar, rate)
+              VALUE('$trans_id', '$amount', '$amount_dollar', '$rate')";
+    $result = $db_handle->runQuery($query);
+    if($result){
+        $message_success = "Withdrawal Sussessful";
+    }else{
+        $message_error = "Withdrawal Not Successful";
+    }
 }
 
 ?>
@@ -47,15 +59,27 @@ if(isset($_POST['create'])){
                     </div>
                     
                     <div class="section-tint super-shadow">
+                        <?php require_once 'layouts/feedback_message.php'; ?>
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <p class="text-center">
-                                    KINDLY CLICK ON BUTTON BELOW TO CREATE A WITHDRAWAL.
+                                    KINDLY FILL THE FORM BELOW TO CREATE A  BONUS WITHDRAWAL.
                                 </p>
-                                <form action="" method="post">
+                                <form data-toggle="validator"  role="form" action="" class="form text-center" method="post">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="inventoryid">AMOUNT IN NAIRA</label>
+                                        <div class="col-sm-6 col-lg-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-institution fa-fw"></i></span>
+                                                <input name="amount" type="text" id=""class="form-control" required/>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 <div class="text-center">
-                                    <button class="btn btn-lg btn-success" name="create">CLICK HERE TO CREATE A WITHDRWAL TRANSACTION</button>
+                                    <button class="btn btn-success" type="submit" name="create">SUBMIT</button>
                                 </div>
 
                                 </form>
