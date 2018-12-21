@@ -162,6 +162,7 @@ if(isset($_POST['withdraw_funds_qty'])) {
             $full_name = $client_first_name . " " . $client_last_name;
 
             $trans_id = "WIT" . time();
+
             $exchange = WITHDRATE;
             $ifx_naira_amount = $ifx_dollar_amount * WITHDRATE;
             $service_charge = $ifx_naira_amount * WSERVCHARGE;

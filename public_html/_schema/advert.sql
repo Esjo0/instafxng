@@ -1,3 +1,18 @@
+CREATE TABLE `unified_bonus_withdrawals` (
+ `id` int(100) NOT NULL AUTO_INCREMENT,
+ `transaction_id` varchar(50) NOT NULL,
+ `amount_naira` int(11) NOT NULL,
+ `amount_dollar` int(11) NOT NULL,
+ `rate` int(11) NOT NULL,
+ `admin` varchar(11) NOT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+)
+
+
+
+ALTER TABLE `user_withdrawal` CHANGE `status` `status` ENUM('1','2','3','4','5','6','7','8','9','10','11') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '1 - Withdrawal Initiated2 - Account Check In Progress3 - Account Check Failed4 - Account Check Successful5 - Withdrawal In Progress6 - Withdrawal Declined7 - Withdrawal Successful8 - Payment In Progress9 - Payment Declined10 - Payment Made / Completed 11- Unified Bonus';
+
 CREATE TABLE `account_audit_date` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `audit_date` datetime NOT NULL,
@@ -11,6 +26,8 @@ CREATE TABLE `account_audit_date` (
 ALTER TABLE `account_audit` ADD `status` ENUM('1') NULL DEFAULT NULL COMMENT '1-Completed' AFTER `audit_date`;
 
 SELECT u.email FROM account_audit AS a INNER JOIN user AS u ON u.user_code = a.user_code WHERE u.email IN ('oo.bukky@gmail.com', 'joshua@instafxng.com', 'olasomimercy@gmail.com', 'joshuaesan1@gmail.com', 'kingsleyifoga@gmail.com');
+
+
 
 `ALTER TABLE ``dinner_2018`` DROP INDEX ``email``;`
 
