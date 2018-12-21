@@ -273,6 +273,8 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="279" id="" <?php if (in_array(279, $my_pages)) { echo 'checked="checked"'; } ?>/> Withdrawal - Reversal</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="47" id="" <?php if (in_array(47, $my_pages)) { echo 'checked="checked"'; } ?>/> Transaction Calculator</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="261" id="" <?php if (in_array(261, $my_pages)) { echo 'checked="checked"'; } ?>/> Review Locked Transactions</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="303" id="" <?php if (in_array(303, $my_pages)) { echo 'checked="checked"'; } ?>/> UNIFIED BONUS WITHDRAWAL</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="304" id="" <?php if (in_array(304, $my_pages)) { echo 'checked="checked"'; } ?>/> UNIFIED BONUS WITHDRAWAL COMPLETED</label></div></div>
                                     </div>
                                     <hr/>
 

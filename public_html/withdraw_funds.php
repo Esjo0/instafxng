@@ -162,6 +162,9 @@ if(isset($_POST['withdraw_funds_qty'])) {
             $full_name = $client_first_name . " " . $client_last_name;
 
             $trans_id = "WIT" . time();
+            if($_SESSION['UNIFIED_BONUS'] == 2018){
+                $trans_id = "UB" . time();
+            }
             $exchange = WITHDRATE;
             $ifx_naira_amount = $ifx_dollar_amount * WITHDRATE;
             $service_charge = $ifx_naira_amount * WSERVCHARGE;

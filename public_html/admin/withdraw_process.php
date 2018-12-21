@@ -127,6 +127,10 @@ if ($withdraw_process_ifx_debited && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_
         case 'Pend Payment': $status = '8'; break;
     }
 
+    if(strpos($transaction_id, 'UB') !== false){
+        $status = 11;
+    }
+
     $client_operation->withdrawal_transaction_completed($transaction_id, $status, $remarks, $_SESSION['admin_unique_code']);
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
     header("Location: withdrawal_ifx_debited.php");
