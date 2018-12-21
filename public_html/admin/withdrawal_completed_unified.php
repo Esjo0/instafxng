@@ -4,15 +4,8 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-$query = "SELECT uw.trans_id, uw.dollar_withdraw, uw.created, uw.naira_total_withdrawable,
-        uw.client_phone_password, uw.status AS withdrawal_status,
-        CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
-        uc.passport, ui.ifxaccount_id, ui.ifx_acct_no, uw.updated
-        FROM user_withdrawal AS uw
-        INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
-        INNER JOIN user AS u ON ui.user_code = u.user_code
-        LEFT JOIN user_credential AS uc ON ui.user_code = uc.user_code
-        WHERE uw.status = '11' ORDER BY uw.updated DESC ";
+$query = "SELECT transaction_id, amount_naira, name, rate, created
+        FROM unified_bonus_withdrawals ";
 $numrows = $db_handle->numRows($query);
 
 $rowsperpage = 20;
@@ -81,13 +74,9 @@ $completed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                     <thead>
                                         <tr>
                                             <th>Transaction ID</th>
-                                            <th>Client Name</th>
-                                            <th>IFX Account</th>
-                                            <th>Dollar Amount</th>
-                                            <th>Amount To Pay</th>
+                                            <th>Name</th>
+                                            <th>Amount</th>
                                             <th>Date Created</th>
-                                            <th>Last Updated</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -96,16 +85,11 @@ $completed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                 foreach ($completed_withdrawal_requests as $row) {
                                         ?>
                                         <tr>
-                                            <td><?php echo $row['trans_id']; ?></td>
-                                            <td><?php echo $row['full_name']; ?></td>
-                                            <td><?php echo $row['ifx_acct_no']; ?></td>
-                                            <td class="nowrap">&dollar; <?php echo number_format($row['dollar_withdraw'], 2, ".", ","); ?></td>
-                                            <td class="nowrap">&#8358; <?php echo number_format($row['naira_total_withdrawable'], 2, ".", ","); ?></td>
+                                            <td><?php echo $row['transaction_id']; ?></td>
+                                            <td><?php echo $row['name']; ?></td>
+                                            <td class="nowrap">&#8358; <?php echo number_format($row['amount_naira'], 2, ".", ","); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
-                                            <td><?php echo datetime_to_text($row['updated']); ?></td>
-                                            <td>
-                                                <a target="_blank" title="View" class="btn btn-info" href="withdrawal_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                            </td>
+
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
