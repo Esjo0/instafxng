@@ -2208,8 +2208,8 @@ MAIL;
 
             <br /><br />
             <p>Best Regards,</p>
-            <p>Bunmi,</p>
-            <p>Clients Relations Manager,<br />
+            <p>Adamolekun Oluwabunmi,</p>
+            <p>Head - Compliance/Operations,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
