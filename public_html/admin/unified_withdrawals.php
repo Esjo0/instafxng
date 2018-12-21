@@ -12,11 +12,11 @@ if(isset($_POST['create'])){
     $amount = $db_handle->sanitizePost(trim($_POST['amount']));
     $name = $db_handle->sanitizePost(trim($_POST['name']));
     $rate = WITHDRATE;
-    $query = "INSERT INTO unified_bonus_withdrawals (transaction_id, amount_naira, name, rate, admin)
-              VALUE('$trans_id', '$amount', '$name', '$rate', '$admin_code')";
+    $query = "INSERT INTO unified_bonus_withdrawals (transaction_id, amount_naira, name, rate)
+              VALUE('$trans_id', $amount, '$name', $rate)";
     $result = $db_handle->runQuery($query);
     if($result){
-        $message_success = "Withdrawal Sussessful";
+        $message_success = "Withdrawal Successful: ID - " . $trans_id . " for " . $name;
     }else{
         $message_error = "Withdrawal Not Successful";
     }
@@ -73,7 +73,7 @@ if(isset($_POST['create'])){
                                         <div class="col-sm-4 col-lg-4">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-institution fa-fw"></i></span>
-                                                <input name="amount" type="number" id=""class="form-control" required/>
+                                                <input name="amount" type="text" id=""class="form-control" required/>
                                             </div>
                                         </div>
                                     </div>
