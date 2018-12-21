@@ -10,10 +10,10 @@ $admin_code = $_SESSION['admin_unique_code'];
 if(isset($_POST['create'])){
     $trans_id = "WIT" . time();
     $amount = $db_handle->sanitizePost(trim($_POST['amount']));
+    $name = $db_handle->sanitizePost(trim($_POST['name']));
     $rate = WITHDRATE;
-    $amount_dollars = $amount * WITHDRATE;
-    $query = "INSERT INTO unified_bonus_withdrawals (transaction_id, amount_naira, amount_dollar, rate)
-              VALUE('$trans_id', '$amount', '$amount_dollar', '$rate')";
+    $query = "INSERT INTO unified_bonus_withdrawals (transaction_id, amount_naira, name, rate, admin)
+              VALUE('$trans_id', '$amount', '$name', '$rate', '$admin_code')";
     $result = $db_handle->runQuery($query);
     if($result){
         $message_success = "Withdrawal Sussessful";
@@ -66,19 +66,29 @@ if(isset($_POST['create'])){
                                 <p class="text-center">
                                     KINDLY FILL THE FORM BELOW TO CREATE A  BONUS WITHDRAWAL.
                                 </p>
-                                <form data-toggle="validator"  role="form" action="" class="form text-center" method="post">
+                                <form data-toggle="validator"  role="form" action="" class="row form text-center" method="post">
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="inventoryid">AMOUNT IN NAIRA</label>
-                                        <div class="col-sm-6 col-lg-6">
+                                    <div class="form-group col-sm-12">
+                                        <label class="control-label col-sm-2">AMOUNT IN NAIRA</label>
+                                        <div class="col-sm-4 col-lg-4">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-institution fa-fw"></i></span>
-                                                <input name="amount" type="text" id=""class="form-control" required/>
+                                                <input name="amount" type="number" id=""class="form-control" required/>
                                             </div>
                                         </div>
                                     </div>
 
-                                <div class="text-center">
+                                    <div class="form-group col-sm-12">
+                                        <label class="control-label col-sm-2">NAME</label>
+                                        <div class="col-sm-4 col-lg-4">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-newspaper-o fa-fw"></i></span>
+                                                <input name="name" type="text" id=""class="form-control" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <div class="col-sm-6">
                                     <button class="btn btn-success" type="submit" name="create">SUBMIT</button>
                                 </div>
 
