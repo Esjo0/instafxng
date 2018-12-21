@@ -12,7 +12,7 @@ if(isset($_POST['create'])){
     $amount = $db_handle->sanitizePost(trim($_POST['amount']));
     $rate = WITHDRATE;
     $amount_dollars = $amount * WITHDRATE;
-    $query = "INSERT INTO unified_bonus_withdrawals (trans_id, amount_naira, amount_dollar, rate)
+    $query = "INSERT INTO unified_bonus_withdrawals (transaction_id, amount_naira, amount_dollar, rate)
               VALUE('$trans_id', '$amount', '$amount_dollar', '$rate')";
     $result = $db_handle->runQuery($query);
     if($result){
