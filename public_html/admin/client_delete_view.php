@@ -14,7 +14,7 @@ if (isset($_POST['process'])) {
 
     extract($_POST);
 
-    $user_code = dec_enc('decrypt',  $client_id));
+    $user_code = dec_enc('decrypt',  $client_id);
 
 
     $profile_modified = $client_operation->update_user_status($user_code, $client_status);
@@ -28,7 +28,7 @@ if (isset($_POST['process'])) {
 
 $get_params = allowed_get_params(['id']);
 $user_code_encrypted = $get_params['id'];
-$user_code = dec_enc('decrypt',  $user_code_encrypted));
+$user_code = dec_enc('decrypt',  $user_code_encrypted);
 
 
 if(is_null($user_code_encrypted) || empty($user_code_encrypted)) {
