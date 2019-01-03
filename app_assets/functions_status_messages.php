@@ -1,5 +1,13 @@
 <?php
 
+function market_target_type($type) {
+    switch ($type) {
+        case '1': $name = 'Onboarding'; break;
+        case '2': $name = 'Retention'; break;
+    }
+
+    return $name;
+}
 
 /**
  * Editable schedule mode
@@ -33,7 +41,7 @@ function target_period($id)
             break;
         case '9':
             $period = "September";
-        break;
+            break;
         case '10':
             $period = "October";
             break;

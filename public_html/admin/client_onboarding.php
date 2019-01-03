@@ -19,7 +19,7 @@ $current_year_code = "1-12";
 $onboarding_analytics = $obj_analytics->get_onboarding_analytics();
 extract($onboarding_analytics);
 
-$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '1' LIMIT 1";
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_month' AND status = '1' AND type = '1' LIMIT 1";
 $result = $db_handle->runQuery($query);
 $m_current_target = $db_handle->fetchAssoc($result)[0]['target'];
 

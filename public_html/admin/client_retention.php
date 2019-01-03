@@ -37,7 +37,7 @@ $q_retention_rate = ($q_client_retained / $q_client_to_retain) * 100;
 $h_retention_rate = ($h_client_retained / $h_client_to_retain) * 100;
 $y_retention_rate = ($y_client_retained / $y_client_to_retain) * 100;
 
-$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '2' LIMIT 1";
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_month' AND status = '1' AND type = '2' LIMIT 1";
 $result = $db_handle->runQuery($query);
 $m_current_target = $db_handle->fetchAssoc($result)[0]['target'];
 $m_target_rate = ($m_retention_rate / $m_current_target) * 100;

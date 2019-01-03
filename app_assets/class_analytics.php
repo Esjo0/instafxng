@@ -270,13 +270,14 @@ class Analytics {
 
         $current_year = date('Y');
         $main_current_month = date('m');
+        $current_month = ltrim($main_current_month, '0');
         $today = date('Y-m-d');
 
         $current_quarter = $this->get_quarter_code($main_current_month);
         $current_half_year = $this->get_half_year_code($main_current_month);
         $current_year_code = "1-12";
 
-        $month_title = $this->get_from_to_dates($current_year, $main_current_month)['period_title'];
+        $month_title = $this->get_from_to_dates($current_year, $current_month)['period_title'];
         $quarter_title = $this->get_from_to_dates($current_year, $current_quarter)['period_title'];
         $half_year_title = $this->get_from_to_dates($current_year, $current_half_year)['period_title'];
         $year_title = $this->get_from_to_dates($current_year, $current_year_code)['period_title'];

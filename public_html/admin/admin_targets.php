@@ -273,6 +273,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                         <tr>
                                                             <th>Title</th>
                                                             <th>Description</th>
+                                                            <th>Type</th>
                                                             <th>Period</th>
                                                             <th>Year</th>
                                                             <th>Value</th>
@@ -289,6 +290,7 @@ $targets = $db_handle->fetchAssoc($result);
                                                             title="Click Here to Update or Delete this notification.">
                                                             <td><?php echo $name; ?></td>
                                                             <td><?php echo $details; ?></td>
+                                                            <td><?php echo market_target_type($type); ?></td>
                                                             <td><?php echo target_period($period); ?></td>
                                                             <td><?php echo $year; ?></td>
                                                             <td><?php echo $value; ?></td>

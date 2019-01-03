@@ -3,9 +3,6 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-$client_operation = new clientOperation();
-$result = $client_operation->requery_webpay_deposit("D1544623089");
-var_dump($result);
 
 /*
  * Period: One year ago
@@ -97,8 +94,8 @@ var_dump($result);
 //$mpdf->Output();
 
 // LOYALTY POINT ARCHIVING
-//$start_date = "2017-12-01";
-//$end_date = "2017-12-31";
+//$start_date = "2019-01-01";
+//$end_date = "2019-01-31";
 //
 //$query = "SELECT pr.month_rank, u.user_code, u.first_name AS full_name
 //      FROM point_ranking AS pr
