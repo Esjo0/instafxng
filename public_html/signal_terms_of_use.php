@@ -8,9 +8,9 @@ $thisPage = "Signal Terms of Use";
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Forex Trading Signals Terms of Use</title>
+        <title>InstaFxNg | Forex Trading Signals Terms of Use</title>
         <meta name="title" content="Instaforex Nigeria | Forex Trading Signals Terms of Use" />
-        <meta name="keywords" content="instaforex, how to trade forex, trade forex, instaforex nigeria.">
+        <meta name="keywords" content="instaforex, how to trade forex, trade forex, instaforex nigeria, InstaFxNg, instafxng.">
         <meta name="description" content="Instaforex Nigeria | Forex Trading Signals Terms of Use">
         <?php require_once 'layouts/head_meta.php'; ?>
     </head>
@@ -36,7 +36,7 @@ $thisPage = "Signal Terms of Use";
                         <div class="row">
                             <div class="col-sm-12">
 
-                                <p>These signals are provided "as is" by InstaForex Nigeria (www.InstaFxNg.com) and though we have taken utmost care and used the best available tools to generate these signals, by using it you agree to release us from every liability arising directly or indirectly from the use of same signals.</p>
+                                <p>These signals are provided "as is" by InstaFxNg (www.InstaFxNg.com) and though we have taken utmost care and used the best available tools to generate these signals, by using it you agree to release us from every liability arising directly or indirectly from the use of same signals.</p>
 
                                 <p>Although the source of the signals has been producing about 85% accurate signals, we will advise that you should try it on your demo account before you use them on your live account.</p>
 
