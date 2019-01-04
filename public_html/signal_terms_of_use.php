@@ -36,7 +36,7 @@ $thisPage = "Signal Terms of Use";
                         <div class="row">
                             <div class="col-sm-12">
 
-                                <p>These signals are provided "as is" by InstaForex Nigeria (www.InstaFxNg.com) and though we have taken utmost care and used the best available tools to generate these signals, by using it you agree to release us from every liability arising directly or indirectly from the use of same signals.</p>
+                                <p>These signals are provided "as is" by InstaFxNg (www.InstaFxNg.com) and though we have taken utmost care and used the best available tools to generate these signals, by using it you agree to release us from every liability arising directly or indirectly from the use of same signals.</p>
 
                                 <p>Although the source of the signals has been producing about 85% accurate signals, we will advise that you should try it on your demo account before you use them on your live account.</p>
 
