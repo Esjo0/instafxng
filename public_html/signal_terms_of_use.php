@@ -8,9 +8,9 @@ $thisPage = "Signal Terms of Use";
         <base target="_self">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Instaforex Nigeria | Forex Trading Signals Terms of Use</title>
+        <title>InstaFxNg | Forex Trading Signals Terms of Use</title>
         <meta name="title" content="Instaforex Nigeria | Forex Trading Signals Terms of Use" />
-        <meta name="keywords" content="instaforex, how to trade forex, trade forex, instaforex nigeria.">
+        <meta name="keywords" content="instaforex, how to trade forex, trade forex, instaforex nigeria, InstaFxNg, instafxng.">
         <meta name="description" content="Instaforex Nigeria | Forex Trading Signals Terms of Use">
         <?php require_once 'layouts/head_meta.php'; ?>
     </head>
