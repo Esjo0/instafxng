@@ -488,7 +488,7 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                     extract($row);
                                     if ($location == 1) {
                                         $location = "Diamond Estate office";
-                                    } elseif ($location == 3) {
+                                    } elseif ($location == 2) {
                                         $location = "EASTLINE Complex office";
                                     }
                                     echo "<div class='col-sm-3'>[ " . datetime_to_text($schedule_date) . " <br> No of Students $no_of_students <br>" . training_mode($schedule_mode) . " <br> @ : " . $location . " ] "; ?>

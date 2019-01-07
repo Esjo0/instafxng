@@ -172,7 +172,7 @@ function office_addresses($id)
         case '1':
             $address = "Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri-Olofin, Lagos. ";
             break;
-        case '3':
+        case '2':
             $address = "Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos";
             break;
         default:
