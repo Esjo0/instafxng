@@ -22,7 +22,7 @@ if(isset($_POST['called'])){
     $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
     $numrows = $db_handle->numRows($query);
     if($numrows == 0){
-        $query = "INSERT INTO call_log (user_code, status) VALUES ('$user_code', '1')";
+        $query = "INSERT INTO call_log (user_code, status, source) VALUES ('$user_code', '1', 'CLIENT_VIEW')";
         $result = $db_handle->runQuery($query);
         if($result){
             $message_success = "Successfully updated as contacted";
@@ -30,7 +30,7 @@ if(isset($_POST['called'])){
             $message_error = "Contact Update Not Successful.";
         }
     }elseif($numrows == 1){
-        $query = "UPDATE call_log SET status = '1' WHERE user_code = '$user_code'";
+        $query = "UPDATE call_log SET status = '1' WHERE user_code = '$user_code' AND source = 'CLIENT_VIEW' ";
         $result = $db_handle->runQuery($query);
         if($result){
             $message_success = "Successfully updated as contacted";
@@ -44,14 +44,14 @@ if(isset($_POST['called'])){
 if(isset($_POST['follow_up'])){
     $user_code = $db_handle->sanitizePost($_POST['user_code']);
     $comment = $db_handle->sanitizePost($_POST['comment']);
-    $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' AND source = 'CLIENT_VIEW'";
     $numrows = $db_handle->numRows($query);
     if($numrows == 0){
         $sales_comment = "CLIENT VIEW:" . $comment;
         $admin_code = $_SESSION['admin_unique_code'];
         $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
         $result = $db_handle->runQuery($query);
-        $query = "INSERT INTO call_log (user_code, status, follow_up_comment) VALUES ('$user_code', '2', '$comment')";
+        $query = "INSERT INTO call_log (user_code, status, follow_up_comment, source) VALUES ('$user_code', '2', '$comment', 'CLIENT_VIEW')";
         $result = $db_handle->runQuery($query);
         if($result){
             $message_success = "Successfully saved for follow-up call";
@@ -63,7 +63,7 @@ if(isset($_POST['follow_up'])){
         $admin_code = $_SESSION['admin_unique_code'];
         $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
         $result = $db_handle->runQuery($query);
-        $query = "UPDATE call_log SET status = '2', follow_up_comment = '$comment' WHERE user_code = '$user_code'";
+        $query = "UPDATE call_log SET status = '2', follow_up_comment = '$comment' WHERE user_code = '$user_code' AND source = 'CLIENT_VIEW'";
         $result = $db_handle->runQuery($query);
         if($result){
             $message_success = "Successfully saved for follow-up call";
@@ -129,7 +129,7 @@ if(isset($_POST['not_contacted'])){
         WHERE u.status = '1' AND u.user_code NOT IN (SELECT user_code FROM call_log) ORDER BY u.created DESC ";
     $_SESSION['query_client_view'] = $query;
 }
-if(isset($_POST['follow_up'])){
+if(isset($_POST['follow_up_list'])){
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
         u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name
         FROM user AS u
@@ -235,7 +235,7 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                 <form method="post" action="" class="col-md-6 form form-horizontal">
                                     <button type="submit" name="contacted" class="btn btn-default btn-sm">Clients Contacted</button>
                                     <button type="submit" name="not_contacted" class="btn btn-default btn-sm">Clients Not Contacted</button>
-                                    <button type="submit" name="follow_up" class="btn btn-default btn-sm">Follow-up/call back</button>
+                                    <button type="submit" name="follow_up_list" class="btn btn-default btn-sm">Follow-up/call back</button>
                                 </form>
                                 </div>
 
@@ -276,7 +276,7 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                     <?php if($allowed_update_profile) { ?>
                                                         <a target="_blank" title="Update" class="btn btn-info btn-sm" href="client_update.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-pencil icon-white"></i> </a>
                                                     <?php } ?></td>
-                                                <td><?php call_log_status($row['user_code']);?></td>
+                                                <td><?php call_log_status($row['user_code'], 'CLIENT_VIEW');?></td>
                                             </tr>
                                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>
