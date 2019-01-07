@@ -2,6 +2,63 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
+if(isset($_POST['called'])){
+    $user_code = $db_handle->sanitizePost($_POST['user_code']);
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
+    $numrows = $db_handle->numRows($query);
+    if($numrows == 0){
+        $query = "INSERT INTO call_log (user_code, status, source) VALUES ('$user_code', '1', 'RETENTION')";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully updated as contacted";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }elseif($numrows == 1){
+        $query = "UPDATE call_log SET status = '1' WHERE user_code = '$user_code' AND source = 'RETENTION' ";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully updated as contacted";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }
+
+}
+
+if(isset($_POST['follow_up'])){
+    $user_code = $db_handle->sanitizePost($_POST['user_code']);
+    $comment = $db_handle->sanitizePost($_POST['comment']);
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' AND source = 'RETENTION'";
+    $numrows = $db_handle->numRows($query);
+    if($numrows == 0){
+        $sales_comment = "CLIENT RETENTION TRACKER:" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
+        $query = "INSERT INTO call_log (user_code, status, follow_up_comment, source) VALUES ('$user_code', '2', '$comment', 'RETENTION')";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully saved for follow-up call";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }elseif($numrows == 1){
+        $sales_comment = "CLIENT RETENTION TRACKER:" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
+        $query = "UPDATE call_log SET status = '2', follow_up_comment = '$comment' WHERE user_code = '$user_code' AND source = 'RETENTION'";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully saved for follow-up call";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }
+
+}
+
 if(isset($_GET['r']) && $_GET['r'] == 1) {
     unset($_SESSION['client_retention_base_query']);
     unset($_SESSION['client_retention_base_query2']);
@@ -571,6 +628,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                             <th>Funding</th>
                                             <th><?php if($retention_type_main_title == "NOT YET RETAINED") { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
                                             <th>Action</th>
+                                            <th>Call Log</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -596,6 +654,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                     <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
                                                     <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
                                                 </td>
+                                                <td><?php call_log_status($row['user_code'], 'RETENTION');?></td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>

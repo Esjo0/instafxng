@@ -932,10 +932,10 @@ MAIL;
  * Clients Call Log
  * Track Clients that have been contacted and thosde that need follow up
  */
-function call_log_status($user_code){
+function call_log_status($user_code, $source){
     global $db_handle;
 
-    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' LIMIT 1";
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' AND source = '$source' LIMIT 1";
     $result = $db_handle->runQuery($query);
     $result = $db_handle->fetchArray($result);
     $numrows = $db_handle->numRows($query);
