@@ -1,3 +1,5 @@
+`ALTER TABLE ``call_log`` DROP INDEX ``user_code``;`
+
 
 ALTER TABLE `call_log` ADD `source` VARCHAR(100) NOT NULL AFTER `status`;
 
