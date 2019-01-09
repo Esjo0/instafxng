@@ -38,7 +38,7 @@ $thisPage = "About";
                             <div class="col-sm-12"><p>Watch Videos of our company below</p></div>
 
                             <div class="col-sm-12">
-                                <h5>InstaFxNg End of the Special Wishes</h5>
+                                <h5>InstaFxNg End of the Year Special Wishes</h5>
                                 <div class="col-sm-6">
                                     <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/PutzohAPL-8" frameborder="0" allowfullscreen></iframe></div>
                                     <p>&nbsp;</p>
