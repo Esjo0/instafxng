@@ -18,6 +18,9 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9"><input name="verify_account_ifx_acct" type="submit" class="btn btn-success" value="Submit" /></div>
+        <div class="col-sm-offset-3 col-sm-9">
+            <input name="verify_account_ifx_acct" type="submit" class="btn btn-success" value="Submit" />
+            <p>Can't remember your passcode? <a href="passcode_recovery.php">recover passcode here</a></p>
+        </div>
     </div>
 </form>
