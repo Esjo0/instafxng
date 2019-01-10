@@ -1,3 +1,5 @@
+DELETE FROM account_audit_date WHERE audit_date = '2019-01-18' AND audit_date = '2019-01-19';
+
 `ALTER TABLE ``call_log`` DROP INDEX ``user_code``;`
 
 
