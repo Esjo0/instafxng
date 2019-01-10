@@ -87,7 +87,8 @@ $client_group_DEFAULT = array(
 	"72" => "Funded NON-ILPR account Not on board",
 	"73" => "All ILPR accounts Not on board",
 	"74" => "All NON-ILPR accounts Not on board",
-	"75" => "Training Clients Not on board"
+	"75" => "Training Clients Not on board",
+    "76" => "Current Month Trading Clients"
 );
 
 $client_group_DESC = array(
@@ -165,5 +166,6 @@ $client_group_DESC = array(
 	"72" => "Funded NON-ILPR account Not on board - That is we havn't gotten any commission from them",
 	"73" => "All ILPR accounts Not on board - That is we havn't gotten any commission from them",
 	"74" => "All NON-ILPR accounts Not on board - That is we havn't gotten any commission from them",
-	"75" => "Training Clients Not on board - That is we havn't gotten any commission from them"
+	"75" => "Training Clients Not on board - That is we havn't gotten any commission from them",
+    "76" => "List of clients that have placed a trade this month."
     );
