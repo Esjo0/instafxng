@@ -1083,10 +1083,13 @@ function client_group_campaign_category($status)
             break;
         case '74':
             $message = "All NON-ILPR accounts Not on board";
-        break;
+            break;
         case '75':
             $message = "Training Clients Not on board";
-        break;
+            break;
+        case '76':
+            $message = "Current Month Trading Clients";
+            break;
         default:
             $message = "Unknown";
             break;
@@ -1104,6 +1107,9 @@ function client_group_query($client_group, $campaign_type)
     $first_day = date('Y-m') . '-01';
     $from_date = date('Y-m-d', strtotime('first day of last month'));
     $to_date = date('Y-m-d', strtotime('last day of last month'));
+
+    $first_day_of_month = date('Y-m-d', strtotime('first day of this month'));
+    $last_day_of_month = date('Y-m-d', strtotime('last day of this month'));
 
     $date_today = date('Y-m-d');
 
@@ -1373,6 +1379,13 @@ function client_group_query($client_group, $campaign_type)
                     AND  u.user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
                     GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
                 break;
+            case '76':
+                $query = "SELECT u.user_code, u.first_name, u.email, u.phone, u.created
+                    FROM trading_commission AS td
+                    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE date_earned BETWEEN '$first_day_of_month' AND '$last_day_of_month' GROUP BY u.email ORDER BY first_name DESC ";
+                break;
             default:
                 $query = false;
                 break;
@@ -1630,6 +1643,13 @@ function client_group_query($client_group, $campaign_type)
                     WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
                     AND  u.user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
                     GROUP BY u.user_code ";
+                break;
+            case '76':
+                $query = "SELECT u.user_code, u.first_name, u.email, u.phone, u.created
+                    FROM trading_commission AS td
+                    INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE date_earned BETWEEN '$first_day_of_month' AND '$last_day_of_month' GROUP BY u.email ORDER BY first_name DESC ";
                 break;
             default:
                 $query = false;
