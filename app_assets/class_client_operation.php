@@ -2678,10 +2678,13 @@ MAIL;
      * @param string $interest_other
      * @return bool
      */
-    public function log_sales_contact_client_interest($user_code, $interest_training = '1', $interest_funding = '1', $interest_bonus = '1', $interest_investment = '1', $interest_services = '1', $interest_other = '1') {
+    public function log_sales_contact_client_interest($user_code, $interest_training = '1', $interest_training_FMM = '1', $interest_training_FPO = '1', $interest_training_audit = '1', $interest_funding = '1', $interest_bonus = '1', $interest_investment = '1', $interest_services = '1', $interest_other = '1') {
         global $db_handle;
 
         if(empty($interest_training)) { $interest_training = '1'; }
+        if(empty($interest_training_FMM)) { $interest_training_FMM = '1'; }
+        if(empty($interest_training_FPO)) { $interest_training_FPO = '1'; }
+        if(empty($interest_training_audit)) { $interest_training_audit = '1'; }
         if(empty($interest_funding)) { $interest_funding = '1'; }
         if(empty($interest_bonus)) { $interest_bonus = '1'; }
         if(empty($interest_investment)) { $interest_investment = '1'; }
@@ -2692,13 +2695,18 @@ MAIL;
 
             $query = "UPDATE sales_contact_client_interest SET
                   interest_training = '$interest_training',
+                  interest_training_FMM = '$interest_training_FMM',
+                  interest_training_FPO = '$interest_training_FPO',
+                  interest_training_audit = '$interest_training_audit',
                   interest_funding = '$interest_funding',
                   interest_bonus = '$interest_bonus',
                   interest_investment = '$interest_investment',
                   interest_services = '$interest_services',
                   interest_other = '$interest_other' WHERE user_code = '$user_code' LIMIT 1";
+            var_dump($query);
         } else {
-            $query = "INSERT INTO sales_contact_client_interest (user_code, interest_training, interest_funding, interest_bonus, interest_investment, interest_services, interest_other) VALUES ('$user_code', '$interest_training', '$interest_funding', '$interest_bonus', '$interest_investment', '$interest_services', '$interest_other')";
+            $query = "INSERT INTO sales_contact_client_interest (user_code, interest_training, interest_training_FMM, interest_training_FPO, interest_training_audit, interest_funding, interest_bonus, interest_investment, interest_services, interest_other) VALUES ('$user_code', '$interest_training', '$interest_training_FMM', '$interest_training_FPO', '$interest_training_audit', '$interest_funding', '$interest_bonus', '$interest_investment', '$interest_services', '$interest_other')";
+            var_dump($query);
         }
 
         $db_handle->runQuery($query);
