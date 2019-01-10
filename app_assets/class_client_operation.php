@@ -2703,7 +2703,6 @@ MAIL;
                   interest_investment = '$interest_investment',
                   interest_services = '$interest_services',
                   interest_other = '$interest_other' WHERE user_code = '$user_code' LIMIT 1";
-            var_dump($query);
         } else {
             $query = "INSERT INTO sales_contact_client_interest (user_code, interest_training, interest_training_FMM, interest_training_FPO, interest_training_audit, interest_funding, interest_bonus, interest_investment, interest_services, interest_other) VALUES ('$user_code', '$interest_training', '$interest_training_FMM', '$interest_training_FPO', '$interest_training_audit', '$interest_funding', '$interest_bonus', '$interest_investment', '$interest_services', '$interest_other')";
             var_dump($query);
