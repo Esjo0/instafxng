@@ -93,7 +93,7 @@ $all_jobs = $db_handle->fetchAssoc($result);
                                             <td class="nowrap"><?php echo status_career_jobs($row['status']); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a title="Edit" class="btn btn-default" href="career_new_job.php?x=edit&id=<?php echo encrypt($row['career_jobs_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
+                                                <a title="Edit" class="btn btn-default" href="career_new_job.php?x=edit&id=<?php echo dec_enc('encrypt', $row['career_jobs_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

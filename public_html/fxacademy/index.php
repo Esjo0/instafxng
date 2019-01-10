@@ -27,8 +27,7 @@ if (!$session_client->is_logged_in()) {
     $get_params = allowed_get_params(['se', 'sid', 'c']);
 
     $control_code_encrypted = $get_params['c'];
-    $control_code = decrypt(str_replace(" ", "+", $control_code_encrypted));
-    $control_code = preg_replace("/[^A-Za-z0-9 ]/", '', $control_code);
+    $control_code = dec_enc('decrypt',  $control_code_encrypted);
 
     if(!empty($get_params['se']) && !empty($get_params['sid']) && $control_code == "1") {
 
@@ -67,8 +66,7 @@ if (!$session_client->is_logged_in()) {
     $get_params = allowed_get_params(['se', 'sid', 'c']);
 
     $control_code_encrypted = $get_params['c'];
-    $control_code = decrypt(str_replace(" ", "+", $control_code_encrypted));
-    $control_code = preg_replace("/[^A-Za-z0-9 ]/", '', $control_code);
+    $control_code = dec_enc('decrypt',  $control_code_encrypted);
 
     if(!empty($get_params['se']) && !empty($get_params['sid']) && $control_code == "1") {
 
@@ -189,21 +187,21 @@ if($get_learning_position) {
                                 <h4>Let's get started</h4>
                                 <p><?php echo $_SESSION['client_first_name']; ?>, in your study plan, the title of your first course is "<strong><?php echo $first_time_course['title']; ?></strong>".
                                 This is where it all begins. Are you ready?</p>
-                                <p><a title="Click to start learning" href="fxacademy/course_view.php?id=<?php echo encrypt($first_time_course['edu_course_id']); ?>" class="btn btn-primary btn-lg">Start</a></p>
+                                <p><a title="Click to start learning" href="fxacademy/course_view.php?id=<?php echo dec_enc('encrypt', $first_time_course['edu_course_id']); ?>" class="btn btn-primary btn-lg">Start</a></p>
                                 <hr />
                                 <?php } ?>
 
                                 <?php if($go_to_next_lesson) { ?>
                                 <h4>Well done!</h4>
                                 <p><?php echo $_SESSION['client_first_name']; ?>, you are making a good progress already. In your study plan, the title of your next lesson is "<strong><?php echo $next_lesson['title']; ?></strong>".</p>
-                                <p><a title="Continue learning" href="fxacademy/lesson_view.php?cid=<?php echo encrypt($next_lesson['course_id']); ?>&lid=<?php echo encrypt($next_lesson['edu_lesson_id']); ?>" class="btn btn-primary btn-lg">Continue</a></p>
+                                <p><a title="Continue learning" href="fxacademy/lesson_view.php?cid=<?php echo dec_enc('encrypt', $next_lesson['course_id']); ?>&lid=<?php echo dec_enc('encrypt', $next_lesson['edu_lesson_id']); ?>" class="btn btn-primary btn-lg">Continue</a></p>
                                 <hr />
                                 <?php } ?>
 
                                 <?php if($go_to_next_course) { ?>
                                 <h4>Bravo!</h4>
                                 <p><?php echo $_SESSION['client_first_name']; ?>, your progress is encouraging. In your study plan, the title of your next course is "<strong><?php echo $first_lesson_course['course_title']; ?></strong>".</p>
-                                <p><a title="Continue learning" href="fxacademy/course_view.php?id=<?php echo encrypt($first_lesson_course['course_id']); ?>" class="btn btn-primary btn-lg">Continue</a></p>
+                                <p><a title="Continue learning" href="fxacademy/course_view.php?id=<?php echo dec_enc('encrypt', $first_lesson_course['course_id']); ?>" class="btn btn-primary btn-lg">Continue</a></p>
                                 <hr />
                                 <?php } ?>
 
@@ -212,7 +210,7 @@ if($get_learning_position) {
                                 <p>Below is the list of courses you have enrolled for.</p>
                                 <ul class="list-group">
                                     <?php foreach($get_course_library AS $row) { ?>
-                                        <li class="list-group-item list-group-item-warning"><a title="Click to view course again" href="fxacademy/course_view.php?id=<?php echo encrypt($row['edu_course_id']); ?>"><?php echo $row['title']; ?></a></li>
+                                        <li class="list-group-item list-group-item-warning"><a title="Click to view course again" href="fxacademy/course_view.php?id=<?php echo dec_enc('encrypt', $row['edu_course_id']); ?>"><?php echo $row['title']; ?></a></li>
                                     <?php } ?>
                                 </ul>
                                 <?php } ?>

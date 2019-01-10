@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $bulletin_id_encrypted = $get_params['id'];
-$bulletin_id = decrypt(str_replace(" ", "+", $bulletin_id_encrypted));
-$bulletin_id = preg_replace("/[^A-Za-z0-9 ]/", '', $bulletin_id);
+$bulletin_id = dec_enc('decrypt',  $bulletin_id_encrypted);
 
 $all_admin_member = $admin_object->get_all_admin_member();
 
@@ -40,7 +39,7 @@ if (isset($_POST['process'])) {
                 $author = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
                 if(isset($bulletin_no) && !empty($bulletin_no))
                 {
-                    $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".encrypt($bulletin_no);
+                    $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".dec_enc('encrypt', $bulletin_no);
                 }
                 else{$source_url = "https://instafxng.com/admin/bulletin_centre.php";}
                 $notify_support = $obj_push_notification->add_new_notification($title1, $message, $recipients, $author, $source_url);

@@ -20,3 +20,5 @@ if ($db_handle->runQuery($insert_query)) {
     file_put_contents('/home/tboy9/models/daily_quotes.json', '');
 }
 file_put_contents('/home/tboy9/models/signal_daily.json', '');
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

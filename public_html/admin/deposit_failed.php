@@ -6,12 +6,10 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['id', 'pm']);
 $trans_id_encrypted = $get_params['id'];
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
-$trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+$trans_id = dec_enc('decrypt',  $trans_id_encrypted);
 
 $pay_method_encrypted = $get_params['pm'];
-$pay_method = decrypt(str_replace(" ", "+", $pay_method_encrypted));
-$pay_method = preg_replace("/[^A-Za-z0-9 ]/", '', $pay_method);
+$pay_method = dec_enc('decrypt',  $pay_method_encrypted);
 
 if($get_params['id'] && !empty($trans_id) && $get_params['pm'] && !empty($pay_method)) {
     $client_operation = new clientOperation();
@@ -174,11 +172,11 @@ $allowed_requery_button = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 <td>&#8358; <?php echo number_format($row['naira_total_payable'], 2, ".", ","); ?></td>
                                                 <td><?php echo datetime_to_text($row['created']); ?></td>
                                                 <td class="nowrap">
-                                                    <a title="Comment" class="btn btn-success" href="deposit_failed_comment.php?x=<?php echo encrypt($row['trans_id']); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a title="Comment" class="btn btn-success" href="deposit_failed_comment.php?x=<?php echo dec_enc('encrypt', $row['trans_id']); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
 
                                                     <?php if($allowed_requery_button) { ?>
-                                                    <a title="Re-Query" class="btn btn-default" href="deposit_failed.php?id=<?php echo encrypt($row['trans_id']); ?>&pm=<?php echo encrypt($row['client_pay_method']); ?>"><i class="fa fa-question icon-white"></i> </a>
+                                                    <a title="Re-Query" class="btn btn-default" href="deposit_failed.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>&pm=<?php echo dec_enc('encrypt', $row['client_pay_method']); ?>"><i class="fa fa-question icon-white"></i> </a>
                                                     <?php } ?>
                                                 </td>
                                             </tr>

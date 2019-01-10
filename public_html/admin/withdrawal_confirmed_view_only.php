@@ -118,8 +118,8 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                         <td> &dollar; <?php echo $row['dollar_withdraw']; ?> - &#8358; <?php echo number_format($row['naira_total_withdrawable'], 2, ".", ","); ?></td>
                                                         <td><?php echo datetime_to_text($row['created']); ?></td>
                                                         <td>
-                                                            <a href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-user"></i></a>
-                                                            <a href="withdraw_process_view_only.php?x=confirmed&id=<?php echo encrypt($row['trans_id']); ?>" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a>
+                                                            <a href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-user"></i></a>
+                                                            <a href="withdraw_process_view_only.php?x=confirmed&id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a>
 
                                                             <!--<button type="button" data-target="#client_profile_<?php /*echo $row['user_code'];*/?>" data-toggle="modal" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-user"></i></button>-->
                                                             <div id="client_profile_<?php echo $row['user_code'];?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal modal-lg fade">
@@ -425,7 +425,7 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                                                                         <tbody>
                                                                                                         <?php if(isset($latest_funding) && !empty($latest_funding)) { foreach ($latest_funding as $row) { ?>
                                                                                                             <tr>
-                                                                                                                <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                                                                                                <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                                                                                                 <td><?php echo $row['ifx_acct_no']; ?></td>
                                                                                                                 <td>&dollar; <?php echo $row['dollar_ordered']; ?></td>
                                                                                                                 <td><?php echo status_user_deposit($row['status']); ?></td>
@@ -449,7 +449,7 @@ $confirmed_withdrawal_requests = $db_handle->fetchAssoc($result);
                                                                                                         <tbody>
                                                                                                         <?php if(isset($latest_withdrawal) && !empty($latest_withdrawal)) { foreach ($latest_withdrawal as $row) { ?>
                                                                                                             <tr>
-                                                                                                                <td><a target="_blank" title="View" href="withdrawal_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                                                                                                <td><a target="_blank" title="View" href="withdrawal_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                                                                                                 <td><?php echo $row['ifx_acct_no']; ?></td>
                                                                                                                 <td>&dollar; <?php echo $row['dollar_withdraw']; ?></td>
                                                                                                                 <td><?php echo status_user_withdrawal($row['status']); ?></td>

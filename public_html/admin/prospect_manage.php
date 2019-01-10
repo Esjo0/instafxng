@@ -194,7 +194,7 @@ if (isset($_POST['process_successfull']))
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -384,7 +384,7 @@ if(isset($_POST['process_pending']))
                                                 <td><?php echo $row['source_name']; ?></td>
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                 <td>
-                                                    <!--<a title="Comment" class="btn btn-success" href="prospect_sales.php?x=<?php /*echo encrypt($row['prospect_biodata_id']); */?>&pg=<?php /*echo $currentpage; */?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>-->
+                                                    <!--<a title="Comment" class="btn btn-success" href="prospect_sales.php?x=<?php /*echo dec_enc('encrypt', $row['prospect_biodata_id']); */?>&pg=<?php /*echo $currentpage; */?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>-->
                                                     <button class="btn btn-success" data-target="#bookmark<?php echo $row['prospect_biodata_id']; ?>" data-toggle="modal" ><i class="glyphicon glyphicon-bookmark"></i></button>
                                                     <!--Modal - confirmation boxes-->
                                                     <div id="bookmark<?php echo $row['prospect_biodata_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">

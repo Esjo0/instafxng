@@ -5,8 +5,8 @@ $thisPage = "";
 $get_params = allowed_get_params(['x', 'c']);
 
 $user_code_encrypted = $get_params['x'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
-$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
+$user_code = dec_enc('decrypt',  $user_code_encrypted);
+
 
 $reset_code = $get_params['c'];
 
@@ -31,8 +31,7 @@ if (isset($_POST['submit_code']) && !empty($_POST['submit_code'])) {
     $pass_code_again = $db_handle->sanitizePost($_POST['pass_code_again']);
 
     $user_code_encrypted = $db_handle->sanitizePost($_POST['uuc']);
-    $user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
-    $user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
+    $user_code = dec_enc('decrypt',  $user_code_encrypted);
     
     if(empty($pass_code) || empty($pass_code_again)) {
         $message_error = "Please fill all the fields and try again.";

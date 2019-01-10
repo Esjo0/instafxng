@@ -92,7 +92,7 @@ $verification_client = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['phone']; ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a title="Process" class="btn btn-info" href="client_doc_verify_process.php?x=edit&id=<?php echo encrypt($row['user_credential_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
+                                                <a title="Process" class="btn btn-info" href="client_doc_verify_process.php?x=edit&id=<?php echo dec_enc('encrypt', $row['user_credential_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> </a>
                                                 <span ><?php if($row['status'] == '3'){echo "<i>Pending</i>";} ?></span>
                                             </td>
                                         </tr>

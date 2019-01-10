@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $bulletin_id_encrypted = $get_params['id'];
-$bulletin_id = decrypt(str_replace(" ", "+", $bulletin_id_encrypted));
-$bulletin_id = preg_replace("/[^A-Za-z0-9 ]/", '', $bulletin_id);
+$bulletin_id = dec_enc('decrypt',  $bulletin_id_encrypted);
 
 $admin_code = $_SESSION['admin_unique_code'];
 $selected_bulletin = $system_object->get_bulletin_by_id($bulletin_id);
@@ -41,7 +40,7 @@ if (isset($_POST['post_comment'])) {
         $message = "Bulletin Title: ".$selected_bulletin['title']." <br/> ".$content;
         $recipients = implode(",", $allowed_admin);
         $author = $admin_object->get_admin_name_by_code($_SESSION['admin_unique_code']);
-        $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".encrypt($bulletin_id);
+        $source_url = "https://instafxng.com/admin/bulletin_read.php?id=".dec_enc('encrypt', $bulletin_id);
         $notify_support = $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
         foreach ($allowed_admin as $row)
         {

@@ -19,7 +19,7 @@ $current_year_code = "1-12";
 $onboarding_analytics = $obj_analytics->get_onboarding_analytics();
 extract($onboarding_analytics);
 
-$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '1' LIMIT 1";
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_month' AND status = '1' AND type = '1' LIMIT 1";
 $result = $db_handle->runQuery($query);
 $m_current_target = $db_handle->fetchAssoc($result)[0]['target'];
 
@@ -181,6 +181,115 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $onboarding_result = $db_handle->fetchAssoc($result);
 
+//if (isset($_POST['send_bulk']) ) {
+//    if($numrows > 0 && $numrows <= 200) {
+//        $campaign_email_id = $_POST['campaign_email_id'];
+//        $selected_campaign_email = $system_object->get_campaign_email_by_id($campaign_email_id);
+//
+//        $my_subject = trim($selected_campaign_email['subject']);
+//        $my_message = stripslashes($selected_campaign_email['content']);
+//        $mail_sender = trim($selected_campaign_email['sender']);
+//
+//        $query = $_SESSION['client_onboarding_query'];
+//        $result = $db_handle->runQuery($query);
+//        $recipients = $db_handle->fetchAssoc($result);
+//        foreach ($recipients as $sendto) {
+//            extract($sendto);
+//            $query = "SELECT user_code, first_name FROM user WHERE email = '$email' LIMIT 1";
+//            $result = $db_handle->runQuery($query);
+//            $fetched_data = $db_handle->fetchAssoc($result);
+//            $selected_member = $fetched_data[0];
+//
+//            $client_name = ucwords(strtolower(trim($selected_member['first_name'])));
+//
+//            // Replace [NAME] with clients full name
+//            $my_message_new = str_replace('[NAME]', $client_name, $my_message);
+//            $my_subject_new = str_replace('[NAME]', $client_name, $my_subject);
+//
+//            if (array_key_exists('user_code', $selected_member)) {
+//                $user_code = $selected_member['user_code'];
+//
+//                $encrypted_user_code = encrypt($user_code);
+//                $black_friday_link = "<a title='Click Here to enjoy the splurge' href='https://instafxng.com/black_friday_splurge.php?x=$encrypted_user_code'><strong>Click Here to set your target Now!</strong></a>";
+//                $dinner_2018 = "<a title='Click Here to reserve your seat' href='https://instafxng.com/dinner.php?r=$encrypted_user_code'><strong>Click Here to reserve your seat</strong></a>";
+//                $found_position_month = in_array_r($user_code, $found_loyalty_month);
+//                $month_position = $found_position_month['position'];
+//                $month_rank = number_format(($found_position_month['rank']), 2, ".", ",");
+//                $month_rank_highest = number_format(($found_loyalty_month[0]['rank']), 2, ".", ",");
+//                $month_rank_difference = number_format(($month_rank_highest - $month_rank), 2, ".", ",");
+//                $month_rank_goal = number_format(($month_rank_difference / $days_left_this_month), 2, ".", ",");
+//
+//                $found_position_year = in_array_r($user_code, $found_loyalty_year);
+//                $year_position = $found_position_year['position'];
+//                $year_rank = number_format(($found_position_year['rank']), 2, ".", ",");
+//                $year_rank_highest = number_format(($found_loyalty_year[0]['rank']), 2, ".", ",");
+//                $year_rank_difference = number_format(($year_rank_highest - $year_rank), 2, ".", ",");
+//                $year_rank_goal = number_format(($year_rank_difference / $days_left_this_month), 2, ".", ",");
+//
+//                $last_trade_detail = $client_operation->get_last_trade_detail($user_code);
+//                $last_trade_volume = $last_trade_detail['volume'];
+//                $last_trade_date = $last_trade_detail['date_earned'];
+//
+//                $funded = $client_operation->get_total_funding($user_code, $from_date, $to_date);
+//                $withdrawn = $client_operation->get_total_withdrawal($user_code, $from_date, $to_date);
+//
+//                $splurge_detail = $client_operation->get_splurge_user_point($user_code);
+//                $splurge_total_points = $splurge_detail['total_points'];
+//                $splurge_tier_target = $splurge_detail['tier_target'];
+//
+//                $my_message_new = str_replace('[DINNER]', $dinner_2018, $my_message_new);
+//                $my_message_new = str_replace('[LPMP]', $month_position, $my_message_new);
+//                $my_message_new = str_replace('[LPMR]', $month_rank, $my_message_new);
+//                $my_message_new = str_replace('[LPMHR]', $month_rank_highest, $my_message_new);
+//                $my_message_new = str_replace('[LPMD]', $month_rank_difference, $my_message_new);
+//                $my_message_new = str_replace('[LPMG]', $month_rank_goal, $my_message_new);
+//                $my_message_new = str_replace('[LPYP]', $year_position, $my_message_new);
+//                $my_message_new = str_replace('[LPYR]', $year_rank, $my_message_new);
+//                $my_message_new = str_replace('[LPYHR]', $year_rank_highest, $my_message_new);
+//                $my_message_new = str_replace('[LPYG]', $year_rank_difference, $my_message_new);
+//                $my_message_new = str_replace('[LPYD]', $year_rank_goal, $my_message_new);
+//                $my_message_new = str_replace('[UC]', encrypt($user_code), $my_message_new);
+//                $my_message_new = str_replace('[LTD]', $last_trade_date, $my_message_new);
+//                $my_message_new = str_replace('[LTV]', $last_trade_volume, $my_message_new);
+//                $my_message_new = str_replace('[FUNDED]', $funded, $my_message_new);
+//                $my_message_new = str_replace('[WITHDRAWN]', $withdrawn, $my_message_new);
+//                $my_message_new = str_replace('[BFL]', $black_friday_link, $my_message_new);
+//                $my_message_new = str_replace('[SLP]', $splurge_total_points, $my_message_new);
+//                $my_message_new = str_replace('[SLL]', $splurge_tier_target, $my_message_new);
+//
+//                $my_message_new = str_replace('[LPMP]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPMR]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPMHR]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPMD]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPMG]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYP]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYR]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYHR]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYG]', '', $my_message_new);
+//                $my_message_new = str_replace('[LPYD]', '', $my_message_new);
+//                $my_message_new = str_replace('[UC]', '', $my_message_new);
+//                $my_message_new = str_replace('[LTD]', '', $my_message_new);
+//                $my_message_new = str_replace('[LTV]', '', $my_message_new);
+//                $my_message_new = str_replace('[FUNDED]', '', $my_message_new);
+//                $my_message_new = str_replace('[WITHDRAWN]', '', $my_message_new);
+//                $my_message_new = str_replace('[BFL]', '', $my_message_new);
+//                $my_message_new = str_replace('[SLP]', '', $my_message_new);
+//                $my_message_new = str_replace('[SLL]', '', $my_message_new);
+//            }
+//
+//            $system_object->send_email($my_subject_new, $my_message_new, $email, $client_name, $mail_sender);
+//
+//        }
+//        $message_success = "You have successfully sent the single email.";
+//    }elseif($numrows > 200) {
+//        $message_error = "You can only send bulk mail to a maximum of 200 recipients";
+//    }elseif($numrows == 0) {
+//        $message_error = "No Participant Selected";
+//    }else{
+//        $message_error = "Please Kindly use the single Email Button.";
+//
+//    }
+//}
 if(isset($_POST['campaign_category'])){
     $recipients = array();
     foreach($onboarding_result AS $row){
@@ -218,6 +327,12 @@ if(isset($_POST['campaign_category'])){
                 document.getElementById('filter_trigger').click();
             }
         </script>
+        <script>
+            function proceed(){
+                document.getElementById("proceed").style.display = "block";
+                document.getElementById("pro").style.display = "none";
+            }
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -231,6 +346,7 @@ if(isset($_POST['campaign_category'])){
 
                 <!-- Main Body - Content Area: This is the main content area, unique for each page  -->
                 <div id="main-body-content-area" class="col-md-8 col-lg-9">
+                    <?php include 'layouts/feedback_message.php'; ?>
 
                     <!-- Unique Page Content Starts Here
                     ================================================== -->
@@ -395,9 +511,67 @@ if(isset($_POST['campaign_category'])){
 
                             <div class="col-sm-6">
                                 <div class="pull-right">
-                                    <a data-target="#confirm-campaign" data-toggle="modal" class="btn btn-default" title="Create Campaign Category">Create Campaign Category</a>
-                                    <a data-target="#onboarding-filter" data-toggle="modal" class="btn btn-default" title="Filter clients already onboard">Onboard Filter <i class="glyphicon glyphicon-search"></i></a>
+                                    <form action="" method="post">
+<!--                                    <button class="btn btn-default" type="button"-->
+<!--                                            data-target="#mail" data-toggle="modal">SEND BULK MAIL-->
+<!--                                    </button>-->
+                                        <a data-target="#confirm-campaign" data-toggle="modal" class="btn btn-default" title="Create Campaign Category">Create Category</a>
+                                        <a data-target="#onboarding-filter" data-toggle="modal" class="btn btn-default" title="Filter clients already onboard">Onboard Filter <i class="glyphicon glyphicon-search"></i></a>
+                                    </form>
                                 </div>
+
+                                <!--Modal - confirmation boxes-->
+                                <div id="mail" tabindex="-1" role="dialog" aria-hidden="true"
+                                     class="modal fade">
+                                    <form class="form-vertical text-center" role="form" method="post" action="">
+                                        <div class="modal-dialog modal-md">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                            class="close">&times;</button>
+                                                    <h4 class="modal-title">Send Single Bulk Mail</h4>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <p>Total Number of Recipients <b><?php echo $numrows;?></b> <br> Select the <b>subject of the email</b> you want to Braodcast to clients
+                                                        <br><i class="fa fa-info-circle"></i>Enter the first letter of the subject to search</p>
+                                                    <div class="form-group mx-sm-4 mb-2">
+                                                        <strong><select name="campaign_email_id" class="form-control " required>
+                                                                <?php
+                                                                $query = "SELECT ce.subject AS campaign_subject, ce.campaign_email_id AS campaign_email_id, ce.sender AS campaign_sender
+                                                              FROM campaign_email AS ce
+                                                              INNER JOIN campaign_category AS cc ON ce.campaign_category_id = cc.campaign_category_id
+                                                              LEFT JOIN campaign_email_track AS cet ON cet.campaign_id = ce.campaign_email_id
+                                                              ORDER BY ce.created DESC ";
+                                                                $result = $db_handle->runQuery($query);
+                                                                $result = $db_handle->fetchAssoc($result);
+                                                                foreach ($result as $row_email) {
+                                                                    extract($row_email)
+                                                                    ?>
+                                                                    <option
+                                                                        value="<?php if(isset($campaign_email_id)) { echo $campaign_email_id; } ?>"><?php echo $campaign_subject.' - SENDER ~'.$campaign_sender ; ?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </strong>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button id="pro" onclick="proceed()" type="button" class="btn btn-default">PROCEED</button>
+
+                                            <span id="proceed" style="display:none"><b>Are you ready to send this mail?</b>
+                                            <input name="send_bulk" type="submit"
+                                                   class="btn btn-sm btn-danger" value="YES/SEND">
+                                                </span>
+                                                    <button type="button" name="close" onClick="window.close();"
+                                                            data-dismiss="modal" class="btn btn-sm btn-danger">Close!
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!--                        Modal end-->
 
                                 <div id="onboarding-filter" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
                                     <div class="modal-dialog">
@@ -528,10 +702,10 @@ if(isset($_POST['campaign_category'])){
                                                 </td>
                                                 <td><?php echo datetime_to_text2($created); ?></td>
                                                 <td nowrap>
-                                                    <a target="_blank" title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_onboarding'; ?>&c=<?php echo encrypt('CLIENT ON-BOARDING'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                                    <a target="_blank" title="Send Email" class="btn btn-xs btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
-                                                    <a target="_blank" title="Send SMS" class="btn btn-xs btn-success" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                    <a target="_blank" title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_onboarding'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT ON-BOARDING'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a target="_blank" title="Send Email" class="btn btn-xs btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
+                                                    <a target="_blank" title="Send SMS" class="btn btn-xs btn-success" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
                                                 </td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

@@ -9,8 +9,7 @@ $client_operation = new clientOperation();
 $get_params = allowed_get_params(['x', 'id']);
 
 $trans_id_encrypted = $get_params['id'];
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
-$trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+$trans_id = dec_enc('decrypt', $trans_id_encrypted);
 
 switch($get_params['x']) {
     case 'pending': $deposit_process_pending = true; $page_title = '- PENDING'; break;
@@ -140,7 +139,7 @@ if ($deposit_process_confirmed && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POS
         $client_operation->update_loyalty_point($points_claimed_id, $point_status);
     }
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    $trans_id_encrypted = encrypt($transaction_id);
+    $trans_id_encrypted = dec_enc('encrypt', $transaction_id);
     header("Location: deposit_view_details.php?id=$trans_id_encrypted");
     exit;
 }
@@ -189,69 +188,11 @@ if ($deposit_process_notified && ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST
     $amount = $_POST['realamtpaid'];
     $client_email = $_POST['client_email'];
     $refund_type = $_POST['refund_type'];
-    $subject = "Deposit Transaction with REF: $transaction_id was rejected.";
-
-    $refund_url = "https://instafxng.com/deposit_refund.php?x=" . $refund_type . "&id=" . encrypt($transaction_id);
-    $refund_type = refund_type($refund_type);
-
-    $my_message = <<<MAIL
-<div style="background-color: #F3F1F2">
-    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
-        <img src="https://instafxng.com/images/ifxlogo.png" />
-        <hr />
-        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $client_name,</p>
-            
-            <p>Your deposit order with Transaction ID: $transaction_id has an issue and cannot be processed.
-            You did not follow the guide for making payment and hence the funds will be returned.</p>
-            
-            <p><strong>Issue Description</strong>: <span  style="color: red;">$refund_type</span></p>
-            
-            <p>Click on the link below to start the refund process.</p>
-            
-            <p><a href="$refund_url">$refund_url</a></p>
-            
-            <p>If you have any question concerning this transaction, <a href="https://instafxng.com/contact_info.php">please contact us here</a>.</p>
-            
-            <br /><br />
-            <p>Best Regards,</p>
-            <p>InstaFxNg Support,<br />
-               www.instafxng.com</p>
-            <br /><br />
-        </div>
-        <hr />
-        <div style="background-color: #EBDEE9;">
-            <div style="font-size: 11px !important; padding: 15px;">
-                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
-                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
-                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
-                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
-                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
-                </p>
-                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
-                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
-                <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
-                <br />
-            </div>
-            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
-                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
-                    official Nigerian Representative of Instaforex, operator and administrator
-                    of the website www.instafxng.com</p>
-                <p>To ensure you continue to receive special offers and updates from us,
-                    please add support@instafxng.com to your address book.</p>
-            </div>
-        </div>
-    </div>
-</div>
-MAIL;
 
     $query = "UPDATE user_deposit SET status = '11' WHERE trans_id = '$transaction_id' LIMIT 1";
     $result = $db_handle->runQuery($query);
 
-    $request = $client_operation->deposit_refund_initiated($transaction_id, $amount, $_SESSION['admin_unique_code']);
-
-    $system_object->send_email($subject, $my_message, $client_email, $client_name);
+    $request = $client_operation->deposit_refund_initiated($transaction_id, $refund_type, $amount, $client_name, $client_email, $_SESSION['admin_unique_code']);
 
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
 

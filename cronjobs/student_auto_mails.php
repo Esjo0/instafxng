@@ -288,7 +288,7 @@ $my_message_template =
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -296,7 +296,7 @@ $my_message_template =
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -511,3 +511,5 @@ $send_message_3d = student_auto_mail_send($query_3d, $my_subject_3d, $get_mail_3
 $query_4d = student_auto_mail_query(4, $interval_4);
 $get_mail_4d = student_auto_mail_template($my_message_4d);
 $send_message_4d = student_auto_mail_send($query_4d, $my_subject_4d, $get_mail_4d);
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

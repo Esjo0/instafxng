@@ -7,14 +7,13 @@ if (!$session_admin->is_logged_in()) {
 $get_params = allowed_get_params(['x', 'id']);
 
 $reg_id_encrypted = $get_params['id'];
-$reg_id = decrypt(str_replace(" ", "+", $reg_id_encrypted));
-$reg_id = preg_replace("/[^A-Za-z0-9 ]/", '', $reg_id);
+$reg_id = dec_enc('decrypt',  $reg_id_encrypted);
 
 $attendee_detail = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM dinner_2016 WHERE id_dinner_2016 = $reg_id"));
 $attendee_detail = $attendee_detail[0];
 
 extract($attendee_detail);
-$id_encrypt = encrypt($id_dinner_2016);
+$id_encrypt = dec_enc('encrypt', $id_dinner_2016);
 
 $subject = "You're Specially Invited";
 $message =
@@ -76,7 +75,7 @@ $message =
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We"re Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>

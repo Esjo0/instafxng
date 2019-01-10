@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $job_id_encrypted = $get_params['id'];
-$job_id = decrypt(str_replace(" ", "+", $job_id_encrypted));
-$job_id = preg_replace("/[^A-Za-z0-9 ]/", '', $job_id);
+$job_id = dec_enc('decrypt',  $job_id_encrypted);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 

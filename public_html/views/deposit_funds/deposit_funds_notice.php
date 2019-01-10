@@ -1,7 +1,7 @@
 <?php
 
 $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
-$user_code_encrypted = encrypt($client_user_code);
+$user_code_encrypted = dec_enc('encrypt',$client_user_code);
 
 ?>
 <ul class="fa-ul">

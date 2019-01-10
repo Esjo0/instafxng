@@ -13,3 +13,5 @@ foreach($selected_transactions AS $trans_detail) {
     $client_operation = new clientOperation();
     $requery_feedback = $client_operation->requery_webpay_deposit($trans_id);
 }
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

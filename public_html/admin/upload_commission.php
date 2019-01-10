@@ -141,9 +141,6 @@ $last_updated = date_to_text($last_updated[0]['date_earned']);
                                     </div>
                                 </form>
 
-                                <hr />
-                                <p><a href="upload_black_friday_points.php" class="btn btn-success">Generate Splurge Points</a> </p>
-
                             </div>
                         </div>
 

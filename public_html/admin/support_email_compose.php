@@ -5,12 +5,10 @@ if (!$session_admin->is_logged_in()){    redirect_to("login.php");   }
 $get_params = allowed_get_params(['type', 'id']);
 
 $id_encrypted = $get_params['id'];
-$id = decrypt(str_replace(" ", "+", $id_encrypted));
-$id = preg_replace("/[^A-Za-z0-9 ]/", '', $id);
+$id = dec_enc('decrypt',  $id_encrypted);
 
 $type_encrypted = $get_params['type'];
-$type = decrypt(str_replace(" ", "+", $type_encrypted));
-$type = preg_replace("/[^A-Za-z0-9 ]/", '', $type);
+$type = dec_enc('decrypt',  $type_encrypted);
 
 if(isset($id) && !empty($id))
 {

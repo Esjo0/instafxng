@@ -115,7 +115,7 @@ $all_clients = $db_handle->fetchAssoc($result);
                                                 <td><?php echo $row['phone']; ?></td>
                                                 <td><?php echo datetime_to_text2($row['created']); ?></td>
                                                 <td>
-                                                    <a target="_blank" title="Delete" class="btn btn-danger" href="client_delete_view.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-erase icon-white"></i> </a>
+                                                    <a target="_blank" title="Delete" class="btn btn-danger" href="client_delete_view.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-erase icon-white"></i> </a>
                                                 </td>
                                             </tr>
                                             <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

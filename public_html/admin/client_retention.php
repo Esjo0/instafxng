@@ -2,6 +2,63 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
+if(isset($_POST['called'])){
+    $user_code = $db_handle->sanitizePost($_POST['user_code']);
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
+    $numrows = $db_handle->numRows($query);
+    if($numrows == 0){
+        $query = "INSERT INTO call_log (user_code, status, source) VALUES ('$user_code', '1', 'RETENTION')";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully updated as contacted";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }elseif($numrows == 1){
+        $query = "UPDATE call_log SET status = '1' WHERE user_code = '$user_code' AND source = 'RETENTION' ";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully updated as contacted";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }
+
+}
+
+if(isset($_POST['follow_up'])){
+    $user_code = $db_handle->sanitizePost($_POST['user_code']);
+    $comment = $db_handle->sanitizePost($_POST['comment']);
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' AND source = 'RETENTION'";
+    $numrows = $db_handle->numRows($query);
+    if($numrows == 0){
+        $sales_comment = "CLIENT RETENTION TRACKER:" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
+        $query = "INSERT INTO call_log (user_code, status, follow_up_comment, source) VALUES ('$user_code', '2', '$comment', 'RETENTION')";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully saved for follow-up call";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }elseif($numrows == 1){
+        $sales_comment = "CLIENT RETENTION TRACKER:" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
+        $query = "UPDATE call_log SET status = '2', follow_up_comment = '$comment' WHERE user_code = '$user_code' AND source = 'RETENTION'";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully saved for follow-up call";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }
+
+}
+
 if(isset($_GET['r']) && $_GET['r'] == 1) {
     unset($_SESSION['client_retention_base_query']);
     unset($_SESSION['client_retention_base_query2']);
@@ -37,7 +94,7 @@ $q_retention_rate = ($q_client_retained / $q_client_to_retain) * 100;
 $h_retention_rate = ($h_client_retained / $h_client_to_retain) * 100;
 $y_retention_rate = ($y_client_retained / $y_client_to_retain) * 100;
 
-$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$main_current_month' AND status = '1' AND type = '2' LIMIT 1";
+$query = "SELECT value AS target FROM admin_targets WHERE year = '$current_year' AND period = '$current_month' AND status = '1' AND type = '2' LIMIT 1";
 $result = $db_handle->runQuery($query);
 $m_current_target = $db_handle->fetchAssoc($result)[0]['target'];
 $m_target_rate = ($m_retention_rate / $m_current_target) * 100;
@@ -95,7 +152,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
         $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ORDER BY rc1.last_trade DESC ";
+            WHERE rc2.user_code IS NULL ORDER BY rc1.first_trade DESC ";
 
         $retention_type_title2 = "RETAINED";
         $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
@@ -193,7 +250,7 @@ if (isset($_POST['retention_tracker']) || isset($_GET['pg'])) {
     $query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade 
             FROM reference_clients AS rc1
             LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
-            WHERE rc2.user_code IS NULL ORDER BY rc2.last_trade DESC ";
+            WHERE rc2.user_code IS NULL ORDER BY rc1.first_trade DESC ";
 
     $retention_type_title2 = "RETAINED";
     $query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
@@ -233,7 +290,7 @@ if($retention_type_main_title == "NOT YET RETAINED") {
 $total_retained = $total_to_retain - $total_not_retained;
 $retention_rate = number_format((($total_retained / $total_to_retain) * 100), 2);
 
-$rowsperpage = 20;
+$rowsperpage = 50;
 
 $totalpages = ceil($numrows / $rowsperpage);
 
@@ -399,7 +456,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                     <table class="table table-border table-responsive table-hover">
                                                         <tr><td>Clients to Retain</td><td><?php echo number_format($h_client_to_retain); ?></td></tr>
                                                         <tr><td>Total Retained</td><td><?php echo number_format($h_client_retained); ?></td></tr>
-                                                        <tr><td>Not Retained</td><td><?php echo number_format($h_client_to_retain - $m_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($h_client_to_retain - $h_client_retained); ?></td></tr>
                                                         <tr><td>Retained Yesterday</td><td><?php echo number_format($h_retained_yesterday); ?></td></tr>
                                                         <tr><td>Retention Rate</td><td><?php echo number_format($h_retention_rate, 2) . "%"; ?></td></tr>
                                                     </table>
@@ -419,7 +476,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                     <table class="table table-border table-responsive table-hover">
                                                         <tr><td>Clients to Retain</td><td><?php echo number_format($y_client_to_retain); ?></td></tr>
                                                         <tr><td>Total Retained</td><td><?php echo number_format($y_client_retained); ?></td></tr>
-                                                        <tr><td>Not Retained</td><td><?php echo number_format($y_client_to_retain - $q_client_retained); ?></td></tr>
+                                                        <tr><td>Not Retained</td><td><?php echo number_format($y_client_to_retain - $y_client_retained); ?></td></tr>
                                                         <tr><td>Retained Yesterday</td><td><?php echo number_format($y_retained_yesterday); ?></td></tr>
                                                         <tr><td>Retention Rate</td><td><?php echo number_format($y_retention_rate, 2) . "%"; ?></td></tr>
                                                     </table>
@@ -571,6 +628,7 @@ $retention_result = $db_handle->fetchAssoc($result);
                                             <th>Funding</th>
                                             <th><?php if($retention_type_main_title == "NOT YET RETAINED") { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
                                             <th>Action</th>
+                                            <th>Call Log</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -591,11 +649,12 @@ $retention_result = $db_handle->fetchAssoc($result);
                                                 <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
                                                 <td><?php if($retention_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
                                                 <td nowrap="nowrap">
-                                                    <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                                    <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo encrypt('CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo encrypt_ssl($name) . '&email=' . encrypt_ssl($row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
-                                                    <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                    <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                    <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                    <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
+                                                    <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
                                                 </td>
+                                                <td><?php call_log_status($row['user_code'], 'RETENTION');?></td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                         </tbody>

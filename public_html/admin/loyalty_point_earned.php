@@ -91,7 +91,7 @@ $selected_months = $db_handle->fetchAssoc($result);
                                                                 <td><?php echo $row['full_name']; ?></td>
                                                                 <td><?php echo $row['phone']; ?></td>
                                                                 <td><?php echo $row['point']; ?></td>
-                                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                                                <td><a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                                             </tr>
                                                         <?php } } else { echo "<tr><td colspan='3' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                                     </tbody>

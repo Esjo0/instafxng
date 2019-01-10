@@ -101,7 +101,7 @@ $all_partners = $db_handle->fetchAssoc($result);
                                             <td><?php echo partner_status($row['status']); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a target="_blank" title="View" class="btn btn-info" href="partner_detail.php?id=<?php echo encrypt_ssl($row['partner_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-info" href="partner_detail.php?id=<?php echo dec_enc('encrypt', $row['partner_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='7' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

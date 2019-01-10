@@ -12,7 +12,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN user AS u ON ui.user_code = u.user_code
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
+            WHERE date_earned BETWEEN '2017-12-01' AND '2018-11-30' AND (ui.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR u.created LIKE '$search_text%')
             GROUP BY u.email
             HAVING total_commission BETWEEN 1 AND 300
             ORDER BY total_commission DESC ";
@@ -24,7 +24,7 @@ if(isset($_POST['search_text']) && strlen($_POST['search_text']) > 3) {
             INNER JOIN user AS u ON ui.user_code = u.user_code
             INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
             INNER JOIN admin AS a ON ao.admin_code = a.admin_code
-            WHERE date_earned BETWEEN '2017-12-01' AND '2018-09-30' 
+            WHERE date_earned BETWEEN '2017-12-01' AND '2018-11-30' 
             GROUP BY u.email
             HAVING total_commission BETWEEN 1 AND 299
             ORDER BY total_commission DESC ";
@@ -113,7 +113,7 @@ $selected_bronze_comm_clients = $db_handle->fetchAssoc($result);
                     <div class="col-sm-12">
                         <?php require_once 'layouts/feedback_message.php'; ?>
 
-                        <p>The list of clients that produced between $1 and $300 commission and above between December 1, 2017 to September 30, 2018</p>
+                        <p>The list of clients that produced between $1 and $300 commission and above between December 1, 2017 to November 30, 2018</p>
 
                         <?php if(isset($numrows)) { ?>
                             <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
@@ -143,8 +143,8 @@ $selected_bronze_comm_clients = $db_handle->fetchAssoc($result);
                                     <td><?php echo datetime_to_text2($row['created']); ?></td>
                                     <td><?php echo $row['account_officer_full_name']; ?></td>
                                     <td nowrap="nowrap">
-                                        <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo encrypt($row['user_code']); ?>&r=<?php echo 'client_comm_bronze'; ?>&c=<?php echo encrypt('BRONZE COMMISSION CLIENTS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                        <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                        <a title="Comment" class="btn btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_comm_bronze'; ?>&c=<?php echo dec_enc('encrypt', 'BRONZE COMMISSION CLIENTS'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                        <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                     </td>
                                 </tr>
                             <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

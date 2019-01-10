@@ -1,5 +1,5 @@
 <?php
-//$trans_id_encrypted = encrypt($client_trans_id);
+//$trans_id_encrypted = dec_enc('encrypt', $client_trans_id);
 $total_payable_card_kobo = $total_payable_card * 100; // Convert to Kobo, required by GTPay
 
 // GTPay hashing instruction using hash id provide by GTPay

@@ -4,31 +4,153 @@ $thisPage = "Traders";
 
 $get_params = allowed_get_params(['x']);
 $additional_msg = $get_params['x'];
+if($additional_msg == 'msg_link'){
+    $additional_msg = 'msg';
+}
 
 if($additional_msg == 'msg')
 {
     $special_msg = <<<msg
-        <p>Our double combo <a href="http://bit.ly/2JysCvT" target="_blank">Free Daily 85% Accurate High Precision trading signals</a> +
-        <a href="http://bit.ly/2CSUjAz" target="_blank">High - Impact News Release</a> will help you hit your
-        profit target this month!</p>
+        <p>We have a target to make over 2000 pips this month so you can have enough to ball this festive season!</p>
 
-        <p>This duo has consistently booked traders between 100-200 pips daily.</p>
+        <p>Are you in?</p>
 
-        <p>Here's what some of our clients had to say about the signals.</p>
+        <p>The 2018 round of the Loyalty Program and Rewards Ended on 30th November, 2018 with 10 emerging winners of the 2.250 Million Naira annual reward.</p>
         <br />
 
-        <div class="row">
-            <div class="col-sm-6"><img class="img-responsive" src="images/testimony-1.png" /></div>
-            <div class="col-sm-6"><img class="img-responsive" src="images/testimony-2.png" /></div>
-        </div>
+        <div class="row" style="background: url('images/form_bg.png') repeat;">
+
+                        <h3 class="col-sm-12 text-center">Meet the Winners</h3>
+                        <div id="winners1" class="carousel slide col-sm-6" data-ride="carousel">
+                            <!-- Indicators -->
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+
+                                <div class="item active" >
+                                    <img src="https://instafxng.com/imgsource/ilpr_winners/Ibe_kwe.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;1,000,000</h3>
+                                        <h5>Points: 9,360.50</h5>
+                                        <b style="background-color: #DD4A68; color:white;" > Chinedu </b>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <img src="https://instafxng.com/imgsource/ilpr_winners/Ehinomen.png" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;250,000</h3>
+                                        <h5>Points: 5,868.63</h5>
+                                        <b style="background-color: #DD4A68; color:white;"> Ehinomen </b>
+
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <img src="https://instafxng.com/imgsource/ilpr_winners/Semawon.png" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;100,000</h3>
+                                        <h5>Points: 3,952.71</h5>
+                                        <b style="background-color: #DD4A68; color:white;"> Henry </b>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="item">
+                                    <img src="https://instafxng.com/imgsource/ilpr_winners/Solo_mon.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;50,000</h3>
+                                        <h5>Points: 3,106.65</h5>
+                                        <b style="background-color: #DD4A68; color:white;"> Solomon </b>
+
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                <img src="https://instafxng.com/imgsource/ilpr_winners/iduh.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;50,000</h3>
+                                        <h5>Points: 1,834.12</h5>
+                                        <b style="background-color: #DD4A68; color:white;"> Iduh </b>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div id="winner2" class="carousel slide col-sm-6" data-ride="carousel">
+                            <!-- Indicators -->
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+
+                                <div class="item active">
+                                    <img src="https://instafxng.com/imgsource/ilpr_winners/Debole.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;500,000</h3>
+                                        <h5>Points: 6,044.72</h5>
+                                        <b style="background-color: #DD4A68; color:white;"> Debole </b>
+
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <img src="https://instafxng.com/imgsource/ilpr_winners/Circleflow.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;150,000</h3>
+                                        <h5>Points: 5,174.00</h5>
+                                        <b style="background-color: #DD4A68; color:white;"> Circleflow </b>
+
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <img src="https://instafxng.com/imgsource/ilpr_winners/Ola%20Abdullahi.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;50,000</h3>
+                                        <h5>Points: 3,910.06</h5>
+                                        <b style="background-color: #DD4A68; color:white;"> Ola </b>
+
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <img src="https://instafxng.com/imgsource/ilpr_winners/Nwabuzor_lucky.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;50,000</h3>
+                                        <h5>Points: 1,622.72</h5>
+                                        <b style="background-color: #DD4A68; color:white;"> Lucky </b>
+
+                                    </div>
+                                </div>
+
+                                <div class="item">
+
+                                    <img src="https://instafxng.com/imgsource/ilpr_winners/Benson.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                    <div class="text-center">
+                                        <h3>Prize: &#8358;50,000</h3>
+                                        <h5>Points: 2,213.42</h5>
+                                        <b style="background-color: #DD4A68; color:white;"> Benson </b>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        </div>
 
         <br />
 
-        <p>Are you maximizing the use of the daily signals and News release? Not yet?
-        You're missing out a lot!</p>
+        <p>The 3rd Round of the Loyalty Reward Program has just kicked off!
+        This is a clean slate for you to trade and earn whatever you desire in the round that just started!</p>
 
-        <p>This is a jaw-dropping opportunity to make consistent profit from your trades,
-        earn more loyalty points and get a share of $500 this month!</p>
+        <p>The race to the monthly prize pool of $500 for this month has started so be sure to trade more and grab your
+        share so you can get more money to celebrate the season in grand style!</p>
+
+        <p>Here’s how to position your trades for extra profit this season!</p>
 
         <p><strong>STEP 1: Fund your InstaForex Account</strong></p>
         <p>Funding your Instaforex account and trading actively increases your loyalty points and qualifies you for the monthly reward of $500.</p>
@@ -37,7 +159,7 @@ if($additional_msg == 'msg')
         <p><strong>STEP 2: Get Signals and News Release Alert Daily</strong></p>
 
         <p>The trading signals are posted every day on our website, just so you do not miss any of the entry prices as they drop, we have created a channel via Facebook Messenger where you can get direct notification as soon as the signals are posted.</p>
-        <p>Don't miss any signal, <a href="http://bit.ly/2KEWxWQ" target="_blank">click here</a> to get daily notifications as soon as the signals are posted.</p>
+        <p>Don't miss any signal, <a href="mailto:support@instafxng,com?subject=Free%20Trade%20Signals%20&body=Dear%20Mercy,%0A%0A%20I%20would%20like%20to%20receive%20signal%20notification%20.%0A%0AThanks!" target="_blank">click here</a> to get daily notifications as soon as the signals are posted.</p>
         <hr />
         <br />
 msg;
@@ -264,7 +386,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
         $origin_of_deposit = '1'; // Originates online
         $stamp_duty = CBN_STAMP_DUTY;
         $trans_id = "D" . time();
-        $trans_id_encrypted = encrypt($trans_id);
+        $trans_id_encrypted = dec_enc('encrypt', $trans_id);
         $service_charge = $ifx_naira_amount * DSERVCHARGE;
         $vat = $service_charge * DVAT;
         $total_payable = CBN_STAMP_DUTY + $vat + $service_charge + $ifx_naira_amount;
@@ -289,8 +411,7 @@ if(isset($_POST['deposit_funds_qty_ilpr']) || isset($_POST['deposit_funds_qty_no
 // This section processes - views/deposit_funds_finalize.php
 if(isset($_POST['deposit_funds_finalize'])) {
     $trans_id_encrypted = $db_handle->sanitizePost($_POST['transaction_no']);
-    $trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
-    $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+    $trans_id = dec_enc('decrypt',  $trans_id_encrypted);
     
     $client_operation = new clientOperation();
     $transaction = $client_operation->get_deposit_by_id_mini($trans_id);
@@ -299,7 +420,7 @@ if(isset($_POST['deposit_funds_finalize'])) {
     {
         extract($transaction);
         $page_requested = 'deposit_funds_pay_type_php';
-        $trans_id_encrypted = encrypt($client_trans_id);
+        $trans_id_encrypted = dec_enc('encrypt', $client_trans_id);
 
     } else {
         $message_error = "Something went wrong, please try again.";
@@ -312,8 +433,7 @@ if(isset($_POST['deposit_funds_pay_type'])) {
     $client_operation = new clientOperation();
 
     $trans_id_encrypted = $db_handle->sanitizePost($_POST['transaction_no']);
-    $trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
-    $trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
+    $trans_id = dec_enc('decrypt',  $trans_id_encrypted);
     
     $pay_type = $db_handle->sanitizePost($_POST['pay_type']);
     $client_operation->log_deposit_pay_method($trans_id, $pay_type); // Update payment method selected
@@ -406,7 +526,7 @@ switch($page_requested) {
                                     <?php if(!$special_msg) { ?>
                                         <h4><strong>Fund Your Instaforex Account</strong></h4>
                                     <?php } else { ?>
-                                        <h4><strong>Make Over 1000 pips more before September runs out!!!</strong></h4>
+                                        <h4><strong>Make the Rest of the Year the Best!</strong></h4>
                                     <?php } ?>
 
                                 </div>

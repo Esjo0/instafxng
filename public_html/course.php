@@ -1,6 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Education";
+header('Location: https://instafxng.com/forex_profit_academy.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

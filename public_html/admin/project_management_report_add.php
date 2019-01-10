@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x']);
 $project_code_encrypted = $get_params['x'];
-$project_code = decrypt(str_replace(" ", "+", $project_code_encrypted));
-$project_code = preg_replace("/[^A-Za-z0-9 ]/", '', $project_code);
+$project_code = dec_enc('decrypt',  $project_code_encrypted);
 
 $query = "SELECT
           project_management_projects.title AS project_title,

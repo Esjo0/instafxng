@@ -10,8 +10,7 @@ $page_requested = "";
 
 $get_params = allowed_get_params(['id']);
 $course_id_encrypted = $get_params['id'];
-$course_id = decrypt(str_replace(" ", "+", $course_id_encrypted));
-$course_id = preg_replace("/[^A-Za-z0-9 ]/", '', $course_id);
+$course_id = dec_enc('decrypt',  $course_id_encrypted);
 
 $selected_course = $education_object->get_active_course_by_id($course_id);
 
@@ -25,7 +24,7 @@ if(empty($selected_course)) {
     $card_processing = 0.015 * $total_payable;
     $total_payable_card = $card_processing + $total_payable;
     $course_name = $selected_course['course_code'] . " - " . $selected_course['title'];
-    $trans_id_encrypted = encrypt($trans_id);
+    $trans_id_encrypted = dec_enc('encrypt', $trans_id);
     $client_name = $_SESSION['client_last_name'] . " " . $_SESSION['client_first_name'];
     $client_email = $_SESSION['client_email'];
 }
@@ -45,7 +44,7 @@ if(isset($_POST['course_payment_summary'])) {
     $total_payable_card = $card_processing + $total_payable;
     $course_name = $selected_course['course_code'] . " - " . $selected_course['title'];
     $trans_id = "FPA" . time();
-    $trans_id_encrypted = encrypt($trans_id);
+    $trans_id_encrypted = dec_enc('encrypt', $trans_id);
     $client_name = $_SESSION['client_last_name'] . " " . $_SESSION['client_first_name'];
     $client_email = $_SESSION['client_email'];
 

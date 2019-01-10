@@ -9,9 +9,13 @@ class clientOperation {
         }
     }
     
+    public function get_client_data() {
+        return $this->client_data;
+    }
+    
     public function set_client_data($ifx_account) {
         global $db_handle;
-        
+
         $query = "SELECT ui.ifxaccount_id AS ifx_acc_id, ui.ifx_acct_no AS ifx_acc_no,
                 ui.is_bonus_account AS ifx_acc_bonus_status, ui.type AS ifx_acc_type,
                 ui.status AS ifx_acc_status, ui.created AS ifx_acc_created, u.user_id AS client_user_id,
@@ -25,9 +29,9 @@ class clientOperation {
                 INNER JOIN user AS u ON ui.user_code = u.user_code
                 LEFT JOIN user_verification AS uv ON ui.user_code = uv.user_code
                 WHERE ui.ifx_acct_no = '$ifx_account' LIMIT 1";
-        
+
         $result = $db_handle->runQuery($query);
-        
+
         if($db_handle->numOfRows($result) == 1) {
             $user = $db_handle->fetchAssoc($result);
             $user_data = $user[0];
@@ -35,10 +39,6 @@ class clientOperation {
         } else {
             return false;
         }
-    }
-    
-    public function get_client_data() {
-        return $this->client_data;
     }
 
     /**Get user basic details
@@ -127,59 +127,6 @@ class clientOperation {
 
     }
 
-    public function ifx_account_is_duplicate($account_no) {
-        global $db_handle;
-        
-        // Check whether the ifx account number is existing
-        $query = "SELECT ifx_acct_no FROM user_ifxaccount WHERE ifx_acct_no = '$account_no' LIMIT 1";
-        $result = $db_handle->runQuery($query);
-
-        return $db_handle->numOfRows($result) > 0 ? true : false;
-    }
-
-    public function send_welcome_email($client_name, $client_email) {
-        global $db_handle;
-        global $system_object;
-
-        $sendto = $client_email;
-
-        $query = "SELECT * FROM system_message WHERE constant = 'WELCOME_MAIL' LIMIT 1";
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-        $selected_message = $fetched_data[0];
-
-        $my_subject = trim($selected_message['subject']);
-        $my_message = stripslashes($selected_message['value']);
-
-        // Replace placeholders
-        $my_message_new = str_replace('[FIRST_NAME]', $client_name, $my_message);
-        $my_subject_new = str_replace('[FIRST_NAME]', $client_name, $my_subject);
-
-        $my_message_new = str_replace('[FULL_NAME]', $client_name, $my_message_new);
-        $my_subject_new = str_replace('[FULL_NAME]', $client_name, $my_subject_new);
-
-        $system_object->send_email($my_subject_new, $my_message_new, $sendto, $client_name);
-
-        // TODO: refine this, no repetition
-        $query = "SELECT * FROM system_message WHERE constant = 'WELCOME_GUIDE' LIMIT 1";
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-        $selected_message_welcome_guide = $fetched_data[0];
-
-        $my_subject_welcome_guide = trim($selected_message_welcome_guide['subject']);
-        $my_message_welcome_guide = stripslashes($selected_message_welcome_guide['value']);
-
-        // Replace placeholders
-        $my_message_new_welcome_guide = str_replace('[FIRST_NAME]', $client_name, $my_message_welcome_guide);
-        $my_subject_new_welcome_guide = str_replace('[FIRST_NAME]', $client_name, $my_subject_welcome_guide);
-
-        $my_message_new_welcome_guide = str_replace('[FULL_NAME]', $client_name, $my_message_new_welcome_guide);
-        $my_subject_new_welcome_guide = str_replace('[FULL_NAME]', $client_name, $my_subject_new_welcome_guide);
-        if($my_subject_new_welcome_guide) {
-            $system_object->send_email($my_subject_new_welcome_guide, $my_message_new_welcome_guide, $sendto, $client_name);
-        }
-    }
-
     /**
      * @param $account_no
      * @param $full_name
@@ -210,11 +157,11 @@ class clientOperation {
             $middle_name = "";
             $first_name = $full_name[1];
         }
-        
+
         // Check whether the email is existing
         $query = "SELECT user_code FROM user WHERE email = '$email_address' LIMIT 1";
         $result = $db_handle->runQuery($query);
-        
+
         if($db_handle->numOfRows($result) > 0) {
             $fetched_data = $db_handle->fetchAssoc($result);
             $user_code = $fetched_data[0]['user_code'];
@@ -237,16 +184,16 @@ class clientOperation {
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
                                 <p>It's official! Welcome to the money making gang! lol</p>
-                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You've just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
                                 <p>You have made a fantastic decision $last_name!</p>
                                 <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
-                                <p>This is what’s happening right now...</p>
+                                <p>This is what's happening right now...</p>
                                 <p>Your Welcome bonus is here!</p>
                                 <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
                                 <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
                                 <p>Let me quickly explain how to get the bonus...</p>
                                 <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
-                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Isn't this amazing? You bet!</p>
                                 <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
                                 <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
                                 <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
@@ -290,7 +237,7 @@ MAIL;
                     $system_object->send_email($subject, $message_final, $email_address, $last_name);
                 }
             }
-            
+
             if($this->ifx_account_is_duplicate($account_no)) {
                 // Get the ifxaccount_id and the account type
                 // If account type is ILPR, ignore logging enrollment request
@@ -314,13 +261,13 @@ MAIL;
             usercode:
             $user_code = rand_string(11);
             if($db_handle->numRows("SELECT user_code FROM user WHERE user_code = '$user_code'") > 0) { goto usercode; };
-            
+
             $pass_salt = hash("SHA256", "$user_code");
 
             if(empty($attendant)) {
                 $attendant = $system_object->next_account_officer();
             }
-            
+
             if(empty($middle_name)) {
                 if(isset($my_refferer) && !empty($my_refferer)) {
                     $query = "INSERT INTO user (user_code, attendant, email, pass_salt, first_name, last_name, phone, partner_code) VALUES ('$user_code', $attendant, '$email_address', '$pass_salt', '$first_name', '$last_name', '$phone_number', '$my_refferer')";
@@ -339,16 +286,16 @@ MAIL;
                             <hr />
                             <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
                                 <p>It's official! Welcome to the money making gang! lol</p>
-                                <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
+                                <p>You've just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
                                 <p>You have made a fantastic decision $last_name!</p>
                                 <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
-                                <p>This is what’s happening right now…</p>                                
+                                <p>This is what's happening right now...</p>
                                 <p>Your Welcome bonus is here!</p>
                                 <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
                                 <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
                                 <p>Let me quickly explain how to get the bonus...</p>
                                 <p>The 130% bonus allows you to get a double of your deposit so you can have more money to trade, make more profit from your trades, earn loyalty points and get the monthly and annual rewards.</p>
-                                <p>Isn’t this amazing? You bet!</p>
+                                <p>Isn't this amazing? You bet!</p>
                                 <p>Within the next 7 days, this means that you will get double of your deposit if you fund your account with $50, $100 or $150.</p>
                                 <p><a href="mailto:support@instafxng.com?subject=130%20Percent%20Bonus%20&body=Hello%20Mercy,I%20am%20interested%20in%20getting%20the%20130%20percent%20bonus.Thanks!">Click the here to claim your bonus now.</a></p>
                                 <p>Yesterday, 20 people who joined InstaForex newly, funded their accounts and got 130% bonus on their deposit.</p>
@@ -414,7 +361,7 @@ MAIL;
                                 <p>You’ve just joined InstaForex Nigeria and said YES to making consistent income from Forex trading.</p>
                                 <p>You have made a fantastic decision $last_name!</p>
                                 <p>You stand to enjoy a whole lot of mind-blowing offers, promos and bonuses and other information that will help you on your journey to financial freedom trading Forex.</p>
-                                <p>This is what’s happening right now…</p>                                
+                                <p>This is what’s happening right now...</p>
                                 <p>Your Welcome bonus is here!</p>
                                 <p>Yes $last_name, for opening an account with InstaForex Nigeria, you get a 130% bonus on your first deposit of either $50, $100 and $150</p>
                                 <p>This one-time bonus is specially designed for you and you can get the 130% bonus within the next 7 days, so you need to act immediately.</p>
@@ -485,6 +432,68 @@ MAIL;
         return $user_code ? $user_code : false;
     }
 
+    public function send_welcome_email($client_name, $client_email) {
+        global $db_handle;
+        global $system_object;
+
+        $sendto = $client_email;
+
+        $query = "SELECT * FROM system_message WHERE constant = 'WELCOME_MAIL' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $selected_message = $fetched_data[0];
+
+        $my_subject = trim($selected_message['subject']);
+        $my_message = stripslashes($selected_message['value']);
+
+        // Replace placeholders
+        $my_message_new = str_replace('[FIRST_NAME]', $client_name, $my_message);
+        $my_subject_new = str_replace('[FIRST_NAME]', $client_name, $my_subject);
+
+        $my_message_new = str_replace('[FULL_NAME]', $client_name, $my_message_new);
+        $my_subject_new = str_replace('[FULL_NAME]', $client_name, $my_subject_new);
+
+        $system_object->send_email($my_subject_new, $my_message_new, $sendto, $client_name);
+
+        // TODO: refine this, no repetition
+        $query = "SELECT * FROM system_message WHERE constant = 'WELCOME_GUIDE' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $selected_message_welcome_guide = $fetched_data[0];
+
+        $my_subject_welcome_guide = trim($selected_message_welcome_guide['subject']);
+        $my_message_welcome_guide = stripslashes($selected_message_welcome_guide['value']);
+
+        // Replace placeholders
+        $my_message_new_welcome_guide = str_replace('[FIRST_NAME]', $client_name, $my_message_welcome_guide);
+        $my_subject_new_welcome_guide = str_replace('[FIRST_NAME]', $client_name, $my_subject_welcome_guide);
+
+        $my_message_new_welcome_guide = str_replace('[FULL_NAME]', $client_name, $my_message_new_welcome_guide);
+        $my_subject_new_welcome_guide = str_replace('[FULL_NAME]', $client_name, $my_subject_new_welcome_guide);
+        if($my_subject_new_welcome_guide) {
+            $system_object->send_email($my_subject_new_welcome_guide, $my_message_new_welcome_guide, $sendto, $client_name);
+        }
+    }
+
+    public function ifx_account_is_duplicate($account_no) {
+        global $db_handle;
+
+        // Check whether the ifx account number is existing
+        $query = "SELECT ifx_acct_no FROM user_ifxaccount WHERE ifx_acct_no = '$account_no' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
+        return $db_handle->numOfRows($result) > 0 ? true : false;
+    }
+
+    public function user_loyalty_log_record($user_code) {
+        global $db_handle;
+
+        $query = "INSERT INTO user_loyalty_log (user_code) VALUES ('$user_code')";
+        $db_handle->runQuery($query);
+
+        return true;
+    }
+
     /**
      * Create a user profile without an associated ifx account number, this works for the
      * fxacademy https://instafxng.com/fxacademy/
@@ -551,17 +560,9 @@ MAIL;
 
         return $user_email ? $user_email : $email_address;
     }
-
-    public function user_loyalty_log_record($user_code) {
-        global $db_handle;
-
-        $query = "INSERT INTO user_loyalty_log (user_code) VALUES ('$user_code')";
-        $db_handle->runQuery($query);
-
-        return true;
-    }
     
     // Confirm that the client has uploaded approved ID, Signature, Passport Photography
+
     public function confirm_credential($user_code) {
         global $db_handle;
         
@@ -880,24 +881,6 @@ MAIL;
 
     }
 
-    public function get_deposit_transaction($trans_id) {
-        global $db_handle;
-
-        $query = "SELECT ud.dollar_ordered, ud.naira_total_payable, ud.status, ud.created, ud.client_pay_method,
-                ui.user_code, ui.ifx_acct_no, u.first_name, u.last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
-                u.phone, u.email
-                FROM user_deposit AS ud
-                INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-                INNER JOIN user AS u ON ui.user_code = u.user_code
-                WHERE ud.trans_id = '$trans_id' LIMIT 1";
-
-        $result = $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-        $deposit_details = $fetched_data[0];
-
-        return $deposit_details ? $deposit_details : false;
-    }
-
     public function user_payment_notification($trans_id, $pay_method, $pay_date, $teller_no, $naira_amount, $comment = "") {
         global $db_handle;
 
@@ -914,6 +897,24 @@ MAIL;
             return false;
         }
 
+    }
+
+    public function get_deposit_transaction($trans_id) {
+        global $db_handle;
+
+        $query = "SELECT ud.dollar_ordered, ud.naira_total_payable, ud.status, ud.created, ud.client_pay_method,
+                ui.user_code, ui.ifx_acct_no, u.first_name, u.last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+                u.phone, u.email
+                FROM user_deposit AS ud
+                INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+                INNER JOIN user AS u ON ui.user_code = u.user_code
+                WHERE ud.trans_id = '$trans_id' LIMIT 1";
+
+        $result = $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $deposit_details = $fetched_data[0];
+
+        return $deposit_details ? $deposit_details : false;
     }
 
     public function is_deposit_order_expired($created) {
@@ -1030,155 +1031,128 @@ MAIL;
     
     public function send_order_invoice($client_full_name, $client_email, $client_trans_id, $client_account, $client_dollar, $client_naira_total, $pay_type) {
         global $system_object;
-
+//2 internet 3 ATM 4 Mobile banking 9 USSD default cash payment
         switch($pay_type) {
             case '2':
                 $mail_body = <<<INVOICE
-<p>To complete your order, please make your payment as follows:</p>
-
-<p>Log into your bank internet banking platform</p>
-<p>When making your payment on your internet banking platform, fill in your transaction ID, account number <br />
-($client_trans_id - $client_account) in the REMARK column.<br />
-If you don't fill it as stated, your order will be delayed, becuase it will be difficult
-to track your payment.</p>
-
-<p>Pay =N= $client_naira_total into our account listed below.</p>
-
-<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
-
+<p>To complete your order, please use the following guide:
 <ol>
-    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
-    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
-    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
-    <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
-    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
-    the invoice.</li>
-</ol>
+<li><p>Log into your bank's internet banking platform.</p>
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+<p>When making your payment on your internet banking platform, fill in your transaction ID and InstaForex account number
+in the REMARK column. (Example: $client_trans_id - $client_account).</p>
 
-<p>NOTE:</p>
+<p>Kindly take note that failure to fill in your information as stated above, will lead to a delay in the completion of your order as we may experience difficulty in tracking your payment.</p>
+</li>
+<li>Pay &#8358;$client_naira_total into our account listed below.
+
+                  <p style="color: red">Kindly ensure to crosscheck the account number properly before making payments to prevent mistakes.</p>
+
+                  <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+                      Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+                      Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+                  </p>
+</li>
+<li>After making the payment, visit <a href="https://instafxng.com/">https://instafxng.com/</a> and click on PAYMENT NOTIFICATION.
+The funding process will be completed within 5 minutes to 2 hours on work days. Funding is completed normally within the same day and if there will be any delay we will inform you promptly.
+</li>
+<b><p style="color:red;">Disclaimer:</p>
 <ul>
-    <li>Third party payments are not allowed.</li>
-    <li>REMARK section must be written as<br />
-    ($client_trans_id - $client_account)</li>
-    <li>Your account can only be funded after you have completed payment notification
-    as advised in (2) above.</li>
+<li>Third party payments are not allowed.</li>
+<li>PAYMENT REMARK should only be written thus ($client_trans_id - $client_account)</li>
+<li>Failure to pay into the account number generated on your invoice can result into a delay of 6 months to 1 year.</li>
+<li>Your account will only be funded after you have completed the funding and notification process.</li>
 </ul>
+</b>
 
-<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
-And please mention your transaction ID $client_trans_id when you call.</p>
+<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a> and please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
 INVOICE;
                 break;
             case '3':
                 $mail_body = <<<INVOICE
-<p>To complete your order, please make your payment as follows:</p>
-
-<p>Visit any bank ATM.</p>
-
-<p>Transfer =N= $client_naira_total into our account listed below.</p>
-
-<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
-
+<p>To complete your order, please use the following guide:
 <ol>
-    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
-    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
-    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
-    <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION,
-    Type in the location where you made the payment in the comment box, <strong>e.g. Apapa Lagos</strong>.
-    If you do not fill it as stated, your order will be delayed, because it will be difficult to track
-    your payment.</li>
-    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
-    the invoice.</li>
-</ol>
+<li><p>Visit any bank ATM.</p></li>
+<li>Pay &#8358;$client_naira_total into our account listed below.
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+                  <p style="color: red">Kindly ensure to crosscheck the account number properly before making payments to prevent mistakes.</p>
 
-<p>NOTE:</p>
+                  <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+                      Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+                      Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+                  </p>
+</li>
+<li>After making the payment, visit <a href="https://instafxng.com/">https://instafxng.com/</a> and click on PAYMENT NOTIFICATION.
+The funding process will be completed within 5 minutes to 2 hours on work days. Funding is completed normally within the same day and if there will be any delay we will inform you promptly.
+</li>
+<b><p style="color:red;">Disclaimer:</p>
 <ul>
-    <li>Third party payments are not allowed.</li>
-    <li>Your account can only be funded after you have completed payment notification
-    as advised in (2) above.</li>
+<li>Third party payments are not allowed.</li>
+<li>PAYMENT REMARK should only be written thus ($client_trans_id - $client_account)</li>
+<li>Failure to pay into the account number generated on your invoice can result into a delay of 6 months to 1 year.</li>
+<li>Your account will only be funded after you have completed the funding and notification process.</li>
 </ul>
+</b>
 
-<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
-And please mention your transaction ID $client_trans_id when you call.</p>
+<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a> and please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
 INVOICE;
                 break;
             case '4':
                 $mail_body = <<<INVOICE
-<p>To complete your order, please make your payment as follows:</p>
-
-<p>When making your payment through the banking application, fill in the transfer memo/ description/ narration as <br />
-($client_trans_id - $client_full_name - $client_account) <br />
-If you don't fill it as stated, your order will be unnecessarily delayed.</p>
-
-<p>Pay =N= $client_naira_total into our account listed below.</p>
-
-<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
-
+<p>To complete your order, please use the following guide:
 <ol>
-    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
-    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
-    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
-    <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
-    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
-    the invoice.</li>
-</ol>
+    <li><p>When making your payment through the banking application, fill in the transfer memo/ description/ narration as <br />
+                      ($client_trans_id - $client_full_name - $client_account) <br />
+                      Please note that if  description is not filled correctly, your order will be delayed.</p>
+                  </li>
+    <li>Pay &#8358;$client_naira_total into our account listed below.
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+                  <p style="color: red">Kindly ensure to crosscheck the account number properly before making payments to prevent mistakes.</p>
 
-<p>NOTE:</p>
+                  <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+                      Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+                      Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+                  </p>
+    </li>
+<li>After making the payment, <a href="https://instafxng.com/">https://instafxng.com/</a> and click on PAYMENT NOTIFICATION.
+The funding process will be completed within 5 minutes to 2 hours on work days. Funding is completed normally within the same day and if there will be any delay we will inform you promptly.
+</li>
+<b>
+<p style="color:red;">Disclaimer:</p>
 <ul>
-    <li>Third party payments are not allowed.</li>
-    <li>Depositor Name / Transfer Memo / Description / Narration must be written as<br />
-    ($client_trans_id - $client_full_name - $client_account)</li>
-    <li>Your account can only be funded after you have completed payment notification
-    as advised in (2) above.</li>
+<li>Third party payments are not allowed.</li>
+<li>PAYMENT REMARK should only be written thus ($client_trans_id - $client_account)</li>
+<li>Failure to pay into the account number generated on your invoice can result into a delay of 6 months to 1 year.</li>
+<li>Your account will only be funded after you have completed the funding and notification process.</li>
 </ul>
+</b>
+<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a> and please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
-And please mention your transaction ID $client_trans_id when you call.</p>
-
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
 INVOICE;
                 break;
             case '9':
                 $mail_body = <<<INVOICE
-<p>To complete your order, please make your payment as follows:</p>
-
-<p>Pay =N= $client_naira_total into our account listed below using the USSD transfer feature
-for your bank, find your bank USSD below.</p>
-
-<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
-
+<p>To complete your order, please use the following guide:
 <ol>
-    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
-    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
-    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
-    <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
-    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
-    the invoice.</li>
-</ol>
+    <li><p>Pay &#8358;$client_naira_total into our account listed below using the USSD transfer feature
+                      for your bank, find your bank USSD below.</p>
+                  </li>
+    <li>Pay &#8358;$client_naira_total into our account listed below.
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+                  <p style="color: red">Kindly ensure to crosscheck the account number properly before making payments to prevent mistakes.</p>
 
-<p>NOTE:</p>
-<ul>
-    <li>Third party payments are not allowed.</li>
-    <li>Your account can only be funded after you have completed payment notification
-    as advised in (2) above.</li>
-</ul>
-
-<p>BANK USSD CODES - This works with phone numbers registered with your account</p>
+                  <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+                      Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+                      Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+                  </p>
+    </li>
+    <p>BANK USSD CODES - This works with phone numbers registered with your account</p>
+<p>
 <ul>
     <li>Guaranty Trust Bank (GTB): *737# </li>
     <li>Fidelity Bank: *770#</li>
@@ -1198,50 +1172,58 @@ normally within the same day. If there is any delay we will inform you.</p>
     <li>Union Bank: *826#</li>
     <li>FCMB: *329#</li>
 </ul>
+</p>
+<li>After making the payment, <a href="https://instafxng.com/">https://instafxng.com/</a> and click on PAYMENT NOTIFICATION.
+The funding process will be completed within 5 minutes to 2 hours on work days. Funding is completed normally within the same day and if there will be any delay we will inform you promptly.
+</li>
+                  <b>
+                  <p style="color:red;">Disclaimer:</p>
+                  <ul>
+                      <li>Third party payments are not allowed.</li>
+                      <li>PAYMENT REMARK should only be written thus ($client_trans_id - $client_account)</li>
+                      <li>Failure to pay into the account number generated on your invoice can result into a delay of 6 months to 1 year.</li>
+                      <li>Your account will only be funded after you have completed the funding and notification process.</li>
+                  </ul>
+                  </b>
+<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a> and please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
-And please mention your transaction ID $client_trans_id when you call.</p>
-
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
 INVOICE;
                 break;
             default:
                 $mail_body = <<<INVOICE
-<p>To complete your order, please make your payment as follows:</p>
-
-<p>When making your payment at the bank, fill in the depositor name as <br />
-($client_trans_id - $client_full_name - $client_account) <br />
-If you don't fill it as stated, your order will be unnecessarily delayed.</p>
-
-<p>Pay =N= $client_naira_total into our account listed below.</p>
-
-<p style="color: red">NOTE: Kindly make sure you pay into the account stated below.</p>
-
+<p>To complete your order, please use the following guide:
 <ol>
-    <li>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
-    Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
-    Account Number: <span style="color: blue; font-weight: bolder">0174516696</span></li>
-    <li>After making the payment, visit https://instafxng.com/ and click on PAYMENT NOTIFICATION</li>
-    <li>Your funding can be delayed for 6 months to 1 year if you fail to pay into the account on
-    the invoice.</li>
-</ol>
+    <li><p>When making your payment at the bank, fill in the depositor name as <br />
+                      ($client_trans_id - $client_full_name - $client_account) <br />
+                      Please note that if  description is not filled correctly, your order will be delayed</p>
+                  </li>
+    <li>Pay &#8358;$client_naira_total into our account listed below.
 
-<p>Funding will be completed within 5 minutes to 2 hours on work days. Funding is completed
-normally within the same day. If there is any delay we will inform you.</p>
+                  <p style="color: red">Kindly ensure to crosscheck the account number properly before making payments to prevent mistakes.</p>
 
-<p>NOTE:</p>
-<ul>
-    <li>Third party payments are not allowed.</li>
-    <li>Depositor Name / Transfer Memo must be written as<br />
-    ($client_trans_id - $client_full_name - $client_account)</li>
-    <li>Your account can only be funded after you have completed payment notification
-    as advised in (2) above.</li>
-</ul>
+                  <p>Any Branch of <span style="color: blue; font-weight: bolder">Guaranty Trust Bank</span><br />
+                      Account Name:   <span style="color: blue; font-weight: bolder">Instant Web-Net Technologies Ltd</span><br />
+                      Account Number: <span style="color: blue; font-weight: bolder">0174516696</span>
+                  </p>
+    </li>
+<li>After making the payment, <a href="https://instafxng.com/">https://instafxng.com/</a> and click on PAYMENT NOTIFICATION.
+The funding process will be completed within 5 minutes to 2 hours on work days. Funding is completed normally within the same day and if there will be any delay we will inform you promptly.
+</li>
+                  <b>
+                  <p style="color:red;">Disclaimer:</p>
+                  <ul>
+                      <li>Third party payments are not allowed.</li>
+                      <li>PAYMENT REMARK should only be written thus ($client_trans_id - $client_account)</li>
+                      <li>Failure to pay into the account number generated on your invoice can result into a delay of 6 months to 1 year.</li>
+                      <li>Your account will only be funded after you have completed the funding and notification process.</li>
+                  </ul>
 
-<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a>
-And please mention your transaction ID $client_trans_id when you call.</p>
+                      </b>
+<p>If you have any questions, please contact our <a href="https://instafxng.com/contact_info.php">support desk</a> and please mention your transaction ID $client_trans_id when you call.</p>
 
-<p>Thank you for using our services.</p>
+<p>We appreciate your cooperation and continuous patronage.</p>
+
 INVOICE;
                 break;
         }
@@ -1249,34 +1231,38 @@ INVOICE;
         // Send order invoice to client email address
         $subject = "InstaForex Funding Order Invoice - " . $client_trans_id;
         $body =
-<<<MAIL
-<div style="background-color: #F3F1F2">
+            <<<MAIL
+                <div style="background-color: #F3F1F2">
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
             <p>Dear $client_full_name,</p>
 
+            <p>Thank you for using our services.</p>
+
+            <p>For you to enjoy a fast, easy and stress free service, kindly take note of the information below:</p>
+
             <p>NOTE: This is a CONFIDENTIAL Document. Information herein should
             never be shared with anyone.</p>
 
-            <p>THIS INVOICE IS VALID ONLY FOR 24 HOURS. IF PAYMENT IS NOT MADE BY THEN,
-            YOU MUST SUBMIT ANOTHER ORDER.</p>
+            <p>THIS INVOICE IS VALID ONLY FOR 24 HOURS AND UPON EXPIRATION, YOU WILL
+BE REQUIRED TO CREATE A NEW ORDER.</p>
 
             <p>====================</p>
 
-            <p>Your Transaction ID for this order is $client_trans_id</p>
-
             <p>The details of your order are as follows:</p>
 
-            <p>Amount of InstaForex Funding ordered: USD $client_dollar
-            Equivalent cost in Naira: =N= $client_naira_total</p>
+            <p>Your Transaction ID for this order is $client_trans_id</p>
+
+            <p>Amount of InstaForex Funding ordered: USD$client_dollar
+            Equivalent cost in Naira: &#8358;$client_naira_total</p>
 
             $mail_body
 
             <br /><br />
             <p>Best Regards,</p>
-            <p>Instafxng Support,<br />
+            <p>InstaFxNg Support,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -1426,7 +1412,7 @@ MAIL;
     public function log_withdrawal($trans_id, $ifx_acc_id, $exchange, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, $phone_password) {
         global $db_handle;
 
-        $phone_password_encrypted = encrypt($phone_password);
+        $phone_password_encrypted = dec_enc('encrypt', $phone_password);
 
         $query = "INSERT INTO user_withdrawal (trans_id, ifxaccount_id, exchange_rate, dollar_withdraw, naira_equivalent_dollar_withdraw, naira_service_charge, naira_vat_charge, naira_total_withdrawable, client_phone_password)
             VALUES ('$trans_id', $ifx_acc_id, $exchange, $ifx_dollar_amount, $ifx_naira_amount, $service_charge, $vat, $total_withdrawal_payable, '$phone_password_encrypted')";
@@ -1541,6 +1527,15 @@ MAIL;
         return $selected_data;
     }
 
+    public function get_loyalty_point($user_code) {
+        $total_point = $this->get_loyalty_point_earned($user_code);
+        $total_point_claimed = $this->get_loyalty_point_claimed($user_code);
+        $total_point_frozen = $this->get_loyalty_point_frozen($user_code);
+        $loyalty_point_balance = $total_point - ($total_point_claimed + $total_point_frozen);
+
+        return $loyalty_point_balance;
+    }
+
     public function get_loyalty_point_earned($user_code) {
         global $db_handle;
 
@@ -1579,7 +1574,7 @@ MAIL;
 
         return $total_point_claimed;
     }
-
+    
     public function get_loyalty_point_frozen($user_code) {
         global $db_handle;
 
@@ -1598,15 +1593,6 @@ MAIL;
         $total_point_frozen = $selected_data[0]['total_point_frozen'];
 
         return $total_point_frozen;
-    }
-    
-    public function get_loyalty_point($user_code) {
-        $total_point = $this->get_loyalty_point_earned($user_code);
-        $total_point_claimed = $this->get_loyalty_point_claimed($user_code);
-        $total_point_frozen = $this->get_loyalty_point_frozen($user_code);
-        $loyalty_point_balance = $total_point - ($total_point_claimed + $total_point_frozen);
-        
-        return $loyalty_point_balance;
     }
 
     public function get_point_based_claimed_by_id($points_claimed_id) {
@@ -1634,61 +1620,6 @@ MAIL;
         $obj_loyalty_point->user_total_point_balance($client_user_code);
 
         return true;
-    }
-
-    public function get_loyalty_point_dollar_amount($user_code, $points_claimed_id) {
-        global $db_handle;
-
-        $query = "SELECT dollar_amount FROM point_based_claimed WHERE point_based_claimed_id = $points_claimed_id AND user_code = '$user_code' AND status = '1'";
-        $result = $db_handle->runQuery($query);
-        $selected_data = $db_handle->fetchAssoc($result);
-        $dollar_amount = $selected_data[0]['dollar_amount'];
-
-        return $dollar_amount;
-    }
-
-    public function set_deposit_loyalty_point($transaction_id) {
-        global $db_handle;
-
-        $query = "SELECT ud.user_deposit_id, ud.real_dollar_equivalent, ud.ifxaccount_id, ui.user_code
-                FROM user_deposit AS ud
-                INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
-                WHERE ud.trans_id = '$transaction_id' AND ud.status = '8' LIMIT 1";
-        $result = $db_handle->runQuery($query);
-
-        if($db_handle->numOfRows($result) > 0) {
-            // Transaction exist and qualifies
-
-            $fetched_data = $db_handle->fetchAssoc($result);
-
-            $user_code = $fetched_data[0]['user_code'];
-            $ifx_account_id = $fetched_data[0]['ifxaccount_id'];
-            $real_dollar = $fetched_data[0]['real_dollar_equivalent'];
-            $reference = $fetched_data[0]['user_deposit_id'];
-            $rate_used = POINT_PER_DOLLAR_FUND;
-            $point_earned = $real_dollar * $rate_used;
-
-            // Let us confirm that loyalty point has not been set for this transaction
-            $query = "SELECT point_based_reward_id FROM point_based_reward WHERE reference = $reference AND type = '1'";
-            $result = $db_handle->runQuery($query);
-
-            if($db_handle->numOfRows($result) > 0) {
-                // Loyalty point already set for this transaction
-                return false;
-            } else {
-                // Loyalty point not set, so set it.
-                $query = "INSERT INTO point_based_reward (user_code, point_earned, rate_used, type, reference, date_earned) VALUES "
-                    . "('$user_code', $point_earned, $rate_used, '1', $reference, NOW())";
-                $db_handle->runQuery($query);
-
-                // Update client point balance
-                $query = "UPDATE user SET point_balance = point_balance + $point_earned WHERE user_code = '$user_code' LIMIT 1";
-                $db_handle->runQuery($query);
-
-                return true;
-            }
-        }
-
     }
 
     public function set_trading_loyalty_point($account_no, $volume, $reference, $commission_date) {
@@ -1739,18 +1670,18 @@ MAIL;
 
         return $result ? $db_handle->insertedId() : false;
     }
-    
+
     public function send_verification_message($client_user_code, $client_email, $client_phone_number, $client_first_name, $client_verification_id) {
         global $db_handle;
         global $system_object;
-        
-        $user_code_encrypted = encrypt($client_user_code);
+
+        $user_code_encrypted = dec_enc('encrypt', $client_user_code);
 
         $sms_code = generate_sms_code();
         $sms_message = "Your activation number is: $sms_code A message has been sent to your email, click the activation link in it and enter this number.";
-        
+
         $system_object->send_sms($client_phone_number, $sms_message);
-        
+
         if(!is_null($client_verification_id)) {
             $query = "UPDATE user_verification SET phone_code = '$sms_code' WHERE verification_id = $client_verification_id LIMIT 1";
             $db_handle->runQuery($query);
@@ -1758,7 +1689,7 @@ MAIL;
             $query = "INSERT INTO user_verification (user_code, phone_code) VALUES ('$client_user_code', '$sms_code')";
             $db_handle->runQuery($query);
         }
-        
+
         // Send activation link to email
         $subject = "Instafxng Activation Link";
         $body =
@@ -1814,7 +1745,7 @@ MAIL;
     </div>
 </div>
 MAIL;
-        
+
         $system_object->send_email($subject, $body, $client_email, $client_first_name);
     }
 
@@ -1873,7 +1804,7 @@ MAIL;
         $system_object->send_email($subject, $message, $client_email, $client_first_name);
         return true;
     }
-
+    
     public function get_user_by_email($email_address) {
         global $db_handle;
 
@@ -1937,7 +1868,6 @@ MAIL;
 
     }
 
-    // Add a new account flag
     public function add_new_account_flag($account_flag_no, $client_user_code, $ifx_account_id, $flag_account_comment, $flag_account_status = '1', $admin_code) {
         global $db_handle;
 
@@ -1956,7 +1886,6 @@ MAIL;
         }
     }
 
-    // get flag details
     public function get_client_flag_by_code($user_code) {
         global $db_handle;
 
@@ -1979,7 +1908,8 @@ MAIL;
         }
     }
 
-    // Check if account is flagged and  details
+    // Add a new account flag
+
     public function account_flagged($user_code) {
         global $db_handle;
 
@@ -1989,7 +1919,8 @@ MAIL;
         return $fetch_flag  ? $fetch_flag  : false;
     }
 
-    // This is for a single client
+    // get flag details
+
     public function get_client_ilpr_accounts_by_code($user_code) {
         global $db_handle;
 
@@ -2000,7 +1931,8 @@ MAIL;
         return $fetched_data;
     }
 
-    // This is for a single client
+    // Check if account is flagged and  details
+
     public function get_client_non_ilpr_accounts_by_code($user_code) {
         global $db_handle;
 
@@ -2011,6 +1943,8 @@ MAIL;
         return $fetched_data;
     }
 
+    // This is for a single client
+
     public function get_client_ifxaccounts($user_code) {
         global $db_handle;
 
@@ -2020,6 +1954,8 @@ MAIL;
 
         return $fetched_data;
     }
+
+    // This is for a single client
 
     public function get_user_address_by_code($user_code) {
         global $db_handle;
@@ -2047,25 +1983,6 @@ MAIL;
         $data = array('phone_code' => $phone_code, 'phone_status' => $phone_status);
 
         return $data;
-    }
-
-    public function deposit_monitoring($admin_code, $transaction_id, $status) {
-        global $db_handle;
-
-        $status = status_user_deposit($status);
-        $query = "INSERT INTO deposit_monitoring (admin_code, trans_id, description) VALUES ('$admin_code', '$transaction_id', '$status')";
-        $db_handle->runQuery($query);
-
-        return true;
-    }
-
-    public function deposit_comment($transaction_id, $admin_code, $comment) {
-        global $db_handle;
-
-        $query = "INSERT INTO deposit_comment (trans_id, admin_code, comment) VALUES ('$transaction_id', '$admin_code', '$comment')";
-        $db_handle->runQuery($query);
-
-        return true;
     }
 
     public function get_deposit_remark($trans_id) {
@@ -2153,6 +2070,180 @@ MAIL;
         return true;
     }
 
+    public function deposit_comment($transaction_id, $admin_code, $comment) {
+        global $db_handle;
+
+        $query = "INSERT INTO deposit_comment (trans_id, admin_code, comment) VALUES ('$transaction_id', '$admin_code', '$comment')";
+        $db_handle->runQuery($query);
+
+        return true;
+    }
+
+    public function deposit_monitoring($admin_code, $transaction_id, $status) {
+        global $db_handle;
+
+        $status = status_user_deposit($status);
+        $query = "INSERT INTO deposit_monitoring (admin_code, trans_id, description) VALUES ('$admin_code', '$transaction_id', '$status')";
+        $db_handle->runQuery($query);
+
+        return true;
+    }
+
+    /**
+     * Confirm if the transaction is the client's first transaction
+     *
+     * @param $trans_id
+     * @param $trans_type
+     * @return bool
+     */
+    public function confirm_first_transaction($trans_id, $trans_type) {
+        global $db_handle;
+
+        switch($trans_type) {
+            // Deposit Transaction
+            case '1':
+                $query = "SELECT ud.trans_id
+                    FROM user_deposit AS ud
+                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE ud.status = '8' AND ud.trans_id NOT IN ('$trans_id') AND u.user_code = (
+                      SELECT ui.user_code
+                      FROM user_deposit AS ud
+                      INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
+                      WHERE ud.trans_id = '$trans_id'
+                    )";
+                break;
+
+            // Withdrawal Transaction
+            case '2':
+                $query = "SELECT uw.trans_id
+                    FROM user_withdrawal AS uw
+                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = uw.ifxaccount_id
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE uw.status = '10' AND uw.trans_id NOT IN ('$trans_id') AND u.user_code = (
+                      SELECT ui.user_code
+                      FROM user_withdrawal AS uw
+                      INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = uw.ifxaccount_id
+                      WHERE uw.trans_id = '$trans_id'
+                    )";
+                break;
+        }
+
+        // if no row is found, it is the first transaction
+        return $db_handle->numRows($query) == 0 ? true : false;
+    }
+
+    public function get_user_detail_by_trans_id($trans_id, $trans_type) {
+        global $db_handle;
+
+        switch($trans_type) {
+            // Deposit Transaction
+            case '1':
+                $query = "SELECT u.user_code AS client_user_code, u.email AS client_email, u.first_name AS client_first_name,
+                    u.last_name AS client_last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+                    u.phone AS client_phone_number
+                    FROM user_deposit AS ud
+                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE ud.trans_id = '$trans_id'";
+                break;
+
+            // Withdrawal Transaction
+            case '2':
+                $query = "SELECT u.user_code AS client_user_code, u.email AS client_email, u.first_name AS client_first_name,
+                    u.last_name AS client_last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
+                    u.phone AS client_phone_number
+                    FROM user_withdrawal AS uw
+                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = uw.ifxaccount_id
+                    INNER JOIN user AS u ON ui.user_code = u.user_code
+                    WHERE uw.trans_id = '$trans_id'";
+                break;
+        }
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $user_detail = $fetched_data[0];
+
+        return $user_detail ? $user_detail : false;
+    }
+
+    public function log_first_transaction($client_user_code,$client_full_name, $client_email, $transaction_id, $trans_type) {
+        global $db_handle, $system_object;
+
+        // Log transaction for compliance
+        $query = "INSERT INTO user_first_transaction (user_code, trans_id, trans_type) VALUE ('$client_user_code', '$transaction_id', '$trans_type')";
+        $db_handle->runQuery($query);
+
+        if($db_handle->affectedRows() == 1) {
+
+            // Send system email to client
+            $subject = "ATTN: Information about your First Deposit";
+            $body = <<<MAIL
+<div style="background-color: #F3F1F2">
+    <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
+        <img src="https://instafxng.com/images/ifxlogo.png" />
+        <hr />
+        <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
+            <p>Dear $client_full_name,</p>
+
+            <p>You are receiving this email because you have just attempted your first deposit transaction
+            to your Instaforex Account through our website at www.instafxng.com</p>
+
+            <p>Thank you for choosing to do business with us.</p>
+
+            <p>Please note the following:</p>
+
+            <ol>
+                <li>We do not have any agent affiliated with us. We operate primarily via www.instafxng.com</li>
+                <li>We are not an investment company and do not hold funds for investment purposes.</li>
+                <li>Any money deposited is purposely meant for online currency trading.</li>
+                <li>We do not accept or approve of third party transactions.</li>
+                <li>You assume full responsibilities for the funds deposited in your trading account(s).</li>
+                <li>We do not advise you to give your Instaforex account details to a third party to operate on your behalf.</li>
+                <li>www.instafxng.com is owned and operated by Instant Web-Net Technologies Ltd.</li>
+            </ol>
+
+            <p>If you need additional information about our services or to learn more, please visit our website at
+            <a href="https://instafxng.com">www.instafxng.com</a> or <a href="https://instafxng.com/contact_info.php">contact us here.</a></p>
+
+            <br /><br />
+            <p>Best Regards,</p>
+            <p>Adamolekun Oluwabunmi,</p>
+            <p>Head - Compliance/Operations,<br />
+                www.instafxng.com</p>
+            <br /><br />
+        </div>
+        <hr />
+        <div style="background-color: #EBDEE9;">
+            <div style="font-size: 11px !important; padding: 15px;">
+                <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
+                    <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
+                    <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
+                    <a href="https://linkedin.com/company/instaforex-ng"><img src="https://instafxng.com/images/LinkedIn.png"></a>
+                </p>
+                <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
+                <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
+                <p><strong>Office Number:</strong> 08028281192</p>
+                <br />
+            </div>
+            <div style="font-size: 10px !important; padding: 15px; text-align: center;">
+                <p>This email was sent to you by Instant Web-Net Technologies Limited, the
+                    official Nigerian Representative of Instaforex, operator and administrator
+                    of the website www.instafxng.com</p>
+                <p>To ensure you continue to receive special offers and updates from us,
+                    please add support@instafxng.com to your address book.</p>
+            </div>
+        </div>
+    </div>
+</div>
+MAIL;
+
+            return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
+        }
+    }
+
     public function deposit_transaction_completion($transaction_id, $transaction_reference, $status, $remarks, $admin_code) {
         global $db_handle, $partner_object;
 
@@ -2180,6 +2271,50 @@ MAIL;
         }
 
         return true;
+    }
+
+    public function set_deposit_loyalty_point($transaction_id) {
+        global $db_handle;
+
+        $query = "SELECT ud.user_deposit_id, ud.real_dollar_equivalent, ud.ifxaccount_id, ui.user_code
+                FROM user_deposit AS ud
+                INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+                WHERE ud.trans_id = '$transaction_id' AND ud.status = '8' LIMIT 1";
+        $result = $db_handle->runQuery($query);
+
+        if($db_handle->numOfRows($result) > 0) {
+            // Transaction exist and qualifies
+
+            $fetched_data = $db_handle->fetchAssoc($result);
+
+            $user_code = $fetched_data[0]['user_code'];
+            $ifx_account_id = $fetched_data[0]['ifxaccount_id'];
+            $real_dollar = $fetched_data[0]['real_dollar_equivalent'];
+            $reference = $fetched_data[0]['user_deposit_id'];
+            $rate_used = POINT_PER_DOLLAR_FUND;
+            $point_earned = $real_dollar * $rate_used;
+
+            // Let us confirm that loyalty point has not been set for this transaction
+            $query = "SELECT point_based_reward_id FROM point_based_reward WHERE reference = $reference AND type = '1'";
+            $result = $db_handle->runQuery($query);
+
+            if($db_handle->numOfRows($result) > 0) {
+                // Loyalty point already set for this transaction
+                return false;
+            } else {
+                // Loyalty point not set, so set it.
+                $query = "INSERT INTO point_based_reward (user_code, point_earned, rate_used, type, reference, date_earned) VALUES "
+                    . "('$user_code', $point_earned, $rate_used, '1', $reference, NOW())";
+                $db_handle->runQuery($query);
+
+                // Update client point balance
+                $query = "UPDATE user SET point_balance = point_balance + $point_earned WHERE user_code = '$user_code' LIMIT 1";
+                $db_handle->runQuery($query);
+
+                return true;
+            }
+        }
+
     }
 
     public function deposit_complete_notify($transaction_id) {
@@ -2295,6 +2430,17 @@ MAIL;
         $system_object->send_email($subject, $message, $email, $first_name);
     }
 
+    public function get_loyalty_point_dollar_amount($user_code, $points_claimed_id) {
+        global $db_handle;
+
+        $query = "SELECT dollar_amount FROM point_based_claimed WHERE point_based_claimed_id = $points_claimed_id AND user_code = '$user_code' AND status = '1'";
+        $result = $db_handle->runQuery($query);
+        $selected_data = $db_handle->fetchAssoc($result);
+        $dollar_amount = $selected_data[0]['dollar_amount'];
+
+        return $dollar_amount;
+    }
+
     public function get_withdrawal_by_id_full($trans_id) {
         global $db_handle;
 
@@ -2330,15 +2476,6 @@ MAIL;
         return $fetched_data ? $fetched_data : false;
     }
 
-    public function withdrawal_comment($transaction_id, $admin_code, $comment) {
-        global $db_handle;
-
-        $query = "INSERT INTO withdrawal_comment (trans_id, admin_code, comment) VALUES ('$transaction_id', '$admin_code', '$comment')";
-        $db_handle->runQuery($query);
-
-        return true;
-    }
-
     public function withdrawal_transaction_account_check($transaction_id, $status, $remarks, $admin_code) {
         global $db_handle;
 
@@ -2351,6 +2488,25 @@ MAIL;
 
         // Log deposit monitoring
         $this->withdrawal_monitoring($admin_code, $transaction_id, $status);
+
+        return true;
+    }
+
+    public function withdrawal_comment($transaction_id, $admin_code, $comment) {
+        global $db_handle;
+
+        $query = "INSERT INTO withdrawal_comment (trans_id, admin_code, comment) VALUES ('$transaction_id', '$admin_code', '$comment')";
+        $db_handle->runQuery($query);
+
+        return true;
+    }
+
+    public function withdrawal_monitoring($admin_code, $transaction_id, $status) {
+        global $db_handle;
+
+        $status = status_user_deposit($status);
+        $query = "INSERT INTO withdrawal_monitoring (admin_code, trans_id, description) VALUES ('$admin_code', '$transaction_id', '$status')";
+        $db_handle->runQuery($query);
 
         return true;
     }
@@ -2383,16 +2539,6 @@ MAIL;
 
         // Log deposit monitoring
         $this->withdrawal_monitoring($admin_code, $transaction_id, $status);
-
-        return true;
-    }
-
-    public function withdrawal_monitoring($admin_code, $transaction_id, $status) {
-        global $db_handle;
-
-        $status = status_user_deposit($status);
-        $query = "INSERT INTO withdrawal_monitoring (admin_code, trans_id, description) VALUES ('$admin_code', '$transaction_id', '$status')";
-        $db_handle->runQuery($query);
 
         return true;
     }
@@ -2430,7 +2576,7 @@ MAIL;
         global $system_object;
 
         $reset_code = rand_string(20);
-        $user_code_encrypted = encrypt($user_code);
+        $user_code_encrypted = dec_enc('encrypt', $user_code);
 
         $query = "UPDATE user SET reset_code = '$reset_code', reset_expiry = NOW() + INTERVAL 1 HOUR WHERE user_code = '$user_code' LIMIT 1";
         $db_handle->runQuery($query);
@@ -2532,10 +2678,13 @@ MAIL;
      * @param string $interest_other
      * @return bool
      */
-    public function log_sales_contact_client_interest($user_code, $interest_training = '1', $interest_funding = '1', $interest_bonus = '1', $interest_investment = '1', $interest_services = '1', $interest_other = '1') {
+    public function log_sales_contact_client_interest($user_code, $interest_training = '1', $interest_training_FMM = '1', $interest_training_FPO = '1', $interest_training_audit = '1', $interest_funding = '1', $interest_bonus = '1', $interest_investment = '1', $interest_services = '1', $interest_other = '1') {
         global $db_handle;
 
         if(empty($interest_training)) { $interest_training = '1'; }
+        if(empty($interest_training_FMM)) { $interest_training_FMM = '1'; }
+        if(empty($interest_training_FPO)) { $interest_training_FPO = '1'; }
+        if(empty($interest_training_audit)) { $interest_training_audit = '1'; }
         if(empty($interest_funding)) { $interest_funding = '1'; }
         if(empty($interest_bonus)) { $interest_bonus = '1'; }
         if(empty($interest_investment)) { $interest_investment = '1'; }
@@ -2546,13 +2695,16 @@ MAIL;
 
             $query = "UPDATE sales_contact_client_interest SET
                   interest_training = '$interest_training',
+                  interest_training_FMM = '$interest_training_FMM',
+                  interest_training_FPO = '$interest_training_FPO',
+                  interest_training_audit = '$interest_training_audit',
                   interest_funding = '$interest_funding',
                   interest_bonus = '$interest_bonus',
                   interest_investment = '$interest_investment',
                   interest_services = '$interest_services',
                   interest_other = '$interest_other' WHERE user_code = '$user_code' LIMIT 1";
         } else {
-            $query = "INSERT INTO sales_contact_client_interest (user_code, interest_training, interest_funding, interest_bonus, interest_investment, interest_services, interest_other) VALUES ('$user_code', '$interest_training', '$interest_funding', '$interest_bonus', '$interest_investment', '$interest_services', '$interest_other')";
+            $query = "INSERT INTO sales_contact_client_interest (user_code, interest_training, interest_training_FMM, interest_training_FPO, interest_training_audit, interest_funding, interest_bonus, interest_investment, interest_services, interest_other) VALUES ('$user_code', '$interest_training', '$interest_training_FMM', '$interest_training_FPO', '$interest_training_audit', '$interest_funding', '$interest_bonus', '$interest_investment', '$interest_services', '$interest_other')";
         }
 
         $db_handle->runQuery($query);
@@ -2785,8 +2937,8 @@ MAIL;
     public function get_total_withdrawal($user_code, $from_date, $to_date) {
         global $db_handle;
 
-        $query = "SELECT SUM(uw.dollar_withdraw) AS total_withdrawal FROM user_withdrawal AS uw 
-                 INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id 
+        $query = "SELECT SUM(uw.dollar_withdraw) AS total_withdrawal FROM user_withdrawal AS uw
+                 INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
                  INNER JOIN user AS u ON ui.user_code = u.user_code WHERE uw.status = '10' AND STR_TO_DATE(uw.created, '%Y-%m-%d')
                  BETWEEN '$from_date' AND '$to_date'
                  AND u.user_code = '$user_code'";
@@ -2801,8 +2953,8 @@ MAIL;
 
     public function get_total_funding($user_code, $from_date, $to_date) {
         global $db_handle;
-        $query = "SELECT SUM(ud.real_dollar_equivalent) AS total_funding 
-                  FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id 
+        $query = "SELECT SUM(ud.real_dollar_equivalent) AS total_funding
+                  FROM user_deposit AS ud INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
                   INNER JOIN user AS u ON ui.user_code = u.user_code WHERE ud.status = '8' AND STR_TO_DATE(ud.order_complete_time, '%Y-%m-%d')
                   BETWEEN '$from_date' AND '$to_date' AND u.user_code = '$user_code'";
 
@@ -2847,136 +2999,47 @@ MAIL;
         return $fetched_data;
     }
 
-    public function deposit_refund_initiated($transaction_id, $amount, $admin_code) {
+    public function deposit_refund_initiated($transaction_id, $refund_type, $amount, $client_name, $client_email, $admin_code) {
         global $db_handle;
-        $query = "INSERT INTO user_deposit_refund (transaction_id, amount_paid, refund_status, admin) VALUES ('$transaction_id', '$amount', '0', '$admin_code')";
+        $query = "INSERT INTO user_deposit_refund (transaction_id, refund_type, amount_paid, refund_status, admin) VALUES ('$transaction_id', '$refund_type', '$amount', '0', '$admin_code')";
         $db_handle->runQuery($query);
+
+        $this->deposit_refund_initiated_email($transaction_id, $refund_type, $client_name, $client_email);
 
         return true;
     }
 
-    /**
-     * Confirm if the transaction is the client's first transaction
-     *
-     * @param $trans_id
-     * @param $trans_type
-     * @return bool
-     */
-    public function confirm_first_transaction($trans_id, $trans_type) {
-        global $db_handle;
+    public function deposit_refund_initiated_email($transaction_id, $refund_type, $client_name, $client_email) {
+        global $system_object;
 
-        switch($trans_type) {
-            // Deposit Transaction
-            case '1':
-                $query = "SELECT ud.trans_id 
-                    FROM user_deposit AS ud
-                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
-                    INNER JOIN user AS u ON ui.user_code = u.user_code
-                    WHERE ud.status = '8' AND ud.trans_id NOT IN ('$trans_id') AND u.user_code = (
-                      SELECT ui.user_code 
-                      FROM user_deposit AS ud 
-                      INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
-                      WHERE ud.trans_id = '$trans_id'
-                    )";
-                break;
+        $subject = "Deposit Transaction with REF: $transaction_id was rejected.";
 
-            // Withdrawal Transaction
-            case '2':
-                $query = "SELECT uw.trans_id 
-                    FROM user_withdrawal AS uw
-                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = uw.ifxaccount_id
-                    INNER JOIN user AS u ON ui.user_code = u.user_code
-                    WHERE uw.status = '10' AND uw.trans_id NOT IN ('$trans_id') AND u.user_code = (
-                      SELECT ui.user_code 
-                      FROM user_withdrawal AS uw
-                      INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = uw.ifxaccount_id
-                      WHERE uw.trans_id = '$trans_id'
-                    )";
-                break;
-        }
+        $refund_url = "https://instafxng.com/deposit_refund.php?id=" . dec_enc('encrypt', $transaction_id);
+        $refund_type_description = refund_type($refund_type);
 
-        // if no row is found, it is the first transaction
-        return $db_handle->numRows($query) == 0 ? true : false;
-    }
-
-    public function get_user_detail_by_trans_id($trans_id, $trans_type) {
-        global $db_handle;
-
-        switch($trans_type) {
-            // Deposit Transaction
-            case '1':
-                $query = "SELECT u.user_code AS client_user_code, u.email AS client_email, u.first_name AS client_first_name,
-                    u.last_name AS client_last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
-                    u.phone AS client_phone_number 
-                    FROM user_deposit AS ud 
-                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = ud.ifxaccount_id
-                    INNER JOIN user AS u ON ui.user_code = u.user_code
-                    WHERE ud.trans_id = '$trans_id'";
-                break;
-
-            // Withdrawal Transaction
-            case '2':
-                $query = "SELECT u.user_code AS client_user_code, u.email AS client_email, u.first_name AS client_first_name,
-                    u.last_name AS client_last_name, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name,
-                    u.phone AS client_phone_number 
-                    FROM user_withdrawal AS uw
-                    INNER JOIN user_ifxaccount AS ui ON ui.ifxaccount_id = uw.ifxaccount_id
-                    INNER JOIN user AS u ON ui.user_code = u.user_code
-                    WHERE uw.trans_id = '$trans_id'";
-                break;
-        }
-
-        $result =  $db_handle->runQuery($query);
-        $fetched_data = $db_handle->fetchAssoc($result);
-        $user_detail = $fetched_data[0];
-
-        return $user_detail ? $user_detail : false;
-    }
-
-    public function log_first_transaction($client_user_code,$client_full_name, $client_email, $transaction_id, $trans_type) {
-        global $db_handle, $system_object;
-
-        // Log transaction for compliance
-        $query = "INSERT INTO user_first_transaction (user_code, trans_id, trans_type) VALUE ('$client_user_code', '$transaction_id', '$trans_type')";
-        $db_handle->runQuery($query);
-
-        if($db_handle->affectedRows() == 1) {
-
-            // Send system email to client
-            $subject = "ATTN: Information about your First Deposit";
-            $body = <<<MAIL
+        $my_message = <<<MAIL
 <div style="background-color: #F3F1F2">
     <div style="max-width: 80%; margin: 0 auto; padding: 10px; font-size: 14px; font-family: Verdana;">
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $client_full_name,</p>
+            <p>Dear $client_name,</p>
             
-            <p>You are receiving this email because you have just attempted your first deposit transaction
-            to your Instaforex Account through our website at www.instafxng.com</p>
+            <p>Your deposit order with Transaction ID: $transaction_id has an issue and cannot be processed.
+            You did not follow the guide for making payment and hence the funds will be returned.</p>
             
-            <p>Thank you for choosing to do business with us.</p>
+            <p><strong>Issue Description</strong>: <span  style="color: red;">$refund_type_description</span></p>
             
-            <p>Please note the following:</p>
+            <p>Click on the link below to start the refund process.</p>
             
-            <ol>
-                <li>We do not have any agent affiliated with us. We operate primarily via www.instafxng.com</li>
-                <li>We are not an investment company and do not hold funds for investment purposes.</li>
-                <li>Any money deposited is purposely meant for online currency trading.</li>
-                <li>We do not accept or approve of third party transactions.</li>
-                <li>You assume full responsibilities for the funds deposited in your trading account(s).</li>
-                <li>We do not advise you to give your Instaforex account details to a third party to operate on your behalf.</li>
-                <li>www.instafxng.com is owned and operated by Instant Web-Net Technologies Ltd.</li>
-            </ol>
-
-            <p>If you need additional information about our services or to learn more, please visit our website at
-            <a href="https://instafxng.com">www.instafxng.com</a> or <a href="https://instafxng.com/contact_info.php">contact us here.</a></p>
-
+            <p><a href="$refund_url">$refund_url</a></p>
+            
+            <p>If you have any question concerning this transaction, <a href="https://instafxng.com/contact_info.php">please contact us here</a>.</p>
+            
             <br /><br />
             <p>Best Regards,</p>
-            <p>Bunmi,</p>
-            <p>Clients Relations Manager,<br />
-                www.instafxng.com</p>
+            <p>InstaFxNg Support,<br />
+               www.instafxng.com</p>
             <br /><br />
         </div>
         <hr />
@@ -2991,7 +3054,7 @@ MAIL;
                 </p>
                 <p><strong>Head Office Address:</strong> TBS Place, Block 1A, Plot 8, Diamond Estate, Estate Bus-Stop, LASU/Isheri road, Isheri Olofin, Lagos.</p>
                 <p><strong>Lekki Office Address:</strong> Block A3, Suite 508/509 Eastline Shopping Complex, Opposite Abraham Adesanya Roundabout, along Lekki - Epe expressway, Lagos.</p>
-                <p><strong>Office Number:</strong> 08028281192</p>
+                <p><strong>Office Number:</strong> 08139250268, 08083956750</p>
                 <br />
             </div>
             <div style="font-size: 10px !important; padding: 15px; text-align: center;">
@@ -3006,8 +3069,8 @@ MAIL;
 </div>
 MAIL;
 
-            return $system_object->send_email($subject, $body, $client_email, $client_full_name) ? true : false;
-        }
+        $system_object->send_email($subject, $my_message, $client_email, $client_name);
+        return true;
     }
 
     public function get_splurge_user_point($user_code) {

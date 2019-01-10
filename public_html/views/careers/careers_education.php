@@ -34,7 +34,7 @@ $my_education = $obj_careers->get_applicant_education($_SESSION['cu_unique_code'
 <p>Add Another Education</p>
 
 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-    <input name="client_no" type="hidden" value="<?php echo encrypt($_SESSION['cu_unique_code']); ?>" />
+    <input name="client_no" type="hidden" value="<?php echo dec_enc('encrypt',$_SESSION['cu_unique_code']); ?>" />
 
     <div class="form-group">
         <label class="control-label col-sm-3" for="c_institute">Institution:</label>

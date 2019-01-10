@@ -128,7 +128,7 @@ $completed_deposit_requests = $db_handle->fetchAssoc($result);
                                             <td class="nowrap">&#8358; <?php echo number_format($row['real_naira_confirmed'], 2, ".", ","); ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td><?php echo datetime_to_text($row['order_complete_time']); ?></td>
-                                            <td><a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
+                                            <td><a target="_blank" title="View" class="btn btn-info" href="deposit_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a></td>
                                         </tr>
                                         <tr>
                                             <td colspan='9' class="text-right text-success">

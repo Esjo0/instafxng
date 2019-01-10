@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $user_bank_id_encrypted = $get_params['id'];
-$user_bank_id = decrypt(str_replace(" ", "+", $user_bank_id_encrypted));
-$user_bank_id = preg_replace("/[^A-Za-z0-9 ]/", '', $user_bank_id);
+$user_bank_id = dec_enc('decrypt',  $user_bank_id_encrypted);
 
 $client_operation = new clientOperation();
 
@@ -17,8 +16,7 @@ if (isset($_POST['process'])) {
     }
     
     extract($_POST);
-    $user_bank_id = decrypt(str_replace(" ", "+", $user_bank_id));
-    $user_bank_id = preg_replace("/[^A-Za-z0-9 ]/", '', $user_bank_id);
+    $user_bank_id = dec_enc('decrypt',  $user_bank_id);
 
     if(empty($bank_account_status)) {
         $message_error = "All fields must be filled, please try again";
@@ -83,13 +81,13 @@ if($get_params['x'] == 'edit') {
                                 <p>You can approve or disapprove a bank account entered by the client, confirm that the bank account name on your
                                 internet banking platform corresponds with names displayed. Disapproved accounts cannot be used for withdrawal.</p>
                                 <form data-toggle="validator" class="form-horizontal" enctype="multipart/form-data" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                                    <input type="hidden" name="user_bank_id" value="<?php echo encrypt($user_bank_id); ?>" />
+                                    <input type="hidden" name="user_bank_id" value="<?php echo dec_enc('encrypt', $user_bank_id); ?>" />
 
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for=""></label>
                                         <div class="col-sm-10 col-lg-6">
                                             <p>
-                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($selected_bank_account['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a target="_blank" title="View Profile" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $selected_bank_account['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
 
                                                 <?php if($client_operation->account_flagged($selected_bank_account['user_code'])) { ?>
                                                     <img class="center-block" src="../images/red-flag.png" alt="" title="This client has an account flagged.">

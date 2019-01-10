@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $campaign_sms_id_encrypted = $get_params['id'];
-$campaign_sms_id = decrypt(str_replace(" ", "+", $campaign_sms_id_encrypted));
-$campaign_sms_id = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_sms_id);
+$campaign_sms_id = dec_enc('decrypt',  $campaign_sms_id_encrypted);
 
 if(!empty($campaign_sms_id)) {
     $selected_campaign_sms = $system_object->get_campaign_sms_by_id($campaign_sms_id);
@@ -43,14 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_test'])) {
     $arr1 = explode(',', $email);
 
     foreach($arr1 as $sendto) {
-        $query = "SELECT phone FROM user WHERE email = '$sendto' LIMIT 1";
+        $query = "SELECT phone, user_code FROM user WHERE email = '$sendto' LIMIT 1";
         $result = $db_handle->runQuery($query);
         $selected_member = $db_handle->fetchAssoc($result);
 
         if(!empty($selected_member)) {
             $client_phone = ucwords(strtolower(trim($selected_member[0]['phone'])));
-            $user_code = strtolower(trim($row['user_code']));
-            $my_message = str_replace('[UC]', encrypt($user_code), $my_message);
+            $user_code = strtolower(trim($selected_member[0]['user_code']));
+            $my_message = str_replace('[UC]', dec_enc('encrypt', $user_code), $my_message);
             $my_message_new = str_replace('[UC]', '', $my_message);
             $system_object->send_sms($client_phone, $my_message_new);
         }

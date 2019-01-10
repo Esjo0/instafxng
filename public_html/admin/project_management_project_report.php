@@ -272,7 +272,7 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                 </td>
                                                 <td><?php echo $row['deadline']; ?></td>
                                                 <td>
-                                                    <a href="project_management_report_add.php?x=<?php echo encrypt($row['project_code']); ?>">
+                                                    <a href="project_management_report_add.php?x=<?php echo dec_enc('encrypt', $row['project_code']); ?>">
                                                         <button class="btn btn-success">Send Report</button>
                                                     </a>
                                                 </td>
@@ -341,7 +341,7 @@ $project_reports = $db_handle->fetchAssoc($result);
                                                                                                         */?>
                                                 </td>
                                                 <td><?php echo $row['report_status']; ?></td>
-                                                <td><a href="project_management_report_view.php?x=<?php echo encrypt($row['report_code']); ?>"><button class="btn btn-success"><i class="glyphicon glyphicon-eye-open"></i></button></a></td>
+                                                <td><a href="project_management_report_view.php?x=<?php echo dec_enc('encrypt', $row['report_code']); ?>"><button class="btn btn-success"><i class="glyphicon glyphicon-eye-open"></i></button></a></td>
                                             </tr>
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>

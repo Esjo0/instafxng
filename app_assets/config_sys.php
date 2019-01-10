@@ -81,7 +81,14 @@ $client_group_DEFAULT = array(
     "66" => "Last Month Trading Clients",
 	"67" => "Splurge participant without tier",
     "68" => "Main Splurge participant",
-	"69" => "Client with complete deposit in current month"
+	"69" => "Client with complete deposit in current month",
+	"70" => "All clients Not on board",
+	"71" => "Funded ILPR account Not on board",
+	"72" => "Funded NON-ILPR account Not on board",
+	"73" => "All ILPR accounts Not on board",
+	"74" => "All NON-ILPR accounts Not on board",
+	"75" => "Training Clients Not on board",
+    "76" => "Current Month Trading Clients"
 );
 
 $client_group_DESC = array(
@@ -153,5 +160,12 @@ $client_group_DESC = array(
     "66" => "List of clients that placed trades in the previous month.",
 	"67" => "Black Friday Splurge leads who haven't selected a tier.",
     "68" => "Main Splurge participant",
-	"69" => "All clients who have successfuly completed deposit in the current month from the first day till today."
+	"69" => "All clients who have successfuly completed deposit in the current month from the first day till today.",
+	"70" => "All clients Not on board - That is we havn't gotten any commission from them",
+	"71" => "Funded ILPR account Not on board - That is we havn't gotten any commission from them",
+	"72" => "Funded NON-ILPR account Not on board - That is we havn't gotten any commission from them",
+	"73" => "All ILPR accounts Not on board - That is we havn't gotten any commission from them",
+	"74" => "All NON-ILPR accounts Not on board - That is we havn't gotten any commission from them",
+	"75" => "Training Clients Not on board - That is we havn't gotten any commission from them",
+    "76" => "List of clients that have placed a trade this month."
     );

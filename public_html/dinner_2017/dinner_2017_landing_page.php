@@ -7,8 +7,8 @@
 <?php
 $get_params = allowed_get_params(['x', 'id']);
 $user_code_encrypted = $get_params['id'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
-$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
+$user_code = dec_enc('decrypt',  $user_code_encrypted));
+
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)

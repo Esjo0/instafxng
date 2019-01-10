@@ -146,6 +146,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(279, $my_pages_sidebar)) { ?><li><a href="withdrawal_reversal.php" title="Withdrawal Reversal">Withdrawal - Reversal</a></li><?php } ?>
                         <?php if (in_array(47, $my_pages_sidebar)) { ?><li><a href="transaction_calculator.php" title="Transaction Calculator">Transaction Calculator</a></li><?php } ?>
                         <?php if (in_array(261, $my_pages_sidebar)) { ?><li><a href="locked_transactions.php"> Review Locked Transaction</a></li><?php } ?>
+                        <?php if (in_array(303, $my_pages_sidebar)) { ?><li><a href="unified_withdrawals.php"> Unified Bonus Withdrawal</a></li><?php } ?>
+                        <?php if (in_array(304, $my_pages_sidebar)) { ?><li><a href="withdrawal_completed_unified.php"> Unified Bonus Withdrawal Compeleted</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -233,6 +235,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(74, $my_pages_sidebar)) { ?><li><a href="edu_forum_reg.php">Forum Registration</a></li><?php } ?>
                         <?php if (in_array(247, $my_pages_sidebar)) { ?><li><a href="traders_forum_schedule.php">Schedule Traders Forum</a></li><?php } ?>
                         <?php if (in_array(280, $my_pages_sidebar)) { ?><li><a href="training_schedule.php">Training Schedule</a></li><?php } ?>
+                        <?php if (in_array(302, $my_pages_sidebar)) { ?><li><a href="account_audit.php">Account Audit</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">

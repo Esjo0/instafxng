@@ -6,6 +6,28 @@ if (!$session_admin->is_logged_in()) {
 
 $client_operation = new clientOperation();
 
+$get_params = allowed_get_params(['id']);
+$trans_id_encrypted = $get_params['id'];
+$trans_id = dec_enc('decrypt',  $trans_id_encrypted);
+
+if($get_params['id'] && !empty($trans_id)) {
+    $query = "SELECT ud.trans_id, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, udf.refund_type
+        FROM user_deposit_refund AS udf
+        INNER JOIN user_deposit AS ud ON udf.transaction_id = ud.trans_id
+        INNER JOIN user_ifxaccount AS ui ON ud.ifxaccount_id = ui.ifxaccount_id
+        INNER JOIN user AS u ON ui.user_code = u.user_code
+        WHERE udf.refund_status = '0' AND udf.transaction_id = '$trans_id' LIMIT 1";
+
+    $result = $db_handle->runQuery($query);
+    $refund_trans = $db_handle->fetchAssoc($result)[0];
+
+    $response = $client_operation->deposit_refund_initiated_email($trans_id, $refund_trans['refund_type'], $refund_trans['full_name'], $refund_trans['email']);
+
+    if($response) {
+        $message_success = "You have successfully sent the refund email to: " . $refund_trans['full_name'] . " with Transaction ID: " . $trans_id;
+    }
+}
+
 $query = "SELECT ud.trans_id, ud.dollar_ordered, ud.created AS deposit_date, ud.naira_total_payable,
         ui.ifx_acct_no, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.phone,
         uc.passport, ui.ifxaccount_id, udf.created AS refund_date
@@ -92,6 +114,7 @@ $deposit_refund_initiated = $db_handle->fetchAssoc($result);
                                 <th>Total Payable</th>
                                 <th>Deposit Date</th>
                                 <th>Refund Intiated Date</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -108,6 +131,9 @@ $deposit_refund_initiated = $db_handle->fetchAssoc($result);
                                         <td class="nowrap">&#8358; <?php echo number_format($row['naira_total_payable'], 2, ".", ","); ?></td>
                                         <td><?php echo datetime_to_text($row['deposit_date']); ?></td>
                                         <td><?php echo datetime_to_text($row['refund_date']); ?></td>
+                                        <td>
+                                            <a title="Resend Refund Initiation Email" class="btn btn-success" href="deposit_refund_initiated.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><i class="fa fa-paper-plane fa-fw"></i> </a>
+                                        </td>
                                     </tr>
                                 <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                             </tbody>

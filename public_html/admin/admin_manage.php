@@ -13,8 +13,7 @@ if (isset($_POST['process'])) {
 
     extract($_POST);
     
-    $admin_id = decrypt(str_replace(" ", "+", $admin_id));
-    $admin_code = preg_replace("/[^A-Za-z0-9 ]/", '', $admin_id);
+    $admin_id = dec_enc('decrypt',  $admin_id);
     
     $profile_modified = $admin_object->modify_admin_profile($admin_code, $first_name, $last_name, $admin_status);
     
@@ -28,8 +27,8 @@ if (isset($_POST['process'])) {
 if (isset($_POST['approve'])) {
     
     $admin_id = $_POST["admin_id"];
-    $admin_id = decrypt(str_replace(" ", "+", $admin_id));
-    $admin_code = preg_replace("/[^A-Za-z0-9 ]/", '', $admin_id);
+    $admin_id = dec_enc('decrypt',  $admin_id);
+    $admin_code = $admin_id;
     $pageid = $_POST["pageid"];
     
     for ($i = 0; $i < count($pageid); $i++) {
@@ -51,8 +50,7 @@ if (isset($_POST['approve'])) {
 $get_params = allowed_get_params(['id']);
 $admin_code_encrypted = $get_params['id'];
 
-$admin_code = decrypt(str_replace(" ", "+", $admin_code_encrypted));
-$admin_code = preg_replace("/[^A-Za-z0-9 ]/", '', $admin_code);
+$admin_code = dec_enc('decrypt',  $admin_code_encrypted);
 $admin_detail = $admin_object->get_admin_detail_by_code($admin_code);
 
 if(!$admin_detail) {
@@ -275,6 +273,8 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="279" id="" <?php if (in_array(279, $my_pages)) { echo 'checked="checked"'; } ?>/> Withdrawal - Reversal</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="47" id="" <?php if (in_array(47, $my_pages)) { echo 'checked="checked"'; } ?>/> Transaction Calculator</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="261" id="" <?php if (in_array(261, $my_pages)) { echo 'checked="checked"'; } ?>/> Review Locked Transactions</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="303" id="" <?php if (in_array(303, $my_pages)) { echo 'checked="checked"'; } ?>/> UNIFIED BONUS WITHDRAWAL</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="304" id="" <?php if (in_array(304, $my_pages)) { echo 'checked="checked"'; } ?>/> UNIFIED BONUS WITHDRAWAL COMPLETED</label></div></div>
                                     </div>
                                     <hr/>
 
@@ -350,6 +350,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="74" id="" <?php if (in_array(74, $my_pages)) { echo 'checked="checked"'; } ?>/> Forum Registration</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="247" id="" <?php if (in_array(247, $my_pages)) { echo 'checked="checked"'; } ?>/> Traders Forum Schedule</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="280" id="" <?php if (in_array(280, $my_pages)) { echo 'checked="checked"'; } ?>/> Training Schedule</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="302" id="" <?php if (in_array(302, $my_pages)) { echo 'checked="checked"'; } ?>/> Account Audit</label></div></div>
                                     </div>
                                     <hr/>
 

@@ -1,11 +1,13 @@
 <?php
 set_include_path('/home/tboy9/public_html/init/');
 require_once 'initialize_general.php';
+
+
 //Paid for the Forex optimizer Course but have not started
 $my_subject_1a = "Your Forex Profit Optimizer course is on…";
 $my_message_1a =
     <<<MAIL
-<p>Dear [Name]</p>
+<p>Dear [NAME]</p>
 <p>Trust you are doing well.</p>
 <p>Your optimizer course has begun and you are late for class!!!</p>
 <p>Your payment for the optimizer class has been long approved but you are yet to start the lessons.</p>
@@ -20,14 +22,14 @@ MAIL;
 $my_subject_1b = " You’ve Paid Your Dues [NAME], you deserve…";
 $my_message_1b =
     <<<MAIL
-<p>Hello [Name]</p>
+<p>Hello [NAME]</p>
 <p>How are you doing?</p>
 <p>    I noticed that you have paid for your optimizer course and you are yet to start the training.</p>
 <p>If this is about not having enough time to take the course, I perfectly understand, because time seems to be very limited and there is so much to achieve every day.</p>
 <p>The secret to time and harnessing it value is simply starting and completing all you need to do immediately.</p>
 <p>That way you can be sure to get the expected results and move on to other tasks.</p>
 <p>Easy and efficient right?</p>
-<p>    Tag along [Name], you have paid your dues and you sure deserve to get your money’s worth.</p>
+<p>    Tag along [NAME], you have paid your dues and you sure deserve to get your money’s worth.</p>
 <p>Why not start your course this weekend? That way you can lay comfortably on your bed on a Saturday morning, take the course on your phone and practice your newly acquired skill.</p>
 <p>Click <a href="https://bit.ly/2iExTpN">here</a> to begin your profit optimizer course now.</p>
 <p>I would love for you to start and complete your optimizer course as soon as possible because it will equip you to be prepared to trade profitably.</p>
@@ -38,14 +40,14 @@ MAIL;
 $my_subject_1c = "Your Training Portal Awaits you";
 $my_message_1c =
     <<<MAIL
-<p>Hello [Name],</p>
+<p>Hello [NAME],</p>
 <p>Just checking on you.</p>
 <p>How have you been?</p>
 <p>    You are yet to start your Forex Profit Optimizer course, and I just want to remind you that your payment for this course has been long approved and you can access your training now.</p>
 <p>I am eager for you to begin this course because I am quite confident that after taking it, you will have a good start at trading and it would be easy for you to develop winning trading strategies and make good profits from trading Forex.</p>
 <p>The Loyalty Reward Program for this year has begun and you are missing out!</p>
 <p>The sooner you begin and conclude the Forex Profit Optimizer course, the earlier you start trading and making money from your trades.</p>
-<p>[Name], you can still hit this year’s financial target and become a millionaire!</p>
+<p>[NAME], you can still hit this year’s financial target and become a millionaire!</p>
 <p>Complete your course and get equipped now! Click <a href="https://bit.ly/2iExTpN">here</a> to begin now.</p>
 <p>I look forward to seeing you in class.</p>
 <p>Please feel free to reach out to me if you need any assistance. I’ll always be here.</p>
@@ -54,7 +56,7 @@ MAIL;
 $my_subject_1d = "All you Need to build a Successful Side Business is in here";
 $my_message_1d =
     <<<MAIL
-<p>Dear [Name],</p>
+<p>Dear [NAME],</p>
             <p>I hope you are doing well?</p>
             <p>    You have been off your training for a very long time, are you experiencing any difficulty? If yes, please click here to send me a mail so I can get in on it and assist you with it right away.</p>
             <p>Do you know that with the right knowledge, you can make millions of dollars while trading Forex? I bet you do!</p>
@@ -86,7 +88,7 @@ MAIL;
 $my_subject_2b = "All that you need to know is just a click away";
 $my_message_2b =
     <<<MAIL
-<p>Dear [Name],</p>
+<p>Dear [NAME],</p>
             <p>Good day,</p>
             <p>How have you been?</p>
             <p>    I noticed you haven’t completed your Forex Profit Optimizer course yet.</p>
@@ -103,7 +105,7 @@ MAIL;
 $my_subject_2c = "[NAME], Here’s a Boss Move You Should Take Today";
 $my_message_2c =
     <<<MAIL
-<p>Hello [Name],</p>
+<p>Hello [NAME],</p>
             <p>Pipsy the trainer, asked about you today!</p>
             <p>How are you?</p>
             <p>    It’s been a while you checked into your training portal.</p>
@@ -163,7 +165,7 @@ MAIL;
 $my_subject_3b = "Learn Key Secrets to Technical Analysis This Week";
 $my_message_3b =
     <<<MAIL
-<p>Dear [Name]</p>
+<p>Dear [NAME]</p>
 <p>How have you been?</p>	
 <p>I would like to quickly remind you to push on with your Forex Profit Optimizer course.</p>
 <p>Technical analysis is key to every trader’s career, it allows you to analyze the market trends and choose a profitable position in the market.</p>
@@ -179,7 +181,7 @@ MAIL;
 $my_subject_3c = "Get to the Finish line This Week and Take the Star Prize.";
 $my_message_3c =
     <<<MAIL
-<p>Hi [Name],</p>
+<p>Hi [NAME],</p>
 <p>Trust your day has been great.</p>
 <p>Do you know that to generate wealth, you need to expand your source of income?</p>
 <p>I have been waiting to hear your success story and to join you in celebrating your first profit</p>
@@ -196,7 +198,7 @@ MAIL;
 $my_subject_3d = "[NAME], Few Steps Further May Get You a Million Naira Extra and Other Freebies";
 $my_message_3d =
     <<<MAIL
-<p>Dear [Name],</p>
+<p>Dear [NAME],</p>
 <p>How have you been?</p>
 <p>Have you heard that you could get rewarded up to N1million at the end of the year for being a Forex trader on <a href="http://www.instafxng.com/">www.InstaFxNg.com</a> and still get up to $150 monthly?</p> 
 <p>Let me give you the details in full.</p>
@@ -248,10 +250,10 @@ $my_message_4a =
 <p>You can click <a href="http://bit.ly/2BjGSYF">here</a> to claim your bonus now. Don’t let all the money pass you by oo.</p>
 MAIL;
 
-$my_subject_4b = "[Name], You are missing out on our 130% Bonus Offer.";
+$my_subject_4b = "[NAME], You are missing out on our 130% Bonus Offer.";
 $my_message_4b =
     <<<MAIL
-<p>Dear [Name],</p>
+<p>Dear [NAME],</p>
 <p>Got your 130% bonus yet?</p>
 <p>For completing your Forex Optimizer Couse, we are offering you a whopping 130% bonus on your first deposit of either $50, $100 $150.</p>
 <p>We are also offering you the opportunity to earn and redeem loyalty points as you trade.</p>
@@ -266,7 +268,7 @@ $my_message_4b =
 MAIL;
 
 
-$my_subject_4c = "[Name], Grab your Share of  $5.3 Trillion Today!";
+$my_subject_4c = "[NAME], Grab your Share of  $5.3 Trillion Today!";
 $my_message_4c =
     <<<MAIL
 <p>More than $10000 profit have been made today!</p>
@@ -391,7 +393,7 @@ function student_auto_mail_template($core_msg) {
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -429,49 +431,60 @@ function student_auto_mail_query($query_type, $day_value) {
 
     $today = date('Y-m-d');
 
+    $education_object = new Education();
+    //get highest lesson published in fx academy
+    $highest_lesson_published = $education_object->get_highest_lesson_published();
+    $before_highest_lesson_published = $highest_lesson_published - 1;
+
     switch($query_type) {
         case 1:
             $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
 INNER JOIN user AS u ON ueel.user_code = u.user_code 
-LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
-WHERE (DATEDIFF('$today', STR_TO_DATE(uefp.created, '%Y-%m-%d')) = '$day_value') 
-AND u.user_code <> ueel.user_code 
-AND ueel.lesson_id = '1' 
+LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
+
+              INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
+              WHERE (DATEDIFF('$today', STR_TO_DATE(uefp.created, '%Y-%m-%d')) = '$day_value')
+AND u.user_code <> ueel.user_code
 AND uefp.user_code = u.user_code 
 GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
+
             break;
         case 2:
-            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
-INNER JOIN user AS u ON ueel.user_code = u.user_code 
-LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
-WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value') 
-AND u.user_code = ueel.user_code 
-AND (ueel.lesson_id BETWEEN '1' AND '6') 
-AND uefp.user_code = u.user_code 
-GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
+            $query = "SELECT u.first_name, u.email, MAX(el.lesson_order) AS max_lesson FROM user_edu_exercise_log AS ueel
+            INNER JOIN user AS u ON ueel.user_code = u.user_code
+            INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
+            LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
+            WHERE WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value')
+        AND u.user_code = ueel.user_code
+        AND uefp.user_code = u.user_code
+            GROUP BY ueel.user_code HAVING (max_lesson BETWEEN 1 AND 6)
+            ORDER BY u.last_name ASC ";
+
+
             break;
         case 3:
-            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
-INNER JOIN user AS u ON ueel.user_code = u.user_code 
-LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
-WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value') 
-AND u.user_code = ueel.user_code 
-AND (ueel.lesson_id BETWEEN '7' AND '13') 
-AND uefp.user_code = u.user_code 
-GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
+            $query = "SELECT u.first_name, u.email, MAX(el.lesson_order) AS max_lesson FROM user_edu_exercise_log AS ueel
+            INNER JOIN user AS u ON ueel.user_code = u.user_code
+            INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
+            LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
+            WHERE WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value')
+        AND u.user_code = ueel.user_code
+        AND uefp.user_code = u.user_code
+            GROUP BY ueel.user_code HAVING (max_lesson BETWEEN 7 AND $before_highest_lesson_published)
+            ORDER BY u.last_name ASC  ";
         break;
         case 4:
-            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
-INNER JOIN user AS u ON ueel.user_code = u.user_code 
+            $query = "SELECT u.first_name, u.email, MAX(el.lesson_order) AS max_lesson FROM user_edu_exercise_log AS ueel
+INNER JOIN user AS u ON ueel.user_code = u.user_code
+ INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
 LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code 
 LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
 LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
 WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value' ) 
-AND u.user_code = ueel.user_code 
-AND ueel.lesson_id = '13' 
+AND u.user_code = ueel.user_code
 AND ui.user_code <> u.user_code
 AND uefp.user_code = u.user_code 
-GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
+GROUP BY ueel.user_code  HAVING max_lesson = $highest_lesson_published ORDER BY u.last_name ASC ";
             break;
         case 5:
             $query = "SELECT u.first_name, u.email
@@ -643,3 +656,5 @@ $interval_5d = 26;
 $query_5d = student_auto_mail_query(5, $interval_5d);
 $get_mail_5d = student_auto_mail_template($my_message_5d);
 $send_message_5d = student_auto_mail_send($query_5d, $my_subject_5d, $get_mail_5d);
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

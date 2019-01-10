@@ -1,7 +1,7 @@
 <?php
-//set_include_path('/home/tboy9/public_html/init/');
-set_include_path('../public_html/init/');
+set_include_path('/home/tboy9/public_html/init/');
 require_once 'initialize_general.php';
+
 //Paid for the Forex optimizer Course but have not started
 $my_subject_1 = "Anything for You [NAME]";
 $my_message_1 =
@@ -9,7 +9,7 @@ $my_message_1 =
 <p>Hello [NAME]</p>
 <p>How are you today?</p>
 <p>Been a while I heard from you</p>
-<p>This is Mercy, from InstaForex Nigeria I thought to check up on you since I haven't seen you lately.</p>
+<p>This is Mercy, from InstaFxNg I thought to check up on you since I haven't seen you lately.</p>
 <p>Hope you're doing really great.</p>
 <p>As you know, there are endless opportunities to earn from the Forex market and I would want you to take the best of these opportunities as they come</p>
 <p>I'm ready to work with you to make this journey a very profitable one so let's consider it our little project.</p>
@@ -122,7 +122,7 @@ function mail_template($core_msg) {
             <p>Your friend,<br />
             Mercy,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -130,7 +130,7 @@ function mail_template($core_msg) {
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -250,3 +250,5 @@ $interval_5 = 28;
 $query_5 = mail_query(2, $interval_5, 5);
 $get_mail_5 = mail_template($my_message_5);
 $send_message_5 = auto_mail_send($query_5, $my_subject_5, $get_mail_5, 5);
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

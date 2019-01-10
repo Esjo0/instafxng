@@ -196,7 +196,7 @@ $last_updated = date_to_text($last_updated[0]['date_earned']);
                                             <td><?php echo number_format($row['sum_volume'], 2, ".", ","); ?></td>
                                             <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
                                             <td>
-                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo encrypt($row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

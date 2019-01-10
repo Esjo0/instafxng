@@ -9,16 +9,18 @@ $all_banks = $system_object->get_all_banks();
 $get_params = allowed_get_params(['x', 'id']);
 
 $trans_id_encrypted = $get_params['id'];
-$trans_id = decrypt(str_replace(" ", "+", $trans_id_encrypted));
-$trans_id = preg_replace("/[^A-Za-z0-9 ]/", '', $trans_id);
-
-$refund_type = $get_params['x'];
+$trans_id = dec_enc('decrypt',  $trans_id_encrypted);
 
 //Ensure only those that have an initiated refund can access this page
-if (!empty($trans_id_encrypted) && !empty($refund_type)) {
+if (!empty($trans_id_encrypted)) {
     //since GET values are set, we will confirm if its a true refund transaction
     $query = "SELECT * FROM user_deposit_refund WHERE transaction_id = '$trans_id' AND refund_status = '0' LIMIT 1";
-    $num_rows = $db_handle->numRows($query);
+    $result = $db_handle->runQuery($query);
+    $selected_refund = $db_handle->fetchAssoc($result)[0];
+
+    $refund_type = $selected_refund['refund_type'];
+
+    $num_rows = $db_handle->numOfRows($result);
 
     if($num_rows != 1) {
         // No record found. Redirect to the home page.
@@ -65,7 +67,7 @@ if (isset($_POST['deposit_refund'])) {
 
         if ($request == true) {
             $message_success = "Your Request has been submitted successfully";
-            $refund_url = "https://instafxng.com/refund_declaration.php?x=" . $refund_type . "&id=" . encrypt($trans_id);
+            $refund_url = "https://instafxng.com/refund_declaration.php?x=" . $refund_type . "&id=" . dec_enc('encrypt', $trans_id);
 
             header("Location: $refund_url");
         } else {

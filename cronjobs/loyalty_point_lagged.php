@@ -15,3 +15,5 @@ foreach ($selected AS $row) {
     $query = "UPDATE user_loyalty_log SET total_point_earned_lagged = $total_point_earned_lagged WHERE user_code = '$user_code' LIMIT 1";
     $result = $db_handle->runQuery($query);
 }
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

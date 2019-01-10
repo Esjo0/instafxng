@@ -50,8 +50,7 @@ function get_dinner_reg_remark($reg_code)
 $get_params = allowed_get_params(['x', 'id']);
 
 $reg_code_encrypted = $get_params['id'];
-$reg_code = decrypt(str_replace(" ", "+", $reg_code_encrypted));
-$reg_code = preg_replace("/[^A-Za-z0-9 ]/", '', $reg_code);
+$reg_code = dec_enc('decrypt',  $reg_code_encrypted);
 
 $attendee_detail = $db_handle->fetchAssoc($db_handle->runQuery("SELECT * FROM dinner_2017 WHERE reservation_code = '$reg_code'"));
 $attendee_detail = $attendee_detail[0];
@@ -122,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['process'] == true)
 
         if($ivs)
         {
-            $r_code = encrypt($reservation_code);
+            $r_code = dec_enc('encrypt', $reservation_code);
             $target_file = str_replace('../dinner_2017/', '', $target_file);
             $ticket_url = str_replace('ivs/', '', $target_file);
             $from_name ="";

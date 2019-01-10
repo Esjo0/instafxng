@@ -29,7 +29,7 @@ if(isset($_POST['approve_ilpr'])){
     $message_success = "You have successfully updated the account";
 }
 
-$app_id = decrypt_ssl(str_replace(" ", "+", $_GET['app_id']));
+$app_id = dec_enc('decrypt',  $_GET['app_id']));
 $app_details = $bonus_operations->get_app_by_id($app_id);
 if(empty($app_details)) {redirect_to("bonus_app_moderation.php");}
 $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code']);
@@ -78,8 +78,8 @@ $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code
                                             <p class="pull-right">
                                                 <button data-toggle="modal" data-target="#app_decline" class="btn btn-sm btn-danger" title="Decline Application."><b style="font-size: medium">&times;</b> Decline</button>
                                                 <button data-toggle="modal" data-target="#app_approve" class="btn btn-sm btn-success" title="Approve Application"><b style="font-size: medium"><i class="fa fa-check"></i></b> Approve</button>
-                                                <a target="_blank" class="btn btn-sm btn-default" href="campaign_email_single.php?name=<?php echo encrypt_ssl($app_details['first_name']." ".$app_details['middle_name']." ".$app_details['last_name']).'&email='.encrypt_ssl($app_details['email']);?>" title="Send This Client A Mail"><b style="font-size: medium"><i class="glyphicon glyphicon-envelope"></i></b> Send Mail</a>
-                                                <a target="_blank" class="btn btn-sm btn-default" href="campaign_sms_single.php?lead_phone=<?php echo encrypt_ssl($app_details['phone']) ?>" title="Send This Client An SMS"><b style="font-size: medium"><i class="glyphicon glyphicon-phone"></i></b> Send SMS</a>
+                                                <a target="_blank" class="btn btn-sm btn-default" href="campaign_email_single.php?name=<?php echo dec_enc('encrypt', $app_details['first_name']." ".$app_details['middle_name']." ".$app_details['last_name']).'&email='.dec_enc('encrypt', $app_details['email']);?>" title="Send This Client A Mail"><b style="font-size: medium"><i class="glyphicon glyphicon-envelope"></i></b> Send Mail</a>
+                                                <a target="_blank" class="btn btn-sm btn-default" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $app_details['phone']) ?>" title="Send This Client An SMS"><b style="font-size: medium"><i class="glyphicon glyphicon-phone"></i></b> Send SMS</a>
                                             </p>
                                         <?php } ?>
                                     </div>

@@ -3,8 +3,8 @@ require_once 'init/initialize_general.php';
 $thisPage = "Promotion";
 $get_params = allowed_get_params(['x']);
 $user_code_encrypted = $get_params['x'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
-$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
+$user_code = dec_enc('decrypt',  $user_code_encrypted);
+
 
 if(($get_params['x'] == "tweeter_lead") && (!isset($_COOKIE['ifxng_tweeter_lead'])) ){
     $cookie_name = "ifxng_tweeter_lead";
@@ -112,7 +112,7 @@ if (!empty($user_code_encrypted) || $check_acct = true) {
 }
 
 //Update tire set user cookie
-if (isset($_POST['opt_in'])) {
+if (isset($_POST['opt'])) {
 
     $tire = $db_handle->sanitizePost($_POST['tire']);
     $terms = $db_handle->sanitizePost($_POST['terms']);
@@ -136,6 +136,11 @@ if (isset($_POST['opt_in'])) {
         $message_error = "Kindly Ensure you Select A tier and accept the terms and conditions. Please Try Again.";
     }
 }
+
+if (isset($_POST['opt_in'])) {
+    $message_success = "Promo Has ended <a href='https://instafxng.com/promo.php'>Click Here Now to view running promotions</a>";
+}
+
 $query = "SELECT u.first_name, u.last_name
     FROM black_friday_2018 AS bf
     INNER JOIN user AS u ON bf.user_code = u.user_code

@@ -15,8 +15,7 @@ if(isset($_POST['final_submit_application'])) {
 
     extract($_POST);
 
-    $application_no = decrypt(str_replace(" ", "+", $application_no));
-    $application_no = preg_replace("/[^A-Za-z0-9 ]/", '', $application_no);
+    $application_no = dec_enc('decrypt',  $application_no);
 
     $application_submitted = $obj_careers->final_application_submit($application_no);
 
@@ -34,8 +33,7 @@ if(isset($_POST['biodata_save'])) {
 
     extract($_POST);
 
-    $client_no = decrypt(str_replace(" ", "+", $client_no));
-    $client_no = preg_replace("/[^A-Za-z0-9 ]/", '', $client_no);
+    $client_no = dec_enc('decrypt',  $client_no);
 
     $update_biodata = $obj_careers->update_user_biodata($first_name, $last_name, $other_names, $phone_no, $sex,
         $marital_status, $state_of_origin, $dob, $address, $state_of_residence, $client_no);
@@ -54,8 +52,7 @@ if(isset($_POST['education_save'])) {
 
     extract($_POST);
 
-    $client_no = decrypt(str_replace(" ", "+", $client_no));
-    $client_no = preg_replace("/[^A-Za-z0-9 ]/", '', $client_no);
+    $client_no = dec_enc('decrypt',  $client_no);
 
     $set_education = $obj_careers->set_user_education($c_institute, $c_degree, $c_grade, $c_course,
         $start_date, $end_date, $client_no);
@@ -74,8 +71,7 @@ if(isset($_POST['work_experience_save'])) {
 
     extract($_POST);
 
-    $client_no = decrypt(str_replace(" ", "+", $client_no));
-    $client_no = preg_replace("/[^A-Za-z0-9 ]/", '', $client_no);
+    $client_no = dec_enc('decrypt',  $client_no);
 
     $set_work_experience = $obj_careers->set_user_work_experience($c_job_title, $c_company, $c_location, $start_date,
         $end_date, $c_description, $client_no);
@@ -94,8 +90,7 @@ if(isset($_POST['skill_save'])) {
 
     extract($_POST);
 
-    $client_no = decrypt(str_replace(" ", "+", $client_no));
-    $client_no = preg_replace("/[^A-Za-z0-9 ]/", '', $client_no);
+    $client_no = dec_enc('decrypt',  $client_no);
 
     $set_skill = $obj_careers->set_user_skill($c_skill_title, $c_competency, $c_description, $client_no);
 
@@ -113,8 +108,7 @@ if(isset($_POST['achievement_save'])) {
 
     extract($_POST);
 
-    $client_no = decrypt(str_replace(" ", "+", $client_no));
-    $client_no = preg_replace("/[^A-Za-z0-9 ]/", '', $client_no);
+    $client_no = dec_enc('decrypt',  $client_no);
 
     $set_achievement = $obj_careers->set_user_achievement($c_title, $c_description, $c_category, $c_date, $client_no);
 

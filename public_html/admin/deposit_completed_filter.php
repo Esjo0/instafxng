@@ -390,7 +390,7 @@ $allowed_export_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                                 foreach ($completed_deposit_requests_filter as $row) {
                                         ?>
                                         <tr>
-                                            <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo encrypt($row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
+                                            <td><a target="_blank" title="View" href="deposit_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><?php echo $row['trans_id']; ?></a></td>
                                             <td><?php echo $row['full_name']; ?></td>
                                             <td><?php echo $row['ifx_acct_no']; ?></td>
                                             <td class="nowrap">&dollar; <?php echo number_format($row['real_dollar_equivalent'], 2, ".", ","); ?></td>

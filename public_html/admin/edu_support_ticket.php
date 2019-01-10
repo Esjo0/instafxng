@@ -12,8 +12,7 @@ if (isset($_POST['close_ticket'])) {
     }
 
     extract($_POST);
-    $ticket_code = decrypt(str_replace(" ", "+", $ticket_code));
-    $ticket_code = preg_replace("/[^A-Za-z0-9 ]/", '', $ticket_code);
+    $ticket_code = dec_enc('decrypt',  $ticket_code);
     $education_object->close_support_ticket($ticket_code);
 }
 
@@ -143,7 +142,7 @@ $education_tickets = $db_handle->fetchAssoc($result);
                                                 <div class="dropdown">
                                                     <a class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Action <span class="caret"></span></a>
                                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" title="View" href="edu_support_ticket_view.php?id=<?php echo encrypt($row['support_request_code']); ?>"><i class="fa fa-eye fa-fw"></i> View</a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" title="View" href="edu_support_ticket_view.php?id=<?php echo dec_enc('encrypt', $row['support_request_code']); ?>"><i class="fa fa-eye fa-fw"></i> View</a></li>
                                                         <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#close-ticket-<?php echo $count; ?>"><i class="fa fa-lock fa-fw"></i> Close Ticket</a></li>
                                                     </ul>
                                                 </div>
@@ -160,7 +159,7 @@ $education_tickets = $db_handle->fetchAssoc($result);
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <form class="form-horizontal" role="form" method="post" action="">
-                                                                    <input type="hidden" name="ticket_code" value="<?php echo encrypt($row['support_request_code']); ?>" />
+                                                                    <input type="hidden" name="ticket_code" value="<?php echo dec_enc('encrypt', $row['support_request_code']); ?>" />
                                                                     <input name="close_ticket" type="submit" class="btn btn-danger" value="Close Ticket">
                                                                     <button type="submit" name="decline" data-dismiss="modal" class="btn btn-default">Cancel</button>
                                                                 </form>

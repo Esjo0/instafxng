@@ -166,7 +166,7 @@ $all_applications = $db_handle->fetchAssoc($result);
                                             <td><?php echo $row['title']; ?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a target="_blank" title="View" class="btn btn-default" href="career_view_application.php?id=<?php echo encrypt($row['career_user_application_id']); ?>"><i class="fa fa-eye icon-white"></i> </a>
+                                                <a target="_blank" title="View" class="btn btn-default" href="career_view_application.php?id=<?php echo dec_enc('encrypt', $row['career_user_application_id']); ?>"><i class="fa fa-eye icon-white"></i> </a>
                                             </td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

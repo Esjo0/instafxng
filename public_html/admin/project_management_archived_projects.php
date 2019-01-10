@@ -408,7 +408,7 @@ $projects = $db_handle->fetchAssoc($result);
                                                     </td>
                                                 <?php endif ?>
                                                 <td>
-                                                    <a target="_blank" href="project_management_project_view.php?x=<?php echo encrypt($row['project_code']);?>">
+                                                    <a target="_blank" href="project_management_project_view.php?x=<?php echo dec_enc('encrypt', $row['project_code']);?>">
                                                         <button title="View Complete Details" class="btn btn-sm btn-success">
                                                             <i class="glyphicon glyphicon-arrow-right "></i>
                                                         </button>

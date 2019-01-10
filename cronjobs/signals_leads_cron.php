@@ -83,7 +83,7 @@ $my_message_template =
 
             <p>Bukola,<br />
             Client Relations Manager.</p>
-            <p>Instaforex Nigeria,<br />
+            <p>InstaFxNg,<br />
                 www.instafxng.com</p>
             <br /><br />
         </div>
@@ -91,7 +91,7 @@ $my_message_template =
         <div style="background-color: #EBDEE9;">
             <div style="font-size: 11px !important; padding: 15px;">
                 <p style="text-align: center"><span style="font-size: 12px"><strong>We're Social</strong></span><br /><br />
-                    <a href="https://facebook.com/InstaForexNigeria"><img src="https://instafxng.com/images/Facebook.png"></a>
+                    <a href="https://facebook.com/InstaFxNg"><img src="https://instafxng.com/images/Facebook.png"></a>
                     <a href="https://twitter.com/instafxng"><img src="https://instafxng.com/images/Twitter.png"></a>
                     <a href="https://www.instagram.com/instafxng/"><img src="https://instafxng.com/images/instagram.png"></a>
                     <a href="https://www.youtube.com/channel/UC0Z9AISy_aMMa3OJjgX6SXw"><img src="https://instafxng.com/images/Youtube.png"></a>
@@ -175,3 +175,5 @@ $send_message_2 = auto_mail_send($query_2, $my_subject_2, $get_mail_2);
 $query_3 = auto_mail_query(3);
 $get_mail_3 = auto_mail_template($my_message_3);
 $send_message_3 = auto_mail_send($query_3, $my_subject_3, $get_mail_3);
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

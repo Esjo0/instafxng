@@ -13,10 +13,9 @@ if (!$session_admin->is_logged_in()) {
 $get_params = allowed_get_params(['x', 'r', 'c', 'pg']);
 
 $user_code_encrypted = $get_params['x'];
-$user_code = decrypt(str_replace(" ", "+", $user_code_encrypted));
-$user_code = preg_replace("/[^A-Za-z0-9 ]/", '', $user_code);
+$user_code = dec_enc('decrypt', $user_code_encrypted);
 $referral_url = $get_params['r'];
-$referral_title_encrypted = $get_params['c']; $referral_title = decrypt(str_replace(" ", "+", $referral_title_encrypted)); $referral_title = preg_replace("/[^A-Za-z0-9 ]/", '', $referral_title);
+$referral_title_encrypted = $get_params['c']; $referral_title = dec_enc('decrypt',  $referral_title_encrypted);
 $referral_pagination = $get_params['pg'];
 
 // get the current page or set a default
@@ -38,7 +37,7 @@ if (isset($_POST['process'])) {
     $result = $db_handle->runQuery($query);
 
     $client_operation = new clientOperation();
-    $client_operation->log_sales_contact_client_interest($selected_id, $int_train, $int_fund, $int_bonus, $int_invest, $int_service, $int_other);
+    $client_operation->log_sales_contact_client_interest($selected_id, $int_train, $int_train_FMM, $int_train_FPO, $int_train_audit, $int_fund, $int_bonus, $int_invest, $int_service, $int_other);
 
     if($result) {
         $message_success = "You have successfully saved your comment";
@@ -114,6 +113,9 @@ $user_interest = $user_interest[0];
                                             <input type="hidden" name="selected_id" value="<?php if(isset($user_code)) { echo $user_code; } ?>" />
 
                                             <?php if($user_interest['interest_training'] == '2') { ?><input type="hidden" name="int_train" value="2" /><?php } ?>
+                                            <?php if($user_interest['interest_training_FMM'] == '2') { ?><input type="hidden" name="int_train" value="2" /><?php } ?>
+                                            <?php if($user_interest['interest_training_FPO'] == '2') { ?><input type="hidden" name="int_train" value="2" /><?php } ?>
+                                            <?php if($user_interest['interest_training_audit'] == '2') { ?><input type="hidden" name="int_train" value="2" /><?php } ?>
                                             <?php if($user_interest['interest_funding'] == '2') { ?><input type="hidden" name="int_fund" value="2" /><?php } ?>
                                             <?php if($user_interest['interest_bonus'] == '2') { ?><input type="hidden" name="int_bonus" value="2" /><?php } ?>
                                             <?php if($user_interest['interest_investment'] == '2') { ?><input type="hidden" name="int_invest" value="2" /><?php } ?>
@@ -148,6 +150,9 @@ $user_interest = $user_interest[0];
                                                 <label class="control-label col-sm-3" for="client_interest">Client Interest:</label>
                                                 <div class="col-sm-9">
                                                     <div class="checkbox"><label><input type="checkbox" name="int_train" value="2" <?php if($user_interest['interest_training'] == '2') { echo "checked disabled"; } ?> /> Training</label></div>
+                                                    <div class="checkbox"><label><input type="checkbox" name="int_train_FMM" value="2" <?php if($user_interest['interest_training_FMM'] == '2') { echo "checked disabled"; } ?> /> Training FMM course</label></div>
+                                                    <div class="checkbox"><label><input type="checkbox" name="int_train_FPO" value="2" <?php if($user_interest['interest_training_FPO'] == '2') { echo "checked disabled"; } ?> /> Training FPO course</label></div>
+                                                    <div class="checkbox"><label><input type="checkbox" name="int_train_audit" value="2" <?php if($user_interest['interest_training_audit'] == '2') { echo "checked disabled"; } ?> /> Training Account Audit</label></div>
                                                     <div class="checkbox"><label><input type="checkbox" name="int_fund" value="2" <?php if($user_interest['interest_funding'] == '2') { echo "checked disabled"; } ?> /> Funding<br></label></div>
                                                     <div class="checkbox"><label><input type="checkbox" name="int_bonus" value="2" <?php if($user_interest['interest_bonus'] == '2') { echo "checked disabled"; } ?> /> Bonuses<br></label></div>
                                                     <div class="checkbox"><label><input type="checkbox" name="int_invest" value="2" <?php if($user_interest['interest_investment'] == '2') { echo "checked disabled"; } ?> /> Investment (ForexCopy / PAMM)<br></label></div>

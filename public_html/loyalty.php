@@ -104,7 +104,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                     <div class="super-shadow page-top-section">
                         <div class="row ">
                             <div class="col-sm-12">
-                                <img style="" src="images/Loyalty_Points_Images/ilpr_landing_image.jpg" alt="" class="img-thumbnail img img-responsive" />
+                                <img style="" src="https://instafxng.com/imgsource/ilpr2019.png" alt="" class="img-thumbnail img img-responsive" />
                             </div>
                             <div class="col-sm-12">
                                 <center><h2>Instafxng Point Based Loyalty Program and Reward</h2>
@@ -123,9 +123,131 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <p>Our new unified reward program which rewards every single one
                                     of our loyal clients daily, monthly and annually.</p>
                                 <p>The first round of the InstaFxNg Point Based Loyalty Program and Reward ended on the 30th of
-                                    November, 2017 with 10 amazing winners who got cash prizes ranging from N50, 000 up to
+                                    November, 2018 with 10 amazing winners who got cash prizes ranging from N50, 000 up to
                                     N1 000 000.</p>
-                                <center><img src="images/Loyalty_Points_Images/ILPR_Collage.jpg" class="img-responsive img-thumbnail"></center>
+                                <div class="row" style="background: url('images/form_bg.png') repeat;">
+
+                                    <h3 class="col-sm-12 text-center">Meet the Winners</h3>
+                                    <div id="winners1" class="carousel slide col-sm-6" data-ride="carousel">
+                                        <!-- Indicators -->
+
+                                        <!-- Wrapper for slides -->
+                                        <div class="carousel-inner">
+
+                                            <div class="item active" >
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Ibe_kwe.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;1,000,000</h3>
+                                                    <h5>Points: 9,360.50</h5>
+                                                    <b style="background-color: #DD4A68; color:white;" > Chinedu </b>
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Ehinomen.png" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;250,000</h3>
+                                                    <h5>Points: 5,868.63</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Ehinomen </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Semawon.png" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;100,000</h3>
+                                                    <h5>Points: 3,952.71</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Henry </b>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Solo_mon.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 3,106.65</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Solomon </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/iduh.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 1,834.12</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Iduh </b>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div id="winner2" class="carousel slide col-sm-6" data-ride="carousel">
+                                        <!-- Indicators -->
+
+                                        <!-- Wrapper for slides -->
+                                        <div class="carousel-inner">
+
+                                            <div class="item active">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Debole.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;500,000</h3>
+                                                    <h5>Points: 6,044.72</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Debole </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Circleflow.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;150,000</h3>
+                                                    <h5>Points: 5,174.00</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Circleflow </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Ola%20Abdullahi.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 3,910.06</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Ola </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Nwabuzor_lucky.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 1,622.72</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Lucky </b>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="item">
+
+                                                <img src="https://instafxng.com/imgsource/ilpr_winners/Benson.jpg" alt="Los Angeles" style="width:150px; height:150px; border-radius: 150px;">
+                                                <div class="text-center">
+                                                    <h3>Prize: &#8358;50,000</h3>
+                                                    <h5>Points: 2,213.42</h5>
+                                                    <b style="background-color: #DD4A68; color:white;"> Benson </b>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
                                 <p>What is thrilling is about the Loyalty rewards how much you can get without doing anything
                                     extra other than just trading as usual.</p>
                                 <p>You do not enter for a draw or trade a particular lot size to qualify <b>"Just Trade!"</b></p>
@@ -140,11 +262,11 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <p>Now, the exciting thing is that everyone is a winner. You get a piece of the pie as long as you
                                     deposit funds to your account or you complete trades on any of your accounts held with us</p>
                                 <p>Isn’t that exciting?</p>
-                                <p>The Star winner of the 2016/2017 round started trading actively in July 2017 and kept trading
-                                    consistently till he worked his way up to the top of the rank scale and emerged the winner of a
-                                    whopping <b>One Million Naira</b>.</p>
-                                <center><img src="images/Loyalty_Points_Images/FXDINNER-232.jpg" class="img-responsive img-thumbnail"></center>
-                                <p>It’s neither too late nor too early for you to emerge the star winner by the end of the 2018 round.</p>
+                                <p>The Star winner of the 2017/2018 round started trading actively in August!<br>
+                                    Just 3 months before the end of the promo and  he kept trading consistently till he worked
+                                    his way up to the top of the rank scale and emerged the winner of a whopping <b>One Million Naira</b>.</p>
+                                <center><img src="https://instafxng.com/imgsource/2018_winner.jpg" class="img-responsive img-thumbnail"></center>
+                                <p>It’s neither too late nor too early for you to emerge the star winner by the end of the 2019 round.</p>
 
                                 <h4>Here is how it works...</h4>
                                 <p>Each time you make a deposit to your account or trade as usual you earn some point’s equivalent
@@ -170,10 +292,10 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                 <p>We will be rewarding $500 to five (5) clients with the highest number of loyalty points as seen from the
                                     monthly ranking for the month in view. The prizes are as follows</p>
                                 <div class="row ">
-                                    <div class="col-sm-6">
-                                        <img style="max-height: 320px" src="images/Loyalty_Points_Images/FXDINNER-106.jpg" alt="" class="img-thumbnail img img-responsive" />
+                                    <div class="col-sm-6 text-center">
+                                        <img style="max-height: 450px" src="https://instafxng.com/imgsource/AUG_7017.jpg" alt="" class="img-thumbnail img img-responsive" />
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6 text-center" style="margin-top:50px;">
                                         <h4>1st Prize = $150</h4>
                                         <br/>
                                         <h4>2nd Prize = $120</h4>
@@ -195,7 +317,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                     ranking will be awarded prizes. An annual cycle runs from December 1 to November 30 of
                                     the following year. The prizes are as follows</p>
                                 <div class="row ">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6 text-center" style="margin-top:50px;">
                                         <h4 class=" text-center">1st Prize = N1,000,000</h4>
                                         <br/>
                                         <h4 class=" text-center">2nd Prize = N500,000</h4>
@@ -208,8 +330,8 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                         <br/>
                                         <h4 class=" text-center">6th – 10th Prize = N50,000 each</h4>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <img style="max-height: 360px" src="images/Loyalty_Points_Images/FXDINNER-117.jpg" alt="" class="img-thumbnail img img-responsive" />
+                                    <div class="col-sm-6 text-center">
+                                        <img style="max-height: 450px" src="https://instafxng.com/imgsource/AUG_6953.jpg" alt="" class="img-thumbnail img img-responsive" />
                                     </div>
                                 </div>
                                 <p>Prizes will be presented to winners during our end of the year dinner in December</p>
@@ -243,8 +365,8 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                         </div>
                                         <div id="collapse1" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <p>InstaForex Nigeria provides clients with the opportunity to make more money through the Instafxng Loyalty Programme.</p>
-                                                <p>This campaign will be held from December 1, 2017 and will run till November 30, 2018.</p>
+                                                <p>InstaForex Nigeria provides clients with the opportunity to make more money through the InstaFxNg Loyalty Programme.</p>
+                                                <p>This campaign will be held from December 1, 2018 and will run till November 30, 2019.</p>
                                                 <ul>
                                                     <li>Points are earned for all account deposit actions.</li>
                                                     <li>Points are earned for all account trading activity.</li>
@@ -257,6 +379,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                                     <li>Redeemed points will be deducted from total earned points and only the new points balance will count for monthly and annual ranking.</li>
                                                     <li>Clients with multiple accounts under the same email address will have all their rewards points summed up and aggregated.</li>
                                                     <li>Members of staff of Instant Web-Net Technologies Ltd are disqualified from taking part in this promotion.</li>
+                                                    <li>Winner(s) agree that his/her pictures will be used by InstaFxNg for promotional purposes</li>
                                                     <li>InstaForex Nigeria holds the sole right to amend or supplement the rules without prior notice.</li>
                                                 </ul>
                                             </div>
@@ -299,6 +422,7 @@ $selected_loyalty_year = $db_handle->fetchAssoc($result);
                                             <div class="panel-body">
                                                 <p>Winners for each monthly and yearly round of the promotion will be displayed on the loyalty page, the winners will be
                                                     contacted and their winnings deposited into their InstaForex accounts.</p>
+                                                <p>Winner(s) agree that his/her pictures will be used by InstaFxNg for promotional purposes.</p>
                                                 <p>Please be informed that InstaForex holds the right to update the rules of the
                                                     campaign without prior notice.</p>
                                             </div>

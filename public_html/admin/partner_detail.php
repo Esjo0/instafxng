@@ -6,7 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['id']);
 $partner_code_encrypted = $get_params['id'];
-$partner_code = decrypt_ssl(str_replace(" ", "+", $partner_code_encrypted));
+$partner_code = dec_enc('decrypt',  $partner_code_encrypted));
 
 if(is_null($partner_code_encrypted) || empty($partner_code_encrypted)) {
     redirect_to("./"); // page cannot display anything without the id

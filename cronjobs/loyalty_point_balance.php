@@ -32,3 +32,5 @@ foreach ($selected AS $row) {
             WHERE ull.user_code = '$user_code'";
     $result = $db_handle->runQuery($query);
 }
+
+if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }

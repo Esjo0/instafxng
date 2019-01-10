@@ -40,8 +40,8 @@ $system_message = $db_handle->fetchAssoc($result);
         <tr>
             <td><?php echo $row['description']; ?></td>
             <td>
-                <a title="Edit" class="btn btn-info" href="system_message.php?action=update&id=<?php echo encrypt($row['system_message_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Edit</a>
-                <a title="Send Test" class="btn btn-info" href="system_message.php?action=test&id=<?php echo encrypt($row['system_message_id']); ?>"><i class="fa fa-paper-plane fa-fw"></i> </a>
+                <a title="Edit" class="btn btn-info" href="system_message.php?action=update&id=<?php echo dec_enc('encrypt', $row['system_message_id']); ?>"><i class="glyphicon glyphicon-edit icon-white"></i> Edit</a>
+                <a title="Send Test" class="btn btn-info" href="system_message.php?action=test&id=<?php echo dec_enc('encrypt', $row['system_message_id']); ?>"><i class="fa fa-paper-plane fa-fw"></i> </a>
             </td>
         </tr>
         <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>

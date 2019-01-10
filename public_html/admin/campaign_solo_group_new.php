@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['id']);
 $campaign_solo_group_id_encrypted = $get_params['id'];
-$campaign_solo_group_id = decrypt(str_replace(" ", "+", $campaign_solo_group_id_encrypted));
-$campaign_solo_group_id = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_solo_group_id);
+$campaign_solo_group_id = dec_enc('decrypt',  $campaign_solo_group_id_encrypted);
 
 if (isset($_POST['process'])) {
     

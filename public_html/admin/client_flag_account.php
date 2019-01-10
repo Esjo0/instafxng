@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $account_flag_id_encrypted = $get_params['id'];
-$account_flag_id = decrypt(str_replace(" ", "+", $account_flag_id_encrypted));
-$account_flag_id = preg_replace("/[^A-Za-z0-9 ]/", '', $account_flag_id);
+$account_flag_id = dec_enc('decrypt',  $account_flag_id_encrypted);
 
 $client_operation = new clientOperation();
 

@@ -6,8 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['x', 'id']);
 $campaign_sms_id_encrypted = $get_params['id'];
-$campaign_sms_id = decrypt(str_replace(" ", "+", $campaign_sms_id_encrypted));
-$campaign_sms_id = preg_replace("/[^A-Za-z0-9 ]/", '', $campaign_sms_id);
+$campaign_sms_id = dec_enc('decrypt',  $campaign_sms_id_encrypted);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach($_POST as $key => $value) {

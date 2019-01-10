@@ -62,13 +62,13 @@ $all_bonus_packages = $db_handle->fetchAssoc($result);
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <a href="bonus_view.php?bc=<?php echo encrypt($bonus_code); ?>" title="click for full details" target="_blank">
+                                        <a href="bonus_view.php?bc=<?php echo dec_enc('encrypt', $bonus_code); ?>" title="click for full details" target="_blank">
                                             <img src="images/bonus_packages/<?php echo $bonus_img; ?>" alt="" class="img-responsive" />
                                         </a>
                                     </div>
                                     <div class="col-sm-8">
                                         <p><?php echo $bonus_desc; ?></p>
-                                        <a class="btn btn-success" href="bonus_view.php?bc=<?php echo encrypt($bonus_code); ?>" title="click for full details" target="_blank">More Details</a>
+                                        <a class="btn btn-success" href="bonus_view.php?bc=<?php echo dec_enc('encrypt', $bonus_code); ?>" title="click for full details" target="_blank">More Details</a>
                                     </div>
                                 </div>
                             </div>

@@ -37,8 +37,7 @@ if(isset($_POST['decline']))
 }
 $get_params = allowed_get_params(['x']);
 $report_code_encrypted = $get_params['x'];
-$report_code = decrypt(str_replace(" ", "+", $report_code_encrypted));
-$report_code = preg_replace("/[^A-Za-z0-9 ]/", '', $report_code);
+$report_code = dec_enc('decrypt',  $report_code_encrypted);
 
 $query = "SELECT PMP.title AS project_title, 
 CONCAT(A.first_name, SPACE(1), A.last_name) AS author_name, 
@@ -103,7 +102,7 @@ $report_details = $db_handle->fetchAssoc($result)[0];
                         <div class="row">
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
-                                <p><a href="project_management_project_view.php?x=<?php echo encrypt($report_details['project_code']) ?>" class="btn btn-default" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a></p>
+                                <p><a href="project_management_project_view.php?x=<?php echo dec_enc('encrypt', $report_details['project_code']) ?>" class="btn btn-default" title="Back"><i class="fa fa-arrow-circle-left"></i> Back</a></p>
 
                                     <p><b>PROJECT TITLE:</b> <?php echo $report_details['project_title']; ?></p>
                                     <p><b>AUTHOR:</b> <?php echo $report_details['author_name']; ?></p>

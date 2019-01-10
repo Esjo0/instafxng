@@ -2,7 +2,7 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {redirect_to("login.php");}
 $bonus_operations = new Bonus_Operations();
-$package_code = decrypt_ssl(str_replace(" ", "+", $_GET['pc']));
+$package_code = dec_enc('decrypt',  $_GET['pc']));
 $package_details = $bonus_operations->get_package_by_code($package_code);
 ?>
 <!DOCTYPE html>
@@ -42,7 +42,7 @@ $package_details = $bonus_operations->get_package_by_code($package_code);
                             <div class="col-sm-12">
                                 <?php require_once 'layouts/feedback_message.php'; ?>
                                 <p class="pull-left"><a href="bonus_list.php" class="btn btn-default" title="Bonus Packages"><i class="fa fa-arrow-circle-left"></i> Bonus Packages</a></p>
-                                <p class="pull-right"><a href="bonus_new.php?package_code=<?php echo encrypt_ssl($package_code);?>" class="btn btn-default" title="Edit Bonus Package">Edit Package <i class="fa fa-arrow-circle-right"></i></a></p>
+                                <p class="pull-right"><a href="bonus_new.php?package_code=<?php echo dec_enc('encrypt', $package_code);?>" class="btn btn-default" title="Edit Bonus Package">Edit Package <i class="fa fa-arrow-circle-right"></i></a></p>
 
                                 <table class="table table-responsive table-responsive">
                                     <tbody>
