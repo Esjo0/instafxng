@@ -1,4 +1,4 @@
-ALTER TABLE `sales_contact_client_interest` ADD `interest_training_FMM` ENUM('1','2') NOT NULL DEFAULT '1' COMMENT '1-Not interested 2-Interested' AFTER `interest_training`, ADD `interest_training_FPO` ENUM('1','2') NOT NULL DEFAULT '1' COMMENT '1-Not interested 2-Interested' AFTER `interest_training_FMM`, ADD `interest_training_audit` ENUM('1','2') NOT NULL DEFAULT '1' COMMENT '1-Not interested 2-Interested' AFTER `interest_training_FPO`;
+DELETE FROM account_audit_date WHERE audit_date = '2019-01-18' AND audit_date = '2019-01-19';
 
 `ALTER TABLE ``call_log`` DROP INDEX ``user_code``;`
 
