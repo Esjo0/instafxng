@@ -8,6 +8,18 @@ $query = "SELECT u.email FROM sales_contact_client_interest AS scci INNER JOIN u
 $result = $db_handle->numRows($query);
 $interest_training = $result;
 
+$query = "SELECT u.email FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_training_FMM = '2'";
+$result = $db_handle->numRows($query);
+$interest_training_FMM = $result;
+
+$query = "SELECT u.email FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_training_FPO = '2'";
+$result = $db_handle->numRows($query);
+$interest_training_FPO = $result;
+
+$query = "SELECT u.email FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_training_audit = '2'";
+$result = $db_handle->numRows($query);
+$interest_training_audit = $result;
+
 $query = "SELECT u.email FROM sales_contact_client_interest AS scci INNER JOIN user AS u ON scci.user_code = u.user_code WHERE scci.interest_funding = '2'";
 $result = $db_handle->numRows($query);
 $interest_funding = $result;
@@ -78,6 +90,9 @@ $interest_other = $result;
                                     </thead>
                                     <tbody>
                                     <tr><td>Training</td><td><?php echo $interest_training; ?></td></tr>
+                                    <tr><td>Training FMM</td><td><?php echo $interest_training_FMM; ?></td></tr>
+                                    <tr><td>Training FPO</td><td><?php echo $interest_training_FPO; ?></td></tr>
+                                    <tr><td>Training ACCOUNT AUDIT</td><td><?php echo $interest_training_audit; ?></td></tr>
                                     <tr><td>Funding</td><td><?php echo $interest_funding; ?></td></tr>
                                     <tr><td>Bonuses</td><td><?php echo $interest_bonus; ?></td></tr>
                                     <tr><td>Investment</td><td><?php echo $interest_investment; ?></td></tr>
