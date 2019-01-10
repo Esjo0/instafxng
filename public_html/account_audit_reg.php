@@ -1,6 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Education";
+$today = date('Y-m-d');
 if (isset($_POST['reserve_seat'])) {
     $email = $db_handle->sanitizePost(trim($_POST['email']));
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
