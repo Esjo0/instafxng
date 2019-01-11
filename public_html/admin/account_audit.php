@@ -316,7 +316,6 @@ $participants = $db_handle->fetchAssoc($result);
                                                                         <select id="entry_channel3" class="form-control" name="date3" >
                                                                             <option value="">Choose a date</option>
                                                                             <?php
-                                                                            var_dump($audit_date);
                                                                             $query = "SELECT * FROM account_audit_date WHERE venue = '3' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today'";
                                                                             $result = $db_handle->runQuery($query);
                                                                             $result = $db_handle->fetchAssoc($result);
