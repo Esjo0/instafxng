@@ -73,7 +73,7 @@ if (isset($_POST['schedule_private_paid'])) {
     $client_email = $email;
     $schedule_type = 3;
 
-    $payment = $obj_training->log_course_deposit($date, $user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
+    $payment = $obj_training->log_course_deposit($mode, $location, $date, $user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
 
     $schedule_public = $obj_training->schedule_private_time($date, $mode, $client_email, $admin_code, $location, $schedule_type);
 
