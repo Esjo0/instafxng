@@ -91,12 +91,11 @@ class training
     public function log_course_deposit($date, $user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email) {
         global $db_handle;
         global $system_object;
-
+      
         $date = datetime_to_text($date);
 
         $query = "INSERT INTO user_edu_deposits (user_code, trans_id, course_id, amount, stamp_duty,
-            gateway_charge, pay_method, deposit_origin, status) VALUES ('$user_code', '$trans_id', $course_id, $course_cost, $stamp_duty, $card_processing, '$pay_type', '$origin_of_deposit', '3')";
-        var_dump($query);
+            gateway_charge, pay_method, deposit_origin, status) VALUES ('$user_code', '$trans_id', $course_id, $course_cost, $stamp_duty, $card_processing, '$pay_type', '$origin_of_deposit', '2')";
         $db_handle->runQuery($query);
 
         $total_payment = $course_cost + $stamp_duty;
