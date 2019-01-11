@@ -88,10 +88,19 @@ class training
     }
 
     // Log course deposit attempt
-    public function log_course_deposit($date, $user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email) {
+    public function log_course_deposit($mode, $location, $date, $user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email) {
         global $db_handle;
         global $system_object;
-      
+
+        if($mode == '1'){
+            $location = "<span>Download & Install the ZOOM App from <a target='_blank' href='https://zoom.us'>www.zoom.us</a> , from Google PlayStore,
+                                        or the Apple Store. You will be contacted by your Instructor for the Meeting ID to
+                                        join the Online Training Class at the exact scheduled time.</span>";
+        }elseif($mode == '2'){
+            $location = "<span class='text-center'><b>Training Venue</b> - " . office_addresses($location) . "</span><br>";
+        }else{
+            $location = " ";
+        }
         $date = datetime_to_text($date);
 
         $query = "INSERT INTO user_edu_deposits (user_code, trans_id, course_id, amount, stamp_duty,
@@ -151,7 +160,9 @@ class training
 
             <p>Below is your IMP training Schedule</p>
 
-            <h3><b>$date</b></h3>
+            <h3><b>$date</b><br>
+            $location
+            </h3>
 
             <br /><br />
             <p>Best Regards,</p>
