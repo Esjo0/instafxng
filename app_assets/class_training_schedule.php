@@ -135,7 +135,7 @@ class training
             <p>The details of your order are as follows:</p>
 
             <p>Payment for Intermediate Mentorship Program: (N $course_cost)</p>
-            <p>Stamp Duty:        --                                  (N 50)</p>
+            <p>Stamp Duty:        --                        (N $stamp_duty)</p>
             <p>Total Payment Due:           --            (N $total_payment)</p>
 
              <p>To complete your order, please make your payment as follows:</p>
