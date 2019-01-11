@@ -61,19 +61,19 @@ if (isset($_POST['schedule_private_paid'])) {
     }
     $course_id = 0;
     $origin_of_deposit = '1'; // Originates online
-    $stamp_duty = 0; // It has been added to course cost
+    $stamp_duty = 50; // It has been added to course cost
     $course_cost = $amount;
     $total_payable = $stamp_duty + $course_cost;
     $card_processing = 0.015 * $total_payable;
     $total_payable_card = $card_processing + $total_payable;
-    $course_name = "One on One Forex Training";
+    $course_name = "Intermediate Mentorship Program";
     $trans_id = "FPA" . time();
     $trans_id_encrypted = dec_enc('encrypt', $trans_id);
     $client_name = $full_name;
     $client_email = $email;
     $schedule_type = 3;
 
-    $payment = $obj_training->log_course_deposit($user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
+    $payment = $obj_training->log_course_deposit($date, $user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
 
     $schedule_public = $obj_training->schedule_private_time($date, $mode, $client_email, $admin_code, $location, $schedule_type);
 

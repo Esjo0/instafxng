@@ -88,13 +88,15 @@ class training
     }
 
     // Log course deposit attempt
-    public function log_course_deposit($user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email) {
+    public function log_course_deposit($date, $user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email) {
         global $db_handle;
         global $system_object;
 
-        $query = "INSERT INTO user_edu_deposits (user_code, trans_id, course_id, amount, stamp_duty,
-            gateway_charge, pay_method, deposit_origin) VALUES ('$user_code', '$trans_id', $course_id, $course_cost, $stamp_duty, $card_processing, '$pay_type', '$origin_of_deposit')";
+        $date = datetime_to_text($date);
 
+        $query = "INSERT INTO user_edu_deposits (user_code, trans_id, course_id, amount, stamp_duty,
+            gateway_charge, pay_method, deposit_origin, status) VALUES ('$user_code', '$trans_id', $course_id, $course_cost, $stamp_duty, $card_processing, '$pay_type', '$origin_of_deposit', '3')";
+        var_dump($query);
         $db_handle->runQuery($query);
 
         $total_payment = $course_cost + $stamp_duty;
@@ -109,13 +111,15 @@ class training
         <img src="https://instafxng.com/images/ifxlogo.png" />
         <hr />
         <div style="background-color: #FFFFFF; padding: 15px; margin: 5px 0 5px 0;">
-            <p>Dear $client_name,</p>
+             <p>Great job $client_name,</p>
 
-            <p>NOTE: This is a CONFIDENTIAL Document. Information herein should
-            never be shared with anyone.</p>
+            <p>You are right on track!</p>
 
-            <p>THIS INVOICE IS VALID ONLY FOR 24 HOURS. IF PAYMENT IS NOT MADE BY THEN,
-            YOU MUST SUBMIT ANOTHER ORDER.</p>
+            <p>Kindly take note of the following information to ensure an easy payment process:</p>
+
+            <p>This Document is CONFIDENTIAL and Information herein should never be shared with anyone.</p>
+
+            <p>Also, please note that THIS INVOICE IS VALID ONLY FOR 24 HOUR and upon expiration, you will be required to submit a new order.</p>
 
             <p>====================</p>
 
@@ -136,11 +140,8 @@ class training
                 Account Name: Instant Web-Net Technologies Ltd<br />
                 Account Number: 0174516696
                 </li>
-                <li>After making the payment, visit <a href='https://instafxng.com/fxacademy'>https://instafxng.com/fxacademy</a> and click on NOTIFICATION.</li>
-                <li>Fill in the column as stated on the page.</li>
+                <li>After making the payment, your payment will be verified and you will be contacted.</li>
             </ol>
-
-            <p>Upon receipt of payment, you will be granted access to the Forex Profit Optimizer Course</p>
 
             <p>NOTE:</p>
             <ul>
@@ -149,10 +150,9 @@ class training
                 in the REMARK column.</li>
             </ul>
 
-            <p>Kindly view your IMP training Schedule below.</p>
+            <p>Below is your IMP training Schedule</p>
 
-
-
+            <h3><b>$date</b></h3>
 
             <br /><br />
             <p>Best Regards,</p>
