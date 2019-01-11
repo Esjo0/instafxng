@@ -91,7 +91,6 @@ class training
     public function log_course_deposit($mode, $location, $date, $user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email) {
         global $db_handle;
         global $system_object;
-
         if($mode == '1'){
             $location = "<span>Download & Install the ZOOM App from <a target='_blank' href='https://zoom.us'>www.zoom.us</a> , from Google PlayStore,
                                         or the Apple Store. You will be contacted by your Instructor for the Meeting ID to
