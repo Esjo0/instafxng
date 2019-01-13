@@ -64,7 +64,7 @@ if (isset($_POST['schedule_private_paid'])) {
     $stamp_duty = 50; // It has been added to course cost
     $course_cost = $amount;
     $total_payable = $stamp_duty + $course_cost;
-    $card_processing = 0.015 * $total_payable;
+    $card_processing = 0;
     $total_payable_card = $card_processing + $total_payable;
     $course_name = "Intermediate Mentorship Program";
     $trans_id = "FPA" . time();
