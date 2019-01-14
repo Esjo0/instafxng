@@ -103,7 +103,7 @@ class training
         $date = datetime_to_text($date);
 
         $query = "INSERT INTO user_edu_deposits (user_code, trans_id, course_id, amount, stamp_duty,
-            gateway_charge, pay_method, deposit_origin, status) VALUES ('$user_code', '$trans_id', $course_id, $course_cost, $stamp_duty, $card_processing, '$pay_type', '$origin_of_deposit', '2')";
+            gateway_charge, pay_method, deposit_origin, status) VALUES ('$user_code', '$trans_id', $course_id, $course_cost, $stamp_duty, $card_processing, '$pay_type', '$origin_of_deposit', '6')";
         $db_handle->runQuery($query);
 
         $total_payment = $course_cost + $stamp_duty;
@@ -135,7 +135,7 @@ class training
             <p>The details of your order are as follows:</p>
 
             <p>Payment for Intermediate Mentorship Program: (N $course_cost)</p>
-            <p>Stamp Duty:        --                                  (N 50)</p>
+            <p>Stamp Duty:        --                        (N $stamp_duty)</p>
             <p>Total Payment Due:           --            (N $total_payment)</p>
 
              <p>To complete your order, please make your payment as follows:</p>
