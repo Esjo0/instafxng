@@ -4,6 +4,8 @@ if (!$session_careers->is_logged_in()) {
     redirect_to("careers_login.php");
 }
 
+$my_client_number = $_SESSION['cu_unique_code'];
+
 $get_params = allowed_get_params(['p']);
 $page_requested = $get_params['p'];
 

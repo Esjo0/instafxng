@@ -1,5 +1,4 @@
 <?php
-
 $my_biodata = $obj_careers->get_applicant_biodata($_SESSION['cu_unique_code']);
 $all_states = $system_object->get_all_states();
 
