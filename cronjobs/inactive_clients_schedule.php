@@ -4,8 +4,8 @@ require_once 'initialize_general.php';
 
 
 //Paid for the Forex optimizer Course but have not started
-$my_subject_1a = "Your Forex Profit Optimizer course is on…";
-$my_message_1a =
+$my_subject_1 = "[NAME], There’s Gold in the Dirt, Find it!";
+$my_message_1 =
     <<<MAIL
 <p>Dear [NAME]</p>
 <p>Trust you are doing well.</p>
@@ -17,10 +17,19 @@ Your training portal awaits and all you need to do is begin now.</p>
 <p>Rest assured, after the training, you will be fully equipped to trade profitably and optimally.</p>
 <p>Start taking your lessons now <a href="https://bit.ly/2iExTpN">here</a></p>
 <p>Hurry Now! I can’t wait to for you to join our league of profitable traders</p>
+Dear [NAME],
+I was talking to a friend yesterday. He had just got a new role and doesn't seem to have a hang of it yet so he's having a hard time putting things together.
+I remember when I started working and I didn't know how to type. I would resume work every day and spend the first 30 minutes of the day learning how to type using Mavis Beacon Teaches Typing.
+I made this a habit and would usually do that every morning till I became a pro who could type without even looking at the monitor screen.
+Maybe you're like me who's taking baby steps and trying to get the grill of Forex trading or you're an intermediate or a pro trader experiencing some setbacks in your trades.
+Never give up! It's in brushing up your skills, learning a new strategy, testing out what works and ditching what doesn't that you'll find your gold.
+There's gold in the dirt.  You only need to find it.
+Do you need help finding your gold in the Forex market? You’re the reason I’m here! Click here to send me a message right away.
+Our amazing team and I will be sure to get in touch with you immediately.
 MAIL;
 
-$my_subject_1b = " You’ve Paid Your Dues [NAME], you deserve…";
-$my_message_1b =
+$my_subject_2 = "[NAME], You Are FIRED!";
+$my_message_2 =
     <<<MAIL
 <p>Hello [NAME]</p>
 <p>How are you doing?</p>
@@ -35,10 +44,17 @@ $my_message_1b =
 <p>I would love for you to start and complete your optimizer course as soon as possible because it will equip you to be prepared to trade profitably.</p>
 <p>If you have any concern, please feel free share with me</p>
 <p>I am eager to read and respond to your email.</p>
+Dear [NAME],
+Oops! That didn’t come out right, I meant to ask this “Are you fired up to achieve your income target this year and earn a minimum of 100 pips per month?
+You have been missing in action for quite a while now, which makes me wonder, what happened to you and your goals of making more money this year.
+If this was to be a 9-5 job, you sure would be fired by now for your absenteeism, but thank goodness, this is your side income stream and you are the boss!
+I know it is not so common to find a job, where you decide your working hours and get the chance to make unlimited money daily.
+It’s time to take charge and make this a profitable journey. I would be glad to assist you on this journey to consistent income
+Have you been making losses or your trade have not been profitable? Whatever it is! I’m right waiting to assist you move your trades back into steady profits. Click here to find out what you need to break even and make profits now.
 MAIL;
 
-$my_subject_1c = "Your Training Portal Awaits you";
-$my_message_1c =
+$my_subject_3 = "Don’t Miss the Next 100 Pips";
+$my_message_3 =
     <<<MAIL
 <p>Hello [NAME],</p>
 <p>Just checking on you.</p>
@@ -51,10 +67,20 @@ $my_message_1c =
 <p>Complete your course and get equipped now! Click <a href="https://bit.ly/2iExTpN">here</a> to begin now.</p>
 <p>I look forward to seeing you in class.</p>
 <p>Please feel free to reach out to me if you need any assistance. I’ll always be here.</p>
+Every day you don’t show up, you miss up to 100 pips in profits daily!
+Have you heard of our tight- entry, high precision signals before? Let me let you in on our top-notch, 85% accurate, tight-entry Free Trade Signals.
+In 2018 alone, our signal generated over 6000 pips in profit.
+Don’t miss the Next 100 Pips…
+ I don’t know what your risk appetite is, but if you grab this 100 pips on {one} Insta-lot size daily{,} you’d leave the market with $100 profits every day!
+$500 in a week and $2 000 in 20 days!
+You can achieve this in a couple of weeks if you are ready to get the right assistance.
+Don’t fire yourself, let me help you get it right and you can start earning off the forex market again!
+Want to start this journey all over again? Click here to get started and I’ll gladly take you every step of the way!
+I’d like to hear from you again. Please feel free to write me back, if you need any assistance or clarification.
 MAIL;
 
-$my_subject_1d = "All you Need to build a Successful Side Business is in here";
-$my_message_1d =
+$my_subject_4 = "[NAME], Have you claimed your 100% Bonus Yet?";
+$my_message_4 =
     <<<MAIL
 <p>Dear [NAME],</p>
             <p>I hope you are doing well?</p>
@@ -67,11 +93,28 @@ $my_message_1d =
             <p>
                 <center><a href="http://bit.ly/2iExTpN" target="_blank"><button style="background: #2f88bc; border-radius: 15px; height: 35px;text-decoration: none; text-align: center; color: white;"><strong>Get me Started</strong>
         </button></a></center></p>
+        Dear [NAME],
+How has your trading activities been? Please share with me, I’ll love to hear about it.
+Since you’ve been away for quite some time, I thought to remind you about your 100% bonus in case you haven’t claimed it before.
+The 100% bonus is a one-time bonus you get for being our esteemed client, so if you have not taken advantage of this, here is another opportunity!
+This bonus is available on your deposits of $50, $100 or $150, don’t miss out on it!
+This means that when you deposit $50 into your trading account with us, you get a $50 bonus added to your trading account.
+When you deposit $100 into your trading account, you get a $100 bonus added to your trading capital, and finally when you deposit $150, you will get $150 bonus added to your trading capital.
+To take this bonus immediately, swiftly follow this quick & easy steps;
+A.Reactivate your account! – Clarify that you are ready to claim this bonus and get all the support you need. Click here to reactivate your account
+B.Give your account {some} Life! -- Click here to make your choice deposit
+C.Claim your 130% --  Click here to claim your bonus now!
+And that is it, as simple as ABC!
+Let me know if you need any help on this, I am here to ensure you get the best of the InstaFxNg experience!
+
+Best Regards,
+Mercy,
+Clients Relations Manager,
 MAIL;
 
 // Student between Lesson 1-6 course2
-$my_subject_2a = "Hy [NAME], Get equipped now";
-$my_message_2a =
+$my_subject_5 = "[NAME], Get 2000 Pips in Profit This Month Alone!";
+$my_message_5 =
     <<<MAIL
 <p>Dear [NAME],</p>
             <p>How are you doing?</p>
@@ -83,6 +126,18 @@ $my_message_2a =
             <p>Get equipped now by completing your course and in few weeks you will be cashing out like a pro.</p>
             <p>Click <a href="https://instafxng.com/fxacademy/login.php">here</a> to finish your profit optimizer course right away!</p>
             <p>Should you experience any challenge or need any help, do well to reply this mail and I will be sure to respond swiftly.</p>
+Dear [NAME],
+More goodnews for you today!
+Are you still thinking of how to make more money this month?
+Don’t stress further! Here is a perfect set up to earn you more money this month!
+In an attempt to ensure that your comeback is productive and profitable, we have created something to give you clearer market directions.
+Now, this means you can make up to 100 pips daily, 500 weekly and 2000 pips monthly.
+This {“All-new” Trade} signals feature about 85% percent guarantee on 30-100 pips per day.
+Now, you can conveniently make up to $100 daily from the comfort of your home, office or on the go!
+All you have to do is save the signal page, check out the daily trading signals posted and place your trades {in} order {to take your} profits!
+Don’t stop there! Get alerted anytime the signals are posted.
+You don’t have to miss out on any signal, we are going to ensure that you take every profit-making opportunity as they come.
+Click here to get alerts on Facebook messenger every time our signals are posted.
 MAIL;
 
 $my_subject_2b = "All that you need to know is just a click away";
@@ -209,29 +264,6 @@ $my_message_3d =
 <p>Fantastic, huh? You bet!</p>
 MAIL;
 
-//<p>Hello [NAME],</p>
-//<p>A big congratulation to you!</p>
-//<p>I’m so glad you have hit a milestone in the ongoing online Forex trading course and I know you feel like a superman right now.</p>
-//<p>Yes ooo, please feel like it because you are actually a SUPERMAN!</p>
-//<p>Now is not the time to relax at all, you have just completed the basics of Forex trading and it’s time for you to move on and get to the part where you can use all the knowledge you have acquired on this level to achieve a greater feat in the next course.</p>
-//<p>Be sure to keep the knowledge you have garnered as you will be needing every one of them at the advanced level.</p>
-//<p>You have laid the foundation, now is the time to build your mansion on the foundation you have laid.</p>
-//<p>Introducing the Brand New Forex Profit Optimizer Course...</p>
-//<p>When you take the Forex Profit Optimizer Course, you will discover the following:</p>
-//<ul>
-//    <li>Important Forex Trading terminologies that you must know to succeed</li>
-//    <li>The right time to trade and make profit</li>
-//	<li>Very easy ways to analyse the market and know whether to enter a buy or sell trade for profit</li>
-//    <li>How to open your own free Live account and earn real dollars</li>
-//	<li>Get guaranteed 100% bonus up to $150 on deposit to your live trading account</li>
-//	<li>How to make an extra $4,200 and N1,000,000 in rewards annually while taking your normal trades</li>
-//</ul>
-//<p>With this knowledge, not only are you ready to make consistent income from Forex trading, you will be adequately equipped to set money goals and meet each of them. </p>
-//<p>So if you are really interested in making consistent money from Forex Trading then go ahead and immediately take the Forex Profit Optimizer Course Click here to enrol now. </p>
-//<p>We have limited spaces left! We have been receiving a truckload of requests from students who wants to be a part of the Forex optimizer course but because we need to maintain a high standard of training and our instructors have to schedule a personal phone/Skype consultation session with each student, we cannot afford to take everyone that tries to enrol.</p>
-//<p>I can guarantee you a space if you get in before 48 hours elapse. If you don't enrol and get in before 48 hours, I am afraid you may lose this opportunity.</p>
-//<p>Why delay further? Click here to get in now.</p>
-//<p>Email to students who haven’t continued to the Forex profit Optimizer course 5 days after the previous mail.</p>
 
 //Students who have completed course 2 but no deposit
 $my_subject_4a = "[NAME] Stop Missing Out";
@@ -427,83 +459,34 @@ MAIL;
     return $my_message_template;
 }
 
-function student_auto_mail_query($query_type, $day_value) {
+function student_auto_mail_query($query_type, $day_value)
+{
 
     $today = date('Y-m-d');
 
-    $education_object = new Education();
-    //get highest lesson published in fx academy
-    $highest_lesson_published = $education_object->get_highest_lesson_published();
-    $before_highest_lesson_published = $highest_lesson_published - 1;
+    $from_date = date_sub($today, date_interval_create_from_date_string('14 days'));
+    $from_date = date_format($from_date, 'Y-m-d');
 
-    switch($query_type) {
-        case 1:
-            $query = "SELECT u.first_name, u.email FROM user_edu_exercise_log AS ueel 
-INNER JOIN user AS u ON ueel.user_code = u.user_code 
-LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-
-              INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
-              WHERE (DATEDIFF('$today', STR_TO_DATE(uefp.created, '%Y-%m-%d')) = '$day_value')
-AND u.user_code <> ueel.user_code
-AND uefp.user_code = u.user_code 
-GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
-
-            break;
-        case 2:
-            $query = "SELECT u.first_name, u.email, MAX(el.lesson_order) AS max_lesson FROM user_edu_exercise_log AS ueel
-            INNER JOIN user AS u ON ueel.user_code = u.user_code
-            INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
-            LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-            WHERE WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value')
-        AND u.user_code = ueel.user_code
-        AND uefp.user_code = u.user_code
-            GROUP BY ueel.user_code HAVING (max_lesson BETWEEN 1 AND 6)
-            ORDER BY u.last_name ASC ";
-
-
-            break;
-        case 3:
-            $query = "SELECT u.first_name, u.email, MAX(el.lesson_order) AS max_lesson FROM user_edu_exercise_log AS ueel
-            INNER JOIN user AS u ON ueel.user_code = u.user_code
-            INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
-            LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-            WHERE WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value')
-        AND u.user_code = ueel.user_code
-        AND uefp.user_code = u.user_code
-            GROUP BY ueel.user_code HAVING (max_lesson BETWEEN 7 AND $before_highest_lesson_published)
-            ORDER BY u.last_name ASC  ";
-        break;
-        case 4:
-            $query = "SELECT u.first_name, u.email, MAX(el.lesson_order) AS max_lesson FROM user_edu_exercise_log AS ueel
-INNER JOIN user AS u ON ueel.user_code = u.user_code
- INNER JOIN edu_lesson AS el ON ueel.lesson_id = el.edu_lesson_id
-LEFT JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code 
-LEFT JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code 
-WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value' ) 
-AND u.user_code = ueel.user_code
-AND ui.user_code <> u.user_code
-AND uefp.user_code = u.user_code 
-GROUP BY ueel.user_code  HAVING max_lesson = $highest_lesson_published ORDER BY u.last_name ASC ";
-            break;
-        case 5:
-            $query = "SELECT u.first_name, u.email
-                FROM user_edu_exercise_log AS ueel
-                INNER JOIN user AS u ON ueel.user_code = u.user_code
-                LEFT JOIN user_edu_fee_payment AS uefp ON ueel.user_code = uefp.user_code
-                WHERE (DATEDIFF('$today', STR_TO_DATE(ueel.created, '%Y-%m-%d')) = '$day_value' ) 
-                AND ueel.lesson_id = '5' 
-                AND uefp.user_code <> u.user_code
-                GROUP BY ueel.user_code ORDER BY u.last_name ASC ";
-            break;
-        default:
-            $query = "";
-    }
+    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name, SUM(td.volume) AS my_volume, MAX(td.date_earned) AS last_trade_date
+            FROM trading_commission AS td
+            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+            INNER JOIN user AS u ON ui.user_code = u.user_code
+            INNER JOIN account_officers AS ao ON u.attendant = ao.account_officers_id
+            INNER JOIN admin AS a ON ao.admin_code = a.admin_code
+            WHERE u.user_code NOT IN (
+                SELECT u.user_code
+                FROM trading_commission AS td
+                INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+                INNER JOIN user AS u ON ui.user_code = u.user_code
+                WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$today'
+            ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$today' ";
 
     return $query;
+
+
 }
 
-function student_auto_mail_send($query, $my_subject_raw, $my_message_raw) {
+function auto_mail_send($query, $my_subject_raw, $my_message_raw) {
     global $db_handle;
     global $system_object;
 
