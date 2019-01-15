@@ -165,56 +165,40 @@ MAIL;
 $my_subject_9 = "[NAME], Don't Lose the Next Trade.";
 $my_message_9 =
     <<<MAIL
-<p>Dear [NAME],</p>
-            <p>It's been quite some time, how are you doing?</p>
-            <p>I have been looking forward to seeing you at the training, but you haven't showed up for a while.</p>
-            <p>Time is so limited right? Yes, I know.</p>
-            <p>You have done such a great job to have come this far. You're almost done with the course, well done! You deserve some accolades.</p>
-            <p>I just want to encourage you to reach the finish line because your reward awaits you at the end of this race.</p>
-            <p>Click here to go back to the training right away.</p>
-            <p>A lot awaits you after this phase, just like a young chap who goes through school and is equipped with wisdom to go face the world and add value to it, after your course you would be able to trade profitably and add value to your bank account.</p>
-            <p>You can add a few zeros to your bank account and break your normal income limit this year. Get into it now!</p>
-            <p>Click <a href="https://bit.ly/2iExTpN">here</a> to continue from where you stopped.</p>
-            <p>I will be waiting with a startup bonus of 130% at the finish line, hurry now! My offer stands till the end of Month.</p>
-Hello [NAME],
-I am quite sure that you have experienced a trade loss before, urghhhh! very painful right?
-Just when you think your forecast is right and you are in for some cool cash, the market takes a different {turn}, goes the other way and reduces your balance or better still clears it out completely.
-Sometimes, your analysis maybe wrong or a news {report} may come up and then interrupt the profit plan.
-Now, if even if you have experienced this before, you are still in the right direction!
-All you need is to take charge right away, get help and start trading profitably.
-And guess what… We are right here to help you get there.
-Are you ready to start trading profitably? Click here to get the best help now!
-I'll be here if you have special requests, feel free to write me back.
+<p>Hello [NAME],</p>
+<p>I am quite sure that you have experienced a trade loss before, urghhhh! very painful right?</p>
+<p>Just when you think your forecast is right and you are in for some cool cash, the market takes a different {turn}, goes the other way and reduces your balance or better still clears it out completely.</p>
+<p>Sometimes, your analysis maybe wrong or a news {report} may come up and then interrupt the profit plan.</p>
+<p>Now, if even if you have experienced this before, you are still in the right direction!</p>
+<p>All you need is to take charge right away, get help and start trading profitably</p>
+<p>And guess what… We are right here to help you get there.</p>
+<p>Are you ready to start trading profitably?
+<a href="mailto:support@instafxng.com?subject=Mercy%20I%20Got%20Your%20Message%20%25body=Hi%20Mercy,%20A%0Akindly%20%20help%20me%20get%20back%20on%20track.%0A%0AThanks!">Click here to get the best help now!</a>
+</p>
+<p>I'll be here if you have special requests, feel free to write me back.</p>
 MAIL;
 
 $my_subject_10 = "Here's Warren Buffet's Recommendations to you!";
 $my_message_10 =
     <<<MAIL
 <p>Dear [NAME]</p>
-<p>How have you been?</p>	
-<p>I would like to quickly remind you to push on with your Forex Profit Optimizer course.</p>
-<p>Technical analysis is key to every trader's career, it allows you to analyze the market trends and choose a profitable position in the market.</p>
-<p>For every trade there is always a gaining end and you need to be able to make good analysis that would put you on the gaining side.</p>
-<p>This is the perfect time to round up your course and begin to make money from the Forex market because there are so much to take advantage of this season; from bonuses to loyalty rewards.</p>
-<p>Click here to continue from where you stopped and begin to take your own share of the $5.3 Trillion currently exchanging hands in the Forex Market</p>
-<p>I am quite confident you can hit your financial goal this year and you're just a click away from joining the top traders cashing out this year.</p>
-<p>Click <a href="http://www.instafxng.com/fxacademy">here</a> to catch up right away.</p>
-Dear [NAME]
-Warren buffet said that when it rains gold, put out a bucket, not a timbre!
-He didn't just say it, he took actions and voila! He's one of the greatest person you could mention when it comes to investments.
-The market has been moving massively with so many opportunities lately, start taking action now.
-Let's help you make the most of these opportunities and make consistent income from the forex market on a daily basis!
-There is no failure until you quit, why not take this opportunity again with a different strategy?
-All you need to do is share your trading experience with me, let's find out what you are doing right or wrong in your trade, fix it and make the experience worth your time again.
-Get your drums ready, it's about to rain some dollars in here!
-The next time the market is moving, make sure it not only moves in your favor but also earns you real cash!
-Click here to get help now, and I will be sure to reply you as soon as possible.
+<p>Warren buffet said that when it rains gold, put out a bucket, not a timbre!</p>
+<p>He didn't just say it, he took actions and voila! He's one of the greatest person you could mention when it comes to investments.</p>
+<p>The market has been moving massively with so many opportunities lately, start taking action now.</p>
+<p>Let's help you make the most of these opportunities and make consistent income from the forex market on a daily basis!</p>
+<p>There is no failure until you quit, why not take this opportunity again with a different strategy?</p>
+<p>All you need to do is share your trading experience with me, let's find out what you are doing right or wrong in your trade, fix it and make the experience worth your time again.</p>
+<p>Get your drums ready, it's about to rain some dollars in here!</p>
+<p>The next time the market is moving, make sure it not only moves in your favor but also earns you real cash!</p>
+<p>
+<a href="mailto:support@instafxng.com?subject=Mercy%20I%20Got%20Your%20Message%20&body=Hi%20Mercy,%0A%0A%20kindly%20%20help%20me%20get%20back%20on%20track.%0A%0AThanks!">Click here to get help now</a>
+, and I will be sure to reply you as soon as possible.</p>
 MAIL;
 
 
 
 
-function student_auto_mail_template($core_msg) {
+function auto_mail_template($core_msg) {
 
     $my_message_template =
         <<<MAIL
@@ -266,15 +250,16 @@ MAIL;
     return $my_message_template;
 }
 
-function student_auto_mail_query($query_type, $day_value)
+function auto_mail_query($date)
 {
-
     $today = date('Y-m-d');
 
-    $from_date = date_sub($today, date_interval_create_from_date_string('14 days'));
-    $from_date = date_format($from_date, 'Y-m-d');
+    if($date == $today){
+        $today = date_create($today);
+        $from_date = date_sub($today, date_interval_create_from_date_string("14 days"));
+        $from_date = date_format($from_date, 'Y-m-d');
 
-    $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name, SUM(td.volume) AS my_volume, MAX(td.date_earned) AS last_trade_date
+        $query = "SELECT u.user_code, u.first_name, u.email, u.phone, u.created, CONCAT(a.last_name, SPACE(1), a.first_name) AS account_officer_full_name, SUM(td.volume) AS my_volume, MAX(td.date_earned) AS last_trade_date
             FROM trading_commission AS td
             INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
@@ -285,11 +270,11 @@ function student_auto_mail_query($query_type, $day_value)
                 FROM trading_commission AS td
                 INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
                 INNER JOIN user AS u ON ui.user_code = u.user_code
-                WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$today'
-            ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$today' ";
+                WHERE STR_TO_DATE(td.date_earned, '%Y-%m-%d') BETWEEN '$from_date' AND '$date'
+            ) AND STR_TO_DATE(td.date_earned, '%Y-%m-%d') <= '$date'";
 
     return $query;
-
+    }
 
 }
 
@@ -317,134 +302,49 @@ function auto_mail_send($query, $my_subject_raw, $my_message_raw) {
     return true;
 }
 
-//TODO: Refactor and make it dynamic
+$date = date('Y-m-d');
 
-// Clients who have paid for Foerex Optimizer Course but hav't started
-$interval_1a = 7;
+if($date == '2019-01-15'){
+$query_1 = auto_mail_query($date);
+$get_mail_1 = auto_mail_template($my_message_1);
+$send_message_1 = auto_mail_send($query_1, $my_subject_1, $get_mail_1);
+}elseif($date == '2019-01-29'){
+    $query_2 = auto_mail_query($date);
+    $get_mail_2 = auto_mail_template($my_message_2);
+    $send_message_2 = auto_mail_send($query_2, $my_subject_2, $get_mail_2);
+}elseif($date == '2019-02-12'){
+    $query_3 = auto_mail_query($date);
+    $get_mail_3 = auto_mail_template($my_message_3);
+    $send_message_3 = auto_mail_send($query_3, $my_subject_3, $get_mail_3);
+}elseif($date == '2019-02-26'){
+    $query_4 = auto_mail_query($date);
+    $get_mail_4 = auto_mail_template($my_message_4);
+    $send_message_4 = auto_mail_send($query_4, $my_subject_4, $get_mail_4);
+}elseif($date == '2019-03-12'){
+    $query_5 = auto_mail_query($date);
+    $get_mail_5 = auto_mail_template($my_message_5);
+    $send_message_5 = auto_mail_send($query_5, $my_subject_5, $get_mail_5);
+}elseif($date == '2019-03-26'){
+    $query_6 = auto_mail_query($date);
+    $get_mail_6 = auto_mail_template($my_message_6);
+    $send_message_6 = auto_mail_send($query_6, $my_subject_6, $get_mail_6);
+}elseif($date == '2019-04-09'){
+    $query_7 = auto_mail_query($date);
+    $get_mail_7 = auto_mail_template($my_message_7);
+    $send_message_7 = auto_mail_send($query_7, $my_subject_7, $get_mail_7);
+}elseif($date == '2019-04-23'){
+    $query_8 = auto_mail_query($date);
+    $get_mail_8 = auto_mail_template($my_message_8);
+    $send_message_8 = auto_mail_send($query_8, $my_subject_8, $get_mail_8);
+}elseif($date == '2019-05-07'){
+    $query_9 = auto_mail_query($date);
+    $get_mail_9 = auto_mail_template($my_message_9);
+    $send_message_9 = auto_mail_send($query_9, $my_subject_9, $get_mail_9);
+}elseif($date == '2019-05-21'){
+    $query_10 = auto_mail_query($date);
+    $get_mail_10 = auto_mail_template($my_message_10);
+    $send_message_10 = auto_mail_send($query_10, $my_subject_10, $get_mail_10);
+}
 
-$query_1a = student_auto_mail_query(1, $interval_1a);
-$get_mail_1a = student_auto_mail_template($my_message_1a);
-$send_message_1a = student_auto_mail_send($query_1a, $my_subject_1a, $get_mail_1a);
-
-$interval_1b = 14;
-
-$query_1b = student_auto_mail_query(1, $interval_1b);
-$get_mail_1b = student_auto_mail_template($my_message_1b);
-$send_message_1b = student_auto_mail_send($query_1b, $my_subject_1b, $get_mail_1b);
-
-$interval_1c = 21;
-
-$query_1c = student_auto_mail_query(1, $interval_1c);
-$get_mail_1c = student_auto_mail_template($my_message_1c);
-$send_message_1c = student_auto_mail_send($query_1c, $my_subject_1c, $get_mail_1c);
-
-$interval_1d = 28;
-
-$query_1d = student_auto_mail_query(1, $interval_1d);
-$get_mail_1d = student_auto_mail_template($my_message_1d);
-$send_message_1d = student_auto_mail_send($query_1d, $my_subject_1d, $get_mail_1d);
-
-// Clients who are between Lesson 1-6 of the forex money maker course
-$interval_2a = 14;
-
-$query_2a = student_auto_mail_query(2, $interval_2a);
-$get_mail_2a = student_auto_mail_template($my_message_2a);
-$send_message_2a = student_auto_mail_send($query_2a, $my_subject_2a, $get_mail_2a);
-
-$interval_2b = 28;
-
-$query_2b = student_auto_mail_query(2, $interval_2b);
-$get_mail_2b = student_auto_mail_template($my_message_2b);
-$send_message_2b = student_auto_mail_send($query_2b, $my_subject_2b, $get_mail_2b);
-
-$interval_2c = 32;
-
-$query_2c = student_auto_mail_query(2, $interval_2c);
-$get_mail_2c = student_auto_mail_template($my_message_2c);
-$send_message_2c = student_auto_mail_send($query_2c, $my_subject_2c, $get_mail_2c);
-
-$interval_2d = 46;
-
-$query_2d = student_auto_mail_query(2, $interval_2d);
-$get_mail_2d = student_auto_mail_template($my_message_2d);
-$send_message_2d = student_auto_mail_send($query_2d, $my_subject_2d, $get_mail_2d);
-
-//Clients who have completed course two but have not Funded their accounts
-$interval_3a = 7;
-
-$query_3a = student_auto_mail_query(3, $interval_3a);
-$get_mail_3a = student_auto_mail_template($my_message_3a);
-$send_message_3a = student_auto_mail_send($query_3a, $my_subject_3a, $get_mail_3a);
-
-
-$interval_3b = 14;
-
-$query_3b = student_auto_mail_query(3, $interval_3b);
-$get_mail_3b = student_auto_mail_template($my_message_3b);
-$send_message_3b = student_auto_mail_send($query_3b, $my_subject_3b, $get_mail_3b);
-
-$interval_3c = 21;
-
-$query_3c = student_auto_mail_query(3, $interval_3c);
-$get_mail_3c = student_auto_mail_template($my_message_3c);
-$send_message_3c = student_auto_mail_send($query_3c, $my_subject_3c, $get_mail_3c);
-
-$interval_3d =28;
-
-$query_3d = student_auto_mail_query(3, $interval_3d);
-$get_mail_3d = student_auto_mail_template($my_message_3d);
-$send_message_3d = student_auto_mail_send($query_3d, $my_subject_3d, $get_mail_3d);
-
-//Clients who have completed course two but have not Funded their accounts
-$interval_4a = 15;
-
-$query_4a = student_auto_mail_query(4, $interval_4a);
-$get_mail_4a = student_auto_mail_template($my_message_4a);
-$send_message_4a = student_auto_mail_send($query_4a, $my_subject_4a, $get_mail_4a);
-
-
-$interval_4b = 30;
-
-$query_4b = student_auto_mail_query(4, $interval_4b);
-$get_mail_4b = student_auto_mail_template($my_message_4b);
-$send_message_4b = student_auto_mail_send($query_4b, $my_subject_4b, $get_mail_4b);
-
-$interval_4c = 45;
-
-$query_4c = student_auto_mail_query(4, $interval_4c);
-$get_mail_4c = student_auto_mail_template($my_message_4c);
-$send_message_4c = student_auto_mail_send($query_4c, $my_subject_4c, $get_mail_4c);
-
-$interval_4d = 60;
-
-$query_4d = student_auto_mail_query(4, $interval_4d);
-$get_mail_4d = student_auto_mail_template($my_message_4d);
-$send_message_4d = student_auto_mail_send($query_4d, $my_subject_4d, $get_mail_4d);
-
-//people who have reached lesson 5 of the Forex money maker course.
-$interval_5a = 5;
-
-$query_5a = student_auto_mail_query(5, $interval_5a);
-$get_mail_5a = student_auto_mail_template($my_message_5a);
-$send_message_5a = student_auto_mail_send($query_5a, $my_subject_5a, $get_mail_5a);
-
-
-$interval_5b = 12;
-
-$query_5b = student_auto_mail_query(5, $interval_5b);
-$get_mail_5b = student_auto_mail_template($my_message_5b);
-$send_message_5b = student_auto_mail_send($query_5b, $my_subject_5b, $get_mail_5b);
-
-$interval_5c = 19;
-
-$query_5c = student_auto_mail_query(5, $interval_5c);
-$get_mail_5c = student_auto_mail_template($my_message_5c);
-$send_message_5c = student_auto_mail_send($query_5c, $my_subject_5c, $get_mail_5c);
-
-$interval_5d = 26;
-
-$query_5d = student_auto_mail_query(5, $interval_5d);
-$get_mail_5d = student_auto_mail_template($my_message_5d);
-$send_message_5d = student_auto_mail_send($query_5d, $my_subject_5d, $get_mail_5d);
 
 if($db_handle) { $db_handle->closeDB(); mysqli_close($db_handle); }
