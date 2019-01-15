@@ -3,7 +3,6 @@ set_include_path('/home/tboy9/public_html/init/');
 require_once 'initialize_general.php';
 
 
-//Paid for the Forex optimizer Course but have not started
 $my_subject_1 = "[NAME], There's Gold in the Dirt, Find it!";
 $my_message_1 =
     <<<MAIL
@@ -72,7 +71,7 @@ $my_message_4 =
 <p>Let me know if you need any help on this, I am here to ensure you get the best of the InstaFxNg experience!</p>
 MAIL;
 
-// Student between Lesson 1-6 course2
+
 $my_subject_5 = "[NAME], Get 2000 Pips in Profit This Month Alone!";
 $my_message_5 =
     <<<MAIL
@@ -161,7 +160,6 @@ or
 MAIL;
 
 
-// Student between Lesson 7-13 course2
 $my_subject_9 = "[NAME], Don't Lose the Next Trade.";
 $my_message_9 =
     <<<MAIL
