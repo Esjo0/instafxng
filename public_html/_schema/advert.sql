@@ -1,3 +1,5 @@
+INSERT INTO `system_setting` (`system_setting_id`, `constant`, `description`, `value`, `type`, `created`, `updated`) VALUES (NULL, 'WITHDRAWAL_DAILY_MAX_VALUE', 'The maximum amount of withdrawal that a client is allowed to request for per day. The sum of all withdrawals placed by a client in a day should not exceed this value.', '10000', '1', '2019-01-16 06:10:08', NULL)
+
 DELETE FROM account_audit_date WHERE audit_date = '2019-01-18' AND audit_date = '2019-01-19';
 
 `ALTER TABLE ``call_log`` DROP INDEX ``user_code``;`
