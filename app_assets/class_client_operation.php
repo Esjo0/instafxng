@@ -2934,6 +2934,23 @@ MAIL;
         return $last_trade_detail ? $last_trade_detail : false;
     }
 
+    public function get_total_client_withdrawal_today($user_code) {
+        global $db_handle;
+
+        $today = date('Y-m-d');
+
+        $query = "SELECT SUM(uw.dollar_withdraw) AS total_withdrawal FROM user_withdrawal AS uw
+                 INNER JOIN user_ifxaccount AS ui ON uw.ifxaccount_id = ui.ifxaccount_id
+                 INNER JOIN user AS u ON ui.user_code = u.user_code 
+                 WHERE STR_TO_DATE(uw.created, '%Y-%m-%d') = '$today' AND u.user_code = '$user_code'";
+
+        $result =  $db_handle->runQuery($query);
+        $fetched_data = $db_handle->fetchAssoc($result);
+        $total = $fetched_data[0]['total_withdrawal'];
+
+        return $total;
+    }
+
     public function get_total_withdrawal($user_code, $from_date, $to_date) {
         global $db_handle;
 
