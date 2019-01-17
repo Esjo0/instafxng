@@ -54,7 +54,9 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
             GROUP BY u.user_code
             HAVING date_earned BETWEEN '$from_date' AND '$to_date' ";
 
+        $filter_category = "";
         $_SESSION['client_onboarding_query'] = $query;
+        $display_msg = "Below is a list of Clients Onboarded Between ".datetime_to_text($from_date)." and ".datetime_to_text($to_date);
 
     } elseif (isset($_POST['filter'])) {
         foreach ($_POST as $key => $value) {
@@ -132,7 +134,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
     }
 } else {
 
-    $result_title = "Not Onboard Category";
+    $result_title = "List of all clients not on board";
 
     $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created 
           FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code 
@@ -146,10 +148,10 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
     $display_msg = "Below is a table listing all clients not yet on board.";
 
     $_SESSION['client_onboarding_query'] = $query;
-    $_SESSION['client_onboarding_filter_category'] = $filter_category;
-    $_SESSION['client_onboarding_display_msg'] = $display_msg;
-    $_SESSION['client_onboarding_result_title'] = $result_title;
 }
+$_SESSION['client_onboarding_filter_category'] = $filter_category;
+$_SESSION['client_onboarding_display_msg'] = $display_msg;
+$_SESSION['client_onboarding_result_title'] = $result_title;
 
 $numrows = $db_handle->numRows($query);
 
@@ -515,7 +517,7 @@ if(isset($_POST['campaign_category'])){
 <!--                                    <button class="btn btn-default" type="button"-->
 <!--                                            data-target="#mail" data-toggle="modal">SEND BULK MAIL-->
 <!--                                    </button>-->
-                                        <a data-target="#confirm-campaign" data-toggle="modal" class="btn btn-default" title="Create Campaign Category">Create Category</a>
+<!--                                        <a data-target="#confirm-campaign" data-toggle="modal" class="btn btn-default" title="Create Campaign Category">Create Category</a>-->
                                         <a data-target="#onboarding-filter" data-toggle="modal" class="btn btn-default" title="Filter clients already onboard">Onboard Filter <i class="glyphicon glyphicon-search"></i></a>
                                     </form>
                                 </div>
@@ -680,6 +682,8 @@ if(isset($_POST['campaign_category'])){
                                 <?php if (isset($numrows)) { ?>
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
+
+                               <?php  echo $_SESSION['client_onboarding_display_msg'] ?>
 
                                 <?php if ((isset($onboarding_result) && !empty($onboarding_result))) { require 'layouts/pagination_links.php'; } ?>
 
