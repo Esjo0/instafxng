@@ -11,6 +11,8 @@ $trans_id_encrypted = $get_params['id'];
 $trans_id = dec_enc('decrypt',  $trans_id_encrypted);
 
 if($get_params['id'] && !empty($trans_id)) {
+    $query = "UPDATE user_deposit_refund SET refund_status = '0' WHERE transaction_id = '$trans_id'";
+    $result = $db_handle->runQuery($query);
     $query = "SELECT ud.trans_id, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, udf.refund_type
         FROM user_deposit_refund AS udf
         INNER JOIN user_deposit AS ud ON udf.transaction_id = ud.trans_id
