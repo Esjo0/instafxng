@@ -619,7 +619,7 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                     <td><?php echo $row['phone']; ?></td>
                                     <td><?php if ($row['location'] == 1) {
                                             echo "Diamond Estate office";
-                                        } elseif ($row['location'] == 3) {
+                                        } elseif ($row['location'] == 2) {
                                             echo "EASTLINE Complex office";
                                         }
                                         ?></td>

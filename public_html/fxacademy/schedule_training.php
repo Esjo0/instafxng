@@ -106,7 +106,7 @@ MAIL;;
     </div>
 </div>
 MAIL;
-    $query = "SELECT * FROM training_schedule_students WHERE user_code = '$user_code' AND status = '0' OR '5'";
+    $query = "SELECT * FROM training_schedule_students WHERE user_code = '$user_code' AND status IN('0', '1', '2', '4', '5') ";
     $result = $db_handle->numRows($query);
     if ($result == 0) {
         $query = "INSERT IGNORE INTO training_schedule_students (user_code, schedule_id, follow_up_class, final_class, status) VALUE('$user_code',  $id, '$follow_date', '$final_date', '0')";
@@ -118,7 +118,7 @@ MAIL;
             $message_error = "Schedule not successful. Kindly Try again.";
         }
     } else {
-        $message_error = "You Have and already existing schedule kindly <a href='https://instafxng.com/contact_info.php'>contact support</a> for a reschedule";
+        $message_error = "You have an already existing schedule kindly <a href='https://instafxng.com/contact_info.php'>contact support</a> for a reschedule";
     }
 }
 
