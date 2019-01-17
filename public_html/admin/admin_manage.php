@@ -409,6 +409,9 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="255" id="" <?php if (in_array(255, $my_pages)) { echo 'checked="checked"'; } ?>/> Campaign Leads</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="256" id="" <?php if (in_array(256, $my_pages)) { echo 'checked="checked"'; } ?>/> Campaign Analytics</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="305" id="" <?php if (in_array(305, $my_pages)) { echo 'checked="checked"'; } ?>/> Onboarding Campaign</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="306" id="" <?php if (in_array(306, $my_pages)) { echo 'checked="checked"'; } ?>/> Onboarding Campaign Review</label></div></div>
+
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="287" id="" <?php if (in_array(287, $my_pages)) { echo 'checked="checked"'; } ?>/> Client Retention</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="289" id="" <?php if (in_array(289, $my_pages)) { echo 'checked="checked"'; } ?>/> Clients On-Boarding</label></div></div>
                                     </div>

@@ -1,50 +1,6 @@
 <?php
 require_once '../init/initialize_general.php';
 
-$get_params = allowed_get_params(['b']);
-$campaign_id = $get_params['b'];
-$client_operation = new clientOperation();
-
-$obj_loyalty_training = new Loyalty_Training();
-
-if (isset($_POST['submit'])) {
-	$email = $db_handle->sanitizePost($_POST['email']);
-	$name = $db_handle->sanitizePost($_POST['name']);
-	$phone = $db_handle->sanitizePost($_POST['phone']);
-	$today = date('Y-m-d');
-	extract(split_name($name));
-	if (filter_var($email, FILTER_VALIDATE_EMAIL) && filter_var($phone, FILTER_SANITIZE_NUMBER_INT)) {
-		$obj_loyalty_training->add_lead($first_name, $last_name, $email, $phone, 1, 1, $today, $state_id = '');
-		$query = "INSERT IGNORE INTO onboarding_campaign_leads (email, campaign_id) VALUE('$email', '$campaign_id')";
-		$result = $db_handle->runQuery($query);
-		if ($result == true) {
-			$message_success = "Successfully submitted";
-			$user_code = $client_operation->get_user_by_email($email);
-			$user_ifx_details = $client_operation->get_user_by_code($user_code['user_code']);
-
-			if($user_ifx_details) {
-				$found_user = array(
-					'user_code' => $user_ifx_details['client_user_code'],
-					'status' => $user_ifx_details['client_status'],
-					'first_name' => $user_ifx_details['client_first_name'],
-					'last_name' => $user_ifx_details['client_last_name'],
-					'email' => $user_ifx_details['client_email']
-				);
-				$session_client->login($found_user);
-			}
-			// Check if this is a first time login, then log the date
-			if(empty($user_ifx_details['client_academy_first_login']) || is_null($user_ifx_details['client_academy_first_login'])) {
-				$client_operation->log_academy_first_login($user_ifx_details['client_first_name'], $user_ifx_details['client_email'], $user_ifx_details['client_user_code']);
-			}
-			redirect_to('completed.php');
-		} else {
-			$message_error = "Not successful. Kindly Try again.";
-		}
-	}else{
-		$message_error = "You entered an invalid email. Kindly Try again.";
-	}
-}
-
 
 ?>
 <!DOCTYPE HTML>
@@ -87,30 +43,22 @@ if (isset($_POST['submit'])) {
 						<header>
 							<h1>Fx Academy</h1>
 							<p>Your first step to making steady income trading Forex... </p>
+
 							<img src="https://instafxng.com/images/train.png"/>
+
+
 						</header>
 						<div class="content">
+							<center>
 							<div style="margin-top:20px; border-radius: 22px; background: white; padding: 20px;">
 								<a href="https://instafxng.com" target="_blank"><img class="img img-responsive" src="../images/ifxlogo.png"></a>
 							</div>
-							<?php include '../layouts/feedback_message.php'; ?>
-							<form role="form" method="post" action="">
+							<h1 class="mb-2">THANK YOU!</h1>
 
-								<div class="fields">
-									<div class="field">
-										<input type="text" name="name" id="name" placeholder="Name" required/>
-									</div>
-									<div class="field">
-										<input type="email" name="email" id="email" placeholder="Email" required/>
-									</div>
-									<div class="field">
-										<input type="text" name="phone" id="email" placeholder="Phone" required/>
-									</div>
-								</div>
-								<div>
-									<button type="submit" name="submit">SUBMIT</button>
-									</div>
-							</form>
+							<p>Your Training Starts Shortly</p>
+
+							<img src="../images/Spinner.gif">
+							</center>
 						</div>
 						<footer>
 							<ul class="items">
@@ -140,6 +88,14 @@ if (isset($_POST['submit'])) {
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+		<script src="../js/fxsignals.min.js"></script>
+		<script>
+			//Using setTimeout to execute a function after 5 seconds.
+			setTimeout(function () {
+				//Redirect with JavaScript
+				window.location.href= 'https://instafxng.com/fxacademy/';
+			}, 10000);
+		</script>
 
 	</body>
 </html>

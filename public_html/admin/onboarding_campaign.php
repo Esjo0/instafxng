@@ -4,15 +4,56 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
-//generate inventory id
-insert_campaign_id:
-$campaign_id = rand_string(6);
-if ($db_handle->numRows("SELECT campaign_id FROM onboarding_campaign WHERE campaign_id = '$campaign_id'") > 0) {
-    goto insert_invent_id;
-};
+$admin_code = $_SESSION['admin_unique_code'];
 
-$link = "https://instafxng.com/forex_training/?b=" . $link;
+if (isset($_POST['create'])) {
+    $title = $db_handle->sanitizePost($_POST['title']);
+    $details = $db_handle->sanitizePost($_POST['details']);
+//generate  id
+    insert_campaign_id:
+    $campaign_id = rand_string(6);
+    if ($db_handle->numRows("SELECT campaign_id FROM onboarding_campaign WHERE campaign_id = '$campaign_id'") > 0) {
+        goto insert_campaign_id;
+    };
 
+    $link = "https://instafxng.com/forex_training/?b=" . $campaign_id;
+
+    $query = "INSERT INTO onboarding_campaign (title, details, campaign_id, link, admin) VALUE('$title', '$details', '$campaign_id', '$link', '$admin_code')";
+    $result = $db_handle->runQuery($query);
+    if ($result == true) {
+        $message_success = "Successfully submitted";
+    } else {
+        $message_error = "Not successful. Kindly Try again.";
+    }
+}
+
+$query = "SELECT * FROM onboarding_campaign ";
+$_SESSION['query_onboarding_campaign'] = $query;
+
+$query = $_SESSION['query_onboarding_campaign'] ;
+
+$numrows = $db_handle->numRows($query);
+
+$rowsperpage = 20;
+
+$totalpages = ceil($numrows / $rowsperpage);
+// get the current page or set a default
+if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
+    $currentpage = (int) $_GET['pg'];
+} else {
+    $currentpage = 1;
+}
+if ($currentpage > $totalpages) { $currentpage = $totalpages; }
+if ($currentpage < 1) { $currentpage = 1; }
+
+$prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
+$prespagehigh = $currentpage * $rowsperpage;
+if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
+
+$offset = ($currentpage - 1) * $rowsperpage;
+$query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+$result = $db_handle->runQuery($query);
+$campaigns = $db_handle->fetchAssoc($result);
 
 ?>
 
@@ -51,11 +92,11 @@ $link = "https://instafxng.com/forex_training/?b=" . $link;
                         <div class="row">
                             <div class="col-md-12">
                                 <h3>Create New Campaign</h3>
-
+                                <?php require_once 'layouts/feedback_message.php'; ?>
                                 <form data-toggle="validator" class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="from_date">Title:</label>
-                                        <div class="col-sm-9 col-lg-5">
+                                        <label class="control-label col-sm-3" for="from_date">Name:</label>
+                                        <div class="col-sm-5 col-lg-5">
                                             <div class="input-group">
                                                 <input name="title" type="text" class="form-control" id="datetimepicker" required>
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -87,25 +128,24 @@ $link = "https://instafxng.com/forex_training/?b=" . $link;
                                 <tr>
                                     <th>Campaign Name</th>
                                     <th>Campaign Description</th>
-                                    <th>Date Created</th>
                                     <th>Link</th>
                                     <th>Created By</th>
+                                    <th>Date Created</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <?php
-                                if(isset($searched_withdrawal) && !empty($searched_withdrawal)) {
-                                    foreach ($searched_withdrawal as $row) {
+                                if(isset($campaigns) && !empty($campaigns)) {
+                                    foreach ($campaigns as $row) {
                                         ?>
                                         <tr>
-                                            <td><?php echo $row['trans_id']; ?></td>
-                                            <td><?php echo $row['full_name']; ?></td>
-                                            <td>&dollar; <?php echo number_format($row['dollar_withdraw'], 2, ".", ","); ?></td>
-                                            <td><?php echo status_user_withdrawal($row['status']); ?></td>
+                                            <td><?php echo $row['title']; ?></td>
+                                            <td><?php echo $row['details']; ?></td>
+                                            <td><?php echo $row['link']; ?></td>
+                                            <td><?php echo $admin_object->get_admin_name_by_code($row['admin']);?></td>
                                             <td><?php echo datetime_to_text($row['created']); ?></td>
                                             <td>
-                                                <a target="_blank" title="View" class="btn btn-info" href="withdrawal_search_view.php?id=<?php echo dec_enc('encrypt', $row['trans_id']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='8' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
