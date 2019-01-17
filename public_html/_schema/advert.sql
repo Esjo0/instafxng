@@ -1,3 +1,26 @@
+CREATE TABLE `onboarding_campaign` (
+ `id` int(100) NOT NULL AUTO_INCREMENT,
+ `title` varchar(100) NOT NULL,
+ `details` text NOT NULL,
+ `campaign_id` varchar(100) NOT NULL,
+ `link` varchar(100) NOT NULL,
+ `admin` varchar(50) NOT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `campaign_id` (`campaign_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1
+
+
+CREATE TABLE `onboarding_campaign_leads` (
+ `id` int(100) NOT NULL AUTO_INCREMENT,
+ `email` varchar(100) NOT NULL,
+ `campaign_id` varchar(100) NOT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1
+
+
 INSERT INTO `system_setting` (`system_setting_id`, `constant`, `description`, `value`, `type`, `created`, `updated`) VALUES (NULL, 'WITHDRAWAL_DAILY_MAX_VALUE', 'The maximum amount of withdrawal that a client is allowed to request for per day. The sum of all withdrawals placed by a client in a day should not exceed this value.', '10000', '1', '2019-01-16 06:10:08', NULL)
 
 DELETE FROM account_audit_date WHERE audit_date = '2019-01-18' AND audit_date = '2019-01-19';
