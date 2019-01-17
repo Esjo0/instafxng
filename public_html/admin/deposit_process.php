@@ -263,6 +263,19 @@ if(!empty($transaction_access['holder'])){
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
         <script type="text/javascript">
+            function copy_text(btn_id) {
+                var btn = document.getElementById(btn_id);
+                var clipboard = new ClipboardJS(btn);
+                clipboard.on('success', function(e) {
+                    console.log(e);
+                });
+                clipboard.on('error', function(e) {
+                    console.log(e);
+                });
+
+            }
+        </script>
+        <script type="text/javascript">
             function showdolval(str,str1,str2) {
                 if (str=="") {
                     document.getElementById("realDol").innerHTML="";
