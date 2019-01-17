@@ -387,7 +387,7 @@ function print_reply($replies) {
                     
                     <div class="section-tint super-shadow">
                         <div class="row">
-                            <?php if (!isset($_COOKIE['ifxng_articles'])) { ?>
+                            <?php if (!isset($_COOKIE['ifxng_articles']) && $news_id != 629) { ?>
                             <div id="register" class="modal" data-easein="perspectiveDownIn"  tabindex="-1" role="dialog" aria-labelledby="costumModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-md" style="background-color:rgba(198, 198, 198, 0.07);">
                                     <div class="modal-content" style="background-color: ghostwhite">

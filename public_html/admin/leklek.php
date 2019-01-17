@@ -4,6 +4,105 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+//$current_year = date('Y');
+//$main_current_month = date('m');
+//$current_month = ltrim($main_current_month, '0');
+//$current_quarter = $obj_analytics->get_quarter_code($main_current_month);
+//$current_half_year = $obj_analytics->get_half_year_code($main_current_month);
+//$current_year_code = "1-12";
+//
+//$dates_selected = $obj_analytics->get_from_to_dates($current_year, $current_month);
+//extract($dates_selected);
+//
+//$base_query = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+//            u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
+//            FROM trading_commission AS td
+//            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+//            INNER JOIN user AS u ON ui.user_code = u.user_code
+//            WHERE date_earned BETWEEN '$prev_from_date' AND '$prev_to_date' GROUP BY u.email ORDER BY last_trade DESC ";
+//
+//$db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients AS " . $base_query);
+//
+//$base_query2 = "SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+//            u.email, u.phone, u.created, MIN(td.date_earned) AS first_trade, MAX(td.date_earned) AS last_trade
+//            FROM trading_commission AS td
+//            INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
+//            INNER JOIN user AS u ON ui.user_code = u.user_code
+//            WHERE date_earned BETWEEN '$from_date' AND '$to_date' GROUP BY u.email ORDER BY last_trade DESC ";
+//
+//$db_handle->runQuery("CREATE TEMPORARY TABLE reference_clients_2 AS " . $base_query2);
+//
+//$retention_type_title = "NOT YET RETAINED";
+//$query = "SELECT rc1.sum_volume, rc1.sum_commission, rc1.user_code, rc1.full_name, rc1.email, rc1.phone, rc1.created, rc1.first_trade, rc1.last_trade
+//            FROM reference_clients AS rc1
+//            LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+//            WHERE rc2.user_code IS NULL ORDER BY rc1.first_trade DESC ";
+//
+//$retention_type_title2 = "RETAINED";
+//$query2 = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+//            FROM reference_clients AS rc1
+//            LEFT JOIN reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+//            WHERE rc2.user_code IS NOT NULL ORDER BY rc2.first_trade DESC ";
+//
+//$main_query = $query;
+//$retention_type_main_title = $retention_type_title;
+//
+//$_SESSION['client_retention_base_query'] = $base_query;
+//$_SESSION['client_retention_base_query2'] = $base_query2;
+//$_SESSION['client_retention_query'] = $query;
+//$_SESSION['client_retention_query2'] = $query2;
+//$_SESSION['client_retention_main_query'] = $query;
+//$_SESSION['client_retention_prev_from_date'] = $prev_from_date;
+//$_SESSION['client_retention_prev_to_date'] = $prev_to_date;
+//$_SESSION['client_retention_from_date'] = $from_date;
+//$_SESSION['client_retention_to_date'] = $to_date;
+//$_SESSION['client_retention_period_title'] = $period_title;
+//$_SESSION['client_retention_type_title'] = $retention_type_title;
+//$_SESSION['client_retention_type_title2'] = $retention_type_title2;
+//$_SESSION['client_retention_type_main_title'] = $retention_type_title;
+//$_SESSION['client_retention_type_selected'] = $retention_type;
+//
+//
+//
+//$total_to_retain = $db_handle->numRows($base_query);
+//
+//$numrows = $db_handle->numRows($main_query);
+//
+//if($retention_type_main_title == "NOT YET RETAINED") {
+//    $total_not_retained = $numrows;
+//} else {
+//    $total_not_retained = $total_to_retain - $numrows;
+//}
+//
+//$total_retained = $total_to_retain - $total_not_retained;
+//$retention_rate = number_format((($total_retained / $total_to_retain) * 100), 2);
+//
+//$rowsperpage = 300;
+//
+//$totalpages = ceil($numrows / $rowsperpage);
+//
+//// get the current page or set a default
+//if (isset($_GET['pg']) && is_numeric($_GET['pg'])) {
+//    $currentpage = (int) $_GET['pg'];
+//} else {
+//    $currentpage = 1;
+//}
+//if ($currentpage > $totalpages) { $currentpage = $totalpages; }
+//if ($currentpage < 1) { $currentpage = 1; }
+//
+//$prespagelow = $currentpage * $rowsperpage - $rowsperpage + 1;
+//$prespagehigh = $currentpage * $rowsperpage;
+//if($prespagehigh > $numrows) { $prespagehigh = $numrows; }
+//
+//$offset = ($currentpage - 1) * $rowsperpage;
+//$main_query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
+//$result = $db_handle->runQuery($main_query);
+//$retention_result = $db_handle->fetchAssoc($result);
+
+
+
+
+
 /*
  * Period: One year ago
  *
@@ -380,3 +479,27 @@ if (!$session_admin->is_logged_in()) {
 //var_dump($month_current_points);
 //
 //
+//
+//?>
+<!--<div class="table-wrap">-->
+<!--    <table class="table table-responsive table-striped table-bordered table-hover">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th></th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        --><?php //if(isset($retention_result) && !empty($retention_result)) { foreach ($retention_result as $row) {
+//            if($retention_type == '1') {
+//                $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $prev_from_date, $prev_to_date);
+//            } else {
+//                $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $from_date, $to_date);
+//            }
+//            ?>
+<!--            <tr>-->
+<!--                <td>--><?php //echo $row['email']; ?><!--</td>-->
+<!--            </tr>-->
+<!--        --><?php //} } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->

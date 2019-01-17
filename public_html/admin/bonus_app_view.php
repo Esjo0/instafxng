@@ -29,7 +29,7 @@ if(isset($_POST['approve_ilpr'])){
     $message_success = "You have successfully updated the account";
 }
 
-$app_id = dec_enc('decrypt',  $_GET['app_id']));
+$app_id = dec_enc('decrypt',  $_GET['app_id']);
 $app_details = $bonus_operations->get_app_by_id($app_id);
 if(empty($app_details)) {redirect_to("bonus_app_moderation.php");}
 $conditions = $bonus_operations->get_conditions_by_code($app_details['bonus_code']);
