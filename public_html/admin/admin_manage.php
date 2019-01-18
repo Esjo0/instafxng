@@ -282,6 +282,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                     <div class="form-group row">
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="285" id="" <?php if (in_array(285, $my_pages)) { echo 'checked="checked"'; } ?>/> First Time Transaction - Initiated</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="286" id="" <?php if (in_array(286, $my_pages)) { echo 'checked="checked"'; } ?>/> First Time Transaction - Reviewed</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="307" id="" <?php if (in_array(307, $my_pages)) { echo 'checked="checked"'; } ?>/> User Details Review</label></div></div>
                                     </div>
                                     <hr/>
 
