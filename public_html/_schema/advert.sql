@@ -1,3 +1,13 @@
+CREATE TABLE `client_review` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(11) NOT NULL,
+ `status` enum('1') NOT NULL COMMENT '1-Contacted',
+ `admin` varchar(11) NOT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1
+Open new phpMyAdmin window
+
 CREATE TABLE `onboarding_campaign` (
  `id` int(100) NOT NULL AUTO_INCREMENT,
  `title` varchar(100) NOT NULL,
