@@ -6,12 +6,14 @@
     <p>See the summary of your withdrawal below. Your Withdrawal will
         be processed and payment made within one business day.</p>
     <p>In a few cases some requests fall outside the category of withdrawals we can process from
-        our office and has to be sent to InstaForex office. Withdrawal requests in this category can take
-        up to 3 Business days.</p>
+        our office and has to be sent to InstaForex office. In such cases the funds will be deducted
+        from your InstaForex account, but not immediately credited into our IFX account.
+        The funds will be deposited into our (InstaFxNg.com) account when the Finance Department is
+        done processing. Withdrawals in this category may take up to 3 business days.</p>
     <p>If your withdrawal request falls within this category, we will inform you immediately.</p>
     <p>Thank you for choosing InstaFxNg.</p>
-    <p class='text-danger' style='font-size: 1.3em'><strong>NOTE: </strong>Your payment will be made based on the rate as at the time the fund
-        is debited from your Instaforex account.</p>
+    <p class='text-danger' style='font-size: 1.3em'><strong>NOTE: </strong>Your payment will be made based on the
+        rate as at the time the funds is credited into our account by InstaForex.</p>
 </div>
 
 <hr />

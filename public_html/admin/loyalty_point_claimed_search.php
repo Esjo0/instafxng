@@ -15,25 +15,25 @@ if (isset($_POST['loyalty_point_claimed_view']) || isset($_GET['pg'])) {
         $to_date = $_POST['to_date'];
         $search_text = $_POST['search_text'];
 
-        $query = "SELECT GROUP_CONCAT(DISTINCT td.ifx_acct_no SEPARATOR ', ') AS accounts, SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission,
+        $query = "SELECT GROUP_CONCAT(DISTINCT ud.trans_id SEPARATOR ', ') AS trans_ids, SUM(pbc.point_claimed) AS point_claimed, SUM(pbc.dollar_amount) AS dollar_amount,
                 CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name
-                FROM trading_commission AS td
-                INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-                INNER JOIN user AS u ON ui.user_code = u.user_code
-                WHERE date_earned BETWEEN '$from_date' AND '$to_date' ";
+                FROM point_based_claimed AS pbc
+                INNER JOIN user AS u ON pbc.user_code = u.user_code
+                INNER JOIN user_deposit AS ud ON pbc.point_based_claimed_id = ud.points_claimed_id
+                WHERE pbc.status = 2 AND STR_TO_DATE(pbc.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' ";
         if(isset($search_text) && strlen($search_text) > 3) {
-            $query .= "AND (td.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR td.date_earned LIKE '$search_text%') ";
+            $query .= "AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%') ";
         }
-        $query .= "GROUP BY u.email ORDER BY sum_commission DESC ";
+        $query .= "GROUP BY u.email ORDER BY point_claimed DESC ";
 
-        $query2 = "SELECT SUM(sum_volume) AS total_sum_volume, SUM(sum_commission) AS total_sum_commission
-                FROM (SELECT SUM(td.volume) AS sum_volume, SUM(td.commission) AS sum_commission
-                FROM trading_commission AS td
-                INNER JOIN user_ifxaccount AS ui ON td.ifx_acct_no = ui.ifx_acct_no
-                INNER JOIN user AS u ON ui.user_code = u.user_code
-                WHERE date_earned BETWEEN '$from_date' AND '$to_date'  ";
+        $query2 = "SELECT SUM(sum_point_claimed) AS total_point_claimed, SUM(sum_dollar_amount) AS total_dollar_amount
+                FROM (SELECT SUM(pbc.point_claimed) AS sum_point_claimed, SUM(pbc.dollar_amount) AS sum_dollar_amount
+                FROM point_based_claimed AS pbc
+                INNER JOIN user AS u ON pbc.user_code = u.user_code
+                INNER JOIN user_deposit AS ud ON pbc.point_based_claimed_id = ud.points_claimed_id
+                WHERE pbc.status = 2 AND STR_TO_DATE(pbc.created, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' ";
         if(isset($search_text) && strlen($search_text) > 3) {
-            $query2 .= "AND (td.ifx_acct_no LIKE '%$search_text%' OR u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%' OR td.date_earned LIKE '$search_text%') ";
+            $query2 .= "AND (u.email LIKE '%$search_text%' OR u.first_name LIKE '%$search_text%' OR u.middle_name LIKE '%$search_text%' OR u.last_name LIKE '%$search_text%' OR u.phone LIKE '%$search_text%') ";
         }
         $query2 .= "GROUP BY u.email) src ";
 
@@ -71,11 +71,11 @@ if (isset($_POST['loyalty_point_claimed_view']) || isset($_GET['pg'])) {
     $offset = ($currentpage - 1) * $rowsperpage;
     $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
     $result = $db_handle->runQuery($query);
-    $all_commissions = $db_handle->fetchAssoc($result);
+    $all_points_claimed = $db_handle->fetchAssoc($result);
 
     $result2 = $db_handle->runQuery($query2);
-    $all_commissions_stat = $db_handle->fetchAssoc($result2);
-    $all_commissions_stat = $all_commissions_stat[0];
+    $all_points_claimed_stat = $db_handle->fetchAssoc($result2);
+    $all_points_claimed_stat = $all_points_claimed_stat[0];
 
 }
 
@@ -169,8 +169,8 @@ if (isset($_POST['loyalty_point_claimed_view']) || isset($_GET['pg'])) {
                                     <p>
                                         Showing commission from <?php echo date_to_text($from_date); ?> to <?php echo date_to_text($to_date); ?><br />
                                         No of Clients: <?php echo $numrows; ?><br />
-                                        Total Volume: <?php echo number_format($all_commissions_stat['total_sum_volume'], 2, ".", ","); ?><br />
-                                        Total Commission: &dollar; <?php echo number_format($all_commissions_stat['total_sum_commission'], 2, ".", ","); ?><br />
+                                        Total Points Claimed: <?php echo number_format($all_points_claimed_stat['total_point_claimed'], 2, ".", ","); ?><br />
+                                        Total Dollar Amount: &dollar; <?php echo number_format($all_points_claimed_stat['total_dollar_amount'], 2, ".", ","); ?><br />
                                     </p>
                                 <?php } ?>
 
@@ -178,24 +178,24 @@ if (isset($_POST['loyalty_point_claimed_view']) || isset($_GET['pg'])) {
                                     <thead>
                                         <tr>
                                             <th>Full Name</th>
-                                            <th>Accounts</th>
-                                            <th>Volume</th>
-                                            <th>Commission</th>
+                                            <th>Transaction ID</th>
+                                            <th>Point Claimed</th>
+                                            <th>Dollar Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php if(isset($all_commissions) && !empty($all_commissions)) { foreach ($all_commissions as $row) { ?>
+                                        <?php if(isset($all_points_claimed) && !empty($all_points_claimed)) { foreach ($all_points_claimed as $row) { ?>
                                         <tr>
                                             <td><?php echo $row['full_name']; ?></td>
-                                            <td><?php echo $row['accounts']; ?></td>
-                                            <td><?php echo number_format($row['sum_volume'], 2, ".", ","); ?></td>
-                                            <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
+                                            <td><?php echo $row['trans_ids']; ?></td>
+                                            <td><?php echo number_format($row['point_claimed'], 2, ".", ","); ?></td>
+                                            <td>&dollar; <?php echo number_format($row['dollar_amount'], 2, ".", ","); ?></td>
                                         </tr>
                                         <?php } } else { echo "<tr><td colspan='4' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
                                 </table>
                                 
-                                <?php if(isset($all_commissions) && !empty($all_commissions)) { ?>
+                                <?php if(isset($all_points_claimed) && !empty($all_points_claimed)) { ?>
                                 <div class="tool-footer text-right">
                                     <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
                                 </div>
@@ -203,7 +203,7 @@ if (isset($_POST['loyalty_point_claimed_view']) || isset($_GET['pg'])) {
 
                             </div>
                         </div>
-                        <?php if(isset($all_commissions) && !empty($all_commissions)) { require_once 'layouts/pagination_links.php'; } ?>
+                        <?php if(isset($all_points_claimed) && !empty($all_points_claimed)) { require_once 'layouts/pagination_links.php'; } ?>
                         
                     </div>
 
