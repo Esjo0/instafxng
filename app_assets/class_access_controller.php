@@ -186,9 +186,10 @@ define("PAGE_CODE", json_encode(array(
     303 => "unified_withdrawals.php",
     304 => "withdrawal_completed_unified.php",
     305 => "onboarding_campaign.php",
-    306 => "onboarding_campaign_review.php"
+    306 => "onboarding_campaign_review.php",
+    307 => "clients_review.php"
 
-    )));
+)));
 class Access_Controller
 {
     public function get_all_pages(){
