@@ -262,12 +262,14 @@ if(!empty($transaction_access['holder'])){
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
-        <script type="text/javascript">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+        <script>
             function copy_text(btn_id) {
                 var btn = document.getElementById(btn_id);
                 var clipboard = new ClipboardJS(btn);
                 clipboard.on('success', function(e) {
                     console.log(e);
+                    document.getElementById("display_"+btn_id).innerHTML = "Copied!!!";
                 });
                 clipboard.on('error', function(e) {
                     console.log(e);

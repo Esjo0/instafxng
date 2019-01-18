@@ -136,7 +136,8 @@ if(!empty($trans_detail['points_claimed_id'])) {
                         <span><strong>Order:</strong> &dollar; <?php echo $trans_detail['dollar_ordered']; ?> - &#8358; <?php echo number_format($trans_detail['naira_total_payable'], 2, ".", ","); ?></span>
                         <span><strong>Date Created: </strong><?php echo datetime_to_text($trans_detail['deposit_created']); ?></span>
                         <span><strong>Account:</strong> <?php echo $trans_detail['ifx_acct_no']; ?>
-                            <button title="Click To Copy" id="btn_<?php echo $trans_detail['ifx_acct_no'];?>" onclick="copy_text('btn_<?php echo $trans_detail['ifx_acct_no'];?>')"  data-clipboard-text="<?php echo $trans_detail['ifx_acct_no']; ?>" data-clipboard-action="copy" class="pull-right cbtn btn btn-default btn-xs"><i class="glyphicon glyphicon-copy"></i></button>
+                            <button title="Double Click To Copy account number" id="btn_<?php echo $trans_detail['ifx_acct_no'];?>" onclick="copy_text('btn_<?php echo $trans_detail['ifx_acct_no'];?>')"  data-clipboard-text="<?php echo htmlspecialchars($trans_detail['ifx_acct_no']); ?>" data-clipboard-action="copy" class="pull-right cbtn btn btn-default btn-xs"><i class="glyphicon glyphicon-copy"></i></button>
+                                                        <span class="pull-right" id="display_btn_<?php echo $trans_detail['ifx_acct_no'];?>"><i class="glyphicon glyphicon-info"></i><i>double click to copy</i></span>
                         </span>
                         <hr/>
                         <span><strong>Paid:</strong> &#8358; <?php echo number_format($trans_detail['client_naira_notified'], 2, ".", ","); ?></span>
@@ -222,6 +223,8 @@ if(!empty($trans_detail['points_claimed_id'])) {
                 <label class="control-label text-danger" for="realamtpaid">Actual Amount Paid (&#8358;):</label>
                 <div>
                     <input type="text" class="form-control" id="realamtpaid" name="realamtpaid" value="<?php echo number_format($trans_detail['real_naira_confirmed'], 2, ".", ","); ?>" readonly/>
+                    <button title="Double Click To Copy actual amount Paid" id="btn_<?php echo $trans_detail['real_naira_confirmed'];?>" onclick="copy_text('btn_<?php echo $trans_detail['real_naira_confirmed'];?>')"  data-clipboard-text="<?php echo $trans_detail['real_naira_confirmed']; ?>" data-clipboard-action="copy" class="pull-right cbtn btn btn-default btn-xs"><i class="glyphicon glyphicon-copy"></i></button>
+                    <span class="pull-right" id="display_btn_<?php echo $trans_detail['real_naira_confirmed'];?>"><i class="glyphicon glyphicon-info"></i><i>double click to copy</i></span>
                 </div>
             </div>
             <div class="form-group">
@@ -241,9 +244,7 @@ if(!empty($trans_detail['points_claimed_id'])) {
             <div class="form-group">
                 <label class="control-label text-danger">Total Amount To Fund Client:</label>
                 <div>
-                    <p style="font-size: 1.3em; padding: 0; color: green;"><strong>&dollar; <?php echo number_format(($trans_detail['real_dollar_equivalent'] + $point_dollar_amount), 2, ".", ","); ?></strong> (points inclusive)
-                        <button title="Click To Copy" id="btn_<?php echo $trans_detail['real_dollar_equivalent'] + $point_dollar_amount;?>" onclick="copy_text('btn_<?php echo $trans_detail['real_dollar_equivalent'] + $point_dollar_amount;?>')"  data-clipboard-text="<?php echo $trans_detail['real_dollar_equivalent'] + $point_dollar_amount; ?>" data-clipboard-action="copy" class="pull-right cbtn btn btn-default btn-xs"><i class="glyphicon glyphicon-copy"></i></button>
-                    </p>
+                    <p style="font-size: 1.3em; padding: 0; color: green;"><strong>&dollar; <?php echo number_format(($trans_detail['real_dollar_equivalent'] + $point_dollar_amount), 2, ".", ","); ?></strong> (points inclusive)</p>
                 </div>
             </div>
             <?php } ?>
