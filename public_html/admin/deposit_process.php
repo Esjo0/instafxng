@@ -268,13 +268,8 @@ if(!empty($transaction_access['holder'])){
                 var btn = document.getElementById(btn_id);
                 var clipboard = new ClipboardJS(btn);
                 clipboard.on('success', function(e) {
-                    console.log(e);
                     document.getElementById("display_"+btn_id).innerHTML = "Copied!!!";
                 });
-                clipboard.on('error', function(e) {
-                    console.log(e);
-                });
-
             }
         </script>
         <script type="text/javascript">
