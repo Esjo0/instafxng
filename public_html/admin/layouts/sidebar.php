@@ -155,7 +155,7 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                     <ul class="dropdown-menu">
                         <?php if (in_array(285, $my_pages_sidebar)) { ?><li><a href="compliance/first_time_transaction_initiated.php">First Time Transaction - Initiated</a></li><?php } ?>
                         <?php if (in_array(286, $my_pages_sidebar)) { ?><li><a href="compliance/first_time_transaction_completed.php">First Time Transaction - Reviewed</a></li><?php } ?>
-                        <?php if (in_array(307, $my_pages_sidebar)) { ?><li><a href="clients_review">User Details Review</a></li><?php } ?>
+                        <?php if (in_array(307, $my_pages_sidebar)) { ?><li><a href="clients_review.php">User Details Review</a></li><?php } ?>
                     </ul>
                 </li>
                 <li class="dropdown">
