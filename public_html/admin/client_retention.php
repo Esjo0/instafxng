@@ -624,8 +624,6 @@ $retention_result = $db_handle->fetchAssoc($result);
 
                                 <?php } ?>
 
-                                <?php if(isset($retention_result) && !empty($retention_result)) { require 'layouts/pagination_links.php'; } ?>
-
                                 <table id="list_table" class="table table-responsive table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
