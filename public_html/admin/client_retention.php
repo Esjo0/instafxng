@@ -290,7 +290,7 @@ if($retention_type_main_title == "NOT YET RETAINED") {
 $total_retained = $total_to_retain - $total_not_retained;
 $retention_rate = number_format((($total_retained / $total_to_retain) * 100), 2);
 
-$rowsperpage = 50;
+$rowsperpage = $numrows;
 
 $totalpages = ceil($numrows / $rowsperpage);
 
@@ -324,6 +324,13 @@ $retention_result = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+
+        <script>
+            $(document).ready( function () {
+                $('#list_table').DataTable();
+            } );
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -619,55 +626,48 @@ $retention_result = $db_handle->fetchAssoc($result);
 
                                 <?php if(isset($retention_result) && !empty($retention_result)) { require 'layouts/pagination_links.php'; } ?>
 
-                                <div class="table-wrap">
-                                    <table class="table table-responsive table-striped table-bordered table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>Client Detail</th>
-                                            <th>Commission</th>
-                                            <th>Funding</th>
-                                            <th><?php if($retention_type_main_title == "NOT YET RETAINED") { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
-                                            <th>Action</th>
-                                            <th>Call Log</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php if(isset($retention_result) && !empty($retention_result)) { foreach ($retention_result as $row) {
-                                            if($retention_type == '1') {
-                                                $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $prev_from_date, $prev_to_date);
-                                            } else {
-                                                $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $from_date, $to_date);
-                                            }
+                                <table id="list_table" class="table table-responsive table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>SN</th>
+                                        <th>Client Detail</th>
+                                        <th>Commission</th>
+                                        <th>Funding</th>
+                                        <th><?php if($retention_type_main_title == "NOT YET RETAINED") { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
+                                        <th>Action</th>
+                                        <th>Call Log</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php if(isset($retention_result) && !empty($retention_result)) { $serial_num = 1; foreach ($retention_result as $row) {
+                                        if($retention_type == '1') {
+                                            $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $prev_from_date, $prev_to_date);
+                                        } else {
+                                            $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $from_date, $to_date);
+                                        }
                                         ?>
-                                            <tr>
-                                                <td>
-                                                    <?php echo $row['full_name']; ?><br />
-                                                    <?php echo $row['email']; ?><br />
-                                                    <?php echo $row['phone']; ?>
-                                                </td>
-                                                <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
-                                                <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
-                                                <td><?php if($retention_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
-                                                <td nowrap="nowrap">
-                                                    <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                                    <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
-                                                    <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
-                                                </td>
-                                                <td><?php call_log_status($row['user_code'], 'RETENTION');?></td>
-                                            </tr>
-                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <?php if(isset($retention_result) && !empty($retention_result)) { ?>
-                                    <div class="tool-footer text-right">
-                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
-                                    </div>
-                                <?php } ?>
-
-                                <?php if(isset($retention_result) && !empty($retention_result)) { require 'layouts/pagination_links.php'; } ?>
+                                        <tr>
+                                            <td><?php echo $serial_num; ?></td>
+                                            <td>
+                                                <?php echo $row['full_name']; ?><br />
+                                                <?php echo $row['email']; ?><br />
+                                                <?php echo $row['phone']; ?>
+                                            </td>
+                                            <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
+                                            <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
+                                            <td><?php if($retention_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
+                                            <td nowrap="nowrap">
+                                                <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <br />
+                                                <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
+                                                <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                            </td>
+                                            <td><?php call_log_status($row['user_code'], 'RETENTION');?></td>
+                                        </tr>
+                                    <?php $serial_num++; } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    </tbody>
+                                </table>
 
                             </div>
                         </div>
@@ -678,6 +678,7 @@ $retention_result = $db_handle->fetchAssoc($result);
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
         <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
     </body>
