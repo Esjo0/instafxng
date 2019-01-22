@@ -331,6 +331,15 @@ $retention_result = $db_handle->fetchAssoc($result);
                 $('#list_table').DataTable();
             } );
         </script>
+
+        <script>
+            $(function () {
+                $('[data-toggle="popover"]').popover()
+            })
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
