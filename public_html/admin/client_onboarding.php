@@ -111,6 +111,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
             GROUP BY u.user_code
             HAVING date_earned BETWEEN '$from_date' AND '$to_date' ";
 
+        $f_trading_date = true;
         $filter_category = "";
         $_SESSION['client_onboarding_query'] = $query;
         $display_msg = "Below is a list of Clients Onboarded Between ".datetime_to_text($from_date)." and ".datetime_to_text($to_date);
@@ -759,6 +760,9 @@ if(isset($_POST['campaign_category'])){
                                             <?php if($f_deposit_date == true){?>
                                             <th>First Funding Date</th>
                                             <?php }?>
+                                            <?php if($f_trading_date == true){?>
+                                                <th>First Funding Date</th>
+                                            <?php }?>
                                             <th>Reg. Date</th>
                                             <th>Action</th>
                                             <th>Call Log</th>
@@ -775,6 +779,9 @@ if(isset($_POST['campaign_category'])){
                                                 </td>
                                                 <?php if($f_deposit_date == true){?>
                                                     <td><?php echo datetime_to_text2($first_deposit); ?></td>
+                                                <?php }?>
+                                                <?php if($f_trading_date == true){?>
+                                                    <td><?php echo datetime_to_text2($date_earned); ?></td>
                                                 <?php }?>
                                                 <td><?php echo datetime_to_text2($created); ?></td>
                                                 <td nowrap>
