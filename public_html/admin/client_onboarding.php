@@ -109,8 +109,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
             INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
             GROUP BY u.user_code
-            ORDER BY date_earned DESC
-            HAVING date_earned BETWEEN '$from_date' AND '$to_date' ";
+            HAVING date_earned BETWEEN '$from_date' AND '$to_date' ORDER BY date_earned DESC ";
 
         $f_trading_date = true;
         $filter_category = "";
