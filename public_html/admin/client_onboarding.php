@@ -225,7 +225,7 @@ $numrows = $db_handle->numRows($query);
 // For search, make rows per page equal total rows found, meaning, no pagination
 // for search results
 
-    $rowsperpage = $numrows;
+    $rowsperpage = 10;
 
 $totalpages = ceil($numrows / $rowsperpage);
 
@@ -748,7 +748,9 @@ if(isset($_POST['campaign_category'])){
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
 
-                               <?php  echo $_SESSION['client_onboarding_display_msg'] ?>
+                                <?php if(isset($onboarding_result) && !empty($onboarding_result)) { require_once 'layouts/pagination_links.php'; } ?>
+
+                                <?php  echo $_SESSION['client_onboarding_display_msg'] ?>
                                     <table id="list_table" class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>
                                         <tr>
@@ -787,6 +789,8 @@ if(isset($_POST['campaign_category'])){
                                         </tbody>
                                     </table>
                             </div>
+                            <?php if(isset($onboarding_result) && !empty($onboarding_result)) { require_once 'layouts/pagination_links.php'; } ?>
+
                         </div>
                     </div>
 
