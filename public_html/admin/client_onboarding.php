@@ -109,6 +109,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
             INNER JOIN user_ifxaccount AS ui ON tc.ifx_acct_no = ui.ifx_acct_no
             INNER JOIN user AS u ON ui.user_code = u.user_code
             GROUP BY u.user_code
+            ORDER BY date_earned DESC
             HAVING date_earned BETWEEN '$from_date' AND '$to_date' ";
 
         $f_trading_date = true;
@@ -225,7 +226,9 @@ $numrows = $db_handle->numRows($query);
 
 // For search, make rows per page equal total rows found, meaning, no pagination
 // for search results
-
+if($f_trading_date == true){
+    $rowsperpage = $numrows;
+}
     $rowsperpage = 10;
 
 $totalpages = ceil($numrows / $rowsperpage);
@@ -749,7 +752,7 @@ if(isset($_POST['campaign_category'])){
                                     <p><strong>Result Found: </strong><?php echo number_format($numrows); ?></p>
                                 <?php } ?>
 
-                                <?php if(isset($onboarding_result) && !empty($onboarding_result)) { require_once 'layouts/pagination_links.php'; } ?>
+                                <?php if(isset($onboarding_result) && !empty($onboarding_result) && ($f_trading_date != true)) { require_once 'layouts/pagination_links.php'; } ?>
 
                                 <?php  echo $_SESSION['client_onboarding_display_msg'] ?>
                                     <table id="list_table" class="table table-responsive table-striped table-bordered table-hover">
@@ -761,7 +764,7 @@ if(isset($_POST['campaign_category'])){
                                             <th>First Funding Date</th>
                                             <?php }?>
                                             <?php if($f_trading_date == true){?>
-                                                <th>First Funding Date</th>
+                                                <th>First Trading Date</th>
                                             <?php }?>
                                             <th>Reg. Date</th>
                                             <th>Action</th>
@@ -796,7 +799,6 @@ if(isset($_POST['campaign_category'])){
                                         </tbody>
                                     </table>
                             </div>
-                            <?php if(isset($onboarding_result) && !empty($onboarding_result)) { require_once 'layouts/pagination_links.php'; } ?>
 
                         </div>
                     </div>
