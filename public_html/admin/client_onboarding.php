@@ -127,7 +127,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
                 $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code 
                     WHERE ui.ifx_acct_no NOT IN (
-                    SELECT ifx_acct_no FROM trading_commission WHERE commission > 0
+                    SELECT ifx_acct_no FROM trading_commission
                     ) 
                     GROUP BY u.email 
                     ORDER BY u.created DESC, u.last_name ASC ";
@@ -139,7 +139,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
                 $query = "SELECT MIN(ud.order_complete_time) AS first_deposit, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-                    WHERE ud.status = '8' AND ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    WHERE ud.status = '8' AND ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission)
                     GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
                 $f_deposit_date = true;
                 $filter_category = "Clients not yet on board but have funded their ILPR accounts";
@@ -150,7 +150,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
                 $query = "SELECT MIN(ud.order_complete_time) AS first_deposit, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-                    WHERE ud.status = '8' AND ui.type = '2' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    WHERE ud.status = '8' AND ui.type = '2' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission)
                     GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
                 $f_deposit_date = true;
                 $filter_category = "Clients not yet on board but have funded their Non-ILPR accounts";
@@ -160,7 +160,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
             case 'ilpr':
                 $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-                    WHERE ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    WHERE ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission)
                     GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
                 $filter_category = "Clients not yet On-Board With ILPR Accounts";
                 $display_msg = "Below is a table listing all clients not yet on board with ILPR account numbers.";
@@ -169,7 +169,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
             case 'nonilpr':
                 $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-                    WHERE ui.type = '2' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    WHERE ui.type = '2' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission)
                     GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
                 $filter_category = "Clients not yet On-Board having NON-ILPR Accounts";
                 $display_msg = "Below is a table listing all clients not yet on board and don't have ILPR account numbers.";
@@ -178,7 +178,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
             case 'training':
                 $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
-                    WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission WHERE commission > 0)
+                    WHERE ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission)
                     AND  u.user_code IN (SELECT user_code FROM user AS U WHERE U.academy_signup IS NOT NULL)
                     GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
                 $filter_category = "Training Clients Not yet ON-Board";
