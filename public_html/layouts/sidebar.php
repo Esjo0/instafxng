@@ -49,18 +49,14 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
                     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                     <li data-target="#myCarousel" data-slide-to="1"></li>
                     <li data-target="#myCarousel" data-slide-to="2"></li>
-                    <li data-target="#myCarousel" data-slide-to="3"></li>
                 </ol>
 
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" style="height: 350px;">
 
-                    <div class="item active">
-                        <img src="images/blog_img.png" class="img img-responsive"  alt="" style="width: 100%; height: 350px;">
-                    </div>
-
-                <?php if(isset($featured_news)) { foreach($featured_news as $row) { ?>
-                    <div class="item blog-featured">
+                <?php if(isset($featured_news)) {$article_num = 1; foreach($featured_news as $row) { ?>
+                    <?php if($article_num == 1){$active = "active";}else{$active = "";}?>
+                    <div class="item <?php echo $active;?> blog-featured">
                         <article>
                         <div class="col-sm-12 text-center">
                             <p><a href="news1/id/<?php echo $row['article_id'] . '/u/' . $row['url'] . '/'; ?>" title="Click to read"><?php echo substr($row['title'], 0, 60); ?>...</a></p>
@@ -86,7 +82,7 @@ $signal_last_updated = $db_handle->fetchAssoc($db_handle->runQuery("SELECT creat
                         </div>
                         </article>
                     </div>
-                <?php } } else { echo "<em>No news to display</em>"; } ?>
+                <?php $article_num++;} } else { echo "<em>No news to display</em>"; } ?>
                 </div>
 
                 <!-- Left and right controls -->
