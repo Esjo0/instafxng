@@ -107,6 +107,8 @@ $scheduled_signals = $signal_object->get_scheduled_signals(date('Y-m-d'));
         <!--............................-->
         <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+        <script src="js/browser_notification.js"></script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
