@@ -227,9 +227,9 @@ $numrows = $db_handle->numRows($query);
 // for search results
 if($f_trading_date == true){
     $rowsperpage = $numrows;
-}
+}else{
     $rowsperpage = 10;
-
+}
 $totalpages = ceil($numrows / $rowsperpage);
 
 // get the current page or set a default
