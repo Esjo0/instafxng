@@ -1,3 +1,12 @@
+CREATE TABLE `push_notification_token` (
+ `id` int(100) NOT NULL AUTO_INCREMENT,
+ `token` varchar(200) NOT NULL,
+ `category` enum('1') DEFAULT NULL COMMENT '1-Signals',
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+) 
+
+
 CREATE TABLE `client_review` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `user_code` varchar(11) NOT NULL,
