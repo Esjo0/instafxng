@@ -1,11 +1,14 @@
-CREATE TABLE `push_notification_token` (
+CREATE TABLE `call_reminder` (
  `id` int(100) NOT NULL AUTO_INCREMENT,
- `token` varchar(200) NOT NULL,
- `category` enum('1') DEFAULT NULL COMMENT '1-Signals',
- `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `user_code` varchar(11) NOT NULL,
+ `reminder_date` datetime NOT NULL,
+ `source` varchar(100) NOT NULL,
+ `status` enum('0','1') NOT NULL DEFAULT '0' COMMENT '0-Pending, 1-Contacted',
+ `comment` text NOT NULL,
+ `admin` varchar(11) NOT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`id`)
-) 
-
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1
 
 CREATE TABLE `client_review` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
