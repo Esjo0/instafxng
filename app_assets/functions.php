@@ -10,6 +10,19 @@ error_reporting( E_ERROR | E_WARNING | E_PARSE );
 // Set the custom Error handler
 set_error_handler("customError");
 
+
+
+function dateDifference($date_1 , $date_2 , $differenceFormat = '%a' )
+{
+    $datetime1 = date_create($date_1);
+    $datetime2 = date_create($date_2);
+
+    $interval = date_diff($datetime1, $datetime2);
+
+    return $interval->format($differenceFormat);
+
+}
+
 /**
  * String zeros from date
  * @param type $marked_string
