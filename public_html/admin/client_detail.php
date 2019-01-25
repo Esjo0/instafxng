@@ -70,6 +70,10 @@ $latest_funding = $system_object->get_latest_funding($user_code);
 // GET LATEST WITHDRAWALS
 $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
 
+// Admin Allowed: Toye, Lekan, Demola, Bunmi
+$sms_code_allowed = array("FgI5p", "5xVvl", "43am6");
+$allowed_sms_code = in_array($_SESSION['admin_unique_code'], $sms_code_allowed) ? true : false;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -134,8 +138,12 @@ $latest_withdrawal = $system_object->get_latest_withdrawal($user_code);
                                         <p><em><?php echo datetime_to_text2($created); ?></em></p>
                                         <span class="span-title">Client Address</span>
                                         <p><em><?php echo $client_address['address'] . ' ' . $client_address['address2'] . ' ' . $client_address['city'] . ' ' . $client_address['state']; ?></em></p>
+
+                                        <?php if($allowed_sms_code) { ?>
                                         <span class="span-title">Client SMS Code</span>
                                         <p>Code: <?php echo $client_phone_code['phone_code']; ?> &nbsp;&nbsp; Status: <?php echo phone_code_status($client_phone_code['phone_status']); ?></p>
+                                        <?php } ?>
+
                                         <span class="span-title">Verification Status</span>
                                         <p><?php echo $verification_level; ?></p>
                                     </div>
