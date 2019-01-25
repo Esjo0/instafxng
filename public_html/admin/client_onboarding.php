@@ -147,7 +147,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
                     WHERE ud.status = '8' AND ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission)
-                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                    GROUP BY u.email ORDER BY u.first_deposit DESC, u.last_name ASC ";
                 $f_deposit_date = true;
                 $filter_category = "Clients not yet on board but have funded their ILPR accounts";
                 $display_msg = "Below is a table listing all clients not yet on board but have completed funding transactions on a ILPR account.";
