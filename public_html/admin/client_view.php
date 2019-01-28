@@ -3,10 +3,16 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
+$client_operation = new clientOperation();
+$today = date('d-m-Y');
+//<!-- Reminder Plug in-->
+$call_reminder = $client_operation->get_call_reminder('CLIENT VIEW');
+//<!-- Reminder Plug in-->
 
 if(empty($_SESSION['account_officer_filter']) || !isset($_SESSION['account_officer_filter'])) {
     $_SESSION['account_officer_filter'] = 'all';
 }
+
 
 if (isset($_POST['apply_filter'])) {
     foreach ($_POST as $key => $value) {
@@ -184,6 +190,11 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
         <script>
+            $(document).ready( function () {
+                $('#list_table').DataTable();
+            } );
+        </script>
+        <script>
             $(function () {
                 $('[data-toggle="popover"]').popover()
             })
@@ -191,6 +202,7 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                 $('[data-toggle="tooltip"]').tooltip()
             })
         </script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -245,6 +257,78 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                     <strong>Clients Today: </strong> <?php echo number_format($clients_today); ?><br />
                                     <strong>Clients Yesterday: </strong><?php echo number_format($clients_yesterday); ?> <br />
                                 </p>
+                                <!-- Reminder Plug in-->
+                                <div id="reminder" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                        class="close">&times;</button>
+                                                <h4 class="modal-title">Contact Reminder.</h4>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <table id="list_table" class="table table-responsive table-striped table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>SN</th>
+                                                        <th>Client Details</th>
+                                                        <th>Comment</th>
+                                                        <th>Reminder Date</th>
+                                                        <th>Status</th>
+                                                        <th>Date Created</th>
+                                                        <th>Created By</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php if(isset($call_reminder) && !empty($call_reminder)){$total_rem_num = 1; $total_rem_pending = 0; foreach ($call_reminder AS $rem){?>
+
+                                                        <tr>
+                                                            <td><?php echo $total_rem_num; ?></td>
+                                                            <td>
+                                                                <?php echo $rem['full_name']; ?><br />
+                                                            </td>
+                                                            <td><?php echo $rem['comment']; ?></td>
+                                                            <td><?php echo datetime_to_text($rem['reminder_date']); ?></td>
+                                                            <td><?php
+                                                                $encrypt_usercode = dec_enc('encrypt', $rem['user_code']);
+                                                                $encrypt_page = dec_enc('encrypt', 'CLIENT VIEW');
+                                                                $reminder_date = date_create($rem['reminder_date']);
+                                                                $reminder_date = date_format($reminder_date,"d-m-Y");
+                                                                $diff = dateDifference($reminder_date,$today);
+
+                                                                if( ($rem['status'] == '0') && ($diff >= 1) ){
+                                                                    $total_rem_pending++;
+                                                                    echo "<b><i class='text-danger'>Over Due</i></b><br>
+                                                                    <a target='_blank' title='Comment' class='btn btn-success btn-sm' href='sales_contact_view.php?x=$encrypt_usercode&r=client_view&c=$encrypt_page&pg=$currentpage'>Contact Client</a>";
+
+                                                                }elseif($rem['status'] == '1'){
+                                                                    echo "<b><i class='text-success'>Contacted</i></b>";
+                                                                }elseif($rem['status'] == '0'){
+                                                                    $total_rem_pending++;
+                                                                    echo "<b><i class='text-warning'>Pending</i></b><br>
+                                                                    <a target='_blank' title='Comment' class='btn btn-success btn-sm' href='sales_contact_view.php?x=$encrypt_usercode&r=client_view&c=$encrypt_page&pg=$currentpage'>Contact Client</a>";
+                                                                }
+                                                                ?></td>
+                                                            <td><?php echo datetime_to_text($rem['created']); ?></td>
+                                                            <td><?php echo $rem['admin']?></td>
+                                                        </tr>
+                                                        <?php $total_rem_num++; } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button data-dismiss="modal" class="btn btn-danger">Close !</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-sm-12">
+                                    <button type="button" data-target="#reminder" data-toggle="modal" class="btn btn-success pull-right"><i class="fa fa-bell "></i> Contact Reminder  <span class="badge"><?php echo $total_rem_pending;?></span></button>
+                                </div>
+                                </div>
+                                <!-- Reminder Plug in-->
 
                                 <?php if(isset($account_officer_filter)) { ?>
                                     <hr />
@@ -303,4 +387,6 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
         </div>
         <?php require_once 'layouts/footer.php'; ?>
     </body>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
 </html>

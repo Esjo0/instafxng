@@ -439,9 +439,12 @@ function print_reply($replies) {
                                     </div>
                                 </div>
                             </div>
-                            <script>$(document).ready(function () {
+                            <script>
+                                setTimeout(reg_modal, 540000);
+                                function reg_modal(){
                                     $('#register').modal("show");
-                                });</script>
+                                }
+                            </script>
                             <?php }?>
                             <div class="col-sm-12">
                                 <p><a href="blog.php" class="btn btn-default" title="All Blog Post"><i class="fa fa-arrow-circle-left"></i> All Blog Post</a></p>
