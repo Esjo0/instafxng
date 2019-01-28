@@ -54,7 +54,10 @@ $query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_nam
 
 $monthly_clients_retained = $db_handle->numRows($query);
 
-$the_query = "SELECT first_trade FROM my_reference_clients_2 WHERE first_trade = '$yesterday'";
+$the_query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+    FROM my_reference_clients AS rc1
+    LEFT JOIN my_reference_clients_2 AS rc2 ON rc1.user_code = rc2.user_code
+    WHERE rc2.first_trade = '$yesterday'";
 $monthly_clients_retained_yesterday = $db_handle->numRows($the_query);
 
 ////////////////////////////////////////////////
@@ -101,7 +104,10 @@ $query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_nam
 
 $quarter_clients_retained = $db_handle->numRows($query);
 
-$the_query = "SELECT first_trade FROM my_reference_clients_4 WHERE first_trade = '$yesterday'";
+$the_query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+    FROM my_reference_clients_3 AS rc1
+    LEFT JOIN my_reference_clients_4 AS rc2 ON rc1.user_code = rc2.user_code
+    WHERE rc2.first_trade = '$yesterday'";
 $quarter_clients_retained_yesterday = $db_handle->numRows($the_query);
 
 ////////////////////////////////////////////////
@@ -151,7 +157,10 @@ $query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_nam
 
 $half_year_clients_retained = $db_handle->numRows($query);
 
-$the_query = "SELECT first_trade FROM my_reference_clients_6 WHERE first_trade = '$yesterday'";
+$the_query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+    FROM my_reference_clients_5 AS rc1
+    LEFT JOIN my_reference_clients_6 AS rc2 ON rc1.user_code = rc2.user_code
+    WHERE rc2.first_trade = '$yesterday'";
 $half_year_clients_retained_yesterday = $db_handle->numRows($the_query);
 
 ////////////////////////////////////////////////
@@ -201,7 +210,10 @@ $query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_nam
 
 $year_clients_retained = $db_handle->numRows($query);
 
-$the_query = "SELECT first_trade FROM my_reference_clients_8 WHERE first_trade = '$yesterday'";
+$the_query = "SELECT rc2.sum_volume, rc2.sum_commission, rc2.user_code, rc2.full_name, rc2.email, rc2.phone, rc2.created, rc2.first_trade, rc2.last_trade
+    FROM my_reference_clients_7 AS rc1
+    LEFT JOIN my_reference_clients_8 AS rc2 ON rc1.user_code = rc2.user_code
+    WHERE rc2.first_trade = '$yesterday'";
 $year_clients_retained_yesterday = $db_handle->numRows($the_query);
 
 ////////////////////////////////////////////////

@@ -8,6 +8,12 @@ if(isset($_GET['r']) && $_GET['r'] == 1) {
     redirect_to("client_onboarding.php");
 }
 
+$client_operation = new clientOperation();
+
+//<!-- Reminder Plug in-->
+$call_reminder = $client_operation->get_call_reminder('CLIENT ON-BOARDING:');
+//<!-- Reminder Plug in-->
+
 if(isset($_POST['called'])){
     $user_code = $db_handle->sanitizePost($_POST['user_code']);
     $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
@@ -141,7 +147,7 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
                     WHERE ud.status = '8' AND ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission)
-                    GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
+                    GROUP BY u.email ORDER BY u.first_deposit DESC, u.last_name ASC ";
                 $f_deposit_date = true;
                 $filter_category = "Clients not yet on board but have funded their ILPR accounts";
                 $display_msg = "Below is a table listing all clients not yet on board but have completed funding transactions on a ILPR account.";
@@ -409,6 +415,11 @@ if(isset($_POST['campaign_category'])){
             } );
         </script>
 
+        <script>
+            $(document).ready( function () {
+                $('#list_table2').DataTable();
+            } );
+        </script>
         <script>
             $(function () {
                 $('[data-toggle="popover"]').popover()
@@ -754,6 +765,78 @@ if(isset($_POST['campaign_category'])){
                                 <?php if(isset($onboarding_result) && !empty($onboarding_result) && ($f_trading_date != true)) { require_once 'layouts/pagination_links.php'; } ?>
 
                                 <?php  echo $_SESSION['client_onboarding_display_msg'] ?>
+                                <!-- Reminder Plug in-->
+                                <div id="reminder" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                        class="close">&times;</button>
+                                                <h4 class="modal-title">Contact Reminder.</h4>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <table id="list_table2" class="table table-responsive table-striped table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>SN</th>
+                                                        <th>Client Details</th>
+                                                        <th>Comment</th>
+                                                        <th>Reminder Date</th>
+                                                        <th>Status</th>
+                                                        <th>Date Created</th>
+                                                        <th>Created By</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php if(isset($call_reminder) && !empty($call_reminder)){$total_rem_num = 1; $total_rem_pending = 0; foreach ($call_reminder AS $rem){?>
+
+                                                        <tr>
+                                                            <td><?php echo $total_rem_num; ?></td>
+                                                            <td>
+                                                                <?php echo $rem['full_name']; ?><br />
+                                                            </td>
+                                                            <td><?php echo $rem['comment']; ?></td>
+                                                            <td><?php echo datetime_to_text($rem['reminder_date']); ?></td>
+                                                            <td><?php
+                                                                $encrypt_usercode = dec_enc('encrypt', $rem['user_code']);
+                                                                $encrypt_page = dec_enc('encrypt', 'CLIENT ON-BOARDING:');
+                                                                $reminder_date = date_create($rem['reminder_date']);
+                                                                $reminder_date = date_format($reminder_date,"d-m-Y");
+                                                                $diff = dateDifference($reminder_date,$today);
+
+                                                                if( ($rem['status'] == '0') && ($diff >= 1) ){
+                                                                    $total_rem_pending++;
+                                                                    echo "<b><i class='text-danger'>Over Due</i></b><br>
+                                                                    <a target='_blank' title='Comment' class='btn btn-success btn-sm' href='sales_contact_view.php?x=$encrypt_usercode&r=client_onboarding&c=$encrypt_page&pg=$currentpage'>Contact Client</a>";
+
+                                                                }elseif($rem['status'] == '1'){
+                                                                    echo "<b><i class='text-success'>Contacted</i></b>";
+                                                                }elseif($rem['status'] == '0'){
+                                                                    $total_rem_pending++;
+                                                                    echo "<b><i class='text-warning'>Pending</i></b><br>
+                                                                    <a target='_blank' title='Comment' class='btn btn-success btn-sm' href='sales_contact_view.php?x=$encrypt_usercode&r=client_onboarding&c=$encrypt_page&pg=$currentpage'>Contact Client</a>";
+                                                                }
+                                                                ?></td>
+                                                            <td><?php echo datetime_to_text($rem['created']); ?></td>
+                                                            <td><?php echo $rem['admin']?></td>
+                                                        </tr>
+                                                        <?php $total_rem_num++; } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button data-dismiss="modal" class="btn btn-danger">Close !</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button type="button" data-target="#reminder" data-toggle="modal" class="btn btn-success pull-right"><i class="fa fa-bell "></i> Contact Reminder  <span class="badge"><?php echo $total_rem_pending;?></span></button>
+                                    </div>
+                                </div>
+                                <!-- Reminder Plug in-->
                                     <table id="list_table" class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>
                                         <tr>
