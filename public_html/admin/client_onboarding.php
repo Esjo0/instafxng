@@ -140,7 +140,9 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
                 $query = "SELECT MIN(ud.order_complete_time) AS first_deposit, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-                    WHERE ud.status = '8' AND ui.type = '1' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission)
+                    WHERE ud.status = '8' AND ui.type = '1' AND u.user_code
+                    NOT IN (SELECT u.user_code FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                    INNER JOIN trading_commission AS tc ON ui.ifx_acct_no = tc.ifx_acct_no WHERE ui.type = '1')
                     GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
                 $f_deposit_date = true;
                 $filter_category = "Clients not yet on board but have funded their ILPR accounts";
@@ -151,7 +153,9 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
                 $query = "SELECT MIN(ud.order_complete_time) AS first_deposit, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name, u.email, u.phone, u.created
                     FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
                     INNER JOIN user_deposit AS ud ON ui.ifxaccount_id = ud.ifxaccount_id
-                    WHERE ud.status = '8' AND ui.type = '2' AND ui.ifx_acct_no NOT IN (SELECT ifx_acct_no FROM trading_commission)
+                    WHERE ud.status = '8' AND ui.type = '2' AND u.user_code
+                    NOT IN (SELECT u.user_code FROM user AS u INNER JOIN user_ifxaccount AS ui ON u.user_code = ui.user_code
+                    INNER JOIN trading_commission AS tc ON ui.ifx_acct_no = tc.ifx_acct_no WHERE ui.type = '2')
                     GROUP BY u.email ORDER BY u.created DESC, u.last_name ASC ";
                 $f_deposit_date = true;
                 $filter_category = "Clients not yet on board but have funded their Non-ILPR accounts";
