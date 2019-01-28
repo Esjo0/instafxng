@@ -1,3 +1,5 @@
+ALTER TABLE `push_notification_token` ADD UNIQUE(`token`);
+
 CREATE TABLE `push_notification_token` (
  `id` int(100) NOT NULL AUTO_INCREMENT,
  `token` varchar(200) NOT NULL,
