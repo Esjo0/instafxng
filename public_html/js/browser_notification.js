@@ -28,7 +28,7 @@ const messaging = firebase.messaging();
 messaging
     .requestPermission()
     .then(function () {
-        MsgElem.innerHTML = "Notification permission granted."
+        //MsgElem.innerHTML = "Notification permission granted.";
         console.log("Notification permission granted.");
 
         // get the token in the form of promise
@@ -43,11 +43,11 @@ messaging
             // code for IE6, IE5
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.open("GET", "logic/pass_notification_token.php?token="+token+"&type=1", true);
+        xmlhttp.open("GET", "../logic/pass_notification_token.php?token="+token+"&type=1", true);
         xmlhttp.send();
     })
     .catch(function (err) {
-        ErrElem.innerHTML =  ErrElem.innerHTML + "; " + err
+        //ErrElem.innerHTML =  ErrElem.innerHTML + "; " + err
         console.log("Unable to get permission to notify.", err);
     });
 
