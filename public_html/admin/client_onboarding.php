@@ -114,7 +114,22 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
         $f_trading_date = true;
         $filter_category = "";
         $_SESSION['client_onboarding_query'] = $query;
-        $display_msg = "Below is a list of Clients Onboarded Between ".datetime_to_text($from_date)." and ".datetime_to_text($to_date);
+
+        $all_gotten = $db_handle->numRows($query);
+        if(($period > 1) && ($period < 12) && !empty($m_current_target)){
+            $per_completed = ($all_gotten/$m_current_target)*100;
+            $report = "The target for this period is $m_current_target. Total clients on-boarded is $all_gotten and percentage completed is $per_completed%.";
+        }elseif(($period == '1-6') || ($period == '7-12') && !empty($h_current_target)){
+            $per_completed = ($all_gotten/$h_current_target)*100;
+            $report = "The target for this period is $h_current_target. Total clients on-boarded is $all_gotten and percentage completed is $per_completed%.";
+        }elseif(($period == '1-3') || ($period == '4-6') || ($period == '7-9') || ($period == '10-12') && !empty($q_current_target)){
+            $per_completed = ($all_gotten/$q_current_target)*100;
+            $report = "The target for this period is $q_current_target. Total clients on-boarded is $all_gotten and percentage completed is $per_completed%.";
+        }elseif(($period == '1-12') && !empty($y_current_target)){
+            $per_completed = ($all_gotten/$y_current_target)*100;
+            $report = "The target for this period is $y_current_target. Total clients on-boarded is $all_gotten and percentage completed is $per_completed%.";
+        }
+        $display_msg = "Below is a list of Clients Onboarded Between ".datetime_to_text($from_date)." and ".datetime_to_text($to_date).".<br> $report";
 
     } elseif (isset($_POST['filter'])) {
         foreach ($_POST as $key => $value) {
@@ -220,9 +235,9 @@ if (isset($_POST['onboarding_tracker']) || isset($_GET['pg']) || isset($_POST['f
 
     $_SESSION['client_onboarding_query'] = $query;
 }
-$_SESSION['client_onboarding_filter_category'] = $filter_category;
-$_SESSION['client_onboarding_display_msg'] = $display_msg;
-$_SESSION['client_onboarding_result_title'] = $result_title;
+if(!empty($filter_category)){$_SESSION['client_onboarding_filter_category'] = $filter_category;}
+if(!empty($display_msg)){$_SESSION['client_onboarding_display_msg'] = $display_msg;}
+if(!empty($result_title)){$_SESSION['client_onboarding_result_title'] = $result_title;}
 
 $query = $_SESSION['client_onboarding_query'];
 $numrows = $db_handle->numRows($query);
