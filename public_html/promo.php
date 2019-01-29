@@ -42,7 +42,7 @@ $thisPage = "Promotion";
                         </div>
                         <div class="row">
                             <div class="col-sm-4">
-                                <a href="loyalty.php" title="click for full details" target="_blank"><img src="images\Loyalty_Points_Images\ilpr_landing_image.jpg" alt="" class="img-responsive" /></a>
+                                <a href="loyalty.php" title="click for full details" target="_blank"><img src="https://instafxng.com/imgsource/ilpr2019.png" alt="" class="img-responsive" /></a>
                             </div>
                             <div class="col-sm-8">
                                 <p>Make Up To $4, 200 and N1, 000, 000 Extra While You Take Your Normal Trades</p>
