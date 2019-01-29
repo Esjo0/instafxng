@@ -168,11 +168,12 @@ if ($deposit_process_refund_approve && ($_SERVER['REQUEST_METHOD'] == 'POST' && 
 
     $transaction_id = $_POST['transaction_id'];
     $remarks = $_POST['remarks'];
+    $url = $_SERVER['REQUEST_URI'];
 
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    header("Location: deposit_refund_pending.php");
+    header("Location: $url");
     exit;
 }
 
@@ -215,7 +216,7 @@ if ($deposit_process_refund_approve && ($_SERVER['REQUEST_METHOD'] == 'POST' && 
     $result = $db_handle->runQuery($query);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    header("Location: deposit_refund_approve.php");
+    header("Location: deposit_refund_pending.php");
     exit;
 }
 
