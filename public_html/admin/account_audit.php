@@ -308,7 +308,7 @@ if(isset($_POST['delete_schedule'])){
                                                                         class="glyphicon glyphicon-ok-circle"></i></button>
                                         <?php }?>
                                                                 <div class="form-group">
-                                                                    <label for="venue" class="control-label">Select a venue and Select a corresponding location</label>
+                                                                    <label for="venue" class="control-label">Select a venue and Select a corresponding date</label>
                                                                     <div class="radio">
                                                                         <label><input id="offline1<?php echo $id;?>" type="radio" name="venue"
                                                                                       value="1" >Block 1A, Plot
