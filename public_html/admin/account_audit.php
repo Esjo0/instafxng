@@ -29,7 +29,7 @@ if(isset($_POST['update'])){
     if($result){
         $message_success = "Successfully Update Client Audit date";
     }else{
-        $message_error = "Not successful.";
+        $message_error = "Not successful. Ensure you Select a Venue and Choose corresponding date!!!";
     }
 }
 
@@ -82,7 +82,21 @@ $query .= 'LIMIT ' . $offset . ',' . $rowsperpage;
 $result = $db_handle->runQuery($query);
 $participants = $db_handle->fetchAssoc($result);
 
+//get schedule date
+$query = "SELECT * FROM account_audit_date WHERE STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today'";
+$result = $db_handle->runQuery($query);
+$all_scheduled_dates = $db_handle->fetchAssoc($result);
 
+if(isset($_POST['delete_schedule'])){
+    $del_id = $db_handle->sanitizePost($_POST['del_id']);
+    $query = "DELETE FROM account_audit_date WHERE id = '$del_id'";
+    $result = $db_handle->runQuery($query);
+    if ($result){
+        $message_success = "Successfully Deleted";
+    } else {
+        $message_error = "Schedule not successfully submitted. Kindly Try again.";
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -170,7 +184,42 @@ $participants = $db_handle->fetchAssoc($result);
                                                 <option value="3">Online(Zoom)</option>
                                             </select>
                                         </div>
+                                                <table class="table table-responsive">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Schedule Date</th>
+                                                        <th>Location</th>
+                                                        <th>Date Created</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <?php if(isset($all_scheduled_dates)){
+                                                    foreach($all_scheduled_dates AS $row){?>
+                                                    <tr>
+                                                        <td><?php echo datetime_to_text($row['audit_date']);?></td>
+                                                        <td><?php if ($row['venue'] == 1) {
+                                                                echo "Diamond Estate";
+                                                            } elseif ($row['venue'] == 2) {
+                                                                echo "HFP Office";
+                                                            } elseif ($row['venue'] == 3) {
+                                                                echo "Online";
+                                                            } ?></td>
+                                                        <td><?php echo datetime_to_text($row['created']);?></td>
+                                                        <td>
+                                                            <form method="post" action="">
+                                                                <input name="del_id" type="hidden" value="<?php echo $row['id']; ?>">
+                                                                <button name="delete_schedule" type="submit" class="btn btn-danger btn-sm"><i
+                                                                        class="glyphicon glyphicon-remove-circle"></i></button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    <?php }
+                                                    }else{echo "<tr colspan='5' class='text-danger'><td >No Scheduled Date... </td></tr>"; }?>
+                                                </table>
+
+
                                     </div>
+
                                     <div class="modal-footer">
                                         <input name="add_date" type="submit"
                                                class="btn btn-sm btn-default" value="SUBMIT">
@@ -259,7 +308,7 @@ $participants = $db_handle->fetchAssoc($result);
                                                                         class="glyphicon glyphicon-ok-circle"></i></button>
                                         <?php }?>
                                                                 <div class="form-group">
-                                                                    <label for="venue" class="control-label">Choose venue</label>
+                                                                    <label for="venue" class="control-label">Select a venue and Select a corresponding date</label>
                                                                     <div class="radio">
                                                                         <label><input id="offline1<?php echo $id;?>" type="radio" name="venue"
                                                                                       value="1" >Block 1A, Plot
@@ -270,14 +319,12 @@ $participants = $db_handle->fetchAssoc($result);
                                                                         <select id="entry_channel1" class="form-control" name="date1">
                                                                             <option value="">Choose a date</option>
                                                                             <?php
-                                                                            $query1 = "SELECT * FROM account_audit_date WHERE venue = '1' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= $today";
-                                                                            $result1 = $db_handle->runQuery($query1);
-                                                                            $result1 = $db_handle->fetchAssoc($result1);
-                                                                            foreach ($result1 as $row1) {
+                                                                            foreach ($all_scheduled_dates as $row1) {
                                                                                 extract($row1);
+                                                                                if($venue == 1){
                                                                                 ?>
                                                                                 <option value="<?php echo $audit_date; ?>"><?php echo datetime_to_textday($audit_date) . " " . datetime_to_text($audit_date) ?></option>
-                                                                            <?php } ?>
+                                                                            <?php }} ?>
                                                                         </select>
                                                                     </div>
                                                                     <div class="radio">
@@ -291,14 +338,12 @@ $participants = $db_handle->fetchAssoc($result);
                                                                         <select id="entry_channel2" class="form-control" name="date2" >
                                                                             <option value="">Choose a date</option>
                                                                             <?php
-                                                                            $query = "SELECT * FROM account_audit_date WHERE venue = '2' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today'";
-                                                                            $result = $db_handle->runQuery($query);
-                                                                            $result = $db_handle->fetchAssoc($result);
-                                                                            foreach ($result as $row2) {
+                                                                            foreach ($all_scheduled_dates as $row2) {
                                                                                 extract($row2);
+                                                                                if($venue == 2){
                                                                                 ?>
                                                                                 <option value="<?php echo $audit_date; ?>"><?php echo datetime_to_textday($audit_date) . " " . datetime_to_text($audit_date) ?></option>
-                                                                            <?php } ?>
+                                                                            <?php }} ?>
                                                                         </select>
                                                                     </div>
 
@@ -316,15 +361,12 @@ $participants = $db_handle->fetchAssoc($result);
                                                                         <select id="entry_channel3" class="form-control" name="date3" >
                                                                             <option value="">Choose a date</option>
                                                                             <?php
-                                                                            $query = "SELECT * FROM account_audit_date WHERE venue = '3' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today'";
-                                                                            $result = $db_handle->runQuery($query);
-                                                                            $result = $db_handle->fetchAssoc($result);
-                                                                            foreach ($result as $row3) {
+                                                                            foreach ($all_scheduled_dates as $row3) {
                                                                                 extract($row3);
+                                                                                if($venue == 3){
                                                                                 ?>
-                                                                                <option
-                                                                                    value="<?php echo $audit_date; ?>"><?php echo datetime_to_textday($audit_date) . " " . datetime_to_text($audit_date) ?></option>
-                                                                            <?php } ?>
+                                                                                <option value="<?php echo $audit_date; ?>"><?php echo datetime_to_textday($audit_date) . " " . datetime_to_text($audit_date) ?></option>
+                                                                            <?php }} ?>
                                                                         </select>
                                                                     </div>
                                                                 </div>
