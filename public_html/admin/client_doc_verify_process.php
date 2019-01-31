@@ -93,7 +93,7 @@ if (isset($_POST['process'])) {
         $message_error = "All fields must be filled, please try again";
     } else {
         $doc_status = $id_card_status . $passport_status . $signature_status;
-        $update_verification = $client_operation->update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks);
+        $update_verification = $client_operation->update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks, $exp_date);
         $update_remark = $client_operation->update_verification_remark($user_code, $admin_code, $remarks);
         if($update_verification) {
             $message_success = "You have successfully updated the account";
@@ -216,7 +216,21 @@ if (isset($_POST['process'])) {
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="client_name">Enter ID Expiry Date:</label>
+                                        <div class="col-sm-10 col-lg-5">
+                                            <input type="text" name="exp_date" class="form-control" id="expy_date"/>
+                                        </div>
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                $('#expy_date').datetimepicker({
+                                                    format: 'YYYY-MM-DD'
+                                                });
+                                            });
+                                        </script>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="address">Address:</label>
@@ -302,5 +316,8 @@ if (isset($_POST['process'])) {
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+        <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+
     </body>
 </html>

@@ -195,6 +195,11 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
             } );
         </script>
         <script>
+            $(document).ready( function () {
+                $('#list_table2').DataTable();
+            } );
+        </script>
+        <script>
             $(function () {
                 $('[data-toggle="popover"]').popover()
             })
@@ -336,7 +341,7 @@ $allowed_update_profile = in_array($_SESSION['admin_unique_code'], $update_allow
                                 <?php } ?>
 
                                 <div class="table-wrap">
-                                    <table class="table table-responsive table-striped table-bordered table-hover">
+                                    <table id="list_table2" class="table table-responsive table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th>Contact Details</th>

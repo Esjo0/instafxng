@@ -1,3 +1,15 @@
+
+CREATE TABLE `user_doc_archive` (
+ `id` int(10) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(11) NOT NULL,
+ `content` varchar(100) NOT NULL,
+ `type` enum('1','2','3','4','5','6','7','8','9','10','11','12') NOT NULL COMMENT '1- ID cards, 2-Passpost, 3-Signature, 4-documents, 5-PhoneNumber, 6-email 7-address 8-state_id 9-city 10-bank_name 11-bank_account_no 12-Bank account name',
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+)
+
+ALTER TABLE `user_credential` ADD `id_exp_date` DATE NULL DEFAULT NULL AFTER `doc_status`;
+
 ALTER TABLE `push_notification_token` ADD UNIQUE(`token`);
 
 CREATE TABLE `push_notification_token` (

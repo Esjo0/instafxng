@@ -739,7 +739,7 @@ MAIL;
         return $fetched_data ? $fetched_data : false;
     }
 
-    public function update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks) {
+    public function update_document_verification_status($credential_id, $meta_id, $doc_status, $address_status, $remarks, $exp_date="") {
         global $db_handle;
         global $system_object;
 
@@ -756,6 +756,11 @@ MAIL;
 
         $query = "UPDATE user_meta SET status = '$address_status' WHERE user_meta_id = $meta_id LIMIT 1";
         $db_handle->runQuery($query);
+
+        if(!empty($exp_date)) {
+            $query = "UPDATE user_credential SET id_exp_date = '$exp_date' WHERE user_credential_id = $credential_id";
+            $db_handle->runQuery($query);
+        }
 
         switch ($doc_status) {
             case '000': $message = "None of the documents was Approved"; break;
