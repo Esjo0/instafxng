@@ -10,14 +10,14 @@ if(($current_day == 1) || ($current_day == 15)){
 //Check for id that expires this month and send then a mail
 $query = "SELECT * FROM user_credential AS uc
 INNER JOIN user AS u ON uc.user_code = u.user_code
-WHERE MONTH(uc.id_exp_date) = '$current_day' AND uc.doc_status = '111' ";
+WHERE MONTH(uc.id_exp_date) <= '$current_month' AND uc.doc_status = '111' ";
 $result = $db_handle->runQuery($query);
     $all_exp_cards = $db_handle->fetchArray($result);
     foreach($all_exp_cards AS $row){
         extract($row);
         $query = "UPDATE user_credentials SET doc_status = '011'";
         $result = $db_handle->runQuery($query);
-        $query = "INSERT INTO user_id_card_archive (user_code, file_name) VALUE('$user_code', '$idcard')";
+        $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$idcard', '1')";
         $result = $db_handle->runQuery($query);
         $subject = "Instafxng ID Card update";
         $message =
@@ -30,7 +30,7 @@ $result = $db_handle->runQuery($query);
             <p>Dear $first_name,</p>
 
             <p>Your ID Card is due to expire This month.</p>
-            <p>You are advised to kindly <a href="https://instafxng.com/verify_account.php">Click Here</a> to upload a valid ID Card.</p>
+            <p>Kindly <a href="https://instafxng.com/verify_account.php">Click Here</a> to update a valid ID Card.</p>
 
             <p>Thank you for choosing Instafxng.</p>
 

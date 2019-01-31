@@ -1,6 +1,16 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 class InstafxngSystem {
+    //function to fetch clients docs
+    public function get_archived_docs($user_code){
+        global $db_handle;
+        $query = "SELECT * FROM user_doc_archive WHERE user_code = '$user_code' ORDER BY created DESC";
+        $result = $db_handle->runQuery($query);
+        $all_archived_doc = $db_handle->fetchArray($result);
+        if($result){
+            return $all_archived_doc;
+        }
+    }
     
     // function to send SMTP emails
     public function send_email($subject, $message, $sendto_email, $sendto_name, $from_name = '', $attachment = '') {

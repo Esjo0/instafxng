@@ -34,6 +34,17 @@ if (isset($_POST['contact_update'])) {
     $query = "UPDATE user_meta SET address = '$address', city = '$city', state_id = $state_id WHERE user_code = '$user_code' LIMIT 1";
     $update2 = $db_handle->runQuery($query);
 
+    $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$phone_number', '5')";
+    $db_handle->runQuery($query);
+    $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$email_address', '6')";
+    $db_handle->runQuery($query);
+    $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$state_id', '8')";
+    $db_handle->runQuery($query);
+    $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$city', '9')";
+    $db_handle->runQuery($query);
+    $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$address', '7')";
+    $db_handle->runQuery($query);
+
     if($update1 || $update2) {
         $message_success = "You have successfully made an update";
     } else {
@@ -62,6 +73,12 @@ if (isset($_POST['account_update'])) {
               ('$user_code', '$bank_acct_name', '$bank_acct_number', $bank_id, '2')";
         $db_handle->runQuery($query);
     }
+    $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$bank_acct_name', '12')";
+    $db_handle->runQuery($query);
+    $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$bank_acct_number', '11')";
+    $db_handle->runQuery($query);
+    $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$bank_id', '10')";
+    $db_handle->runQuery($query);
 
     if($db_handle->affectedRows() > 0) {
         $message_success = "You have successfully made an update";
@@ -111,6 +128,8 @@ if(isset($_POST['document_update'])) {
                 $query = "INSERT INTO user_credential (user_code, idcard, status) VALUES ('$user_code_value', '$idcard', '1')";
                 $db_handle->runQuery($query);
             }
+            $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$idcard', '1')";
+            $db_handle->runQuery($query);
         }
     }
 
@@ -140,6 +159,8 @@ if(isset($_POST['document_update'])) {
                 $query = "INSERT INTO user_credential (user_code, passport, status) VALUES ('$user_code_value', '$passport', '1')";
                 $db_handle->runQuery($query);
             }
+            $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$passport', '2')";
+            $db_handle->runQuery($query);
 
         }
     }
@@ -170,7 +191,8 @@ if(isset($_POST['document_update'])) {
                 $query = "INSERT INTO user_credential (user_code, signature, status) VALUES ('$user_code_value', '$signature', '1')";
                 $db_handle->runQuery($query);
             }
-
+            $query = "INSERT INTO user_doc_archive (user_code, content, type) VALUE('$user_code', '$signature', '3')";
+            $db_handle->runQuery($query);
 
         }
     }
