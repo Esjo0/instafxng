@@ -234,7 +234,8 @@ $my_pages_sidebar = $_SESSION['user_privilege'];
                         <?php if (in_array(73, $my_pages_sidebar)) { ?><li><a href="edu_client_training_funded.php">Training Campaign Funded</a></li><?php } ?>
                         <?php if (in_array(74, $my_pages_sidebar)) { ?><li><a href="edu_forum_reg.php">Forum Registration</a></li><?php } ?>
                         <?php if (in_array(247, $my_pages_sidebar)) { ?><li><a href="traders_forum_schedule.php">Schedule Traders Forum</a></li><?php } ?>
-                        <?php if (in_array(280, $my_pages_sidebar)) { ?><li><a href="training_schedule.php">Training Schedule</a></li><?php } ?>
+                        <?php if (in_array(247, $my_pages_sidebar)) { ?><li><a href="traders_forum_schedule.php">Training Schedule</a></li><?php } ?>
+                        <?php if (in_array(305, $my_pages_sidebar)) { ?><li><a href="training_schedule_view_only.php">Training Schedule Clients</a></li><?php } ?>
                         <?php if (in_array(302, $my_pages_sidebar)) { ?><li><a href="account_audit.php">Account Audit</a></li><?php } ?>
                     </ul>
                 </li>
