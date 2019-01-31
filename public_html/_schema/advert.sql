@@ -1,3 +1,13 @@
+CREATE TABLE `user_id_card_archive` (
+ `id` int(10) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(11) NOT NULL,
+ `file_name` varchar(100) NOT NULL,
+ `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+)
+
+ALTER TABLE `user_credential` ADD `id_exp_date` DATE NULL DEFAULT NULL AFTER `doc_status`;
+
 ALTER TABLE `push_notification_token` ADD UNIQUE(`token`);
 
 CREATE TABLE `push_notification_token` (
