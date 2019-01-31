@@ -351,6 +351,7 @@ $my_pages = $admin_object->get_privileges($admin_code);
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="74" id="" <?php if (in_array(74, $my_pages)) { echo 'checked="checked"'; } ?>/> Forum Registration</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="247" id="" <?php if (in_array(247, $my_pages)) { echo 'checked="checked"'; } ?>/> Traders Forum Schedule</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="280" id="" <?php if (in_array(280, $my_pages)) { echo 'checked="checked"'; } ?>/> Training Schedule</label></div></div>
+                                        <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="308" id="" <?php if (in_array(308, $my_pages)) { echo 'checked="checked"'; } ?>/> Training Schedule Clients</label></div></div>
                                         <div class="col-sm-4"><div class="checkbox"><label for=""><input type="checkbox" name="pageid[]" value="302" id="" <?php if (in_array(302, $my_pages)) { echo 'checked="checked"'; } ?>/> Account Audit</label></div></div>
                                     </div>
                                     <hr/>

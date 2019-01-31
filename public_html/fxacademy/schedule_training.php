@@ -24,7 +24,7 @@ if (isset($_POST['schedule'])) {
         date_add($date_, date_interval_create_from_date_string('7 days'));
         $final_date = date_format($date_, 'Y-m-d H:i:s');
     }elseif(datetime_to_textday($date) == 'Tue'){
-        date_add($date_, date_interval_create_from_date_string('9 days'));
+        date_add($date_, date_interval_create_from_date_string('8 days'));
         $follow_date = date_format($date_, 'Y-m-d H:i:s');
         date_add($date_, date_interval_create_from_date_string('7 days'));
         $final_date = date_format($date_, 'Y-m-d H:i:s');

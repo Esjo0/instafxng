@@ -187,8 +187,8 @@ define("PAGE_CODE", json_encode(array(
     304 => "withdrawal_completed_unified.php",
     305 => "onboarding_campaign.php",
     306 => "onboarding_campaign_review.php",
-    307 => "clients_review.php"
-
+    307 => "clients_review.php",
+    308 => "training_schedule_view_only.php"
 )));
 class Access_Controller
 {
