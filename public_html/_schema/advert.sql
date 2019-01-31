@@ -1,3 +1,47 @@
+ALTER TABLE `push_notification_token` ADD UNIQUE(`token`);
+
+CREATE TABLE `push_notification_token` (
+ `id` int(100) NOT NULL AUTO_INCREMENT,
+ `token` varchar(200) NOT NULL,
+ `category` enum('1') DEFAULT NULL COMMENT '1-Signals',
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+) 
+
+
+CREATE TABLE `client_review` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_code` varchar(11) NOT NULL,
+ `status` enum('1') NOT NULL COMMENT '1-Contacted',
+ `admin` varchar(11) NOT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1
+Open new phpMyAdmin window
+
+CREATE TABLE `onboarding_campaign` (
+ `id` int(100) NOT NULL AUTO_INCREMENT,
+ `title` varchar(100) NOT NULL,
+ `details` text NOT NULL,
+ `campaign_id` varchar(100) NOT NULL,
+ `link` varchar(100) NOT NULL,
+ `admin` varchar(50) NOT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `campaign_id` (`campaign_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1
+
+
+CREATE TABLE `onboarding_campaign_leads` (
+ `id` int(100) NOT NULL AUTO_INCREMENT,
+ `email` varchar(100) NOT NULL,
+ `campaign_id` varchar(100) NOT NULL,
+ `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1
+
+
 INSERT INTO `system_setting` (`system_setting_id`, `constant`, `description`, `value`, `type`, `created`, `updated`) VALUES (NULL, 'WITHDRAWAL_DAILY_MAX_VALUE', 'The maximum amount of withdrawal that a client is allowed to request for per day. The sum of all withdrawals placed by a client in a day should not exceed this value.', '10000', '1', '2019-01-16 06:10:08', NULL)
 
 DELETE FROM account_audit_date WHERE audit_date = '2019-01-18' AND audit_date = '2019-01-19';

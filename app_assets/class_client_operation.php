@@ -1439,14 +1439,15 @@ MAIL;
             Your Withdrawal will be processed and payment made within one business day.</p>
 
             <p>In a few cases some requests fall outside the category of withdrawals we can process from
-            our office and has to be sent to InstaForex office. Withdrawal requests in this category can take
-            up to 3 Business days.</p>
+                our office and has to be sent to InstaForex office. In such cases the funds will be deducted
+                from your InstaForex account, but not immediately credited into our IFX account.
+                The funds will be deposited into our (InstaFxNg.com) account when the Finance Department is
+                done processing. Withdrawals in this category may take up to 3 business days.</p>
 
             <p>If your withdrawal request falls within this category, we will inform you immediately.</p>
 
-            <p style="font-size: 1.3em; color: #AE0000;"><strong>NOTE: </strong>Your
-            payment will be made based on the rate as at the time the fund is debited from your
-            Instaforex account.</p>
+            <p style="font-size: 1.3em; color: #AE0000;"><strong>NOTE: </strong>Your payment will be made based on the rate as at the time 
+            the funds is credited into our account by InstaForex.</p>
 
             <table style="margin-left: auto; margin-right: auto;" border="1" width="400">
                 <thead>
@@ -2710,6 +2711,58 @@ MAIL;
         $db_handle->runQuery($query);
 
         return $db_handle->affectedRows() > 0 ? true : false;
+    }
+
+    public function call_reminder_log($user_code, $reminder_date, $comment, $source, $admin){
+        global $db_handle;
+        $obj_push_notification = new Push_Notification_System();
+        $admin_object = new AdminUser();
+
+        $author = $admin_object->get_admin_name_by_code($admin);
+        $encrypt_usercode = dec_enc('encrypt', $user_code);
+        $encrypt_page = dec_enc('encrypt', $source);
+
+        $query = "INSERT INTO call_reminder (user_code, reminder_date, comment, source, admin) VALUES('$user_code', '$reminder_date', '$comment', '$source', '$admin')";
+        $db_handle->runQuery($query);
+        $title = "Client Contact Reminder";
+        $message = "You have a client to contact <br/><a href='https://instafxng.com/admin/sales_contact_view.php?x=$encrypt_usercode&r=$source&c=$encrypt_page&pg=1' target='_blank'>Click here to contact the client.</a>";
+        $recipients = $obj_push_notification->get_recipients_by_access(41);
+
+        $source_url = "https://instafxng.com/admin/sales_contact_view.php?x=$encrypt_usercode&r=$source&c=$encrypt_page&pg=1";
+        $obj_push_notification->add_new_notification($title, $message, $recipients, $author, $source_url);
+
+    }
+
+
+    public function call_reminder_update($user_code){
+        global $db_handle;
+        $today = date('d');
+        $query = "SELECT * FROM call_reminder WHERE user_code = '$user_code' AND DAY(reminder_date) <= '$today' AND status = '0'";
+        $num_rows = $db_handle->numRows($query);
+        if($num_rows >= 1){
+            $query = "UPDATE call_reminder SET status = '1' WHERE user_code = '$user_code'";
+            $db_handle->runQuery($query);
+        }
+    }
+
+
+    public function get_call_reminder($source){
+        global $db_handle;
+        $today = date('Y-m-d');
+        $query = "SELECT u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS full_name,
+        u.email, u.phone, cr.comment, cr.status, cr.reminder_date, cr.created, cr.id,
+        CONCAT(a.last_name, SPACE(1), a.first_name) AS admin
+        FROM call_reminder AS cr
+        INNER JOIN user AS u ON cr.user_code = u.user_code
+        LEFT JOIN admin AS a ON cr.admin = a.admin_code
+                  WHERE cr.source = '$source'  AND (STR_TO_DATE( cr.reminder_date, '%Y-%m-%d') <= '$today')";
+        $result = $db_handle->runQuery($query);
+
+        if($result){
+        $reminder = $db_handle->fetchAssoc($result);
+            return $reminder;
+        }
+
     }
 
     public function log_academy_first_login($first_name, $email_address, $user_code) {

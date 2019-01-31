@@ -168,11 +168,12 @@ if ($deposit_process_refund_approve && ($_SERVER['REQUEST_METHOD'] == 'POST' && 
 
     $transaction_id = $_POST['transaction_id'];
     $remarks = $_POST['remarks'];
+    $url = $_SERVER['REQUEST_URI'];
 
     $client_operation->deposit_comment($transaction_id, $_SESSION['admin_unique_code'], $remarks);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    header("Location: deposit_refund_pending.php");
+    header("Location: $url");
     exit;
 }
 
@@ -215,7 +216,7 @@ if ($deposit_process_refund_approve && ($_SERVER['REQUEST_METHOD'] == 'POST' && 
     $result = $db_handle->runQuery($query);
 
     release_transaction($transaction_id, $_SESSION['admin_unique_code']);
-    header("Location: deposit_refund_approve.php");
+    header("Location: deposit_refund_pending.php");
     exit;
 }
 
@@ -262,6 +263,16 @@ if(!empty($transaction_access['holder'])){
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+        <script>
+            function copy_text(btn_id) {
+                var btn = document.getElementById(btn_id);
+                var clipboard = new ClipboardJS(btn);
+                clipboard.on('success', function(e) {
+                    document.getElementById("display_"+btn_id).innerHTML = "Copied!!!";
+                });
+            }
+        </script>
         <script type="text/javascript">
             function showdolval(str,str1,str2) {
                 if (str=="") {

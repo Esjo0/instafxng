@@ -2,6 +2,10 @@
 require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) { redirect_to("login.php"); }
 
+$client_operation = new clientOperation();
+//<!-- Reminder Plug in-->
+$call_reminder = $client_operation->get_call_reminder('CLIENT RETENTION TRACKER');
+//<!-- Reminder Plug in-->
 if(isset($_POST['called'])){
     $user_code = $db_handle->sanitizePost($_POST['user_code']);
     $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
@@ -290,7 +294,7 @@ if($retention_type_main_title == "NOT YET RETAINED") {
 $total_retained = $total_to_retain - $total_not_retained;
 $retention_rate = number_format((($total_retained / $total_to_retain) * 100), 2);
 
-$rowsperpage = 50;
+$rowsperpage = $numrows;
 
 $totalpages = ceil($numrows / $rowsperpage);
 
@@ -324,6 +328,27 @@ $retention_result = $db_handle->fetchAssoc($result);
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+
+        <script>
+            $(document).ready( function () {
+                $('#list_table').DataTable();
+            } );
+        </script>
+
+        <script>
+            $(document).ready( function () {
+                $('#list_table2').DataTable();
+            } );
+        </script>
+        <script>
+            $(function () {
+                $('[data-toggle="popover"]').popover()
+            })
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -516,13 +541,16 @@ $retention_result = $db_handle->fetchAssoc($result);
                             <div class="col-sm-12">
 
                                 <div class="row">
+
                                     <div class="col-sm-12">
                                         <br />
+
 
                                         <p class="text-right">
                                             <a href="client_month_activity.php" target="_blank" class="btn btn-info" title="Month Activity">Month Activity <i class="fa fa-tasks"></i></a>
 
                                             <a data-target="#search-form" data-toggle="modal" class="btn btn-default" title="Apply Filter">Apply Filter <i class="glyphicon glyphicon-search"></i></a>
+
                                         </p>
 
                                         <div id="search-form" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
@@ -616,58 +644,120 @@ $retention_result = $db_handle->fetchAssoc($result);
                                     </div>
 
                                 <?php } ?>
+                                <!-- Reminder Plug in-->
+                                <div id="reminder" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" data-dismiss="modal" aria-hidden="true"
+                                                        class="close">&times;</button>
+                                                <h4 class="modal-title">Contact Reminder.</h4>
+                                            </div>
+                                            <div class="modal-body">
 
-                                <?php if(isset($retention_result) && !empty($retention_result)) { require 'layouts/pagination_links.php'; } ?>
+                                                <table id="list_table2" class="table table-responsive table-striped table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>SN</th>
+                                                        <th>Client Details</th>
+                                                        <th>Comment</th>
+                                                        <th>Reminder Date</th>
+                                                        <th>Status</th>
+                                                        <th>Date Created</th>
+                                                        <th>Created By</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php if(isset($call_reminder) && !empty($call_reminder)){$total_rem_num = 1; $total_rem_pending = 0; foreach ($call_reminder AS $rem){?>
 
-                                <div class="table-wrap">
-                                    <table class="table table-responsive table-striped table-bordered table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>Client Detail</th>
-                                            <th>Commission</th>
-                                            <th>Funding</th>
-                                            <th><?php if($retention_type_main_title == "NOT YET RETAINED") { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
-                                            <th>Action</th>
-                                            <th>Call Log</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php if(isset($retention_result) && !empty($retention_result)) { foreach ($retention_result as $row) {
-                                            if($retention_type == '1') {
-                                                $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $prev_from_date, $prev_to_date);
-                                            } else {
-                                                $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $from_date, $to_date);
-                                            }
-                                        ?>
-                                            <tr>
-                                                <td>
-                                                    <?php echo $row['full_name']; ?><br />
-                                                    <?php echo $row['email']; ?><br />
-                                                    <?php echo $row['phone']; ?>
-                                                </td>
-                                                <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
-                                                <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
-                                                <td><?php if($retention_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
-                                                <td nowrap="nowrap">
-                                                    <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
-                                                    <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
-                                                    <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
-                                                    <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
-                                                </td>
-                                                <td><?php call_log_status($row['user_code'], 'RETENTION');?></td>
-                                            </tr>
-                                        <?php } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                        <tr>
+                                                            <td><?php echo $total_rem_num; ?></td>
+                                                            <td>
+                                                                <?php echo $rem['full_name']; ?><br />
+                                                            </td>
+                                                            <td><?php echo $rem['comment']; ?></td>
+                                                            <td><?php echo datetime_to_text($rem['reminder_date']); ?></td>
+                                                            <td><?php
+                                                                $encrypt_usercode = dec_enc('encrypt', $rem['user_code']);
+                                                                $encrypt_page = dec_enc('encrypt', 'CLIENT RETENTION TRACKER');
+                                                                $reminder_date = date_create($rem['reminder_date']);
+                                                                $reminder_date = date_format($reminder_date,"d-m-Y");
+                                                                $diff = dateDifference($reminder_date,$today);
 
-                                <?php if(isset($retention_result) && !empty($retention_result)) { ?>
-                                    <div class="tool-footer text-right">
-                                        <p class="pull-left">Showing <?php echo $prespagelow . " to " . $prespagehigh . " of " . $numrows; ?> entries</p>
+                                                                if( ($rem['status'] == '0') && ($diff >= 1) ){
+                                                                    $total_rem_pending++;
+                                                                    echo "<b><i class='text-danger'>Over Due</i></b><br>
+                                                                    <a target='_blank' title='Comment' class='btn btn-success btn-sm' href='sales_contact_view.php?x=$encrypt_usercode&r=client_retention&c=$encrypt_page&pg=$currentpage'>Contact Client</a>";
+
+                                                                }elseif($rem['status'] == '1'){
+                                                                    echo "<b><i class='text-success'>Contacted</i></b>";
+                                                                }elseif($rem['status'] == '0'){
+                                                                    $total_rem_pending++;
+                                                                    echo "<b><i class='text-warning'>Pending</i></b><br>
+                                                                    <a target='_blank' title='Comment' class='btn btn-success btn-sm' href='sales_contact_view.php?x=$encrypt_usercode&r=client_retention&c=$encrypt_page&pg=$currentpage'>Contact Client</a>";
+                                                                }
+                                                                ?></td>
+                                                            <td><?php echo datetime_to_text($rem['created']); ?></td>
+                                                            <td><?php echo $rem['admin']?></td>
+                                                        </tr>
+                                                        <?php $total_rem_num++; } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button data-dismiss="modal" class="btn btn-danger">Close !</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                <?php } ?>
-
-                                <?php if(isset($retention_result) && !empty($retention_result)) { require 'layouts/pagination_links.php'; } ?>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button type="button" data-target="#reminder" data-toggle="modal" class="btn btn-success pull-right"><i class="fa fa-bell "></i> Contact Reminder  <span class="badge"><?php echo $total_rem_pending;?></span></button>
+                                    </div>
+                                </div>
+                                <!-- Reminder Plug in-->
+                                <table id="list_table" class="table table-responsive table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>SN</th>
+                                        <th>Client Detail</th>
+                                        <th>Commission</th>
+                                        <th>Funding</th>
+                                        <th><?php if($retention_type_main_title == "NOT YET RETAINED") { echo "Last Trading"; } else { echo "First Trading"; } ?></th>
+                                        <th>Action</th>
+                                        <th>Call Log</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php if(isset($retention_result) && !empty($retention_result)) { $serial_num = 1; foreach ($retention_result as $row) {
+                                        if($retention_type == '1') {
+                                            $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $prev_from_date, $prev_to_date);
+                                        } else {
+                                            $sum_funding = $obj_analytics->get_client_funding_in_period($row['user_code'], $from_date, $to_date);
+                                        }
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $serial_num; ?></td>
+                                            <td>
+                                                <?php echo $row['full_name']; ?><br />
+                                                <?php echo $row['email']; ?><br />
+                                                <?php echo $row['phone']; ?>
+                                            </td>
+                                            <td>&dollar; <?php echo number_format($row['sum_commission'], 2, ".", ","); ?></td>
+                                            <td>&dollar; <?php echo number_format($sum_funding, 2, ".", ","); ?></td>
+                                            <td><?php if($retention_type == '1') { echo datetime_to_text2($row['last_trade']); } else { echo datetime_to_text2($row['first_trade']); } ?></td>
+                                            <td nowrap="nowrap">
+                                                <a title="View" target="_blank" class="btn btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
+                                                <a title="Comment" target="_blank" class="btn btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_retention'; ?>&c=<?php echo dec_enc('encrypt', 'CLIENT RETENTION TRACKER'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
+                                                <br />
+                                                <a title="Send Email" target="_blank" class="btn btn-primary" href="campaign_email_single.php?name=<?php $name = $row['full_name']; echo dec_enc('encrypt', $name) . '&email=' . dec_enc('encrypt', $row['email']); ?>"><i class="glyphicon glyphicon-envelope"></i></a>
+                                                <a title="Send SMS" target="_blank" class="btn btn-success" href="campaign_sms_single.php?lead_phone=<?php echo dec_enc('encrypt', $row['phone']) ?>"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                            </td>
+                                            <td><?php call_log_status($row['user_code'], 'RETENTION');?></td>
+                                        </tr>
+                                    <?php $serial_num++; } } else { echo "<tr><td colspan='5' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
+                                    </tbody>
+                                </table>
 
                             </div>
                         </div>
@@ -678,6 +768,7 @@ $retention_result = $db_handle->fetchAssoc($result);
             </div>
         </div>
         <?php require_once 'layouts/footer.php'; ?>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
         <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
     </body>

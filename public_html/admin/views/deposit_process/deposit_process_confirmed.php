@@ -135,7 +135,12 @@ if(!empty($trans_detail['points_claimed_id'])) {
                         <span id="transaction_identity"><?php echo $trans_id; ?></span>
                         <span><strong>Order:</strong> &dollar; <?php echo $trans_detail['dollar_ordered']; ?> - &#8358; <?php echo number_format($trans_detail['naira_total_payable'], 2, ".", ","); ?></span>
                         <span><strong>Date Created: </strong><?php echo datetime_to_text($trans_detail['deposit_created']); ?></span>
-                        <span><strong>Account:</strong> <?php echo $trans_detail['ifx_acct_no']; ?></span>
+                        <span><strong>Account:</strong> <?php echo $trans_detail['ifx_acct_no']; ?>
+                            <button title="Click To Copy account number" id="btn_<?php echo $trans_detail['ifx_acct_no'];?>" onclick="copy_text('btn_<?php echo $trans_detail['ifx_acct_no'];?>')"  data-clipboard-text="<?php echo htmlspecialchars($trans_detail['ifx_acct_no']); ?>" data-clipboard-action="copy" class="pull-right cbtn btn btn-success btn-xs"><i class="glyphicon glyphicon-copy"></i></button>
+                            <span class="pull-right" id="display_btn_<?php echo $trans_detail['ifx_acct_no'];?>">
+                                <i class="glyphicon glyphicon-info"> </i><i>Click to copy </i>
+                            </span>
+                        </span>
                         <hr/>
                         <span><strong>Paid:</strong> &#8358; <?php echo number_format($trans_detail['client_naira_notified'], 2, ".", ","); ?></span>
                         <span><strong>Payment Date:</strong> <?php if(!is_null($trans_detail['client_pay_date'])) { echo date_to_text($trans_detail['client_pay_date']); } ?></span>
@@ -224,9 +229,15 @@ if(!empty($trans_detail['points_claimed_id'])) {
             </div>
             <div class="form-group">
                 <label class="control-label text-danger" for="realDolVal">Real Dollar Value (&#36;):</label>
-                <div id="realDol"><input type="text" class="form-control" id="realDolVal" name="realDolVal" value="<?php echo number_format($trans_detail['real_dollar_equivalent'], 2, ".", ","); ?>" readonly></div>
+                <div class="input-group" id="realDol">
+                    <input type="text" class="form-control" id="realDolVal" name="realDolVal" value="<?php echo number_format($trans_detail['real_dollar_equivalent'], 2, ".", ","); ?>" readonly>
+                    <span title="Click To Copy actual amount Paid" id="btn_<?php echo $trans_detail['real_dollar_equivalent'];?>" onclick="copy_text('btn_<?php echo $trans_detail['real_dollar_equivalent'];?>')"  data-clipboard-text="<?php echo $trans_detail['real_dollar_equivalent']; ?>" data-clipboard-action="copy" class="btn btn-success btn-xs input-group-addon">
+                        <i class="glyphicon glyphicon-copy"></i>
+                    </span>
+                </div>
+                <span class="pull-right" id="display_btn_<?php echo $trans_detail['real_dollar_equivalent'];?>"><i class="glyphicon glyphicon-info"></i><i>Click to copy</i></span>
             </div>
-            
+
             <?php if(isset($point_dollar_amount)) { ?>
             <div class="form-group">
                 <label class="control-label text-danger" for="point_dollar_amount">Loyalty Point Dollar Value (&#36;):</label>

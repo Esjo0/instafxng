@@ -3,7 +3,8 @@ require_once("../init/initialize_admin.php");
 if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
-
+$client_operation = new clientOperation();
+$today = date('d-m-Y');
 /**
  * x = user code
  * r = referral page URL
@@ -15,7 +16,8 @@ $get_params = allowed_get_params(['x', 'r', 'c', 'pg']);
 $user_code_encrypted = $get_params['x'];
 $user_code = dec_enc('decrypt', $user_code_encrypted);
 $referral_url = $get_params['r'];
-$referral_title_encrypted = $get_params['c']; $referral_title = dec_enc('decrypt',  $referral_title_encrypted);
+$referral_title_encrypted = $get_params['c'];
+$referral_title = dec_enc('decrypt',  $referral_title_encrypted);
 $referral_pagination = $get_params['pg'];
 
 // get the current page or set a default
@@ -24,6 +26,7 @@ if (isset($referral_pagination) && is_numeric($referral_pagination)) {
 } else {
     $currentpage = 1;
 }
+
 
 if (isset($_POST['process'])) {
     foreach($_POST as $key => $value) {
@@ -36,7 +39,13 @@ if (isset($_POST['process'])) {
     $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$selected_id', '$admin_code', '$comment')";
     $result = $db_handle->runQuery($query);
 
-    $client_operation = new clientOperation();
+    //Update reminder
+    $client_operation->call_reminder_update($selected_id);
+
+    if($remind_me == 1){
+        $client_operation->call_reminder_log($selected_id, $reminder_date, $comment, $referral_title, $admin_code);
+    }
+
     $client_operation->log_sales_contact_client_interest($selected_id, $int_train, $int_train_FMM, $int_train_FPO, $int_train_audit, $int_fund, $int_bonus, $int_invest, $int_service, $int_other);
 
     if($result) {
@@ -142,6 +151,29 @@ $user_interest = $user_interest[0];
                                             </div>
 
                                             <div class="form-group">
+                                                <label class="control-label col-sm-3" for="client_interest">Reminder:</label>
+                                                <div class="col-sm-9"><input name="remind_me" type="checkbox" id="remind_me" onclick="set_reminder()"> <i class="fa fa-info-circle"></i >Tick to set reminder</div>
+                                            </div>
+
+                                            <div class="form-group" id="reminder" style="display:none;">
+                                                <label class="control-label col-sm-3" for="phone_number">Set Reminder:</label>
+                                                <div class="col-sm-9 col-lg-5">
+                                                    <div class='input-group date' id='datetimepicker'>
+                                                        <input name="reminder_date" type="text" class="form-control" id='reminder_date' >
+                                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+                                                <script type="text/javascript">
+                                                    $(function () {
+                                                        $('#reminder_date').datetimepicker({
+                                                            format: 'YYYY-MM-DD HH:mm'
+                                                        });
+                                                    });
+                                                </script>
+                                            </div>
+
+
+                                            <div class="form-group">
                                                 <label class="control-label col-sm-3" for="comment">Comment:</label>
                                                 <div class="col-sm-9"><textarea name="comment" id="comment" rows="3" class="form-control" required></textarea></div>
                                             </div>
@@ -179,7 +211,7 @@ $user_interest = $user_interest[0];
                                                         <div class="modal-body">Are you sure you want to save this information?</div>
                                                         <div class="modal-footer">
                                                             <input name="process" type="submit" class="btn btn-success" value="Save">
-                                                            <button type="submit" name="decline" onClick="window.close();" data-dismiss="modal" class="btn btn-danger">Close !</button>
+                                                            <button type="submit" name="decline" data-dismiss="modal" class="btn btn-danger">Close !</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -228,6 +260,23 @@ $user_interest = $user_interest[0];
                 
             </div>
         </div>
+        <script>
+            function set_reminder(){
+                var x = document.getElementById("remind_me").checked;
+                if( x == true){
+                    document.getElementById("reminder").style.display = "block";
+                    document.getElementById("reminder_date").required = true;
+                    document.getElementById("remind_me").value = 1;
+                }else{
+                    document.getElementById("reminder").style.display = "none";
+                    document.getElementById("reminder_date").required = false;
+                    document.getElementById("remind_me").value = 0;
+                }
+
+            }
+        </script>
         <?php require_once 'layouts/footer.php'; ?>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+        <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
     </body>
 </html>
