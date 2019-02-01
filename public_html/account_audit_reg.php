@@ -1,6 +1,7 @@
 <?php
 require_once 'init/initialize_general.php';
 $thisPage = "Education";
+$today = date('Y-m-d');
 if (isset($_POST['reserve_seat'])) {
     $email = $db_handle->sanitizePost(trim($_POST['email']));
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
@@ -174,7 +175,7 @@ if (isset($_POST['reserve_seat'])) {
                                             <select id="entry_channel1" class="form-control" name="date1">
                                                 <option value="">Choose a date</option>
                                                 <?php
-                                                $query = "SELECT * FROM account_audit_date WHERE venue = '1' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today'";
+                                                $query = "SELECT * FROM account_audit_date WHERE venue = '1' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today' AND audit_date NOT IN (SELECT audit_date FROM account_audit WHERE audit_location = '1')";
                                                 $result = $db_handle->runQuery($query);
                                                 $result = $db_handle->fetchAssoc($result);
                                                 foreach ($result as $row_loc) {
@@ -190,7 +191,7 @@ if (isset($_POST['reserve_seat'])) {
                                             <select id="entry_channel2" class="form-control" name="date2" >
                                                 <option value="">Choose a date</option>
                                                 <?php
-                                                $query = "SELECT * FROM account_audit_date WHERE venue = '2' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today'";
+                                                $query = "SELECT * FROM account_audit_date WHERE venue = '2' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today' AND audit_date NOT IN (SELECT audit_date FROM account_audit WHERE audit_location = '2')";
                                                 $result = $db_handle->runQuery($query);
                                                 $result = $db_handle->fetchAssoc($result);
                                                 foreach ($result as $row_loc) {
@@ -206,7 +207,7 @@ if (isset($_POST['reserve_seat'])) {
                                             <select id="entry_channel3" class="form-control" name="date3" >
                                                 <option value="">Choose a date</option>
                                                 <?php
-                                                $query = "SELECT * FROM account_audit_date WHERE venue = '3' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today'";
+                                                $query = "SELECT * FROM account_audit_date WHERE venue = '3' AND STR_TO_DATE(audit_date, '%Y-%m-%d') >= '$today' AND audit_date NOT IN (SELECT audit_date FROM account_audit WHERE audit_location = '3')";
                                                 $result = $db_handle->runQuery($query);
                                                 $result = $db_handle->fetchAssoc($result);
                                                 foreach ($result as $row_loc) {

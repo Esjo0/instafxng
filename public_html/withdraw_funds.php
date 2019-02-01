@@ -142,20 +142,27 @@ if(isset($_POST['withdraw_funds_add_bank'])) {
 // This section processes - views/withdraw_funds_qty.php
 if(isset($_POST['withdraw_funds_qty'])) {
     $page_requested = 'withdraw_funds_qty_php';
-    
+
     $account_no = $db_handle->sanitizePost($_POST['ifx_acct_no']);
     $ifx_dollar_amount = $db_handle->sanitizePost($_POST['ifx_dollar_amount']);
     $phone_password = $db_handle->sanitizePost($_POST['phone_password']);
 
+    $client_operation = new clientOperation($account_no);
+    $user_ifx_details = $client_operation->get_client_data();
+    if($user_ifx_details) {
+        extract($user_ifx_details);
+    }
+
+    $today_client_withdrawal_today = $client_operation->get_total_client_withdrawal_today($client_user_code);
+
     if($ifx_dollar_amount < WITHDRAWAL_MIN_VALUE || $ifx_dollar_amount > WITHDRAWAL_MAX_VALUE) {
         $message_error = "Please re-enter amount. The minimum you can withdraw per transaction is $" . WITHDRAWAL_MIN_VALUE . " and the maximum is $" . number_format(WITHDRAWAL_MAX_VALUE);
+    } elseif (($today_client_withdrawal_today + $ifx_dollar_amount) > WITHDRAWAL_DAILY_MAX_VALUE) {
+        $message_error = "Please re-enter amount. This transaction will make your total requested withdrawal today to exceed the maximum allowed withdrawal per day, the maximum per day is $"  . number_format(WITHDRAWAL_DAILY_MAX_VALUE);
     } else {
 
-        $client_operation = new clientOperation($account_no);
-        $user_ifx_details = $client_operation->get_client_data();
+        if($client_user_code) {
 
-        if($user_ifx_details) {
-            extract($user_ifx_details);
             $user_bank_details = $client_operation->get_user_bank_account($client_user_code);
             extract($user_bank_details);
 

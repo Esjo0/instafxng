@@ -6,6 +6,8 @@ if (!$session_admin->is_logged_in()) {
 
 $obj_training = new training();
 $admin_code = $_SESSION['admin_unique_code'];
+$admin_email = $_SESSION['admin_email'];
+
 if (isset($_POST['schedule_public'])) {
     $no_of_students = $db_handle->sanitizePost($_POST['no_of_students']);
     $date = $db_handle->sanitizePost($_POST['schedule_time']);
@@ -59,27 +61,22 @@ if (isset($_POST['schedule_private_paid'])) {
     }
     $course_id = 0;
     $origin_of_deposit = '1'; // Originates online
-    $stamp_duty = 0; // It has been added to course cost
+    $stamp_duty = 50; // It has been added to course cost
     $course_cost = $amount;
     $total_payable = $stamp_duty + $course_cost;
-    $card_processing = 0.015 * $total_payable;
+    $card_processing = 0;
     $total_payable_card = $card_processing + $total_payable;
-    $course_name = "One on One Forex Training";
+    $course_name = "Intermediate Mentorship Program";
     $trans_id = "FPA" . time();
     $trans_id_encrypted = dec_enc('encrypt', $trans_id);
     $client_name = $full_name;
     $client_email = $email;
     $schedule_type = 3;
 
-    $payment = $education_object->log_course_deposit($user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
+    $payment = $obj_training->log_course_deposit($mode, $location, $date, $user_code, $trans_id, $course_id, $course_cost, $stamp_duty, $card_processing, $pay_type, $origin_of_deposit, $client_name, $client_email);
 
     $schedule_public = $obj_training->schedule_private_time($date, $mode, $client_email, $admin_code, $location, $schedule_type);
-    $admin_details = $admin_object->get_admin_detail_by_code($admin_code);
-    foreach ($admin_details AS $row) {
-        extract($row);
-        $admin_email = $email;
 
-    }
     $date = datetime_to_text($date);
     $content = <<<MAIL
 <p>You Created a paid Training for $client_name</p>
@@ -488,7 +485,7 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                     extract($row);
                                     if ($location == 1) {
                                         $location = "Diamond Estate office";
-                                    } elseif ($location == 3) {
+                                    } elseif ($location == 2) {
                                         $location = "EASTLINE Complex office";
                                     }
                                     echo "<div class='col-sm-3'>[ " . datetime_to_text($schedule_date) . " <br> No of Students $no_of_students <br>" . training_mode($schedule_mode) . " <br> @ : " . $location . " ] "; ?>
@@ -622,7 +619,7 @@ $training_schedules = $db_handle->fetchAssoc($result);
                                     <td><?php echo $row['phone']; ?></td>
                                     <td><?php if ($row['location'] == 1) {
                                             echo "Diamond Estate office";
-                                        } elseif ($row['location'] == 3) {
+                                        } elseif ($row['location'] == 2) {
                                             echo "EASTLINE Complex office";
                                         }
                                         ?></td>

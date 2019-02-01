@@ -869,7 +869,7 @@ MAIL;
                 ued.status, ued.created, u.user_code, CONCAT(u.last_name, SPACE(1), u.first_name) AS client_full_name, u.email, u.phone
                 FROM user_edu_deposits AS ued
                 INNER JOIN user AS u ON u.user_code = ued.user_code
-                INNER JOIN edu_course AS ec ON ec.edu_course_id = ued.course_id
+                LEFT JOIN edu_course AS ec ON ec.edu_course_id = ued.course_id
                 WHERE ued.trans_id = '$trans_id' LIMIT 1";
 
         $result = $db_handle->runQuery($query);

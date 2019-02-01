@@ -6,7 +6,7 @@ if (!$session_admin->is_logged_in()) {
 
 $get_params = allowed_get_params(['id']);
 $user_code_encrypted = $get_params['id'];
-$user_code = dec_enc('decrypt',  $user_code_encrypted));
+$user_code = dec_enc('decrypt',  $user_code_encrypted);
 
 
 $client_operation = new clientOperation();
