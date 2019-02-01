@@ -12,7 +12,7 @@ $call_reminder = $client_operation->get_call_reminder('INACTIVE TRADING CLIENT')
 
 if(isset($_POST['called'])){
     $user_code = $db_handle->sanitizePost($_POST['user_code']);
-    $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' AND source = 'INACTIVE TRADING CLIENT'";
     $numrows = $db_handle->numRows($query);
     if($numrows == 0){
         $query = "INSERT INTO call_log (user_code, status, source) VALUES ('$user_code', '1', 'INACTIVE TRADING CLIENT')";
@@ -154,6 +154,11 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
             } );
         </script>
         <script>
+            $(document).ready( function () {
+                $('#list_table2').DataTable();
+            } );
+        </script>
+        <script>
             $(function () {
                 $('[data-toggle="popover"]').popover()
             })
@@ -260,7 +265,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                                             </div>
                                             <div class="modal-body">
 
-                                                <table id="list_table" class="table table-responsive table-striped table-bordered table-hover">
+                                                <table id="list_table2" class="table table-responsive table-striped table-bordered table-hover">
                                                     <thead>
                                                     <tr>
                                                         <th>SN</th>

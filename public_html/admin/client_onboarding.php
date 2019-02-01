@@ -10,7 +10,7 @@ if(isset($_GET['r']) && $_GET['r'] == 1) {
 
 if(isset($_POST['called'])){
     $user_code = $db_handle->sanitizePost($_POST['user_code']);
-    $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' AND source = 'ONBOARDING'";
     $numrows = $db_handle->numRows($query);
     if($numrows == 0){
         $query = "INSERT INTO call_log (user_code, status, source) VALUES ('$user_code', '1', 'ONBOARDING')";
