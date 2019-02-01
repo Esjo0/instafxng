@@ -4,6 +4,64 @@ if (!$session_admin->is_logged_in()) {
     redirect_to("login.php");
 }
 
+if(isset($_POST['called'])){
+    $user_code = $db_handle->sanitizePost($_POST['user_code']);
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code'";
+    $numrows = $db_handle->numRows($query);
+    if($numrows == 0){
+        $query = "INSERT INTO call_log (user_code, status, source) VALUES ('$user_code', '1', 'CLIENT_VIEW')";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully updated as contacted";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }elseif($numrows == 1){
+        $query = "UPDATE call_log SET status = '1' WHERE user_code = '$user_code' AND source = 'CLIENT_VIEW' ";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully updated as contacted";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }
+
+}
+
+if(isset($_POST['follow_up'])){
+    $user_code = $db_handle->sanitizePost($_POST['user_code']);
+    $comment = $db_handle->sanitizePost($_POST['comment']);
+    $query = "SELECT * FROM call_log WHERE user_code = '$user_code' AND source = 'CLIENT_VIEW'";
+    $numrows = $db_handle->numRows($query);
+    if($numrows == 0){
+        $sales_comment = "INACTIVE TRADING CLIENT" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
+        $query = "INSERT INTO call_log (user_code, status, follow_up_comment, source) VALUES ('$user_code', '2', '$comment', 'INACTIVE TRADING CLIENT')";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully saved for follow-up call";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }elseif($numrows == 1){
+        $sales_comment = "INACTIVE TRADING CLIENT" . $comment;
+        $admin_code = $_SESSION['admin_unique_code'];
+        $query = "INSERT INTO sales_contact_comment (user_code, admin_code, comment) VALUES ('$user_code', '$admin_code', '$sales_comment')";
+        $result = $db_handle->runQuery($query);
+        $query = "UPDATE call_log SET status = '2', follow_up_comment = '$comment' WHERE user_code = '$user_code' AND source = 'INACTIVE TRADING CLIENT'";
+        $result = $db_handle->runQuery($query);
+        if($result){
+            $message_success = "Successfully saved for follow-up call";
+        }else{
+            $message_error = "Contact Update Not Successful.";
+        }
+    }
+
+}
+
+
 if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
 
     if(isset($_POST['inactive_trading_client'])) {
@@ -82,6 +140,14 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <?php require_once 'layouts/head_meta.php'; ?>
+        <script>
+            $(function () {
+                $('[data-toggle="popover"]').popover()
+            })
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     </head>
     <body>
         <?php require_once 'layouts/header.php'; ?>
@@ -180,6 +246,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                                         <th>Last Trade Date</th>
                                         <th>Account Officer</th>
                                         <th>Action</th>
+                                        <th>Call Log</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -197,6 +264,7 @@ if (isset($_POST['inactive_trading_client']) || isset($_GET['pg'])) {
                                                 <a title="Comment" class="btn btn-xs btn-success" href="sales_contact_view.php?x=<?php echo dec_enc('encrypt', $row['user_code']); ?>&r=<?php echo 'client_inactive'; ?>&c=<?php echo dec_enc('encrypt', 'INACTIVE TRADING CLIENT'); ?>&pg=<?php echo $currentpage; ?>"><i class="glyphicon glyphicon-comment icon-white"></i> </a>
                                                 <a target="_blank" title="View" class="btn btn-xs btn-info" href="client_detail.php?id=<?php echo dec_enc('encrypt', $row['user_code']); ?>"><i class="glyphicon glyphicon-eye-open icon-white"></i> </a>
                                             </td>
+                                            <td><?php call_log_status($row['user_code'], 'INACTIVE TRADING CLIENT');?></td>
                                         </tr>
                                     <?php } } else { echo "<tr><td colspan='6' class='text-danger'><em>No results to display</em></td></tr>"; } ?>
                                     </tbody>
